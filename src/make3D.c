@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: make3D.c,v 1.2 2001-03-19 15:58:40 afr Exp $
+ * $Id: make3D.c,v 1.3 2001-03-19 16:13:07 afr Exp $
  *
  */
 
@@ -73,7 +73,7 @@ void
   int kincre;           /* Number of doubles in first vertex direction */
   int ki,kj,kl,kstop;
   double tsum,*sp,*sq;
-  int kstat=0,kpos=0;
+  //int kstat=0,kpos=0;
    
   if (!ps) goto errnull;
   if (ps->idim != 1) goto errdim;

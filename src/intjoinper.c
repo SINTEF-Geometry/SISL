@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: intjoinper.c,v 1.3 2001-03-19 15:58:40 afr Exp $
+ * $Id: intjoinper.c,v 1.4 2001-03-19 16:13:07 afr Exp $
  *
  */
 
@@ -113,7 +113,7 @@ void
   double dist_d;                /* Distance in 3D, periodicity            */
   double ang;                   /* Angel between tangents, periodicity    */
   int dimobj;                   /* Dimension 3, periodicity               */
-  int dim2=2;                   /* Dimension 2, periodicity               */
+  //int dim2=2;                   /* Dimension 2, periodicity               */
   int join=TRUE;                /* Flag to kill int point, periodicity    */
   int const_crv_1;              /* Constant parameter direction           */
   int const_crv_2;              /* Constant parameter direction           */
