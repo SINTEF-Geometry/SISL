@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1896.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1896.c,v 1.2 1994-08-31 14:34:15 pfu Exp $
  *
  */
 
@@ -115,15 +115,17 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
 * REVISED BY : Michael Floater, SI, June 92. The rational stuff
 *              was completely messed up. But it works now.
 *              Dimension of output curve was wrong -- now narr.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, August 94. Fixed over-running
+*              of array indices (found with Purify).
 *
 *********************************************************************
 */
 {
-  int nik1;			/* Order of new surface in 
+  int nik1;			/* Order of new surface in
 				   first parameter direction. */
-  int nin1;			/* Order of new surface in 
+  int nin1;			/* Order of new surface in
 				   second parameter direction. */
-  int nik2;			/* Number of vertices in first 
+  int nik2;			/* Number of vertices in first
 				   parameter direction. */
   int nin2;			/* Number of vertices in second parameter direction. */
   int lfs;			/* Interval indicator. (left side) */
@@ -140,11 +142,11 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
   int mdt1;
   int mds2;
   int mdt2;
-  int nder1;			/* Total order of derivatives. 
+  int nder1;			/* Total order of derivatives.
 				   (Both directions) */
   int nder2;
   int dim;			/* Dimension of tau. */
-  int maxder;			/* Largest total order of derivatives. 
+  int maxder;			/* Largest total order of derivatives.
 				   (Both functions.) */
   int count1;			/* Loop control variables. */
   int kj, ki;
@@ -222,9 +224,9 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
 
   /* Allocate memory for point calculation. */
 
-  val1 = newarray (dimp1+1, DOUBLE);
+  val1 = newarray (dimp1, DOUBLE);
   if (val1 == NULL) goto err101;
-  val2 = newarray (dimp1+1, DOUBLE);
+  val2 = newarray (dimp1, DOUBLE);
   if (val2 == NULL) goto err101;
   tau = newarray (narr * nin1 * nin2, DOUBLE);
   if (tau == NULL) goto err101;
@@ -266,7 +268,7 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
 	      pos1 = osurf->idim * (nder1 * (nder1 + 1) / 2 + dt1);
 	      pos2 = osurf->idim * (nder2 * (nder2 + 1) / 2 + dt2);
 
-	      for (count1 = 0; count1 <= osurf->idim; count1++)
+	      for (count1 = 0; count1 < osurf->idim; count1++)
 		{
 		  val1[count1] = deriv[pos1++];
 		  val2[count1] = deriv[pos2++];
