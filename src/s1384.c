@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1384.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1384.c,v 1.2 1994-06-20 06:39:44 vsk Exp $
  *
  */
 
@@ -159,12 +159,16 @@ void s1384(pcurve,psurf,idim,iside,ax,ileftc,ilefts1,ilefts2,
   knum2 = kdims*(kder+1)*(kder+2)/2;
   
   if (knum1>8)
+  {
     if((sderc = newarray(knum1,DOUBLE)) == NULL) goto err101;
+  }
   else  
     sderc = sdumc;
   
   if (knum2>30)
+  {
     if((sders = newarray(knum2,DOUBLE)) == NULL) goto err101;
+  }
   else   
     sders = sdums;
   
