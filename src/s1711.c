@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1711.c,v 1.2 1994-06-13 08:14:51 boh Exp $
+ * $Id: s1711.c,v 1.3 1994-08-15 14:27:28 pfu Exp $
  *
  */
 
@@ -76,6 +76,8 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 * MODIFIED BY : Mike Floater, SI, 90-12. Subdivide rational surfaces.
 * MODIFIED BY : Arne Laksaa, SI, 92-09. Move apar to closest knot
 *		if it is close to a knot. Using D(N)EQUAL().
+* MODIFIED BY : Paal Fugelli, SINTEF, Oslo 15/07-1994. Changed from icopy==0
+*               to icopy==2 in creation of output surface - memory leak.
 *
 **********************************************************************/
 {
@@ -371,17 +373,17 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 
   if (ipar==1)
   {
-    if ((q1=newSurf(kn1,knsec,kk,kksec,st1,st1sec,
-                    scoef1,newkind,ps->idim,0)) == NULL) goto err101;
-    if ((q2=newSurf(kn2,knsec,kk,kksec,st2,st2sec,
-                    scoef2,newkind,ps->idim,0)) == NULL) goto err101;
+    if ((q1=newSurf(kn1,knsec,kk,kksec,st1,st1sec,     /* PFU 15/07-94 */
+                    scoef1,newkind,ps->idim,2)) == NULL) goto err101;
+    if ((q2=newSurf(kn2,knsec,kk,kksec,st2,st2sec,     /* PFU 15/07-94 */
+                    scoef2,newkind,ps->idim,2)) == NULL) goto err101;
   }
   else
   {
-    if ((q1=newSurf(knsec,kn1,kksec,kk,st1sec,st1,
-                    scoef1,newkind,ps->idim,0)) == NULL) goto err101;
-    if ((q2=newSurf(knsec,kn2,kksec,kk,st2sec,st2,
-                    scoef2,newkind,ps->idim,0)) == NULL) goto err101;
+    if ((q1=newSurf(knsec,kn1,kksec,kk,st1sec,st1,     /* PFU 15/07-94 */
+                    scoef1,newkind,ps->idim,2)) == NULL) goto err101;
+    if ((q2=newSurf(knsec,kn2,kksec,kk,st2sec,st2,     /* PFU 15/07-94 */
+                    scoef2,newkind,ps->idim,2)) == NULL) goto err101;
   }
 
 
