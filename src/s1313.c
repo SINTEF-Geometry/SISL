@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.10 2004-10-20 13:21:19 afr Exp $
+ * $Id: s1313.c,v 1.11 2004-10-29 14:01:49 afr Exp $
  *
  */
 
@@ -263,6 +263,8 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
   double tltan1,tltan2;    /* Tangent lengths                           */
   SISLCurve *q3dcur=SISL_NULL;/* Pointer to 3-D curve                     */
   SISLCurve *qp1cur=SISL_NULL;/* Pointer to curve in first parameter plane*/
+  double sdiffcur[3];        /* Difference between current and previous point found */
+  double sdiffprev[3];        /* Difference between previous point and the one before that */
 
 
   *jstat = 0;
@@ -950,8 +952,8 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 		       * we have either jumped to another branch or passed a
 		       * singularity, iterprete this as the iteration has diverged
 		       * In addition we don't want the direction of the tangents
-		       * change to much. We set a limit of approximately PI/3
-		       * by testing on a cosin value of 0.5
+		       * change to much. We set a limit of approximately 41 degrees
+		       * by testing on a cosin value of 0.75
 		       * Make normal vectors in implicit surface for both points
 		       * Make also sure that the curve in the parameter plane
 		       * does not turn more than 90 degrees.
@@ -974,13 +976,17 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 			  s6crss(sipnt1+ksizem3,snorm2,sdum2);
 			  (void)s6norm(sdum2,kdim,sdum2,&kstat);
 			  if (kstat < 0) goto error;
-
 			  tdum = s6scpr(sdum1,sdum2,kdim);
 			}
 
 		      s6diff(spar2,spar1,2,sdum1);
 		      tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
-
+		      /* The test below was added to detect the case when the
+			 normal of the parametric surface turns */
+		      if(s6scpr(spnt1+ksizem3,sipnt1+ksizem3,kdim) < 0.0)
+			{
+			  tdum = -tdum;
+			}
 		      if (tdum == DZERO)
 			{
 			  double tl1,tl2;
@@ -1001,7 +1007,7 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 			    }
 
 			}
-		      else if (tdum <= (double)0.5 || tdump <= (double)0.0)
+		      else if (tdum <= (double)0.75 || tdump <= (double)0.0)
 			{
 			  /* Find new end point of segment */
 			  koutside_resolution = 0;
@@ -1148,8 +1154,8 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 			   * we have either jumped to another branch or passed a
 			   * singularity, iterprete this as the iteration has diverged
 			   * In addition we don't want the direction of the tangents
-			   * change to much. We set a limit of approximately PI/3
-			   * by testing on a cosin value of 0.5
+			   * change to much. We set a limit of approximately 41 degrees
+			   * by testing on a cosin value of 0.75
 			   * Make normal vectors in implicit surface for both points
 			   * Make also sure that the curve in the parameter plane
 			   * does not turn more than 90 degrees.
@@ -1182,11 +1188,17 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 
 			  s6diff(sipar1,spar1,2,sdum1);
 			  tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
+			  /* The test below was added to detect the case when the
+			     normal of the parametric surface turns */
+			  if(s6scpr(spnt1+ksizem3,sipnt1+ksizem3,kdim) < 0.0)
+			    {
+			      tdum = -tdum;
+			    }
 			}
 
 		      /* An intersection point has only been found when kstat==1
 		       */
-		      if (kstat1==1 && tdump >= (double)0.0 && tdum > (double)0.5)
+		      if (kstat1==1 && tdump >= (double)0.0 && tdum > (double)0.75)
 			{
 			  /* If krem=3 we step into the patch, if krem=2 we step
 			     out of the patch */
@@ -1296,6 +1308,20 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 	   * snxt1 points to the position and derivatives
 	   * of the accepted point. */
 
+	  /* If we have accepted a segment pointing in the opposite
+	   * direction of the previous segment, something very wrong
+	   * has happened, and we go out with an error. */
+	  if (knbinf >= 2)
+	    {
+	      s6diff(s3dinf + 10*knbinf, s3dinf + 10*(knbinf - 1), kdim, sdiffcur);
+	      s6diff(s3dinf + 10*(knbinf-1), s3dinf + 10*(knbinf - 2), kdim, sdiffprev);
+	      if (s6scpr(sdiffcur, sdiffprev ,kdim) < DZERO)
+		{
+		  /* We have a problem with degeneracy, quit now. */
+		  goto war03;
+		}
+	      /* printf("%7.13f\n", s6scpr(sdiffcur, sdiffprev ,kdim)); */
+	    }
 
 	  /* Update number of intersection points */
 
