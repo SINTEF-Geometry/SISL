@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1222.c,v 1.2 1995-10-25 08:18:16 jka Exp $
+ * $Id: s1222.c,v 1.3 1995-10-25 08:49:10 jka Exp $
  *
  */
 
@@ -45,7 +45,7 @@ void s1222(et, ik, in, ibase, ax, ider, ebder, jstat)
 * PURPOSE    : To compute the value and ider first derivatives of the
 *              B-spline base function starting at et[ibase], associated
 *              with the knot vector et at the point ax.
-*              REMARK: THIS OUTPUT ARRAY MUST HAVE DIMENSION IK*(IDER + 1),
+*              REMARK: THE OUTPUT ARRAY MUST HAVE DIMENSION IK*(IDER + 1),
 *                      BECAUSE OF INTERNAL USE !!!!!!!!!!!!!!!!!!!!!!
 *
 *
