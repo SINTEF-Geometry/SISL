@@ -1,0 +1,29 @@
+--------------------------------------------------------------------------------
+The directories contain:
+
+sisl/      - the GPL distribution of SISL 4.4
+examples/  - example programs that links with SISL
+streaming/ - additional functionality for streaming SISL objects to the 'Go' 
+             format
+viewer/    - a viewer to inspect SISL objects saved to file in the 'Go' format
+	     (requires OpenGL)
+doc/       - documentation: manual and users guide.
+
+Makefiles are provided in each of the directories containing source code.  In
+Linux, just type 'make lib' in each directory.  In windows, you might do the
+same in CygWin (untested as of yet), or you might have to define a project in 
+Visual Studio.
+
+The code in the 'sisl' directory does not link with anything else and should 
+be compiled first.  
+
+The code in the 'streaming' directory links with 'sisl'.
+
+The code in the 'examples' and 'viewer' directory links with 'sisl' and
+'streaming'
+
+The code in the 'viewer' directory also links with OpenGL, which must be 
+available on your machine.
+
+--------------------------------------------------------------------------------
+Oslo, February 3, 2005
