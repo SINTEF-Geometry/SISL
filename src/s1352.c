@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1352.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1352.c,v 1.2 1994-06-20 10:36:45 vsk Exp $
  *
  */
 
@@ -134,7 +134,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 					    the variables should be
 					    clear from the code.       */
 
-  int left, i, lstat, j, jh, pos=0;
+  int left=0, i, lstat, j, jh, pos=0;
   double k1inv, ta, tb, tmid, hh, maxval, sum, cnst, ch, val;
 
   /* A useful constant. */
