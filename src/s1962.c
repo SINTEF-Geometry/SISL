@@ -1,0 +1,198 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+
+#define S1962
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void s1962(double ep[],double ev[],int im,int idim,int ipar,double epar[],
+	   double eeps[],int ilend,int irend,int iopen,int itmax,
+	   SISLCurve **rc,double emxerr[],int *jstat)
+#else
+void s1962(ep,ev,im,idim,ipar,epar,eeps,ilend,irend,iopen,itmax,
+           rc,emxerr,jstat)
+     double ep[];
+     double ev[];
+     int    im;
+     int    idim;
+     int    ipar;
+     double epar[];
+     double eeps[];
+     int    ilend;
+     int    irend;
+     int    iopen;
+     int    itmax;
+     SISLCurve  **rc;
+     double emxerr[];
+     int    *jstat;
+#endif
+/*
+***********************************************************
+*
+* Purpose: To compute the approximation to the data given by the points
+*          ep and the derivatives (tangents) ev, and represent it as a
+*          B-spline curve with parametrization determined by the parameter
+*          ipar. The approximation is determined by first forming the cubic
+*          hermite interpolant to the data, and then performing knot
+*          removal on this initial approximation.
+*
+* Input :
+*         Ep     - Array (length idim*im) comtaining the points
+*                  to be approximated.
+*         Ev     - Array (length idim*im) containing the derivatives
+*                  of the points to be approximated.
+*         Im     - The no. of data points.
+*         Idim   - The dimension of the euclidean space in which the
+*                  curve lies.
+*         Ipar   - Flag indicating the type of paramterization to be used.
+*                   = 1 : Parametrize by accumulated cord length (arc
+*                         length parameterization for the piecewise
+*                         linear interpolant.)
+*                   = 2 : Uniform parametrization.
+*                   = 3 : parameterization given by epar.
+*                  If ipar<1 or ipar>3, it will be set to 1.
+*         Epar   - Array (length im) containing a parameterization
+*                  of the given data.
+*         Eeps   - Array (length idim) giving the desired accuracy of
+*                  the spline-approximation in each component.
+*         Ilend  - The no. of derivatives that are not allowed to change
+*                  at the left end of the curve.
+*                  The (0 - (ilend-1)) derivatives will be kept fixed.
+*                  If ilend <0, this routine will set it to 0.
+*                  If ilend<ik, this routine will set it to ik.
+*         Irend  - The no. of derivatives that are not allowed to change
+*                  at the right end of the curve.
+*                  The (0 - (irend-1)) derivatives will be kept fixed.
+*                  If irend <0, this routine will set it to 0.
+*                  If irend<ik, this routine will set it to ik.
+*        iopen   - Open/closed parameter.
+*                        =  1 : Produce open curve.
+*                        =  0 : Produce closed, non-periodic curve.
+*                        = -1 : Produce closed, periodic curve.
+*                  If a closed or periodic curve is to be produced and the
+*                  start- and endpoint is more distant than the length of
+*                  the tolerance, a new point is added. Note that if the
+*                  parametrization is given as input, the parametrization
+*                  if the last point will be arbitrary.
+*         Itmax  - Max. no. of iteration.
+* Output:
+*         Jstat  - Output status:
+*                   < 0 : Error.
+*                   = 0 : Ok.
+*                   > 0 : Warning:
+*         Rc     - Pointer to curve.
+*         Emxerr - Array (length idim) (allocated outside this routine.)
+*                  containing an upper bound for the pointwise error
+*                  in each of the components of the spline-approximation.
+*-
+* Method: First the cubic hermite interpolant is computed by a call
+*         to s1379 or s1380, and then knots are removed from this
+*         interpolant.
+*
+* Calls: s1379, s1380, s1940, s6err.
+*
+* Written by: C.R. Birkeland, Si, April 1993.
+* Changed and renamed by : Vibeke Skytt, SINTEF Oslo, 02.95. 
+*                          Introduced periodicity.
+**********************************************************
+*/
+{
+  int stat = 0;                /* Error control parameters         */
+  int kpos = 0;
+  SISLCurve *ocurve = NULL;    /* Local spline curve               */
+  double *sp = NULL;        /* Extended data points in closed/periodic case. */
+  double *sv = NULL;        /* Extended tangents in closed/periodic case. */
+  double *spar = NULL;      /* Extended par. values.                */
+
+  /* Check Input */
+
+  if (im < 2 || idim < 1) goto err103;
+  if (ipar < 1 || ipar > 3) ipar = 1;
+
+  if ((iopen == 0 || iopen == -1) &&
+      s6dist(ep, ep+(im-1)*idim, idim) > s6length(eeps, idim, &stat))
+  {
+     /* Add an extra point to the input points. First allocated scratch
+	for extended arrays. */
+     
+     if ((sp = newarray((im+1)*idim, DOUBLE)) == NULL) goto err101;
+     memcopy(sp, ep, im*idim, DOUBLE);
+     memcopy(sp+im*idim, ep, idim, DOUBLE);
+     
+     if ((sv = newarray((im+1)*idim, DOUBLE)) == NULL) goto err101;
+     memcopy(sv, ev, im*idim, DOUBLE);
+     memcopy( sv+im*idim, ev, idim, DOUBLE);
+     
+     if (ipar == 3)
+     {
+	if ((spar = newarray(im+1, DOUBLE)) == NULL) goto err101;
+	memcopy(spar, epar, im, DOUBLE);
+	spar[im] = spar[im-1] + s6dist(sp+(im-1)*idim, sp+im*idim, idim);
+     }
+  }
+  else 
+  {
+     sp = ep;
+     sv = ev;
+     spar = epar;
+  }
+  
+  /* Compute hermite interpolant */
+
+  if (ipar == 3)
+    s1379(sp, sv, spar, im, idim, &ocurve, &stat);
+  else
+    s1380(sp, sv, im, idim, ipar, &ocurve, &stat);
+  if (stat < 0) goto error;
+
+  /* Perform data reduction on the cubic hermite interpolant */
+
+  s1940(ocurve, eeps, ilend, irend, iopen, itmax, rc,
+	emxerr, &stat);
+  if (stat < 0) goto error;
+
+  /* Success */
+
+  *jstat = 0;
+  goto out;
+  
+  /* Error in scratch allocation. */
+  
+  err101:
+     *jstat = -101;
+  s6err("s1962",*jstat,kpos);
+  goto out;
+  
+  /* Error in input */
+
+ err103: 
+  *jstat = -103;
+  s6err("s1962",*jstat,kpos);
+  goto out;
+  
+  /* Error in lower level routine. */
+
+ error: 
+  *jstat = stat;
+  s6err("s1962",*jstat,kpos);
+  goto out;
+
+  /* Exit */
+
+ out:
+  if (ocurve != NULL) freeCurve(ocurve);
+  if (spar != NULL && spar != epar) freearray(spar);
+  if (sp != NULL && sp != ep) freearray(sp);
+  if (sv != NULL && sv != ev) freearray(sv);
+  return;
+}
