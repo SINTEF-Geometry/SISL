@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1360.c,v 1.2 1995-01-26 15:39:11 pfu Exp $
+ * $Id: s1360.c,v 1.3 1995-01-26 16:02:24 pfu Exp $
  *
  */
 
@@ -46,13 +46,14 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 *
 * INPUT      : pc     - The input NURBS curve.
 *              aoffset- The offset distance.
-*                       If idim=2 a positive signe on this value put the
-*                       offset on the side of the positive normal vector,
-*                       and a negative sign puts the offset on the sign
-*                       of the negative normal vector.
+*                       If idim=2 a positive offset value will place the
+*                       offset curve on the positive side of the normal vector,
+*                       and a negative value places the offset curve on the
+*                       negative side of the normal vector.
 *                       If idim=3 the offset is determined by the cross
 *                       product of the tangent vector and the anorm vector.
 *                       The offset distance is multiplied by this vector.
+*              enorm  - normal vector
 *              aepsge - Maximal deviation allowed between true offset curve
 *                       and the approximated offset curve.
 *              amax   - Maximal stepping length. Is negleceted if amax<=aepsge
