@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1732.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1732.c,v 1.2 1994-10-19 14:55:31 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1732(SISLCurve *pc,int icont,double *cstart,double *cend,double *gcoef,int *jstat)
 #else
 void s1732(pc,icont,cstart,cend,gcoef,jstat)
@@ -71,6 +71,8 @@ void s1732(pc,icont,cstart,cend,gcoef,jstat)
 * REVISED BY : Christophe Birkeland, July 1992 (Test line 97)
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
 *              *jstat = 0  in begining
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Oct. 1994.
+*              Added check on 'icont' lower bound.
 *
 *********************************************************************
 */
@@ -83,9 +85,9 @@ void s1732(pc,icont,cstart,cend,gcoef,jstat)
   int kdim;        /* Potential rational dimension.       */
 
   *jstat = 0;
-  
+
   /* Check if this is a rational curve. */
-  
+
   if (pc->ikind == 2 || pc->ikind ==4)
     {
        rcoef = pc->rcoef;
@@ -96,34 +98,32 @@ void s1732(pc,icont,cstart,cend,gcoef,jstat)
        rcoef = pc->ecoef;
        kdim = pc->idim;
     }
-  
+
   /* Check that we have a Bezier curve to treat. */
-  
-  if (icont<pc->in/pc->ik)
+
+  if ( icont >= 0  &&  icont < pc->in/pc->ik )
     {
       /* The first and last element in pc->et with the
 	 start value. */
-      
+
       kfi = icont*pc->ik;
       kla = kfi + pc->ik;
-      
+
       /* Updating the start and the end parameter value
 	 to the curve. */
-      
+
       *cstart = pc->et[kfi];
       *cend = pc->et[kla+1];
-      
+
       /* Updating the vertices to the Bezier curve. */
-      
+
       memcopy(gcoef,&rcoef[kfi*kdim],kdim*pc->ik,double);
     }
   else
     {
       /* Error, no curve to return. */
-      
+
       *jstat = -151;
       s6err("s1732",*jstat,kpos);
     }
 }
-
-
