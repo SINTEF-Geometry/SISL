@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idaledg.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idaledg.c,v 1.2 1994-11-30 16:27:31 pfu Exp $
  *
  */
 
@@ -61,6 +61,8 @@ void
 * WRITTEN BY : Arne Laksaa, SI, 89-05.
 * REVISED BY: Ulf J. Krystad, SI, 91-07.
 * REVISED BY : Vibeke Skytt, SI, 92-09.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov.1994. Initialized
+*              'kleft1' and 'kleft2' to avoid memory problems.
 *********************************************************************
 */
 {
@@ -71,7 +73,8 @@ void
   int kndir;                    /* Number of par. dir.      */
   int kedg, kedg1;		/* Number of edges.         */
   int kpar;			/* Parameter number.        */
-  int kleft1,kleft2;            /* Number of knot.          */
+  int kleft1 = 0;               /* Index of knot.          */
+  int kleft2 = 0;               /* Index of knot.          */
   int ln[4];                    /* Number of vertices in each par. dir. */
   int lk[4];                    /* Order in each par. dir.  */
   double tpar;			/* Parameter value at edge. */
@@ -87,7 +90,7 @@ void
   int notfound;
 
   /* Set up information about the knot vector in each parameter direction. */
-  
+
   if (pob1->iobj == SISLCURVE)
   {
      ln[0] = pob1->c1->in;
@@ -119,7 +122,7 @@ void
      lk[pob1->iobj+1] = pob2->s1->ik2;
      st[pob1->iobj+1] = pob2->s1->et2;
   }
-  
+
   for (kn = 0, qob1 = pob1, qob2 = pob2; kn < 2; kn++, qob1 = pob2, qob2 = pob1)
     {
       kedg = (qob1->iobj == SISLPOINT ? 0 : (qob1->iobj == SISLCURVE ? 2 : 4));
@@ -184,37 +187,37 @@ void
 		   /* Check if the help point and main point lie
 		      in different knot intervals in any parameter
 		      direction. In that case, keep the help point.  */
-		   
+
 		   for (kndir=pob1->iobj+pob2->iobj, ki=0;
 		    ki<kndir; ki++)
 		   {
 		      tparmain = pmain->epar[ki];
 		      tparhelp = pte->ppt->epar[ki];
-		      
-		      /* Find position of parameter value in 
+
+		      /* Find position of parameter value in
 			 to the knot vector.                  */
-		      
+
 		      /* __________________________________ */
 		      /* UJK, sept 93, this did not work
 			 for left hand help pts. */
 		      /*s1219(st[ki],lk[ki],ln[ki],&kleft1,tparmain,&kstat);
 			 if (kstat < 0) goto error;
-			 
+
 			 s1219(st[ki],lk[ki],ln[ki],&kleft2,tparhelp,&kstat);
-			 if (kstat < 0) goto error; 
-			 
+			 if (kstat < 0) goto error;
+
 			 if (kleft1 != kleft2) break;*/
-		      
+
 		      s6fndintvl(st[ki],lk[ki],ln[ki],&kleft1,
 				 tparmain,tparhelp,0,&kstat);
-		      if (kstat < 0) goto error; 
-		      
+		      if (kstat < 0) goto error;
+
 		      if (kstat) break;
-		      
+
 		      /* UJK, sept 93, END */
 		      /* __________________________________ */
 		   }
-		   
+
 		   if (ki == kndir)
 		   {
 		      /* Search for pmain */
@@ -224,7 +227,7 @@ void
 		      {
 			 kedg1 = (qob11->iobj == SISLPOINT ?
 				  0 : (qob11->iobj == SISLCURVE ? 2 : 4));
-			 
+
 			 for (kj1 = 0; kj1 < kedg1 && notfound; kj1++)
 			 {
 			    for (pte1 = wedge[kn1]->prpt[kj1];
