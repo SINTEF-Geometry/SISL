@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.4 1994-11-08 08:38:51 vsk Exp $
+ * $Id: sh1762.c,v 1.5 1994-11-11 12:39:06 poeh Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 
 #include "sislP.h"
 
-/* 
+/*
 extern int nmbcall;
 extern int nmb0;
 extern int nmb1;
@@ -679,7 +679,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
   /* VSK, 10.92. Set status if reex takes action.  */
 
-  /* *jstat = MAX(*jstat,kstat); 
+  /* *jstat = MAX(*jstat,kstat);
 
   if (debug_flag && kstat)
      printf("\n Output reex: %d \n",kstat); */
@@ -1611,18 +1611,18 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	       spar[0] = s1792 (qo1->s1->et1, qo1->s1->ik1, qo1->s1->in1);
 	    if (kfound != 2)
 	       spar[1] = s1792 (qo1->s1->et2, qo1->s1->ik2, qo1->s1->in2);
-	    
+
 	    /* Test if this subdivision point is too close to an existing
 	       inner intersection point. */
-	    
-	    if (kf1 && fabs(spar[0]-sparsave[0]) < tdel1) 
+
+	    if (kf1 && fabs(spar[0]-sparsave[0]) < tdel1)
 	       spar[0] = sparsave[0];
 	    if (kf2 && fabs(spar[1]-sparsave[1]) < tdel2)
 	       spar[1] = sparsave[1];
 	 }
 
      if ((!qpt) && (qo2->iobj == SISLSURFACE ||
-		    (qo2->iobj == SISLPOINT && 
+		    (qo2->iobj == SISLPOINT &&
 		     (qo2->p1->idim == 1 || qo2->p1->idim == 2))))
      {
 	SISLPtedge *qptedg;	/* Pointer used to traverse int. points on edges. */
@@ -3421,7 +3421,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   kcrv1 = (po1->iobj == SISLCURVE) ? 1 : 0;
   kcrv2 = (po2->iobj == SISLCURVE) ? 1 : 0;
 
-  if ((po1->iobj == SISLPOINT && po1->p1->idim == 1) || 
+  if ((po1->iobj == SISLPOINT && po1->p1->idim == 1) ||
       (po2->iobj == SISLPOINT && po2->p1->idim == 1))
     *jstat = 0;
   else
@@ -3434,11 +3434,11 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
        if (po2->iobj == SISLPOINT) qd2 = NULL;
        else
 	  qd2 = (po2->iobj == SISLCURVE ? po2->c1->pdir : po2->s1->pdir);
-       
+
        knum = 0;
        if (vedge[0] != NULL) knum += vedge[0]->ipoint;
        if (vedge[1] != NULL) knum += vedge[1]->ipoint;
-       
+
       if (knum > 0)
 	{
 	  /* Organize intersection points on an array. */
@@ -3456,29 +3456,29 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
       if (po1->iobj == SISLCURVE)
       {
 	 tboxsize1 = po1->c1->pbox->e2max[2][0] - po1->c1->pbox->e2min[2][0];
-	 if (po1->c1->idim > 1) 
-	    tboxsize1 = MAX(tboxsize1, 
+	 if (po1->c1->idim > 1)
+	    tboxsize1 = MAX(tboxsize1,
 			   po1->c1->pbox->e2max[2][1] - po1->c1->pbox->e2min[2][1]);
-	 if (po1->c1->idim > 2) 
-	    tboxsize1 = MAX(tboxsize1, 
+	 if (po1->c1->idim > 2)
+	    tboxsize1 = MAX(tboxsize1,
 			   po1->c1->pbox->e2max[2][2] - po1->c1->pbox->e2min[2][2]);
 	 mintang1 = aepsge/((double)2*tboxsize1);
       }
       else  if (po1->iobj == SISLSURFACE)
 	 mintang1 = ANGULAR_TOLERANCE/(double)10;
-      
+
       if (po2->iobj == SISLCURVE)
       {
 	 tboxsize2 = po2->c1->pbox->e2max[2][0] - po2->c1->pbox->e2min[2][0];
-	 if (po2->c1->idim > 1) 
-	    tboxsize2 = MAX(tboxsize2, 
+	 if (po2->c1->idim > 1)
+	    tboxsize2 = MAX(tboxsize2,
 			   po2->c1->pbox->e2max[2][1] - po2->c1->pbox->e2min[2][1]);
-	 if (po2->c1->idim > 2) 
-	    tboxsize2 = MAX(tboxsize2, 
+	 if (po2->c1->idim > 2)
+	    tboxsize2 = MAX(tboxsize2,
 			   po2->c1->pbox->e2max[2][2] - po2->c1->pbox->e2min[2][2]);
 	 mintang2 = aepsge/((double)2*tboxsize2);
       }
-      else if (po2->iobj == SISLSURFACE) 
+      else if (po2->iobj == SISLSURFACE)
 	 mintang2 = ANGULAR_TOLERANCE/(double)10;
 
       /* if (qd1->igtpi || qd2->igtpi || qd1->aang > ANGULAR_TOLERANCE ||
@@ -3487,7 +3487,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 	 *jstat = 0;
       else if (qd1->igtpi || qd2->igtpi || qd1->aang > mintang1 ||
 	  qd2->aang > mintang2)
-	*jstat = 0; 
+	*jstat = 0;
       else if (knum == 2)
 	/* Newi (ujk) When linear and 2 points, we know how to set
            the pretopology for curves, this is done a bit further down */
@@ -4093,7 +4093,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	  goto out;
 	}
     }
-  else if (po1->iobj == SISLCURVE && po2->iobj == SISLCURVE && 
+  else if (po1->iobj == SISLCURVE && po2->iobj == SISLCURVE &&
 	   2*po1->c1->ik >= po1->c1->in && 2*po2->c1->ik >= po2->c1->in)
   {
      double spoint[3];  /* Point in splitting plane. */
@@ -4102,20 +4102,20 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
      int ki;
      double t1, t2;
      int ksign;
-     
+
      /* Find dimension of geometry space. */
-     
+
      kdim = po1->c1->idim;
      if (kdim != po2->c1->idim)
 	goto err106;
-     
+
      if (inmbpt == 1)
      {
 	/* One intersection point between two curves found. Find splitting
 	   plane. */
 	/* First allocate space for local arrays.  */
 	/* NEWI, (ujk), Lets try to find a help point */
-	
+
 	incr = 0;
 	if (DEQUAL (vintpt[0]->epar[0], po1->c1->et[po1->c1->ik - 1]))
 	{
@@ -4127,7 +4127,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   incr++;
 	   testpar[0] = po1->c1->et[po1->c1->ik - 1];
 	}
-	
+
 	if (DEQUAL (vintpt[0]->epar[1], po2->c1->et[po2->c1->ik - 1]))
 	{
 	   incr++;
@@ -4138,7 +4138,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   incr++;
 	   testpar[1] = po2->c1->et[po2->c1->ik - 1];
 	}
-	
+
 	if (incr == 2)
 	   for (ind = 0; ind < vintpt[0]->no_of_curves; ind++)
 	      if (sh6ishelp (vintpt[0]->pnext[ind]) &&
@@ -4148,19 +4148,19 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 		 *jstat = 2;
 		 goto out;
 	      }
-	
+
 	/* Evaluate the curves in the intersection point.  */
-	
+
 	s1221 (po1->c1, 1, vintpt[0]->epar[0], &kleft, sder1, &kstat);
 	if (kstat < 0)
 	   goto error;
-	
+
 	s1221 (po2->c1, 1, vintpt[0]->epar[1], &kleft, sder2, &kstat);
 	if (kstat < 0)
 	   goto error;
-	
+
 	/* Normalize derivatives. */
-	
+
 	t1 = s6norm(sder1+kdim, kdim, sder1+kdim, &kstat);
 	t2 = s6norm(sder2+kdim, kdim, sder2+kdim, &kstat);
 	ksign = (s6scpr(sder1+kdim, sder2+kdim, kdim) >
@@ -4194,15 +4194,15 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	double tpar1, tpar2;
 	SISLPoint *pt = NULL;
 	double *s1, *s2, *s3, *s4;
-	
+
 	s1 = po1->c1->ecoef;
 	s2 = po1->c1->ecoef+kdim*(po1->c1->in-1);
 	s3 = po2->c1->ecoef;
 	s4 = po2->c1->ecoef+kdim*(po2->c1->in-1);
-	
+
 	/* Evaluate midpoint of first curve. */
-	
-	/* tpar1 = (double)0.5*(po1->c1->et[po1->c1->ik-1] + 
+
+	/* tpar1 = (double)0.5*(po1->c1->et[po1->c1->ik-1] +
 	   po1->c1->et[po1->c1->in]);
 	   s1221 (po1->c1, 0, tpar1, &kleft, sder1, &kstat);
 	   if (kstat < 0)
@@ -4210,14 +4210,14 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	if (MIN(s6dist(s1,s3,kdim),s6dist(s1,s4,kdim)) <
 	    MIN(s6dist(s2,s3,kdim),s6dist(s2,s4,kdim)))
 	   memcopy(sder1,s1,kdim,DOUBLE);
-	else 
+	else
 	   memcopy(sder1,s2,kdim,DOUBLE);
-	
+
 	/* Find closest point on the other curve. */
-	
+
 	if ((pt = newPoint(sder1, kdim, 0)) == NULL) goto err101;
-	
-	/* tpar2 = (double)0.5*(po2->c1->et[po2->c1->ik-1] + 
+
+	/* tpar2 = (double)0.5*(po2->c1->et[po2->c1->ik-1] +
 	   po2->c1->et[po2->c1->in]); */
 	if (s6dist(s3,sder1,kdim) < s6dist(s4,sder1,kdim))
 	   tpar2 = po2->c1->et[po2->c1->ik-1];
@@ -4225,25 +4225,25 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   tpar2 = po2->c1->et[po2->c1->in];
 	s1771(pt, po2->c1, aepsge, po2->c1->et[po2->c1->ik-1],
 	      po2->c1->et[po2->c1->in], tpar2, &tpar2, &kstat);
-	
-	if (pt) freePoint(pt); 
-	if (kstat < 0) 
+
+	if (pt) freePoint(pt);
+	if (kstat < 0)
 	   goto error;
-	
+
 	s1221 (po1->c1, 1, tpar2, &kleft, sder1, &kstat);
 	if (kstat < 0)
 	   goto error;
 	s1221 (po2->c1, 1, tpar2, &kleft, sder2, &kstat);
 	if (kstat < 0)
 	   goto error;
-	
+
 	/* Let the splitting plane pass through the midpoint of the
 	   points on the two curves and let the medium of the
 	   axises of the direction cones of the curves lie in the
 	   plane. */
-	
+
 	/* Normalize the tangents. */
-	
+
 	t1 = s6norm(sder1+kdim, kdim, sder1+kdim, &kstat);
 	t2 = s6norm(sder2+kdim, kdim, sder2+kdim, &kstat);
 	ksign = (s6scpr(sder1+kdim, sder2+kdim, kdim) >
@@ -4256,111 +4256,111 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   sn1[ki] = (double)0.5*(sder1[kdim+ki] +
 				  (double)ksign*sder2[kdim+ki]);
 	}
-	
+
 	if (kdim == 3)
 	{
 	   s6crss(sder1+kdim, sder2+kdim, sn2);
 	   s6crss(sn1, sn2, snorm);
 	}
-	else 
+	else
 	{
 	   snorm[0] = sn1[1]; /* KYS 5/7-94: normal corrected */
 	   snorm[1] = -sn1[0];
 	}
-	
+
 	(void)s6norm(snorm, kdim, snorm, &kstat);
 	if (!kstat) kstat = 1;
 	else kstat = 0;
      }
      else kstat = 1;
-     
-     
+
+
      /* Try to intercept with the found plane. */
-     
+
      if (kstat == 0)
      {
 	/* nmb_rotated++; */
 	sh1831(po1->c1, po2->c1, ksign, spoint, snorm, aepsge, &kstat);
 	if (kstat < 0) goto error;
      }
-     
+
      if (kstat == 0)
      {
 	/* nmb_succ_rotated++; */
 	*jstat = 2;
 	goto out;
      }
-     
-     
+
+
      if (kstat == 1 && inmbpt == 0 && po1->c1->idim > 2)
      {
 	/* kstat = 1; */			/* Make sure to subdivide further if there
 						   is two curves and no intersection point. */
 	/* Try to separate the objects by a sphere. */
-	
+
 	   if (xc % 2 == 0)
-	   { 
+	   {
 	      /* nmb_sep++; */
 	      sh6sepcrv(po1->c1, po2->c1, aepsge, scentre, &trad, &kstat);
 	      if (kstat < 0) goto error;
 	   }
-	   else 
+	   else
 	   {
 	      /* nmb_sep++; */
 	      sh6sepcrv(po2->c1, po1->c1, aepsge, scentre, &trad, &kstat);
 	      if (kstat < 0) goto error;
-	   } 	 
-	
+	   }
+
 	/* If kstat = 0 is returned, no splitting geometry is found,
 	   and no further interception is to be tried.  */
-	
+
 	if (kstat)
 	{
-	   /* The splitting geometry object is a sphere.  
+	   /* The splitting geometry object is a sphere.
 	      Make a matrix of dimension (idim+1)x(idim+1) describing a hyper
 	      sphere as an implicit function.      	      */
-	   
+
 	   /* nmb_try_sep++; */
 	   s1321(scentre,trad,po1->c1->idim,1,splitgeom,&kstat);
 	   if (kstat < 0) goto error;
-	   
-	   
-	   /* 
-	   * Put the description of the surface and the curve into the 
+
+
+	   /*
+	   * Put the description of the surface and the curve into the
 	   * implicit equation for the sphere.
 	   * ----------------------------------------------------------
 	   */
-	   
+
 	   ratflag = (po1->c1->ikind == 2 || po1->c1->ikind == 4) ? 1 : 0;
 	   s1370(po1->c1,splitgeom,po1->c1->idim,1,ratflag,&qc,&kstat);
 	   if (kstat < 0) goto error;
-	   
+
 	   ratflag = (po2->c1->ikind == 2 || po2->c1->ikind == 4) ? 1 : 0;
 	   s1370(po2->c1,splitgeom,po2->c1->idim,1,ratflag,&qc2,&kstat);
 	   if (kstat < 0) goto error;
-	   
+
 	   /* Set up local tolerance. */
-	   
+
 	   tepsge = (double)2.0*trad*aepsge;
-	   
+
 	   /* Make box of 1D surface. */
-	   
+
 	   sh1992cu(qc,2,tepsge,&kstat);
 	   if (kstat < 0) goto error;
-	   
+
 	   /* Make box of 1D curve. */
-	   
+
 	   sh1992cu(qc2,2,tepsge,&kstat);
 	   if (kstat < 0) goto error;
-	   
+
 	   /* Check if the boxes overlap.  */
-	   
+
 	   if (qc2->pbox->e2min[2][0] > qc->pbox->e2max[2][0] ||
 	       qc2->pbox->e2max[2][0] < qc->pbox->e2min[2][0])
 	   {
-	      
+
 	      /* No intersection is possible.  */
-	      
+
 	      /* numb_succ_sep++; */
 	      *jstat = 2;
 	      goto out;
@@ -4370,7 +4370,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	else kstat = 1;
      }
      else kstat = 1;
-  }    
+  }
   else if ((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT &&
 	   po2->p1->idim == 2) ||
 	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT &&
@@ -4378,18 +4378,18 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
   {
      /* Compute the mid-parameter value of the surface. First set
 	pointer to the surface.  */
-     
+
      if (po1->iobj == SISLSURFACE) qs1 = po1->s1;
      else qs1 = po2->s1;
-     
+
      spar[0] = (double)0.5*(qs1->et1[qs1->ik1-1] + qs1->et1[qs1->in1]);
      spar[1] = (double)0.5*(qs1->et2[qs1->ik2-1] + qs1->et2[qs1->in2]);
-     
+
      /* Evaluate the surface in the midpoint. */
-     
+
      s1421(qs1, 1, spar, &kleft, &kleft2, sder1, snorm1, &kstat);
      if (kstat < 0) goto error;
-     
+
      if (s6ang(sder1+2, sder1+4, 2) < ANGULAR_TOLERANCE)
      {
 	spar[0] = (double)0.5*(sder1[2]+sder1[4]);
@@ -4397,25 +4397,25 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	sh1834(po1, po2, aepsge, 2, spar, sder1+4, &kstat);
 	if (kstat < 0) goto error;
 	if (kstat == 5) kstat = 0;   /* No 45 degree testing for rotated
-					box test meens no danger of 
+					box test meens no danger of
 					intersection point near corner that
 					is not caught by the box test. */
      }
      else kstat = 1;
-     
+
      qs1 = NULL;     /* Make sure that the input surface is not freed. */
   }
   else kstat = 1;
-  
+
 
   *jstat = (kstat == 0 || kstat == 2) ? 2 : 0;
   goto out;
 
   /* Error in scratch allocation.  */
-  
+
   err101: *jstat = -101;
   goto out;
-  
+
   /* Error in input. Confliciting dimensions.  */
 
 err106:*jstat = -106;
@@ -4660,9 +4660,9 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	goto error;
 
     }
-  else if ((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT && 
+  else if ((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT &&
 	    po2->p1->idim == 2) ||
-	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT && 
+	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT &&
 	    po1->p1->idim == 2))
   {
      if (po1->iobj == SISLSURFACE)
@@ -4675,41 +4675,41 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	qs = po2->s1;
 	qp = po1->p1;
      }
-     
+
      /* Allocate space for local arrays.  */
-     
+
      if ((sder1 = newarray (7 * qs->idim, double)) == NULL)
 	goto err101;
      sder2 = sder1 + 3 * qs->idim;
      snorm = sder2 + 6 * qs->idim;
-     
+
      /* Evaluate the surface in the intersection points at the edges. */
-     
+
      s1421 (qs, 1, vintpt[0]->epar, &kleft1, &kleft2, sder1, snorm, &kstat);
      if (kstat < 0)
 	goto error;
-     
+
      s1421 (qs, 1, vintpt[1]->epar, &kleft1, &kleft2, sder2, snorm, &kstat);
      if (kstat < 0)
 	goto error;
-     
+
      /* Test if this is a singular situation. */
-     
+
      if (s6ang(sder1+2, sder1+4, 2) <= ANGULAR_TOLERANCE &&
 	 s6ang(sder2+2, sder2+4, 2) <= ANGULAR_TOLERANCE)
      {
 	/* Perform marching to check if there is coincidence between
 	   the intersection points. */
-	
+
 	/* fprintf(stdout,"Try coincidence marching \n"); */
-	
+
 	s1789(qp, qs, aepsge, vintpt[0]->epar, vintpt[1]->epar, &kstat);
 	if (kstat < 0) goto error;
      }
      else
 	kstat = 0;   /* No coincidence. */
   }
-  
+
   *jstat = kstat;
   goto out;
 
@@ -4805,6 +4805,8 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
  * WRITTEN BY : Vibeke Skytt, 9403.
  *              Note that this verions of coincidence testing between
  *              surfaces are a prelimenary one, not a final version.
+ * Changed by : Per OEyvind Hvidsten, SINTEF, 11-94
+ *              Added a goto out; at end (thus skipping err101).
  *
  *********************************************************************
  */
@@ -4838,66 +4840,67 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
    double spar2[2];            /* Parameter value of second surface.      */
 
    /* Set number of locations to test coincidence. */
-   
+
    kntest1 = 30*(kn11 - kk11 + 1);
    kntest2 = 30*(kn12 - kk12 + 1);
    tint1 = (st11[kn11] - st11[kk11-1])/(double)(kntest1+1);
    tint2 = (st12[kn12] - st12[kk12-1])/(double)(kntest2+1);
-   
+
    /* Set parameter boundaries and midpoint of second surface. */
-   
+
    sstart[0] = st21[kk21-1];
    sstart[1] = st22[kk22-1];
    send[0] = st21[kn21];
    send[1] = st22[kn22];
    spar2[0] = (double)0.5*(sstart[0] + send[0]);
    spar2[1] = (double)0.5*(sstart[1] + send[1]);
-		    
+
    for (spar[0]=st11[kk11-1]+tint1, ki=0; ki<kntest1; ki++, spar[0]+=tint1)
    {
       for (spar[1]=st12[kk12-1]+tint2, kj=0; kj<kntest2; kj++, spar[1]+=tint2)
       {
 	 /* Evaluate first surface. */
-	 
+
 	 s1421(po1->s1, 0, spar, &kleft11, &kleft12, sder1, snorm1, &kstat);
 	 if (kstat < 0) goto error;
-	 
+
 	 /* Find closest point on the other surface. */
-	 
+
 	 if ((pt =  newPoint(sder1, kdim, 0)) == NULL) goto err101;
-	 
+
 	 s1773(pt, po2->s1, aepsge, sstart, send, spar2, spar2, &kstat);
 	 if (kstat < 0) goto error;
-	 
+
 	 /* Evalutate second surface. */
-	 
+
 	 s1421(po2->s1, 0, spar2, &kleft21, &kleft22, sder2, snorm2, &kstat);
 	 if (kstat < 0) goto error;
-	 
+
 	 if (pt != NULL) freePoint(pt);
 	 pt = NULL;
-	 
+
 	 /* Check distance between the closest points. */
-	 
+
 	 if (s6dist(sder1, sder2, kdim) > aepsge) break;  /* Not a coincidence.*/
       }
       if (kj < kntest2) break;  /* Not a coincidence. */
    }
-   
+
    *jstat = (ki==kntest1 && kj==kntest2) ? 1 : 0;
-   
+   goto out;
+
    err101 : *jstat = -101;    /* Error in scratch allocation. */
    goto out;
-   
+
    error : *jstat = kstat;    /* Error in lower level function. */
    goto out;
-   
+
    out:
       if (pt != NULL) freePoint(pt);
-      
+
       return;
 }
-   
+
 
 #if defined(SISLNEEDPROTOTYPES)
 static void
@@ -5000,7 +5003,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
   SISLIntpt *qsing=NULL;        /* Singular intersection point.          */
 
   /* Experiment UJK, sept 92 (BEOrd12754) */
-    double tolpar = (double) 0.001;  
+    double tolpar = (double) 0.001;
 
     /* double tolpar = (double) 0.01; */
 
