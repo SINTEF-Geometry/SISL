@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idrcros.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idrcros.c,v 1.2 1994-09-05 14:46:46 pfu Exp $
  *
  */
 
@@ -22,8 +22,8 @@
 
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
-      sh6idrmcross(SISLObject *po1, SISLObject *po2, SISLIntdat **pintdat, 
+void
+      sh6idrmcross(SISLObject *po1, SISLObject *po2, SISLIntdat **pintdat,
 		   SISLIntpt *vcross[], int incross, SISLIntpt *vpt[],
 		   int inpt, int *jstat)
 #else
@@ -36,7 +36,7 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
    SISLIntpt  *vpt[];
    int        inpt;
    int        *jstat;
-#endif   
+#endif
 /*
 *********************************************************************
 *
@@ -67,7 +67,7 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 *
 *
 *
-* METHOD     : 
+* METHOD     :
 *
 *
 * REFERENCES :
@@ -77,14 +77,17 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 *
 *
 * WRITTEN BY : Vibeke Skytt, SI, 12.92.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994. Init of
+*              kleft1 and kleft2.
 *
 *********************************************************************
 */
-{ 
+{
    int kstat;          /* Status variable.                          */
    int ki,kj,kl;       /* Counters.                                 */
    int kdim;           /* Dimension of geometry space.              */
-   int kleft1,kleft2;  /* Parameters used in evaluator.             */
+   int kleft1 = 0;     /* Parameters used in evaluator.             */
+   int kleft2 = 0;
    int kdir1,kdir2;    /* Parameter directions.                     */
    int kpar;           /* Number of parameter directions.           */
    int k1par = po1->iobj; /* Number of par. dir. in first object.   */
@@ -96,76 +99,76 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
    double stang1[3];   /* Tangent in first parameter dir., deg. surf. */
    double stang2[3];   /* Tangent in second parameter dir., deg. surf. */
    double snorm[3];    /* Normal of degenerated surface.            */
- 
+
    *jstat = 0;
-   
+
    /* Test input.  */
-   
+
    if (incross != 4) goto err138;
-   
+
    if (po1->iobj == SISLPOINT || po2->iobj == SISLPOINT)
    {
       *jstat = 0;
       goto out;
    }
-   
+
    if (po1->iobj == SISLSURFACE)
    {
-      /* Check if the intersection points have got one parameter in 
+      /* Check if the intersection points have got one parameter in
 	 common.      */
-      
+
       for (kj=0; kj<2; kj++)
       {
 	 for (ki=1; ki<incross; ki++)
 	    if (DNEQUAL(vcross[ki]->epar[kj],vcross[0]->epar[kj])) break;
 	 if (ki == incross) break;  /* Common parameter direction.  */
       }
-      
+
       if (kj == 2)
       {
 	 /* No common parameter direction, i.e. no cross intersection
 	    to remove.  */
-	 
+
 	 *jstat = 0;
 	 goto out;
       }
-      
+
       /* Set the parameter direction that is not constant.  */
-      
+
       kdir1 = 1 - kj;
    }
-	    
+
    if (po2->iobj == SISLSURFACE)
    {
-      /* Check if the intersection points have got one parameter in 
+      /* Check if the intersection points have got one parameter in
 	 common.      */
-      
+
       for (kj=po1->iobj, kpar=vcross[0]->ipar; kj<kpar; kj++)
       {
 	 for (ki=1; ki<incross; ki++)
 	    if (DNEQUAL(vcross[ki]->epar[kj],vcross[0]->epar[kj])) break;
 	 if (ki == incross) break;  /* Common parameter direction.  */
       }
-      
+
       if (kj == kpar)
       {
 	 /* No common parameter direction, i.e. no cross intersection
 	    to remove.  */
-	 
+
 	 *jstat = 0;
 	 goto out;
       }
-      
+
       /* Set the parameter direction that is not constant.  */
-      
+
       kdir2 = kpar - 1 - kj;
    }
-   
+
    /* Find the minimum parameter point in which to evaluate. */
-   
+
    kmin = 0;
    tmin = s6length(vcross[0]->epar,vcross[0]->ipar,&kstat);
-   
+
    for (kj=1; kj<incross; kj++)
    {
       thelp = s6length(vcross[kj]->epar,vcross[kj]->ipar,&kstat);
@@ -175,9 +178,9 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 	 kmin = kj;
       }
    }
-   
+
    /* Compute derivatives.  */
-   
+
    if (po1->iobj == SISLCURVE)
    {
       kdir1 = 0;
@@ -191,25 +194,25 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
       s1421(po1->s1,2,vcross[kmin]->epar,&kleft1,&kleft2,sder1,
 	    snorm,&kstat);
       if (kstat < 0) goto error;
-      
+
       /* Check if the surface is degenerated in the wanted parameter
 	 direction.   */
-      
-      if (s6length(sder1+(1+kdir1)*kdim,kdim,&kstat) <= REL_COMP_RES) 
+
+      if (s6length(sder1+(1+kdir1)*kdim,kdim,&kstat) <= REL_COMP_RES)
       {
 	 /* Compute partial derivatives as a limit.  */
-	 
+
 	 s6degnorm(po1->s1,2,vcross[kmin]->epar,sder1,stang1,stang2,
 		   snorm,&kstat);
 	 if (kstat < 0) goto error;
-	 
+
 	 memcopy(sder1+kdim,stang1,kdim,DOUBLE);
 	 memcopy(sder1+2*kdim,stang2,kdim,DOUBLE);
       }
    }
 
    /* Compute derivatives.  */
-   
+
    if (po2->iobj == SISLCURVE)
    {
       kdir2 = 0;
@@ -221,23 +224,23 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
       s1421(po2->s1,2,vcross[kmin]->epar+k1par,&kleft1,&kleft2,sder2,
 	    snorm,&kstat);
       if (kstat < 0) goto error;
-      
+
       /* Check if the surface is degenerated in the wanted parameter
 	 direction.   */
-      
-      if (s6length(sder2+(1+kdir2)*kdim,kdim,&kstat) <= REL_COMP_RES) 
+
+      if (s6length(sder2+(1+kdir2)*kdim,kdim,&kstat) <= REL_COMP_RES)
       {
 	 /* Compute partial derivatives as a limit.  */
-	 
+
 	 s6degnorm(po2->s1,2,vcross[kmin]->epar+k1par,sder2,stang1,stang2,
 		   snorm,&kstat);
 	 if (kstat < 0) goto error;
-	 
+
 	 memcopy(sder2+kdim,stang1,kdim,DOUBLE);
 	 memcopy(sder2+2*kdim,stang2,kdim,DOUBLE);
       }
    }
-   
+
    if (s6ang(sder1+(kdir1+1)*kdim,sder2+(kdir2+1)*kdim,kdim) > ANGULAR_TOLERANCE
        && !(s6length(sder1+(kdir1+1)*kdim,kdim,&kstat) < REL_COMP_RES &&
 	    s6length(sder2+(kdir2+1)*kdim,kdim,&kstat) < REL_COMP_RES))
@@ -245,14 +248,14 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
       *jstat = 0;
       goto out;
    }
-   
+
    /* Check if the parameter directions of the objects are the same.  */
-   
+
    if (s6scpr(sder1+(kdir1+1)*kdim,sder2+(kdir2+1)*kdim,kdim) >= 0)
    {
       /* Remove the pair of intersection point that do not have the
 	 same "parameter direction" in both objects.  */
-      
+
       for (ki=0; ki<incross; ki++)
 	 for (kj=1; kj<incross; kj++)
 	 {
@@ -261,36 +264,36 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 			vcross[kj]->epar[k1par+kdir2]))
 	    {
 	       /* A pair is found. Check if the pair should be removed. */
-	       
+
 	       if ((vcross[ki]->epar[kdir1] - vcross[kj]->epar[kdir1]) *
-		   (vcross[ki]->epar[k1par+kdir2] - 
+		   (vcross[ki]->epar[k1par+kdir2] -
 		    vcross[kj]->epar[k1par+kdir2]) < 0)
 	       {
-		  /* Remove the points. First make sure that vpt will 
+		  /* Remove the points. First make sure that vpt will
 		     not point to killed points.  */
-		  
+
 		  for (kl=0; kl<inpt; kl++)
 		     if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
 			vpt[kl] = NULL;
-		  
+
 		  sh6idkpt(pintdat,&vcross[ki],1,&kstat);
 		  if (kstat < 0) goto error;
-		  
+
 		  sh6idkpt(pintdat,&vcross[kj],1,&kstat);
 		  if (kstat < 0) goto error;
-		  
+
 		  *jstat = 1;
 	       }
 	    }
 	 }
-	    
+
       if (*jstat == 1) goto out;  /* Points removed.  */
    }
    else
    {
       /* Remove the pair of intersection point that have the
 	 same "parameter direction" in both objects.  */
-      
+
       for (ki=0; ki<incross; ki++)
 	 for (kj=1; kj<incross; kj++)
 	 {
@@ -299,48 +302,48 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 			vcross[kj]->epar[k1par+kdir2]))
 	    {
 	       /* A pair is found. Check if the pair should be removed. */
-	       
+
 	       if ((vcross[ki]->epar[kdir1] - vcross[kj]->epar[kdir1]) *
-		   (vcross[ki]->epar[k1par+kdir2] - 
+		   (vcross[ki]->epar[k1par+kdir2] -
 		    vcross[kj]->epar[k1par+kdir2]) > 0)
 	       {
-		  /* Remove the points. First make sure that vpt will 
+		  /* Remove the points. First make sure that vpt will
 		     not point to killed points. */
-		  
+
 		  for (kl=0; kl<inpt; kl++)
 		     if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
 			vpt[kl] = NULL;
-		  
+
 		  sh6idkpt(pintdat,&vcross[ki],1,&kstat);
 		  if (kstat < 0) goto error;
-		  
+
 		  sh6idkpt(pintdat,&vcross[kj],1,&kstat);
 		  if (kstat < 0) goto error;
-		  
+
 		  *jstat = 1;
 	       }
 	    }
 	 }
-      
+
       if (*jstat == 1) goto out;  /* Points removed.  */
    }
-      
+
       /* No points are removed. Set status.  */
-      
+
       *jstat = 0;
       goto out;
-      
- 
+
+
    /* Wrong number of intersection points.  */
-   
+
    err138 : *jstat = -138;
    goto out;
-   
+
    /* Error in lower level routine.  */
-   
+
    error : *jstat = kstat;
    goto out;
-   
+
    out :
       return;
 }
