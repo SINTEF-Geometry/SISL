@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.7 1998-04-02 13:13:40 vsk Exp $
+ * $Id: sh1762.c,v 1.8 1998-05-12 08:31:09 vsk Exp $
  *
  */
 
@@ -177,7 +177,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   int kexpand = 2;		/* Expand box in the inner of object. */
   int knedge1;                  /* Number of edges of object.         */
   int knedge2;                  /* Number of edges of object.         */
-  int kxintercept = (*jstat == 202);  // Extra interception
+  int kxintercept = (*jstat == 202);  /* Extra interception           */
   /* int knum;  */                   /* Number of intersection points at edges. */
   SISLObject *uob1[4];		/* Pointers to subdivided object.     */
   SISLObject *uob2[4];		/* Pointer to object to subdivide.    */
@@ -3436,7 +3436,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   double mintang2;
   double tboxsize1;
   double tboxsize2;
-  int kxintercept = (*jstat == 202);  // Extra interception
+  int kxintercept = (*jstat == 202);  /* Extra interception       */
 
   /*int loopcount;*/		/* Count up num intpts in a list. */
   int one_edge = 0;             /* Indicates if all intersection points
@@ -3895,7 +3895,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
   int kleft2 = 0;               /* Parameter to evaluator.        */
   int incr, ind;		/* indexes and loop control       */
   int ratflag = 0;              /* Indicates if rational object.  */
-  int kxintercept = (*jstat == 202);  // Extra interception
+  int kxintercept = (*jstat == 202);  /* Extra interception       */
   double tepsge;                /* Local tolerance in 1D box test. */
   double testpar[2];		/* Par val when treating help p.  */
   double trad;                  /* Radius of geometry object.     */
@@ -4475,8 +4475,8 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	  goto error;
 
 
-	// Test distance between the closest points on the surface and
-	// the point
+	/* Test distance between the closest points on the surface and
+	   the point  */
 	for (ind1=0; ind1<kpt; ind1++)
 	  {
 	    s1421(qs1, 0, spar+2*ind1, &kleft, &kleft2, sder1, 
