@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.6 1994-08-18 13:04:24 pfu Exp $
+ * $Id: sislP.h,v 1.7 1994-08-18 13:38:09 pfu Exp $
  *
  */
 
@@ -2516,10 +2516,6 @@ void s1377();
 extern
 #endif
 void s1378();
-#ifndef  S1379
-extern
-#endif
-void s1379();
 #ifndef  S1380
 extern
 #endif
