@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1333.c,v 1.3 1994-08-02 11:20:42 pfu Exp $
+ * $Id: s1333.c,v 1.4 1994-08-02 11:21:08 pfu Exp $
  *
  */
 
@@ -95,7 +95,7 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
 * WRITTEN BY : A. M. Ytrehus   SI  Oslo,Norway. Sep. 1988
 * Revised by : Tor Dokken, SI, Oslo, Norway, 26-feb-1989
 * Revised by : Trond Vidar Stensby, SI, 91-08
-* Revised by : Paal Fugelli, SINTEF, Oslo 25/07-1994. Fixed memory leak.
+* Revised by : Paal Fugelli, SINTEF, Oslo 02/08-1994. Fixed memory leak.
 *********************************************************************
 */
 {
