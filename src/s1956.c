@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1956.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1956.c,v 1.2 1994-09-22 08:46:07 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1956(SISLCurve *pc1,SISLCurve *pc2,SISLSurf **rsurf,int *jstat)
 #else
 void s1956(pc1,pc2,rsurf,jstat)
@@ -34,7 +34,7 @@ void s1956(pc1,pc2,rsurf,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find the surface describing the difference function
 *              between two B-spline curves.
 *
@@ -45,7 +45,7 @@ void s1956(pc1,pc2,rsurf,jstat)
 *
 *
 * OUTPUT     : rsurf  - Pointer to difference surface.
-*              jstat  - status messages  
+*              jstat  - status messages
 *                     = 2      : The curves have the same representation
 *                                and opposite direction.
 *                     = 1      : The curves have the same representation
@@ -67,6 +67,8 @@ void s1956(pc1,pc2,rsurf,jstat)
 * WRITTEN BY : Vibeke Skytt, SI, 88-11.
 * REVISED BY : Michael Floater, SI, 91-09 for possible rational curves.
 *          Also fixed a bug in the "check same representation" part.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994. Fixed memory
+*          leak from 'ratpc'.
 *
 *********************************************************************
 */
@@ -83,7 +85,7 @@ void s1956(pc1,pc2,rsurf,jstat)
   double tdist;         /* Distance between vertices.                    */
   double *scoef1;       /* Pointer to vertices of first curve.           */
   double *scoef2;       /* Pointer to vertices of second curve.          */
-  double *ssurf = NULL; /* Pointer to the vertices of the difference 
+  double *ssurf = NULL; /* Pointer to the vertices of the difference
 			   surface.                                      */
   double *s0;           /* Pointer used to traverse ssurf.               */
   double *s1;           /* Pointer used to traverse scoef1.              */
@@ -93,22 +95,22 @@ void s1956(pc1,pc2,rsurf,jstat)
   double *s1weight;    /* Pointer to weights in pc1 if rational.         */
   double *s2weight;    /* Pointer to weights in pc2 if rational.         */
   double *s3;          /* Pointer to traverse scoef2 if rational.        */
-  
+
   /* Test input. */
-  
+
   if (pc1->idim != pc2->idim) goto err106;
-  
+
   /* Describe curves in local parameters.  */
-  
+
   kdim = pc1 -> idim;
   kn1 = pc1 -> in;
   kk1 = pc1 -> ik;
   kind1 = pc1 -> ikind;
-  
+
   kn2 = pc2 -> in;
   kk2 = pc2 -> ik;
   kind2 = pc2 -> ikind;
-  
+
   if((kind1 == 2 || kind1 == 4) || (kind2 == 2 || kind2 == 4))
   {
     /* At least one of the curves is rational. Convert the
@@ -141,11 +143,11 @@ void s1956(pc1,pc2,rsurf,jstat)
 
     /* Allocate space for homogeneous coefficients of rational
        difference surface.  */
-  
+
     if ((ssurf = newarray(kn1*kn2*newdim,double)) == NULL) goto err101;
-  
+
     /* Make coefficients of difference function.  */
-  
+
     for (s0=ssurf,s2=scoef2,kj=0; kj<kn2; s2+=(kdim+1),kj++)
     {
       for (s1=scoef1,ki=0; ki<kn1; s0++,s1++,ki++)
@@ -161,9 +163,9 @@ void s1956(pc1,pc2,rsurf,jstat)
 	  (*s0) = (*s1weight) * (*s2weight);
       }
     }
-  
+
     /* Create difference function.  */
-    
+
     *rsurf = NULL;
     if ((*rsurf = newSurf(kn1,kn2,kk1,kk2,pc1->et,pc2->et,
 			  ssurf,2,kdim,1)) == NULL) goto err101;
@@ -178,22 +180,22 @@ void s1956(pc1,pc2,rsurf,jstat)
     scoef2 = pc2 -> ecoef;
 
     /* Allocate space for coefficients of difference surface.  */
-  
+
     if ((ssurf = newarray(kn1*kn2*kdim,double)) == NULL) goto err101;
-  
+
     /* Make coefficients of difference function.  */
-  
+
     for (s0=ssurf,s2=scoef2,kj=0; kj<kn2; s2+=kdim,kj++)
       for (s1=scoef1,ki=0; ki<kn1; s0+=kdim,s1+=kdim,ki++)
         s6diff(s1,s2,kdim,s0);
-  
+
     /* Create difference function.  */
-    
+
     *rsurf = NULL;
     if ((*rsurf = newSurf(kn1,kn2,kk1,kk2,pc1->et,pc2->et,
 			  ssurf,1,kdim,1)) == NULL) goto err101;
   }
-  
+
 
 
   /* Test if the curves have the same representation and same direction. */
@@ -207,7 +209,7 @@ void s1956(pc1,pc2,rsurf,jstat)
   }
   else
   {
-      for (s1=scoef1+newdim,s2=scoef2+newdim,ki=1; ki<kn1 && kstat>0; 
+      for (s1=scoef1+newdim,s2=scoef2+newdim,ki=1; ki<kn1 && kstat>0;
            s1+=newdim,s2+=newdim,ki++)
       {
         if (DNEQUAL(s6dist(s1,s2,newdim),tdist))
@@ -217,12 +219,12 @@ void s1956(pc1,pc2,rsurf,jstat)
 	}
       }
   }
-  
+
   if (kstat == 0)
   {
-      
+
       /* Test if the curves have the same representation and opposite direction.*/
-      
+
       kstat = 2;
       if (kn1 != kn2 || kk1 != kk2) kstat = 0;
       tdist = s6dist(scoef1,scoef2+(kn2-1)*newdim,newdim);
@@ -246,33 +248,34 @@ void s1956(pc1,pc2,rsurf,jstat)
 
 
   /* Difference function made.  */
-  
+
   *jstat = kstat;
   goto out;
-  
+
   /* Error in space allocation.  */
-  
+
  err101: *jstat = -101;
   s6err("s1956",*jstat,kpos);
   goto out;
-  
+
   /* Error in in lower level routine. */
-  
+
  err102: *jstat = kstat;
   s6err("s1956",*jstat,kpos);
   goto out;
-  
+
   /* Error in input. Conflicting dimensions.  */
-  
+
   err106 : *jstat = -106;
   s6err("s1956",*jstat,kpos);
   goto out;
-  
- out: 
-  
+
+ out:
+
   /* Free space occupied by local array.  */
-  
+
   if (ssurf != NULL) freearray(ssurf);
-  
+  if (ratpc) freeCurve(ratpc);
+
   return;
 }
