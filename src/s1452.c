@@ -14,7 +14,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void s1452(SISLSurf *ps, double aepsge, double aoffset, SISLSurf **rs, 
+void s1452(SISLSurf *ps, double aepsge, double aoffset, SISLSurf **rs,
 	   int *jstat)
 #else
 void s1452(ps,aepsge,aoffset,rs,jstat)
@@ -28,7 +28,7 @@ void s1452(ps,aepsge,aoffset,rs,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To create a B-spline approximating the offset surface of
 *              a B-spline surface.
 *
@@ -46,8 +46,8 @@ void s1452(ps,aepsge,aoffset,rs,jstat)
 *                       product of the tangent vector and the anorm vector.
 *                       The offset distance is multiplied by this vector.
 *
-* OUTPUT     : 
-*              jstat  - status messages  
+* OUTPUT     :
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -66,7 +66,7 @@ void s1452(ps,aepsge,aoffset,rs,jstat)
 *
 *-
 * CALLS      : s1365     - This routine is performing the actual computation
-*                          The existence of the current routine is for 
+*                          The existence of the current routine is for
 *                          historical reasons.
 *
 * WRITTEN BY : Vibeke Skytt, SINTEF, 0394.
@@ -78,22 +78,22 @@ void s1452(ps,aepsge,aoffset,rs,jstat)
   int kpos = 0;      /* Position of error.                               */
   int kdim = ps->idim;  /* Dimension of geometry space.                  */
   double tmax = (double)0;  /* Dummy.                                    */
-  
+
   /* Compute offset surface. */
-  
+
    s1365(ps, aoffset, aepsge, tmax, kdim, rs, &kstat);
-   if (kstat , 0) goto error;
-     
+   if (kstat < 0) goto error;
+
   /* Surface approximated. */
-  
+
   *jstat = kstat;
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
+
   error : *jstat = kstat;
   s6err("s1452",*jstat,kpos);
   goto out;
-  
+
   out: return;
 }
