@@ -13,7 +13,7 @@
 #define S2550
 
 #include "sislP.h"
-^L
+
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2550( SISLCurve *curve,
