@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.6 1995-01-23 12:35:42 pfu Exp $
+ * $Id: s2503.c,v 1.7 1995-06-28 11:06:50 jka Exp $
  *
  */
 
@@ -92,6 +92,8 @@ void s2503(SISLSurf *surf, int ider, double derive[], double normal[],
 * WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.             Date: 1995-1
 * CORRECTED BY :  Ulf J Krystad, SINTEF, Oslo, Norway.             Date: 1995-1
 *                 Removed knot navigators + some clean up.
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.           Date: 1995-06
+*                 Error in explicit curvature.
 ******************************************************************************
 */
 {
@@ -121,7 +123,7 @@ void s2503(SISLSurf *surf, int ider, double derive[], double normal[],
 
     b = (1.0 + hx*hx)*hyy - 2.0*hx*hy*hxy + (1.0 + hy*hy)*hxx;
 
-    *meancurvature = b/a;
+    *meancurvature = 0.5*b/a;
   }
 
   else if (surf->idim == 2) /* 2D surface */
