@@ -92,6 +92,8 @@ void
 * REVISED BY : Trond Vidar Stensby, SI, 91-07
 * REWISED BY : Vibeke Skytt, 94-03. Changed the concept of closed, 
 *                                   non-periodic.
+* REWISED BY : Johannes Kaasa, 95-11. Fixed error in output of the parameter
+*              values (<= instead of < in for loop).
 *
 *********************************************************************
 */
@@ -196,7 +198,7 @@ void
   *gpar = spar1;
 
   *jnbpar = 0;
-  for (ki = 1; spar1[ki] < *cendpar; ki++)
+  for (ki = 1; spar1[ki] <= *cendpar; ki++)
     {
       if (spar1[ki - 1] < spar1[ki])
 	(*gpar)[(*jnbpar)++] = spar1[ki-1];
