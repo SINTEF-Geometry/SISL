@@ -19,7 +19,7 @@
 #define S2558
 
 #include "sislP.h"
-^L
+
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2558( double     derive[],

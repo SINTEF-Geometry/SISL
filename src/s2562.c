@@ -18,7 +18,7 @@
 #define S2562
 
 #include "sislP.h"
-^L
+
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2562( SISLCurve *curve,

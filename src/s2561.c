@@ -19,7 +19,7 @@
 #define S2561
 
 #include "sislP.h"
-^L
+
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2561( double     derive[],

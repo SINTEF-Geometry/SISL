@@ -19,7 +19,7 @@
 #define S2555
 
 #include "sislP.h"
-^L
+
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2555( double     derive[],

@@ -1,13 +1,23 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
 #include "copyright.h"
 
+/*
+ *
+ * $Id:
+ *
+ */
 
 #define S2557
 
-
 #include "sislP.h"
-
-#include "s2557.h"
-
 
 #if defined(SISLNEEDPROTOTYPES)
 void

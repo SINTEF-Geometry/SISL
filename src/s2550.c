@@ -9,6 +9,11 @@
 
 #include "copyright.h"
 
+/*
+ *
+ * $Id:
+ *
+ */
 
 #define S2550
 
