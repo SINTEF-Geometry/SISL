@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1383.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1383.c,v 1.2 1997-11-04 07:45:19 vsk Exp $
  *
  */
 
@@ -163,14 +163,18 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
   
   s3dinf = newarray((3*kdims+1)*kmaxinf,DOUBLE);                               
   if (s3dinf == NULL) goto err101;
-  sudpos = newarray(kdims*kmaxinf,DOUBLE);                               
-  if (sudpos == NULL) goto err101;
-  sudder = newarray(kdims*kmaxinf,DOUBLE);                               
-  if (sudder == NULL) goto err101;
-  svdpos = newarray(kdims*kmaxinf,DOUBLE);                               
-  if (svdpos == NULL) goto err101;
-  svdder = newarray(kdims*kmaxinf,DOUBLE);                               
-  if (svdder == NULL) goto err101;
+
+  if (ider >= 1)
+    {
+      sudpos = newarray(kdims*kmaxinf,DOUBLE);                               
+      if (sudpos == NULL) goto err101;
+      sudder = newarray(kdims*kmaxinf,DOUBLE);                               
+      if (sudder == NULL) goto err101;
+      svdpos = newarray(kdims*kmaxinf,DOUBLE);                               
+      if (svdpos == NULL) goto err101;
+      svdder = newarray(kdims*kmaxinf,DOUBLE);                               
+      if (svdder == NULL) goto err101;
+    }
   
   /* Allocate space for parametrization array */
   
@@ -196,10 +200,10 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
   knbinf = 1;                   
   
   /* Store the other calculated information */
-  memcopy(sudpos,sderu,kdims,DOUBLE);
   
   if (ider>=1)
     {
+      memcopy(sudpos,sderu,kdims,DOUBLE);
       memcopy(sudder,sderu+kdims,kdims,DOUBLE);
       memcopy(svdpos,sderv,kdims,DOUBLE);
       memcopy(svdder,sderv+kdims,kdims,DOUBLE);
@@ -254,16 +258,20 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	      kmaxinf = kmaxinf + 100;
 	      s3dinf = increasearray(s3dinf,(3*kdims+1)*kmaxinf,DOUBLE);
 	      if (s3dinf == NULL) goto err101;
-	      sudpos = increasearray(sudpos,kdims*kmaxinf,DOUBLE);
-	      if (sudpos == NULL) goto err101;
-	      sudder = increasearray(sudder,kdims*kmaxinf,DOUBLE);
-	      if (sudder == NULL) goto err101;
-	      svdpos = increasearray(svdpos,kdims*kmaxinf,DOUBLE);
-	      if (svdpos == NULL) goto err101;
-	      svdder = increasearray(svdder,kdims*kmaxinf,DOUBLE);
-	      if (svdder == NULL) goto err101;
 	      spar   = increasearray(spar,kmaxinf,DOUBLE);
 	      if (spar == NULL) goto err101;
+
+	      if (ider >= 1)
+		{
+		  sudpos = increasearray(sudpos,kdims*kmaxinf,DOUBLE);
+		  if (sudpos == NULL) goto err101;
+		  sudder = increasearray(sudder,kdims*kmaxinf,DOUBLE);
+		  if (sudder == NULL) goto err101;
+		  svdpos = increasearray(svdpos,kdims*kmaxinf,DOUBLE);
+		  if (svdpos == NULL) goto err101;
+		  svdder = increasearray(svdder,kdims*kmaxinf,DOUBLE);
+		  if (svdder == NULL) goto err101;
+		}
             }
 	  
 	  
@@ -286,9 +294,9 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	  
 	  /* Store the other calculated information */
 	  
-	  memcopy(&sudpos[kdims*knbinf],sderu,kdims,DOUBLE);
 	  if (ider>=1)
             {
+	      memcopy(&sudpos[kdims*knbinf],sderu,kdims,DOUBLE);
 	      memcopy(&sudder[kdims*knbinf],sderu+kdims,kdims,DOUBLE);
 	      memcopy(&svdpos[kdims*knbinf],sderv,kdims,DOUBLE);
 	      memcopy(&svdder[kdims*knbinf],sderv+kdims,kdims,DOUBLE);
@@ -436,7 +444,21 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
             {
 	      kmaxinf = kmaxinf + 100;
 	      s3dinf = increasearray(s3dinf,(3*kdims+1)*kmaxinf,DOUBLE);
+	      if (s3dinf == NULL) goto err101;
 	      spar   = increasearray(spar,kmaxinf,DOUBLE);
+	      if (spar == NULL) goto err101;
+
+	      if (ider >= 1)
+		{
+		  sudpos = increasearray(sudpos,kdims*kmaxinf,DOUBLE);
+		  if (sudpos == NULL) goto err101;
+		  sudder = increasearray(sudder,kdims*kmaxinf,DOUBLE);
+		  if (sudder == NULL) goto err101;
+		  svdpos = increasearray(svdpos,kdims*kmaxinf,DOUBLE);
+		  if (svdpos == NULL) goto err101;
+		  svdder = increasearray(svdder,kdims*kmaxinf,DOUBLE);
+		  if (svdder == NULL) goto err101;
+		}
             }
 	  
 	  /* Remember length of start tangent, end of zero segment */
@@ -451,9 +473,9 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	  
 	  /* Store the other calculated information */
 	  
-	  memcopy(&sudpos[kdims*knbinf],sderu,kdims,DOUBLE);
 	  if (ider>=1)
             {
+	      memcopy(&sudpos[kdims*knbinf],sderu,kdims,DOUBLE);
 	      memcopy(&sudder[kdims*knbinf],sderu+kdims,kdims,DOUBLE);
 	      memcopy(&svdpos[kdims*knbinf],sderv,kdims,DOUBLE);
 	      memcopy(&svdder[kdims*knbinf],sderv+kdims,kdims,DOUBLE);
