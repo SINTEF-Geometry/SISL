@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1219.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1219.c,v 1.2 2000-05-23 08:44:05 vsk Exp $
  *
  */
 
@@ -121,7 +121,7 @@ void s1219(et,ik,in,ileft,ax,jstat)
   
   else if (et[kleft+1] <= ax && ax < et[kleft+2])
     kleft += 1;
-  else if (et[kleft-1] <= ax && ax < et[kleft])
+  else if (kleft > 0 && et[kleft-1] <= ax && ax < et[kleft])
     kleft -= 1;
   
   /* Last resort - a binary search. */
