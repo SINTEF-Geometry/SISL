@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.48 1999-11-19 12:15:00 jka Exp $
+ * $Id: sislP.h,v 1.49 1999-11-19 12:54:40 jka Exp $
  *
  */
 
@@ -1547,6 +1547,15 @@ void s2557(SISLCurve *, double, int *, double [], double *, int *);
 extern
 #endif
 void s2558(double [], int, double *, int *);
+#ifndef  S2560
+extern
+#endif
+void s2560(SISLCurve *, double, int *, double [], double [], double [],
+           double [], double [], int *);
+#ifndef  S2561
+extern
+#endif
+void s2561(double [], int, double [], double [], double [], double [], int *);
 #ifndef  S6ADDCURVE
 extern
 #endif
@@ -3477,6 +3486,14 @@ void s2557();
 extern
 #endif
 void s2558();
+#ifndef  S2560
+extern
+#endif
+void s2560();
+#ifndef  S2561
+extern
+#endif
+void s2561();
 #ifndef  S6ADDCURVE
 extern
 #endif
