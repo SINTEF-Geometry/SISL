@@ -1,25 +1,19 @@
+# Local addition to generic Makefile
 #
-# On which other "subprojects" do we want this one to depend?
-# The following libraries will be linked in. (This is not so
-# easy to do through the dependency-mechanism?)
+# On which other modules do we want this one to depend?
+# The modules indicated in DEPSLIBLOCAL will be linked in
+# when making an app in this module, and their include
+# files are available to this module's code.
 #
-# The libdirs should be organized like this: /SI......../lib/ should
-# contain one subdir for every platform (sgi [or IRIX for some globals, hp-pa 
-# [or hp-aCC for global libs], winnt etc.). Each of these should contain the
-# nopt/ and opt/ subdirs.
-#
-# Global is really a bad name, it only applies to siscat/latools/etc. stuff
+# The libdirs should be organized like this: Every module
+# contain one subdir for every platform (linux, sgi, hp-pa,
+# winnt etc.). Most of the time only one exists, but the feature
+# is there so that you can use the same working directory on
+# multiple platforms (for instance when the working dir is on a
+# server). Each of these again should contain the
+# nopt/ and opt/ subdirs, that actually contain the lib file
+# and the .o files.
 
-DEPLIBSLOCAL  =
-
-GLOBALINCLUDEDIRS =
-
-GLOBALLIBDIRS     =
-
-DEPLIBSSYSTEM     =
-
-SYSTEMINCLUDEDIRS =
-
-SYSTEMLIBDIRS     =
+DEPLIBSLOCAL = 
 
 CXXDEFS += 
