@@ -20,12 +20,12 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-s1542(SISLCurve *pc1,int m,double *x,double eder[],int *jstat)
+s1542(SISLCurve *pc1,int m,double x[],double eder[],int *jstat)
 #else
 void s1542(pc1,m,x,eder,jstat)
      SISLCurve *pc1;
      int      m;
-     double   *x;
+     double   x[];
      double   eder[];
      int      *jstat;
 #endif
