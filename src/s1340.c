@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1340.c,v 1.3 1994-08-15 13:21:53 pfu Exp $
+ * $Id: s1340.c,v 1.4 1994-11-08 12:43:09 poeh Exp $
  *
  */
 
@@ -160,6 +160,9 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 * CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to NULL)
 *      in 'ranking' to avoid potential memory leak when exiting through 'out'.
 *      Removed several other memory leaks.
+* CHANGED BY: Per OEyvind Hvidsten, SINTEF, 1994-11. Added a freeCurve
+*      call before overwriting the *newarray pointer (thus removing a
+*      memory leak.
 *
 *********************************************************************
 */
@@ -379,6 +382,12 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
       s1354(qc_kreg, *newcurve, &ranking, eps, lepsco,
 	    startfix, endfix, mini, maxi, &helpcurve, maxerr, &lstat);
       if (lstat < 0) goto error;
+
+      if (*newcurve != NULL && *newcurve != tempcurve)
+      {
+	freeCurve(*newcurve);
+	*newcurve = NULL;
+      }
 
       if (tempcurve != NULL)
       {
