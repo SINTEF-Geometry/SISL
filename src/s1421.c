@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1421.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1421.c,v 1.2 1994-06-30 08:22:21 vsk Exp $
  *
  */
 #define S1421
@@ -428,7 +428,7 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
   
   /* Make cross products of tangents, if idim==3 and derivative >0 */
   
-  if (ider>0 && kdim ==3)
+  if (ider>0 && ps1->idim ==3)
     {
       double tlen1,tlen2,tnorm,tang=(double)0.0;
       
