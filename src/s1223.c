@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1223.c,v 1.2 1995-11-02 10:37:11 jka Exp $
+ * $Id: s1223.c,v 1.3 1995-11-02 13:08:02 jka Exp $
  *
  */
 
@@ -157,12 +157,12 @@ void s1223(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider1, ider2,
    
    /* Compute the value and derivatives in the first parameter direction. */
    
-   s1222(et1, ik1, in1, ibase1, par[0], ider1, sder1, &kstat);
+   s1222(et1, ik1, in1, ibase1, par[0], kder1, sder1, &kstat);
    if (kstat < 0) goto error;
 
    /* Compute the value and derivatives in the second parameter direction. */
    
-   s1222(et2, ik2, in2, ibase2, par[1], ider2, sder2, &kstat);
+   s1222(et2, ik2, in2, ibase2, par[1], kder2, sder2, &kstat);
    if (kstat < 0) goto error;
    
    /* Multiply together. */
