@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1515.c,v 1.2 1994-12-01 12:54:53 pfu Exp $
+ * $Id: s1515.c,v 1.3 1994-12-01 13:14:06 pfu Exp $
  *
  */
 
@@ -134,7 +134,7 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 
   s1313 (ps1, simpli, kdeg, aepsco, aepsge, amax, pintcr, icur, igraph, &kstat);
   if (kstat == -185)
-    goto war04;
+    goto err185;
   if (kstat < 0)
     goto error;
 
@@ -150,8 +150,8 @@ err104:
 
   /* Couldn't march */
   /* Only degenerate or singular guide points */
-war04:
-  *jstat = 4;
+err185:
+  *jstat = -185;
   goto out;
 
   /* Error in lower level routine.  */
