@@ -9,12 +9,23 @@
 /*                                                                           */
 /*****************************************************************************/
 
+/*
+ * If _SISL_COPYRIGHT_H is defined before copyright.h is included
+ * then flag this by defining SISL_INTERNAL as we're compiling SISL
+ * library source files. By doing this we can hide internal SISL macros
+ * if this header file is included in external files.
+ * ---------------------------------------------------------------------
+ */
+#if defined(_SISL_COPYRIGHT_H)
+#define SISL_INTERNAL 1
+#endif
+
 #include "copyright.h"
 
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.25 1995-08-10 09:19:59 jka Exp $
+ * $Id: sislP.h,v 1.26 1995-08-20 01:50:37 boh Exp $
  *
  */
 
@@ -22,49 +33,57 @@
 #pragma HP_ALIGN NATURAL
 #endif
 
-/* Get standard I/O library definitions */
+/* Get size_t */
+#include <sys/types.h>
 
+#if defined(SISL_INTERNAL)
+
+/* Get standard I/O library definitions */
 #include <stdio.h>
 
 /* Get standard library definitions (includes malloc defs) */
-
 #include <stdlib.h>
 
 /* Get  string library definitions (includes memcpy defs) */
-
 #include <string.h>
 
-/* Get math library routines definition. */
+/* Get system spesific limits */
+#include <limits.h>
 
+/* Get system spesific values */
+#include <values.h>
+
+/* Get floating point limits */
+#include <float.h>
+
+/* Get math library routines definition. */
 #include <math.h>
 
-#if !defined(apollo)
+#endif  /* SISL_INTERNAL */
 
+#if !defined(apollo)
 #if defined(__STDC__)
 
 #if !defined(CONST)
 #define CONST const
 #endif
-#define VOIDP (void *)
+#define VOIDP      (void *)
 #define CONSTVOIDP (const void *)
-#define UNSIGNED unsigned
 
 #else /* Not __STDC__ */
 #if !defined(CONST)
 #define CONST
 #endif
-#define VOIDP (char *)
-#define CONSTVOIDP (char *)
-#define UNSIGNED unsigned
+#define VOIDP       (char *)
+#define CONSTVOIDP  (char *)
 #endif
 
 #else /* apollo */
 #if !defined(CONST)
 #define CONST
 #endif
-#define VOIDP (void *)
-#define CONSTVOIDP (void *)
-#define UNSIGNED int
+#define VOIDP        (void *)
+#define CONSTVOIDP   (void *)
 #endif
 
 
@@ -302,40 +321,34 @@ enum
 
 /* UJK: NEW INTERSECTION STUFF END*/
 
-#ifndef HUGE_VAL
-#define HUGE_VAL    (double)1.7976931348623157e+308
-#endif
-
+#if defined(SISL_INTERNAL)
 #ifndef HUGE
-#define HUGE          HUGE_VAL
+#define HUGE          MAXDOUBLE
 #endif
 
 /* Storage classes. Used in space allocation.  */
-
 #define  INT     int
-#define  FLOAT   float
 #define  DOUBLE  double
-#define  POINTER int*
-#define  LONG    long
+#endif /* SISL_INTERNAL */
 
 /* Name of geometry objects. Used in branching. */
-
 #define SISLPOINT    0
 #define SISLCURVE    1
 #define SISLSURFACE  2
 
 /* The resolution of double precision numbers */
-
 #define AEPSGE (double)1.e-6
 #define AEPSCO (double)0.0
 
-#define REL_COMP_RES (double)0.000000000000001
-#define REL_PAR_RES (double)0.000000000001
-#define ANGULAR_TOLERANCE (double)0.01        /* IN RADIANS */
+#define REL_COMP_RES                   (double)0.000000000000001
+#define REL_PAR_RES                    (double)0.000000000001
+#define ANGULAR_TOLERANCE              (double)0.01  /* IN RADIANS */
 #define MAXIMAL_RADIUS_OF_CURVATURE    (double)10000.0
 
-/* Name of the nullobject, what a pointer points to when it points to
-   nothing.                                                           */
+/*
+ * Name of the nullobject, what a pointer points to when
+ * it points to  nothing.
+ */
 
 #ifndef NULL
 #define NULL 0
@@ -347,6 +360,7 @@ enum
 #define DNULL (double)0.0
 #endif
 
+#if defined(SISL_INTERNAL)
 #define ONE_THIRD  (double)0.333333333333333333333333
 #define ONE_SIXTH  (double)0.166666666666666666666667
 #define ONE_FOURTH (double)0.25
@@ -380,14 +394,14 @@ enum
   ( (fabs(a) <= AEPSGE) ? (1) : (0) )
 
 /* Space allocation.  */
-
+#if defined(SISL_INTERNAL)
 #define newarray(a,b) \
-  ((a)>(NULL)?((b*)malloc((unsigned)((a)*sizeof(b)))):(NULL))
+  ((a)>(NULL)?((b*)malloc((size_t)((a)*sizeof(b)))):(NULL))
 
 #define new0array(a,b) \
-  ((a)>(NULL)?((b*)calloc((unsigned)(a),(unsigned)(sizeof(b)))):(NULL))
+  ((a)>(NULL)?((b*)calloc((size_t)(a),(size_t)(sizeof(b)))):(NULL))
 
-#define increasearray(a,b,c) (c*)realloc(VOIDP(a),(unsigned)((b)*sizeof(c)))
+#define increasearray(a,b,c) (c*)realloc(VOIDP(a),(size_t)((b)*sizeof(c)))
 
 #define freearray(a) { (void)free(VOIDP a); a = NULL; }
 
@@ -397,20 +411,21 @@ enum
 /* Copying of arrays   */
 
 #define memcopy(a,b,c,d) \
-  VOIDP memcpy(VOIDP (a),CONSTVOIDP(b),(UNSIGNED)((c)*sizeof(d)))
+  VOIDP memcpy(VOIDP (a),CONSTVOIDP(b),(size_t)((c)*sizeof(d)))
 
 /* Zero out an array   */
 
 #define memzero(a,b,c) \
-  VOIDP memset(VOIDP (a),0,(UNSIGNED)((b)*sizeof(c)))
+  VOIDP memset(VOIDP (a),0,(size_t)((b)*sizeof(c)))
+#endif
 
 /* Set value of PI/2, PI, 3PI/2 and 2PI */
 
 #ifndef PIHALF
-#define PIHALF       (double)1.57079632679489661923
+#define PIHALF       (double)M_PI_2
 #endif
 #ifndef PI
-#define PI           (double)3.14159265358979323846
+#define PI           (double)M_PI
 #endif
 #ifndef THREEPIHALF
 #define THREEPIHALF  (double)4.71238898038468985769
@@ -419,7 +434,8 @@ enum
 #define TWOPI        (double)6.28318530717958647692
 #endif
 #ifndef ROTM
-#define ROTM         (double)0.70710678118654752440
+/*#define ROTM         (double)0.70710678118654752440*/
+#define ROTM         (double)M_SQRT1_2
 #endif
 #ifndef SIMPLECASE
 #define SIMPLECASE   (double)0.75
@@ -427,9 +443,13 @@ enum
 
 /* Values of logicals */
 
+#ifndef TRUE
 #define TRUE 1
+#endif
+#ifndef FALSE
 #define FALSE 0
-
+#endif
+#endif          /* SISL_INTERNAL */
 
 
 /*
