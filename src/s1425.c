@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1425.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1425.c,v 1.2 1995-11-29 14:39:01 jka Exp $
  *
  */
 
@@ -223,6 +223,8 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 * DEBUGGED BY : Mike Floater, SI, Oslo, Norway, April 1991;
 *               1. The freearray calls for ew and ebder were the wrong way round.
 *               2. The array sder was not being freed when rational.
+* Revised by : Johannes Kaasa, SINTEF Oslo, Nov. 1995,
+*              Made local copies of leftknot.
 *
 *********************************************************************
 */                                     
@@ -278,6 +280,9 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
   double sdum2[147];  /* Array used for ew */
   int knumb1;         /* Necessary size of ebder */   
   int knumb2;         /* Necessary size of ew */   
+  
+  kleft2 = *ileft2;
+  kleft1 = *ileft1;
   
   /* Copy surface to local parameters.  */
   
@@ -366,7 +371,7 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
   {
      /* Calculate last knot equal to or left of epar[1] */
      
-     s1219(st2,kk2,kn2,ileft2,epar[1],&kstat);
+     s1219(st2,kk2,kn2,&kleft2,epar[1],&kstat);
      if (kstat < 0) goto error;
 		    
     
@@ -374,12 +379,12 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 	kmult = 0;
      else
      {
-        kmult = s6knotmult(st2,kk2,kn2,ileft2,epar[1],&kstat);
+        kmult = s6knotmult(st2,kk2,kn2,&kleft2,epar[1],&kstat);
         if (kstat < 0) goto error;
      }
      
-     *ileft2 = MAX(kk2-1,(*ileft2) - kmult);		    
-     kn = *ileft2+1;
+     kleft2 = MAX(kk2-1,kleft2 - kmult);		    
+     kn = kleft2+1;
   }
   else
      kn = kn2;
@@ -387,13 +392,13 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
   /* Compute the values and derivatives of the nonzero B-splines in the
      second parameter direction.                                        */
   
-  s1220(st2,kk2,kn,ileft2,epar[1],kder2,ebder,&kstat);
+  s1220(st2,kk2,kn,&kleft2,epar[1],kder2,ebder,&kstat);
   
   if (kstat < 0) goto error;
   
   /* Update ileft1 (ileft2 was updated above, in s1220). */
   
-  s1219(st1,kk1,kn1,ileft1,epar[0],&kstat);
+  s1219(st1,kk1,kn1,&kleft1,epar[0],&kstat);
   if (kstat < 0) goto error;
     
    /* If the left hand derivative at epar[0] is to be calculated, this can be
@@ -408,18 +413,15 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 	kmult = 0;
      else
      {
-	 kmult = s6knotmult(st1,kk1,kn1,ileft1,epar[0],&kstat);
+	 kmult = s6knotmult(st1,kk1,kn1,&kleft1,epar[0],&kstat);
          if (kstat < 0) goto error;
      }
      
-     *ileft1 = MAX(kk1-1,*ileft1-kmult);
-     kn = (*ileft1) + 1;
+     kleft1 = MAX(kk1-1,kleft1-kmult);
+     kn = kleft1 + 1;
   }
   else
      kn = kn1;
-  
-  kleft2 = *ileft2;
-  kleft1 = *ileft1;
   
   /* Compute the first matrix product in (2) above. */
   
@@ -460,7 +462,7 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
   /* Compute the values and derivatives of the nonzero B-splines in the
      first parameter direction.                                        */
   
-  s1220(st1,kk1,kn,ileft1,epar[0],kder1,ebder,&kstat);         
+  s1220(st1,kk1,kn,&kleft1,epar[0],kder1,ebder,&kstat);         
   
   if (kstat < 0) goto error;
   
@@ -596,6 +598,9 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
   s6err("s1425",*jstat,kpos);
   goto out;
   
- out: return;
+ out: 
+   *ileft2 = kleft2;
+   *ileft1 = kleft1;
+   return;
 }
 
