@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1510.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1510.c,v 1.2 1994-11-30 10:18:15 pfu Exp $
  *
  */
 
@@ -103,6 +103,8 @@ void sh1510(ps, eyepoint, idim, aepsco, aepsge,	trackflag,jtrack,wtrack,
 *              freeIntdat  - Free space occupied by an intersection data.
 *
 * WRITTEN BY : Mike Floater, SI, 90-11.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994. Added
+*              initialization of 'jsurf'.
 *
 *********************************************************************
 */
@@ -125,11 +127,11 @@ void sh1510(ps, eyepoint, idim, aepsco, aepsge,	trackflag,jtrack,wtrack,
   SISLIntdat *qintdat = NULL;	/* Intersection result */
   int kdeg = 1004;              /* The degree of the implicit equation */
   double simpli[16];             /* Array containing the implicit description */
-  
+
   SISLObject *track_obj=NULL;
   SISLSurf *qkreg=NULL; /* Input surface ensured k-regularity. */
 
-  /* -------------------------------------------------------- */  
+  /* -------------------------------------------------------- */
 
   if (ps->cuopen_1 == SISL_SURF_PERIODIC ||
       ps->cuopen_2 == SISL_SURF_PERIODIC)
@@ -141,21 +143,21 @@ void sh1510(ps, eyepoint, idim, aepsco, aepsge,	trackflag,jtrack,wtrack,
    }
   else
     qkreg = ps;
-    
+
   /*
   * Create new object and connect surface to object.
   * ------------------------------------------------
   */
-  
+
   if (!(track_obj = newObject (SISLSURFACE)))
     goto err101;
   track_obj->s1 = ps;
-  
+
   simpli[0] = eyepoint[0];
   simpli[1] = eyepoint[1];
   simpli[2] = eyepoint[2];
-  
-  
+
+
 
 
 
@@ -168,6 +170,7 @@ void sh1510(ps, eyepoint, idim, aepsco, aepsge,	trackflag,jtrack,wtrack,
   *jpt = 0;
   *jcrv = 0;
   *jtrack = 0;
+  *jsurf = 0;
 
   if (idim != qkreg->idim)
     goto err106;
@@ -213,33 +216,33 @@ void sh1510(ps, eyepoint, idim, aepsco, aepsge,	trackflag,jtrack,wtrack,
     goto error;
 
   /* Represent degenerated intersection curves as one point.  */
-  
+
   sh6degen(track_obj,track_obj,&qintdat,aepsge,&kstat);
   if (kstat < 0) goto error;
-  
+
   /* Split curves at knots where the surface is only C1. */
-  
+
   spli_silh(&qintdat,track_obj,&kstat);
   if (kstat < 0) goto error;
 
   /* Create tracks */
   if (trackflag && qintdat)
     {
- 
+
       refine_all (&qintdat, track_obj, track_obj, simpli, kdeg, aepsge, &kstat);
       if (kstat < 0)
 	goto error;
     }
-  
+
   /* Join periodic curves */
   int_join_per( &qintdat,track_obj,track_obj,simpli,kdeg,aepsge,&kstat);
   if (kstat < 0)
     goto error;
-  
+
   if (trackflag && qintdat)
     {
       make_tracks (track_obj, track_obj, kdeg, simpli,
-		   qintdat->ilist, qintdat->vlist, 
+		   qintdat->ilist, qintdat->vlist,
 		   jtrack, wtrack, aepsge, &kstat);
       if (kstat < 0)
 	goto error;
@@ -309,4 +312,3 @@ out:
 
   return;
 }
-
