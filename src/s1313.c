@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.2 1994-12-01 13:34:36 pfu Exp $
+ * $Id: s1313.c,v 1.3 1994-12-01 13:58:04 pfu Exp $
  *
  */
 
@@ -143,6 +143,10 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 * Revised by : Mike Floater, SI, 1991-01
 *                   Improved the routine for parallel silhouettes (ideg=1003) and
 *                   added perspective and circular silhouettes (ideg=1004,ideg=1005)
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Dec. 1994.  Added check for
+*              NULL 'pintcr' and to avoid regenerating the geometry when it has
+*              already been generated in the topology part (constant curve, type 9).
+*              This fixes memory problmes.
 *
 *********************************************************************
 */
@@ -253,6 +257,16 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   double tltan1,tltan2;    /* Tangent lengths                           */
   SISLCurve *q3dcur=NULL;/* Pointer to 3-D curve                     */
   SISLCurve *qp1cur=NULL;/* Pointer to curve in first parameter plane*/
+
+
+  *jstat = 0;
+
+  if ( pintcr == NULL )  goto err150;
+
+
+  /* Check if the geometry has allready been generated in the topology part. */
+
+  if ( pintcr->itype == 9 )  goto out;
 
 
 
@@ -1463,6 +1477,12 @@ war03:  *jstat = 3;
 err101: *jstat = -101;
         s6err("s1313",*jstat,kpos);
         goto out;
+
+/* Error - NULL pointer was given */
+err150 :
+    *jstat = -150;
+    s6err("s1313",*jstat,kpos);
+    goto out;
 
 /* Error in surface description parameter direction does not exist */
 err123: *jstat = -123;
