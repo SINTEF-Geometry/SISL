@@ -1,4 +1,4 @@
-#ifndef SISLP_INCLUDED 
+#ifndef SISLP_INCLUDED
 #define SISLP_INCLUDED
 /*****************************************************************************/
 /*                                                                           */
@@ -10,11 +10,11 @@
 /*****************************************************************************/
 
 #include "copyright.h"
- 
-#include "sisl.h" 
+
+#include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.3 1994-05-02 08:50:43 vsk Exp $
+ * $Id: sislP.h,v 1.4 1994-08-16 14:28:06 pfu Exp $
  *
  */
 
@@ -434,7 +434,7 @@ enum
 
 /*
  * --------------------------------------------------------------
- * Forward declarations of all sisl routines, both C and FORTRAN.
+ * Forward declarations of all sisl low-level routines, all in C.
  * --------------------------------------------------------------
  */
 
@@ -442,7 +442,7 @@ enum
     extern "C" {
 #endif
 #if defined(SISLNEEDPROTOTYPES)
-       
+
 #ifndef CONSTRUCT
 extern
 #endif
@@ -500,10 +500,6 @@ SISLIntpt    *hp_copyIntpt(SISLIntpt *);
 #ifndef DESTRUCT
 extern
 #endif
-void freeCurve(SISLCurve *);
-#ifndef DESTRUCT
-extern
-#endif
 void freeEdge(SISLEdge *);
 #ifndef DESTRUCT
 extern
@@ -532,10 +528,6 @@ void freePtedge(SISLPtedge *);
 #ifndef DESTRUCT
 extern
 #endif
-void freeSurf(SISLSurf *);
-#ifndef DESTRUCT
-extern
-#endif
 void freeIntsurf(SISLIntsurf *);
 #ifndef DESTRUCT
 extern
@@ -553,15 +545,15 @@ void s1119(double *,double *,double *,int,int,int,int,int *,int *,int *,int *);
 extern
 #endif
 void s1161(SISLObject *,double *,double ,SISLIntdat **,int *);
-#ifndef S1172
-extern
-#endif
-void s1172(SISLCurve *,double,double,double,double *,int *);
 #ifndef S1162
 extern
 #endif
 void s1162(SISLObject *,double *,double,SISLIntdat **,SISLEdge *[2],int,
 	   int,int *);
+#ifndef S1172
+extern
+#endif
+void s1172(SISLCurve *,double,double,double,double *,int *);
 #ifndef S1173
 extern
 #endif
@@ -595,10 +587,6 @@ void s1231(SISLCurve *,double,SISLCurve **,SISLCurve **,int *);
 extern
 #endif
 void s1232(double [],int,int,double,double,double [],int *);
-#ifndef  S1234
-extern
-#endif
-void s1234(SISLCurve *,double [],int,int,int,SISLCurve **,int *);
 #ifndef  S1235
 extern
 #endif
@@ -624,10 +612,6 @@ void s1252(SISLCurve *,double,double,double *,int *);
 extern
 #endif
 void s1301(double,double,int,SISLCurve **,int *);
-#ifndef  S1303
-extern
-#endif
-void s1303(double [],double,double,double [],double [],int,SISLCurve **,int *);
 #ifndef  S1304
 extern
 #endif
@@ -749,10 +733,6 @@ void s1355(SISLCurve *,double [],double **,int *,int *);
 extern
 #endif
 void s1359(double [],double,int,int,int,double [],SISLCurve **,int *);
-#ifndef  S1360
-extern
-#endif
-void s1360(SISLCurve *,double,double,double [],double,int,SISLCurve **,int *);
 #ifndef  S1361
 extern
 #endif
@@ -771,11 +751,6 @@ extern
 #endif
 void s1367(SISLSurf *,double,double,int,double [],
 	   int,int *,int *,double [],int *);
-#ifndef  S1369
-extern
-#endif
-void s1369(SISLSurf *,double [],double [],double,double,int,double,double,
-	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1370
 extern
 #endif
@@ -895,10 +870,6 @@ void s1618(double [],double [],double[],int,double *);
 extern
 #endif
 void s1619(double [],int,int,int [],double [],int,double[],double *, int *);
-#ifndef S1620
-extern
-#endif
-void s1620(double [],int,int,int,int,int,int,int,int,SISLSurf **,int *);
 #ifndef  S1700
 extern
 #endif
@@ -920,10 +891,6 @@ void s1707(SISLCurve *,int *);
 extern
 #endif
 void s1708(SISLSurf *,int *);
-#ifndef  S1730
-extern
-#endif
-void s1730(SISLCurve *,SISLCurve **,int *);
 #ifndef  S1741
 extern
 #endif
@@ -1263,10 +1230,6 @@ void s1993(SISLCurve *,int *);
 extern
 #endif
 void s1994(SISLSurf *,int *);
-#ifndef  S6DECASTELJAU
-extern
-#endif
-void     s6deCasteljau(double [],double,double,double,int,double [],int *);
 #ifndef  S6ADDCURVE
 extern
 #endif
@@ -1303,6 +1266,10 @@ void s6curvature(double [],int,double [],int *);
 extern
 #endif
 void s6curvrad(double [],double [],double [],int,double *,int *);
+#ifndef  S6DECASTELJAU
+extern
+#endif
+void     s6deCasteljau(double [],double,double,double,int,double [],int *);
 #ifndef  S6DECOMP
 extern
 #endif
@@ -1562,69 +1529,6 @@ extern
 #endif
 void s9surmarch(SISLSurf *,SISLSurf *,double [],int [],int,
 		double *[],int *[],int *,int *);
-#ifndef  SH1119
-extern
-#endif
-void sh1119(double *,double *,double *,int,int,int,int,double,
-	    int *,int *,int *,int *);
-#ifndef  SH1161
-extern
-#endif
-void sh1161(SISLObject *,double *,double,double ,SISLIntdat **,int *);
-#ifndef  SH1162
-extern
-#endif
-void sh1162(SISLObject *,double *,double,double,SISLIntdat **,
-	    SISLEdge *[2],int,int,int *);
-#ifndef  SH1190
-extern
-#endif
-void sh1190(SISLObject *,double *,double,double,int *);
-#ifndef  SH1204
-extern
-#endif
-void sh1204(double [],int,int,double [],int *);
-#ifndef  SH1205
-extern
-#endif
-void sh1205(double [],int,int,double [],int *);
-#ifndef  SH1206
-extern
-#endif
-void sh1206(double [],int [],int,int,int,int,double **,int **,int *,int *);
-#ifndef  SH1207
-extern
-#endif
-void sh1207(double [],int [],int,int,double,double *,double [],
-	    double [],int *);
-#ifndef  SH1208
-extern
-#endif
-void sh1208(double [],int [],int,int,double,double *,double [],
-	    double [],int *);
-#ifndef  SH1209
-extern
-#endif
-void sh1209(double [],int [],int,int,double,double *,double [],
-	    double [],int *);
-#ifndef  SH1210
-extern
-#endif
-void sh1210(double [],int [],int,int,double,double *,double [],
-	    double [],int *);
-#ifndef  SH1211
-extern
-#endif
-void sh1211(double [],int [],int,int,double,double *,double [],
-	    double [],int *);
-#ifndef  SH1212
-extern
-#endif
-void sh1212(double [],int,int,double [],int *);
-#ifndef  SH1213
-extern
-#endif
-void sh1213(double [],int,int,double [],int *);
 #ifndef  SH1260
 extern
 #endif
@@ -1642,30 +1546,6 @@ void sh1262(SISLCurve *vcurve[],int iedge,int inmbx,double ecoef[],int *jstat);
 extern
 #endif
 void sh1263(SISLCurve *vcurve[],int iedge,SISLCurve *vboundc[],int *jstat);
-#ifndef  SH1350
-extern
-#endif
-void sh1350(SISLCurve *,double,double,double,int,SISLCurve **,int *);
-#ifndef  SH1351
-extern
-#endif
-void sh1351(double [],int,double [],int *);
-#ifndef  SH1352
-extern
-#endif
-double sh1352(double,double,double,int *);
-#ifndef  SH1353
-extern
-#endif
-void sh1353(double [],double [],int,double,double [],double [],int *);
-#ifndef  SH1354
-extern
-#endif
-void sh1354(double [],int,int,int,double [],SISLCurve **,int *);
-#ifndef  SH1355
-extern
-#endif
-void sh1355(double [],double [],int,double,double *,double *,int *);
 #ifndef  SH1365
 extern
 #endif
@@ -1840,7 +1720,7 @@ void sh1830(SISLObject *,SISLObject *,double,int *);
 #ifndef  SH1831
 extern
 #endif
-void sh1831(SISLCurve *pc1, SISLCurve *pc2, int isign, double epoint[], 
+void sh1831(SISLCurve *pc1, SISLCurve *pc2, int isign, double epoint[],
             double enorm[], double aepsge, int *jstat);
 #ifndef  SH1834
 extern
@@ -1923,21 +1803,6 @@ extern
 #endif
 void sh1871(SISLCurve *,double *,int,double,double,int,int *,SISLTrack ***,
 	    int *,double **,int **,int *,SISLIntcurve ***,int *);
-#ifndef  SH1880
-extern
-#endif
-void sh1880(int,int,int,SISLIntpt **,int,SISLIntlist **,double,
-	    int *,double **,double **,int **,int *);
-#ifndef  SH1920
-extern
-#endif
-void sh1920(SISLCurve *,double [],double,int,double,int,double,double,
-	    int *,double **,int **,int *);
-#ifndef  SH1921
-extern
-#endif
-void sh1921(SISLSurf *,double [],double,int,double,int,double,double,
-	    int *,double **,int **,int *);
 #ifndef  SH1922
 extern
 #endif
@@ -1980,46 +1845,6 @@ extern
 #endif
 void sh1930(double [],int [],int [],double [],double [],
 	    int,int,int,int,int,int,int *);
-#ifndef  SH1953
-extern
-#endif
-void sh1953(SISLCurve *,double [],double,int,double,int,double,double,
-	    int *,double **,int **,int *);
-#ifndef  SH1953NEW
-extern
-#endif
-void sh1953new(SISLCurve *,double [],double,int,double,int,double,double,
-	   int *,double **,int **,int *);
-#ifndef  SH1953REK
-extern
-#endif
-void sh1953rek(SISLCurve *,double [],int,int,double,double,double,
-	       double *,int *,double **,int **,int *);
-#ifndef  SH1954
-extern
-#endif
-void sh1954(SISLSurf *,double [],double,int,double,int,double,double,
-	    int *,double **,int **,int *);
-#ifndef  SH1954NEW
-extern
-#endif
-void sh1954new(SISLSurf *,double [],double,int,double,int,double,double,
-	       int *,double **,int **,int *);
-#ifndef  SH1954REK
-extern
-#endif
-void sh1954rek(SISLSurf *,double [],int,int,int,double,double,double,
-	       double *,int *,double **,int **,int *);
-#ifndef  SH1955
-extern
-#endif
-void sh1955(SISLCurve *,SISLCurve *,double,int,double,double,double,
-       	    int *,double **,double **,int **,int *);
-#ifndef  SH1955NEW
-extern
-#endif
-void sh1955new(SISLCurve *,SISLCurve *,double,int,double,double,double,
-	       int *,double **,double **,int **,int *);
 #ifndef  SH1992
 extern
 #endif
@@ -2527,10 +2352,6 @@ void s1231();
 extern
 #endif
 void s1232();
-#ifndef  S1234
-extern
-#endif
-void s1234();
 #ifndef  S1235
 extern
 #endif
@@ -2555,10 +2376,6 @@ void s1252();
 extern
 #endif
 void s1301();
-#ifndef  S1303
-extern
-#endif
-void s1303();
 #ifndef  S1304
 extern
 #endif
@@ -2675,10 +2492,6 @@ void s1355();
 extern
 #endif
 void s1359();
-#ifndef  S1360
-extern
-#endif
-void s1360();
 #ifndef  S1361
 extern
 #endif
@@ -2819,10 +2632,6 @@ void s1618 ();
 extern
 #endif
 void s1619 ();
-#ifndef S1620
-extern
-#endif
-void s1620();
 #ifndef  S1700
 extern
 #endif
@@ -3119,10 +2928,6 @@ void s1993();
 extern
 #endif
 void s1994();
-#ifndef  S6DECASTELJAU
-extern
-#endif
-void s6deCasteljau();
 #ifndef  S6ADDCURVE
 extern
 #endif
@@ -3159,6 +2964,10 @@ void s6curvature();
 extern
 #endif
 void s6curvrad();
+#ifndef  S6DECASTELJAU
+extern
+#endif
+void s6deCasteljau();
 #ifndef  S6DECOMP
 extern
 #endif
@@ -3395,62 +3204,6 @@ void 	 s9simple_knot();
 extern
 #endif
 void s9surmarch();
-#ifndef  SH1119
-extern
-#endif
-void sh1119();
-#ifndef  SH1161
-extern
-#endif
-void sh1161();
-#ifndef  SH1162
-extern
-#endif
-void sh1162();
-#ifndef  SH1190
-extern
-#endif
-void sh1190();
-#ifndef  SH1204
-extern
-#endif
-void sh1204();
-#ifndef  SH1205
-extern
-#endif
-void sh1205();
-#ifndef  SH1206
-extern
-#endif
-void sh1206();
-#ifndef  SH1207
-extern
-#endif
-void sh1207();
-#ifndef  SH1208
-extern
-#endif
-void sh1208();
-#ifndef  SH1209
-extern
-#endif
-void sh1209();
-#ifndef  SH1210
-extern
-#endif
-void sh1210();
-#ifndef  SH1211
-extern
-#endif
-void sh1211();
-#ifndef  SH1212
-extern
-#endif
-void sh1212();
-#ifndef  SH1213
-extern
-#endif
-void sh1213();
 #ifndef  SH1260
 extern
 #endif
@@ -3467,30 +3220,6 @@ void sh1262();
 extern
 #endif
 void sh1263();
-#ifndef  SH1350
-extern
-#endif
-void sh1350();
-#ifndef  SH1351
-extern
-#endif
-void sh1351();
-#ifndef  SH1352
-extern
-#endif
-double sh1352();
-#ifndef  SH1353
-extern
-#endif
-void sh1353();
-#ifndef  SH1354
-extern
-#endif
-void sh1354();
-#ifndef  SH1355
-extern
-#endif
-void sh1355();
 #ifndef  SH1365
 extern
 #endif
@@ -3691,18 +3420,6 @@ void sh1870();
 extern
 #endif
 void sh1871();
-#ifndef  SH1880
-extern
-#endif
-void sh1880();
-#ifndef  SH1920
-extern
-#endif
-void sh1920();
-#ifndef  SH1921
-extern
-#endif
-void sh1921();
 #ifndef  SH1922
 extern
 #endif
@@ -3739,38 +3456,6 @@ void sh1929();
 extern
 #endif
 void sh1930();
-#ifndef  SH1953
-extern
-#endif
-void sh1953();
-#ifndef  SH1953NEW
-extern
-#endif
-void sh1953new();
-#ifndef  SH1953REK
-extern
-#endif
-void sh1953rek();
-#ifndef  SH1954
-extern
-#endif
-void sh1954();
-#ifndef  SH1954NEW
-extern
-#endif
-void sh1954new();
-#ifndef  SH1954REK
-extern
-#endif
-void sh1954rek();
-#ifndef  SH1955
-extern
-#endif
-void sh1955();
-#ifndef  SH1955NEW
-extern
-#endif
-void sh1955new();
 #ifndef  SH1992
 extern
 #endif

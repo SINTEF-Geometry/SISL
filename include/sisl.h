@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.2 1994-04-28 10:51:31 vsk Exp $
+ * $Id: sisl.h,v 1.3 1994-08-16 14:27:55 pfu Exp $
  *
  */
 
@@ -38,12 +38,12 @@
 #undef SISLNEEDPROTOTYPES
 #define SISLNEEDPROTOTYPES
 #endif
-  
+
 #if defined(__STDC__) || defined (c_plusplus) || defined (__cplusplus)
 #undef SISLNEEDPROTOTYPES
 #define SISLNEEDPROTOTYPES
 #endif
-  
+
 typedef struct SISLdir
 {
   int igtpi;			/* 0 - The direction of the surface or curve
@@ -243,7 +243,7 @@ enum
     extern "C" {
 #endif
 #if defined(SISLNEEDPROTOTYPES)
-       
+
 #ifndef CONSTRUCT
 extern
 #endif
@@ -359,10 +359,6 @@ void s1221(SISLCurve *,int,double,int *,double [],int *);
 extern
 #endif
 void s1227(SISLCurve *,int,double,int *,double [],int *);
-#ifndef  S1233
-extern
-#endif
-void s1233(SISLCurve *,double,double,SISLCurve **,int *);
 #ifndef  S1237
 extern
 #endif
@@ -375,18 +371,14 @@ void s1238(SISLSurf *,SISLCurve *,int,int,double,double,int *);
 extern
 #endif
 void s1240(SISLCurve *,double,double *,int *);
-#ifndef  S1241
-extern
-#endif
-void s1241(SISLCurve *,double [],int,double,double *,int *);
-#ifndef  S1242
-extern
-#endif
-void s1242(SISLCurve *,double [],int,double,double [],double *,double *,int *);
 #ifndef  S1302
 extern
 #endif
 void s1302(SISLCurve *,double,double,double [],double [],SISLSurf **,int *);
+#ifndef  S1303
+extern
+#endif
+void s1303(double [],double,double,double [],double [],int,SISLCurve **,int *);
 #ifndef  S1310
 extern
 #endif
@@ -491,6 +483,10 @@ extern
 #endif
 void s1358(double [],int,int,double [],double [],int,int,int,int,double,
 	   double *,SISLCurve **,double **,int *,int *);
+#ifndef  S1360
+extern
+#endif
+void s1360(SISLCurve *,double,double,double [],double,int,SISLCurve **,int *);
 #ifndef  S1363
 extern
 #endif
@@ -604,20 +600,6 @@ void s1437(SISLSurf *,double,SISLCurve **,int *);
 extern
 #endif
 void s1440(SISLSurf *,SISLSurf **,int *);
-#ifndef  S1441
-extern
-#endif
-void s1441(SISLSurf *,double [],int,double,double,double *,int *);
-#ifndef  S1442
-extern
-#endif
-void s1442(SISLSurf *,double [],double [],int,double,double,double [],
-	   double *,double *,int *);
-#ifndef  S1443
-extern
-#endif
-void s1443(SISLSurf *,double [],double [],double [],int,double,double,
-	   double [],double *,double *,int *);
 #ifndef  S1450
 extern
 #endif
@@ -880,13 +862,13 @@ void s1860(SISLSurf *,double [],int,double,double,
 #ifndef  S1870
 extern
 #endif
-void 
+void
    s1870(SISLSurf *ps1, double *pt1, int idim, double aepsge,
 	 int *jpt,double **gpar1,int *jcrv,SISLIntcurve ***wcurve,int *jstat);
 #ifndef S1871
 extern
 #endif
-void 
+void
    s1871(SISLCurve *pc1, double *pt1, int idim, double aepsge,
 	 int *jpt,double **gpar1,int *jcrv,SISLIntcurve ***wcurve,int *jstat);
 #ifndef  S1920
@@ -1064,10 +1046,6 @@ void s1221();
 extern
 #endif
 void s1227();
-#ifndef  S1233
-extern
-#endif
-void s1233();
 #ifndef  S1237
 extern
 #endif
@@ -1080,18 +1058,14 @@ void s1238();
 extern
 #endif
 void s1240();
-#ifndef  S1241
-extern
-#endif
-void s1241();
-#ifndef  S1242
-extern
-#endif
-void s1242();
 #ifndef  S1302
 extern
 #endif
 void s1302();
+#ifndef  S1303
+extern
+#endif
+void s1303();
 #ifndef  S1310
 extern
 #endif
@@ -1176,6 +1150,10 @@ void s1357();
 extern
 #endif
 void s1358();
+#ifndef  S1360
+extern
+#endif
+void s1360();
 #ifndef  S1363
 extern
 #endif
@@ -1272,18 +1250,6 @@ void s1437();
 extern
 #endif
 void s1440();
-#ifndef  S1441
-extern
-#endif
-void s1441();
-#ifndef  S1442
-extern
-#endif
-void s1442();
-#ifndef  S1443
-extern
-#endif
-void s1443();
 #ifndef  S1450
 extern
 #endif
@@ -1573,7 +1539,7 @@ extern
 #endif
 void s6drawseq();
 #endif /* End of forward declarations of sisl top level routines */
-       
+
 #if defined(__cplusplus)
     }
 #endif
