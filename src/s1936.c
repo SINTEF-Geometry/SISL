@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1936.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1936.c,v 1.2 1994-07-25 10:49:28 pfu Exp $
  *
  */
 
@@ -66,7 +66,9 @@ s1936 (crv, etd, ind, curvd, jstat)
 *
 * CALLS: s1937, s6err.
 *
-* WRITTEN BY :  Christophe R. Birkeland, SI, 1991-07
+* WRITTEN BY :  Christophe R. Birkeland, SI, 1991-07.
+* CORRECTED BY : Paal Fugelli, SINTEF, Oslo 1994-07. Added test for
+*                equality using DEQUAL in knot verification loop.
 *
 *********************************************************************
 */
@@ -129,11 +131,15 @@ s1936 (crv, etd, ind, curvd, jstat)
     {
       if (ki >= ind)
 	goto err111;
+      if ( DEQUAL(knt[kj], etd[ki]) )  /* PFU 25/07-1994 */
+      {
+	kj++;
+	continue;
+      }
       if (knt[kj] > etd[ki])
 	continue;
       if (knt[kj] < etd[ki])
 	goto err112;
-      kj++;
     }
 
   /* etd is a refinement of original knot vector knt
