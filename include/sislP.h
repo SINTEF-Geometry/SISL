@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.26 1995-08-20 01:50:37 boh Exp $
+ * $Id: sislP.h,v 1.27 1995-08-21 14:00:31 jka Exp $
  *
  */
 
@@ -1331,10 +1331,42 @@ void s2505(SISLSurf *, int, double [], double [], double *, int *);
 extern
 #endif
 void s2507(SISLSurf *, int, double [], double [], double *, int *);
+#ifndef  S2512
+extern
+#endif
+void s2512(SISLSurf *, int, int, int, double [], int *, int *, double [], int *);
 #ifndef  S2513
 extern
 #endif
 void s2513(SISLSurf *, int, int, double [], double [], double [], int *);
+#ifndef  S2514
+extern
+#endif
+void s2514(SISLSurf *, int, double [], double [], double [], int *);
+#ifndef  S2515
+extern
+#endif
+void s2515(SISLSurf *, int, int, int, double [], int *,int *, double [], int *);
+#ifndef  S2516
+extern
+#endif
+void s2516(SISLSurf *, int, double [], double [], double [], int *);
+#ifndef  S2533
+extern
+#endif
+void s2533(double *, int, int, int, int, int *, double **, int *);
+#ifndef  S2534
+extern
+#endif
+void s2534(SISLSurf *, int, int, int, int,
+	  void evalp(SISLSurf *, int, int, int, 
+		     double [], int *, int *, 
+		     double *, int *),
+	  int, SISLSurf **, int *);
+#ifndef  S2535
+extern
+#endif
+void s2535(SISLSurf *, int, int, int *, int *, SISLSurf ***, int *);
 #ifndef  S6ADDCURVE
 extern
 #endif
@@ -3077,10 +3109,38 @@ void s2505();
 extern
 #endif
 void s2507();
+#ifndef  S2512
+extern
+#endif
+void s2512();
 #ifndef  S2513
 extern
 #endif
 void s2513();
+#ifndef  S2514
+extern
+#endif
+void s2514();
+#ifndef  S2515
+extern
+#endif
+void s2515();
+#ifndef  S2516
+extern
+#endif
+void s2516();
+#ifndef  S2533
+extern
+#endif
+void s2533();
+#ifndef  S2534
+extern
+#endif
+void s2534();
+#ifndef  S2535
+extern
+#endif
+void s2535();
 #ifndef  S6ADDCURVE
 extern
 #endif
