@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1303.c,v 1.2 1994-08-23 08:40:42 pfu Exp $
+ * $Id: s1303.c,v 1.3 1994-08-23 08:55:58 pfu Exp $
  *
  */
 #define S1303
@@ -87,6 +87,8 @@ void s1303(epstrt,aepsge,angle,epcent,eaxis,idim,rc,jstat)
 *
 * WRITTEN BY : Tor Dokken, SI, Oslo, Norway. 24. May 1988
 * REVISED BY : J. Kaasa, SI, Aug. 92 (Made a proper handling of 2D circles).
+* Revised by : Paal Fugelli, SINTEF Oslo, Norway, 23/08-1994. Added handling of
+*              kstat after call to s1301().
 *
 *********************************************************************
 */
