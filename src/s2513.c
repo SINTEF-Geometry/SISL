@@ -16,21 +16,15 @@
 #if defined(SISLNEEDPROTOTYPES)
 void
    s2513(SISLSurf *surf, int ider, int normalized, double derive[], 
-	 double normal[], double *E, double *F, double *G, double *e,
-	 double *f, double *g, int *stat)
+	 double normal[], double fundform[], int *stat)
 #else
-   void s2513(surf, ider, normalized, derive, normal, E, F, G, e, f, g, stat)
+   void s2513(surf, ider, normalized, derive, normal, fundform, stat)
       SISLSurf *surf;
       int ider;
       int normalized;
       double derive[];
       double normal[];
-      double *E;
-      double *F;
-      double *G;
-      double *e;
-      double *f;
-      double *g;
+      double fundform[];
       int *stat;
 #endif
 /*
@@ -54,12 +48,9 @@ void
 *                    Size = 3, only used for dim = 3.
 *
 *  OUTPUT       :
-*     E            - <Su, Su> (first fundamental form coefficient)
-*     F            - <Su, Sv> (first fundamental form coefficient)
-*     G            - <Sv, Sv> (first fundamental form coefficient)
-*     e            - <N, Suu> (second fundamental form coefficient)
-*     f            - <N, Suv> (second fundamental form coefficient)
-*     g            - <N, Svv> (second fundamental form coefficient)
+*     fundform     - Array for the fundamental form. The dimension is
+*                    6*(ider + 1)*(ider + 2)/2, and the sequence is
+*                    (E,F,G,e,f,g,Eu,...,Ev,...,Euu,...,Euv,...,Evv,...).
 *     stat         - Status messages
 *
 *                         = 0 : Ok.
@@ -96,13 +87,13 @@ void
       else
 	 norm_scale = sqrt(1. + derive[1]*derive[1] + derive[2]*derive[2]);
 	 
-      *E = 1. + derive[1]*derive[1];
-      *F = derive[1]*derive[2];
-      *G = 1. + derive[2]*derive[2];
+      fundform[0] = 1. + derive[1]*derive[1];
+      fundform[1] = derive[1]*derive[2];
+      fundform[2] = 1. + derive[2]*derive[2];
 	 
-      *e = derive[3]/norm_scale;
-      *f = derive[4]/norm_scale;
-      *g = derive[5]/norm_scale;
+      fundform[3] = derive[3]/norm_scale;
+      fundform[4] = derive[4]/norm_scale;
+      fundform[5] = derive[5]/norm_scale;
    }
       
    else if (surf->idim == 3) 
@@ -116,13 +107,13 @@ void
 	 norm_scale = sqrt(normal[0]*normal[0] + normal[1]*normal[1] +
 			   normal[2]*normal[2]);
 	 
-      *E = s6scpr(&derive[3], &derive[3], 3);
-      *F = s6scpr(&derive[3], &derive[6], 3);
-      *G = s6scpr(&derive[6], &derive[6], 3);
+      fundform[0] = s6scpr(&derive[3], &derive[3], 3);
+      fundform[1] = s6scpr(&derive[3], &derive[6], 3);
+      fundform[2] = s6scpr(&derive[6], &derive[6], 3);
 	 
-      *e = (s6scpr(normal, &derive[9], 3))/norm_scale;
-      *f = (s6scpr(normal, &derive[12], 3))/norm_scale;
-      *g = (s6scpr(normal, &derive[15], 3))/norm_scale;
+      fundform[3] = (s6scpr(normal, &derive[9], 3))/norm_scale;
+      fundform[4] = (s6scpr(normal, &derive[12], 3))/norm_scale;
+      fundform[5] = (s6scpr(normal, &derive[15], 3))/norm_scale;
    }
    else 
    {
