@@ -134,23 +134,25 @@ EXCEPTIONS=true
 CC			="A_C_compiler_for_use_on_$(PLATFORM)"
 
 
+
 ifeq "$(PLATFORM)" "winnt"
 
   CC			=cl
   LD			=link
 
   ifeq "$(MODE)" "opt"
-    CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo # -MD
+    CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
     CDEFS		=-DWIN32 -DMICROSOFT
     LDFLAGS		=-nologo -opt:ref
 
   else
-    CFLAGS		=-GX -nologo -Yd -Z7 # -MDd
+    CFLAGS		=-GX -nologo -Yd -Z7 -MDd
     CDEFS		=-DWIN32 -DMICROSOFT
     LDFLAGS		=-nologo -DEBUGTYPE:BOTH 
 
   endif
 endif
+
 
 ifeq "$(PLATFORM)" "hp-pa"
 
@@ -159,9 +161,10 @@ ifeq "$(PLATFORM)" "hp-pa"
 
   ifeq "$(MODE)" "opt"
     CFLAGS		=+DAportable +Oall
+    CDEFS		=-DHPUX
   else
     CFLAGS		=+DAportable -g
-    CDEFS		=-DHP
+    CDEFS		=-DHPUX
   endif
 
   LDFLAGS		=+DAportable
@@ -223,12 +226,12 @@ ifeq "$(PLATFORM)" "winnt"
   LDXX			=link
 
   ifeq "$(MODE)" "opt"
-    CXXFLAGS		=-TP -GX -GR -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo # -MD
+    CXXFLAGS		=-TP -GX -GR -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
     CXXDEFS		=-DWIN32 -DMICROSOFT
     LDXXFLAGS		=-nologo -opt:ref
 
   else
-    CXXFLAGS		=-TP -GX  -GR -nologo -Yd -Z7 # -MDd
+    CXXFLAGS		=-TP -GX -GR -nologo -Yd -Z7 -MDd
     CXXDEFS		=-DWIN32 -DMICROSOFT
     LDXXFLAGS		=-nologo -DEBUGTYPE:BOTH 
 
@@ -243,10 +246,10 @@ ifeq "$(PLATFORM)" "hp-pa"
 
   ifeq "$(MODE)" "opt"
     CXXFLAGS		=-O -AA
-    CXXDEFS		=-DHP -D$(EX)
+    CXXDEFS		=-DHPUX -D$(EX)
   else
     CXXFLAGS		=-g -AA
-    CXXDEFS		=-DHP -DCHECKLEVEL4 -DHP_ACC_Cplusplus -DHP_Cplusplus
+    CXXDEFS		=-DHPUX -DCHECKLEVEL4 -DHP_ACC_Cplusplus -DHP_Cplusplus
   endif
 
   LDXXFLAGS		=-g -z -G +DAportable -AA
