@@ -75,8 +75,8 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
 *                                     degenerate at some point
 *                                     Angle between tangents,
 *                                     less than angular tolerance.
-*                          = 0      : ok
-*                          < 0      : error
+*                          = 0      : Ok.
+*                          < 0      : Error.
 *
 * METHOD     : We call s1504 to pre-evaluate the B-splines then call
 *              s1505 to multiply them with the coefficients.
