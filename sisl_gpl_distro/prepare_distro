@@ -1,0 +1,39 @@
+# removing old files
+rm sisl/include/*.h 2> /dev/null
+rm sisl/src/*.c 2> /dev/null
+
+# copying header files
+cp ../include/*.h sisl/include/
+
+# generating source files
+SOURCEFILES=`ls ../src/*.c`
+
+# make sure the 'removecomments' program is compiled
+g++ -O3 removecomments.C -o removecomments
+
+for n in $SOURCEFILES
+do
+   FILENAME=`basename $n`
+   TARGETNAME=sisl/src/$FILENAME
+
+   # writing obligatory header
+   cat license_header > $TARGETNAME
+
+   # determining whether comments should be removed
+   # or not
+   if test `grep $FILENAME documented_routines`
+   then
+      # this routine should be docummented.
+      # writing file, minus header to target
+      tail $n -n+9 >> $TARGETNAME
+      echo $FILENAME documented.
+   else
+      # we need to remove comments from this file
+      # before writing it to target.
+      ./removecomments < $n > xcmklp_temp
+      cat xcmklp_temp >> $TARGETNAME
+      rm xcmklp_temp
+      echo $FILENAME undocumented.      
+   fi
+      
+done
