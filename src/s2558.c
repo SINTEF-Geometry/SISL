@@ -1,14 +1,25 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
 #include "copyright.h"
+
+/*
+ *
+ * $Id:
+ *
+ */
 
 
 #define S2558
 
-
 #include "sislP.h"
-
-#include "s2558.h"
-
-
+^L
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2558( double     derive[],
