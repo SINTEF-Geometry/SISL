@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1619.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1619.c,v 1.2 1995-01-26 08:44:48 pfu Exp $
  *
  */
 
@@ -87,7 +87,8 @@ void s1619(epoint, inbpnt, idim, eptyp, econic, ityp,etang, ashape, jstat)
   double tdum;
   int ktyp;
 
-  int ki, kk, kki;
+  int ki, kk;
+  int kki = 0;
 
   int krem = 0;
   int ksam = 0;
