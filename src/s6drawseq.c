@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6drawseq.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6drawseq.c,v 1.2 1994-12-19 09:04:01 pfu Exp $
  *
  */
 
@@ -21,13 +21,15 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-extern void line3(double,double,double,int);
+extern void s6move(DOUBLE,DOUBLE,DOUBLE);
+extern void s6line(DOUBLE,DOUBLE,DOUBLE);
 #else
-extern void line3();
+extern void s6move();
+extern void s6line();
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
   s6drawseq(double epoint[],int ipoint)
 #else
 void s6drawseq(epoint,ipoint)
@@ -38,8 +40,8 @@ void s6drawseq(epoint,ipoint)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
-* PURPOSE    : Draw a broken line as a sequence of straight lines 
+*
+* PURPOSE    : Draw a broken line as a sequence of straight lines
 *              described by the array epoint.
 *
 *
@@ -51,7 +53,7 @@ void s6drawseq(epoint,ipoint)
 *              ipoint - Number of points in epoint.
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -60,14 +62,16 @@ void s6drawseq(epoint,ipoint)
 * REFERENCES :
 *
 *
-* REMARK     : This routine is machine-dependant and the internal of 
-*              this routine has to be reprogrammed if the function
-*              line3 does not exist on the current computer.
+* REMARK     : This routine is machine-dependant and the internal of
+*              this routine has to be reprogrammed if the functions
+*              s6move() and s6line() are not defined for your graphics
+*              sub-system.
 *
 *
 *-
-* CALLS      : line3  - Place pen at given position or draw a line from
-*                       the current position to the given one.
+* CALLS      : s6move - Place pen at given position (empty dummy routine).
+*              s6line - Draw a line from the current position to the given one
+*                       (empty dummy routine).
 *
 * WRITTEN BY :
 *
@@ -76,16 +80,15 @@ void s6drawseq(epoint,ipoint)
 {
   int ki;          /* Counter.                                    */
   double *spoint;  /* Pointer to corner point in the broken line. */
-  
+
   /* Position pen at start of the broken line.  */
-  
-  line3(epoint[0],epoint[1],epoint[2],0);
-  
+
+  s6move(epoint[0],epoint[1],epoint[2]);
+
   /* Draw sequence of line-segments.  */
-  
+
   for (ki=1,spoint=epoint+3; ki<ipoint; ki++,spoint+=3)
-    line3(spoint[0],spoint[1],spoint[2],1);
-  
+    s6line(spoint[0],spoint[1],spoint[2]);
+
   return;
 }
-                                    
