@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: makesfkreg.c,v 1.2 1994-08-31 09:32:30 pfu Exp $
+ * $Id: makesfkreg.c,v 1.3 1994-08-31 09:35:10 pfu Exp $
  *
  */
 
@@ -78,6 +78,6 @@ void
 error:
   s6err ("make_sf_kreg", *jstat, 1);
 
-out:
+out:;
 
 }
