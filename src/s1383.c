@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1383.c,v 1.2 1997-11-04 07:45:19 vsk Exp $
+ * $Id: s1383.c,v 1.3 1997-12-11 10:25:11 vsk Exp $
  *
  */
 
@@ -133,6 +133,7 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
   double tdist;       /* Distance */
   double tang;        /* Angle */
   double tnew;        /* New increment */
+  double tlength;     /* Estimated length of current curve piece */
   
   
   /* Make maximal step length based on box-size of surface */
@@ -379,6 +380,9 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	  tdist = s6dist(sder,smidd,kdims);
 	  
 	  tang  = s6ang(&sder[kdims],smtang,kdims);
+
+	  tlength = s6dist(start,smidd,kdims) + 
+	    s6dist(start+3*kdims+1,smidd,kdims);
 	  
 	  /* If the point is not within the resolution treat it as divergence
 	   */
@@ -390,7 +394,7 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	  /* Dependent on previous conditions decide if the segment 
 	     is acceptable or not */
 	  
-	  if (kdiv==0)
+	  if (kdiv==0 || tlength < (double)2*aepsge)
             {
 	      /* Segement acceptable */
 	      notaccepted = 0;
