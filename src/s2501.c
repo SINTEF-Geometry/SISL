@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.7 1995-06-30 13:15:44 jka Exp $
+ * $Id: s2501.c,v 1.8 1995-08-01 08:36:56 jka Exp $
  *
  */
 
@@ -90,30 +90,25 @@ s2501(SISLSurf *surf, int ider, double derive[], double normal[],
 * WRITTEN BY   :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
 * CORRECTED BY :  Ulf J Krystad, SINTEF, Oslo, Norway.             Date: 1995-1
 *                 Removed knot navigators + some clean up.
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.            Date: 1995-8
+*                 Calculated the fundamental form coefficients by
+*                 calls to s2513.
 *****************************************************************************
 */
 {
-  double a,b;            /* Dummy variables.                                */
-  double hx,hy,
-    hxx,hyy,hxy;        /* The derivatives of the 1D surface, h(x,y).      */
-  double e,f,g;          /* The coefficents of the second fundamental form,
-			    that is, e = <N,Xuu>, f = <N,Xuv> and
-			    g = <N,Xvv>.                                   */
+   double fundform[6]; /* The coefficients of the fundamental forms.
+			  The sequence is: E, F, G, e, f, g.         */
 
+   if (ider != 0) goto err178;
 
-
-  if (ider != 0) goto err178;
-
-  if (surf->idim == 1) /* 1D surface */
-  {
-    hx  = derive[1];
-    hy  = derive[2];
-    hxx = derive[3];
-    hxy = derive[4];
-    hyy = derive[5];
-
-    a = (1+hx*hx+hy*hy);
-    *gaussian = (hxx*hyy-hxy*hxy)/(a*a);
+   if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
+   {
+      s2513(surf, ider, 0, derive, normal, fundform, jstat);
+      if (*jstat < 0) goto error;
+      
+      *gaussian = (fundform[3]*fundform[5]-fundform[4]*fundform[4])
+	 /((fundform[0]*fundform[2] - fundform[1]*fundform[1])*
+	   (fundform[0]*fundform[2] - fundform[1]*fundform[1]));
   }
 
   else if (surf->idim == 2) /* 2D surface */
@@ -122,29 +117,10 @@ s2501(SISLSurf *surf, int ider, double derive[], double normal[],
 
     *gaussian = 0.0;
   }
-  else if (surf->idim == 3) /* 3D surface */
-  {
-    /* e = <N,Xuu> (/ sqrt(E*G-F*F)) */
-    e = normal[0]*derive[9]+normal[1]*derive[10]+normal[2]*derive[11];
-
-    /* f = <N,Xuv> (/ sqrt(E*G-F*F)) */
-    f = normal[0]*derive[12]+normal[1]*derive[13]+normal[2]*derive[14];
-
-    /* g = <N,Xvv> (/ sqrt(E*G-F*F)) */
-    g = normal[0]*derive[15]+normal[1]*derive[16]+normal[2]*derive[17];
-
-    /* Compute gaussian = (e*g-f*f)/(E*G-F*F). */
-    b = normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2];
-    *gaussian = (e*g-f*f)/(b*b);
-
-  }
   else /* When surf->idim != 1,2 or 3 */
   {
     goto err105;
   }
-
-
-
 
   /* Successful computations  */
 
@@ -161,6 +137,10 @@ err105:
   /* Illegal derivative requested. */
 err178:
   *jstat = -178;
+  s6err("s2501",*jstat,0);
+  goto out;
+  
+error:
   s6err("s2501",*jstat,0);
   goto out;
 
