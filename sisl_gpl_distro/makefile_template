@@ -1,0 +1,211 @@
+#------------------------------------------------------------
+#                   Choosing platform
+#------------------------------------------------------------
+UNAME=$(shell uname)
+ifeq "$(UNAME)" "Linux"
+  PLATFORM=linux
+  SUPPORTED_PLATFORM_FOUND=yes
+else
+  PLATFORM=$(HOSTTYPE)
+endif
+
+ifeq "$(PLATFORM)" "winnt"
+  WINDOWS_TYPE_PLATFORM=yes
+  SUPPORTED_PLATFORM_FOUND=yes
+endif
+ifeq "$(PLATFORM)" "winxp"
+  WINDOWS_TYPE_PLATFORM=yes
+  SUPPORTED_PLATFORM_FOUND=yes
+endif
+
+#------------------------------------------------------------
+#                   VARIOUS VARIABLES
+#------------------------------------------------------------
+MODE = opt
+
+INCLUDEDIRS=./include
+LINKDIRS=./lib
+LINKLIBS=
+
+include local_settings
+
+ifdef USE_OPEN_GL
+  GRAPHICS_LIBS=-lglut -lGLU -lGL
+endif
+
+#------------------------------------------------------------
+#  Choosing C compiler and linker, and setting specifics
+#------------------------------------------------------------
+CC	="A_C_compiler_for_use_on_$(PLATFORM)"
+
+ifdef WINDOWS_TYPE_PLATFORM
+#ifeq "$(PLATFORM)" "winnt"
+  CC		= cl
+
+  ifeq "$(MODE)" "opt"
+    CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
+    CDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
+    LDFLAGS		=-nologo -opt:ref
+  else
+    CFLAGS		=-GX -nologo -Yd -Z7 -MDd
+    CDEFS		=-DWIN32 -DMICROSOFT
+    LDFLAGS		=-nologo
+  endif
+endif
+
+ifeq "$(PLATFORM)" "linux"
+
+  CC		=gcc
+
+  ifeq "$(MODE)" "opt"
+    CFLAGS	=-O2 -Wall
+    CDEFS	=-DNDEBUG
+  else
+    CFLAGS	=-g -Wall
+    CDEFS	=
+  endif
+
+endif
+
+COPTS = $(CFLAGS) $(addprefix -I, $(INCLUDEDIRS)) $(CDEFS)
+
+#------------------------------------------------------------
+#  Choosing C++ compiler and linker, and setting specifics
+#------------------------------------------------------------
+CXX			="A_C++_compiler_for_use_on_$(PLATFORM)"
+
+ifdef WINDOWS_TYPE_PLATFORM
+#ifeq "$(PLATFORM)" "winnt"
+  CXX			=cl
+  LDXX			=link
+  ifeq "$(MODE)" "opt"
+    CXXFLAGS		=-TP -GX -GR -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
+    CXXDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
+    LDXXFLAGS		=-nologo -opt:ref
+  else
+    CXXFLAGS		=-TP -GX -GR -nologo -Yd -Z7 -MDd
+    CXXDEFS		=-DWIN32 -DMICROSOFT
+    LDXXFLAGS		=-nologo -DEBUGTYPE:BOTH 
+  endif
+endif
+
+ifeq "$(PLATFORM)" "linux"
+    CXX		=g++
+    LDXX	=$(CXX)
+  ifeq "$(MODE)" "opt"
+    CXXFLAGS	=-O2 -Wall
+    CXXDEFS	=-DNDEBUG
+  else
+    CXXFLAGS	=-g -Wall
+    CXXDEFS	=
+  endif
+endif
+
+		
+CXXOPTS =$(CXXFLAGS) $(addprefix -I, $(INCLUDEDIRS)) $(CXXDEFS)
+
+#------------------------------------------------------------
+#                   Deciding library name
+#------------------------------------------------------------
+LIBNAME		=
+
+ifdef WINDOWS_TYPE_PLATFORM
+#ifeq "$(PLATFORM)" "winnt"
+  LIBNAME	=$(notdir $(shell pwd))_$(MODE).lib
+endif
+
+ifeq "$(PLATFORM)" "linux"
+  LIBNAME	=lib$(notdir $(shell pwd))_$(MODE).a
+endif
+
+#------------------------------------------------------------
+#               Deciding object file names
+#------------------------------------------------------------
+CSRCS		=$(wildcard src/*.c)
+COBJS0		=$(CSRCS:.c=.o)
+COBJS		=$(subst src/,lib/,$(COBJS0))
+
+CXXSRCS		=$(wildcard src/*.cpp)
+CXXOBJS0	=$(CXXSRCS:.cpp=.o)
+CXXOBJS		=$(subst src/,lib/,$(CXXOBJS0))
+
+CXXAPPSRCS	=$(wildcard *.cpp)
+CXXAPPS		=$(CXXAPPSRCS:.cpp=)
+
+
+#------------------------------------------------------------
+#                   Rules
+#------------------------------------------------------------
+
+ifdef SUPPORTED_PLATFORM_FOUND
+
+#------------------------------------------------------------
+#            THE DETECTED PLATFORM IS SUPPORTED
+#------------------------------------------------------------
+
+all:		lib
+
+.PHONY:		all lib clean
+
+clean:;		rm -f $(wildcard lib/*.o lib/*.a lib/*.lib) $(CXXAPPS)
+
+lib:		$(LIBNAME)
+
+$(LIBNAME):	$(COBJS) $(CXXOBJS)
+		@echo ""
+		@echo Remember to compile the object files with the correct MODE!
+		@echo \(opt/nopt\) represents optimized/unoptimized mode
+		@echo \(Use 'make clean' first, if in doubt.\)
+		@echo ""
+  ifdef WINDOWS_TYPE_PLATFORM
+		link -lib $(LDXXFLAGS) /out:"lib/$(LIBNAME)" $^
+  else
+		ar -sr lib/$(LIBNAME) $^
+  endif
+
+lib/%.o:	src/%.c
+		$(CC) $(COPTS) -c src/$*.c -o $@
+  ifdef WINDOWS_TYPE_PLATFORM
+		@mv $*.obj $@
+  endif
+
+
+lib/%.o:	src/%.cpp
+		$(CXX) $(CXXOPTS) -c src/$*.cpp -o $@
+  ifdef WINDOWS_TYPE_PLATFORM
+		@mv $*.obj $@
+  endif
+
+$(CXXAPPS):	$(wildcard $@.cpp) lib
+		$(CXX) $(CXXOPTS) $@.cpp -o $@  \
+		$(addprefix -L, $(LINKDIRS)) \
+		$(addsuffix _$(MODE), $(addprefix -l, $(LINKLIBS))) $(GRAPHICS_LIBS)
+
+varcheck:;	@echo "testing..."
+#		@echo $(wildcard src/*.c)
+#		@echo $(wildcard include/*.h)
+#		@echo $(wildcard lib/*.o)
+		@echo "CSRCS=" $(CSRCS)
+		@echo "COBJS=" $(COBJS)
+		@echo "CXXOBJS=" $(CXXOBJS)
+		@echo "CXXAPPSRCS=" $(CXXAPPSRCS)
+		@echo "CXXAPPS=" $(CXXAPPS)
+		@echo "LIBNAME=" $(LIBNAME)
+		@echo "LIBNAME2=" $(LIBNAME:t.a=rtrt.qwqw)
+		@echo notdir shell output= $(notdir $(shell pwd))
+
+else
+
+#------------------------------------------------------------
+#                UNKNOWN PLATFORM TYPE
+#------------------------------------------------------------
+.PHONY:		all lib clean default
+
+all lib clean varcheck: default
+
+default:;	@echo ""
+		@echo "Makefile does not support your platform type."
+		@echo "You need to edit the Makefile to set the required"
+		@echo "variables for your platform type."
+		@echo ""
+endif
