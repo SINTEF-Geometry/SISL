@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: makesfkreg.c,v 1.5 1994-11-30 12:13:33 pfu Exp $
+ * $Id: makesfkreg.c,v 1.6 1994-11-30 12:53:02 pfu Exp $
  *
  */
 
@@ -59,8 +59,6 @@ void
 *
 * WRITTEN BY : Ulf J. Krystad, SI, 04.92.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-08. Added error propagation.
-* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov.1994. Set cuopen flags to
-*              closed when changed from periodic.
 *
 **********************************************************************/
 {
@@ -73,11 +71,6 @@ void
   s1001 (ps, ps->et1[kk1-1], ps->et2[kk2-1],
 		ps->et1[kn1], ps->et2[kn2], rsnew, jstat);
   if (*jstat < 0)  goto error;
-
-  if (ps->cuopen_1 == SISL_SURF_PERIODIC )
-    (*rsnew)->cuopen_1 = SISL_SURF_CLOSED;
-  if (ps->cuopen_2 == SISL_SURF_PERIODIC )
-    (*rsnew)->cuopen_2 = SISL_SURF_CLOSED;
 
   goto out;
 
