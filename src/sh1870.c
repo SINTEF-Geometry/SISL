@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1870.c,v 1.3 2001-03-19 15:59:06 afr Exp $
+ * $Id: sh1870.c,v 1.4 2002-05-07 11:46:54 jbt Exp $
  *
  */
 
@@ -158,9 +158,9 @@ void sh1870(ps1,pt1,idim,aepsco,aepsge,
   if (kstat < 0) goto error;
 
   /* Join periodic curves */
-  int_join_per( &qintdat,qo1,qo2,nullp,kdeg=0,aepsge,&kstat);
-  if (kstat < 0)
-    goto error;
+/*    int_join_per( &qintdat,qo1,qo2,nullp,kdeg=0,aepsge,&kstat); */
+/*    if (kstat < 0) */
+/*      goto error; */
 
   /* Create tracks */
   if (trackflag && qintdat)
