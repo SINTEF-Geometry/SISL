@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.4 1995-01-18 14:57:49 pfu Exp $
+ * $Id: s2503.c,v 1.5 1995-01-23 09:19:05 pfu Exp $
  *
  */
 
@@ -21,13 +21,12 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void s2503(SISLSurf *surf, int ider, double parvalue[], double derive[],
-	   double normal[], double *meancurvature, int *jstat)
+void s2503(SISLSurf *surf, int ider, double derive[], double normal[],
+	   double *meancurvature, int *jstat)
 #else
- void s2503(surf, ider, parvalue, derive, normal, meancurvature, jstat)
+ void s2503(surf, ider, derive, normal, meancurvature, jstat)
       SISLSurf *surf;
       int ider;
-      double parvalue[];
       double derive[],
       double normal[],
       double *meancurvature;
@@ -44,15 +43,12 @@ void s2503(SISLSurf *surf, int ider, double parvalue[], double derive[],
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
 *          ider     - Only implemented for ider=0 (derivative order).
-*      parvalue     - Parameter-value at which to evaluate. Dimension of
-*                     parvalue is 2.
 *       derive      - Array containing derivatives from routine s1421().
 *                     Size = idim*6.
 *       normal      - Array containing the normal from routine s1421().
 *                     Size = 3.
 *  OUTPUT       :
 *    meancurvature  - Mean curvature of the surface in (u,v) =
-*                     (parvalue[0],parvalue[1]).
 *        jstat      - Status messages
 *
 *                         = 0 : Ok.
