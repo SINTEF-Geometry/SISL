@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1761.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1761.c,v 1.2 1994-11-30 10:17:44 pfu Exp $
  *
  */
 
@@ -95,6 +95,8 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 *
 * WRITTEN BY : Arne Laksaa, 05.89.
 *              UJK, 06.91 newi
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov.1994. Fixed memory
+*              leaks from 'qt', 'qedge', and 'qintdat' - occured on error exits.
 *********************************************************************
 */
 {
@@ -107,11 +109,18 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 				   k-regular basis.                       */
   SISLObject *po2_kreg=NULL;    /* Pointer to second object converted to
 				   k-regular basis.                       */
+  SISLIntpt *qt = NULL;         /* Temporary intersection point. */
+  SISLEdge *qedge[2];	        /* Edges for use in s1862().      */
+  SISLIntdat *qintdat = NULL;	/* Intdat for use in recurson.    */
+
   double *nullp = NULL;
   int idummy;
-  
+
+  qedge[0] = qedge[1] = NULL;  /* PFU - to fix memory leak */
+
+
   /* Ensure K-regularity on B-spline basis ________________*/
-  if (po1->iobj == SISLCURVE) 
+  if (po1->iobj == SISLCURVE)
     {
        if (po1->c1->cuopen == SISL_CRV_PERIODIC)
 	 {
@@ -121,9 +130,9 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	    if (kstat < 0) goto error;
 	 }
        else po1_kreg = po1;
-       
+
     }
-  else if (po1->iobj == SISLSURFACE) 
+  else if (po1->iobj == SISLSURFACE)
     {
        if (po1->s1->cuopen_1 == SISL_CRV_PERIODIC ||
 	   po1->s1->cuopen_2 == SISL_CRV_PERIODIC)
@@ -136,10 +145,10 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
        else po1_kreg = po1;
     }
   else po1_kreg = po1;
-  
-  
-  
-  if (po2->iobj == SISLCURVE) 
+
+
+
+  if (po2->iobj == SISLCURVE)
     {
        if (po2->c1->cuopen == SISL_CRV_PERIODIC)
 	 {
@@ -150,7 +159,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	 }
        else po2_kreg = po2;
     }
-  else if (po2->iobj == SISLSURFACE) 
+  else if (po2->iobj == SISLSURFACE)
     {
        if (po2->s1->cuopen_1 == SISL_CRV_PERIODIC ||
 	   po2->s1->cuopen_2 == SISL_CRV_PERIODIC)
@@ -162,12 +171,12 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	 }
        else po2_kreg = po2;
     }
-  
+
   else po2_kreg = po2;
-  
+
   /* End of ensure K-regularity on B-spline basis ________________*/
-  
-  
+
+
   if (po1_kreg->iobj == SISLPOINT && po2_kreg->iobj == SISLPOINT)
     {
       /* Control the dimension of the two points. */
@@ -181,7 +190,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 
       if (tpar <= aepsge)
 	{
-	  SISLIntpt *qt = NULL;
+	  /* PFU, moved to top to fix memory leak: SISLIntpt *qt = NULL; */
 
 	  *jstat = 1;		/* Mark intersection found. */
 	  /* UJK , newi */
@@ -198,6 +207,9 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  sh6idnpt (pintdat, &qt, 1, &kstat);
 	  if (kstat < 0)
 	    goto error;
+
+	  freeIntpt(qt);  /* PFU                  */
+	  qt = NULL;      /* - to fix memory leak */
 	}
       else
 	*jstat = 0;
@@ -221,10 +233,13 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	{
 	  int ki, kj;		/* Counters.                      */
 	  int kedg = 0;		/* Number of parameter direction. */
-	  SISLEdge *qedge[2];	/* Edges for use in s1862().      */
-	  SISLObject *qo1 = NULL;	/* Help pointer.                  */
-	  SISLObject *qo2 = NULL;	/* Help pointer.                  */
-	  SISLIntdat *qintdat = NULL;	/* Intdat for use in recurson.    */
+	  SISLObject *qo1 = NULL;  /* Help pointer.                  */
+	  SISLObject *qo2 = NULL;  /* Help pointer.                  */
+
+	  /* PFU, moved to top to fix memory leak:
+	   *  SISLEdge *qedge[2];
+	   *  SISLIntdat *qintdat = NULL;
+	   */
 
 	  qedge[0] = qedge[1] = NULL;
 	  *jstat = 0;
@@ -413,7 +428,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 
 
 	  /* UJK, edge reduction rules */
-	     sh6edgred (po1_kreg, po2_kreg, (*pintdat), &kstat); 
+	     sh6edgred (po1_kreg, po2_kreg, (*pintdat), &kstat);
 
 	  /* Organize the list in pintdat. */
 	    sh6idlis (po1_kreg, po2_kreg, pintdat, aepsge, &kstat);
@@ -429,6 +444,8 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  sh6degen(po1_kreg,po2_kreg,pintdat,aepsge,&kstat);
 	  if (kstat < 0) goto error;
 */
+	  if (qintdat)  freeIntdat(qintdat);  /* PFU                  */
+	  qintdat = NULL;                     /* - to fix memory leak */
 	}
       else
 	*jstat = 0;
@@ -460,19 +477,24 @@ error:*jstat = kstat;
   s6err ("sh1761", *jstat, kpos);
   goto out;
 
-  out: 
+  out:
      /* Kill kreg temporary geometry */
      if (po1_kreg && po1_kreg != po1)
        {
 	  freeObject(po1_kreg);
 	  po1_kreg = NULL;
        }
-     
+
      if (po2_kreg && po2_kreg != po2)
        {
 	  freeObject(po2_kreg);
 	  po2_kreg = NULL;
-	  
+
        }
-     
+
+     if (qt)  freeIntpt(qt);             /* PFU                   */
+     if (qintdat)  freeIntdat(qintdat);  /* - to fix memory leak. */
+     if (qedge[0])  freeEdge(qedge[0]);
+     if (qedge[1])  freeEdge(qedge[1]);
+
 }
