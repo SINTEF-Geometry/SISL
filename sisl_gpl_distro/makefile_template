@@ -49,7 +49,7 @@ CC	="A_C_compiler_for_use_on_$(PLATFORM)"
 ifdef WINDOWS_TYPE_PLATFORM
 #ifeq "$(PLATFORM)" "winnt"
   CC		= cl
-
+  LD            = link
   ifeq "$(MODE)" "opt"
     CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
     CDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
@@ -153,7 +153,7 @@ ifdef SUPPORTED_PLATFORM_FOUND
 
 all:		lib
 
-.PHONY:		all lib clean
+.PHONY:		all clean
 
 clean:;		rm -f $(wildcard lib/*.o lib/*.a lib/*.lib) $(CXXAPPS)
 
@@ -184,10 +184,20 @@ lib/%.o:	src/%.cpp
 		@mv $*.obj $@
   endif
 
-$(CXXAPPS):	$(wildcard $@.cpp) lib
-		$(CXX) $(CXXOPTS) $@.cpp -o $@  \
-		$(addprefix $(LIBPATH_PREFIX), $(LINKDIRS)) \
-		$(addsuffix _$(MODE), $(addprefix -l, $(LINKLIBS))) $(GRAPHICS_LIBS)
+$(CXXAPPS):	$(LIBNAME)
+		$(CXX) $(CXXOPTS) -c $(notdir $@.cpp) -o lib/$@.o
+  ifdef WINDOWS_TYPE_PLATFORM
+		@mv $*.obj $@.o 
+		$(LDXX) $(LDXXFLAGS) -out:$@ \
+		$(addprefix $(LIBPATH_PREFIX), $(LINKDIRS)) lib/$@.o \
+		$(addsuffix _$(MODE).lib, $(addprefix lib, $(LINKLIBS))) $(GRAPHICS_LIBS)
+		@cp -p $@ $@.exe
+
+  else 
+		$(LDXX) $(LDXXFLAGS) $(addprefix $(LIBPATH_PREFIX), $(LINKDIRS)) lib/$@.o\
+		$(addsuffix _$(MODE), $(addprefix -l, $(LINKLIBS))) $(GRAPHICS_LIBS) \
+		-o $@
+  endif
 
 varcheck:;	@echo "testing..."
 #		@echo $(wildcard src/*.c)

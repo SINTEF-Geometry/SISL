@@ -1,6 +1,6 @@
 all:;
-	cd sisl; make
-	cd streaming; make
+	cd sisl; make lib
+	cd streaming; make lib
 	cd viewer; make sisl_view_demo
 	cd examples; make example01
 	cd examples; make example02
