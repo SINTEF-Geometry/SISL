@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.6 1998-01-23 14:41:49 jka Exp $
+ * $Id: sh1762.c,v 1.7 1998-04-02 13:13:40 vsk Exp $
  *
  */
 
@@ -107,6 +107,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 *              po2       - Pointer to second object
 *              aepsge    - Geometry resolution.
 *              vedge[2]  - Pointers to structure of edge-intersections.
+*              *jstat    - Flag
+*                          = 202 : Complicated point-surface intersection
+*                                  in 3D. Perform extra interception test.
 *
 *
 * INPUT/OUTPUT : pintdat - Pointer to intersection data.
@@ -174,6 +177,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   int kexpand = 2;		/* Expand box in the inner of object. */
   int knedge1;                  /* Number of edges of object.         */
   int knedge2;                  /* Number of edges of object.         */
+  int kxintercept = (*jstat == 202);  // Extra interception
   /* int knum;  */                   /* Number of intersection points at edges. */
   SISLObject *uob1[4];		/* Pointers to subdivided object.     */
   SISLObject *uob2[4];		/* Pointer to object to subdivide.    */
@@ -403,6 +407,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 	    /* Check for interval intersection. */
 
+	   kstat = (kxintercept) ? 202 : 0;
 	    sh1762_s9con (po1, po2, aepsge, pintdat, vedge, &kstat);
 	    if (kstat < 0)
 	       goto error;
@@ -563,6 +568,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		      goto error;
 
 		    at_bottom = FALSE;
+		    kstat = (kxintercept) ? 202 : 0;
 		    sh1762 (po1, uob2[ki], aepsge, pintdat, uedge, &kstat);
 		    if (kstat < 0)
 		      goto error;
@@ -595,6 +601,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		      goto error;
 
 		    at_bottom = FALSE;
+		    kstat = (kxintercept) ? 202 : 0;
 		    sh1762 (uob1[ki], po2, aepsge, pintdat, uedge, &kstat);
 		    if (kstat < 0)
 		      goto error;
@@ -627,6 +634,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
 		      at_bottom = FALSE;
+		      kstat = (kxintercept) ? 202 : 0;
 		      sh1762 (uob1[ki1], uob2[ki2], aepsge, pintdat, uedge, &kstat);
 		      if (kstat < 0)
 			goto error;
@@ -3371,6 +3379,9 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 *              po2      - The second SISLObject to check.
 *              aepsge   - Geometrical resolution.
 *              vedge[]  - SISLEdge intersection.
+*              *jstat    - Flag
+*                          = 202 : Complicated point-surface intersection
+*                                  in 3D. Perform extra interception test.
 *
 *
 * INPUT/OUTPUT:pintdat  - Intersection data.
@@ -3425,6 +3436,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   double mintang2;
   double tboxsize1;
   double tboxsize2;
+  int kxintercept = (*jstat == 202);  // Extra interception
 
   /*int loopcount;*/		/* Count up num intpts in a list. */
   int one_edge = 0;             /* Indicates if all intersection points
@@ -3587,6 +3599,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
              two. Try to intercept further subdivision by performing
              improved box tests.  */
 
+	  kstat = (kxintercept) ? 202 : 0;
 	  sh1762_s9intercept (po1, po2, aepsge, knum, up, &kstat);
 	  if (kstat < 0)
 	    goto error;
@@ -3846,7 +3859,10 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
  *              inmbpt   - Number of intersections found on the edges.
  *              vintpt   - The intersections at the edges.
  *                         Dimension of pointer array is inmbpt.
- *
+ *              *jstat    - Flag
+*                          = 202 : Complicated point-surface intersection
+*                                  in 3D. Perform extra interception test.
+*
  *
  *
  * OUTPUT     :
@@ -3879,6 +3895,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
   int kleft2 = 0;               /* Parameter to evaluator.        */
   int incr, ind;		/* indexes and loop control       */
   int ratflag = 0;              /* Indicates if rational object.  */
+  int kxintercept = (*jstat == 202);  // Extra interception
   double tepsge;                /* Local tolerance in 1D box test. */
   double testpar[2];		/* Par val when treating help p.  */
   double trad;                  /* Radius of geometry object.     */
@@ -3898,6 +3915,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 				   equation.                      */
   SISLCurve *qc2=NULL;           /* B-spline curve put into sphere
 				   equation.                      */
+  SISLPoint *pp1=NULL;
   SISLObject *qobjs;		/* Pointer to surface object.     */
   SISLObject *qobjc;		/* Pointer to curve object.       */
 
@@ -3908,6 +3926,8 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
   /* VSK, 01/93. if (inmbpt > 1 || inmbpt < 0)
     goto err128; */
+
+  *jstat = 0;
 
   if (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE)
     {
@@ -4420,6 +4440,79 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
      qs1 = NULL;     /* Make sure that the input surface is not freed. */
   }
+  else if (((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT &&
+	   po2->p1->idim == 3) ||
+	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT &&
+	   po1->p1->idim == 3)) && kxintercept && xc > 7 && xc % 2 == 0)
+  {
+    if (po1->iobj == SISLSURFACE) 
+      {
+	qs1 = po1->s1;
+	pp1 = po2->p1;
+      }
+    else 
+      {
+	qs1 = po2->s1;
+	pp1 = po1->p1;
+      }
+    kdim = qs1->idim;
+
+    if (qs1->in1 > qs1->ik1 || qs1->in2 > qs1->ik2)
+      kstat = 1;
+    else
+      {
+	int ind1, ind2, ind3;
+	int kpt = 0;
+	int kcrv = 0;
+	double *spar = NULL;
+	SISLIntcurve **ucurve = NULL;
+	double eps = 0.001*aepsge;
+
+	/* Find the closest points between the surface and the point */
+	s1954(qs1, pp1->ecoef, qs1->idim, 0.0, eps, &kpt, &spar,
+	      &kcrv, &ucurve, &kstat);
+	if (kstat < 0)
+	  goto error;
+
+
+	// Test distance between the closest points on the surface and
+	// the point
+	for (ind1=0; ind1<kpt; ind1++)
+	  {
+	    s1421(qs1, 0, spar+2*ind1, &kleft, &kleft2, sder1, 
+		  snorm1, &kstat);
+	    if (s6dist(pp1->ecoef, sder1, kdim) <= aepsge)
+	      break;
+	  }
+
+	for (ind2=0; ind2<kcrv; ind2++)
+	  {
+	    for (ind3=0; ind3<ucurve[ind2]->ipoint; ind3++)
+	      {
+		s1421(qs1, 0, ucurve[ind2]->epar1+2*ind3, &kleft, &kleft2, 
+		      sder1, snorm1, &kstat);
+		if (s6dist(pp1->ecoef, sder1, kdim) <= aepsge)
+		  break;
+	      }
+	    if (ind3 < ucurve[ind2]->ipoint)
+	      break;
+	  }
+
+	if (ind1 < kpt || ind2 < kcrv)
+	  kstat = 1;
+	else kstat = 0;
+
+	/* fprintf(stdout,"%7.13f %7.13f %7.13f %7.13f \n",qs1->et1[0],
+		qs1->et1[qs1->in1],qs1->et2[0],qs1->et2[qs1->in2]);
+	fprintf(stdout,"Point-srf : kstat = %d\n",kstat); */
+
+	if (spar)
+	  freearray(spar);
+	if (ucurve)
+	  freeIntcrvlist(ucurve, kcrv);
+      }
+    qs1 = NULL;
+  }  
   else kstat = 1;
 
 
@@ -4676,9 +4769,9 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
     }
   else if ((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT &&
-	    po2->p1->idim == 2) ||
+	    po2->p1->idim >= 2) ||
 	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT &&
-	    po1->p1->idim == 2))
+	    po1->p1->idim >= 2))
   {
      if (po1->iobj == SISLSURFACE)
      {
@@ -4696,7 +4789,7 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
      if ((sder1 = newarray (7 * qs->idim, double)) == NULL)
 	goto err101;
      sder2 = sder1 + 3 * qs->idim;
-     snorm = sder2 + 6 * qs->idim;
+     snorm = sder2 + 3 * qs->idim;
 
      /* Evaluate the surface in the intersection points at the edges. */
 
@@ -4710,16 +4803,21 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
      /* Test if this is a singular situation. */
 
-     if (s6ang(sder1+2, sder1+4, 2) <= ANGULAR_TOLERANCE &&
-	 s6ang(sder2+2, sder2+4, 2) <= ANGULAR_TOLERANCE)
+     if (s6ang(sder1+qs->idim, sder1+2*qs->idim, qs->idim) <= 
+	 ANGULAR_TOLERANCE &&
+	 s6ang(sder2+qs->idim, sder2+2*qs->idim, qs->idim) <= 
+	 ANGULAR_TOLERANCE)
      {
 	/* Perform marching to check if there is coincidence between
 	   the intersection points. */
 
-	/* fprintf(stdout,"Try coincidence marching \n"); */
+	 /* fprintf(stdout,"Try coincidence marching \n"); 
+	 fprintf(stdout,"%7.13f %7.13f %7.13f %7.13f \n",qs->et1[0],
+		 qs->et1[qs->in1],qs->et2[0],qs->et2[qs->in2]); */
 
 	s1789(qp, qs, aepsge, vintpt[0]->epar, vintpt[1]->epar, &kstat);
 	if (kstat < 0) goto error;
+	 /* fprintf(stdout,"kstat = %d \n",kstat); */
      }
      else
 	kstat = 0;   /* No coincidence. */
