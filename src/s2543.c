@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2543.c,v 1.4 1995-09-19 13:41:13 jka Exp $
+ * $Id: s2543.c,v 1.5 1995-09-19 13:45:33 jka Exp $
  *
  */
 
@@ -285,7 +285,7 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
    
    /* The surface does not have principal curvatures. */
    war100:
-      if (sqrt_arg >= 0.)
+      if (fabs(sqrt_arg) < REL_PAR_RES)
       {
 	 *k1 = - b/(2.*a);
 	 *k2 = *k1;
