@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1359.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1359.c,v 1.2 1994-07-05 11:06:13 vsk Exp $
  *
  */
 #define S1359
@@ -355,13 +355,14 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
         }
     }
   
+  /* VSK, 07.94. Moved this statement before inserting the last knot.
+     Update number of vertices */
+  
+  kn = kvert/idim;
+  
   /* Insert last knot */
   
   st[kn+kk-1] = st[kn+kk-2];
-  
-  /* Update number of vertices */
-  
-  kn = kvert/idim;
   
   /* Test if cyclic curve */
 
