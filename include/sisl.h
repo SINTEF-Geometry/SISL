@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.8 1994-11-14 09:56:08 pfu Exp $
+ * $Id: sisl.h,v 1.9 1994-11-15 11:49:46 pfu Exp $
  *
  */
 
@@ -612,6 +612,10 @@ void s1440(SISLSurf *,SISLSurf **,int *);
 extern
 #endif
 void s1450(SISLSurf *,double,int *,int *,int *,int *,int *,int *,int *);
+#ifndef  S1451
+extern
+#endif
+void s1451(SISLCurve *,double,int *,int *);
 #ifndef  S1452
 extern
 #endif
@@ -1282,6 +1286,10 @@ void s1440();
 extern
 #endif
 void s1450();
+#ifndef  S1451
+extern
+#endif
+void s1451();
 #ifndef  S1452
 extern
 #endif

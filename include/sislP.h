@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.9 1994-11-07 09:33:14 vsk Exp $
+ * $Id: sislP.h,v 1.10 1994-11-15 11:49:52 pfu Exp $
  *
  */
 
@@ -800,10 +800,6 @@ void s1438(SISLCurve  *,int,SISLPoint **,double *,int *);
 extern
 #endif
 void s1439(SISLSurf *,double,int,SISLCurve **,int *);
-#ifndef  S1451
-extern
-#endif
-void s1451(SISLCurve *,double,int *,int *);
 #ifndef S1500
 extern
 #endif
@@ -954,7 +950,7 @@ void s1788(SISLSurf *,SISLSurf *,double,double [],double [],double [],int *);
 #ifndef  S1789
 extern
 #endif
-void  s1789(SISLPoint *,SISLSurf *,double ,double [],double [],int *);   
+void  s1789(SISLPoint *,SISLSurf *,double ,double [],double [],int *);
 #ifndef  S1790
 extern
 #endif
@@ -2556,10 +2552,6 @@ void s1438();
 extern
 #endif
 void s1439();
-#ifndef  S1451
-extern
-#endif
-void s1451();
 #ifndef S1500
 extern
 #endif
