@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1520.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1520.c,v 1.2 1994-12-01 17:16:39 pfu Exp $
  *
  */
 
@@ -25,7 +25,7 @@ void
 s1520 (SISLCurve * pc, double angle, double ep[], double eaxis[],
        SISLSurf ** rs, int *jstat)
 #else
-void 
+void
 s1520 (pc, angle, ep, eaxis, rs, jstat)
      SISLCurve *pc;
      double angle;
@@ -71,6 +71,11 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
 *              Based on s1302 with use of NURBS instead of B-splines.
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
 *              NULL tests included
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Dec. 1994.  Added
+*              initialization and check for allocation error of 'rs'.
+*              The 'cuopen_1' flag is now set to CLOSED if angle >= 2PI, it
+*              should really have been made periodic - and might at a later
+*              date be updated.
 *
 *********************************************************************
 */
@@ -113,6 +118,13 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
   int nbvec = 1;		/* Number of vectors                          */
 
   int kpos = 1;			/* Position of error                          */
+
+
+
+  /* Ensure a valid output surface. */
+
+  *rs = NULL;
+
 
   /* Make local pointers to description of curve */
 
@@ -269,6 +281,15 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
   /* Create the surface */
 
   *rs = newSurf (kn1, kn2, kk1, kk2, st1, st2, sucof, 2, kdim, 1);
+  if ( *rs == NULL )  goto err101;
+
+  if ( tangle >= TWOPI )
+  {
+    /* Set the flag indicating that the surface is closed in the first
+       parameter direction.  It should really have been made cyclic/periodic. */
+
+    (*rs)->cuopen_1 = SISL_SURF_CLOSED;
+  }
 
   *jstat = 0;
   goto out;
