@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1346.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1346.c,v 1.2 1994-11-09 08:49:36 poeh Exp $
  *
  */
 
@@ -128,7 +128,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 *         Ik2    - The order of the approximation in second
 *                  parameter-directon.
 *
-* Output: 
+* Output:
 *         Jstat  - Output status:
 *                   < 0 : Error.
 *                   = 0 : Ok.
@@ -151,6 +151,10 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 *
 * Written by: C.R.Birkeland, Si, April 1993.
 * The main routine, s1345, is written by: Knut M|rken,  SI.
+* Changed by: Per OEyvind, SINTEF, 1994-11.
+*             Removed following memory leaks:
+*              1) Improper use of copy flag to newSurf()
+*              2) Forgetting to free temp array after using icopy == 1
 **********************************************************************
 */
 {
@@ -161,63 +165,65 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   int stat=0, kpos=0;         /* Error message parameters             */
   double *par1 = NULL;
   double *par2 = NULL;
-  double *knot1 = NULL;       /* Knot vectors in 1 and 2. par.dir.    */ 
-  double *knot2 = NULL; 
-  double *error1 = NULL;      /* Arrays for error storage             */ 
+  double *knot1 = NULL;       /* Knot vectors in 1 and 2. par.dir.    */
+  double *knot2 = NULL;
+  double *error1 = NULL;      /* Arrays for error storage             */
   double *error2 = NULL;
-  double *maxerr = NULL; 
+  double *maxerr = NULL;
   double *newcoeff = NULL;    /* Coefficients array                   */
   SISLCurve *ocurve1 = NULL;  /* Used to store local curves           */
-  SISLCurve *ocurve2 = NULL; 
+  SISLCurve *ocurve2 = NULL;
   SISLSurf *osurf1 = NULL;    /* Used to store local surfaces         */
   SISLSurf *osurf2 = NULL;
 
   /* Check Input */
 
-  if (im1 < 2 || im2 < 2 || ik1 < 1 || ik2 < 1 || idim < 1) 
-    goto err103; 
+  if (im1 < 2 || im2 < 2 || ik1 < 1 || ik2 < 1 || idim < 1)
+    goto err103;
   if (ipar < 1 || ipar > 3) ipar = 1;
 
-  if (ipar != 3) 
+  if (ipar != 3)
     {
       /* Generate parametrization */
-      
+
       s1528(idim, im1, im2, ep, ipar, SISL_CRV_OPEN, SISL_CRV_OPEN,
 	    &par1, &par2, &stat);
       if (stat<0) goto error;
     }
-  else 
+  else
     {
       /* Parametrization is passed as parameter */
 
       par1 = epar1;
       par2 = epar2;
-    } 
+    }
 
-  /* Represent input (points) as a surface of 
-   * order 2 (linear) in both directions. 
+  /* Represent input (points) as a surface of
+   * order 2 (linear) in both directions.
    * First, generate knot vectors */
 
   knot1 = newarray(im1+2, DOUBLE);
-  knot2 = newarray(im2+2, DOUBLE); 
+  knot2 = newarray(im2+2, DOUBLE);
   if(knot1 == NULL || knot2 == NULL) goto err101;
   memcopy(&knot1[1],par1,im1,DOUBLE);
-  memcopy(&knot2[1],par2,im2,DOUBLE); 
+  memcopy(&knot2[1],par2,im2,DOUBLE);
   knot1[0] = knot1[1];
   knot2[0] = knot2[1];
-  knot1[im1+1] = knot1[im1]; 
+  knot1[im1+1] = knot1[im1];
   knot2[im2+1] = knot2[im2];
-  osurf1 = newSurf(im1, im2, 2, 2, knot1, knot2, ep, 		
-		   1,idim, 0); 
+  osurf1 = newSurf(im1, im2, 2, 2, knot1, knot2, ep,
+		   1,idim, 1);
   if (osurf1 == NULL) goto err101;
+  free(knot1); knot1 = NULL;
+  free(knot2); knot2 = NULL;
 
-  /* Compute tolerance vectors for linear reduction 
+  /* Compute tolerance vectors for linear reduction
    * Both max deviation of surface and max dev. of edges */
 
   maxerr = newarray(idim, DOUBLE);
   error1 = newarray(idim, DOUBLE);
   error2 = newarray(fouridim, DOUBLE);
-  if (error1 == NULL || error2 == NULL || maxerr == NULL) 
+  if (error1 == NULL || error2 == NULL || maxerr == NULL)
     goto err101;
   for (i=0; i<fouridim; i++)
     {
@@ -229,7 +235,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   /* Perform datareduction on the bilinear interpolant */
 
-  s1345(osurf1, error1, nend, error2, aepsco, iopt, itmax, 
+  s1345(osurf1, error1, nend, error2, aepsco, iopt, itmax,
 	&osurf2, maxerr, &stat);
   if (stat<0) goto error;
 
@@ -238,25 +244,25 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   /* Free surface osurf1 */
 
-  if(osurf1 != NULL) 
+  if(osurf1 != NULL)
     {
       freeSurf(osurf1);
       osurf1 = NULL;
     }
 
-  /* Piecewise linear interpolant to the reduced 
-   * bilinear interpolant expressed as a surface 
+  /* Piecewise linear interpolant to the reduced
+   * bilinear interpolant expressed as a surface
    * of orders ik1 and ik2 */
 
   /* Second parameter direction */
 
-  s1350(osurf2->ecoef,&(osurf2->et2)[1], in2, 	
-	in1 * idim, ik2, &ocurve1, &stat); 
+  s1350(osurf2->ecoef,&(osurf2->et2)[1], in2,
+	in1 * idim, ik2, &ocurve1, &stat);
   if (stat<0) goto error;
 
   newin2 = ocurve1->in;
 
-  /* Transpose result, store new coefficients in 
+  /* Transpose result, store new coefficients in
    * array newcoeff */
 
   if( (newcoeff = newarray(idim * in1 * newin2, DOUBLE)) == NULL )
@@ -272,7 +278,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   /* Free surface osurf2 */
 
-  if(osurf2 != NULL) 
+  if(osurf2 != NULL)
     {
       freeSurf(osurf2);
       osurf2 = NULL;
@@ -281,62 +287,65 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   /* Transpose back and get coefficients of bilinear
    * approximatoin surface of orders ik1 and ik2     */
 
-  newcoeff = increasearray(newcoeff, 
+  newcoeff = increasearray(newcoeff,
 			   idim * newin1 * newin2, DOUBLE);
   if (newcoeff == NULL) goto err101;
   s6chpar(ocurve2->ecoef, newin2, newin1, idim, newcoeff);
-  
+
   /* Store results as a surface */
-  
+
   osurf1 = newSurf(newin1, newin2, ik1, ik2, ocurve2->et,
 		   ocurve1->et, newcoeff, 1, idim, 1);
+
+  free(newcoeff); newcoeff = NULL;
+
   if (osurf1 == NULL) goto err101;
 
   /* Set periodicity flag. */
-  
+
   osurf1->cuopen_1 = ocurve2->cuopen;
   osurf1->cuopen_2 = ocurve1->cuopen;
-  
+
   /* Compute tolerance for final datareduction */
 
   for (i=0; i<fouridim; i++)
     error2[i] = edgeps[i]-error2[i];
   for (i=0; i<idim; i++)
     error1[i] = eeps[i]-maxerr[i];
-   
+
   /* Perform final datareduction step */
 
-  s1345(osurf1, error1, nend, error2, aepsco, iopt, itmax, 
+  s1345(osurf1, error1, nend, error2, aepsco, iopt, itmax,
 	rs, emxerr, &stat);
   if (stat<0) goto error;
-  
+
   /* Compute total (and final) error */
 
   for(i=0; i<idim; i++)
     emxerr[i] += maxerr[i];
-  
+
   /* Success */
 
   *jstat = 0;
   goto out;
-  
+
   /* Empty array. */
 
- err101: 
+ err101:
   *jstat = -101;
   s6err("s1346",*jstat,kpos);
   goto out;
-  
+
   /* Error in input */
 
- err103: 
+ err103:
   *jstat = -103;
   s6err("s1346",*jstat,kpos);
   goto out;
-  
+
   /* Error in lower level routine. */
 
- error: 
+ error:
   *jstat = stat;
   s6err("s1346",*jstat,kpos);
   goto out;
@@ -364,6 +373,6 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
       freearray(par1);
       freearray(par2);
     }
-  
+
   return;
 }
