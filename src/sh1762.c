@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.10 1999-05-21 08:42:51 jka Exp $
+ * $Id: sh1762.c,v 1.11 2000-09-25 07:28:16 vsk Exp $
  *
  */
 
@@ -1283,6 +1283,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   int kgtpi1=0, kgtpi2=0;
   double tang1=DNULL, tang2=DNULL;
   int not_case_2d;
+  int kbez1=1, kbez2=1;
 
   /* Init. */
 
@@ -1310,6 +1311,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	  kgtpi1 = po->c1->pdir->igtpi;
 	  tang1 = po->c1->pdir->aang;
 	}
+      kbez1 = (po->c1->ik == po->c1->in);
     }
   else
     {
@@ -1318,6 +1320,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	  kgtpi1 = po->s1->pdir->igtpi;
 	  tang1 = po->s1->pdir->aang;
 	}
+      kbez1 = (po->s1->ik1 == po->s1->in1 && po->s1->ik2 == po->s1->in2);
     }
 
   /* Get attributes from referance object. */
@@ -1328,6 +1331,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	  kgtpi2 = poref->c1->pdir->igtpi;
 	  tang2 = poref->c1->pdir->aang;
 	}
+      kbez2 = (poref->c1->ik == poref->c1->in);
     }
   else if (poref->iobj == SISLSURFACE)
     {
@@ -1336,6 +1340,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	  kgtpi2 = poref->s1->pdir->igtpi;
 	  tang2 = poref->s1->pdir->aang;
 	}
+      kbez2 = (poref->s1->ik1 == poref->s1->in1 &&
+	       poref->s1->ik2 == poref->s1->in2);
     }
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
@@ -1361,9 +1367,9 @@ sh1762_s9num (po, poref, jdiv, jstat)
 
     }
 
-  else if (kgtpi1 == 0 && tang1 < SIMPLECASE / (double) 2.0 &&
+  else if (kgtpi1 == 0 && tang1 < SIMPLECASE / (double) 2.0 && kbez1 == 1 &&
 	   (kgtpi2 != 0 || tang2 > tang1 * (double) 2.0))
-     /* Test againts referance object. */ *jdiv = 0;
+    *jdiv = 0; 
 
   else if (po->iobj == SISLCURVE)
     {
