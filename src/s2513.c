@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2513.c,v 1.7 1995-09-22 13:11:56 jka Exp $
+ * $Id: s2513.c,v 1.8 1995-09-22 13:45:15 jka Exp $
  *
  */
 
@@ -60,9 +60,8 @@ void
 *                    Size = 3, only used for dim = 3.
 *
 *  OUTPUT       :
-*     fundform     - Array for the fundamental form. The dimension is
-*                    6*(ider + 1)*(ider + 2)/2, and the sequence is
-*                    (E,F,G,e,f,g,Eu,...,Ev,...,Euu,...,Euv,...,Evv,...).
+*     fundform     - Array for the fundamental form. The sequence is
+*                    (E,F,G,e,f,g,P,Q,S,T,Eu,...,Ev,...,Euu,...,Euv,...,Evv,...).
 *     stat         - Status messages
 *
 *                         = 0 : Ok.
@@ -110,6 +109,13 @@ void
 	 fundform[4] = derive[4]/norm_scale;
 	 fundform[5] = derive[5]/norm_scale;
       }
+      if (type > 2)
+      {
+	 fundform[6] = derive[6]/norm_scale;
+	 fundform[7] = derive[7]/norm_scale;
+	 fundform[8] = derive[8]/norm_scale;
+	 fundform[9] = derive[9]/norm_scale;
+      }
    }
       
    else if (surf->idim == 3) 
@@ -132,6 +138,14 @@ void
 	 fundform[3] = (s6scpr(normal, &derive[9], 3))/norm_scale;
 	 fundform[4] = (s6scpr(normal, &derive[12], 3))/norm_scale;
 	 fundform[5] = (s6scpr(normal, &derive[15], 3))/norm_scale;
+      }
+      
+      if (type > 2)
+      {
+	 fundform[6] = (s6scpr(normal, &derive[18], 3))/norm_scale;
+	 fundform[7] = (s6scpr(normal, &derive[21], 3))/norm_scale;
+	 fundform[8] = (s6scpr(normal, &derive[24], 3))/norm_scale;
+	 fundform[9] = (s6scpr(normal, &derive[27], 3))/norm_scale;
       }
    }
    else 
