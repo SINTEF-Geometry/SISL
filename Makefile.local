@@ -1,0 +1,25 @@
+#
+# On which other "subprojects" do we want this one to depend?
+# The following libraries will be linked in. (This is not so
+# easy to do through the dependency-mechanism?)
+#
+# The libdirs should be organized like this: /SI......../lib/ should
+# contain one subdir for every platform (sgi [or IRIX for some globals, hp-pa 
+# [or hp-aCC for global libs], winnt etc.). Each of these should contain the
+# nopt/ and opt/ subdirs.
+#
+# Global is really a bad name, it only applies to siscat/latools/etc. stuff
+
+DEPLIBSLOCAL  =
+
+GLOBALINCLUDEDIRS =
+
+GLOBALLIBDIRS     =
+
+DEPLIBSSYSTEM     =
+
+SYSTEMINCLUDEDIRS =
+
+SYSTEMLIBDIRS     =
+
+CXXDEFS += 
