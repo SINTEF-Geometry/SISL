@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1786.c,v 1.2 1999-01-15 10:09:34 jka Exp $
+ * $Id: s1786.c,v 1.3 1999-01-15 11:58:18 jka Exp $
  *
  */
 #define S1786
@@ -140,7 +140,7 @@ void s1786(pc1,pc2,aepsge,epar1,epar2,jstat)
  #if defined(SISLNEEDPROTOTYPES)
    void (*fevalc)(SISLCurve *, int, double , int *, double [], int *);
  #else
-      void (*fevalc)();   /* Pointer to curve evaluator routine of 2. curve.
+      void (*fevalc)();
  #endif
  */
      /* UJK, aug 93, make min step in parameter domain based on the
