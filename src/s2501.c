@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.5 1995-01-19 15:05:25 pfu Exp $
+ * $Id: s2501.c,v 1.6 1995-01-23 09:15:11 pfu Exp $
  *
  */
 
@@ -22,14 +22,12 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
-      double normal[], double *gaussian, int *jstat)
+s2501(SISLSurf *surf, int ider, double derive[], double normal[],
+      double *gaussian, int *jstat)
 #else
- void s2501(surf, ider, parvalue, derive, normal, gaussian,
-	    jstat)
+ void s2501(surf, ider, derive, normal, gaussian, jstat)
       SISLSurf *surf;
       int ider;
-      double parvalue[];
       double derive[],
       double normal[],
       double *gaussian;
@@ -45,8 +43,6 @@ s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
 *          ider     - Only implemented for ider=0 (derivative order).
-*      parvalue     - Parameter-value at which to evaluate. Dimension of
-*                     parvalue is 2.
 *       derive      - Array containing derivatives from routine s1421().
 *                     Size = idim*6.
 *       normal      - Array containing the normal from routine s1421().
@@ -54,7 +50,6 @@ s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
 *
 *  OUTPUT       :
 *     gaussian      - Gaussian of the surface in (u,v) =
-*                     (parvalue[0],parvalue[1]).
 *        jstat      - Status messages
 *
 *                         = 0 : Ok.
