@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2507.c,v 1.4 1995-06-28 11:20:33 jka Exp $
+ * $Id: s2507.c,v 1.5 1995-06-28 13:05:53 jka Exp $
  *
  */
 
@@ -88,6 +88,8 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
 *
 *
 * WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
+*                 Error in explicit curvature.
 *****************************************************************************
 */
 {
