@@ -43,6 +43,10 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 *              pt1    - coordinates of the point.
 *	       idim   - number of coordinates in pt1.
 *              aepsge - Geometry resolution.
+*              *jstat    - Flag
+*                          = 202 : Complicated point-surface intersection
+*                                  in 3D. Perform extra interception test.
+*
 *
 *
 *
@@ -85,6 +89,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
   SISLTrack **wtrack=NULL;
   double aepsco = REL_COMP_RES;
 
+  kstat = *jstat;
   sh1870(ps1, pt1, idim, aepsco, aepsge, trackflag, &jtrack, &wtrack,
 	 jpt, gpar1, &pretop, jcrv, wcurve, &kstat);
   if(kstat < 0) goto error;
