@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idaledg.c,v 1.2 1994-11-30 16:27:31 pfu Exp $
+ * $Id: sh6idaledg.c,v 1.3 1997-12-28 19:16:46 jka Exp $
  *
  */
 
@@ -259,7 +259,7 @@ void
 		      wedge[kn]->ipoint--;
 		    }
 		}
-	      else
+	      if (notfound == TRUE)
 		{
 		  sh6tomain(pte->ppt, &kstat);
 		  prev = pte;
