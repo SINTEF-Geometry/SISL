@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.14 2003-01-10 12:53:36 vsk Exp $
+ * $Id: sh1762.c,v 1.15 2003-02-14 12:42:26 vsk Exp $
  *
  */
 
@@ -1204,7 +1204,7 @@ static double sh1762_sflength(psurf, idir, jstat)
       spar[1] = psurf->et2[psurf->ik2-1];
 
       sint[0] = 0.0;
-      sint[1] = (psurf->et2[psurf->in2] - spar[0])/(double)(kneval-1);
+      sint[1] = (psurf->et2[psurf->in2] - spar[1])/(double)(kneval-1);
     }
 
   /* Evaluate points. */
