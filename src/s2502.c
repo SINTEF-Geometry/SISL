@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2502.c,v 1.4 1995-01-18 14:44:25 pfu Exp $
+ * $Id: s2502.c,v 1.5 1995-01-18 14:49:20 pfu Exp $
  *
  */
 
@@ -201,5 +201,7 @@ error:
   s6err("s2502",*jstat,0);
   goto out;
 
-out:;
+out:
+
+  return;
 }

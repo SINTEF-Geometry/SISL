@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2500.c,v 1.4 1995-01-18 14:43:08 pfu Exp $
+ * $Id: s2500.c,v 1.5 1995-01-18 14:48:42 pfu Exp $
  *
  */
 
@@ -49,7 +49,8 @@ s2500(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 *
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
-*          ider     - Number of derivatives to calculate. Only implemented for ider=0
+*          ider     - Number of derivatives to calculate.
+*                     Only implemented for ider=0.
 *                       < 0 : No derivative calculated.
 *                       = 0 : Position calculated.
 *                       = 1 : Position and first derivative calculated.
@@ -200,6 +201,8 @@ error:
   goto out;
 
 
-out:;
+out:
+
+  return;
 
 }
