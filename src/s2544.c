@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2544.c,v 1.3 1995-11-22 13:59:06 jka Exp $
+ * $Id: s2544.c,v 1.4 1995-11-22 14:10:12 jka Exp $
  *
  */
 
@@ -240,20 +240,16 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 			   surf->idim)/length;
 	  mu      = s6scpr(&derive[5*(surf->idim)], &derive[2*(surf->idim)],
 			   surf->idim)/length;
-	  /* printf("A %lf %lf %lf %lf %lf %lf \n",alpha,beta,gamma,delta,
-		 epsilon,mu); */
 	  
 	  a = fundform[1]*fundform[4] - fundform[2]*fundform[3];
 	  b = fundform[1]*fundform[3] - fundform[0]*fundform[4];
 	  c = fundform[1]*fundform[5] - fundform[2]*fundform[4];
 	  d = fundform[1]*fundform[4] - fundform[0]*fundform[5];
-	  /* printf("B %lf %lf %lf %lf \n",a,b,c,d); */
 	  
 	  P = fundform[6] + 3*(a*alpha + b*beta);
 	  Q = fundform[7] + c*alpha + d*beta + 2*a*gamma + 2*b*delta;
 	  S = fundform[8] + 2*c*gamma + 2*d*delta + a*epsilon + b*mu;
 	  T = fundform[9] + 3*(c*epsilon + d*mu);
-	  /* printf("C %lf %lf %lf %lf \n",P,Q,S,T); */
 	  
 	  /* Calculate the principal curvatures. */
 	  
@@ -322,10 +318,8 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 	  if (fabs(phi - asin_result) > ANGULAR_TOLERANCE &&
 	      fabs(PI - phi - asin_result) > ANGULAR_TOLERANCE &&
 	      fabs(phi - TWOPI - asin_result) > ANGULAR_TOLERANCE)
-	  {
-	     printf("phi %lf asin_result %lf \n", phi, asin_result);
 	     goto err180;
-	  }
+
 	  phi /= 2.;
 	  
 	  /* Calculate psi. */
@@ -338,10 +332,7 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 	  if (fabs(psi - asin_result) > ANGULAR_TOLERANCE &&
 	      fabs(PI - psi - asin_result) > ANGULAR_TOLERANCE &&
 	      fabs(psi - TWOPI - asin_result) > ANGULAR_TOLERANCE)
-	  {
-	     printf("psi %lf asin_result %lf \n", psi, asin_result);
 	     goto err180;
-	  }
 	  
 	  /* Calculate the derivative. */
 	  
