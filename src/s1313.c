@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.3 1994-12-01 13:58:04 pfu Exp $
+ * $Id: s1313.c,v 1.4 1994-12-01 14:05:58 pfu Exp $
  *
  */
 
@@ -144,9 +144,9 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                   Improved the routine for parallel silhouettes (ideg=1003) and
 *                   added perspective and circular silhouettes (ideg=1004,ideg=1005)
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Dec. 1994.  Added check for
-*              NULL 'pintcr' and to avoid regenerating the geometry when it has
+*              NULL 'pintcr' and to avoid re-generating the geometry when it has
 *              already been generated in the topology part (constant curve, type 9).
-*              This fixes memory problmes.
+*              This fixes memory problems.
 *
 *********************************************************************
 */
@@ -261,12 +261,13 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
   *jstat = 0;
 
-  if ( pintcr == NULL )  goto err150;
+  if (pintcr == NULL)  goto err150;
 
 
-  /* Check if the geometry has allready been generated in the topology part. */
+  /* Check if the geometry already has been generated in the topology part.
+     This will be the case if the geometry is along a constant parameter line. */
 
-  if ( pintcr->itype == 9 )  goto out;
+  if (pintcr->itype == 9)  goto out;
 
 
 
