@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.1 1995-09-25 13:16:16 jka Exp $
+ * $Id: s2545.c,v 1.2 1995-10-03 13:35:57 jka Exp $
  *
  */
 
@@ -56,7 +56,8 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 *                            1 - Mean.
 *                            2 - Absolute.
 *                            3 - Total.
-*                            4 - Mehlum.
+*                            4 - second order Mehlum (curvature).
+*                            5 - third order Mehlum (variation of curvature).
 *	    export_par_val - Flag telling if the parameter values for each grid
 *                            point is to be exported:
 *                            0 - False, do not export parameter values,

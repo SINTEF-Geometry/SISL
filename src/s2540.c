@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2540.c,v 1.1 1995-09-14 06:55:32 jka Exp $
+ * $Id: s2540.c,v 1.2 1995-10-03 13:33:27 jka Exp $
  *
  */
 
@@ -54,7 +54,8 @@ s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 *                            1 - Mean.
 *                            2 - Absolute.
 *                            3 - Total.
-*                            4 - Mehlum.
+*                            4 - second order Mehlum (curvature).
+*                            5 - third order Mehlum (variation of curvature).
 *	    export_par_val - Flag telling if the parameter values for each grid
 *                            point is to be exported:
 *                            0 - False, do not export parameter values,
@@ -93,7 +94,7 @@ s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 * METHOD  :
 *
 *
-* CALLS   :s2541(), ( s2500(), s2502(), s2504(), s2506(), s2508()).
+* CALLS   :s2541(), ( s2500(), s2502(), s2504(), s2506(), s2508(), s2510()).
 *
 * WRITTEN BY :  Ulf J Krystad,  SINTEF, Oslo, Norway, Jan. 1995.
 * REVISED BY :  Johannes Kaasa, SINTEF, Oslo, Norway, Aug. 1995.
@@ -118,6 +119,9 @@ s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 	   garr, stat);
   else if (curvature_type == 4)
      s2541(surf, s2508, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+	   garr, stat);
+  else if (curvature_type == 5)
+     s2541(surf, s2510, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
 	   garr, stat);
   else
      goto err151;
