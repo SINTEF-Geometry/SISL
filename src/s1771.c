@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1771.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1771.c,v 1.2 1994-09-08 09:03:31 pfu Exp $
  *
  */
 #define S1771
@@ -41,7 +41,7 @@ static double s1771_s9del();
 
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1771(SISLPoint *ppoint,SISLCurve *pcurve,double aepsge,
 	   double astart,double aend,double anext,double *cpos,int *jstat)
 #else
@@ -75,7 +75,7 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
 *
 * OUTPUT     : cpos    - Parameter value of the curve in intersection
 *                        or closest point.
-*              jstat   - status messages  
+*              jstat   - status messages
 *                                = 2   : A minimum distanse found.
 *                                = 1   : Intersection found.
 *                                < 0   : error.
@@ -92,8 +92,8 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
 *              Error message corrected
 *
 *********************************************************************
-*/                       
-{                        
+*/
+{
   int kstat = 0;         /* Local status variable.                           */
   int kpos = 0;          /* Position of error.                               */
   int kleft=0;           /* Variables used in the evaluator.                 */
@@ -103,86 +103,86 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
   double td;             /* Distances between old and new parameter value in
 			    the two parameter directions.                    */
   double tprev;          /* Previous difference between the curves.          */
-  double *sval=NULL;     /* Value ,first and second derivatie on curve 1    */ 
+  double *sval=NULL;     /* Value ,first and second derivatie on curve 1    */
   double *sdiff;         /* Difference between the curves                    */
   int quick = (*jstat);  /* Indicates if the exactness requirement is
                             relaxed.                                         */
   int max_it = 20;       /* Maximum number of iterations.                    */
-  
-  if (quick) max_it = 10; 
-  
+
+  if (quick) max_it = 10;
+
   /* Test input.  */
-  
+
   if (ppoint->idim != pcurve->idim) goto err106;
-  
+
   kdim = pcurve -> idim;
-  
+
   /* Fetch endpoints and the intervals of parameter interval of curves.  */
-  
+
   tdelta = pcurve->et[pcurve->in] - pcurve->et[pcurve->ik - 1];
-  
+
   /* Allocate local used memory */
-  
+
   sval = newarray(4*kdim,double);
   if (sval == NULL) goto err101;
-  
+
   sdiff = sval + 3*kdim;
-  
+
   /* Initiate variable.  */
-  
+
   tprev = (double)HUGE;
-  
+
   /* Evaluate 0-2.st derivatives of the curve. */
-  
+
   s1221(pcurve,2,anext,&kleft,sval,&kstat);
   if (kstat < 0) goto error;
-  
+
   s6diff(ppoint->ecoef,sval,kdim,sdiff);
-  
+
   tdist = s6length(sdiff,kdim,&kstat);
-  
+
   td = s1771_s9del(sdiff,sval+kdim,sval+kdim+kdim,kdim);
-  
+
   /* Correct if we are not inside the parameter intervall. */
-  
+
   if (anext + td < astart) td = astart - anext;
   else if (anext + td > aend) td = aend - anext;
-  
+
   s1771_s9point(pcurve,ppoint->ecoef,sval,sdiff,astart,aend,max_it,&anext,
 	  &td,tdelta,&tdist,tprev,kleft,&kstat);
   if (kstat < 0) goto error;
-  
+
   /* Iteration stopped, test if point found is within resolution */
-  
+
   if (tdist <= aepsge)
     *jstat = 1;
   else
     *jstat = 2;
-  
+
   *cpos = anext;
-  
+
   /* Iteration completed.  */
-  
+
   goto out;
-  
+
   /* Error in allocation */
-  
+
  err101: *jstat = -101;
   s6err("s1771",*jstat,kpos);
-  goto out;                  
-  
+  goto out;
+
   /* Error in input. Conflicting dimensions.  */
-  
+
  err106: *jstat = -106;
   s6err("s1771",*jstat,kpos);
-  goto out;                  
-  
+  goto out;
+
   /* Error in lower level routine.  */
-  
+
   error : *jstat = kstat;
   s6err("s1771",*jstat,kpos);
-  goto out;                  
-  
+  goto out;
+
  out:    if (sval != NULL) freearray(sval);
 }
 
@@ -193,8 +193,8 @@ s1771_s9point(SISLCurve *pcurve,double eval1[],double eval2[],double ediff[],
 	      double astart,double aend,int max_it,double *cnext,double *ad,
 	      double adel,double *cdist,double aprev,int ileft,int *jstat)
 #else
-static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,cnext,ad,adel,cdist,
-	     aprev,ileft,jstat)
+static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,max_it,cnext,ad,adel,
+			  cdist,aprev,ileft,jstat)
      SISLCurve  *pcurve;
      double eval1[];
      double eval2[];
@@ -241,12 +241,12 @@ static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,cnext,ad,adel,cdi
 * OUTPUT     : cnext   - Parameter value of curve in the closest point.
 *              cdist    -The current distance between the curve and
 *                        the point.
-*              jstat   - status messages  
+*              jstat   - status messages
 *                                >= 0   : OK.
 *                                <  0   : error.
 *
 *
-* METHOD     : 
+* METHOD     :
 *
 *
 * REFERENCES :
@@ -256,43 +256,43 @@ static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,cnext,ad,adel,cdi
 * MODIFIED BY : Vibeke Skytt, SINTEF SI, 10.93. Stop earlier when divergence.
 *
 *********************************************************************
-*/                       
-{                        
+*/
+{
   int kstat = 0;            /* Local status variable.                      */
   int kdim = pcurve->idim;  /* Dimension of space the curves lie in        */
   int knbit;                /* Number of iterations                        */
   int kdiv = 0;             /* Counts number of diverging steps.           */
   int kdiv2 = 0;            /* Counts number of almost divergence.         */
-   
+
   /* Correct if we are not inside the parameter intervall. */
-  
+
   if (*cnext + *ad < astart)    *ad = astart - *cnext;
   else if (*cnext + *ad > aend) *ad = aend - *cnext;
-  
+
   for (knbit=0;knbit<max_it;knbit++)
     {
       /* Evaluate 0-2.st derivatives of the curve. */
-      
+
       s1221(pcurve,2,*cnext + *ad,&ileft,eval2,&kstat);
       if (kstat < 0) goto error;
-      
+
       s6diff(eval1,eval2,kdim,ediff);
-      
+
       *cdist = s6length(ediff,kdim,&kstat);
-      
+
       if (*cdist -aprev  <= REL_COMP_RES)
 	{
 	   if (kdiv2 > 4) break;
 	   if (*cdist -aprev >= DNULL) kdiv2++;
-	  
+
 	   kdiv = 0;
 	  aprev = *cdist;
 	  *cnext += *ad;
-	  
+
 	  *ad = s1771_s9del(ediff,eval2+kdim,eval2+kdim+kdim,kdim);
-	  
+
 	  /* Correct if we are not inside the parameter intervall. */
-	  
+
 	  if (*cnext + *ad < astart)    *ad = astart - *cnext;
 	  else if (*cnext + *ad > aend) *ad = aend - *cnext;
 	}
@@ -303,17 +303,17 @@ static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,cnext,ad,adel,cdi
 	  (*ad) /= (double)2;
 	  /** knbit--; */
 	}
-      if (fabs((*ad)/MAX(fabs(*cnext),adel)) <= REL_COMP_RES) break;      
+      if (fabs((*ad)/MAX(fabs(*cnext),adel)) <= REL_COMP_RES) break;
     }
-  
+
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
+
   error : *jstat = kstat;
   s6err("s1771_s9point",*jstat,0);
-  goto out;                  
-  
+  goto out;
+
  out:   ;
 }
 
@@ -332,7 +332,7 @@ static void s1771_s9corr(gdn,acoef,astart,aend)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To be sure that we are inside the boorder of the
 *              parameter plan. If we are outside clipping is used
 *	       to corrigate the step value.
@@ -347,7 +347,7 @@ static void s1771_s9corr(gdn,acoef,astart,aend)
 * INPUT/OUTPUT : gdn   - Old and new step value.
 *
 *
-* METHOD     : 
+* METHOD     :
 *
 *
 * REFERENCES :
@@ -356,11 +356,11 @@ static void s1771_s9corr(gdn,acoef,astart,aend)
 * WRITTEN BY : Arne Laksaa, SI, Feb 1989
 *
 *********************************************************************
-*/                       
+*/
 {
-  if (acoef + gdn[0] < astart) 
+  if (acoef + gdn[0] < astart)
     gdn[0] = astart - acoef;
-  else if (acoef + gdn[0] > aend)   
+  else if (acoef + gdn[0] > aend)
     gdn[0] = aend - acoef;
 }
 
@@ -379,7 +379,7 @@ static double s1771_s9del(eco,eco1,eco2,idim)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To compute the distance on the parameter line to a point
 *            on the curve on which the tangent is orthogonal to the
 *            difference vector from this point on the curve to the
@@ -415,26 +415,26 @@ static double s1771_s9del(eco,eco1,eco2,idim)
 * WRITTEN BY : Arne Laksaa, SI, Mar 1989
 *
 *********************************************************************
-*/                       
+*/
 {
   double t1,t2,t3,t4,t5,t6;   /* Constants in equation.                    */
   double tmax,tmax1;          /* Max values in equation.                   */
   double ttol=(double)1e-10;  /* Relative tolerance in equation.           */
-  
+
   t1 =  s6scpr(eco,eco1,idim);
   t3 =  s6scpr(eco1,eco1,idim);
   t2 =  t3 - s6scpr(eco,eco2,idim);
   t4 =  -(double)2 * s6scpr(eco1,eco2,idim);
-  
+
   tmax  = max(fabs(t1),fabs(t2));
   tmax1 = max(fabs(t3),fabs(t4));
   tmax  = max(tmax1,tmax);
-  
+
   if (DEQUAL(tmax,DNULL))                    return DNULL;
-  
+
   else if (fabs(t4)/tmax < ttol) /* The second degree part is degenerated. */
     {
-      if (fabs(t2)/tmax < ttol) 
+      if (fabs(t2)/tmax < ttol)
 	{
           if (fabs(t3)/tmax < ttol)        return DNULL;
           else                             return (t1/t3);
@@ -451,13 +451,13 @@ static double s1771_s9del(eco,eco1,eco2,idim)
           t5 = (t2 + t6)/t4;
           t6 = (t2 - t6)/t4;
 	  t1 *= t3;
-	  
-	  
+
+
           /* We have two solutions and we want to use the one
 	     with the same sign as we get while using an other
 	     metode t1/t3. If both solutions have the same
 	     sign we use the one with smallest value. */
-	  
+
           if (t1 < DNULL)
 	    {
 	      if (t5 <= DNULL && t6 <= DNULL)
@@ -484,5 +484,3 @@ static double s1771_s9del(eco,eco1,eco2,idim)
 	}
     }
 }
-
-
