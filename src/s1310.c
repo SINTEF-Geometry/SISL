@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1310.c,v 1.6 2001-03-19 15:58:43 afr Exp $
+ * $Id: s1310.c,v 1.7 2001-03-20 09:02:53 afr Exp $
  *
  */
 
@@ -445,9 +445,14 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
 	  /* Remember if start, internal or end point */
 
 	  if (tlnorm != DZERO)
-            if (ki == 0) kfirst = 1;
-            else if (ki == kpoint-1) klast = kpoint;
-            else  kstart = ki+1;
+	    {
+	      if (ki == 0)
+		kfirst = 1;
+	      else if (ki == kpoint-1)
+		klast = kpoint;
+	      else
+		kstart = ki+1;
+	    }
         }
     }
 

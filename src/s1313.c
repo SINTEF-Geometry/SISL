@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.8 2001-03-19 15:58:44 afr Exp $
+ * $Id: s1313.c,v 1.9 2001-03-20 09:02:53 afr Exp $
  *
  */
 
@@ -444,9 +444,11 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 	  /* Remember if start, internal or end point */
 
 	  if (kstat != 2)
+	    {
                 if (ki == 0) kfirst = 1;
                 else if (ki == kpoint-1) klast = kpoint;
                 else  kstart = ki+1;
+	    }
         }
     }
 
