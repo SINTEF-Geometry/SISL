@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.14 1995-01-03 10:31:36 pfu Exp $
+ * $Id: sislP.h,v 1.15 1995-01-18 09:45:00 pfu Exp $
  *
  */
 
@@ -1223,6 +1223,16 @@ void s1993(SISLCurve *,int *);
 extern
 #endif
 void s1994(SISLSurf *,int *);
+#ifndef  S2501
+extern
+#endif
+void s2501(SISLSurf *, int, double [], double [], normal [],
+	   int *, int *, double *, int *);
+#ifndef  S2503
+extern
+#endif
+void s2503(SISLSurf *, int, double [], double [], normal [],
+	   int *, int *, double *, int *);
 #ifndef  S6ADDCURVE
 extern
 #endif
@@ -2901,6 +2911,14 @@ void s1993();
 extern
 #endif
 void s1994();
+#ifndef  S2501
+extern
+#endif
+void s2501();
+#ifndef  S2503
+extern
+#endif
+void s2503();
 #ifndef  S6ADDCURVE
 extern
 #endif
