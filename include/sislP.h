@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.27 1995-08-21 14:00:31 jka Exp $
+ * $Id: sislP.h,v 1.28 1995-08-23 09:26:40 boh Exp $
  *
  */
 
@@ -394,7 +394,9 @@ enum
   ( (fabs(a) <= AEPSGE) ? (1) : (0) )
 
 /* Space allocation.  */
-#if defined(SISL_INTERNAL)
+
+#if defined(SISL_INTERNAL) || defined(USING_SISL_NEWARRAY)
+
 #define newarray(a,b) \
   ((a)>(NULL)?((b*)malloc((size_t)((a)*sizeof(b)))):(NULL))
 
@@ -417,7 +419,8 @@ enum
 
 #define memzero(a,b,c) \
   VOIDP memset(VOIDP (a),0,(size_t)((b)*sizeof(c)))
-#endif
+
+#endif /* SISL_INTERNAL || USING_SISL_NEWARRAY */
 
 /* Set value of PI/2, PI, 3PI/2 and 2PI */
 
@@ -1359,8 +1362,8 @@ void s2533(double *, int, int, int, int, int *, double **, int *);
 extern
 #endif
 void s2534(SISLSurf *, int, int, int, int,
-	  void evalp(SISLSurf *, int, int, int, 
-		     double [], int *, int *, 
+	  void evalp(SISLSurf *, int, int, int,
+		     double [], int *, int *,
 		     double *, int *),
 	  int, SISLSurf **, int *);
 #ifndef  S2535
