@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1001.c,v 1.3 1994-11-16 08:59:47 pfu Exp $
+ * $Id: s1001.c,v 1.4 1994-11-30 13:08:40 pfu Exp $
  *
  */
 
@@ -37,15 +37,17 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
      SISLSurf **rsnew;
      int *jstat;
 #endif
- /*
- ********************************************************************
- *
- *********************************************************************
- *
- * PURPOSE    : To pick a part of a surface.
- *
- *
- *
+/*
+********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : To pick a part of a surface.
+*              The surface produced will always be k-regular, i.e. with
+*              k-tupple end knots.
+*
+*
+*
 * INPUT      : ps	- Surface to pick a part of.
 *	       min1     - Min value 1. parameter direction.
 *	       min2     - Min value 2. parameter direction.
@@ -70,7 +72,12 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
 *
 * WRITTEN BY : Ulf J. Krystad, SI, 04.92.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-08. Added error propagation.
-* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-11. Handling of periodics.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-11. Looked at handling of
+*              periodics - since this routine is used to convert a periodic into
+*              a k-regular surface, it must always return a k-regular surface,
+*              even if the whole periodic parameter range (ik-1 to in) is picked.
+*              To do this correctly the 'cuopen' flags must indicate closed after
+*              the picking of the whole periodic range.
 *
 **********************************************************************/
 {
@@ -114,24 +121,25 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
   kleft4=ps->in2;
   change_1 = change_2 = TRUE;
 
-  if ( min1 == ps->et1[ps->ik1 -1]  &&  max1 == ps->et1[ps->in1] )
-/* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
- *   &&
- *     s6knotmult(ps->et1,ps->ik1,ps->in1,
- *		 &kleft1,ps->et1[ps->ik1-1],&kstat) == ps->ik1 &&
- *     s6knotmult(ps->et1,ps->ik1,ps->in1,
- *		 &kleft2,ps->et1[ps->in1],&kstat) == ps->ik1)
- */
+  if ( min1 == ps->et1[ps->ik1 -1]  &&  max1 == ps->et1[ps->in1]
+       /* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
+	  AND re-inserted again (PFU 30/11-94) - see comment in header. */
+       &&
+       s6knotmult(ps->et1,ps->ik1,ps->in1,
+		  &kleft1,ps->et1[ps->ik1-1],&kstat) == ps->ik1 &&
+       s6knotmult(ps->et1,ps->ik1,ps->in1,
+		  &kleft2,ps->et1[ps->in1],&kstat) == ps->ik1) /* END of TAKEN OUT*/
     change_1 = FALSE;
 
-  if ( min2 == ps->et2[ps->ik2 -1]  &&  max2 == ps->et2[ps->in2] )
-/* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
- *  &&
- *     s6knotmult(ps->et2,ps->ik2,ps->in2,
- *		 &kleft3,ps->et2[ps->ik2-1],&kstat) == ps->ik2 &&
- *     s6knotmult(ps->et2,ps->ik2,ps->in2,
- *		 &kleft4,ps->et2[ps->in2],&kstat) == ps->ik2)
- */
+
+  if ( min2 == ps->et2[ps->ik2 -1]  &&  max2 == ps->et2[ps->in2]
+       /* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
+	  AND re-inserted again (PFU 30/11-94) - see comment in header. */
+       &&
+       s6knotmult(ps->et2,ps->ik2,ps->in2,
+		  &kleft3,ps->et2[ps->ik2-1],&kstat) == ps->ik2 &&
+       s6knotmult(ps->et2,ps->ik2,ps->in2,
+		  &kleft4,ps->et2[ps->in2],&kstat) == ps->ik2) /* END of TAKEN OUT*/
     change_2 = FALSE;
 
   if (change_1)
