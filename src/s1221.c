@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1221.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1221.c,v 1.2 1994-12-02 13:11:50 pfu Exp $
  *
  */
 
@@ -36,9 +36,9 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To compute the value and ider first derivatives of the
-*              B-spline curve pointed to by pc1, at the point with
+*              NURBS curve pointed to by pc1, at the point with
 *              parameter value ax.
 *
 *
@@ -53,16 +53,16 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 *              ax     - The parameter value at which to compute
 *                       position and derivatives.
 *
-*                
+*
 *
 * INPUT/OUTPUT : ileft - Pointer to the interval in the knot vector
 *                        where ax is located. If et is the knot vector,
 *                        the relation
-*                          
+*
 *                          et[ileft] <= ax < et[ileft+1]
-* 
+*
 *                        should hold. (If ax == et[in] then ileft should
-*                        be in-1. Here in is the number of B-spline
+*                        be in-1. Here in is the number of NURBS
 *                        coefficients.)
 *                        If ileft does not have the right value upon
 *                        entry to the routine, its value will be changed
@@ -82,7 +82,7 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 *                       vector, and so on.
 *                       (The C declaration of eder as a two dimensional array
 *                       would therefore be eder[ider+1,idim].)
-*              jstat  - Status messages  
+*              jstat  - Status messages
 *                                         > 0      : Warning.
 *                                         = 0      : Ok.
 *                                         < 0      : Error.
@@ -111,7 +111,7 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 *-
 * CALLS      : s1220    - Computes B-spline values and derivatives at
 *                         a given point.
-*              s6err    - Error handling routine 
+*              s6err    - Error handling routine
 *              s6ratder - Make derivative of rational expression
 *
 * WRITTEN BY : Knut Moerken, University of Oslo, August 1988.
@@ -122,7 +122,7 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 *              derivative is not set equal to the order).
 *
 *********************************************************************
-*/                                     
+*/
 {
   int kstat=0;        /* Local status variable.                          */
   int kpos=0;         /* The position of the error.                      */
@@ -166,85 +166,85 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 			 non rational sder points to eder, if rational sder
 			 has to be allocated to make room for the homogenous
 			 coordinate */
-  
+
   /* Copy curve attributes to local parameters.  */
-  
+
   kn = pc1 -> in;
   kk = pc1 -> ik;
   st = pc1 -> et;
   kdim = pc1 -> idim;
   kind = pc1 ->ikind;
-  
+
   if (kind == 2 || kind == 4)
     {
       scoef = pc1 -> rcoef;
       kdim +=1;
-      sder = newarray(kdim*(ider+1),DOUBLE); 
+      sder = newarray(kdim*(ider+1),DOUBLE);
       if (sder==NULL) goto err101;
     }
   else
     {
       scoef = pc1 -> ecoef;
-      sder = eder;  
+      sder = eder;
     }
-  
+
   /* Check the input. */
-  
+
   if (kdim < 1) goto err102;
-  
+
   if (kk < 1) goto err110;
-  
+
   if (kn < kk) goto err111;
-  
+
   if (st[kk-1] == st[kk] || st[kn-1] == st[kn]) goto err112;
-  
+
   if (ider < 0) goto err178;
-  
+
   if (pc1->ikind == 1 || pc1->ikind == 3)
     kder = min(kk-1,ider);
   else
     kder = ider;
-  
+
   /* Allocate space for B-spline values and derivatives. */
-  
+
   ebder = newarray(kk*(kder+1),double);
   if (ebder == NULL) goto err101;
-  
+
   /* Set all the elements of sder to 0. */
-  
+
   for (ki=0; ki<(ider+1)*kdim; ki++) sder[ki] = DNULL;
-  
+
   /* Compute the values and derivatives of the nonzero B-splines and
      update ileft if necessary.                                      */
-  
+
   s1220(st,kk,kn,ileft,ax,kder,ebder,&kstat);
-  
+
   if (kstat < 0) goto error;
-  
+
   kleft = *ileft;
-  
+
   /* Multiply together as indicated above. */
-  
+
   /* ki steps through the appropriate kk B-spline coefficients while kih steps
      through the B-spline value and derivatives for the B-spline given by ki.*/
-  
+
   kih = 0;
   for (ki=kleft-kk+1; ki<=kleft; ki++)
     {
-      
+
       /* kj counts through the kder+1 derivatives to be computed.
 	 kjh steps through sder once for each ki to accumulate the contribution
 	 from the different B-splines.
 	 kl1 points to the first component of B-spline coefficient no. ki. */
-      
+
       kjh = 0; kl1 = kdim*ki;
       for (kj=0; kj<=kder; kj++)
 	{
-	  
+
 	  /* The value of the B-spline derivative is stored in tt while
 	     kl2 steps through the idim components of this B-spline
 	     coefficient. */
-	  
+
 	  tt = ebder[kih++]; kl2 = kl1;
 	  for (kl=0; kl<kdim; kl++,kjh++,kl2++)
 	    {
@@ -252,23 +252,23 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 	    }
 	}
     }
-  
+
   /* Free memory. */
-  
+
   /* If rational curve calculate the derivatives based on derivatives in
      homogenous coordinates */
-  
+
   if (kind == 2 || kind == 4)
     {
       s6ratder(sder,pc1->idim,ider,eder,&kstat);
       if (kstat<0) goto error;
       freearray(sder);
     }
-  
+
   freearray(ebder);
-  
+
   /* Successful computations.  */
-  
+
   *jstat = 0;
   goto out;
 
