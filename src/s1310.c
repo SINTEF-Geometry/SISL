@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1310.c,v 1.2 1994-12-01 13:30:36 pfu Exp $
+ * $Id: s1310.c,v 1.3 1994-12-01 14:29:31 pfu Exp $
  *
  */
 
@@ -79,6 +79,14 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
 *                       adds intersection curve and curve in the parameter
 *                       planes to the SISLIntcurve object according to the
 *                       values of i3Dcur and iplane
+*                       If these curves have already been generated in the
+*                       topology part of the intersections, they will first
+*                       be free'ed.  This makes it possible to generate
+*                       curves for both parameter planes if required.
+*                       The geometry will have been generated in the case when
+*                       the intersection curve represents a constant parameter
+*                       line in the parmeter plane of the surface.
+
 *              jstat  - status messages
 *                         = 3      : Iteration stopped due to singular
 *                                    point or degenerate surface. A part
@@ -105,6 +113,10 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
 * Revised by : Tor Dokken, SI, Oslo, Norway, 03-April-1988
 *              Maximal step length calculation, new strategy around
 *              singular points, error correction
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Dec. 1994.  Added check for
+*              NULL 'pinter' and to avoid re-generating the geometry when it has
+*              already been generated in the topology part (constant curve, type 9).
+*              This fixes memory problems.
 *
 *********************************************************************
 */
@@ -239,6 +251,25 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
   SISLCurve *q3dcur=NULL;/* Pointer to 3-D curve                     */
   SISLCurve *qp1cur=NULL;/* Pointer to curve in first parameter plane*/
   SISLCurve *qp2cur=NULL;/* Pointer to curve in 2.nd  parameter plane*/
+
+
+  *jstat = 0;
+
+  if ( pinter == NULL )  goto err150;
+
+
+  /* Check if the geometry already has been generated in the topology part.
+     This will be the case if the geometry is along a constant parameter line.
+     Freeing the geometry her makes it possible to generate curves for both
+     parameter planes if required (the pointers will be set to NULL further
+     down, i.e. would cause a memory leak if they weren't free'ed here. */
+
+  if (pinter->itype == 9)
+  {
+    if (pinter->pgeom)  freeCurve(pinter->pgeom);
+    if (pinter->ppar1)  freeCurve(pinter->ppar1);
+    if (pinter->ppar2)  freeCurve(pinter->ppar2);
+  }
 
 
   /* Make maximal step length based on box-size of surface */
@@ -1557,6 +1588,12 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
   s6err("s1310",*jstat,kpos);
   goto out;
 
+
+/* Error - NULL pointer was given */
+  err150 :
+    *jstat = -150;
+    s6err("s1310",*jstat,kpos);
+    goto out;
 
   /* Only degenerate or singular guide points */
  err185: *jstat = -185;
