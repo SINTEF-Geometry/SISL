@@ -133,6 +133,25 @@ EXCEPTIONS=true
 
 CC			="A_C_compiler_for_use_on_$(PLATFORM)"
 
+
+ifeq "$(PLATFORM)" "winnt"
+
+  CC			=cl
+  LD			=link
+
+  ifeq "$(MODE)" "opt"
+    CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo # -MD
+    CDEFS		=-DWIN32 -DMICROSOFT
+    LDFLAGS		=-nologo -opt:ref
+
+  else
+    CFLAGS		=-GX -nologo -Yd -Z7 # -MDd
+    CDEFS		=-DWIN32 -DMICROSOFT
+    LDFLAGS		=-nologo -DEBUGTYPE:BOTH 
+
+  endif
+endif
+
 ifeq "$(PLATFORM)" "hp-pa"
 
   CC			=/usr/bin/cc

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.10 1995-09-22 13:14:14 jka Exp $
+ * $Id: s2501.c,v 1.11 2001-06-12 11:07:33 jbt Exp $
  *
  */
 
@@ -28,8 +28,8 @@ s2501(SISLSurf *surf, int ider, double derive[], double normal[],
  void s2501(surf, ider, derive, normal, gaussian, jstat)
       SISLSurf *surf;
       int ider;
-      double derive[],
-      double normal[],
+      double derive[];
+      double normal[];
       double *gaussian;
       int *jstat;
 #endif

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.9 1995-09-22 13:15:40 jka Exp $
+ * $Id: s2503.c,v 1.10 2001-06-12 11:07:33 jbt Exp $
  *
  */
 
@@ -27,8 +27,8 @@ void s2503(SISLSurf *surf, int ider, double derive[], double normal[],
  void s2503(surf, ider, derive, normal, meancurvature, jstat)
       SISLSurf *surf;
       int ider;
-      double derive[],
-      double normal[],
+      double derive[];
+      double normal[];
       double *meancurvature;
       int *jstat;
 #endif

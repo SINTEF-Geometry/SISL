@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.7 2001-03-19 15:59:00 afr Exp $
+ * $Id: s2545.c,v 1.8 2001-06-12 11:07:34 jbt Exp $
  *
  */
 
@@ -28,7 +28,7 @@ s2545(SISLSurf *surf, int curvature_type, int export_par_val, int pick_subpart,
       double **garr, int *stat)
 #else
 void
-s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
+s2545(surf, curvature_type, export_par_val, pick_subpart, boundary, n_u, n_v,
       scale, garr, stat)
      SISLSurf *surf;
      int curvature_type;

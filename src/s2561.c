@@ -30,7 +30,7 @@ s2561( double     derive[],
        double     b[],
        int       *jstat )
 #else
-void s2561( derive, idim, t, n, b, jstat )
+void s2561( derive, idim, p, t, n, b, jstat )
      double      derive[];
      int         idim;
      double      p[];

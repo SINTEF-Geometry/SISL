@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2514.c,v 1.2 1995-09-22 13:20:11 jka Exp $
+ * $Id: s2514.c,v 1.3 2001-06-12 11:07:34 jbt Exp $
  *
  */
 
@@ -28,8 +28,8 @@ void
  void s2514(surf, ider, derive, normal, gaussian, stat)
       SISLSurf *surf;
       int ider;
-      double derive[],
-      double normal[],
+      double derive[];
+      double normal[];
       double gaussian[];
       int *stat;
 #endif

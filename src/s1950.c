@@ -20,7 +20,7 @@ void s1950(SISLCurve *oldcurve,SISLCurve *rankcurve,rank_info *ranking,
 	   int mini,int maxi,SISLCurve **newcurve,double maxerr[],int *stat)
 #else
 void s1950(oldcurve, rankcurve, ranking, eps, epsco,
-	   startfix, endfix, jncont mini, maxi, newcurve, maxerr, stat)
+	   startfix, endfix, jncont, mini, maxi, newcurve, maxerr, stat)
      SISLCurve	*oldcurve;
      SISLCurve	*rankcurve;
      rank_info	*ranking;

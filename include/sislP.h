@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.51 2001-03-19 15:57:56 afr Exp $
+ * $Id: sislP.h,v 1.52 2001-06-12 11:07:33 jbt Exp $
  *
  */
 
@@ -51,7 +51,18 @@
 #include <limits.h>
 
 /* Get system spesific values */
-#include <values.h>
+#ifdef MICROSOFT
+#  define MAXDOUBLE   1.79769313486231570e+308
+#  define MAXFLOAT    ((float)3.40282346638528860e+38)
+#  define MINDOUBLE   2.22507385850720140e-308
+#  define MINFLOAT    ((float)1.17549435082228750e-38)
+#  define M_PI        3.14159265358979323846
+#  define M_PI_2      1.57079632679489661923
+#  define M_SQRT2     1.41421356237309504880
+#  define M_SQRT1_2   0.70710678118654752440
+#else
+#  include <values.h>
+#endif
 
 /* Get floating point limits */
 #include <float.h>

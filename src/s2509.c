@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2509.c,v 1.4 1995-09-22 13:18:32 jka Exp $
+ * $Id: s2509.c,v 1.5 2001-06-12 11:07:34 jbt Exp $
  *
  */
 
@@ -28,8 +28,8 @@ s2509(SISLSurf *surf, int ider, double derive[], double normal[],
  void s2509(surf, ider, derive, normal, mehlum, jstat)
       SISLSurf *surf;
       int ider;
-      double derive[],
-      double normal[],
+      double derive[];
+      double normal[];
       double *mehlum;
       int *jstat;
 #endif
