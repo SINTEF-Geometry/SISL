@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1990.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1990.c,v 1.2 1994-11-07 10:25:35 vsk Exp $
  *
  */
 
@@ -313,8 +313,9 @@ void s1990(ps,aepsge,jstat)
 		tlen += tn[k1+k2]*tn[k1+k2];
 	      }
 	    tlen = sqrt(tlen);
+	    /* KYS 070494 : multiplied ANGULAR_TOLERANCE by 1.0e-2 */
 	    if (slen[ki]>aepsge && slen[ki+1]>aepsge &&
-		scorn[ki] > ANGULAR_TOLERANCE)
+		scorn[ki] > 1.0e-2*ANGULAR_TOLERANCE)
 	      for (k2=0; k2 < kdim; k2++) tn[k1+k2] /= tlen;
 	    else 
 	      {
@@ -323,7 +324,7 @@ void s1990(ps,aepsge,jstat)
 	      }
 	  }
 	
-	if (kcount == 4) continue;
+	if (kcount == 4) continue;   /* Degenerate control polygon patch */
 	
 	/* We are treating the first patch. */
 	
@@ -348,7 +349,17 @@ void s1990(ps,aepsge,jstat)
 	    if (tlen > DNULL)
 	      for (k1=0; k1 < kdim; k1++) ps->pdir->ecoef[k1] /= tlen;
 	    else
-	      continue;
+	      /* KYS 070494 : 'continue' replaced by the following block {} */
+	      /* There are nonzero normals pointing in
+		 opposite directions, i.e. not simple case */
+	      {
+		if (khor <= kver)
+		  ps->pdir->igtpi = 1;
+		else
+		  ps->pdir->igtpi = 2;
+		ps->pdir->aang = PI;
+		goto out;
+	      }
 	    
 	    /* Computing the angle of the cone. */
 	    
@@ -463,7 +474,7 @@ void s1990(ps,aepsge,jstat)
 	    if (s6dist(scoef,scoef + (k2*kdim),kdim) >aepsge)
 	      {
 		s6diff(scoef,scoef + (k2*kdim),kdim,svec2);
-		if (s6ang(svec1,svec2,kdim) > ANGULAR_TOLERANCE) break;
+		if (s6ang(svec1,svec2,kdim) > 1.0e-2*ANGULAR_TOLERANCE) break;
 	      }
 	  
 	  if (k2 == kn1*kn2)
