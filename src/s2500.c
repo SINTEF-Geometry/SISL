@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2500.c,v 1.1 1995-01-18 09:48:53 pfu Exp $
+ * $Id: s2500.c,v 1.2 1995-01-18 13:12:23 pfu Exp $
  *
  */
 
@@ -154,24 +154,29 @@ s2500(SISLSurf *surf, double parvalue[], int *leftknot1,
   /* Successful computations  */
 
   *istat = kistat;
-  return;
+  goto out;
 
 
    /* The surface is degenerated at (u,v) */
 war002:
   *istat = 2;
-  return;
+  goto out;
 
   /* Error. Input (surface) pointer is NULL. */
 err150:
   *istat = -150;
   s6err("s2500", *istat, 0);
-  return;
+  goto out;
 
   /* Error in lower level routine.  */
 error:
   *istat = kistat;
   s6err("s2500",*istat,0);
+  goto out;
+
+
+out:
+
   return;
 
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2502.c,v 1.1 1995-01-18 09:48:53 pfu Exp $
+ * $Id: s2502.c,v 1.2 1995-01-18 13:14:49 pfu Exp $
  *
  */
 
@@ -152,29 +152,31 @@ void
   }
 
 
-
   /* Successful computations  */
 
   *istat = kistat;
-  return;
+  goto out;
+
 
 
    /* The surface is degenerated at (u,v) */
 war002:
   *istat = 2;
-  return;
+  goto out;
 
   /* Error. Input (surface) pointer is NULL. */
 err150:
   *istat = -150;
   s6err("s2502", *istat, 0);
-  return;
-
+  goto out;
 
    /* Error in lower level routine.  */
 error:
   *istat = kistat;
   s6err("s2502",*istat,0);
-  return;
+  goto out;
 
+out:
+
+  return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.1 1995-01-18 09:48:53 pfu Exp $
+ * $Id: s2503.c,v 1.2 1995-01-18 13:15:51 pfu Exp $
  *
  */
 
@@ -102,7 +102,7 @@ void s2503(SISLSurf *surf, int der, double parvalue[], double derive[],
 *                    right derivatives, the mean c. will be correct (provided
 *                    that the surface is not degenerate).
 *               (iv) The dimension of the space in which the surface lies must
-*                    be 1,2 or 3.  The routine return istat < 0.
+*                    be 1,2 or 3.  The routine returns istat < 0.
 *
 *
 * WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.             Date: 1995-1
@@ -177,18 +177,19 @@ void s2503(SISLSurf *surf, int der, double parvalue[], double derive[],
   }
 
 
-
-
   /* Successful computations  */
 
   *istat = 0;
-  return;
+  goto out;
 
 
    /* Error in input, surf->idim != 1,2 or 3 */
 err105:
   *istat = -105;
   s6err("s2503", *istat, 0);
-  return;
+  goto out;
 
+out:
+
+  return;
 }

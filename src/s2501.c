@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.1 1995-01-18 09:48:53 pfu Exp $
+ * $Id: s2501.c,v 1.2 1995-01-18 13:13:34 pfu Exp $
  *
  */
 
@@ -179,18 +179,21 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
   }
 
 
-
-
   /* Successful computations  */
 
   *istat = 0;
-  return;
+  goto out;
+
 
 
    /* Error in input, surf->idim != 1,2 or 3 */
 err105:
   *istat = -105;
   s6err("s2501",*istat,0);
-  return;
+  goto out;
 
+
+out:
+
+  return;
 }
