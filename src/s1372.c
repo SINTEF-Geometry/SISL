@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1372.c,v 1.2 1994-11-14 13:04:48 pfu Exp $
+ * $Id: s1372.c,v 1.3 1994-11-14 14:28:50 pfu Exp $
  *
  */
 
@@ -55,7 +55,7 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *              epoint - SISLPoint on cylinder axis
 *              edirec - Direction of cylinder axis
 *              aradiu - Radius of the circle or sphere
-*              idim   - Dimension of the space in which the plane/line
+*              idim   - Dimension of the space in which the cylinder/circle
 *                       lies. idim should be equal to two or three.
 *              aepsco - Computational resolution.
 *              aepsge - Geometry resolution.
@@ -90,7 +90,7 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *
 * WRITTEN BY : Christophe Rene Birkeland, SINTEF, 93-06.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Updated to
-*              handle 2D input.
+*              handle 2D input as specified in header.
 *
 *********************************************************************
 */
