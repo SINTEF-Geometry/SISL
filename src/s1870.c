@@ -14,7 +14,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
    s1870(SISLSurf *ps1, double *pt1, int idim, double aepsge,
 	 int *jpt,double **gpar1,int *jcrv,SISLIntcurve ***wcurve,int *jstat)
 #else
@@ -33,7 +33,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find all intersections between a B-spline surface
 *              and a point.
 *
@@ -41,7 +41,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 *
 * INPUT      : ps1    - Pointer to the surface.
 *              pt1    - coordinates of the point.
-*	       idim   - number of coordinates in pt1.	
+*	       idim   - number of coordinates in pt1.
 *              aepsge - Geometry resolution.
 *
 *
@@ -49,7 +49,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 * OUTPUT     : jpt    - Number of single intersection points.
 *              gpar1  - Array containing the parameter values of the
 *                       single intersection points in the parameter
-*                       interval of the surface. The points lie 
+*                       interval of the surface. The points lie
 *                       continuous. Intersection curves are stored in wcurve.
 *              jcrv   - Number of intersection curves.
 *              wcurve - Array containing descriptions of the intersection
@@ -61,7 +61,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 *                       intersection point can be returned as an intersection
 *                       curve. Use s1327 to decide if an intersection curve
 *                       is a point on one of the curves.
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -76,7 +76,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 *
 *********************************************************************
 */
-{            
+{
   int kstat = 0;           /* Local status variable.                       */
   int kpos = 0;            /* Position of error.                           */
   int trackflag = 0;
@@ -84,15 +84,15 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
   int *pretop=NULL;
   SISLTrack **wtrack=NULL;
   double aepsco = REL_COMP_RES;
-  
-  sh1870(ps1, pt1, idim, aepsco, aepsge, trackflag, jtrack, wtrack,
-	 jpt, gpar1, pretop, jcrv, wcurve, &kstat);
+
+  sh1870(ps1, pt1, idim, aepsco, aepsge, trackflag, &jtrack, &wtrack,
+	 jpt, gpar1, &pretop, jcrv, wcurve, &kstat);
   if(kstat < 0) goto error;
 
   if(pretop != NULL) freearray(pretop);
-  
-  /* 
-   * Intersections found.  
+
+  /*
+   * Intersections found.
    * --------------------
    */
 
@@ -101,11 +101,11 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 
   /* Error in lower level routine.  */
 
-  error : 
+  error :
     *jstat = kstat;
     s6err("s1870",*jstat,kpos);
     goto out;
 
   out:
     return;
-}                                               
+}
