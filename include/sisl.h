@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.14 1994-12-05 14:58:08 pfu Exp $
+ * $Id: sisl.h,v 1.15 1994-12-19 16:43:37 pfu Exp $
  *
  */
 
@@ -652,7 +652,7 @@ void s1511(SISLSurf *,double [],double [],int,double,double,
 #ifndef S1514
 extern
 #endif
-void s1514(SISLSurf *,double *,int,double,double,double,SISLIntcurve *,
+void s1514(SISLSurf *,double [],int,double,double,double,SISLIntcurve *,
 	   int,int,int *);
 #ifndef S1515
 extern
