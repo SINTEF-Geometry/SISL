@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.2 1995-01-18 13:15:51 pfu Exp $
+ * $Id: s2503.c,v 1.3 1995-01-18 13:19:45 pfu Exp $
  *
  */
 
@@ -22,18 +22,14 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void s2503(SISLSurf *surf, int der, double parvalue[], double derive[],
-	   double normal[], int *leftknot1, int *leftknot2,
-	   double *meancurvature, int *istat)
+	   double normal[], double *meancurvature, int *istat)
 #else
- void s2503(surf, der, parvalue, derive, normal, leftknot1, leftknot2,
-	    meancurvature, istat)
+ void s2503(surf, der, parvalue, derive, normal, meancurvature, istat)
       SISLSurf *surf;
       int der;
       double parvalue[];
       double derive[],
       double normal[],
-      int *leftknot1;
-      int *leftknot2;
       double *meancurvature;
       int *istat;
 #endif

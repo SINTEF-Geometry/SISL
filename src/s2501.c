@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.2 1995-01-18 13:13:34 pfu Exp $
+ * $Id: s2501.c,v 1.3 1995-01-18 13:20:51 pfu Exp $
  *
  */
 
@@ -23,18 +23,16 @@
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
-      double normal[], int *leftknot1, int *leftknot2, double *gaussian,
+      double normal[], double *gaussian,
       int *istat)
 #else
- void s2501(surf, der, parvalue, derive, normal, leftknot1, leftknot2, gaussian,
+ void s2501(surf, der, parvalue, derive, normal, gaussian,
 	    istat)
       SISLSurf *surf;
       int der;
       double parvalue[];
       double derive[],
       double normal[],
-      int *leftknot1;
-      int *leftknot2;
       double *gaussian;
       int *istat;
 #endif
@@ -56,19 +54,6 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
 *                     Size = 3.
 *
 *  INPUT/OUTPUT :
-*     leftknot1     - Pointer to the interval in the knot vector in the
-*                     first parameter direction where parvalue[0] is found,
-*                     that is:
-*                          et1[leftknot1] <= parvalue[0] < et1[leftknot1+1].
-*                     leftknot1 should be set equal to zero at the first call
-*                     to the routine.
-*
-*     leftknot1     - Pointer to the interval in the knot vector in the
-*                     second parameter direction where parvalue[1] is found,
-*                     that is:
-*                          et2[leftknot2] <= parvalue[1] < et2[leftknot2+1].
-*                     leftknot2 should be set equal to zero at the first call
-*                     to the routine.
 *
 *  OUTPUT       :
 *     gaussian      - Gaussian of the surface in (u,v) =
