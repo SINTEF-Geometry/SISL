@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: destruct.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: destruct.c,v 1.2 1994-09-02 07:51:48 pfu Exp $
  *
  */
 
@@ -31,7 +31,7 @@ void freeCurve(pcurve)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by the curve pointed at by
 *              pcurve.
 *
@@ -41,7 +41,7 @@ void freeCurve(pcurve)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -54,52 +54,63 @@ void freeCurve(pcurve)
 *
 * WRITTEN BY : Vibeke Skytt, SI, 88-05. Arne Laksaa, SI, 89-03.
 *              Vibeke Skytt, SI, 91-01.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-09.  Added free'ing
+*              of ecoef for rationals when icopy==0.  ecoef is ALWAYS
+*              allocated for rationals, regardless of the icopy flag value.
 *
 *********************************************************************
-*/                                                              
+*/
 {
-   int ki;         /* Counter.  */
+  int ki;         /* Counter.  */
 
-  if (pcurve -> icopy != 0)
-    {
-      
-      /* Free arrays.  */
-      
-      freearray(pcurve -> et);
-      freearray(pcurve -> ecoef);
-      if(pcurve -> rcoef != NULL) freearray(pcurve -> rcoef); 
-    }
-  
-  if (pcurve->pdir)
-    {
-      
-      /* Free direction structure. */
-      
-      if(pcurve->pdir->ecoef) freearray(pcurve->pdir->ecoef);
-      if (pcurve->pdir->esmooth != NULL) freearray(pcurve->pdir->esmooth);
-      freearray(pcurve -> pdir);
-    }
-  
-  if (pcurve->pbox)
+
+  if ( pcurve->icopy != 0 )
   {
-     
-     /* Free surrounded SISLbox structure. */
-     
-     if (pcurve->pbox->emax) freearray(pcurve->pbox->emax);
-     if (pcurve->pbox->emin) freearray(pcurve->pbox->emin);
 
-     for (ki=0; ki<3; ki++)
-     {
-	if(pcurve->pbox->e2max[ki]) freearray(pcurve->pbox->e2max[ki]);
-	if(pcurve->pbox->e2min[ki]) freearray(pcurve->pbox->e2min[ki]);
-     }
-     freearray(pcurve -> pbox);
+    /* Free arrays.  */
+
+    freearray(pcurve->et);
+    freearray(pcurve->ecoef);
+    if ( pcurve->rcoef != NULL )  freearray(pcurve->rcoef);
   }
-  
+  else if ( pcurve->ikind == 2  ||  pcurve->ikind == 4 )
+  {
+    /* VSK, 940902. The array pcurve->ecoef is ALWAYS allocated in the
+       constructor for rationals and must be free'ed.                  */
+
+    freearray(pcurve->ecoef);
+  }
+
+  if ( pcurve->pdir )
+  {
+
+    /* Free direction structure. */
+
+    if ( pcurve->pdir->ecoef )  freearray(pcurve->pdir->ecoef);
+    if ( pcurve->pdir->esmooth != NULL )  freearray(pcurve->pdir->esmooth);
+    freearray(pcurve->pdir);
+  }
+
+  if ( pcurve->pbox )
+  {
+
+    /* Free surrounded SISLbox structure. */
+
+    if ( pcurve->pbox->emax )  freearray(pcurve->pbox->emax);
+    if ( pcurve->pbox->emin )  freearray(pcurve->pbox->emin);
+
+    for ( ki=0;  ki < 3;  ki++ )
+    {
+      if ( pcurve->pbox->e2max[ki] )  freearray(pcurve->pbox->e2max[ki]);
+      if ( pcurve->pbox->e2min[ki] )  freearray(pcurve->pbox->e2min[ki]);
+    }
+    freearray(pcurve->pbox);
+  }
+
   /* Free instance of curve. */
-  
+
   freearray(pcurve);
-  
+
   return;
 }
 
@@ -114,7 +125,7 @@ void freeEdge(pedge)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by an instance of the structure
 *              Edge. Also free space occupied by instances of Ptedge
 *              that belongs to pedge.
@@ -125,7 +136,7 @@ void freeEdge(pedge)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -139,40 +150,40 @@ void freeEdge(pedge)
 * WRITTEN BY : Vibeke Skytt, SI, 88-05.
 *
 *********************************************************************
-*/                                     
+*/
 {
-  
+
   SISLPtedge *p1,*p2;  /* Pointers to traverse lists of Ptedge-elements.*/
   SISLPtedge *(*pel);  /* Pointer to an array element.      */
   int ki;                 /* Counter.                          */
-  
+
   /* First free the space occupied by the lists pointed at by
      the array prpt.                                           */
-  
+
   pel = pedge -> prpt;
   for (ki=0; ki<pedge->iedge; ki++)
-    {                              
-      
+    {
+
       /* Traverse the list connected to edge nr ki and free the elements. */
-      
+
       p1 = *pel;
       while (p1 != NULL)
 	{
 	  p2 = p1 -> pnext;
 	  freePtedge(p1);
 	  p1 = p2;
-	}                                                        
+	}
       pel++;
     }
-  
+
   /* Free the space occupied by the prpt array. */
-  
+
   freearray(pedge -> prpt);
-  
+
   /* Free the space occupied by the instance. */
-  
+
   freearray(pedge);
-  
+
   return;
 }
 
@@ -213,7 +224,7 @@ void freeIntcrvlist(viclist,icrv)
    */
 
   int         ki;
-  
+
   /*
    * Free each SISLIntcurve from bottom of the list and u to the top.
    * ------------------------------------------------------------
@@ -279,7 +290,7 @@ void freeIntcurve(pintc)
       freearray(pintc);
     }
   return;
-}  
+}
 
 #if defined(SISLNEEDPROTOTYPES)
 void
@@ -292,7 +303,7 @@ void freeIntdat(pintdat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by an instance of the structure
 *              Intdat. Also free space occupied by instances of Intlist
 *              and SISLIntpt that belongs to intdat.
@@ -303,7 +314,7 @@ void freeIntdat(pintdat)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -318,36 +329,36 @@ void freeIntdat(pintdat)
 * WRITTEN BY : UJK         , SI, 89-04.
 *
 *********************************************************************
-*/                                     
+*/
 {
   int ki;                    /* Counter.                                     */
-  
+
   if (pintdat == NULL) goto out;
-  
+
   /* First free the space occupied by the Intpt's pointed at by
      the array vpoint.                                                       */
-  
+
   for (ki=0; ki<pintdat->ipoint; ki++)
     if (pintdat -> vpoint[ki])   freeIntpt(pintdat -> vpoint[ki]);
-  
+
   /* Free the space occupied by the vpoint array. */
-  
+
   freearray(pintdat -> vpoint);
-  
+
   /* Next free the space occupied by the Intlists pointed at by
      the array vlist.                                                       */
-  
+
   for (ki=0; ki<pintdat->ilist; ki++)
     if    (pintdat -> vlist[ki])   freeIntlist(pintdat -> vlist[ki]);
-  
+
   /* Free the space occupied by the vpoint array. */
-  
+
   freearray(pintdat -> vlist);
-  
+
   /* Free the space occupied by the instance. */
-  
+
   freearray(pintdat);
-  
+
  out:
   return;
 }
@@ -363,7 +374,7 @@ void freeIntlist(plist)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by an instance of the structure
 *              Intlist. The instance contains a list of intersection
 *              points defining an intersection curve.
@@ -374,7 +385,7 @@ void freeIntlist(plist)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -388,12 +399,12 @@ void freeIntlist(plist)
 * WRITTEN BY : Vibeke Skytt, SI, 88-05.
 *
 *********************************************************************
-*/                                     
+*/
 {
   /* Free space. */
 
   freearray(plist);
- 
+
   return;
 }
 
@@ -408,7 +419,7 @@ void freeIntpt(ppt)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space allocated to keep the instance of Intpt
 *              pointed at by ppt.
 *
@@ -418,7 +429,7 @@ void freeIntpt(ppt)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -432,7 +443,7 @@ void freeIntpt(ppt)
 * WRITTEN BY : Ulf J. Krystad, SI, 91-06.
 *
 *********************************************************************
-*/                                     
+*/
 {
   /* Free the arrays contained in the instance. */
 
@@ -466,7 +477,7 @@ void freeIntsurf(intsurf)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space allocated to keep the instance of Intsurf
 *              pointed at by intsurf.
 *
@@ -476,7 +487,7 @@ void freeIntsurf(intsurf)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -490,7 +501,7 @@ void freeIntsurf(intsurf)
 * WRITTEN BY : Michael Floater, SI, 91-11.
 *
 *********************************************************************
-*/                                     
+*/
 {
 
   /* Free the arrays if not NULL. */
@@ -516,7 +527,7 @@ void freeTrimpar(trimpar)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space allocated to keep the instance of Trimpar
 *              pointed at by trimpar.
 *
@@ -526,7 +537,7 @@ void freeTrimpar(trimpar)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -540,7 +551,7 @@ void freeTrimpar(trimpar)
 * WRITTEN BY : Michael Floater, SI, 91-10.
 *
 *********************************************************************
-*/                                     
+*/
 {
 
 
@@ -562,7 +573,7 @@ void freeTrack(ppt)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space allocated to keep the instance of Track
 *              pointed at by ppt.
 *              Curves and surfaces are also removed.
@@ -572,7 +583,7 @@ void freeTrack(ppt)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -586,7 +597,7 @@ void freeTrack(ppt)
 * WRITTEN BY : Ulf J. Krystad, SI, 91-06.
 *
 *********************************************************************
-*/                                     
+*/
 {
   /* Free the arrays contained in the instance. */
 
@@ -606,13 +617,13 @@ void
      freeObject(SISLObject *pobj)
 #else
 void freeObject(pobj)
-     SISLObject *pobj;                                           
+     SISLObject *pobj;
 #endif
 /*
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by the object pointed at by
 *              pobj. Also free the point, curve or surface that the
 *              object represents.
@@ -623,7 +634,7 @@ void freeObject(pobj)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -642,26 +653,26 @@ void freeObject(pobj)
 *              The structure SISLPoint is included.
 *
 *********************************************************************
-*/                                                              
+*/
 {
   int ki;
-  
+
   /* Free point, curve or surface represented by pobj.                */
-  
+
   if (pobj -> iobj == SISLPOINT)
     { if (pobj -> p1 != NULL) freePoint(pobj -> p1); }
   else if (pobj -> iobj == SISLCURVE)
     { if (pobj -> c1 != NULL) freeCurve(pobj -> c1); }
   else if (pobj -> iobj == SISLSURFACE)
     { if (pobj -> s1 != NULL) freeSurf(pobj -> s1);  }
-  
+
   for (ki=0; ki<4; ki++)
     if (pobj->edg[ki] != NULL) freeObject(pobj->edg[ki]);
-  
+
   /* Free instance of object. */
-  
+
   freearray(pobj);
-  
+
   return;
 }
 
@@ -676,7 +687,7 @@ void freePoint(ppoint)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by the point pointed at by
 *              ppoint.
 *
@@ -686,7 +697,7 @@ void freePoint(ppoint)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -695,12 +706,12 @@ void freePoint(ppoint)
 * REFERENCES :
 *
 *-
-* CALLS      : 
+* CALLS      :
 *
 * WRITTEN BY : UJK, SI, 89-04.   Vibeke Skytt, SI, 91-01.
 *
 *********************************************************************
-*/                                                              
+*/
 {
    int ki;   /* Counter.  */
 
@@ -719,11 +730,11 @@ void freePoint(ppoint)
 	 freearray(ppoint->pbox);
 	}
 
-      if ((ppoint -> idim > 3) && 
-	  (ppoint -> icopy != 0) && 
+      if ((ppoint -> idim > 3) &&
+	  (ppoint -> icopy != 0) &&
 	  (ppoint -> ecoef != NULL))
 	freearray(ppoint -> ecoef);	/* Free array.  */
-      
+
       freearray(ppoint);		/* Free instance of point. */
     }
   return;
@@ -740,7 +751,7 @@ void freePtedge(p1)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space allocated by an instance of the structure
 *              Ptedge.
 *
@@ -750,7 +761,7 @@ void freePtedge(p1)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -764,12 +775,12 @@ void freePtedge(p1)
 * WRITTEN BY : Vibeke Skytt, SI, 88-05.
 *
 *********************************************************************
-*/                                     
+*/
 {
   /* Free the space that p1 occupies. */
-  
+
   freearray(p1);
-  
+
   return;
 }
 
@@ -784,7 +795,7 @@ void freeSurf(psurf)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Free the space occupied by the surface pointed at by
 *              psurf.
 *
@@ -794,7 +805,7 @@ void freeSurf(psurf)
 *
 *
 *
-* OUTPUT     : 
+* OUTPUT     :
 *
 *
 * METHOD     :
@@ -807,53 +818,64 @@ void freeSurf(psurf)
 *
 * WRITTEN BY : Vibeke Skytt, SI, 88-05. Arne Laksaa, SI, 89-03.
 *              Vibeke Skytt, SI, 91-01.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-09.  Added free'ing
+*              of ecoef for rationals when icopy==0.  ecoef is ALWAYS
+*              allocated for rationals, regardless of the icopy flag value.
 *
 *********************************************************************
-*/                                                              
+*/
 {
-   int ki;     /* Counter.  */
+  int ki;     /* Counter.  */
 
-  if (psurf->icopy != 0)
-    {
-      
-      /* Free arrays.  */
-      
-      freearray(psurf -> et1);
-      freearray(psurf -> et2);
-      freearray(psurf -> ecoef);
-      if(psurf -> rcoef != NULL) freearray(psurf -> rcoef);
-    }
-  
-  
-  if (psurf->pdir)
-    {
-      
-      /* Free direction structure. */
-      
-      if(psurf->pdir->ecoef) freearray(psurf->pdir->ecoef);
-      if (psurf->pdir->esmooth != NULL) freearray(psurf->pdir->esmooth);
-      freearray(psurf -> pdir);
-    }
-  
-  if (psurf->pbox)
-    {
-      
-      /* Free surrounded SISLbox structure. */
-       
-       if (psurf->pbox->emax) freearray(psurf->pbox->emax);
-       if (psurf->pbox->emin) freearray(psurf->pbox->emin);
 
-       for (ki=0; ki<3; ki++)
-       {
-	  if (psurf->pbox->e2max[ki]) freearray(psurf->pbox->e2max[ki]);
-	  if (psurf->pbox->e2min[ki]) freearray(psurf->pbox->e2min[ki]);
-       }
-       freearray(psurf -> pbox);
+  if ( psurf->icopy != 0 )
+  {
+
+    /* Free arrays.  */
+
+    freearray(psurf->et1);
+    freearray(psurf->et2);
+    freearray(psurf->ecoef);
+    if ( psurf->rcoef != NULL )  freearray(psurf->rcoef);
+  }
+  else if ( psurf->ikind == 2  ||  psurf->ikind == 4 )
+  {
+    /* VSK, 940902. The array pcurve->ecoef is ALWAYS allocated in the
+       constructor for rationals and must be free'ed.                  */
+
+    freearray(psurf->ecoef);
+  }
+
+
+  if ( psurf->pdir )
+  {
+
+    /* Free direction structure. */
+
+    if ( psurf->pdir->ecoef )  freearray(psurf->pdir->ecoef);
+    if ( psurf->pdir->esmooth != NULL )  freearray(psurf->pdir->esmooth);
+    freearray(psurf->pdir);
+  }
+
+  if ( psurf->pbox )
+  {
+
+    /* Free surrounded SISLbox structure. */
+
+    if ( psurf->pbox->emax )  freearray(psurf->pbox->emax);
+    if ( psurf->pbox->emin )  freearray(psurf->pbox->emin);
+
+    for ( ki=0;  ki < 3;  ki++ )
+    {
+      if ( psurf->pbox->e2max[ki] )  freearray(psurf->pbox->e2max[ki]);
+      if ( psurf->pbox->e2min[ki] )  freearray(psurf->pbox->e2min[ki]);
     }
-  
+    freearray(psurf->pbox);
+  }
+
   /* Free instance of surface. */
-  
+
   freearray(psurf);
-  
+
   return;
 }
