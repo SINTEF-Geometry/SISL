@@ -327,10 +327,18 @@ endif
 
 ifeq "$(PLATFORM)" "linux"
 
-  CXX		=g++
+  ifeq "$(USER)" "jnygaard"
+    # 040921: I'm adding this 'personalization' to the common Makefile,
+    #         'cause I don't want my system's gcc to be some crappy old
+    #         version (strangely) required by GoTools! :-) (J.O.)
+    CXX		=g++.3.3.1
+  else
+    CXX		=g++
+  endif
   LDXX		=$(CXX)
 
   ifeq "$(MODE)" "opt"
+
 # Many of these flags may actually slow things down. This has to
 # be measured!
 
@@ -570,6 +578,8 @@ all:		$(addprefix app/, $(CPROGS) $(CXXPROGS)) \
 
 
 varcheck:	
+		@echo ""
+		@echo "USER=" $(USER)
 		@echo ""
 		@echo "PWD=" $(PWD)
 		@echo "(notdir (PWD))=" $(notdir $(PWD))
