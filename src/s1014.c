@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1014.c,v 1.2 1994-11-16 14:21:06 pfu Exp $
+ * $Id: s1014.c,v 1.3 1994-11-16 14:31:54 pfu Exp $
  *
  */
 #define S1014
@@ -39,7 +39,7 @@ static void c_a_f_s9dir();
 void
      s1014(SISLCurve *pc1,double circ_cen[],double circ_rad,
 	   double aepsge,double eps1[],double eps2[],double aradius,
-	   double *parpt1, double *parpt2, double **center,int *jstat)
+	   double *parpt1, double *parpt2, double center[],int *jstat)
 #else
 void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
 		  parpt1,parpt2,center,jstat)
@@ -52,7 +52,7 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
      double aradius;
      double *parpt1;
      double *parpt2;
-     double **center;
+     double center[];
      int    *jstat;
 #endif
 /*
@@ -79,7 +79,8 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
 *              parpt2   - Parameter value of the point on the input circle where the
 *                         fillet ends. Input is a guess value for the iteration.
 *
-* OUTPUT     : center   - 2D center of the (circular) fillet.
+* OUTPUT     : center   - 2D center of the (circular) fillet.  Space must be
+*                         allocated outside the function.
 *              status   - Status:
 *                              = 1      : converged
 *                              = 2      : diverged
@@ -97,7 +98,8 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
 *
 * WRITTEN BY : Johannes Kaasa, SI, April 1992.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Clearified
-*              header and added allocation of 'center'.
+*              header and added allocation of 'center' after changing function
+*              interface declaration.
 *
 *********************************************************************
 */
@@ -263,9 +265,8 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
 
   /* Calculate the centerpoint. */
 
-  *center = newarray(2, DOUBLE);
-  (*center)[0] = (sval1[0] + sval2[0])/2.;
-  (*center)[1] = (sval1[1] + sval2[1])/2.;
+  center[0] = (sval1[0] + sval2[0])/2.;
+  center[1] = (sval1[1] + sval2[1])/2.;
 
   /* Iteration stopped, test if point founds found is within resolution */
 
