@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2511.c,v 1.1 1995-10-03 11:37:26 jka Exp $
+ * $Id: s2511.c,v 1.2 1996-08-14 13:28:06 jka Exp $
  *
  */
 
@@ -61,7 +61,7 @@ void
 *                             + (EG + 4F^2)
 *                             *(9GQ^2 + 9ES^2 + 6GPS + 6EQT) 
 *                             + 5E^3T^2 
-*                             - 2F(3EG + 5F^2)(PT + 9QS)
+*                             - 2F(3EG + 2F^2)(PT + 9QS)
 *                             - 30F(G^2PQ + E^2ST))
 *                             /(16(EG - F^2)^3).
 *
@@ -165,7 +165,7 @@ void
 	 + 6*fundform[2]*P*S
 	 + 6*fundform[0]*Q*T)
 	 + 5*fundform[0]*fundform[0]*fundform[0]*T*T
-	 - 2*fundform[1]*(3*fundform[0]*fundform[2] + 5*fundform[1]*fundform[1])
+	 - 2*fundform[1]*(3*fundform[0]*fundform[2] + 2*fundform[1]*fundform[1])
 	 *(P*T + 9*Q*S)
 	 - 30*fundform[1]*(fundform[2]*fundform[2]*P*Q
 	 + fundform[0]*fundform[0]*S*T);
