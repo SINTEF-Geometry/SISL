@@ -119,11 +119,10 @@ endif
 #------------------------------------------------------------
 
 MODE=nopt
+PROFILING=false
 LIBMODE=true
 GLMODE=opengl
 EXCEPTIONS=true
-
-
 
 #------------------------------------------------------------
 #
@@ -288,7 +287,6 @@ ifeq "$(PLATFORM)" "linux"
     CXXFLAGS	=-g -Wimplicit -Wcomment -Wmain -Woverloaded-virtual -Wreturn-type
     CXXDEFS	=-DLINUX -DCHECKLEVEL4
   endif
-
 endif
 
 
@@ -301,6 +299,13 @@ endif
 
 CXXDEFS			+ =-DGLMODE=$(GLMODE) -D$(EX)
 
+
+ifeq "$(PROFILING)" "true"
+  CFLAGS +=-pg
+  CXXFLAGS +=-pg
+  LDFLAGS +=-pg
+  LDXXFLAGS +=-pg
+endif
 
 
 
@@ -722,17 +727,11 @@ ifeq "$(LIBMODE)" "true"
 
   ifeq "$(PLATFORM)" "winnt"
 
-    #
-    # this is a hack @@@
-    #
-
-    QQCXXLIBS=utils sisl SceneGraph
-
     $(addprefix app/, $(CXXPROGS)):	lib/$(HOSTMODELIB).lib \
 					$(DEPLIBS)
 	$(LDXX) $(LDXXOPTS) -out:$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	        lib/$(HOSTMODELIB).lib \
-		$(addsuffix .lib, $(addprefix lib, $(QQCXXLIBS))) \
+		$(addsuffix .lib, $(addprefix lib, $(DEPLIBSLOCAL))) \
 		gdi32.lib user32.lib glut32.lib glu32.lib opengl32.lib
 	@cp -p $@ $@.exe
 
