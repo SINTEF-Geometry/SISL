@@ -10,7 +10,7 @@
 
 /*
  *
- * $Id: s1226.c,v 1.2 1998-03-16 09:07:50 vsk Exp $
+ * $Id: s1226.c,v 1.3 1999-01-20 12:40:42 jka Exp $
  *
  */
 
@@ -20,7 +20,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1226(SISLCurve *curve,int der,double parvalue,int *leftknot,
       double derive[],double curvature[], double *radius_of_curvature,
       int *jstat)
@@ -40,11 +40,10 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
-* PURPOSE    : To evaluate the position and the first derivative of a 
-*              curve at a given parameter value, in addition to evaulate
-*              the curvature and the radius of curvature in the same value.
-*              Evaluation from the right hand side.
+*
+* PURPOSE    : Evaluate position, first derivative, curvature and radius of
+*              curvature of a curve at a given parameter value, from the
+*              right hand side.
 *
 *
 *
@@ -58,14 +57,14 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 *              parvalue - The parameter value at which to compute
 *                       position and derivatives.
 *
-*                
+*
 *
 * INPUT/OUTPUT : leftknot - Pointer to the interval in the knot vector
 *                        where ax is located. If et is the knot vector,
 *                        the relation
-*                          
+*
 *                          et[ileft] < parvalue <= et[ileft+1]
-* 
+*
 *                        should hold. (If parvalue == et[ik-1] then ileft
 *                        should be ik-1. Here in is the number of B-spline
 *                        coefficients.)
@@ -90,7 +89,7 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 *              curvature - Array of dimension idim
 *              radius_of_curvature -  A radius of curvature =-1, indicates
 *                       that the radius of curvature is infinit.
-*              jstat  - Status messages   
+*              jstat  - Status messages
 *                                         > 0      : Warning.
 *                                         = 0      : Ok.
 *                                         < 0      : Error.
@@ -98,9 +97,9 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 *
 * METHOD     : The derivatives are evaluated from the right hand
 *              side by  s1221
-*              The curvature and the radius of curvature are evaluated 
+*              The curvature and the radius of curvature are evaluated
 *              by s1307
-*             
+*
 * REFERENCES :
 *
 *-
@@ -108,10 +107,10 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 *
 * WRITTEN BY : Cathrine Tegnander
 * MODIFIED BY :
-* REVISED BY : 
+* REVISED BY :
 *
 *********************************************************************
-*/      
+*/
 {
   int ider=2;                 /* minimum number of derivatives needed to
                                  calculated the curvature */
@@ -119,7 +118,7 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
   int kstat=0;                /* local status variable */
   int kpos = 0;               /* local error position  */
   int iknot = 0;              /* local version of leftknot */
-  double *iderive = NULL;     /* pointer to array used to store the position 
+  double *iderive = NULL;     /* pointer to array used to store the position
                                  and the first and second derivatives  */
   double *egeo = NULL;        /* pointer to store curvature and radius of
                                  curvature */
@@ -131,9 +130,9 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
   if (egeo == NULL)
     goto err101;
 
- 
+
   /* Evaluate the derivatives */
-    if (der<2) 
+    if (der<2)
       {
 	s1221(curve,ider,parvalue,&iknot,iderive,&kstat);
 	if (kstat<0) goto error;
@@ -142,7 +141,7 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 	memcopy(derive,iderive,(der+1)*kdim,DOUBLE);
       }
   else
-    { 
+    {
       s1221(curve,der,parvalue,&iknot,derive,&kstat);
       if (kstat<0) goto error;
 
@@ -150,14 +149,14 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
 	memcopy(iderive,derive,3*kdim,DOUBLE);
     }
     *leftknot = iknot;
-  
+
   /* Evaluate the curvature and the radius_of_curvature */
   s1307(iderive,kdim,egeo,&kstat);
   if (kstat<0) goto error;
 
   /* Copy position */
   memcopy(curvature,egeo+kdim*2,kdim,DOUBLE);
-  
+
   *radius_of_curvature = egeo[kdim*3];
 
   /* Free memory */
@@ -165,7 +164,7 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
  freearray(egeo);
 
  /* Successful computations.  */
-  
+
   *jstat = 0;
   goto out;
 
@@ -175,12 +174,11 @@ void s1226(curve,der,parvalue,leftknot,derive,curvature,
   s6err("s1226",*jstat,kpos);
 
   /* Error in lower level routine.  */
-  
+
  error:  *jstat = kstat;
   s6err("S1226",*jstat,kpos);
   goto out;
-  
+
  out: return;
 
 }
-  
