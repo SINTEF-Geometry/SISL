@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1925.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1925.c,v 1.2 1994-06-02 12:19:47 vsk Exp $
  *
  */
 
@@ -405,6 +405,12 @@ s1925 (etau, epoint, inbpnt, eder, et, ebcoef, in, ik, iright, dim, ew1, nur,
 	store = inbpnt * dim * kl + dim1;
 	for (jj = 0; jj < nn; jj++, store += dim)
 	  ebcoef[store] = mcoef[jj];
+
+        if(mcoef != NULL)       /* KYS 200594: healed memory leak */
+        {
+          freearray(mcoef);
+          mcoef = NULL;
+        }
       }
 
   goto out;
