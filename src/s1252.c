@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1252.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1252.c,v 1.2 1994-07-04 15:02:43 boh Exp $
  *
  */
 
@@ -34,7 +34,7 @@ static void s1252_s6dir();
 
 #if defined (SISLNEEDPROTOTYPES)
 void
-      
+
      s1252(SISLCurve *pcurve,double aepsge,double astart,double *cpos,int *jstat)
 #else
 void s1252(pcurve,aepsge,astart,cpos,jstat)
@@ -60,7 +60,7 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
 *
 * OUTPUT     : cpos    - Parameter value of of first curve in intersection
 *                        point.
-*              jstat   - status messages  
+*              jstat   - status messages
 *                                = 2   : Divergence or approximative
 *                                        intersection found.
 *                                = 1   : Intersection found.
@@ -79,8 +79,8 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
 * WRITTEN BY : Tor Dokken, SI, Mars 1989
 *
 *********************************************************************
-*/                       
-{                        
+*/
+{
   int kstat = 0;        /* Local status variable.                          */
   int kpos = 0;         /* Position of error.                              */
   int kleft=0;          /* Variables used in the evaluator.                */
@@ -91,89 +91,89 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
   int kdir=1;           /* Direction of derivative to be calculated        */
   double tstart,tend;   /* Ends of parameter interval of first curve.      */
   double tdelta;        /* Parameter interval of the curves.               */
-  double tdist;         /* Distance between position and origo.            */
+  double tdist=DNULL;   /* Distance between position and origo.            */
   double td;        	/* Distances between old and new parameter value   */
   double tnext;         /* Parameter-value of expression in first curve.   */
   double tprev;         /* Previous difference between the curves.         */
-  double sval[4];       /* Value ,first and second derivative on function  */ 
-  double *st;           /* Knot vector                                     */ 
+  double sval[4];       /* Value ,first and second derivative on function  */
+  double *st;           /* Knot vector                                     */
   double ref;           /* Refferance value for equality test.             */
-  
+
   /* Test input.  */
-  
+
   if (pcurve->idim != 1) goto err106;
-  
+
   kdim = pcurve -> idim;
-  
+
   /* Fetch endpoints and the intervals of parameter interval of curves.  */
-  
+
   st = pcurve->et;
   kn = pcurve->in;
   kk = pcurve->ik;
-  
+
   tstart = *(pcurve->et + pcurve->ik - 1);
   tend   = *(pcurve->et + pcurve->in);
   tdelta = tend - tstart;
   if (tdelta == DNULL) tdelta = fabs(tend);
   if (tdelta == DNULL) tdelta = (double)1.0;
-  
+
   /* Initiate variables.  */
-  
+
   tnext = astart;
-  
+
   /* Evaluate 0-1.st derivatives of function */
-  
+
   s1221(pcurve,kder,tnext,&kleft,sval,&kstat);
   if (kstat < 0) goto error;
 
   tprev = sval[0];
 
   /* Evaluate step */
-  
+
   s1252_s6dir(&td,tnext,sval,tstart,tend);
-  
+
   /* Correct if we not are inside the parameter intervall. */
-  
+
   s1252_s6corr(&td,tnext,st,kn,kk,&kleft,&kdir);
-  
+
   /* Iterate to find the intersection point.  */
-  
+
   for (knbit = 0; knbit < 20; knbit++)
     {
-      
+
       /* If the tnext is a break point test if it is a local maximum */
-      
-      if (kdir == -2 || kdir == 2) 
+
+      if (kdir == -2 || kdir == 2)
 	{
-	  double tder1,tder2; 
+	  double tder1,tder2;
 	  /* Break point, test if local maximum */
-	  
+
 	  s1221(pcurve,kder,tnext,&kleft,sval,&kstat);
 	  if (kstat < 0) goto error;
 	  tder2 = sval[1];
-	  
+
 	  s1227(pcurve,kder,tnext,&kleft,sval,&kstat);
 	  if (kstat < 0) goto error;
 	  tder1 = sval[1];
-	  
+
 	  /*    Test if top point */
-	  
+
 	  if (tder1>=DNULL && tder2<=DNULL) break;
-	  
+
 	  /*    Not a top point */
 	}
-      
-      
+
+
       /* Evaluate 0-1.st derivatives of both curves, dependent of the
 	 sign of td we calculate derivatives from the right or the left */
-      
+
       if (kdir>=1)
 	{
 	  s1221(pcurve,kder,tnext+td,&kleft,sval,&kstat);
 	  if (kstat < 0) goto error;
 	}
       else
-	{ 
+	{
 	  s1227(pcurve,kder,tnext+td,&kleft,sval,&kstat);
 	  if (kstat < 0) goto error;
 	}
@@ -181,41 +181,41 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
         tdist = sval[0];
         if (fabs(tdist) < (double)1.0) ref = (double)2.0;
 	else                           ref = DNULL;
-	
+
         if (tdist >= tprev || DEQUAL(ref+tdist,ref+tprev))
 	{
 	   tnext += td;
-	   
+
 	   /* Evaluate step */
 	   s1252_s6dir(&td,tnext,sval,tstart,tend);
 	   s1252_s6corr(&td,tnext,st,kn,kk,&kleft,&kdir);
-	   
+
 	   if (fabs(td/tdelta) <= REL_COMP_RES) break;
-	   
-	   tprev = tdist; 
-	  
+
+	   tprev = tdist;
+
 	}
-      
+
       /* Not converging, correct and try again. */
-      
+
       else
 	{
-	  
+
 	  td /= (double)2;
 	  if (fabs(td/tdelta) <= REL_COMP_RES) break;
 	}
-      
-      
+
+
     }
-  
-  
+
+
   /* Iteration stopped, test if point founds found is within resolution */
-  
+
   if (tdist <= aepsge)
     *jstat = 1;
   else
     *jstat = 2;
-  
+
   /*ujk,july 89:*/
   /* Test if the iteration is close to a knot */
   if (DEQUAL(tnext,pcurve->et[kleft]))
@@ -224,24 +224,24 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
     *cpos = pcurve->et[kleft+1];
   else
     *cpos = tnext;
-  
+
   /* Iteration completed.  */
-  
+
   goto out;
-  
-  
+
+
   /* Error in input. Conflicting dimensions.  */
-  
+
  err106: *jstat = -106;
   s6err("S1252",*jstat,kpos);
-  goto out;                  
-  
+  goto out;
+
   /* Error in lower level routine.  */
-  
+
   error : *jstat = kstat;
   s6err("S1252",*jstat,kpos);
-  goto out;                  
-  
+  goto out;
+
  out:;
 }
 
@@ -263,12 +263,12 @@ static void s1252_s6corr(gdn,acoef,et,in,ik,ileft,jdir)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Adjust the step to not cross knot values or out
 *              of the curve
 *
 *
-* INPUT      : acoef   - Current parameter value 
+* INPUT      : acoef   - Current parameter value
 *              st      - knots
 *              in      - number of vertices
 *              ik      - polynomial order
@@ -291,34 +291,34 @@ static void s1252_s6corr(gdn,acoef,et,in,ik,ileft,jdir)
 *
 *-
 * CALLS      :
-*              
+*
 *
 * WRITTEN BY : Tor Dokken, SI, Mars 1989
 *
 *********************************************************************
-*/                       
+*/
 {
   int kmult,kstat;
-  
+
   /* Make sure the point is inside the interval */
-  
+
   *gdn = MAX(et[ik-1]-acoef,*gdn);
   *gdn = MIN(et[in]  -acoef,*gdn);
-  
+
   if (acoef+*gdn<et[*ileft] && acoef>et[*ileft])
     {
       *gdn = MAX(et[*ileft]-acoef,*gdn);
     }
-  
+
   else if(acoef<et[*ileft+1] && acoef+*gdn>et[*ileft+1])
     {
       /*  We cross a knot value */
-      
+
       *gdn = MIN(et[*ileft+1]-acoef,*gdn);
     }
-  
+
   /* Make sure that we calculate the left or right handed derivatives */
-  
+
   if (*gdn>=0)
     {
       *jdir = 1;
@@ -327,13 +327,13 @@ static void s1252_s6corr(gdn,acoef,et,in,ik,ileft,jdir)
     {
       *jdir = -1;
     }
-  
+
   kmult = s6knotmult(et,ik,in,ileft,acoef,&kstat);
-  
+
   if (acoef==et[*ileft])
     {
-      
-      if(kmult>ik-2) 
+
+      if(kmult>ik-2)
         {
 	  if (*jdir == -1)
             {
@@ -348,7 +348,7 @@ static void s1252_s6corr(gdn,acoef,et,in,ik,ileft,jdir)
 }
 
 #if defined (SISLNEEDPROTOTYPES)
-static void      
+static void
   s1252_s6dir(double *cdiff,double acoef,double eval[],double astart,
 	      double aend)
 #else
@@ -363,12 +363,12 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To compute the next iteration step
 *
 * INPUT      : eval    - Value and derivative
-*              astart  - The lower interval end 
-*              aend    - The higher interval end 
+*              astart  - The lower interval end
+*              aend    - The higher interval end
 *
 *
 * OUTPUT     : cdiff   - Iteration step
@@ -377,25 +377,25 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
 * WRITTEN BY : Tor Dokken, SI, Mars 1989
 *
 *********************************************************************
-*/                       
-{                                                                     
+*/
+{
   double t1,t2,t3,t4,t5,t6;   /* Constants in equation.                    */
   double tmax;                /* Max values in equation.                   */
   double ttol=(double)1e-10;  /* Relative tolerance in equation.           */
-  
+
   /* Dummy statements to avoid warning. */
   t1=acoef;
   t2=astart;
   t3=aend;
-  
-  
+
+
   t1 =  eval[1];
   t2 =  eval[2];
   t3 =  eval[3]/(double)2.0;
-  
+
   tmax  = max(fabs(t1),fabs(t2));
   tmax  = max(fabs(t3),tmax);
-  
+
   if (DEQUAL(tmax,DNULL))                    *cdiff = DNULL;
   else if (fabs(t3)/tmax < ttol) /* The second degree part is degenerated. */
 	{
@@ -406,7 +406,7 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
 	{
           /* An ordinary second degree equation.    */
 	   t4 = t2*t2 - (double)4*t3*t1;
-	   if (t4 < DNULL) 
+	   if (t4 < DNULL)
 	    {
 	      /* Use linear equation. */
 	      if (fabs(t2) == DNULL )      *cdiff = DNULL;
@@ -419,10 +419,10 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
 	       t5 = (-t2 + t6)/((double)2*t3);
 	       t6 = (-t2 - t6)/((double)2*t3);
 	       t4 = min(fabs(t5),fabs(t6));
-	       
+
                /* We have two solutions and we want to use the one
 	          with the one with smallest value. */
-	  
+
                if (t4 == DNULL)
                 {
 	          /* Use linear equation. */
@@ -434,4 +434,3 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
              }
 	}
 }
-
