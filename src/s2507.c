@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2507.c,v 1.5 1995-06-28 13:05:53 jka Exp $
+ * $Id: s2507.c,v 1.6 1995-06-29 12:08:07 jka Exp $
  *
  */
 
@@ -90,6 +90,8 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
 * WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
 * CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
 *                 Error in explicit curvature.
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
+*                 Used absolute valute in square for principal curvature.
 *****************************************************************************
 */
 {
@@ -126,7 +128,7 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
 
     mc = 0.5*a/b;
 
-    a = sqrt(mc*mc - gc);
+    a = sqrt(fabs(mc*mc - gc));
     k1 = mc + a;
     k2 = mc - a;
 
@@ -171,7 +173,7 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
 
     mc = a/b;
 
-    a = sqrt(mc*mc - gc);
+    a = sqrt(fabs(mc*mc - gc));
     k1 = mc + a;
     k2 = mc - a;
 

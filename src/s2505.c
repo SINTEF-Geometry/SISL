@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2505.c,v 1.6 1995-06-28 13:04:33 jka Exp $
+ * $Id: s2505.c,v 1.7 1995-06-29 12:08:46 jka Exp $
  *
  */
 
@@ -99,8 +99,10 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
 *
 *
 * WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
-* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.           Date: 1995-06
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
 *                 Error in explicit curvature.
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
+*                 Used absolute valute in square for principal curvature.
 *****************************************************************************
 */
 {
@@ -136,8 +138,8 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
 
     mc = 0.5*a/b;
 
-    *absCurvature = fabs(mc + sqrt(mc*mc - gc)) +
-       fabs(mc - sqrt(mc*mc - gc));
+    *absCurvature = fabs(mc + sqrt(fabs(mc*mc - gc))) +
+       fabs(mc - sqrt(fabs(mc*mc - gc)));
   }
 
   else if (surf->idim == 2) /* 2D surface */
@@ -178,8 +180,8 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
 
     mc = a/b;
 
-    *absCurvature = fabs(mc + sqrt(mc*mc - gc)) +
-       fabs(mc - sqrt(mc*mc - gc));
+    *absCurvature = fabs(mc + sqrt(fabs(mc*mc - gc))) +
+       fabs(mc - sqrt(fabs(mc*mc - gc)));
   }
   else /* When surf->idim != 1,2 or 3 */
   {
