@@ -124,6 +124,20 @@ LIBMODE=true
 GLMODE=opengl
 EXCEPTIONS=true
 
+
+
+#------------------------------------------------------------
+#
+#	A Borland trick
+#
+#------------------------------------------------------------
+
+ifeq "$(PLATFORM)" "borland"
+  SPACEIFNOBORLAND= 
+else
+  SPACEIFNOBORLAND=
+endif
+
 #------------------------------------------------------------
 #
 #	C specifics.
@@ -148,6 +162,24 @@ ifeq "$(PLATFORM)" "winnt"
     CFLAGS		=-GX -nologo -Yd -Z7 -MDd
     CDEFS		=-DWIN32 -DMICROSOFT
     LDFLAGS		=-nologo -DEBUGTYPE:BOTH 
+
+  endif
+endif
+
+ifeq "$(PLATFORM)" "borland"
+
+  CC			=bcc32
+  LD			=ilink32
+
+  ifeq "$(MODE)" "opt"
+    CFLAGS		=-6 -O2
+    CDEFS		=-DWIN32
+    LDFLAGS		=
+
+  else
+    CFLAGS		=-6 -v
+    CDEFS		=-DWIN32
+    LDFLAGS		=
 
   endif
 endif
@@ -234,6 +266,25 @@ ifeq "$(PLATFORM)" "winnt"
     CXXFLAGS		=-TP -GX -GR -nologo -Yd -Z7 -MDd
     CXXDEFS		=-DWIN32 -DMICROSOFT
     LDXXFLAGS		=-nologo -DEBUGTYPE:BOTH 
+
+  endif
+endif
+
+
+ifeq "$(PLATFORM)" "borland"
+
+  CXX			=bcc32
+  LDXX			=ilink32
+
+  ifeq "$(MODE)" "opt"
+    CXXFLAGS		=-6 -P -O2
+    CXXDEFS		=-DWIN32
+    LDXXFLAGS		=
+
+  else
+    CXXFLAGS		=-6 -P -v
+    CXXDEFS		=-DWIN32
+    LDXXFLAGS		=
 
   endif
 endif
@@ -745,11 +796,11 @@ ifeq "$(LIBMODE)" "true"
   else
 
     $(addprefix app/, $(CXXPROGS)):	lib/$(HOSTMODELIB).a $(DEPLIBS)
-	$(LDXX) $(LDXXOPTS) -o $@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
+	$(LDXX) $(LDXXOPTS) -o$(SPACEIFNOBORLAND)$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	        -l$(LIBNAME) $(CXXLIBS)
 
     $(addprefix app/, $(CPROGS)):	lib/$(HOSTMODELIB).a $(DEPLIBS)
-	$(LD) $(LDOPTS) -o $@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
+	$(LD) $(LDOPTS) -o$(SPACEIFNOBORLAND)$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	      -l$(LIBNAME) $(CLIBS)
 
   endif
@@ -782,11 +833,11 @@ else
   else
 
     $(addprefix app/, $(CXXPROGS)):	$(NOAPPCXXOBJS)
-	$(LDXX) $(LDXXOPTS) -o $@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
+	$(LDXX) $(LDXXOPTS) -o$(SPACEIFNOBORLAND)$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	        $(NOAPPCXXOBJS) $(CXXLIBS)
 
     $(addprefix app/, $(CPROGS)):	$(NOAPPCOBJS)
-	$(LD) $(LDOPTS) -o $@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
+	$(LD) $(LDOPTS) -o$(SPACEIFNOBORLAND)$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	      $(NOAPPCOBJS) $(CLIBS)
 
   endif
@@ -814,7 +865,7 @@ lib/$(PLATFORM)/$(MODE)/%.o:	src/%.C
 		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
 		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
 		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
-		$(CXX) $(CXXOPTS) -c src/$*.C -o $@
+		$(CXX) $(CXXOPTS) -o$(SPACEIFNOBORLAND)$@ -c src/$*.C
 ifeq "$(PLATFORM)" "winnt"
 		@mv $*.obj $@
 endif
@@ -824,7 +875,7 @@ lib/$(PLATFORM)/$(MODE)/%.o:	app/%.C
 		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
 		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
 		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
-		$(CXX) $(CXXOPTS) -c app/$*.C -o $@
+		$(CXX) $(CXXOPTS) -o$(SPACEIFNOBORLAND)$@ -c app/$*.C
 ifeq "$(PLATFORM)" "winnt"
 		@mv $*.obj $@
 endif
@@ -834,7 +885,7 @@ lib/$(PLATFORM)/$(MODE)/%.o:	src/%.c
 		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
 		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
 		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
-		$(CC) $(COPTS) -c src/$*.c -o $@
+		$(CC) $(COPTS) -o$(SPACEIFNOBORLAND)$@ -c src/$*.c
 ifeq "$(PLATFORM)" "winnt"
 		@mv $*.obj $@
 endif
@@ -844,7 +895,7 @@ lib/$(PLATFORM)/$(MODE)/%.o:	app/%.c
 		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
 		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
 		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
-		$(CC) $(COPTS) -c app/$*.c -o $@
+		$(CC) $(COPTS) -o$(SPACEIFNOBORLAND)$@ -c app/$*.c
 ifeq "$(PLATFORM)" "winnt"
 		@mv $*.obj $@
 endif

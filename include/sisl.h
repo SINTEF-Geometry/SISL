@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.44 2001-03-19 15:57:56 afr Exp $
+ * $Id: sisl.h,v 1.45 2001-11-16 14:43:03 afr Exp $
  *
  */
 
@@ -39,7 +39,7 @@
 #define SISLNEEDPROTOTYPES
 #endif
 
-#if defined(__STDC__) || defined (c_plusplus) || defined (__cplusplus)
+#if defined(__STDC__) || defined (c_plusplus) || defined (__cplusplus) || defined(__BORLANDC__)
 #undef SISLNEEDPROTOTYPES
 #define SISLNEEDPROTOTYPES
 #endif

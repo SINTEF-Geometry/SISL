@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.52 2001-06-12 11:07:33 jbt Exp $
+ * $Id: sislP.h,v 1.53 2001-11-16 14:43:04 afr Exp $
  *
  */
 
@@ -51,7 +51,7 @@
 #include <limits.h>
 
 /* Get system spesific values */
-#ifdef MICROSOFT
+#if defined(_MSC_VER) || defined(__BORLANDC__)
 #  define MAXDOUBLE   1.79769313486231570e+308
 #  define MAXFLOAT    ((float)3.40282346638528860e+38)
 #  define MINDOUBLE   2.22507385850720140e-308
