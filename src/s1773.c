@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1773.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1773.c,v 1.2 1995-08-10 08:57:24 jka Exp $
  *
  */
 #define S1773
@@ -57,20 +57,25 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
 *********************************************************************
 *
 * PURPOSE    : Newton iteration on the distance function between
-*              a surface and a point to find a closest point or an
+*              a surface and a point, to find a closest point or an
 *              intersection point.
+*              If a bad choice for the guess parameters is given in, the
+*              iteration may end at a local, not global closest point.
 *
 *
-* INPUT      : ppoint   - Pointer to the point in the intersection.
-*              psurface - Pointer to the surface in the intersection.
+* INPUT      : ppoint   - The point in the closest point problem.
+*              psurf    - The surface in the closest point problem.
 *              aepsge   - Geometry resolution.
-*              estart   - Start value of the first curve to the iteration.
-*              eend     - End value of the second curve to the iteration.
+*              estart   - Surface parameters giving the start of the search
+*                         area (umin, vmin).
+*              eend     - Surface parameters giving the end of the search
+*                         area (umax, vmax).
+*              enext    - Surface guess parameters for the closest point
+*                         iteration.
 *
 *
 *
-* OUTPUT     : gpos    - Parameter value of the curve in intersection
-*                        or closest point.
+* OUTPUT     : gpos    - Resulting surface parameters from the iteration.
 *              jstat   - status messages  
 *                                = 2   : A minimum distanse found.
 *                                = 1   : Intersection found.
@@ -84,6 +89,8 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
 *
 *
 * WRITTEN BY : Arne Laksaa, SI, May 1989
+* Revised by : Johannes Kaasa, SINTEF Oslo, August 1995.
+*              Introduced a local copy of enext, to avoid changes.
 *
 *********************************************************************
 */                       
@@ -106,6 +113,10 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   double *sdiff;            /* Difference between the point and the surf.  */
   double *snorm;            /* Normal vector of the surface, dummy.        */
   double snext[2];          /* Parameter values                            */
+  double guess[2];          /* Local copy of enext.                        */
+  
+  guess[0] = enext[0];
+  guess[1] = enext[1];
   
   /* Test input.  */
   
@@ -115,7 +126,7 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   
   if (kdim == 1)
     {
-      s1173(ppoint,psurf,aepsge,estart,eend,enext,gpos,&kstat);
+      s1173(ppoint,psurf,aepsge,estart,eend,guess,gpos,&kstat);
       if (kstat < 0)
         goto error;
       else
@@ -150,9 +161,9 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   
   /* Evaluate 0-1.st derivatives of surface */
   /* printf("\n lin: \n %#20.20g %#20.20g",
-     enext[0],enext[1]); */
+     guess[0],guess[1]); */
   
-  s1421(psurf,kder,enext,&kleft1,&kleft2,sval,snorm,&kstat);
+  s1421(psurf,kder,guess,&kleft1,&kleft2,sval,snorm,&kstat);
   if (kstat < 0) goto error;
   
   /* Compute the distanse vector and value and the new step. */
@@ -164,7 +175,7 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   
   t1[0] = td[0];
   t1[1] = td[1];
-  s1773_s9corr(t1,enext[0],enext[1],estart[0],eend[0],estart[1],eend[1]);
+  s1773_s9corr(t1,guess[0],guess[1],estart[0],eend[0],estart[1],eend[1]);
   
   /* Iterate to find the intersection point.  */
   
@@ -172,8 +183,8 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
     {
       /* Evaluate 0-1.st derivatives of surface */
       
-      snext[0] = enext[0] + t1[0];
-      snext[1] = enext[1] + t1[1];
+      snext[0] = guess[0] + t1[0];
+      snext[1] = guess[1] + t1[1];
       
       s1421(psurf,kder,snext,&kleft1,&kleft2,sval,snorm,&kstat);
       if (kstat < 0) goto error;
@@ -191,11 +202,11 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
       
       if (tdist < tprev/(double)2 || kdir)
 	{
-          enext[0] += t1[0];
-          enext[1] += t1[1];
+	   guess[0] += t1[0];
+	   guess[1] += t1[1];
   
 	  /* printf("\n %#20.20g %#20.20g",
-		 enext[0],enext[1]); */
+	     guess[0],guess[1]); */
   
 	  
           td[0] = t1[0] = tdn[0];
@@ -203,7 +214,7 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
 	  
 	  /* Correct if we are not inside the parameter intervall. */
 	  
-	  s1773_s9corr(t1,enext[0],enext[1],estart[0],eend[0],estart[1],eend[1]);
+	  s1773_s9corr(t1,guess[0],guess[1],estart[0],eend[0],estart[1],eend[1]);
           tprev = tdist;
 
 	  if ( (fabs(t1[0]/tdelta[0]) <= REL_COMP_RES) &&
@@ -218,8 +229,8 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
           t1[1] /= (double)2;
           /* knbit--;  */
 	}
-      if (enext[0]==enext[0]+t1[0] &&
-	  enext[1]==enext[1]+t1[1]) break;
+      if (guess[0]==guess[0]+t1[0] &&
+	  guess[1]==guess[1]+t1[1]) break;
     }
   
   /* Iteration stopped, test if point founds found is within resolution */
@@ -235,8 +246,8 @@ void s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   else
      *jstat = 2;
   
-  gpos[0] = enext[0];
-  gpos[1] = enext[1];
+  gpos[0] = guess[0];
+  gpos[1] = guess[1];
   
   /* Iteration completed.  */
   

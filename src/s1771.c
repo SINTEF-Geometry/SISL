@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1771.c,v 1.2 1994-09-08 09:03:31 pfu Exp $
+ * $Id: s1771.c,v 1.3 1995-08-10 08:57:00 jka Exp $
  *
  */
 #define S1771
@@ -61,20 +61,25 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
 *********************************************************************
 *
 * PURPOSE    : Newton iteration on the distance function between
-*              a curve and a point to find a closest point or an
+*              a curve and a point, to find a closest point or an
 *              intersection point.
+*              If a bad choice for the guess parameter is given in, the
+*              iteration may end at a local, not global closest point.
 *
 *
-* INPUT      : ppoint  - Pointer to the point in the intersection.
-*              pcurve  - Pointer to the curve in the intersection.
-*              aepsge  - Geometry resolution.
-*              astart  - Start value of the first curve to the iteration.
-*              aend    - End value of the second curve to the iteration.
+* INPUT      : ppoint  - The point in the closest point problem.
+*              pcurve  - The curve in the closest point problem.
+*              aepsge  - Geometrical resolution.
+*              astart  - Curve parameter giving the start of the search
+*                        interval.
+*              aend    - Curve parameter giving the end of the search
+*                        interval.
+*              anext   - Curve guess parameter for the closest point
+*                        iteration.
 *
 *
 *
-* OUTPUT     : cpos    - Parameter value of the curve in intersection
-*                        or closest point.
+* OUTPUT     : cpos    - Resulting curve parameter from the iteration.
 *              jstat   - status messages
 *                                = 2   : A minimum distanse found.
 *                                = 1   : Intersection found.
