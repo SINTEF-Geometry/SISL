@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.40 1997-12-30 11:27:30 jka Exp $
+ * $Id: sislP.h,v 1.41 1998-01-23 15:07:35 jka Exp $
  *
  */
 
@@ -2049,6 +2049,10 @@ void sh1993(SISLCurve *,double,int *);
 extern
 #endif
 void sh1994(SISLSurf *,double,int *);
+#ifndef SH6CLOSEVERT
+extern
+#endif
+void sh6closevert(SISLCurve *,SISLSurf *,double *,double []);
 #ifndef  SH6COMEDG
 extern
 #endif
@@ -3768,6 +3772,10 @@ void sh1993();
 extern
 #endif
 void sh1994();
+#ifndef SH6CLOSEVERT
+extern
+#endif
+void sh6closevert();
 #ifndef  SH6COMEDG
 extern
 #endif
