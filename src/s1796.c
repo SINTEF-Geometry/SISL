@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1796.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1796.c,v 1.2 2000-03-29 08:42:53 vsk Exp $
  *
  */
 #define S1796
@@ -73,6 +73,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
 {
   int kstat = 0;     /* Local status variable.                           */
   int kpos = 0;      /* Position of the error.                           */
+  int turned = 0;    /* Use as mark if dir of curve2 is turned.		 */
   int kn;            /* Number of vertices of curve.                     */
   int kdim;	     /* Dimension of the space in which the objects lie. */
   int kin;           /* The index to the vertice to treat.               */
@@ -99,8 +100,10 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
   /* We have to turn the direction into the smallest angel. */
   
   if (aang > PIHALF)
+  {
     aang = PI - aang;
-  
+    turned = 1;
+  }
   
   /* The first basis vector. */
   
@@ -116,6 +119,8 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
   for (k1=0; k1 < kdim; k1++)
     scen2[k1] /= tlen;
   
+  if (turned)  
+     for (k1=0; k1 < kdim; k1++)    scen2[k1] = -scen2[k1];
   
   
   /* Here we are treating each patch in the control polygon separately.*/
@@ -124,7 +129,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
     {
       
       /* Here we make an aproximative tangents to the curve
-	 using the control polygon. The tangents is also normalized
+	 using the control polygon. The tangents are also normalized
 	 by deviding with its own length. */
       
       for (tlen=DNULL,k1=0; k1 < kdim; k1++,k2++)
@@ -141,14 +146,14 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
 	for (k1=0; k1 < kdim; k1++) t[k1] = scen1[k1];
       
       t2 = scen2[0]*t[0];
-      for (k2=1; k2<kdim; k2++)
-	t2 += scen2[k2]*t[k2];
+      for (k1=1; k1<kdim; k1++)
+	t2 += scen2[k1]*t[k1];
       
       if (t2 <= DNULL) continue;
       
       t1 = scen1[0]*t[0];
-      for (k2=1; k2<kdim; k2++)
-	t1 += scen1[k2]*t[k2];
+      for (k1=1; k1<kdim; k1++)
+	t1 += scen1[k1]*t[k1];
       
       tang = t1/sqrt(t1*t1 + t2*t2);
       
@@ -174,6 +179,8 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
   for (k1=0; k1 < kdim; k1++)
     scen2[k1] /= tlen;
   
+  if (turned)  
+     for (k1=0; k1 < kdim; k1++)    scen2[k1] = -scen2[k1];
   
   /* Here we are treating each patch in the control polygon separately.*/
   
@@ -181,7 +188,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
     {
       
       /* Here we make an aproximative tangents to the curve
-	 using the control polygon. The tangents is also normalized
+	 using the control polygon. The tangents are also normalized
 	 by deviding with its own length. */
       
       for (tlen=DNULL,k1=0; k1 < kdim; k1++,k2++)
@@ -199,14 +206,14 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
       
       
       t2 = scen2[0]*t[0];
-      for (k2=1; k2<kdim;k2++)
-	t2 += scen2[k2]*t[k2];
+      for (k1=1; k1<kdim;k1++)
+	t2 += scen2[k1]*t[k1];
       
       if (t2 <= DNULL) continue;
       
       t1 = scen1[0]*t[0];
-      for (k2=1; k2<kdim; k2++)
-	t1 += scen1[k2]*t[k2];
+      for (k1=1; k1<kdim; k1++)
+	t1 += scen1[k1]*t[k1];
       
       tang = t1/sqrt(t1*t1 + t2*t2);
       
