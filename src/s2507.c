@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2507.c,v 1.8 1995-08-01 10:51:35 jka Exp $
+ * $Id: s2507.c,v 1.9 1995-09-22 13:17:36 jka Exp $
  *
  */
 
@@ -106,7 +106,7 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
 
    if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
    {
-      s2513(surf, ider, 0, derive, normal, fundform, jstat);
+      s2513(surf, ider, 2, 0, derive, normal, fundform, jstat);
       if (*jstat < 0) goto error;
       
       gc = (fundform[3]*fundform[5]-fundform[4]*fundform[4])

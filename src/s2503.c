@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.8 1995-08-01 09:03:23 jka Exp $
+ * $Id: s2503.c,v 1.9 1995-09-22 13:15:40 jka Exp $
  *
  */
 
@@ -105,7 +105,7 @@ void s2503(SISLSurf *surf, int ider, double derive[], double normal[],
 
    if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
    {
-      s2513(surf, ider, 0, derive, normal, fundform, jstat);
+      s2513(surf, ider, 2, 0, derive, normal, fundform, jstat);
       if (*jstat < 0) goto error;
       
       *meancurvature = 0.5*(fundform[3]*fundform[2] - 2*fundform[4]*fundform[1] 

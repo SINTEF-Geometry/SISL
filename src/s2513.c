@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2513.c,v 1.6 1995-08-01 10:54:45 jka Exp $
+ * $Id: s2513.c,v 1.7 1995-09-22 13:11:56 jka Exp $
  *
  */
 
@@ -22,12 +22,13 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-   s2513(SISLSurf *surf, int ider, int normalized, double derive[], 
+   s2513(SISLSurf *surf, int ider, int type, int normalized, double derive[], 
 	 double normal[], double fundform[], int *stat)
 #else
-   void s2513(surf, ider, normalized, derive, normal, fundform, stat)
+   void s2513(surf, ider, type, normalized, derive, normal, fundform, stat)
       SISLSurf *surf;
       int ider;
+      int type;
       int normalized;
       double derive[];
       double normal[];
@@ -43,6 +44,10 @@ void
 *  INPUT        :
 *     surf         - Pointer to the surface to evaluate.
 *     ider         - Only implemented for ider=0 (derivative order).
+*     type         - Type of fundamental form:
+*                    = 1 : first fundamental form,
+*                    = 2 : first and second fundamental form,
+*                    = 3 : first, second and third fundamental form.
 *     normalized   - Flag telling if the second fundamental form
 *                    coefficients shall be calculated from normalized or
 *                    not normalized normals:
@@ -83,6 +88,7 @@ void
    double norm_scale; /* Scalation of the surface normal. */
       
    if (ider != 0) goto err178;
+   if (type < 1 || type > 3) goto err178;
       
    if (surf->idim == 1) 
    {
@@ -98,9 +104,12 @@ void
       fundform[1] = derive[1]*derive[2];
       fundform[2] = 1. + derive[2]*derive[2];
 	 
-      fundform[3] = derive[3]/norm_scale;
-      fundform[4] = derive[4]/norm_scale;
-      fundform[5] = derive[5]/norm_scale;
+      if (type > 1)
+      {
+	 fundform[3] = derive[3]/norm_scale;
+	 fundform[4] = derive[4]/norm_scale;
+	 fundform[5] = derive[5]/norm_scale;
+      }
    }
       
    else if (surf->idim == 3) 
@@ -118,9 +127,12 @@ void
       fundform[1] = s6scpr(&derive[3], &derive[6], 3);
       fundform[2] = s6scpr(&derive[6], &derive[6], 3);
 	 
-      fundform[3] = (s6scpr(normal, &derive[9], 3))/norm_scale;
-      fundform[4] = (s6scpr(normal, &derive[12], 3))/norm_scale;
-      fundform[5] = (s6scpr(normal, &derive[15], 3))/norm_scale;
+      if (type > 1)
+      {
+	 fundform[3] = (s6scpr(normal, &derive[9], 3))/norm_scale;
+	 fundform[4] = (s6scpr(normal, &derive[12], 3))/norm_scale;
+	 fundform[5] = (s6scpr(normal, &derive[15], 3))/norm_scale;
+      }
    }
    else 
    {

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2544.c,v 1.1 1995-09-20 08:15:45 jka Exp $
+ * $Id: s2544.c,v 1.2 1995-09-22 13:23:26 jka Exp $
  *
  */
 
@@ -170,7 +170,7 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
     else if (*jstat != 2) /* The surface is not degenerate */
     {
        /* Find factors in fundamental form */
-       s2513(surf, 0, 1, derive, normal, val, jstat);
+       s2513(surf, 0, 2, 1, derive, normal, val, jstat);
        
        if (*jstat < 0)
 	  goto error;

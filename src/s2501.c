@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.9 1995-08-01 08:39:11 jka Exp $
+ * $Id: s2501.c,v 1.10 1995-09-22 13:14:14 jka Exp $
  *
  */
 
@@ -103,7 +103,7 @@ s2501(SISLSurf *surf, int ider, double derive[], double normal[],
 
    if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
    {
-      s2513(surf, ider, 0, derive, normal, fundform, jstat);
+      s2513(surf, ider, 2, 0, derive, normal, fundform, jstat);
       if (*jstat < 0) goto error;
       
       *gaussian = (fundform[3]*fundform[5]-fundform[4]*fundform[4])

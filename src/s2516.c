@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2516.c,v 1.1 1995-08-21 13:22:13 jka Exp $
+ * $Id: s2516.c,v 1.2 1995-09-22 13:21:09 jka Exp $
  *
  */
 
@@ -99,7 +99,7 @@ void
 
    if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
    {
-      s2513(surf, ider, 0, derive, normal, fundform, stat);
+      s2513(surf, ider, 2, 0, derive, normal, fundform, stat);
       if (*stat < 0) goto error;
       
       coef1 = fundform[3]*fundform[2] - 2*fundform[4]*fundform[1]

@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.33 1995-09-19 08:32:51 jka Exp $
+ * $Id: sislP.h,v 1.34 1995-09-22 13:07:57 jka Exp $
  *
  */
 
@@ -1349,7 +1349,7 @@ void s2512(SISLSurf *, int, int, int, double [], int *, int *, double [], int *)
 #ifndef  S2513
 extern
 #endif
-void s2513(SISLSurf *, int, int, double [], double [], double [], int *);
+void s2513(SISLSurf *, int, int, int, double [], double [], double [], int *);
 #ifndef  S2514
 extern
 #endif

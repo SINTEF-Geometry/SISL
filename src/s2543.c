@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2543.c,v 1.5 1995-09-19 13:45:33 jka Exp $
+ * $Id: s2543.c,v 1.6 1995-09-22 13:22:10 jka Exp $
  *
  */
 
@@ -138,7 +138,7 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
       
       /* Calculate the fundamental forms. */
       
-      s2513(surf, ider, 1, derive, normal, fundform, jstat);
+      s2513(surf, ider, 2, 1, derive, normal, fundform, jstat);
       if (*jstat < 0) goto error;
       
       /* Calculate the transformation matrix. */
