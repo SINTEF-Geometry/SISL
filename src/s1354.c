@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1354.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1354.c,v 1.2 1994-08-15 13:55:52 pfu Exp $
  *
  */
 
@@ -43,7 +43,7 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * Purpose: To remove as many knots as possible from oldcurve
 *          without perturbing this spline more than eps, using the ranking
 *          information in rank_info which was obtained from the spline
@@ -156,7 +156,7 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 *     index in t, t[k-1+5] has index 5), and since we are to remove
 *     all knots in the first ranking groups, we remove the first groups[i-1]
 *     knots of prio (assuming for simplicity that groups[-1]=0).
-*     In the last group we reach into (which consists of knots no. 
+*     In the last group we reach into (which consists of knots no.
 *     prio[groups[i-1]+1], prio[groups[i-1]+2],...,prio[groups[i]])
 *     knots are removed uniformly on index, meaning that if we are to remove
 *     half the knots in this group, we pick every other knot as they are
@@ -185,6 +185,8 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 *
 * Written by : Knut Moerken, University of Oslo, July 1992, based on an
 *              earlier Fortran version.
+* Changed by: Paal Fugelli, SINTEF, 1994-07.
+*             Changed to fix several major memory leakage problems.
 *
 *********************************************************************
 */
@@ -207,8 +209,8 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 					 coefficients that should be
 					 left in newcurve.            */
 
-                                  /* For the use of the other variables,
-				     see the code below.              */
+				/* For the use of the other variables,
+				   see the code below.              */
   int i, start, stop, indx, count, r, p, hn;
   SISLCurve *hcurve = NULL;
   double h;
@@ -219,19 +221,6 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
   del_array = newarray(mprio-k, char);
   if (del_array == NULL) goto err101;
 
-  /* We need local_err for storing the error in approximation until we
-     know that we have an approximation with error smaller than the tolerance,
-     then we can transfer the error to maxerr. */
-
-  local_err = newarray(dim, double);
-  if (local_err == NULL) goto err101;
-
-  /* The routine sh1365 which computes the spline approximation also returns
-     an upper bound for the l2-error in l2-err. */
-
-  l2_err = newarray(dim, double);
-  if (l2_err == NULL) goto err101;
-
   /* In case we do not enter the while loop at all we must give newcurve
      a value. */
 
@@ -241,174 +230,181 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
   /* Iterate by binary search until the lower and upper bound on how many
      knots to include are essentially equal. */
 
-  while (mini+1 < maxi) 
+  while (mini+1 < maxi)
+  {
+
+    /* To start with none of the knots of rankspline are marked
+       for removal. */
+
+    for (i=0; i<mprio-k; i++) del_array[i] = 0;
+
+    /* We then have to find out which knots to remove. We remove knots
+       group by group, with start pointing (into prio) to the first knot
+       of the current group and stop to the one following the last of this
+       group. */
+
+    start = 0;
+    stop = group[0];
+    count = 0;
+
+    /* We remove all knots of each group and mark them in del_array
+       until this would mean that we have removed too many. */
+
+    while (stop <= antrem)
     {
+      for (i=start; i<stop; i++) del_array[prio[i]] = 1;
 
-      /* To start with none of the knots of rankspline are marked
-	 for removal. */
+      count++;
 
-      for (i=0; i<mprio-k; i++) del_array[i] = 0;
-
-      /* We then have to find out which knots to remove. We remove knots
-	 group by group, with start pointing (into prio) to the first knot
-	 of the current group and stop to the one following the last of this
-	 group. */
-
-      start = 0;
-      stop = group[0];
-      count = 0;
-
-      /* We remove all knots of each group and mark them in del_array
-         until this would mean that we have removed too many. */
-
-      while (stop <= antrem)
-	{
-	  for (i=start; i<stop; i++) del_array[prio[i]] = 1;
-
-	  count++;
-
-	  if (count < antgr)
-	    {
-	      start = stop;
-	      stop = group[count];
-	    }
-	  else
-	    {
-
-	      /* start=stop signifies that we have reached the end. */
-
-	      stop = stop + 1;
-	      start = stop + 1;
-	    }
-	}
-
-      /* Now there are p more knots to remove from a group containing
-	 p knots. These p knots are removed "uniformly on index". */
-
-      r = stop - start;
-      p = antrem - start;
-
-      if (p > 0)
-	{
-	  h = (double) (r+1) / (double) p;
-	  for (i=0; i<p; i++)
-	    {
-	      indx = start - 1 + (int) floor( h*(i+0.5)+0.5 );
-	      del_array[prio[indx]] = 1;
-	    }
-	}
-
-      /* Gives the number of coefficients in the new spline to be computed. */
-
-      hn = mprio - antrem ;
-
-      /* The new knot vector is stored in ltau. */
-
-      if (ltau != NULL) freearray(ltau);
-      ltau = newarray(hn+k, double);
-      if (ltau == NULL) goto err101;
-
-      /* Set the first and last k knots. */
-
-      for (i=0; i<k; i++)
-	{
-	  ltau[i] = rankcurve->et[i];
-	  ltau[i+hn] = rankcurve->et[i+mprio];
-	}
-
-      /* Set the remaining knots as indicated by del_array. */
-
-      for (indx=k, i=0; i<mprio-k; i++)
-	if (!del_array[i]) ltau[indx++] = rankcurve->et[i+k];
-
-      /* Compute an approximation on the new knot vector and store it
-	 in hcurve. */
-
-      sh1365(oldcurve, ltau, k, hn, startfix, endfix,
-		  &hcurve, &local_err, &l2_err, &lstat);
-      if (lstat < 0) goto err;
-
-      /* Check the error. big signifies that the error in one of the
-	 components is larger than the tolerance. bigco signifies that
-	 the error in one of the components is larger than the (usually
-	 much smaller) tolerance epsco. */
-      big = 0;
-      bigco = 0;
-
-      for (i=0; i<dim; i++)
-	{
-	  big = big || (local_err[i] > eps[i]);
-	  bigco = bigco || (local_err[i] > epsco[i]);
-	}
-
-      /* The error is too large if it is big or if it is bigco and the
-	 number of coefficients is smaller than nlim. The latter test is
-	 important when the sum of the number of derivatives to be kept
-	 fixed at the two ends is larger than k. */
-
-      big = big || (bigco && hn < nlim);
-
-      if (big)
-	{
-
-	  /* If the error was too big, we just throw away hcurve and
-	     indicate that an upper bound for the number of knots to
-	     remove is antrem. */
-
-	  if (hcurve != NULL) freeCurve(hcurve);
-	  maxi = antrem;
-	}
+      if (count < antgr)
+      {
+	start = stop;
+	stop = group[count];
+      }
       else
-	{
+      {
 
-	  /* If the error is acceptable we know that we can remove at least
-	     antrem knots and store hcurve in newcurve. We also save the
-	     error in maxerr. */
+	/* start=stop signifies that we have reached the end. */
 
-	  mini = antrem;
-	  if (*newcurve != NULL) freeCurve(*newcurve);
-	  *newcurve = hcurve;
-	  for (i=0; i<dim; i++)  maxerr[i] = local_err[i];
-	}
-
-      /* The number of knots to be removed next time is half way between
-	 mini and maxi. */
-
-      antrem = mini + (maxi-mini)/2;
+	stop = stop + 1;
+	start = stop + 1;
+      }
     }
 
-  /* Free space before exiting. */
+    /* Now there are p more knots to remove from a group containing
+       p knots. These p knots are removed "uniformly on index". */
 
-  freearray(ltau);
+    r = stop - start;
+    p = antrem - start;
 
-  freearray(del_array);
+    if (p > 0)
+    {
+      h = (double) (r+1) / (double) p;
+      for (i=0; i<p; i++)
+      {
+	indx = start - 1 + (int) floor( h*(i+0.5)+0.5 );
+	del_array[prio[indx]] = 1;
+      }
+    }
 
-  freearray(local_err);
+    /* Gives the number of coefficients in the new spline to be computed. */
 
-  freearray(l2_err);
+    hn = mprio - antrem ;
+
+    /* The new knot vector is stored in ltau.  It might already be allocated
+       from the last iteration, so free it first if required. */
+
+    if (ltau != NULL) freearray(ltau);
+    ltau = newarray(hn+k, double);
+    if (ltau == NULL) goto err101;
+
+    /* Set the first and last k knots. */
+
+    for (i=0; i<k; i++)
+    {
+      ltau[i] = rankcurve->et[i];
+      ltau[i+hn] = rankcurve->et[i+mprio];
+    }
+
+    /* Set the remaining knots as indicated by del_array. */
+
+    for (indx=k, i=0; i<mprio-k; i++)
+      if (!del_array[i]) ltau[indx++] = rankcurve->et[i+k];
+
+    /* Compute an approximation on the new knot vector and store it
+       in hcurve.
+       sh1365() will allocate space for hcurve (with icopy==1), local_err
+       and l2_err.
+       Need local_err to store the error of the approximation until we know
+       that we have an approximation with error smaller than the tolerance,
+       then we can transfer the error to maxerr.
+       Must remember to free local_err and l2_err since there will be
+       a memory leak if they were allocated in the previous iteration. */
+
+    if (local_err != NULL) freearray(local_err);
+    if (l2_err != NULL) freearray(l2_err);
+
+    sh1365(oldcurve, ltau, k, hn, startfix, endfix,
+	   &hcurve, &local_err, &l2_err, &lstat);
+    if (lstat < 0) goto err;
+
+    /* Check the error. big signifies that the error in one of the
+       components is larger than the tolerance. bigco signifies that
+       the error in one of the components is larger than the (usually
+       much smaller) tolerance epsco. */
+    big = 0;
+    bigco = 0;
+
+    for (i=0; i<dim; i++)
+    {
+      big = big || (local_err[i] > eps[i]);
+      bigco = bigco || (local_err[i] > epsco[i]);
+    }
+
+    /* The error is too large if it is big or if it is bigco and the
+       number of coefficients is smaller than nlim. The latter test is
+       important when the sum of the number of derivatives to be kept
+       fixed at the two ends is larger than k. */
+
+    big = big || (bigco && hn < nlim);
+
+    if (big)
+    {
+
+      /* If the error was too big, we just throw away hcurve and
+	 indicate that an upper bound for the number of knots to
+	 remove is antrem. */
+
+      if (hcurve != NULL) freeCurve(hcurve);
+      hcurve = NULL;
+      maxi = antrem;
+    }
+    else
+    {
+
+      /* If the error is acceptable we know that we can remove at least
+	 antrem knots and store hcurve in newcurve. We also save the
+	 error in maxerr. */
+
+      mini = antrem;
+      if (*newcurve != NULL) freeCurve(*newcurve);
+      *newcurve = hcurve;
+      hcurve = NULL;
+      for (i=0; i<dim; i++)  maxerr[i] = local_err[i];
+    }
+
+    /* The number of knots to be removed next time is half way between
+       mini and maxi. */
+
+    antrem = mini + (maxi-mini)/2;
+  }
+
   *stat = 0;
-  return;
+
+  goto out;
+
+
 
   /* Error in memory allocation. */
 
-  err101:
-    *stat = -101;
-    goto out;
+err101:
+  *stat = -101;
+  goto out;
 
   /* Error in lower level routine. */
 
-  err:
-    *stat = lstat;
-    s6err("s1354", *stat, pos);
+err:
+  *stat = lstat;
+  s6err("s1354", *stat, pos);
 
   /* Clean up before exit. */
 
-  out:
-    if (del_array != NULL) freearray(del_array);
-    if (local_err != NULL) freearray(local_err);
-    if (l2_err != NULL) freearray(l2_err);
-    if (ltau != NULL) freearray(ltau);
+out:
+  if (hcurve != NULL) freeCurve(hcurve);
+  if (del_array != NULL) freearray(del_array);
+  if (local_err != NULL) freearray(local_err);
+  if (l2_err != NULL) freearray(l2_err);
+  if (ltau != NULL) freearray(ltau);
 
-    return;
+  return;
 }
-
