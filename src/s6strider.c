@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6strider.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6strider.c,v 1.2 1994-07-06 09:21:13 mif Exp $
  *
  */
 
@@ -181,17 +181,24 @@ void s6strider(eder,idim,ider,gder,jstat)
     if(binom == NULL) goto err179;
   }
   else
+  { 
     binom = bidum;
-
-  for(j=0; j<=ider; j++)
-  {
-    /* Calculate the new row of binomial coefficients. */
-  
-    binom[j] = 1;  
-    for(i=j-1; i>=1; i--)
-      binom[i] += binom[i-1];
   }
+
+  for(j=0,k=0; j<=ider; j++,k+=j)
+  {
+      /* Calculate the new row of binomial coefficients. */
   
+      binom[k] = 1;
+  
+      for(i=k+1; i<k+j; i++)
+      {
+          binom[i] = binom[i-j-1] + binom[i-j];
+      }
+
+      binom[k+j] = 1;
+  }
+
   /* Set up space for sum1 and sum2 if necessary.
      Use new arrays only when idim > 4. */
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6sratder.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6sratder.c,v 1.2 1994-07-06 09:21:13 mif Exp $
  *
  */
 
@@ -200,16 +200,18 @@ void s6sratder(eder,idim,ider1,ider2,gder,jstat)
       binom = bidum;
   }
 
-  for(j=0; j<=idermax; j++)
+  for(j=0,k=0; j<=idermax; j++,k+=j)
   {
       /* Calculate the new row of binomial coefficients. */
   
-      binom[j] = 1;
+      binom[k] = 1;
   
-      for(i=j-1; i>=1; i--)
+      for(i=k+1; i<k+j; i++)
       {
-          binom[i] += binom[i-1];
+          binom[i] = binom[i-j-1] + binom[i-j];
       }
+
+      binom[k+j] = 1;
   }
   
 
