@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.49 1999-11-19 12:54:40 jka Exp $
+ * $Id: sislP.h,v 1.50 1999-11-22 12:34:06 jka Exp $
  *
  */
 
@@ -970,6 +970,14 @@ void s1528(int,int,int,double [],int,int,int,double **,double **,int *);
 extern
 #endif
 void s1531(double [],int,int,int,double **,int *);
+#ifndef S1540
+extern
+#endif
+void s1540(double [], int, int, double [], int, int, double [], int [], int *);
+#ifndef S1541
+extern
+#endif
+void s1541(SISLCurve *, int, double [], int [], double [], int *);
 #ifndef  S1604
 extern
 #endif
@@ -3010,6 +3018,14 @@ void s1528();
 extern
 #endif
 void s1531();
+#ifndef S1540
+extern
+#endif
+void s1540();
+#ifndef S1541
+extern
+#endif
+void s1541();
 #ifndef  S1604
 extern
 #endif
