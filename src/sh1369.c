@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1369.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1369.c,v 1.2 1994-11-14 10:08:51 poeh Exp $
  *
  */
 
@@ -53,8 +53,8 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
-* PURPOSE    : Find all intersections between a surface and a torus. 
+*
+* PURPOSE    : Find all intersections between a surface and a torus.
 *
 * INPUT      : ps     - Pointer to the surface.
 *              ecentr - The center of the torus (lying in the symmetry plane)
@@ -83,7 +83,7 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 *                       in the parameter interval. The curve-pointers points
 *                       to nothing. (See description of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -97,7 +97,7 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 * REFERENCES :  "How tolerances change in the topology part
 *                of SISL intersections", MF 17/10/91.
 *
-*- 
+*-
 * CALLS      : sh1761       - Find point/object intersections.
 *              hp_s1880       - Put intersections into output format.
 *              s1378       - Put surface into torus equation
@@ -111,28 +111,31 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 * WRITTEN BY : Vibeke Skytt, SI, 88-11.
 * REWRITTEN BY : Bjoern Olav Hoset, SI, 89-06.
 * REVISED BY:  Michael Floater, 93-02. Corrected 1D tolerance.
+* Changed by: Per OEyvind Hvidsten, SINTEF, 94-11.
+*             Added code to handle output parameters jcrv, jsurf
+*             when no intersection was found.
 *
 *********************************************************************
-*/                                                               
-{                                                                     
+*/
+{
   int kstat = 0;              /* Local status variable.                      */
   int kpos = 0;               /* Position of error.                          */
-  int kdim=1;                 /* Dimension of surface in surface/point 
+  int kdim=1;                 /* Dimension of surface in surface/point
 				 intersection.                               */
   int kdeg = 1001;            /* Code that the implice surface is a torus    */
   double simpli[16];           /* Array for representation of torus-surface   */
   double snorm[3];            /* Normalized normal vector                    */
   double spoint[1];           /* SISLPoint in surface/point intersection.        */
-  double *spar = NULL;        /* Values of intersections in the parameter 
-				 area of the second object. 
+  double *spar = NULL;        /* Values of intersections in the parameter
+				 area of the second object.
 				 Empty in this case.   */
-  SISLSurf *qs = NULL;        /* Pointer to surface in 
+  SISLSurf *qs = NULL;        /* Pointer to surface in
 			     surface/point intersection.*/
-  SISLPoint *qp = NULL;       /* Pointer to point in 
+  SISLPoint *qp = NULL;       /* Pointer to point in
 			     surface/point intersection.  */
-  SISLObject *qo1 = NULL;     /* Pointer to surface in 
+  SISLObject *qo1 = NULL;     /* Pointer to surface in
 			     object/point intersection. */
-  SISLObject *qo2 = NULL;     /* Pointer to point in 
+  SISLObject *qo2 = NULL;     /* Pointer to point in
 			     object/point intersection    */
   SISLIntdat *qintdat = NULL; /* Intersection result */
   SISLObject *track_obj=NULL;
@@ -141,7 +144,7 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 
   int ki;
   double nmax=(double)1.0;
-  /* -------------------------------------------------------- */  
+  /* -------------------------------------------------------- */
 
   if (ps->cuopen_1 == SISL_SURF_PERIODIC ||
       ps->cuopen_2 == SISL_SURF_PERIODIC)
@@ -153,18 +156,18 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
    }
   else
     qkreg = ps;
-  
+
   /*
   * Create new object and connect surface to object.
   * ------------------------------------------------
   */
-  
+
   if (!(track_obj = newObject (SISLSURFACE)))
     goto err101;
   track_obj->s1 = ps;
 
-  /* 
-   * Check dimension.  
+  /*
+   * Check dimension.
    * ----------------
    */
 
@@ -175,17 +178,17 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   if (idim != 3) goto err104;
   if (qkreg -> idim != idim) goto err106;
 
-  /* 
-   * Normalize normal vector. 
+  /*
+   * Normalize normal vector.
    * ------------------------
    */
 
   (void)s6norm(enorm,idim,snorm,&kstat);
   if (kstat<0) goto error;
 
-  /* 
+  /*
    * Put the information concerning the torus in the following sequence
-   * into simpli: Center, normal, big radius, small radius 
+   * into simpli: Center, normal, big radius, small radius
    * ------------------------------------------------------------------
    */
 
@@ -194,16 +197,16 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   simpli[6] = abigr;
   simpli[7] = asmalr;
 
-  /* 
-   * Put surface into torus equation 
+  /*
+   * Put surface into torus equation
    * -------------------------------
-   */ 
+   */
 
   s1378(qkreg,simpli,kdeg,idim,&qs,&kstat);
   if (kstat<0) goto error;
 
-  /* 
-   * Create new object and connect surface to object.  
+  /*
+   * Create new object and connect surface to object.
    * ------------------------------------------------
    */
 
@@ -221,30 +224,30 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   if(!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
-  /* 
-   * Find intersections.  
+  /*
+   * Find intersections.
    * -------------------
    */
 
-  /* Apply corrected tolerance. 
+  /* Apply corrected tolerance.
      Reference: "How tolerances change in the topology part
      of SISL intersections", MF 23/2/93. */
-  
+
   aepsge2 = (double)8.0 * aepsge * asmalr * abigr * abigr;
-    
+
   /* UJK,sept 93, Normalize to get angle tolerances correct */
   for(ki=0; ki<qs->in1*qs->in2;ki++)
      nmax = max(fabs(qs->ecoef[ki]),nmax);
-  
+
   if (nmax >(double)10.0)
   {
      for(ki=0; ki<qs->in1*qs->in2;ki++)
 	qs->ecoef[ki] /= nmax;
      aepsge2 = max((double)1.0e-09,aepsge2/nmax);
   }
-  
+
   /* UJK,sept 93, End of change */
-  
+
   sh1761(qo1,qo2,aepsge2,&qintdat,&kstat);
   if (kstat < 0) goto error;
 
@@ -257,7 +260,7 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   /* Create tracks */
   if (trackflag && qintdat)
     {
- 
+
       refine_all (&qintdat, track_obj, track_obj, simpli, kdeg, aepsge, &kstat);
       if (kstat < 0)
 	goto error;
@@ -271,15 +274,15 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   if (trackflag && qintdat)
     {
       make_tracks (track_obj, track_obj, kdeg, simpli,
-		   qintdat->ilist, qintdat->vlist, 
+		   qintdat->ilist, qintdat->vlist,
 		   jtrack, wtrack, aepsge, &kstat);
       if (kstat < 0)
 	goto error;
 
     }
 
-  /* 
-   * Express intersections on output format.  
+  /*
+   * Express intersections on output format.
    * ---------------------------------------
    */
 
@@ -289,9 +292,14 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 	       2,0,qintdat,jpt,gpar,&spar,pretop,jcrv,wcurve,jsurf,wsurf,&kstat);
       if (kstat < 0) goto error;
     }
-  
-  /* 
-   * Intersections found.  
+  else
+  {
+    *jcrv = 0;
+    *jsurf = 0;
+  }
+
+  /*
+   * Intersections found.
    * --------------------
    */
 
@@ -312,7 +320,7 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 
   /* Dimension not equal to three.  */
 
- err104: *jstat = -104;                          
+ err104: *jstat = -104;
          s6err("sh1369",*jstat,kpos);
          goto out;
 
@@ -338,10 +346,6 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 
   /* Free local surface.  */
     if (qkreg != NULL && qkreg != ps) freeSurf(qkreg);
-  
-return;
-}                                               
-                                           
-                       
-       
 
+return;
+}
