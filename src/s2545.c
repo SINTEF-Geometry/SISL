@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.3 1995-10-12 12:06:01 jka Exp $
+ * $Id: s2545.c,v 1.4 1995-10-12 13:34:09 jka Exp $
  *
  */
 
@@ -81,11 +81,12 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 *
 * OUTPUT  : garr  	   - Array containing the computed values on the grid.
 *		             The allocation is done internally and the dimension
-*			     is  5*(n_u+1)*(n_v+1) if export_par_val is true,
-*		             and 3*(n_u+1)*(n_v+1) if export_par_val is false.
-*                            Each gridpoint consist of 5 values
-*                            (Ui,Vj,x(Ui,Vj),y(Ui,Vj),z(Ui,Vj)) or only the
-*                            focal points (x(Ui,Vj),y(Ui,Vj),z(Ui,Vj)).
+*			     is  (dim+2)*(n_u+1)*(n_v+1) if export_par_val is 
+*                            true, and dim*(n_u+1)*(n_v+1) if export_par_val is
+*                            false.
+*                            Each gridpoint consist of dim+2 values
+*                            (Ui,Vj,x(Ui,Vj),...) or only the
+*                            focal points (x(Ui,Vj),....).
 *			     The sequence is running first in the
 *                            1. parameter direction.
 **
@@ -156,29 +157,29 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 	 s1421(surf, 1, par, &leftknot1, &leftknot2, derive, normal, stat);
 	 if (*stat < 0) goto error;
 	 
+	 /* Calculate the point. */
+
 	 if (surf->idim == 1)
 	 {
-	    normal[0] = - derive[1];
-	    normal[1] = - derive[2];
-	    normal[2] = 1.;
+	    (*garr)[idx2] = derive[0] + scale*offset[idx1 + 2];
+	    idx2 += 1;
 	 }
 	 else if (surf->idim == 2)
 	 {
-	    normal[0] = 0.;
-	    normal[1] = 0.;
-	    normal[2] = 1.;
+	    (*garr)[idx2] = scale*offset[idx1 + 2];
+	    idx2 += 1;
+	 }	    
+	 else if (surf->idim == 3)
+	 {
+	    length = s6norm(normal, 3, Nnormal, stat);
+	    if (*stat < 0) goto error;
+	    for (kl = 0; kl < 3; kl++)
+	       (*garr)[idx2 + kl] = derive[kl] 
+		  + scale*offset[idx1 + 2]*Nnormal[kl];
+	    idx2 += 3;
 	 }
 
-	 length = s6norm(normal, 3, Nnormal, stat);
-	 if (*stat < 0) goto error;
-
-	 /* Calculate the point. */
-
-	 for (kl = 0; kl < 3; kl++)
-	    (*garr)[idx2 + kl] = derive[kl] + scale*offset[idx1 + 2]*Nnormal[kl];
-
 	 idx1 += 3;
-	 idx2 += 3;
       }
    }
 
