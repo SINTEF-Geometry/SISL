@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1373.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1373.c,v 1.2 1994-11-14 15:07:15 pfu Exp $
  *
  */
 
@@ -43,7 +43,7 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find all intersections between a curve and a cone.
 *
 *
@@ -52,8 +52,8 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 *              etop   - Top point on cone.
 *              eaxis  - Point on the cone axis (other than top point).
 *              econe  - SISLPoint on cone surface.
-*              idim   - Dimension of the space in which the plane/line
-*                       lies. idim should be equal to two or three.
+*              idim   - Dimension of the space in which the cone
+*                       lies. idim should be equal to three.
 *              aepsco - Computational resolution.
 *              aepsge - Geometry resolution.
 *
@@ -62,7 +62,7 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 * OUTPUT     : *jpt   - Number of single intersection points.
 *              gpar   - Array containing the parameter values of the
 *                       single intersection points in the parameter
-*                       interval of the curve. The points lie continuous. 
+*                       interval of the curve. The points lie continuous.
 *                       Intersection curves are stored in wcurve.
 *              *jcrv  - Number of intersection curves.
 *              wcurve  - Array containing descriptions of the intersection
@@ -70,7 +70,7 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 *                       in the parameter interval. The curve-pointers points
 *                       to nothing. (See description of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -86,11 +86,12 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 * CALLS      : sh1373, s6err.
 *
 * WRITTEN BY : Christophe Rene Birkeland, SINTEF, 93-06.
-*
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Updated
+*              header to reflect that only 3D input is accepted.
 *
 *********************************************************************
-*/                                                               
-{                                                                     
+*/
+{
   int kstat = 0;              /* Local status variable.                      */
   int kpos = 0;               /* Position of error.                          */
   int trackflag = 0;
@@ -104,8 +105,8 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 
   if(pretop != NULL) freearray(pretop);
 
-  /* 
-   * Intersections found.  
+  /*
+   * Intersections found.
    * --------------------
    */
 
@@ -114,13 +115,11 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 
   /* Error in lower level routine.  */
 
-  error : 
+  error :
     *jstat = kstat;
     s6err("s1373",*jstat,kpos);
     goto out;
 
   out:
     return;
-} 
-                                           
-                       
+}
