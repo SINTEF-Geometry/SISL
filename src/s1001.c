@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1001.c,v 1.5 1994-11-30 13:56:04 pfu Exp $
+ * $Id: s1001.c,v 1.6 1994-12-12 08:45:43 vsk Exp $
  *
  */
 
@@ -162,7 +162,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        qc1->cuopen = ps->cuopen_1;
 
        /* Pick part of curve */
-       s1712 (qc1, min1, max1, &qc2, &kstat);
+       s1713 (qc1, min1, max1, &qc2, &kstat);
        if (kstat < 0)
 	 goto error;
 
@@ -184,7 +184,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        else
 	 cuopen_1 = qc2->cuopen;
 
-       /* Free curve used as input to s1712. */
+       /* Free curve used as input to s1713. */
        if (qc1)
 	 freeCurve (qc1);
        qc1 = NULL;
@@ -213,7 +213,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        qc1->cuopen = ps->cuopen_2;
 
        /* Pick part of curve */
-       s1712 (qc1, min2, max2, &qc3, &kstat);
+       s1713 (qc1, min2, max2, &qc3, &kstat);
        if (kstat < 0)
 	 goto error;
 
@@ -227,7 +227,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        else
 	 cuopen_2 = qc3->cuopen;
 
-       /* Free curve used as input to s1712. */
+       /* Free curve used as input to s1713. */
        if (qc1)
 	 freeCurve (qc1);
        qc1 = NULL;
