@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1386.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1386.c,v 1.2 1994-10-21 15:55:08 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1386(SISLSurf *ps,int ider1,int ider2,SISLSurf **rsnew,int *jstat)
 #else
 void s1386(ps,ider1,ider2,rsnew,jstat)
@@ -36,7 +36,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 *
 *********************************************************************
 *
-* PURPOSE    : To express the (ider1,ider2)-th derivative of a B-pline 
+* PURPOSE    : To express the (ider1,ider2)-th derivative of a B-pline
 *              surface as a B-spline surface with order (ider1,ider2)
 *              less than the original B-spline surface.
 *
@@ -57,8 +57,8 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 *                                         < 0      : error
 *
 *
-* METHOD     : For non-rational surfaces, we treate the surface as a 
-*                curve in both parameter directions and utilize the  
+* METHOD     : For non-rational surfaces, we treate the surface as a
+*                curve in both parameter directions and utilize the
 *                curve differentiation method twice.
 *              For nurbs, we find the new orders and dimensions, and then
 *                interpolate a set of points on the derivative surface.
@@ -83,11 +83,19 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 * REVISED BY : Christophe Birkeland, SI, August 1992
 *              The NURBS algorithm is changed completely. First we find the new
 *              orders and dimensions of the surface, then we estimate points
-*              on the derivative surface, and at last we interpolate the 
+*              on the derivative surface, and at last we interpolate the
 *              resulting derivative surface.
 * REVISED BY : Johannes Kaasa, SI, Aug. 92 (Established correct order and interior
 *              knot multiplicity in the NURBS case. In addition I have used s1891
 *              to solve the interpolation matrix in both parameter directions).
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Oct. 1994.  Changed icopy
+*              value from 0 to 2 in call to newSurf for rationals and free'ed 'rat',
+*              'par1', 'par2', 'der1' and 'der2' at exit to remove memory
+*              leakage problems.  Initialized 'rsnew'.  Increased the size
+*              of 'scoef' for non-rationals by 'kn2*ider1*ps->idim', since the
+*              first call to s1720() will increase "in" by ider1.
+*              Added handling of periodicity for non-rationals, periodic NURBS
+*              are still NOT handled correctly.
 *
 **********************************************************************/
 {
@@ -95,7 +103,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   SISLCurve *qc2 = NULL;      /* Temporary curve                     */
   SISLCurve *qc3 = NULL;      /* Temporary curve                     */
   SISLCurve *qc4 = NULL;      /* Temporary curve                     */
-  
+
   int kk1;                    /* Order in first parameter direction  */
   int kk2;                    /* Order in second parameter direction */
   int kn1;                    /* NumberOrder in first parameter direction */
@@ -106,9 +114,9 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   double *st1 = NULL;         /* Pointer to knot vector              */
   double *st2 = NULL;         /* Pointer to knot vector              */
   double *scoef = NULL;       /* Pointer to coefficients             */
-  
+
   /* NURBS variables: */
-  
+
   SISLSurf *rat=NULL;         /* The denominator surface.            */
   double *ratcoef=NULL;       /* The vertices of rat.                */
   int ki, kj, kl, km;         /* Index in for loop.                  */
@@ -135,27 +143,29 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   double *tau = NULL;         /* Interpolation points.                   */
   int iopen = TRUE;           /* Open flag.                              */
   int in;                     /* Number of vertices in interpolation.    */
-  int inlr = 0, inrc = 0;  
+  int inlr = 0, inrc = 0;
   int indx1, indx2;
-  
+
   /* Check that we have a surface to differentiable. */
-  
+
+  *rsnew = NULL;  /* Must be valid incase of error exit. */
+
   if (!ps) goto err150;
-  
+
   /* Check that the number of derivation is legal. */
-  
-  if (ider1 < 0 || ider2 < 0) goto err156;
-		
+
+  if ( ider1 < 0  ||  ider2 < 0 )  goto err156;
+
   if (ps->ikind == 2 || ps->ikind == 4)
   {
-     
+
      /* NURBS surface. */
-     
-     kdim=ps->idim; 
+
+     kdim=ps->idim;
      rdim = kdim + 1;
-     
+
      /* Make the denominator surface. */
-     
+
      ratcoef = newarray(ps->in1 * ps->in2, DOUBLE);
      limit = ps->in1*ps->in2;
      for (kj=0; kj < limit ; kj++)
@@ -163,27 +173,27 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      rat = newSurf(ps->in1,ps->in2, ps->ik1,ps->ik2, ps->et1,
 		   ps->et2,ratcoef, 1, 1, 1);
      if (ratcoef != NULL) freearray(ratcoef);
-     
-     
-     
+
+
+
      /* Make resolution for testing of knot equality. */
-     
+
      eps = fabs(ps->et1[ps->in1] - ps->et1[ps->ik1 - 1])*REL_PAR_RES;
-     
+
      /* Make the new knot vector st1 in first direction. */
-     
+
      kn1 = 0;
-     kk1 = (ider1 + ider2 + 1)*ps->ik1 - (ider1 + ider2);   
-     multadd = (ider1+ider2)*ps->ik1 - ider2; 
+     kk1 = (ider1 + ider2 + 1)*ps->ik1 - (ider1 + ider2);
+     multadd = (ider1+ider2)*ps->ik1 - ider2;
 
      st1 = newarray((2 + ps->in1 - ps->ik1)*kk1, DOUBLE);
-     
+
      for (newcurr=0; newcurr<kk1; newcurr++)
      {
 	st1[newcurr] = ps->et1[ps->ik1 - 1];
         kn1++;
      }
-	
+
      oldcurr = ps->ik1;
      oldprev = oldcurr;
      limit = ps->et1[ps->in1] - eps;
@@ -204,43 +214,43 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 	}
 	newcurr += mult;
 	oldprev = oldcurr;
-     }     
+     }
      for (kj=0; kj<kk1; kj++)
 	st1[newcurr + kj] = ps->et1[ps->in1];
-     
+
      /* Resize new knot vector st1 */
-     
+
      st1 = increasearray(st1,kn1+kk1,DOUBLE);
      if (st1 == NULL) goto err101;
-     
+
      /* Calculate parameter values and derivate indicators. */
-     
+
      s1890(st1, kk1, kn1, &par1, &der1, &kstat);
      if (kstat < 0) goto error;
-     
-		    
-		    
+
+
+
      /* Knot vector in second parameter direction */
-		    
+
      /* Make resolution for testing of knot equality in second parameter
       * direction. */
-     
+
      eps = fabs(ps->et2[ps->in2] - ps->et2[ps->ik2 - 1])*REL_PAR_RES;
-     
+
      /* Make the new knot vector st2. */
-     
+
      kn2 = 0;
      kk2 = (ider1 + ider2 + 1)*ps->ik2 - (ider1 + ider2);
      multadd = (ider1 + ider2)*ps->ik2 - ider1;
-     
+
      st2 = newarray((2 + ps->in2 - ps->ik2)*kk2, DOUBLE);
-     
+
      for (newcurr=0; newcurr<kk2; newcurr++)
      {
 	st2[newcurr] = ps->et2[ps->ik2 - 1];
         kn2++;
      }
-	
+
      oldcurr = ps->ik2;
      oldprev = oldcurr;
      limit = ps->et2[ps->in2]-eps;
@@ -262,30 +272,30 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 	newcurr += mult;
 	oldprev = oldcurr;
      }
-     
+
      for (kj=0; kj<kk2; kj++)
 	st2[newcurr + kj] = ps->et2[ps->in2];
-     
+
      /* Resize new knot vector st2 */
-     
+
      st2 = increasearray(st2,kn2+kk2,DOUBLE);
      if (st2 == NULL) goto err101;
-     
+
      /* Calculate parameter values and derivate indicators. */
-     
+
      s1890(st2, kk2, kn2, &par2, &der2, &kstat);
      if (kstat < 0) goto error;
-		    
-	
-		    
+
+
+
      /* ------------------------------- */
      /* Calculate interpolation points. */
      /* ------------------------------- */
-		    
+
      deriv = newarray((ider1 + 1)*(ider2 + 1)*kdim, DOUBLE);
      tau = newarray(rdim*kn1*kn2, DOUBLE);
      if (tau == NULL) goto err101;
-               
+
      km = 0;
      for (kj=0 ; kj<kn1 ; kj++)
 	for (kl=0; kl<kn2; kl++)
@@ -298,7 +308,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 	   s1424(ps, ider1, ider2, par, &left1, &left2, deriv, &kstat);
 	   if (kstat < 0) goto error;
 	   for (ki=0; ki<kdim; ki++)
-	      tau[km++] = 
+	      tau[km++] =
 		 deriv[(ider2*(ider1+1)+ider1)*kdim + ki]*denom;
 	   tau[km++] = denom;
 	}
@@ -306,7 +316,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      /* Solve the interpolation equation in the second parameter direction. */
 
      s1891(par2, tau, rdim, kn2, kn1, der2, iopen, st2, &scoef, &in, kk2,
-          inlr, inrc, &kstat); 
+          inlr, inrc, &kstat);
      if (kstat < 0) goto error;
      if (in != kn2) goto error;
 
@@ -323,124 +333,131 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
                 tau[km++] = scoef[indx2 + indx1 + ki];
 	   }
        }
-     
-     if (scoef != NULL) freearray(scoef);	
+
+     if (scoef != NULL) freearray(scoef);
 
      /* Solve the interpolation equation in the first parameter direction. */
 
      s1891(par1, tau, rdim, kn1, kn2, der1, iopen, st1, &scoef, &in, kk1,
-          inlr, inrc, &kstat); 
+          inlr, inrc, &kstat);
      if (kstat < 0) goto error;
      if (in != kn1) goto error;
-     
-     *rsnew = newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,ps->ikind,3,0);
+
+     *rsnew = newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,ps->ikind,3,2);
   }
   else
   {
      /* Not NURBS. */
-     
+
      kk1 = ps -> ik1;
      kk2 = ps -> ik2;
      kn1 = ps -> in1;
      kn2 = ps -> in2;
-  
+
      /* Create curve representing the surface a a curve in the second parameter
         direction, copy input arrays */
-  
+
      kdim = (ps->in1)*(ps->idim);
-  
+
      qc1 = newCurve(ps->in2,ps->ik2,ps->et2,ps->ecoef,1,kdim,1);
      if (qc1 == NULL) goto err101;
-  
+
      /* Make the derivative in the second parameter direction */
-  
+
      s1720(qc1,ider2,&qc2,&kstat);
      if (kstat<0) goto error;
-  
+
      /* Remember new knot vector in second parameter direction */
-  
+
      kk2 = qc2 -> ik;
      kn2 = qc2 -> in;
      st2 = newarray(kk2+kn2,DOUBLE);
      if (st2 == NULL) goto err101;
-  
+
      memcopy(st2,qc2->et,kk2+kn2,DOUBLE);
-  
+
      /* Allocate space for turned parameter directions */
-  
-     scoef = newarray(kn1*kn2*(ps->idim),DOUBLE);
+
+     scoef = newarray((kn1*kn2 + kn2*ider1)*(ps->idim),DOUBLE);
      if (scoef == NULL) goto err101;
-  
+
      /* Turn parameter directions */
-			
-     s6chpar(qc2->ecoef,kn1,kn2,(ps->idim),scoef); 
-  
-  
-     /* Represent the surface a curve using the first knot vector */
-  
+
+     s6chpar(qc2->ecoef,kn1,kn2,(ps->idim),scoef);
+
+
+     /* Represent the surface as curve using the first knot vector */
+
      kdim = kn2*(ps->idim);
-  
+
      qc3 = newCurve(ps->in1,ps->ik1,ps->et1,scoef,1,kdim,1);
      if (qc3 == NULL) goto err101;
-  
+
      /* Make the derivative in the first parameter direction */
-  
+
      s1720(qc3,ider1,&qc4,&kstat);
      if (kstat<0) goto error;
-  
-  
+
+
      /* Remember new knot vector in first parameter direction */
-  
+
      kk1 = qc4 -> ik;
      kn1 = qc4 -> in;
      st1 = newarray(kk1+kn1,DOUBLE);
      if (st1 == NULL) goto err101;
-  
+
      memcopy(st1,qc4->et,kk1+kn1,DOUBLE);
-  
-  
+
+
      /* Turn parameter directions of coefficients to match surface */
-  
-     s6chpar(qc4->ecoef,kn2,kn1,(ps->idim),scoef); 
-     
+
+     s6chpar(qc4->ecoef,kn2,kn1,(ps->idim),scoef);
+
      /* Create surface object containing the differentiated of the surface */
-     
+
      *rsnew = newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,ps->ikind,(ps->idim),1);
      if (*rsnew == NULL) goto err101;
+
+     /* Set the open/closed/periodic flags of the new surface.
+	The knots and coefs will be correct since s1720() handles it correctly. */
+
+     (*rsnew)->cuopen_1 = ps->cuopen_1;
+     (*rsnew)->cuopen_2 = ps->cuopen_2;
+
   }
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Error in space allocation */
-  
+
  err101: *jstat = -101;
   s6err("s1386",*jstat,kpos);
   goto out;
-  
+
   /* Error. No surface to differentiate.  */
-  
+
  err150:
   *jstat = -150;
   s6err("s1386",*jstat,kpos);
   goto out;
-  
+
   /* Error. Illegal number of derivatives.  */
-  
+
  err156:
   *jstat = -156;
   s6err("s1386",*jstat,kpos);
   goto out;
-  
+
   /* Error. Error in lower level function. */
-  
+
  error:  *jstat = kstat;
   s6err("s1386",*jstat,kpos);
   goto out;
-  
-  
+
+
   /* Free local used memory. */
-  
+
  out:
   if (qc1 != NULL) freeCurve(qc1);
   if (qc2 != NULL) freeCurve(qc2);
@@ -454,10 +471,17 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   }
   else
   {
+    if (par1)  freearray(par1);
+    if (par2)  freearray(par2);
+    if (der1)  freearray(der1);
+    if (der2)  freearray(der2);
+
+    if (rat) freeSurf(rat);
+
     if (tau != NULL) freearray(tau);
-    
+
     if (deriv != NULL) freearray(deriv);
   }
-  
+
   return;
 }
