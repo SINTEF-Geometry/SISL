@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2540.c,v 1.2 1995-10-03 13:33:27 jka Exp $
+ * $Id: s2540.c,v 1.3 1997-10-31 09:02:01 jka Exp $
  *
  */
 
@@ -27,23 +27,24 @@ s2540(SISLSurf *surf, int curvature_type, int export_par_val, int pick_subpart,
       double boundary[], int n_u, int n_v,
       double **garr, int *stat)
 #else
-s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v, 
+void
+s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
       garr, stat)
      SISLSurf *surf;
-     int curvature_type; 
+     int curvature_type;
      int export_par_val;
      int pick_subpart;
      double boundary[];
      int n_u;
      int n_v;
-     double **garr; 
+     double **garr;
      int *stat;
 #endif
 /*
 ***************************************************************************
 *
 ***************************************************************************
-* PURPOSE : To compute a set of curvature values on an uniform grid 
+* PURPOSE : To compute a set of curvature values on an uniform grid
 *           in a selected subset of the parameter domain for a
 *           NURBS surface.
 *
@@ -73,16 +74,16 @@ s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 *                            = 0, the parameter area of surf is given out here.
 *           n_u            - Number of segments in 1. parameter direction.
 *           n_v            - Number of segments in 2. parameter direction.
-*                                 
+*
 *
 *
 * OUTPUT  : garr  	   - Array containing the computed values on the grid.
-*		             The allocation is done internally and the dimension 
+*		             The allocation is done internally and the dimension
 *			     is  3*(n_u+1)*(n_v+1) if export_par_val is true,
 *		             and (n_u+1)*(n_v+1) if export_par_val is false.
-*                            Each gridpoint consist of a triple 
+*                            Each gridpoint consist of a triple
 *                            (Ui,Vj,curvature(Ui,Vj)) or only curvature(Ui,Vj).
-*			     The sequence is running first in the 
+*			     The sequence is running first in the
 *                            1. parameter direction.
 **
 *           stat           - Status message.
@@ -104,30 +105,30 @@ s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 */
 {
   int dim=1;              /* Dimension of evaluator output.	  */
-  
+
   if (curvature_type == 0)
-     s2541(surf, s2500, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+     s2541(surf, s2500, dim, export_par_val, pick_subpart, boundary, n_u, n_v,
 	   garr, stat);
   else if (curvature_type == 1)
-     s2541(surf, s2502, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+     s2541(surf, s2502, dim, export_par_val, pick_subpart, boundary, n_u, n_v,
 	   garr, stat);
   else if (curvature_type == 2)
-     s2541(surf, s2504, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+     s2541(surf, s2504, dim, export_par_val, pick_subpart, boundary, n_u, n_v,
 	   garr, stat);
   else if (curvature_type == 3)
-     s2541(surf, s2506, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+     s2541(surf, s2506, dim, export_par_val, pick_subpart, boundary, n_u, n_v,
 	   garr, stat);
   else if (curvature_type == 4)
-     s2541(surf, s2508, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+     s2541(surf, s2508, dim, export_par_val, pick_subpart, boundary, n_u, n_v,
 	   garr, stat);
   else if (curvature_type == 5)
-     s2541(surf, s2510, dim, export_par_val, pick_subpart, boundary, n_u, n_v, 
+     s2541(surf, s2510, dim, export_par_val, pick_subpart, boundary, n_u, n_v,
 	   garr, stat);
   else
      goto err151;
   if (*stat < 0) goto error;
-  
-  
+
+
   *stat = 0;
   goto out;
 

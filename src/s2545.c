@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.5 1995-10-12 14:02:16 jka Exp $
+ * $Id: s2545.c,v 1.6 1997-10-31 09:04:36 jka Exp $
  *
  */
 
@@ -27,6 +27,7 @@ s2545(SISLSurf *surf, int curvature_type, int export_par_val, int pick_subpart,
       double boundary[], int n_u, int n_v, double scale,
       double **garr, int *stat)
 #else
+void
 s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
       scale, garr, stat)
      SISLSurf *surf;
@@ -81,7 +82,7 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 *
 * OUTPUT  : garr  	   - Array containing the computed values on the grid.
 *		             The allocation is done internally and the dimension
-*			     is  (dim+2)*(n_u+1)*(n_v+1) if export_par_val is 
+*			     is  (dim+2)*(n_u+1)*(n_v+1) if export_par_val is
 *                            true, and dim*(n_u+1)*(n_v+1) if export_par_val is
 *                            false.
 *                            Each gridpoint consist of dim+2 values
@@ -156,7 +157,7 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 
 	 s1421(surf, 1, par, &leftknot1, &leftknot2, derive, normal, stat);
 	 if (*stat < 0) goto error;
-	 
+
 	 /* Calculate the point. */
 
 	 if (surf->idim == 1)
@@ -168,13 +169,13 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 	 {
 	    (*garr)[idx2] = scale*offset[idx1 + 2];
 	    idx2 += 1;
-	 }	    
+	 }
 	 else if (surf->idim == 3)
 	 {
 	    length = s6norm(normal, 3, Nnormal, stat);
 	    if (*stat < 0) goto error;
 	    for (kl = 0; kl < 3; kl++)
-	       (*garr)[idx2 + kl] = derive[kl] 
+	       (*garr)[idx2 + kl] = derive[kl]
 		  + scale*offset[idx1 + 2]*Nnormal[kl];
 	    idx2 += 3;
 	 }
