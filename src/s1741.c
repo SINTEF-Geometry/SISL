@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1741.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1741.c,v 1.2 1997-05-14 12:48:49 jka Exp $
  *
  */
 
@@ -63,6 +63,7 @@ void s1741(po1,po2,aepsge,jstat)
 *              s6err   - Gives error message.
 *
 * WRITTEN BY : Arne Laksaa, SI, 89-05.
+* REVISED BY : Michael Floater, SI, May 1997 to agree with the HP version.
 *
 *********************************************************************
 */
@@ -71,6 +72,7 @@ void s1741(po1,po2,aepsge,jstat)
   int kpos = 0;     /* Position of the error.                          */
   int k1;           /* Control variable in loop.		       */
   double tang;	    /* Angel between two vectors.		       */
+  double small_tang;/* Smallest angle between two vectors.	       */
   
   if (po1->iobj == SISLPOINT || po2->iobj == SISLPOINT)
     {
@@ -189,6 +191,10 @@ void s1741(po1,po2,aepsge,jstat)
       
       tang = acos(tang);
       
+      if (tang > PIHALF)
+         small_tang = PI - tang;
+      else
+         small_tang = tang;
       
       /* Performing a simple case check. */
       
@@ -201,10 +207,17 @@ void s1741(po1,po2,aepsge,jstat)
 	  *jstat = 1;
 	  goto out;
 	}
+      else if (po1->c1->idim == 2)
+        {
+	  *jstat = 0;
+	  goto out;
+	}
       else if (tang < PI - ANGULAR_TOLERANCE && 
 	       tang > ANGULAR_TOLERANCE      &&
-	       po1->c1->pdir->aang <= (double)1.3*tang &&
-	       po2->c1->pdir->aang <= (double)1.3*tang)
+	       po1->c1->pdir->aang <= (double)1.3*small_tang &&
+	       po2->c1->pdir->aang <= (double)1.3*small_tang)
+	 /*po1->c1->pdir->aang <= (double)1.3*tang &&
+	       po2->c1->pdir->aang <= (double)1.3*tang)*/
 	{
 	  s1796(po1->c1,po2->c1,aepsge,tang,&kstat);
 	  if (kstat<0) goto error;
