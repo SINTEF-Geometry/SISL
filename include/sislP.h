@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.50 1999-11-22 12:34:06 jka Exp $
+ * $Id: sislP.h,v 1.51 2001-03-19 15:57:56 afr Exp $
  *
  */
 
@@ -350,14 +350,14 @@ enum
  * it points to  nothing.
  */
 
-#ifndef NULL
-#define NULL 0
+#ifndef SISL_NULL
+#define SISL_NULL 0
 #endif
 
 /* Name of double 0.0 */
 
-#ifndef DNULL
-#define DNULL (double)0.0
+#ifndef DZERO
+#define DZERO (double)0.0
 #endif
 
 #if defined(SISL_INTERNAL)
@@ -398,16 +398,16 @@ enum
 #if defined(SISL_INTERNAL) || defined(USING_SISL_NEWARRAY)
 
 #define newarray(a,b) \
-  ((a)>(NULL)?((b*)malloc((size_t)((a)*sizeof(b)))):(NULL))
+  ((a)>(SISL_NULL)?((b*)malloc((size_t)((a)*sizeof(b)))):(SISL_NULL))
 
 #define new0array(a,b) \
-  ((a)>(NULL)?((b*)calloc((size_t)(a),(size_t)(sizeof(b)))):(NULL))
+  ((a)>(SISL_NULL)?((b*)calloc((size_t)(a),(size_t)(sizeof(b)))):(SISL_NULL))
 
 #define increasearray(a,b,c) (c*)realloc(VOIDP(a),(size_t)((b)*sizeof(c)))
 
-#define freearray(a) { (void)free(VOIDP a); a = NULL; }
+#define freearray(a) { (void)free(VOIDP a); a = SISL_NULL; }
 
-#define free0array(a) { (void)free(VOIDP a); a = NULL; }
+#define free0array(a) { (void)free(VOIDP a); a = SISL_NULL; }
 
 
 /* Copying of arrays   */

@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.43 1999-11-23 15:09:57 jka Exp $
+ * $Id: sisl.h,v 1.44 2001-03-19 15:57:56 afr Exp $
  *
  */
 
@@ -71,7 +71,7 @@ typedef struct SISLdir
     when making the boxes are stored in etol[0] - etol[2]. etol[0]
     will always be equal to zero. If a box is made, the pointers
     belonging to this box points to arrays, otherwise they point
-    to NULL.                                                       */
+    to SISL_NULL.                                                       */
 
 typedef struct SISLbox
 {
