@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2536.c,v 1.1 1995-08-21 13:24:53 jka Exp $
+ * $Id: s2536.c,v 1.2 1995-08-21 13:35:30 jka Exp $
  *
  */
 
@@ -19,21 +19,6 @@
 #define S2536
 
 #include "sislP.h"
-/* Prelimenary declaration */
-#if defined(SISLNEEDPROTOTYPES)
-#ifndef s2515
-extern
-#endif
-void
-   s2515(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
-      int *leftknot1,int *leftknot2, double gaussian[], int *stat);
-#else
-#ifndef s2515
-extern
-#endif
-void s2515();
-#endif
-/* *********************** */
 
 
 
