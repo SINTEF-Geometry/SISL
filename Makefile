@@ -337,8 +337,13 @@ ifeq "$(PLATFORM)" "linux"
     CXXFLAGS	=-O2 -Wimplicit -Wcomment -Wmain -Wuninitialized -Woverloaded-virtual -Wreturn-type
     CXXDEFS	=-DLINUX -DNDEBUG
   else
-    CXXFLAGS	=-g -Wimplicit -Wcomment -Wmain -Woverloaded-virtual -Wreturn-type
-    CXXDEFS	=-DLINUX
+    ifeq "$(MODE)" "maxopt"
+      CXXFLAGS	=-O3 -ffast-math -Wimplicit -Wcomment -Wmain -Wuninitialized -Woverloaded-virtual -Wreturn-type
+      CXXDEFS	=-DLINUX -DNDEBUG
+    else
+      CXXFLAGS	=-g -Wimplicit -Wcomment -Wmain -Woverloaded-virtual -Wreturn-type
+      CXXDEFS	=-DLINUX
+    endif
   endif
 endif
 
