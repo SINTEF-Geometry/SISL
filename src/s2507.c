@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2507.c,v 1.2 1995-01-23 12:36:42 pfu Exp $
+ * $Id: s2507.c,v 1.3 1995-01-23 12:51:14 pfu Exp $
  *
  */
 
@@ -28,7 +28,6 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
  void s2507(surf, ider, derive, normal, totalCurvature, jstat)
       SISLSurf *surf;
       int ider;
-      double parvalue[];
       double derive[],
       double normal[],
       double *totalCurvature;
