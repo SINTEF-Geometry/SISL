@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1870.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1870.c,v 1.2 1998-04-02 13:45:51 vsk Exp $
  *
  */
 
@@ -59,6 +59,9 @@ void sh1870(ps1,pt1,idim,aepsco,aepsge,
 *              aepsco - Computational resolution.
 *              aepsge - Geometry resolution.
 *              trackflag - For future use. Should now be 0.
+*              *jstat    - Flag
+*                          = 202 : Complicated point-surface intersection
+*                                  in 3D. Perform extra interception test.
 *
 *
 *
@@ -145,6 +148,7 @@ void sh1870(ps1,pt1,idim,aepsco,aepsge,
    * -------------------
    */
 
+  kstat = *jstat;
   sh1761(qo1,qo2,aepsge,&qintdat,&kstat);
   if (kstat < 0) goto error;
 
