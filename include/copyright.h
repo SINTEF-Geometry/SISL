@@ -3,8 +3,8 @@
 /*****************************************************************************/
 /*                                                                           */
 /*                                                                           */
-/* (c) Copyright 1995 by                                                     */
-/*     SINTEF, Oslo, Norway                                                  */
+/* (c) Copyright 1989-2001 by                                                */
+/*     SINTEF Applied Mathematics, Oslo, Norway                              */
 /*     All rights reserved.                                                  */
 /*                                                                           */
 /*  THIS SOFTWARE IS FURNISHED UNDER A LICENSE AND MAY BE USED AND COPIED    */
