@@ -9,6 +9,13 @@
 
 #include "copyright.h"
 
+/*
+ *
+ * $Id: s2513.c,v 1.6 1995-08-01 10:54:45 jka Exp $
+ *
+ */
+
+
 #define S2513
 
 #include "sislP.h"
