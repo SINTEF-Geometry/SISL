@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shmkhlppts.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: shmkhlppts.c,v 1.2 1994-09-21 11:39:00 pfu Exp $
  *
  */
 
@@ -69,6 +69,8 @@ shmkhlppts (po1, po2, aepsge, rintdat, vedge, jnewpt, jstat)
 * REFERENCES :
 *
 * WRITTEN BY : Ulf J. Krystad, SI, 09.91
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 09-94. Fixed over-running
+*              of 'up' array.
 *********************************************************************
 */
 {
@@ -173,8 +175,12 @@ shmkhlppts (po1, po2, aepsge, rintdat, vedge, jnewpt, jstat)
        qpt = up[0];
     }
 
-  for (; ki < knum; ki++,qpt=up[ki])
+  for (; ki < knum; ki++ )
     {
+
+      qpt = up[ki];  /* Moved from "step clausule(s)" of for loop to avoid
+			over-running 'up' (PFU 21/09-94 ) */
+
       /* Browse on the dimension of geometry space and the type of
          the input objects.     */
 
