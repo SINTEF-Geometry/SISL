@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1439.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1439.c,v 1.2 1994-12-05 15:46:49 pfu Exp $
  *
  */
 
@@ -34,10 +34,12 @@ void s1439(ps1,apar,idirec,rcurve,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
-* PURPOSE    : Make constant parameter curve in the surface. The 
-*              constant parameter value used is apar and is in the 
+*
+* PURPOSE    : Pick a curve along a constant parameter line in a NURBS
+*              surface.
+*              The constant parameter value used is apar and is in the
 *              idirec parameter direction.
+*              This routine replaces s1436() and s1437().
 *
 *
 *
@@ -48,13 +50,13 @@ void s1439(ps1,apar,idirec,rcurve,jstat)
 *
 *
 * OUTPUT     : rcurve - Constant parameter curve.
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
 *
 *
-* METHOD     : 
+* METHOD     :
 *
 * REFERENCES :
 *
@@ -65,7 +67,7 @@ void s1439(ps1,apar,idirec,rcurve,jstat)
 * WRITTEN BY : Christophe Rene Birkelan, SINTEF Oslo, July 1993.
 *
 *********************************************************************
-*/                                     
+*/
 {
   int kpos = 0;      /* Position of error.                            */
 
@@ -88,18 +90,18 @@ void s1439(ps1,apar,idirec,rcurve,jstat)
 
 
   /* Error in input parameter idirec.  */
-  
-  err115: 
+
+  err115:
     *jstat = -115;
     s6err("s1439",*jstat,kpos);
     goto out;
-  
+
   /* Error in lower level routine.  */
-  
-  error: 
+
+  error:
     s6err("s1439",*jstat,kpos);
     goto out;
-  
-  out: 
+
+  out:
     return;
 }
