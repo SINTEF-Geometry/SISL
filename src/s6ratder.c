@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6ratder.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6ratder.c,v 1.2 1994-07-07 14:45:36 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s6ratder(double eder[],int idim,int ider,double gder[],int *jstat)
 #else
 void s6ratder(eder,idim,ider,gder,jstat)
@@ -33,7 +33,7 @@ void s6ratder(eder,idim,ider,gder,jstat)
 #endif
 /*
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To calculate the ider derivatives of a rational
 *              point described in homogenous coordinates
 *
@@ -63,17 +63,17 @@ void s6ratder(eder,idim,ider,gder,jstat)
 *
 *               Now, since wP = T, we find, by the Leibnitz formula,
 *
-*                 k 
+*                 k
 *                         k!     (k-i) (i)         (k)
 *                sum   -------- w     P       =   T    .
 *                      i!(k-i)!
 *                i=0
 *
 *               Therefore
-*               
+*
 *
 *                   --         k-1                      --
-*             (k)   |   (k)             k!     (k-i) (i) |    
+*             (k)   |   (k)             k!     (k-i) (i) |
 *            P    = |  T    -  sum   -------- w     P    | / w .
 *                   |                i!(k-i)!            |
 *                   --         i=0                      --
@@ -89,7 +89,8 @@ void s6ratder(eder,idim,ider,gder,jstat)
 * REWRITTEN BY : Michael Floater, SI, 16/12/91. New algorithm.
 * REWRITTEN BY : Michael Floater, SI, 25/8/92. Extend to arbitrary
 *                   number of derivatives (by Leibnitz). Finally!
-*
+* REVISED BY : Paal Fugelli, SINTEF, 07/07-94. Added free'ing of binom and
+*              initiation to NULL to avoid memory leakage.
 *********************************************************************
 */
 {
@@ -97,24 +98,24 @@ void s6ratder(eder,idim,ider,gder,jstat)
   double w0;           /* The denominator.                       */
   int ki;              /* Count through dimensions.              */
   int id;              /* Count through derivatives.             */
-  int *binom;          /* Array for binomial coefficients.       */
+  int *binom = NULL;   /* Array for binomial coefficients.       */
   double sum;          /* Binomial (Leibnitz) expansion.         */
   int idimp1;          /* idim + 1.                              */
   int iw;              /* Pointer to a weight.                   */
   int igder;           /* Pointer to already calculated derivs.  */
   int i,j,k;           /* Counters.                              */
   int iwfix;           /* Initial value of iw in Leibnitz loop.  */
-  
+
   if (ider<0) goto err178;
   if (idim<1) goto err102;
-  
+
   idimp1 = idim + 1;
 
-  /* Find denominator. */ 
-  
+  /* Find denominator. */
+
   w0 = eder[idim];
   if (DEQUAL(w0,DNULL)) w0 = (double)1.0;
-  
+
   /* Set up initial binomial coefficient (1). */
 
   binom = newarray(ider+1, INT);
@@ -174,7 +175,7 @@ void s6ratder(eder,idim,ider,gder,jstat)
 
   /* Done. */
 
-  
+
   *jstat = 0;
   goto out;
 
@@ -195,6 +196,8 @@ void s6ratder(eder,idim,ider,gder,jstat)
          goto out;
 
 
-out: 
-return;
+out:
+  if (binom != NULL) freearray(binom);
+
+  return;
 }
