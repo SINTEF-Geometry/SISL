@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1933.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1933.c,v 1.2 1994-08-16 08:35:57 pfu Exp $
  *
  */
 
@@ -93,6 +93,8 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
 *
 *
 * WRITTEN BY :  Christophe R. Birkeland, SI, 1991-07
+* REVISED BY :  Paal Fugelli, SINTEF, Oslo 18/07-1994.  Removed memory
+*               leaks.
 *
 *********************************************************************
 */
@@ -201,9 +203,12 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
       if (kstat < 0)
 	goto error;
 
+      if (incknt != NULL)  freearray(incknt);  /* PFU 18/07-94. */
+
       if (kt != NULL)
 	freearray (kt);
       kt = knot;
+      knot = NULL;  /* PFU 18/07-94 */
     }
 
   /* The knot vector produced might contain knots originating
@@ -418,6 +423,8 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
 
   /* Make start knot vector					*/
 
+  if (kt != NULL)  freearray(kt);  /* PFU 18/07-94 */
+
   kt = newarray (*iordr * 2, double);
   if (kt == NULL)
     goto err101;
@@ -449,15 +456,19 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
       if (kstat < 0)
 	goto error;
 
+      if (incknt != NULL)  freearray(incknt);  /* PFU 18/07-94 */
+
       if (kt != NULL)
 	freearray (kt);
       kt = knot;
+      knot = NULL;  /* PFU 18/07-94 */
     }
 
   /* No errors */
 
   *in = kn;
   *it = kt;
+  kt = NULL;  /* PFU 18/07-94 */
   goto out;
 
 
@@ -497,5 +508,8 @@ err170:
   goto out;
 
 out:
+  if (kt != NULL)  freearray(kt);  /* PFU 18/07-94 */
+  if (knot != NULL)  freearray(knot);  /* PFU 18/07-94 */
+  if (incknt != NULL)  freearray(incknt);  /* PFU 18/07-94 */
   return;
 }
