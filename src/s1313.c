@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.6 1994-12-01 14:15:59 pfu Exp $
+ * $Id: s1313.c,v 1.7 1995-01-26 07:50:43 pfu Exp $
  *
  */
 
@@ -174,7 +174,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   int kdim = 3;            /* The dimension of the space we work in     */
   int kfirst = 0;          /* Indicator telling if first guide point degenerate */
   int klast = 0;           /* Indicator telling if last guide point degenerate */
-  int kpos;                /* Position of error                         */
+  int kpos = 0;            /* Position of error                         */
   int kstat,kstat1;        /* Status variable returned form routine     */
   int kmaxinf=0;           /* Number of entries object that can be stored
 			      in s3dinf, sp1inf, sp2inf                 */
