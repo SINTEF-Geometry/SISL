@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1614.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1614.c,v 1.2 1994-12-07 12:05:37 pfu Exp $
  *
  */
 
@@ -204,7 +204,7 @@ void s1614(epoint, inbpnt, idim, eptyp,spoint, jnbpnt, sptyp, jstat)
     }
 
   if (ktell <= 1)
-    goto err1614;
+    goto err181;
 
 
   /* Run through and remove double tangents that may be introduced by
@@ -249,10 +249,10 @@ void s1614(epoint, inbpnt, idim, eptyp,spoint, jnbpnt, sptyp, jstat)
   goto out;
 
 
-  /* Error in input, less than two points accepted. */
+  /* Error in input, less than two points given in problem formulation. */
 
-err1614:
-  *jstat = -1614;
+err181:
+  *jstat = -181;
   s6err ("s1614", *jstat, kpos);
   goto out;
 
