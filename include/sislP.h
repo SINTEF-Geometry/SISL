@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.23 1995-06-30 14:08:25 jka Exp $
+ * $Id: sislP.h,v 1.24 1995-08-10 09:02:41 jka Exp $
  *
  */
 
@@ -918,20 +918,11 @@ extern
 #endif
    void s1770_2D(SISLCurve *,SISLCurve *,double,double,double,double,double,
 		 double,double,double *,double *,int *);
-#ifndef  S1771
-extern
-#endif
-void s1771(SISLPoint *,SISLCurve *,double,double,double,double,double *,int *);
 #ifndef  S1772
 extern
 #endif
 void s1772(SISLCurve *,SISLSurf *,double,double,double [],double,double [],
 	   double,double [],double *,double [],int *);
-#ifndef  S1773
-extern
-#endif
-void s1773(SISLPoint *,SISLSurf *,double,double [],double [],double [],
-	   double [],int *);
 #ifndef  S1780
 extern
 #endif
@@ -2749,18 +2740,10 @@ void s1770();
 extern
 #endif
 void s1770_2D();
-#ifndef  S1771
-extern
-#endif
-void s1771();
 #ifndef  S1772
 extern
 #endif
 void s1772();
-#ifndef  S1773
-extern
-#endif
-void s1773();
 #ifndef  S1780
 extern
 #endif
