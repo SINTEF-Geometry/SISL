@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.18 1995-01-18 09:47:41 pfu Exp $
+ * $Id: sisl.h,v 1.19 1995-01-18 14:46:08 pfu Exp $
  *
  */
 
@@ -970,11 +970,11 @@ void s1992su(SISLSurf *,int *);
 #ifndef  S2500
 extern
 #endif
-void s2500(SISLSurf *, double [], int *, int *, double *, int *);
+void s2500(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2502
 extern
 #endif
-void s2502(SISLSurf *, double [], int *, int *, double *, int *);
+void s2502(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S6DRAWSEQ
 extern
 #endif
