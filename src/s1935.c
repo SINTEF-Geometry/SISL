@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1935.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1935.c,v 1.2 1994-07-05 09:02:46 pfu Exp $
  *
  */
 
@@ -22,7 +22,7 @@
 
 
 #if defined(SISLNEEDPROTOTYPES)
-void s1935 (double et1[], int in1, double et2[], int in2, 
+void s1935 (double et1[], int in1, double et2[], int in2,
 	    double *knt[], int *in, int ik, int *jstat)
 #else
 void
@@ -70,9 +70,12 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
 * WRITTEN BY:  Christophe R. Birkeland, SI, 1991-07
 * CORRECTED BY: Vibeke Skytt, SI, 92-10. Removed exact test on equality
 *                                        of knots.
-* CORRECTED BY: Christophe R. Birkeland, SI, 93-05. 
+* CORRECTED BY: Christophe R. Birkeland, SI, 93-05.
 *         Reinstalled exact test on equality of knots. Necessary
 *         for correct working of routine s1931-s1937.
+* CORRECTED BY: Paal Fugelli, SINTEF, 1994-07.
+*         Changed the setting of 'curr', for the while loop, to avoid
+*         over running array bounds (address error).
 *
 *********************************************************************
 */
@@ -105,7 +108,7 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
   /* PRODUCTION OF KNOTS */
 
   *in = 0;
-  curr = MIN (et1[0], et2[0]);
+  /* PFU 05/07-94  curr = MIN (et1[0], et2[0]); */
   pek1 = 0;
   pek2 = 0;
   stop1 = in1 + ik;
@@ -115,13 +118,14 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
     {
       /* Test if error in knot vector */
 
+      curr = MIN (et1[pek1], et2[pek2]);
+
       if ((et1[pek1] < curr) || (et2[pek2] < curr)) goto err112;
 
       if (et1[pek1]==curr) pek1++;
       if (et2[pek2]==curr) pek2++;
       (*knt)[*in] = curr;
       (*in) ++;
-      curr = MIN (et1[pek1], et2[pek2]);
     }
 
   /* Some knots may remain in one of the arrays */
@@ -163,7 +167,7 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
   /* No. of vertices less than order. */
 
   err111:
-    *jstat = -111;  
+    *jstat = -111;
     s6err ("s1935", *jstat, kpos);
     goto out;
 
