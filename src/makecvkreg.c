@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: makecvkreg.c,v 1.3 1994-08-31 09:34:55 pfu Exp $
+ * $Id: makecvkreg.c,v 1.4 1994-08-31 10:07:13 pfu Exp $
  *
  */
 
@@ -73,7 +73,7 @@ void
 
   /* Error in lower level routine */
 error:
-  s6err ("make_cv_kreg", *jstat, 1);
+  s6err ("make_cv_kreg", *jstat, 0);
 
 out:;
 
