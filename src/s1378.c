@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1378.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1378.c,v 1.2 1998-05-12 08:36:41 jnygaard Exp $
  *
  */
 
@@ -106,7 +106,7 @@ s1378 (psurf, econic, ideg, idim, rsurf, jstat)
   double tzz;			/* Square of length of sz                           */
   double ty;			/* Component of sy                                  */
   double tz;			/* Component of sz                                  */
-  double sder[3];		/* SISLPoint on the surface                         */
+  double sder[4];		/* SISLPoint on the surface                         */
   double spar[2];		/* Current parameter pair                           */
   double ww;			/* the weight of sder squared if psurf is rational  */
   double *par1 = NULL;		/* Parameter vaues in direction 1. 		  */

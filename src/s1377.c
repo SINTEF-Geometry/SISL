@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1377.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1377.c,v 1.2 1998-05-12 08:35:26 jnygaard Exp $
  *
  */
 
@@ -99,7 +99,7 @@ s1377 (pcurv, econic, ideg, idim, rcurv, jstat)
   double tzz;			/* Square of length of sz                           */
   double ty;			/* Component of sy                                  */
   double tz;			/* Component of sz                                  */
-  double sder[3];		/* Point on the curve                           */
+  double sder[4];		/* Point on the curve                           */
   double ww;			/* the weight of sder squared if pcurv is rational  */
   double *par = NULL;
   SISLCurve *tempcurv = NULL;	/* only used for rational curves              */

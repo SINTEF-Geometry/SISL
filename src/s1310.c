@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1310.c,v 1.4 1995-01-26 07:52:28 pfu Exp $
+ * $Id: s1310.c,v 1.5 1998-05-12 08:35:16 jnygaard Exp $
  *
  */
 
@@ -1140,13 +1140,13 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
 			   (DEQUAL(spar1[0]+tref1,sval1[1]+tref1) &&
 			    sp1inf[ki  ]<DNULL)
 			   ) &&
-			 ((DEQUAL(spar1[3]+tref4,sval3[0]+tref4) &&
+			 ((DEQUAL(spar2[1]+tref4,sval3[0]+tref4) &&
 			   sp2inf[ki+1]>DNULL) ||
-			  (DEQUAL(spar1[3]+tref4,sval3[1]+tref4) &&
+			  (DEQUAL(spar2[1]+tref4,sval3[1]+tref4) &&
 			   sp2inf[ki+1]<DNULL) ||
-			  (DEQUAL(spar1[2]+tref3,sval2[0]+tref3) &&
+			  (DEQUAL(spar2[0]+tref3,sval2[0]+tref3) &&
 			   sp2inf[ki  ]>DNULL) ||
-			  (DEQUAL(spar1[2]+tref3,sval2[1]+tref3) &&
+			  (DEQUAL(spar2[0]+tref3,sval2[1]+tref3) &&
 			   sp2inf[ki  ]<DNULL)))
 			kstat = 1;
 		    }
