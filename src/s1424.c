@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1424.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1424.c,v 1.2 1995-11-29 14:28:38 jka Exp $
  *
  */
 
@@ -202,6 +202,8 @@ void s1424(ps1,ider1,ider2,epar,ileft1,ileft2,eder,jstat)
 *              for non-rational splines).
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
 *              NULL tests included
+* Revised by : Johannes Kaasa, SINTEF Oslo, Nov. 1995,
+*              Made local copies of leftknot.
 *
 *********************************************************************
 */                                     
@@ -254,6 +256,9 @@ void s1424(ps1,ider1,ider2,epar,ileft1,ileft2,eder,jstat)
   double sdum2[147];  /* Array used for ew */
   int knumb1;         /* Necessary size of ebder */   
   int knumb2;         /* Necessary size of ew */   
+  
+  kleft1 = *ileft1;
+  kleft2 = *ileft2;
   
   /* Copy surface to local parameters.  */
   
@@ -338,18 +343,15 @@ void s1424(ps1,ider1,ider2,epar,ileft1,ileft2,eder,jstat)
   /* Compute the values and derivatives of the nonzero B-splines in the
      second parameter direction.                                        */
   
-  s1220(st2,kk2,kn2,ileft2,epar[1],kder2,ebder,&kstat);
+  s1220(st2,kk2,kn2,&kleft2,epar[1],kder2,ebder,&kstat);
   
   if (kstat < 0) goto error;
   
   /* Update ileft1 (ileft2 was updated above, in s1220). */
   
-  s1219(st1,kk1,kn1,ileft1,epar[0],&kstat);
+  s1219(st1,kk1,kn1,&kleft1,epar[0],&kstat);
   
   if (kstat < 0) goto error;
-  
-  kleft2 = *ileft2;
-  kleft1 = *ileft1;
   
   /* Compute the first matrix product in (2) above. */
   
@@ -389,7 +391,7 @@ void s1424(ps1,ider1,ider2,epar,ileft1,ileft2,eder,jstat)
   /* Compute the values and derivatives of the nonzero B-splines in the
      first parameter direction.                                        */
   
-  s1220(st1,kk1,kn1,ileft1,epar[0],kder1,ebder,&kstat);         
+  s1220(st1,kk1,kn1,&kleft1,epar[0],kder1,ebder,&kstat);         
   
   if (kstat < 0) goto error;
   
@@ -534,5 +536,7 @@ void s1424(ps1,ider1,ider2,epar,ileft1,ileft2,eder,jstat)
     goto out;
   
   out: 
+    *ileft1 = kleft1;
+    *ileft2 = kleft2;
     return;
 }
