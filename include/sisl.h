@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.20 1995-01-19 15:30:24 pfu Exp $
+ * $Id: sisl.h,v 1.21 1995-01-23 09:47:03 pfu Exp $
  *
  */
 
@@ -979,6 +979,10 @@ void s2502(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 extern
 #endif
 void s2504(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+#ifndef  S2506
+extern
+#endif
+void s2506(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S6DRAWSEQ
 extern
 #endif
@@ -1639,6 +1643,10 @@ void s2502();
 extern
 #endif
 void s2504();
+#ifndef  S2506
+extern
+#endif
+void s2506();
 #ifndef  S6DRAWSEQ
 extern
 #endif
