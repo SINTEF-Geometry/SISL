@@ -1,14 +1,19 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
 #include "copyright.h"
 
 
 #define S2550
 
-
 #include "sislP.h"
-
-#include "s2550.h"
-
-
+^L
 #if defined(SISLNEEDPROTOTYPES)
 void
 s2550( SISLCurve *curve,
