@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1370.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1370.c,v 1.2 1994-09-21 16:49:09 pfu Exp $
  *
  */
 
@@ -77,6 +77,9 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
 * REVISED BY : Christophe Birkeland, SI, July 1992.
 * REVISED BY : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
 *              jcurve removed, other minor changes
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, September 1994.
+*              Didn't work for rationals - '(*rcurve)->rcoef' returned from
+*              s1893() was NULL (must copy from ecoef).
 *
 *********************************************************************
 */
@@ -165,8 +168,8 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
       sarray = new0array (kdimp1 * kdimp1 * knarr, DOUBLE);
       if (sarray == NULL) goto err101;
 
-      memcopy (sarray, earray, kdimp1 * kdimp1 * inarr, double);
-      sarray[kdimp1 * kdimp1 * knarr - 1] = (double) 1.0;
+      memcopy (sarray, earray, kdimp1 * kdimp1 * inarr, DOUBLE);
+      sarray[kdimp1 * kdimp1 * knarr - 1] = (DOUBLE) 1.0;
     }
   else
     {
@@ -180,24 +183,29 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
   s1893 (icurve, sarray, kdimp1, knarr, 0, 0, rcurv, &kstat);
   if (kstat < 0) goto error;
 
-  if ((ikind == 2 || ikind == 4) && ratflag == 1)
+  if (*rcurv == NULL) goto err171;
+
+  if ( ikind == 2 || ikind == 4 )
+  {
+    /* Free arrays. */
+
+    if (scoef) freearray (scoef);
+    if (ratflag && sarray) freearray (sarray);
+
+    if ( ratflag == 1 )
     {
       /* Output from s1893 is a dim+1 non-rational curve. */
-      /* Convert homogeneous curve to rational form. */
+      /* Convert homogeneous curve to rational form (rcoef is NULL here). */
 
-      (*rcurv)->idim --;
-      (*rcurv)->ikind = 2;
+      (*rcurv)->rcoef = newarray((*rcurv)->in * (*rcurv)->idim, DOUBLE);
+      memcopy((*rcurv)->rcoef, (*rcurv)->ecoef,
+	      (*rcurv)->in * (*rcurv)->idim, DOUBLE);
+
+      (*rcurv)->idim --;    /* Adjust from the homogeneus coordinates. */
+      (*rcurv)->ikind = 2;  /* i.e. rational */
+
     }
-
-  /* Free arrays. */
-
-  if (ikind == 2 || ikind == 4)
-    {
-      if (scoef) freearray (scoef);
-      if (ratflag) freearray (sarray);
-    }
-
-  if (*rcurv == NULL) goto err171;
+  }
 
 
   /* Ok ! */
@@ -234,7 +242,7 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
 
   /* Dimension inarr not equal to 1,2 or 3. */
 
-  err172:  
+  err172:
     *jstat = -172;
     s6err ("s1370", *jstat, kpos);
     goto out;
@@ -243,5 +251,3 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
   if (icurve != NULL) freeCurve (icurve);
   return;
 }
-
-
