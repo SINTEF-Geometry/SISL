@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6topohlp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6topohlp.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -69,7 +69,7 @@ sh6gettophlp (pt, pretop, case_2d, jstat)
 
 /* Check pt. */
 
-  if (pt == NULL)
+  if (pt == SISL_NULL)
     goto err2;
 /* Only help points are treated */
   if (sh6ishelp (pt) && pt->marker == 0)
@@ -112,7 +112,7 @@ sh6gettophlp (pt, pretop, case_2d, jstat)
 
 
 err2:
-  /* Error in input. pt is NULL. */
+  /* Error in input. pt is SISL_NULL. */
 
   *jstat = -2;
   s6err ("sh6gettophlp", *jstat, 0);

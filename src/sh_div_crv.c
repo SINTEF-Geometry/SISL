@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh_div_crv.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh_div_crv.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -79,9 +79,9 @@ void
   int ki,kj;                    /* Loop control                     */
   int kn,kk,kdim;               /* Attributes of inut curve         */			/* Position of error.               */
   double a,b;                   /* Bezier interval                  */
-  double *et_new = NULL;        /* New knot array                   */
-  double *ecoef_new = NULL;     /* New coefficient array            */
-  SISLCurve *qc = NULL;		/* Pointer to new curve-object.     */
+  double *et_new = SISL_NULL;        /* New knot array                   */
+  double *ecoef_new = SISL_NULL;     /* New coefficient array            */
+  SISLCurve *qc = SISL_NULL;		/* Pointer to new curve-object.     */
 
 
   /* Check that we have a curve. */
@@ -118,7 +118,7 @@ void
   */
   
   /* create knot array. __________________________________________*/
-  if ((et_new= newarray(kn+kk-2,DOUBLE)) == NULL) goto err101;
+  if ((et_new= newarray(kn+kk-2,DOUBLE)) == SISL_NULL) goto err101;
 
   for (ki=0; ki < kk-1; ki++)
   et_new[ki] = a;
@@ -127,7 +127,7 @@ void
   et_new[ki] = b;
 
   /* create coeficient array. _________________________________ */
-  if ((ecoef_new= newarray(kdim*(kn-1),DOUBLE)) == NULL) goto err101;
+  if ((ecoef_new= newarray(kdim*(kn-1),DOUBLE)) == SISL_NULL) goto err101;
 
   if (which_end)
      for (ki=0; ki < kn-1; ki++)
@@ -141,7 +141,7 @@ void
   
   /* Create factor curve */
   if ((qc = newCurve (kn-1, kk-1, et_new, ecoef_new, pc->ikind, kdim, 2))
-      == NULL) goto err101;
+      == SISL_NULL) goto err101;
 
   *rcnew = qc;
   *jstat = 0;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shcsfsing.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: shcsfsing.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -115,7 +115,7 @@ void shcsfsing(pcurve,psurf,limit,enext,gpos,jstat)
                             /* call to closest point                        */
   double guess[2];          /* Start point for closest point iteration      */
   double tol = (double)10000.0*REL_COMP_RES; /* equality tol. in par.space  */
-  SISLPoint *ppoint=NULL;   /* Contains the current position of the curve   */ 
+  SISLPoint *ppoint=SISL_NULL;   /* Contains the current position of the curve   */ 
                             /* used in closest point iteration              */
   int max_iter=20;          /* Maximal number of iteration allowed          */
 
@@ -392,9 +392,9 @@ static void shcsfsing_s9dir(cdiff,evals,evalq)
   
   /* ------------------------------------------------------------------------------- */
   
-  cdiff[0] = DNULL;
-  cdiff[1] = DNULL;
-  cdiff[2] = DNULL;
+  cdiff[0] = DZERO;
+  cdiff[1] = DZERO;
+  cdiff[2] = DZERO;
 
   /* Init, Set pointers to input values */
   sval = evals;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idput.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idput.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -92,11 +92,11 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
   int kant;			/* Number of parameters in new points.  */
   int ind1, ind2;		/* Indexes (not used)                   */
   int no;			/* No. of doubles to copy into geo_aux  */
-  double *scoef = NULL;		/* Pointer to array copying into geo_aux*/
-  double *spar = NULL;		/* Storing uppdated parametervalues.    */
-  SISLIntpt **uintpt = NULL;	/* Help array while getting connections */
+  double *scoef = SISL_NULL;		/* Pointer to array copying into geo_aux*/
+  double *spar = SISL_NULL;		/* Storing uppdated parametervalues.    */
+  SISLIntpt **uintpt = SISL_NULL;	/* Help array while getting connections */
   int iinter;
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   /* VSK. Remove cross intersections. ----------------------------  */
   int kcross = 1;     /* Indicates existence of cross intersections. */
   int kncross = 0;    /* Number of cross intersections.              */
@@ -112,7 +112,7 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
     keep_first = 1;
 
   /* Do we have an intdat structure? */
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     {
       *jstat = 0;
       goto out;
@@ -128,11 +128,11 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
   *npoint = pintdat->ipoint;
 
   /* Allocate an array for intersection points. */
-  if ((uintpt = newarray (pintdat->ipoint, SISLIntpt *)) == NULL)
+  if ((uintpt = newarray (pintdat->ipoint, SISLIntpt *)) == SISL_NULL)
     goto err101;
 
   /* Allocate an array for parametervalues. */
-  if ((spar = newarray (kant, double)) == NULL)
+  if ((spar = newarray (kant, double)) == SISL_NULL)
     goto err101;
 
 
@@ -160,7 +160,7 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
 		     (keep_first ? pintdat->vpoint[ki]->geo_data_1 : nullp),
 		    (keep_first ? nullp : pintdat->vpoint[ki]->geo_data_2));
 
-      if (uintpt[ki] == NULL)
+      if (uintpt[ki] == SISL_NULL)
 	goto err101;
 
       /* Store info from lower level object */
@@ -249,7 +249,7 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
 	      /* Points have been removed. Update uintpt.  */
 	      
 	      for (kj=0; kj<*npoint; kj++)
-		 if (uintpt[kj] == NULL)
+		 if (uintpt[kj] == SISL_NULL)
 		 {
 		    uintpt[kj] = uintpt[(*npoint)-1];
 		    kj--;
@@ -286,6 +286,6 @@ error:*jstat = kstat;
   goto out;
 
 out:*outintpt = uintpt;
-  if (spar != NULL)
+  if (spar != SISL_NULL)
     freearray (spar);
 }

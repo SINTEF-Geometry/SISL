@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6settop.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6settop.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -72,7 +72,7 @@ void sh6settop(pt,ilist,left1,right1,left2,right2,jstat)
 
    /* Check pt. */
 
-   if(pt == NULL) goto err2;
+   if(pt == SISL_NULL) goto err2;
 
    /* Check ilist. */
 
@@ -113,7 +113,7 @@ err1:
    goto out;
 
 err2:
-   /* Error in input. pt is NULL. */
+   /* Error in input. pt is SISL_NULL. */
    
    *jstat = -2;
    s6err("sh6settop",*jstat,0);

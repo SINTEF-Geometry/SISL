@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh_set_at.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh_set_at.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -68,14 +68,14 @@ sh_set_at (po1, po2, pintdat,  jstat)
   int kstat = 0;		/* Status variable.                        */
   int ki;			/* Counter.                                */
   int kdim;			/* Dimension of geometry space.            */
-  SISLIntpt *qpt = NULL;	/* Pointer to intersection point.          */
+  SISLIntpt *qpt = SISL_NULL;	/* Pointer to intersection point.          */
   /* --------------------------------------------------------------------- */
 
   /* Init */
   *jstat = 0;
 
   /* Test if an intersection data structure exist.  */
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     goto out;
 
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6trmlist.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6trmlist.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -92,7 +92,7 @@ sh6trimlist (pt, ptlist, no_of_points, no_alloc)
 	  clean_up = TRUE;
 	  (*no_alloc) += incr;
 	  *ptlist = newarray (*no_alloc, SISLIntpt *);
-	  if (*ptlist == NULL)
+	  if (*ptlist == SISL_NULL)
 	    goto out;
 	}
       else
@@ -100,7 +100,7 @@ sh6trimlist (pt, ptlist, no_of_points, no_alloc)
 	  clean_up = FALSE;
 	  (*no_alloc) += incr;
 	  *ptlist = increasearray (*ptlist, *no_alloc, SISLIntpt *);
-	  if (*ptlist == NULL)
+	  if (*ptlist == SISL_NULL)
 	    goto out;
 	}
     }

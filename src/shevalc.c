@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shevalc.c,v 1.2 1994-09-21 09:06:22 pfu Exp $
+ * $Id: shevalc.c,v 1.3 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -113,9 +113,9 @@ void shevalc(pc1,ider,ax,aepsge,ileft,eder,jstat)
 {
   int kstat=0;        /* Local status variable.                          */
   int kdim = pc1->idim;  /* Dimension of geometry space.                 */
-  double *scoef=NULL;    /* Array storing filtered coefficients.         */
+  double *scoef=SISL_NULL;    /* Array storing filtered coefficients.         */
   double *s1,*s2,*s3,*s4; /* Pointers into coefficient arrays.           */
-  SISLCurve *qc = NULL;   /* Curve to evaluate.                          */
+  SISLCurve *qc = SISL_NULL;   /* Curve to evaluate.                          */
 
   /* Make sure that the filtered coefficients of the curve exist.  */
 
@@ -141,7 +141,7 @@ void shevalc(pc1,ider,ax,aepsge,ileft,eder,jstat)
 
      /* Create filtered coefficients. */
 
-     if ((scoef = newarray(pc1->in,DOUBLE)) == NULL) goto err101;
+     if ((scoef = newarray(pc1->in,DOUBLE)) == SISL_NULL) goto err101;
 
      for (s1=pc1->ecoef, s2=scoef, s3=s1+pc1->in; s1<s3; s1=s4)
      {
@@ -156,7 +156,7 @@ void shevalc(pc1,ider,ax,aepsge,ileft,eder,jstat)
      /* Create curve object.  */
 
      if ((qc = newCurve(pc1->in,pc1->ik,pc1->et,scoef,pc1->ikind,
-			kdim,0)) == NULL) goto err101;
+			kdim,0)) == SISL_NULL) goto err101;
   }
   else
     qc = pc1;
@@ -197,8 +197,8 @@ void shevalc(pc1,ider,ax,aepsge,ileft,eder,jstat)
 out:
    /* Free scratch occupied by local objects. */
 
-   if (scoef != NULL) freearray(scoef);
-   if (qc != NULL && qc != pc1 ) freeCurve(qc);
+   if (scoef != SISL_NULL) freearray(scoef);
+   if (qc != SISL_NULL && qc != pc1 ) freeCurve(qc);
 
    return;
 }

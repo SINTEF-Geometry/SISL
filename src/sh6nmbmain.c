@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6nmbmain.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6nmbmain.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -59,7 +59,7 @@ int sh6nmbmain(pt,jstat)
 
    for(ki=0; ki<pt->no_of_curves; ki++)
    {
-       if(pt->pnext[ki] == NULL) goto err1;
+       if(pt->pnext[ki] == SISL_NULL) goto err1;
        if(sh6ismain(pt->pnext[ki])) num++;
    }
 

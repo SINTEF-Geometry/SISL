@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shsing.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: shsing.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -126,7 +126,7 @@ void shsing(psurf1,psurf2,limit,enext,gpos,jstat)
                             /* call to closest point                       */
   double guess[2];          /* Start point for closest point iteration     */
   double tol = (double)10000.0*REL_COMP_RES; /* equality tol. in par.space */
-  SISLPoint *ppoint=NULL;   /* Contains the current position in first      */ 
+  SISLPoint *ppoint=SISL_NULL;   /* Contains the current position in first      */ 
                             /* surface used in closest point iteration     */
   int max_iter=20;          /* Maximal number of iteration allowed         */
 
@@ -420,10 +420,10 @@ static void shsing_s9dir(cdiff,evals,evalq)
   
   /* ------------------------------------------------------------------------------- */
   
-  cdiff[0] = DNULL;
-  cdiff[1] = DNULL;
-  cdiff[2] = DNULL;
-  cdiff[3] = DNULL;
+  cdiff[0] = DZERO;
+  cdiff[1] = DZERO;
+  cdiff[2] = DZERO;
+  cdiff[3] = DZERO;
 
   /* Init, Set pointers to input values */
   sval = evals;
@@ -492,7 +492,7 @@ static void shsing_s9dir(cdiff,evals,evalq)
   
   for (ki=0;ki<3;ki++) nq_v[ki] = help3[ki] + help4[ki];
 
-  for (ki=0;ki<4;ki++) matr[ki] = DNULL;
+  for (ki=0;ki<4;ki++) matr[ki] = DZERO;
   
   for (ki=0;ki<3;ki++) 
     {
@@ -507,10 +507,10 @@ static void shsing_s9dir(cdiff,evals,evalq)
   s6lufacp(matr,piv,2,&kstat);
   if (kstat != 0) 
     {
-      if( DNEQUAL(matr[0],DNULL)) cdiff[0] = - s6scpr(s_u,nq,kdim)/matr[0];
-      else if( DNEQUAL(matr[1],DNULL)) cdiff[1] = - s6scpr(s_u,nq,kdim)/matr[1];
-      else if( DNEQUAL(matr[2],DNULL)) cdiff[0] = - s6scpr(s_v,nq,kdim)/matr[2];
-      else if( DNEQUAL(matr[3],DNULL)) cdiff[1] = - s6scpr(s_v,nq,kdim)/matr[3];
+      if( DNEQUAL(matr[0],DZERO)) cdiff[0] = - s6scpr(s_u,nq,kdim)/matr[0];
+      else if( DNEQUAL(matr[1],DZERO)) cdiff[1] = - s6scpr(s_u,nq,kdim)/matr[1];
+      else if( DNEQUAL(matr[2],DZERO)) cdiff[0] = - s6scpr(s_v,nq,kdim)/matr[2];
+      else if( DNEQUAL(matr[3],DZERO)) cdiff[1] = - s6scpr(s_v,nq,kdim)/matr[3];
 
     }
   else 

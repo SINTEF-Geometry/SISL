@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6ismain.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6ismain.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -51,7 +51,7 @@ int sh6ismain(pt)
 {
    int flag = 0;
 
-   if(pt != NULL && pt->iinter > 0) flag = 1;
+   if(pt != SISL_NULL && pt->iinter > 0) flag = 1;
 
 
    goto out;

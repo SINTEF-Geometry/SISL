@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6sepcrv.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6sepcrv.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -92,7 +92,7 @@ void
    double sparc2[3];      /* Parameters of closest points on second surface. */
    double scorn1[9];     /* Corners of first surface.           */
    double scorn2[9];     /* Closest points in the other surface. */
-   SISLPoint *qp = NULL;  /* Representing a surface corner as a point. */
+   SISLPoint *qp = SISL_NULL;  /* Representing a surface corner as a point. */
    double tstart;      /* Start parameters of second surface.       */
    double tend;       /* End parameters of second surface.       */
    double saxis[3];       /* Normal to circle between edges.         */
@@ -132,7 +132,7 @@ void
       return.   */
 
    tdot = s6scpr(pc1->pdir->ecoef,pc2->pdir->ecoef,kdim);
-   tsign = (tdot >= DNULL) ? (double)1.0 : -(double)1.0;
+   tsign = (tdot >= DZERO) ? (double)1.0 : -(double)1.0;
 
    tang = s6ang(pc1->pdir->ecoef,pc2->pdir->ecoef,kdim);
    if (tang > tpi4)
@@ -162,7 +162,7 @@ void
       /* Find the closest point in the other surface. First express
 	 the corner as a SISLPoint. */
       
-      if ((qp = newPoint(scorn1+ki*kdim, kdim, 1)) == NULL) goto err101;
+      if ((qp = newPoint(scorn1+ki*kdim, kdim, 1)) == SISL_NULL) goto err101;
       s1771(qp, pc2, aepsge, tstart, tend, tpar, sparc2+ki, &kstat);
       if (kstat < 0) goto error;
       
@@ -171,7 +171,7 @@ void
       s1221(pc2, 0, sparc2[ki], &kleft1, scorn2+ki*kdim, &kstat);
       if (kstat < 0) goto error;
       
-      if (qp != NULL) freePoint(qp); qp = NULL;
+      if (qp != SISL_NULL) freePoint(qp); qp = SISL_NULL;
    }
    
    

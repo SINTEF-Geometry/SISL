@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shdivsurf.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: shdivsurf.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -107,13 +107,13 @@ void
   int kn2;			/* Number of vertices in 2. par. dir.  */
   double *st1;			/* Knot vector in 1. par. dir.         */
   double *st2;			/* Knot vector in 2. par. dir.         */
-  double *scoef1 = NULL;	/* Coefficients of input curve to
+  double *scoef1 = SISL_NULL;	/* Coefficients of input curve to
 			           factorize in 1. par. dir.           */
-  double *scoef2 = NULL;	/* Coefficients of factorized surface. */
+  double *scoef2 = SISL_NULL;	/* Coefficients of factorized surface. */
   double *scoef;		/* Coefficients of factorized surface. */
-  SISLCurve *qc1 = NULL;	/* Input curve to sh_div_crv in 1. par. dir.    */
-  SISLCurve *qc2 = NULL;	/* Output curve from sh_div_crv in 1. par. dir. */
-  SISLCurve *qc3 = NULL;	/* Output curve from sh_div_crv in 2. par. dir. */
+  SISLCurve *qc1 = SISL_NULL;	/* Input curve to sh_div_crv in 1. par. dir.    */
+  SISLCurve *qc2 = SISL_NULL;	/* Output curve from sh_div_crv in 1. par. dir. */
+  SISLCurve *qc3 = SISL_NULL;	/* Output curve from sh_div_crv in 2. par. dir. */
   /* __________________________________________________________________ */
 
   if (which_end_1 > -1)
@@ -121,7 +121,7 @@ void
       /* Factorize 1. dir,
 	 first express the surface as a curve.  */
 
-      if ((scoef1 = newarray (kdim * ps->in1 * ps->in2, double)) == NULL)
+      if ((scoef1 = newarray (kdim * ps->in1 * ps->in2, double)) == SISL_NULL)
 	goto err101;
 
       /* Change parameter directions of surface.  */
@@ -131,7 +131,7 @@ void
       /* Create curve.  */
 
       qc1 = newCurve (ps->in1, ps->ik1, ps->et1, scoef1, kkind, kdim * ps->in2, 0);
-      if (qc1 == NULL)
+      if (qc1 == SISL_NULL)
 	goto err101;
 
       /* Factorize the curve.  */
@@ -142,7 +142,7 @@ void
       /* Change parameter directions of the coefficient array of
          the resulting curve.  */
 
-      if ((scoef2 = newarray (qc2->in *ps->in2 * kdim, DOUBLE)) == NULL)
+      if ((scoef2 = newarray (qc2->in *ps->in2 * kdim, DOUBLE)) == SISL_NULL)
 	goto err101;
       s6chpar (qc2->ecoef, ps->in2, qc2->in, kdim, scoef2);
 
@@ -157,9 +157,9 @@ void
 
       /* Free curve used as input to the sh_div_crv. */
 
-      if (qc1 != NULL)
+      if (qc1 != SISL_NULL)
 	freeCurve (qc1);
-      qc1 = NULL;
+      qc1 = SISL_NULL;
     }
   else
     {
@@ -180,7 +180,7 @@ void
 	 surface. First express the surface as a curve.           */
 
       if ((qc1 = newCurve (kn2, ps->ik2, st2, scoef2, kkind, kn1 * kdim, 0))
-	  == NULL)
+	  == SISL_NULL)
 	goto err101;
 
 
@@ -204,7 +204,7 @@ void
   /* Express result as a surface.  */
 
   if ((*rsnew = newSurf (kn1, kn2, kk1, kk2, st1, st2,
-			 scoef, kkind, kdim, 1)) == NULL)
+			 scoef, kkind, kdim, 1)) == SISL_NULL)
     goto err101;
 
   /* Exit.  */
@@ -225,15 +225,15 @@ error:*jstat = kstat;
 out:
   /* Free scratch occupied by local arrays and objects.  */
 
-  if (which_end_1 > -1 && scoef1 != NULL)
+  if (which_end_1 > -1 && scoef1 != SISL_NULL)
     freearray (scoef1);
-  if (which_end_1 > -1&& scoef2 != NULL)
+  if (which_end_1 > -1&& scoef2 != SISL_NULL)
     freearray (scoef2);
-  if (qc1 != NULL)
+  if (qc1 != SISL_NULL)
     freeCurve (qc1);
-  if (qc2 != NULL)
+  if (qc2 != SISL_NULL)
     freeCurve (qc2);
-  if (qc3 != NULL)
+  if (qc3 != SISL_NULL)
     freeCurve (qc3);
 
   return;

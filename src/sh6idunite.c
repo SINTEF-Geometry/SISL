@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idunite.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idunite.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -94,7 +94,7 @@ sh6idunite (intdat, pt1, pt2, weight, jstat)
   /* for (ki=0;;ki++) */
   for (ki = 0;;)
     {
-      if ((lpt = sh6getnext (lpt2, ki)) == NULL)
+      if ((lpt = sh6getnext (lpt2, ki)) == SISL_NULL)
 	break;
 
       sh6disconnect (lpt2, lpt, &kstat);

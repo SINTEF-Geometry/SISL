@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6isinsid.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6isinsid.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -78,7 +78,7 @@ sh6isinside (po1, po2, intpt, jstat)
  int on_edge = 0;
 
    
- if (intpt != NULL)
+ if (intpt != SISL_NULL)
  {
     /* Making the parametric boarders */
  

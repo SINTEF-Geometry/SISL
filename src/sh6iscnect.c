@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6iscnect.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6iscnect.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -38,7 +38,7 @@ int sh6isconnect(pt0, pt1, pt2)
 *              the two intersection points pt1 and pt2.
 *
 *
-* INPUT      : pt0       - Pointer to previous Intpt, possibly NULL.
+* INPUT      : pt0       - Pointer to previous Intpt, possibly SISL_NULL.
 *              pt1       - Pointer to first Intpt.
 *              pt2       - Pointer to second Intpt.
 *

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6tohelp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6tohelp.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -65,7 +65,7 @@ void sh6tohelp(pt,jstat)
 
    *jstat=0;
 
-   if(pt == NULL) goto err1;
+   if(pt == SISL_NULL) goto err1;
 
    if(sh6ismain(pt))  /* If pt is a help point. */
    {

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6spltgeo.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6spltgeo.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -120,7 +120,7 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
    double sparc2[10];      /* Parameters of closest points on second surface. */
    double scorn1[15];     /* Corners of first surface.           */
    double scorn2[15];     /* Closest points in the other surface. */
-   SISLPoint *qp = NULL;  /* Representing a surface corner as a point. */
+   SISLPoint *qp = SISL_NULL;  /* Representing a surface corner as a point. */
    double start2[2];      /* Start parameters of second surface.       */
    double send2[2];       /* End parameters of second surface.       */
    double sdist[4];       /* Distance between closest points.        */
@@ -144,7 +144,7 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
       return.   */
    
    tdot = s6scpr(ps1->pdir->ecoef,ps2->pdir->ecoef,kdim);
-   tsign = (tdot >= DNULL) ? (double)1.0 : -(double)1.0;
+   tsign = (tdot >= DZERO) ? (double)1.0 : -(double)1.0;
    
    tang = s6ang(ps1->pdir->ecoef,ps2->pdir->ecoef,kdim);
    if (tang > tpi6)
@@ -237,7 +237,7 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
 	 /* Find the closest point in the other surface. First express
 	    the corner as a SISLPoint. */
 	 
-	 if ((qp = newPoint(scorn1+ki*kdim, kdim, 1)) == NULL) goto err101;
+	 if ((qp = newPoint(scorn1+ki*kdim, kdim, 1)) == SISL_NULL) goto err101;
 	 s1773(qp, ps2, aepsge, start2, send2, spar2, sparc2+2*ki, &kstat);
 	 if (kstat < 0) goto error;
 	 
@@ -252,7 +252,7 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
 	 for (kj=0; kj<kdim; kj++)
 	    scorn1[ki*kdim+kj] = (double)0.5*(scorn1[ki*kdim+kj] + scorn2[ki*kdim+kj]);
 	    
-	 if (qp != NULL) freePoint(qp); qp = NULL;
+	 if (qp != SISL_NULL) freePoint(qp); qp = SISL_NULL;
       }
       
       /* Estimate circles.  */
@@ -358,7 +358,7 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
 	 /* Find the closest point in the other surface. First express
 	    the corner as a SISLPoint. */
 	 
-	 if ((qp = newPoint(scorn1+ki*kdim, kdim, 1)) == NULL) goto err101;
+	 if ((qp = newPoint(scorn1+ki*kdim, kdim, 1)) == SISL_NULL) goto err101;
 	 s1773(qp, ps2, aepsge, start2, send2, spar2, sparc2+2*ki, &kstat);
 	 if (kstat < 0) goto error;
 	 
@@ -372,7 +372,7 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
 	 
 	 sdist[ki] = s6dist(scorn1+ki*kdim, scorn2+ki*kdim, kdim);
 	 
-	 if (qp != NULL) freePoint(qp); qp = NULL;
+	 if (qp != SISL_NULL) freePoint(qp); qp = SISL_NULL;
       }
       
       /* Check if the two closest points lies on a common edge. */
@@ -418,11 +418,11 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
       /* Find the closest point in the other surface. First express
 	 the corner as a SISLPoint. */
       
-      if ((qp = newPoint(scorn1+4*kdim, kdim, 1)) == NULL) goto err101;
+      if ((qp = newPoint(scorn1+4*kdim, kdim, 1)) == SISL_NULL) goto err101;
       s1773(qp, ps2, aepsge, start2, send2, spar2, sparc2+8, &kstat);
       if (kstat < 0) goto error;
       
-      if (qp != NULL) freePoint(qp); qp = NULL;
+      if (qp != SISL_NULL) freePoint(qp); qp = SISL_NULL;
       
       /* Evaluate surface. */
       

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idsplit.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idsplit.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -73,13 +73,13 @@ void
   int test= FALSE;              /* No equality testing when inserted
 				   in pintdat                        */
   int kstat = 0;                /* Local status.                     */
-  SISLIntpt *pneighb = NULL;	/* Current neighbour                 */
-  SISLIntpt *pshadow = NULL;	/* Current copy of source point      */
+  SISLIntpt *pneighb = SISL_NULL;	/* Current neighbour                 */
+  SISLIntpt *pshadow = SISL_NULL;	/* Current copy of source point      */
   /* ------------------------------------------------*/
   
   *jstat = 0;
   
-  if (psource == NULL)
+  if (psource == SISL_NULL)
     {
        *jstat = 1;
        goto out;

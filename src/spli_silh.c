@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: spli_silh.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: spli_silh.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -83,21 +83,21 @@ void
   int ac_no=0;		        /* No of points in first half of split crv*/
   int knum=0;		        /* No of points in crv to split.          */
   int test=0;		        /* Flag input to s6idnpt.                 */
-  SISLIntpt *pfirst=NULL;	/* First point in a list.                 */
-  SISLIntpt *plast=NULL;	/* Last point in a list.                  */
-  SISLIntpt *plast_prev=NULL;	/* Next to last point in a list.          */
-  SISLIntpt *pshadow=NULL;	/* Copy of pnext.                         */
-  SISLIntpt *pnext=NULL;	/* Navigator in  a list.             	  */
-  SISLIntpt *prev=NULL;	 	/* Navigator in  a list.             	  */
-  SISLIntpt *pother=NULL;	/* Navigator in  a list.             	  */
-  SISLSurf  *psurf=NULL;	/* The surface in question.            	  */
+  SISLIntpt *pfirst=SISL_NULL;	/* First point in a list.                 */
+  SISLIntpt *plast=SISL_NULL;	/* Last point in a list.                  */
+  SISLIntpt *plast_prev=SISL_NULL;	/* Next to last point in a list.          */
+  SISLIntpt *pshadow=SISL_NULL;	/* Copy of pnext.                         */
+  SISLIntpt *pnext=SISL_NULL;	/* Navigator in  a list.             	  */
+  SISLIntpt *prev=SISL_NULL;	 	/* Navigator in  a list.             	  */
+  SISLIntpt *pother=SISL_NULL;	/* Navigator in  a list.             	  */
+  SISLSurf  *psurf=SISL_NULL;	/* The surface in question.            	  */
   double arr[2];            	/* Delta vector in par space              */
   /* -------------------------------------------------------------------- */ 
        
   *jstat = 0;
   
   /* If we do not have any intersection data we just return. */     
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
     goto out;
   
   if (po1->iobj != SISLSURFACE) goto errinp;
@@ -220,13 +220,13 @@ void
 		 
 		 if (((*pintdat)->vlist =
 		      increasearray ((*pintdat)->vlist, (*pintdat)->ilmax,
-				     SISLIntlist *)) == NULL)
+				     SISLIntlist *)) == SISL_NULL)
 		    goto err101;
 	      }
 	      
 	      
 	      if(((*pintdat)->vlist[klist] = newIntlist (pnext, plast, ktype))
-		 == NULL) goto err101;
+		 == SISL_NULL) goto err101;
 	      (*pintdat)->vlist[klist]->inumb = knum + 1 - ac_no;
 	      (*pintdat)->vlist[klist]->ind_first = index1;
 	      (*pintdat)->vlist[klist]->ind_last  = indlast;
@@ -274,9 +274,9 @@ void
 	freearray (pfirst->geo_data_1);
      if (pfirst->geo_data_2)
 	freearray (pfirst->geo_data_2);
-     pfirst->geo_data_1 = NULL;
+     pfirst->geo_data_1 = SISL_NULL;
      pfirst->size_1 = 0;
-     pfirst->geo_data_2 = NULL;
+     pfirst->geo_data_2 = SISL_NULL;
      pfirst->size_2 = 0;
      pfirst->evaluated = FALSE;
      
@@ -284,9 +284,9 @@ void
 	freearray (plast->geo_data_1);
      if (plast->geo_data_2)
 	freearray (plast->geo_data_2);
-     plast->geo_data_1 = NULL;
+     plast->geo_data_1 = SISL_NULL;
      plast->size_1 = 0;
-     plast->geo_data_2 = NULL;
+     plast->geo_data_2 = SISL_NULL;
      plast->size_2 = 0;
      plast->evaluated = FALSE;
   }  

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idrcros.c,v 1.3 1998-03-31 13:06:13 jka Exp $
+ * $Id: sh6idrcros.c,v 1.4 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -277,7 +277,7 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 
 		      for (kl=0; kl<inpt; kl++)
 			if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
-			  vpt[kl] = NULL;
+			  vpt[kl] = SISL_NULL;
 
 		      sh6idkpt(pintdat,&vcross[ki],1,&kstat);
 		      if (kstat < 0) goto error;
@@ -320,7 +320,7 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 
 		      for (kl=0; kl<inpt; kl++)
 			if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
-			  vpt[kl] = NULL;
+			  vpt[kl] = SISL_NULL;
 
 		      sh6idkpt(pintdat,&vcross[ki],1,&kstat);
 		      if (kstat < 0) goto error;

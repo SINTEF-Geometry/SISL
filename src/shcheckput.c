@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shcheckput.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: shcheckput.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -91,9 +91,9 @@ void shcheckput(po1,rintdat,pintdat,inr,apar,jstat)
   int ki,kj;                    /* Counters                             */
   int kant;                     /* Number of parameters in new points.  */
   int knum;                     /* Number of points transmitted.        */
-  int *perm_arr = NULL;         /* Permutation array used in transmit.  */
-  double *spar   = NULL;        /* Storing uppdated parametervalues.    */
-  SISLIntpt **uintpt = NULL;    /* Pointers to new intersection points. */
+  int *perm_arr = SISL_NULL;         /* Permutation array used in transmit.  */
+  double *spar   = SISL_NULL;        /* Storing uppdated parametervalues.    */
+  SISLIntpt **uintpt = SISL_NULL;    /* Pointers to new intersection points. */
   /* ------------------------------------------------------------------ */
   
   /* Initiate to no points transmitted */
@@ -103,7 +103,7 @@ void shcheckput(po1,rintdat,pintdat,inr,apar,jstat)
     if (po1->iobj != SISLSURFACE) goto err192;
 			       
   /* We have to be sure that we have an intdat structure. */
-  if (pintdat == NULL) goto out;
+  if (pintdat == SISL_NULL) goto out;
    
   /* Computing number of new parameter direction. */
   
@@ -115,18 +115,18 @@ void shcheckput(po1,rintdat,pintdat,inr,apar,jstat)
   
   /* Allocating an array for intersection points. */
   
-  if ((uintpt = newarray(pintdat->ipoint,SISLIntpt *)) == NULL)
+  if ((uintpt = newarray(pintdat->ipoint,SISLIntpt *)) == SISL_NULL)
     goto err101;
   
   /* Allocating an array for index relation between pintdat
      and the selected points.      . */
   
-  if ((perm_arr = newarray(pintdat->ipoint,int)) == NULL)
+  if ((perm_arr = newarray(pintdat->ipoint,int)) == SISL_NULL)
     goto err101;
   
   /* Allocating an array for parametervalues. */
   
-  if ((spar = newarray(kant,double)) == NULL)
+  if ((spar = newarray(kant,double)) == SISL_NULL)
     goto err101;
   
   
@@ -166,7 +166,7 @@ void shcheckput(po1,rintdat,pintdat,inr,apar,jstat)
   /* Than we can uppdate all pcurve pointers (lists). */
   
   for (ki=0; ki<pintdat->ipoint; ki++)
-    if (pintdat->vpoint[ki]->pcurve != NULL)
+    if (pintdat->vpoint[ki]->pcurve != SISL_NULL)
       {
 	for (kj=0;kj<pintdat->ipoint;kj++)
 	  if (pintdat->vpoint[ki]->pcurve == pintdat->vpoint[kj])
@@ -215,7 +215,7 @@ error: *jstat = kstat;
         s6err("shcheckput",*jstat,kpos);
         goto out;
 
- out: if (uintpt     != NULL) freearray(uintpt);
-      if (spar       != NULL) freearray(spar);
-      if (perm_arr   != NULL) freearray(perm_arr);
+ out: if (uintpt     != SISL_NULL) freearray(uintpt);
+      if (spar       != SISL_NULL) freearray(spar);
+      if (perm_arr   != SISL_NULL) freearray(perm_arr);
 }

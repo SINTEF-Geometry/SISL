@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shmkhlppts.c,v 1.3 1994-09-27 09:18:47 pfu Exp $
+ * $Id: shmkhlppts.c,v 1.4 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -81,10 +81,10 @@ shmkhlppts (po1, po2, aepsge, rintdat, vedge, jnewpt, jstat)
   int knewpt = 0;		/* Number of new intersection points.      */
   int kobj;			/* Number of obj, used in s6idint          */
   int index1, index2;		/* Dummy in this context                   */
-  SISLIntpt **up = NULL;	/* Array of poiners to intersection point. */
+  SISLIntpt **up = SISL_NULL;	/* Array of poiners to intersection point. */
   /*  SISLIntpt *lup[3];*/		/* Array of poiners to intersection point. */
-  SISLIntpt *qptint = NULL;	/* Pointer to internal intersection point. */
-  SISLIntpt *qpt = NULL;	/* Pointer to intersection point.          */
+  SISLIntpt *qptint = SISL_NULL;	/* Pointer to internal intersection point. */
+  SISLIntpt *qpt = SISL_NULL;	/* Pointer to intersection point.          */
   /* --------------------------------------------------------------------- */
 
   /* Init */
@@ -92,7 +92,7 @@ shmkhlppts (po1, po2, aepsge, rintdat, vedge, jnewpt, jstat)
   *jnewpt = 0;
 
   /* Test if an intersection data structure exist.  */
-  if (*rintdat == NULL)
+  if (*rintdat == SISL_NULL)
     goto out;
 
 
@@ -120,12 +120,12 @@ shmkhlppts (po1, po2, aepsge, rintdat, vedge, jnewpt, jstat)
     goto out;
 
   /* Compute number of intersection points on edges, 0 1 or 2. */
-  if (vedge[0] == NULL)
+  if (vedge[0] == SISL_NULL)
     knum = 0;
   else
     knum = vedge[0]->ipoint;
 
-  if (vedge[1] != NULL)
+  if (vedge[1] != SISL_NULL)
     knum += vedge[1]->ipoint;
 
 
@@ -249,7 +249,7 @@ error:*jstat = kstat;
   goto out;
 
 out:
-  if (up != NULL)
+  if (up != SISL_NULL)
     freearray (up);
 
   return;

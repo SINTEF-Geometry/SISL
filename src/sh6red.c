@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6red.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6red.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -79,7 +79,7 @@ sh6red (po1, po2, pintdat, jstat)
         && po2->s1->idim == 1) ||
        (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE
         && po1->s1->idim == 3)) &&
-        pintdat != NULL)
+        pintdat != SISL_NULL)
      for (j = 0; j < pintdat->ipoint; j++)
      {
 	
@@ -131,7 +131,7 @@ sh6red (po1, po2, pintdat, jstat)
      }
    
   
-  if (pintdat != NULL)
+  if (pintdat != SISL_NULL)
     {
       /* Weight value in 3D sf vs sf case is one */
       if (pintdat->vpoint[0]->ipar == 4)
@@ -143,7 +143,7 @@ sh6red (po1, po2, pintdat, jstat)
 	{
 	  if (pintdat->vpoint[i]->iinter == SI_TRIM)
 	    {
-	      SISLIntpt **trim = NULL;
+	      SISLIntpt **trim = SISL_NULL;
 	      int no_trim = 0;
 	      int no_alloc = 0;
 	      sh6trimlist (pintdat->vpoint[i], &trim, &no_trim, &no_alloc);

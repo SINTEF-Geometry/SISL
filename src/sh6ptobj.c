@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6ptobj.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6ptobj.c,v 1.2 2001-03-19 16:06:03 afr Exp $
  *
  */
 
@@ -75,16 +75,16 @@ void sh6ptobj(point, obj, aepsge, start, result, jstat)
   int kpos = 0;             /* Position of error.                          */
   double pstart[2];
   double pend[2];
-  SISLPoint *sislpt = NULL;
+  SISLPoint *sislpt = SISL_NULL;
   double loc_start[2];
   
   /* Test input.  */
   
-  if (obj == NULL) goto err106;
+  if (obj == SISL_NULL) goto err106;
 		   
   if ( obj->iobj == SISLSURFACE)
   {
-     if ((sislpt = newPoint(point, obj->s1->idim, 0)) == NULL)
+     if ((sislpt = newPoint(point, obj->s1->idim, 0)) == SISL_NULL)
         goto error;
 
      memcopy(loc_start,start,2,double);
@@ -100,7 +100,7 @@ void sh6ptobj(point, obj, aepsge, start, result, jstat)
   }
   else if ( obj->iobj == SISLCURVE)
   {
-     if ((sislpt = newPoint(point, obj->c1->idim, 0)) == NULL)
+     if ((sislpt = newPoint(point, obj->c1->idim, 0)) == SISL_NULL)
         goto error;
      
      pstart[0] = obj->c1->et[obj->c1->ik - 1];
@@ -135,5 +135,5 @@ void sh6ptobj(point, obj, aepsge, start, result, jstat)
   s6err("sh6ptobj",*jstat,kpos);
   goto out;                  
 	 
- out:    if (sislpt != NULL) freePoint(sislpt);
+ out:    if (sislpt != SISL_NULL) freePoint(sislpt);
 }

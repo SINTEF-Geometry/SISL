@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh_1d_div.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh_1d_div.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -101,16 +101,16 @@ void
    int kn, kj, ki;              /* Loop control                            */
    int edge_1=0, edge_2=0;      /* No of pts in pt_arr_1[2]                */
    int alloc_1=0, alloc_2=0;    /* Size of pt_arr_1[2]                     */
-   SISLIntpt *pcurr = NULL;	/* Array of poiners to int points.         */
-   SISLIntpt **uintpt = NULL;	/* Array of poiners to int points.         */
-   SISLIntpt **up = NULL;	/* Array of poiners to edge int points.    */
-   SISLIntpt **pt_arr_1 = NULL;	/* Array of poiners to ZERO edge.          */
-   SISLIntpt **pt_arr_2 = NULL;	/* Array of poiners to ZERO edge.          */
-   SISLIntpt **up2 = NULL;	/* Array of poiners to corner int points.  */
-   SISLIntdat *qintdat = NULL;	/* Data structure of sub inters problem    */
-   SISLObject *qo1 = NULL;      /* Pointer to surface in
+   SISLIntpt *pcurr = SISL_NULL;	/* Array of poiners to int points.         */
+   SISLIntpt **uintpt = SISL_NULL;	/* Array of poiners to int points.         */
+   SISLIntpt **up = SISL_NULL;	/* Array of poiners to edge int points.    */
+   SISLIntpt **pt_arr_1 = SISL_NULL;	/* Array of poiners to ZERO edge.          */
+   SISLIntpt **pt_arr_2 = SISL_NULL;	/* Array of poiners to ZERO edge.          */
+   SISLIntpt **up2 = SISL_NULL;	/* Array of poiners to corner int points.  */
+   SISLIntdat *qintdat = SISL_NULL;	/* Data structure of sub inters problem    */
+   SISLObject *qo1 = SISL_NULL;      /* Pointer to surface in
 				   object/point intersection. */
-   double *nullp = NULL;
+   double *nullp = SISL_NULL;
    /* ____________________________________________________________________ */
 
    *jstat = 0;
@@ -133,7 +133,7 @@ void
    
    /* Find corner points */
    /* Allocate an array for intersection points. */
-   if ((up2= newarray (knum, SISLIntpt *)) == NULL)
+   if ((up2= newarray (knum, SISLIntpt *)) == SISL_NULL)
       goto err101;
    
    for (knum2=ki=0;ki<knum;ki++)
@@ -168,7 +168,7 @@ void
 	       {
 		  alloc_1 = 10;
 		  if((pt_arr_1 = newarray(alloc_1,SISLIntpt *))
-		     == NULL) goto err101;
+		     == SISL_NULL) goto err101;
 	       }
 	       edge_1 = 2;
 	       if (up2[ki]->epar[1] < up2[kj]->epar[1])
@@ -195,7 +195,7 @@ void
 	       {
 		  alloc_2 = 10;
 		  if((pt_arr_2 = newarray(alloc_2,SISLIntpt *))
-		     == NULL) goto err101;
+		     == SISL_NULL) goto err101;
 	       }
 	       edge_2 = 2;
 	       if (up2[ki]->epar[0] < up2[kj]->epar[0])
@@ -228,7 +228,7 @@ void
       
       if (!(qo1 = newObject (SISLSURFACE)))
 	 goto err101;
-      qo1->s1 = NULL;
+      qo1->s1 = SISL_NULL;
       qo1->o1 = qo1;
       
       /* Filter coefficients less than aepsge. */
@@ -269,7 +269,7 @@ void
 	 kant = qintdat->vpoint[0]->ipar;
 	 
 	 /* Allocate an array for intersection points. */
-	 if ((uintpt = newarray (qintdat->ipoint, SISLIntpt *)) == NULL)
+	 if ((uintpt = newarray (qintdat->ipoint, SISLIntpt *)) == SISL_NULL)
 	    goto err101;
 	 
 	 /* Copy all intersection points. */
@@ -287,7 +287,7 @@ void
 				      0, 0,
 				      nullp, nullp);
 	    
-	    if (uintpt[ki] == NULL)
+	    if (uintpt[ki] == SISL_NULL)
 	       goto err101;
 	 }
 	 
@@ -320,7 +320,7 @@ void
 			alloc_1 += 10;
 			if ((pt_arr_1 = 
 			     increasearray(pt_arr_1,alloc_1,SISLIntpt *))
-			    == NULL) goto err101;
+			    == SISL_NULL) goto err101;
 		     }
 		     
 		     for (kn = edge_1; kn > kj+1; kn--)
@@ -346,7 +346,7 @@ void
 			alloc_2 += 10;
 			if ((pt_arr_2 = 
 			     increasearray(pt_arr_2,alloc_2,SISLIntpt *))
-			    == NULL) goto err101;
+			    == SISL_NULL) goto err101;
 		     }
 		     
 		     for (kn = edge_2; kn > kj+1; kn--)
@@ -463,7 +463,7 @@ static void
 *********************************************************************
 *                                                                   
 * PURPOSE    : To insert a new intersection point into pintdat.
-*              If pintdat is NULL a new pintdat is also made.
+*              If pintdat is SISL_NULL a new pintdat is also made.
 *              If pintpt is close to an other intersection point
 *              the object pintpt is pointing to is freed, and
 *              pintpt is set to point to the already inserted point.
@@ -509,9 +509,9 @@ static void
   
   /* We have to be sure that we have an intdat structure. */
   
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
     {
-      if (((*pintdat) = newIntdat()) == NULL) goto err101;
+      if (((*pintdat) = newIntdat()) == SISL_NULL) goto err101;
     }
   
   
@@ -552,7 +552,7 @@ static void
       (*pintdat)->ipmax += 20;
       
       if (((*pintdat)->vpoint = increasearray((*pintdat)->vpoint,
-					      (*pintdat)->ipmax,SISLIntpt *)) == NULL) 
+					      (*pintdat)->ipmax,SISLIntpt *)) == SISL_NULL) 
 	goto err101;
     }
   

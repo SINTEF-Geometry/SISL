@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shchecktyp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: shchecktyp.c,v 1.2 2001-03-19 16:06:04 afr Exp $
  *
  */
 
@@ -82,7 +82,7 @@ int shchecktype(pobj,parval)
    double ttol = 1000000.0*REL_COMP_RES;
    /* --------------------------------------------------------- */
    
-   if (pobj == NULL ||
+   if (pobj == SISL_NULL ||
        (pobj->iobj != SISLCURVE && pobj->iobj != SISLSURFACE))
       return -1;
    
@@ -141,7 +141,7 @@ int shchecktype(pobj,parval)
       tdet = (sval[3]*sval[5] - sval[4]*sval[4]);
       if      (tdet < -ttol) return 3;
       else if (tdet <  ttol) return 4;
-      else if (sval[3] < DNULL) return 1;
+      else if (sval[3] < DZERO) return 1;
       else return 2;
       
    }
