@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.41 1998-01-23 15:07:35 jka Exp $
+ * $Id: sislP.h,v 1.42 1999-01-15 11:53:55 jka Exp $
  *
  */
 
@@ -626,6 +626,10 @@ extern
 #endif
 void s1224(double [],double [],int,int,int,int,int, int,double [],int,
 	   double [],int *);
+#ifndef  S1231
+extern
+#endif
+void s1231(SISLCurve *,double,SISLCurve **,SISLCurve **,int *);
 #ifndef  S1232
 extern
 #endif
@@ -743,6 +747,11 @@ void s1330(double [],double [],double [],double [],double [],double [],
 extern
 #endif
 void s1331(double [],double [],int,int,double [],double [],int *);
+#ifndef  S1333
+extern
+#endif
+void s1333(int,SISLCurve *[],int [],double,int,int,int,SISLSurf **,
+	   double **,int *);
 #ifndef  S1333_COUNT
 extern
 #endif
@@ -751,6 +760,52 @@ void s1333_count(int,SISLCurve *[],int *,int *);
 extern
 #endif
 void s1333_cyclic(SISLSurf *,int,int *);
+#ifndef  S1334
+extern
+#endif
+void s1334(double [],int,int,double [],int,int,int,int,double,
+	   double *,SISLCurve **,double **,int *,int *);
+#ifndef  S1340
+extern
+#endif
+void s1340(SISLCurve *,double [],int,int,double,int,SISLCurve **,
+	   double [],int *);
+#ifndef  S1341
+extern
+#endif
+void s1341(double [],int,int,int,double [],double [],int,int,
+	   double,double,int,int,SISLCurve **,double [],int *);
+#ifndef  S1342
+extern
+#endif
+void s1342(double [],double [],int,int,int,double [],
+	   double [],int,int,double,int,SISLCurve **,double [],int *);
+#ifndef  S1343
+extern
+#endif
+void s1343(SISLCurve *,double [],int,int,double,int,SISLCurve **,int *);
+#ifndef  S1345
+extern
+#endif
+void s1345(SISLSurf *,double [],int [],double [],double,int,int,
+	   SISLSurf **,double [],int *);
+#ifndef  S1346
+extern
+#endif
+void s1346(double [],int,int,int,int,double [],double [],double [],
+	   int [],double [],double,double,int,int,int,int,
+	   SISLSurf **,double [],int *);
+#ifndef  S1347
+extern
+#endif
+void s1347(double [],double [],double [],double [],int,int,int,int,
+	   double [],double [],double [],int [],double [],double,int,
+	   int,SISLSurf **,double [],int *);
+#ifndef  S1348
+extern
+#endif
+void s1348(SISLSurf *,double [],int [],double [],double,int,int,
+	   SISLSurf **,int *);
 #ifndef  S1349
 extern
 #endif
@@ -781,6 +836,11 @@ void s1354(SISLCurve *,SISLCurve *,rank_info *,double [],
 extern
 #endif
 void s1355(SISLCurve *,double [],double **,int *,int *);
+#ifndef  S1358
+extern
+#endif
+void s1358(double [],int,int,double [],double [],int,int,int,int,double,
+	   double *,SISLCurve **,double **,int *,int *);
 #ifndef  S1359
 extern
 #endif
@@ -848,15 +908,36 @@ void s1399(SISLCurve *,double,double);
 extern
 #endif
 void s1435(SISLSurf *,int,SISLCurve **,double *,int *);
+#ifndef  S1436
+extern
+#endif
+void s1436(SISLSurf *,double,SISLCurve **,int *);
+#ifndef  S1437
+extern
+#endif
+void s1437(SISLSurf *,double,SISLCurve **,int *);
 #ifndef  S1438
 extern
 #endif
 void s1438(SISLCurve  *,int,SISLPoint **,double *,int *);
+#ifndef  S1452
+extern
+#endif
+void s1452(SISLSurf *,double,double,SISLSurf **,int *);
 #ifndef S1500
 extern
 #endif
 void s1500(double [],double [],double [],double,double,int,int,
 	   double [],int *);
+#ifndef S1504
+extern
+#endif
+void s1504(double *,int,int,double *,int,int,double [],int [],int *);
+#ifndef S1505
+extern
+#endif
+void s1505(const SISLSurf *,int,int,int,double *,double *, int *,
+           int *,double [],double [],int *);
 #ifndef S1512
 extern
 #endif
@@ -865,6 +946,10 @@ void s1512(SISLSurf *,double [],int,SISLSurf **,int *);
 extern
 #endif
 void s1513(SISLSurf *,double [],double [],int,SISLSurf **,int *);
+#ifndef  S1520
+extern
+#endif
+void s1520(SISLCurve *,double,double [],double [],SISLSurf **,int *);
 #ifndef S1521
 extern
 #endif
@@ -877,6 +962,10 @@ void s1528(int,int,int,double [],int,int,int,double **,double **,int *);
 extern
 #endif
 void s1531(double [],int,int,int,double **,int *);
+#ifndef  S1604
+extern
+#endif
+void s1604(double [],int,double,int,int,int,SISLCurve **,int *);
 #ifndef  S1605
 extern
 #endif
@@ -1330,10 +1419,26 @@ void s1959(SISLPoint *, SISLCurve *, double *, int *);
 extern
 #endif
 void s1960(SISLPoint *, SISLSurf *, double [], int *);
+#ifndef S1990
+extern
+#endif
+void s1990(SISLSurf *, double, int *);
+#ifndef  S1991
+extern
+#endif
+void s1991(SISLCurve *,double,int *);
 #ifndef  S1992
 extern
 #endif
 void s1992(SISLObject *,int *);
+#ifndef  S1992
+extern
+#endif
+void s1992cu(SISLCurve *,int *);
+#ifndef  S1992
+extern
+#endif
+void s1992su(SISLSurf *,int *);
 #ifndef  S1993
 extern
 #endif
@@ -2548,6 +2653,10 @@ void s1223();
 extern
 #endif
 void s1224();
+#ifndef  S1231
+extern
+#endif
+void s1231();
 #ifndef  S1232
 extern
 #endif
@@ -2660,6 +2769,10 @@ void s1330();
 extern
 #endif
 void s1331();
+#ifndef  S1333
+extern
+#endif
+void s1333();
 #ifndef  S1333_COUNT
 extern
 #endif
@@ -2668,6 +2781,42 @@ void s1333_count();
 extern
 #endif
 void s1333_cyclic();
+#ifndef  S1334
+extern
+#endif
+void s1334();
+#ifndef  S1340
+extern
+#endif
+void s1340();
+#ifndef  S1341
+extern
+#endif
+void s1341();
+#ifndef  S1342
+extern
+#endif
+void s1342();
+#ifndef  S1343
+extern
+#endif
+void s1343();
+#ifndef  S1345
+extern
+#endif
+void s1345();
+#ifndef  S1346
+extern
+#endif
+void s1346();
+#ifndef  S1347
+extern
+#endif
+void s1347();
+#ifndef  S1348
+extern
+#endif
+void s1348();
 #ifndef  S1349
 extern
 #endif
@@ -2696,6 +2845,10 @@ void s1354();
 extern
 #endif
 void s1355();
+#ifndef  S1358
+extern
+#endif
+void s1358();
 #ifndef  S1359
 extern
 #endif
@@ -2760,14 +2913,34 @@ void s1399();
 extern
 #endif
 void s1435();
+#ifndef  S1436
+extern
+#endif
+void s1436();
+#ifndef  S1437
+extern
+#endif
+void s1437();
 #ifndef  S1438
 extern
 #endif
 void s1438();
+#ifndef  S1452
+extern
+#endif
+void s1452();
 #ifndef S1500
 extern
 #endif
 void s1500();
+#ifndef S1504
+extern
+#endif
+void s1504();
+#ifndef S1505
+extern
+#endif
+void s1505();
 #ifndef S1512
 extern
 #endif
@@ -2776,6 +2949,10 @@ void s1512();
 extern
 #endif
 void s1513();
+#ifndef S1520
+extern
+#endif
+void s1520();
 #ifndef S1521
 extern
 #endif
@@ -2788,6 +2965,10 @@ void s1528();
 extern
 #endif
 void s1531();
+#ifndef  S1604
+extern
+#endif
+void s1604();
 #ifndef  S1605
 extern
 #endif
@@ -3148,10 +3329,26 @@ void s1959();
 extern
 #endif
 void s1960();
+#ifndef S1990
+extern
+#endif
+void s1990();
+#ifndef  S1991
+extern
+#endif
+void s1991();
 #ifndef  S1992
 extern
 #endif
 void s1992();
+#ifndef  S1992
+extern
+#endif
+void s1992cu();
+#ifndef  S1992
+extern
+#endif
+void s1992su();
 #ifndef  S1993
 extern
 #endif
