@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1921.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1921.c,v 1.2 1994-08-31 08:07:30 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1921(SISLSurf *ps1,double edir[],int idim,double aepsco,double aepsge,
 	   int *jpt,double **gpar,int *jcrv,SISLIntcurve ***wcurve,int *jstat)
 #else
@@ -41,8 +41,8 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
-* PURPOSE    : Find the extremal points/curves of the surface ps1 in 
+*
+* PURPOSE    : Find the extremal points/curves of the surface ps1 in
 *              the direction edir.
 *
 *
@@ -64,7 +64,7 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 * OUTPUT     : jpt    - Number of single extremal points.
 *              gpar   - Array containing the parameter values of the
 *                       single extremal points in the parameter
-*                       area of the surface. The points lie continuous. 
+*                       area of the surface. The points lie continuous.
 *                       Extremal curves are stored in wcurve.
 *              jcrv   - Number of extremal curves.
 *              wcurve - Array containing descriptions of the extremal
@@ -72,7 +72,7 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 *                       in the parameter area. The curve-pointers points
 *                       to nothing. (See descrjption of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -81,16 +81,16 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 * METHOD     : The scalar-product of the coefficients of the surface with
 *              the vector edir is calculated giving a surface with dimension
 *              1. Then the maxima of this surface is calculated.
-*              
+*
 *
 *
 * REFERENCES :
 *
-*- 
+*-
 * CALLS      : s1880 - Put extremal points/intervals into output format.
 *              s1161 - Find maxima of one-dimensional object.
 *              s6scpr - Scalar-product between two vectors.
-*              newSurf    - Create new surface 
+*              newSurf    - Create new surface
 *              newObject  - Create new object.
 *              newIntdat  - Create new max point .
 *              freeObject - Free the space occupied by a given object.
@@ -98,132 +98,174 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 *
 * WRITTEN BY : Vibeke Skytt, SI, 88-10.
 * REVISED BY : Mike Floater, SI, 91-09.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 1994-08.  Updated to handle
+*              input surface with periodic basis correctly.
 *
 *********************************************************************
-*/                                                               
-{                                                                     
+*/
+{
   int ikind;               /* Type of surface ps1 is.                     */
   int kstat = 0;           /* Local status variable.                      */
   int kpos = 0;            /* Position of error.                          */
+  int ki;                  /* Counter.                                    */
   int kn1,kn2;             /* Number of vertices of surface.              */
   int kk1,kk2;             /* Order of surface.                           */
   double tmax;             /* Estimate of maximal value of 1-dim. surface.*/
   double *st1,*st2;        /* Pointer to knotvectors of surface.          */
   double *scoef;           /* Pointer to vertices of surface.             */
-  double *sc = NULL;       /* Pointer to vertices of surface in maxima   
+  double *sc = NULL;       /* Pointer to vertices of surface in maxima
 			      calculation.                                */
-  double *spar = NULL;     /* Values of maxima in the parameter area of 
+  double *spar = NULL;     /* Values of maxima in the parameter area of
 			      the second object. Empty in this case.      */
   double *s1,*s2,*sstop;   /* Pointers used to traverse double-arrays.    */
-  SISLIntdat *qintdat = NULL;  /* Pointer to max data structure.*/ 
+  SISLIntdat *qintdat = NULL;  /* Pointer to max data structure.*/
   SISLSurf *qs = NULL;         /* Pointer to 1-dim. surface in maxima-calculation.*/
   SISLObject *qo1 = NULL;      /* Pointer to object in maxima-calculation.  */
-  
-  /* Check dimension.  */
-  
-  if (ps1 -> idim != idim) goto err106;
-  
-  /* Describe surface with local variables.  */
-  
-  kn1 = ps1 -> in1;
-  kn2 = ps1 -> in2;
-  kk1 = ps1 -> ik1;
-  kk2 = ps1 -> ik2;
-  st1 = ps1 -> et1;
-  st2 = ps1 -> et2;
-  ikind = ps1 -> ikind;
-  
-  if(ikind == 2 || ikind == 4)
+  SISLSurf *qkreg = NULL;      /* Input surface with k-regularity ensured.  */
+
+
+  /* Ensure k-regular input surface. */
+
+  if ( ps1 -> cuopen_1 == SISL_SURF_PERIODIC ||
+       ps1 -> cuopen_2 == SISL_SURF_PERIODIC )
   {
-      scoef = ps1 -> rcoef;
-      /* Allocate space for coeffecients of new surface.  */
-      
-      if ((sc = newarray(2*kn1*kn2,double)) == NULL) goto err101; 
-      
-      /* Compute scalar-product of surface-vertices and direction vector. */
-      /* Copy over weights. */
-      
-      for (s1=scoef,s2=sc,sstop=s2+2*kn1*kn2; s2<sstop; s1+=idim+1,s2+=2)
-      {
-          *s2 = s6scpr(s1,edir,idim);
-	  *(s2+1) = *(s1+idim);
-      }
+    /* Cyclic (periodic) surface */
+
+    make_sf_kreg(ps1, &qkreg, &kstat);
+    if ( kstat < 0 )  goto error;
+  }
+  else
+    qkreg = ps1;
+
+
+  /* Check dimension.  */
+
+  if ( qkreg -> idim != idim )  goto err106;
+
+  /* Describe surface with local variables.  */
+
+  kn1 = qkreg -> in1;
+  kn2 = qkreg -> in2;
+  kk1 = qkreg -> ik1;
+  kk2 = qkreg -> ik2;
+  st1 = qkreg -> et1;
+  st2 = qkreg -> et2;
+  ikind = qkreg -> ikind;
+
+  if ( ikind == 2 || ikind == 4 )
+  {
+    scoef = qkreg -> rcoef;
+    /* Allocate space for coeffecients of new surface.  */
+
+    if ( (sc = newarray(2*kn1*kn2, DOUBLE)) == NULL )  goto err101;
+
+    /* Compute scalar-product of surface-vertices and direction vector. */
+    /* Copy over weights. */
+
+    for ( s1=scoef, s2=sc, sstop=s2+2*kn1*kn2;  s2 < sstop;  s1+=idim+1, s2+=2 )
+    {
+      *s2 = s6scpr(s1, edir, idim);
+      *(s2+1) = *(s1+idim);
+    }
   }
   else
   {
-      scoef = ps1 -> ecoef;
-      /* Allocate space for coeffecients of new surface.  */
-      
-      if ((sc = newarray(kn1*kn2,double)) == NULL) goto err101; 
-      
-      /* Compute scalar-product of surface-vertices and direction vector. */
-      
-      for (s1=scoef,s2=sc,sstop=s2+kn1*kn2; s2<sstop; s1+=idim,s2++)
-        *s2 = s6scpr(s1,edir,idim);
+    scoef = qkreg -> ecoef;
+    /* Allocate space for coeffecients of new surface.  */
+
+    if ( (sc = newarray(kn1*kn2, DOUBLE)) == NULL )  goto err101;
+
+    /* Compute scalar-product of surface-vertices and direction vector. */
+
+    for ( s1=scoef, s2=sc, sstop=s2+kn1*kn2;  s2 < sstop;  s1+=idim, s2++ )
+      *s2 = s6scpr(s1, edir, idim);
   }
 
-  
+
   /* Create new surface.  */
-  
-  qs = newSurf(kn1,kn2,kk1,kk2,st1,st2,sc,ps1->ikind,1,1);
-  if (qs == NULL) goto err101;
-  
+
+  qs = newSurf(kn1, kn2, kk1, kk2, st1, st2, sc, qkreg->ikind, 1, 1);
+  if ( qs == NULL )  goto err101;
+
   /* Create new object and connect surface to object.  */
-  
+
   qo1 = newObject(SISLSURFACE);
-  if (qo1 == NULL) goto err101;
+  if ( qo1 == NULL )  goto err101;
   qo1 -> s1 = qs;
-  
+
   /* Find maxima.  */
-  
+
   /* Find maxima. */
   tmax = -(double)HUGE;
-  
-  s1161(qo1,&tmax,aepsge,&qintdat,&kstat);
-  if (kstat < 0) goto error;
-  
+
+  s1161(qo1, &tmax, aepsge, &qintdat, &kstat);
+  if ( kstat < 0 )  goto error;
+
   if (qintdat)
+  {
+
+    /* Express maximal points/intervals on output format.  */
+    s1880(2, 0, &qintdat->ipoint, qintdat->vpoint,
+	  &qintdat->ilist, qintdat->vlist,
+	  jpt, gpar, &spar, jcrv, wcurve, &kstat);
+    if ( kstat < 0 )  goto error;
+
+    /* Handle periodicity (remove extraneous points) */
+
+    if ( *jpt > 1  &&  idim > 1 && (ps1 -> cuopen_1 == SISL_SURF_PERIODIC ||
+				    ps1 -> cuopen_2 == SISL_SURF_PERIODIC ) )
     {
-      
-      /* Express maximal points/intervals on output format.  */
-      s1880(2,0,&qintdat->ipoint,qintdat->vpoint,&qintdat->ilist,qintdat->vlist
-	    ,jpt,gpar,&spar,jcrv,wcurve,&kstat);
-      if (kstat < 0) goto error;
+      for ( ki=0; ki < (*jpt); ki++ )
+      {
+	if ( (ps1 -> cuopen_1 == SISL_SURF_PERIODIC &&
+	      (*gpar)[2*ki]   == ps1 -> et1[ps1->in1]) ||
+	     (ps1 -> cuopen_2 == SISL_SURF_PERIODIC &&
+	      (*gpar)[2*ki+1] == ps1 -> et2[ps1->in2]) )
+	{
+	  (*jpt)--;
+	  (*gpar)[2*ki]   = (*gpar)[2*(*jpt)];
+	  (*gpar)[2*ki+1] = (*gpar)[2*(*jpt)+1];
+	  ki--;
+	}
+      }
     }
-  
+  }
+
   /* Extremal points/intervals found.  */
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Error in space allocation.  */
-  
- err101: *jstat = -101;
+
+ err101:
+  *jstat = -101;
   s6err("s1921",*jstat,kpos);
   goto out;
-  
+
   /* Dimensions conflicting.  */
-  
- err106: *jstat = -106;
+
+ err106:
+  *jstat = -106;
   s6err("s1921",*jstat,kpos);
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
-  error : *jstat = kstat;
+
+ error:
+  *jstat = kstat;
   s6err("s1921",*jstat,kpos);
   goto out;
-  
+
  out:
-  
+
   /* Free allocated space.  */
-  
+
+  if ( qkreg && qkreg != ps1 )  freeSurf(qkreg);
   if (sc) freearray(sc);
   if (spar) freearray(spar);
   if (qo1) freeObject(qo1);
   if (qintdat) freeIntdat(qintdat);
-  
+
   return;
-}                                               
-                                           
-                                        
+}
