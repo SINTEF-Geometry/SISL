@@ -95,7 +95,15 @@ UNAME=$(shell uname)
 ifeq "$(UNAME)" "Linux"
   PLATFORM=linux
 else
-  PLATFORM=$(HOSTTYPE)
+  ifeq "$(UNAME)" "HP-UX"
+    PLATFORM=hp-pa
+  else
+    ifeq "$(UNAME)" "IRIX64"
+      PLATFORM=sgi
+    else
+      PLATFORM=$(HOSTTYPE)
+    endif
+  endif
 endif
 
 
