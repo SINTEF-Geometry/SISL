@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1893.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1893.c,v 1.2 1994-09-21 16:51:05 pfu Exp $
  *
  */
 
@@ -82,11 +82,12 @@ s1893 (orig, earray, dimp1, narr, der1, der2, ncurve, jstat)
 * CALLS      :  s1894, s1890, s1221, s1891, s6err.
 *
 * WRITTEN BY : Trond Vidar Stensby, SI, 1991-06
-* REVISED BY : Johannes Kaasa, SI, May 1992 (Corrected the sequence of 
+* REVISED BY : Johannes Kaasa, SI, May 1992 (Corrected the sequence of
 *              indexes in the product earray*val1*val2)
 * REVISED BY : Michael Floater, SI, June 92. The rational stuff
 *              was completely messed up. But it works now.
-*
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, September 1994.  Size of
+*              'tau' must be according to parameters passed to s1891().
 *********************************************************************
 */
 {
@@ -149,7 +150,8 @@ s1893 (orig, earray, dimp1, narr, der1, der2, ncurve, jstat)
   val2 = newarray (orig->idim + 1, DOUBLE);
   if (val2 == NULL)
     goto err101;
-  tau = newarray (nin * narr, DOUBLE);
+  tau = new0array (nin * narr * narr, DOUBLE);
+  /*  tau = newarray (nin * narr, DOUBLE);  (PFU 21/09-94) */
   if (tau == NULL)
     goto err101;
 
@@ -173,7 +175,7 @@ s1893 (orig, earray, dimp1, narr, der1, der2, ncurve, jstat)
 
       pos1 = der1 * orig->idim;
       pos2 = der2 * orig->idim;
-      
+
       for (count2 = 0; count2 < orig->idim; count2++)
 	{
 	  val1[count2] = deriv[pos1++];
