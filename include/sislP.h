@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.20 1995-01-23 09:45:14 pfu Exp $
+ * $Id: sislP.h,v 1.21 1995-02-08 10:02:50 vsk Exp $
  *
  */
 
@@ -1199,6 +1199,78 @@ extern
 #endif
 void
 s1938(SISLSurf *,double [],int,double [],int,double **,int *);
+#ifndef S1941
+extern
+#endif
+void
+s1941(SISLCurve *pcurve,int icont,int *jstat);
+#ifndef S1942
+extern
+#endif
+void s1942(SISLCurve *pc1,SISLCurve *pc2,int idim,double ea[],int nstart[],
+             int nstop[],double emxerr[],double el2err[],int *jstat);
+#ifndef S1943
+extern
+#endif
+void
+   s1943(SISLCurve *pcurve,double etau[],int ik,int in,int ileftfix,
+             int irightfix,int incont,SISLCurve **rnewcurve,
+             double gmaxerr[],double gl2err[],int *jstat);
+#ifndef S1944
+extern
+#endif
+void
+   s1944(double etau[],int ik,int in,int idim,double et[],double ed[],
+             int im,int inlc,int inlr,int inorm,double ea[],double ew1[],
+             int nfirst[],int nlast[],double eb[],double ew2[],
+             int n2sta[],double ec[],int *jstat);
+#ifndef S1945
+extern
+#endif
+void
+   s1945(double etau[],int ik,int in,int idim,double et[],
+             double ed[],int im,int ilend,int irend, int inlc,
+             int inlr, int inorm, double ea[], double ew1[], int inh,
+             int nfirst[],int nlast[],double eb[],
+             double ew2[], double ec[],int n2sta[],int *jstat);
+#ifndef S1946
+extern
+#endif
+void
+   s1946(double ea[],double ew1[],int nfirst[],int nlast[],double ed[],
+         double ec[],int ik,int in,int im,int idim,int ilend,int irend,
+         int inlr, int inlc,int *jstat);
+#ifndef S1947
+extern
+#endif
+void
+   s1947(double ea[], int nfirst[], int nlast[], int ik, int im,
+         double etau[], int in, int incont, double ew[], int inlr,
+         int *jnred, double efac[], int *jstat);
+#ifndef S1948
+extern
+#endif
+void
+   s1948(double *ea,double *ew,int in,int ik,int inlr,
+         int *nstart,int *jstat);
+#ifndef S1949
+extern
+#endif
+void
+   s1949(double *ea,double *ew,double *eb,int in,int ik,int inlr,
+         int idim,int *nstart,int *jstat);
+#ifndef S1950
+extern
+#endif
+void s1950(SISLCurve *oldcurve,SISLCurve *rankcurve,rank_info *ranking,
+           double eps[],double epsco[],int startfix,int endfix,int *jncont,
+           int mini,int maxi,SISLCurve **newcurve,double maxerr[],int *stat);
+#ifndef S1951
+extern
+#endif
+void
+   s1951(double etau[], double ecoef[], int in, int ik, int idim,
+         int ilend, int irend, int incont, double efac[]);
 #ifndef  S1956
 extern
 #endif
@@ -2893,6 +2965,54 @@ void s1937();
 extern
 #endif
 void s1938();
+#ifndef S1940
+extern
+#endif
+void s1940();
+#ifndef S1941
+extern
+#endif
+void s1941();
+#ifndef S1942
+extern
+#endif
+void s1942();
+#ifndef S1943
+extern
+#endif
+void s1943();
+#ifndef S1944
+extern
+#endif
+void s1944();
+#ifndef S1945
+extern
+#endif
+void s1945();
+#ifndef S1946
+extern
+#endif
+void s1946();
+#ifndef S1947
+extern
+#endif
+void s1947();
+#ifndef S1948
+extern
+#endif
+void s1948();
+#ifndef S1949
+extern
+#endif
+void s1949();
+#ifndef S1950
+extern
+#endif
+void s1950();
+#ifndef S1951
+extern
+#endif
+void s1951();
 #ifndef  S1956
 extern
 #endif

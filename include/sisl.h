@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.21 1995-01-23 09:47:03 pfu Exp $
+ * $Id: sisl.h,v 1.22 1995-02-08 10:02:23 vsk Exp $
  *
  */
 
@@ -910,6 +910,12 @@ extern
 #endif
 void s1921(SISLSurf *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
+#ifndef S1940
+extern
+#endif      
+void s1940(SISLCurve *oldcurve, double eps[], int startfix, int endfix, 
+	   int iopen, int itmax, SISLCurve **newcurve, double maxerr[],
+	   int *stat);
 #ifndef  S1953
 extern
 #endif
@@ -933,6 +939,51 @@ void s1957(SISLCurve *,double [],int,double,double,double *,double *,int *);
 extern
 #endif
 void s1958(SISLSurf *,double [],int,double,double,double [],double *,int *);
+#ifndef S1961
+extern
+#endif
+void s1961(double ep[],int im,int idim,int ipar,double epar[],
+	   double eeps[],int ilend,int irend,int iopen,double afctol,
+	   int itmax,int ik,SISLCurve **rc,double emxerr[],
+	   int *jstat);   
+#ifndef S1962
+extern
+#endif
+void s1962(double ep[],double ev[],int im,int idim,int ipar,double epar[],
+           double eeps[],int ilend,int irend,int iopen,int itmax,
+           SISLCurve **rc,double emxerr[],int *jstat);
+#ifndef S1963
+extern
+#endif
+void s1963(SISLCurve *pc,double eeps[],int ilend,int irend,int iopen,
+           int itmax, SISLCurve **rc,int *jstat);
+#ifndef S1965
+extern
+#endif
+void s1965(SISLSurf *oldsurf,double eps[],int edgefix[4],int iopen1,
+           int iopen2,double edgeps[],int opt,int itmax,
+           SISLSurf **newsurf,double maxerr[],int *stat);
+#ifndef S1966
+extern
+#endif
+void s1966(double ep[],int im1,int im2,int idim,int ipar,double epar1[],
+           double epar2[],double eeps[],int nend[],int iopen1,int iopen2,
+           double edgeps[],double afctol,int iopt,int itmax,
+           int ik1,int ik2,SISLSurf **rs,double emxerr[],int *jstat);
+#ifndef S1967
+extern
+#endif
+void s1967(double ep[],double etang1[],double etang2[],double eder11[],
+           int im1,int im2,int idim,int ipar,double epar1[],double epar2[],
+           double eeps[],int nend[],int iopen1,int iopen2,double edgeps[],
+           int iopt,int itmax,SISLSurf **rs,double emxerr[],
+           int *jstat);
+#ifndef S1968
+extern
+#endif
+void s1968(SISLSurf *ps,double eeps[],int nend[],int iopen1,int iopen2,
+           double edgeps[],int iopt,int itmax,SISLSurf **rs,
+           int *jstat);
 #ifndef S1986
 extern
 #endif
@@ -1579,6 +1630,10 @@ void s1920();
 extern
 #endif
 void s1921();
+#ifndef  S1940
+extern
+#endif
+void s1940();
 #ifndef  S1953
 extern
 #endif
@@ -1599,6 +1654,38 @@ void s1957();
 extern
 #endif
 void s1958();
+#ifndef  S1960
+extern
+#endif
+void s1960();
+#ifndef  S1961
+extern
+#endif
+void s1961();
+#ifndef  S1962
+extern
+#endif
+void s1962();
+#ifndef  S1963
+extern
+#endif
+void s1963();
+#ifndef  S1965
+extern
+#endif
+void s1965();
+#ifndef  S1966
+extern
+#endif
+void s1966();
+#ifndef  S1967
+extern
+#endif
+void s1967();
+#ifndef  S1968
+extern
+#endif
+void s1968();
 #ifndef S1986
 extern
 #endif
