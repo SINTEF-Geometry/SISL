@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1222.c,v 1.3 1995-10-25 08:49:10 jka Exp $
+ * $Id: s1222.c,v 1.4 1995-10-25 10:09:06 jka Exp $
  *
  */
 
@@ -121,7 +121,7 @@ void s1222(et, ik, in, ibase, ax, ider, ebder, jstat)
   
    /* Check the knot vector. */
   
-   if (in < ik || ibase < 0 || ibase > (in - 1))
+   if (in < ik || ik < 1 || ibase < 0 || ibase > (in - 1))
       goto err112;
    
    /* Check number of derivatives. */
