@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1936.c,v 1.2 1994-07-25 10:49:28 pfu Exp $
+ * $Id: s1936.c,v 1.3 1996-09-05 09:13:08 jka Exp $
  *
  */
 
@@ -154,8 +154,10 @@ s1936 (crv, etd, ind, curvd, jstat)
          Since kj is increasing, the nu-values will be increasing
          due to copying of knots. */
 
-      for (; (((knt[nu - 1] > etd[kj]) || (etd[kj] >= knt[nu])) && (nu != ins));
-	   nu++) ;
+       /* for (; (((knt[nu - 1] > etd[kj]) || (etd[kj] >= knt[nu])) && (nu != ins));
+	   nu++) ; */
+       for (; (((knt[nu - 1] > (double)0.5*(etd[kj]+etd[kj+1])) 
+		 || ((double)0.5*(etd[kj]+etd[kj+1]) >= knt[nu])) && (nu != ins)); nu++) ; 
 
       /* Now we have  knt[nu-1] <= etd[kj] < knt[nu],
          so the discrete B-splines can be calculated. */
