@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1511.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1511.c,v 1.2 1994-12-02 11:10:29 pfu Exp $
  *
  */
 
@@ -22,7 +22,7 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void s1511(SISLSurf *ps,double qpoint [],double bvec [],int idim,
-	   double aepsco,double aepsge,int *jpt,double **gpar,int *jcrv, 
+	   double aepsco,double aepsge,int *jpt,double **gpar,int *jcrv,
 	   SISLIntcurve ***wcurve,int *jstat)
 #else
 void s1511(ps,qpoint,bvec,idim,aepsco,aepsge,jpt, gpar, jcrv, wcurve, jstat)
@@ -43,9 +43,8 @@ void s1511(ps,qpoint,bvec,idim,aepsco,aepsge,jpt, gpar, jcrv, wcurve, jstat)
 *
 *********************************************************************
 *
-* PURPOSE    : Find the circular silhouette curves and points of a surface when
-*              the surface is viewed from a specific eye point. In
-*              addition to the points and curves found by this routine,
+* PURPOSE    : Find the circular silhouette curves and points of a surface.
+*              In addition to the points and curves found by this routine,
 *              break curves and edge-curves might be silhouette curves.
 *
 *
@@ -108,9 +107,9 @@ void s1511(ps,qpoint,bvec,idim,aepsco,aepsge,jpt, gpar, jcrv, wcurve, jstat)
     freeIntsurf(wsurf[i]);
   if(wsurf != NULL) freearray(wsurf);
 
-  if(jsurf > 0) 
+  if(jsurf > 0)
     *jstat=10;
-  else 
+  else
     *jstat = kstat;
   goto out;
 
