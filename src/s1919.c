@@ -1,0 +1,310 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1919.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1919
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+s1919 (double et[], double prev[], double curr[], double deriv[],
+       double follow[], int in, int ik, int idim, int iip, int iif,
+       double ap, double ac, double af, int *jstat)
+#else
+void
+s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
+     double et[];
+     double prev[];
+     double curr[];
+     double deriv[];
+     double follow[];
+     int in;
+     int ik;
+     int idim;
+     int iip;
+     int iif;
+     double ap;
+     double ac;
+     double af;
+     int *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    :	To make the product of the tangent legth and the parametrization
+*		of the curve epd as close as possible to the curve length.
+*
+* INPUT      :	et	- The original knot vector.
+*
+* OUTPUT     :jstat    - Status variable:
+*                                               > 0     : warning
+*                                               = 0     : ok
+*                                               < 0     : error
+*
+* METHOD     :
+*
+* REFERENCES :	Fortran version by Tor Dokken, SI, 1991-07
+*
+* CALLS      : s1890, s1221, s1891, s6err.
+*
+* WRITTEN BY :	Trond Vidar Stensby, SI, 1991-07
+*
+*********************************************************************
+*/
+{
+  SISLCurve *tcurve = NULL;	/* Temporary curve. */
+  int knh;			/* Local number of verticews. */
+  int left;			/* Used when calling s1221 */
+  int pos, pos2;		/* Used for efficent adressing of arrays. */
+  int ki, kj;			/* Loop control variables. */
+  double tdist1;		/* Distance between previous and current. */
+  double tdist2;		/* Distance between current and following. */
+  double tlength;		/* Length of tangemt. */
+  double tdiff;			/* Dummy. */
+  double tfak;
+  double tval1;			/* Adjusted parameter values. */
+  double tval2;
+  double *kpar = NULL;		/* Used when calculating parametrization. */
+  int *kder = NULL;
+  double *kpc = NULL;		/* Points on previous curve. */
+  double *kdc = NULL;		/* Points on derivative curve. */
+  double *kcc = NULL;		/* Points on current curve. */
+  double *kfc = NULL;		/* Points on following curve. */
+  double *epd = NULL;		/* Vertices of the derivative curve. */
+  int kstat = 0;
+  int kpos = 0;
+
+  *jstat = 0;
+
+
+  /* Test if legal input. */
+
+  if (ik <= 1 || in <ik)
+    goto err112;
+
+
+  /* Produce parameter values. */
+
+  s1890 (et, ik, in, &kpar, &kder, &kstat);
+  if (kstat < 0)
+    goto error;
+
+
+  /* Allocate temporary arrays. */
+
+  kpc = newarray (idim * in, DOUBLE);
+  if (kpc == NULL)
+    goto err101;
+  kcc = newarray (idim * in, DOUBLE);
+  if (kcc == NULL)
+    goto err101;
+  kdc = newarray (idim * in, DOUBLE);
+  if (kdc == NULL)
+    goto err101;
+  kfc = newarray (idim * in, DOUBLE);
+  if (kfc == NULL)
+    goto err101;
+
+
+  if (iip == 1)
+    {
+      /* Caculate interpolation points on previous curve. */
+
+      tcurve = newCurve (in, ik, et, prev, 1, idim, 1);
+      if (tcurve == NULL)
+	goto err101;
+
+      left = 0;
+      for (ki = 0; ki < in; ki++)
+	{
+	  s1221 (tcurve, 0, kpar[ki], &left, &kpc[ki * idim], &kstat);
+	  if (kstat < 0)
+	    goto error;
+	}
+      if (tcurve != NULL)
+	freeCurve (tcurve);
+    }
+
+  /* Caculate interpolation points on current curve. */
+
+  tcurve = newCurve (in, ik, et, curr, 1, idim, 1);
+  if (tcurve == NULL)
+    goto err101;
+
+  left = 0;
+  for (ki = 0; ki < in; ki++)
+    {
+      s1221 (tcurve, 0, kpar[ki], &left, &kcc[ki * idim], &kstat);
+      if (kstat < 0)
+	goto error;
+    }
+  if (tcurve != NULL)
+    freeCurve (tcurve);
+
+
+  /* Caculate interpolation points on derivative curve. */
+
+  tcurve = newCurve (in, ik, et, deriv, 1, idim, 1);
+  if (tcurve == NULL)
+    goto err101;
+
+  left = 0;
+  for (ki = 0; ki < in; ki++)
+    {
+      s1221 (tcurve, 0, kpar[ki], &left, &kdc[ki * idim], &kstat);
+      if (kstat < 0)
+	goto error;
+    }
+  if (tcurve != NULL)
+    freeCurve (tcurve);
+
+
+  if (iif == 1)
+    {
+      /* Caculate interpolation points on following curve. */
+
+      tcurve = newCurve (in, ik, et, follow, 1, idim, 1);
+      if (tcurve == NULL)
+	goto err101;
+
+      left = 0;
+      for (ki = 0; ki < in; ki++)
+	{
+	  s1221 (tcurve, 0, kpar[ki], &left, &kfc[ki * idim], &kstat);
+	  if (kstat < 0)
+	    goto error;
+	}
+      if (tcurve != NULL)
+	freeCurve (tcurve);
+    }
+
+  /* Adjust the points calculated on the derivative curve according to the
+     distances between previous, current and following curve. */
+
+  if (iip == 1)
+    tval1 = fabs (ac - ap);
+  if (iif == 1)
+    tval2 = fabs (af - ac);
+
+  pos = 0;
+  for (ki = 0; ki < in; ki++)
+    {
+      tdist1 = (double) 0.0;
+      tdist2 = (double) 0.0;
+      tlength = (double) 0.0;
+
+      for (kj = 0; kj < idim; kj++)
+	{
+	  if (iip == 1)
+	    {
+	      tdiff = kcc[pos] - kpc[pos];
+	      tdist1 += tdiff * tdiff;
+	    }
+	  if (iif == 1)
+	    {
+	      tdiff = kfc[pos] - kcc[pos];
+	      tdist2 += tdiff * tdiff;
+	    }
+	  tlength += kdc[pos] * kdc[pos];
+	  pos++;
+	}
+
+      tdist1 = sqrt (tdist1);
+      tdist2 = sqrt (tdist2);
+      tlength = sqrt (tlength);
+      if (tlength == (double) 0.0)
+	tlength = (double) 1.0;
+
+
+      /* Make scaling factor of tangent/derivative. */
+
+      tfak = (double) 1.0;
+      if (iip == 1 && iif != 1)
+	tfak = tdist1 / (tval1 * tlength);
+      else if (iip != 1 && iif == 1)
+	tfak = tdist2 / (tval2 * tlength);
+      else if (iip == 1 && iif == 1)
+	tfak = min (tdist1 / (tval1 * tlength),
+		    tdist2 / (tval2 * tlength));
+
+
+      /* Find actual length of derivative curve at the parameter value.
+	 Make new derivative length. */
+
+      pos2 = pos - idim;
+      for (kj = 0; kj < idim; kj++)
+	{
+	  kdc[pos2 + kj] *= tfak;
+	}
+    }
+
+  /* Calculate new curve description. */
+
+  s1891 (kpar, kdc, idim, in, 1, kder, 1, et, &epd, &knh, ik, 0, 0, &kstat);
+  if (kstat < 0)
+    goto error;
+
+  memcopy (deriv, epd, idim * in, DOUBLE);
+
+
+  /* OK */
+
+  goto out;
+
+
+  /* Allocation error. */
+
+err101:
+  *jstat = -101;
+  s6err ("s1919", *jstat, kpos);
+  goto out;
+
+  /* Error in description of B-spline. */
+
+err112:
+  *jstat = -112;
+  s6err ("s1919", *jstat, kpos);
+  goto out;
+
+  /* Error in lower level routine. */
+
+error:
+  *jstat = kstat;
+  s6err ("s1919", *jstat, kpos);
+  goto out;
+
+out:
+  if (epd != NULL)
+    freearray (epd);
+  if (kpc != NULL)
+    freearray (kpc);
+  if (kcc != NULL)
+    freearray (kcc);
+  if (kdc != NULL)
+    freearray (kdc);
+  if (kfc != NULL)
+    freearray (kfc);
+  if (kpar != NULL)
+    freearray (kpar);
+  if (kder != NULL)
+    freearray (kder);
+
+  return;
+}

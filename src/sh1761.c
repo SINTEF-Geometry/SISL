@@ -1,0 +1,478 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: sh1761.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define SH1761
+
+#include "sislP.h"
+
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+sh1761 (SISLObject * po1, SISLObject * po2, double aepsge, SISLIntdat ** pintdat, int *jstat)
+#else
+void
+sh1761 (po1, po2, aepsge, pintdat, jstat)
+     SISLObject *po1;
+     SISLObject *po2;
+     double aepsge;
+     SISLIntdat **pintdat;
+     int *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*          NOTE : Comments for further developments/tasks starts
+*                 with /* UPDATE :
+*
+*
+* PURPOSE    : Find all intersections between two objects (of type
+*              point, curve or surface). In this rouine the outer
+*              edges/endpoints of the objects are treated.
+*
+*
+*
+* INPUT      : po1    - First object in the intersection.
+*              po2    - Second object in the intersection.
+*              aepsge - Geometry resolution.
+*
+*
+*
+*
+*
+*
+* OUTPUT     : intdat - Intersection dates found beetween the two
+*                       objects.
+*              jstat  - status messages
+*                                       = 1      : Intersection found
+*                                       = 0      : no intersection
+*                                       < 0      : error
+*
+*
+* METHOD     : This function is computing point/point intersection
+*              otherwise it is computing edge/endpoint intersections
+*              by recurson on one end object and the other object,
+*              and futher calling a rutine for computing intersections
+*              in the inner of an object.
+*
+*
+* REFERENCES :
+*
+*-
+* CALLS      : s6err      - Gives error message.
+*              s6dist     - Compute the distance beetween two point.
+*              s1435      - Pick edge curve from a surface.
+*              s1438      - Pick endpoint from a curve.
+*              sh1762      - Find the intersections in the inner of the objects.
+*              sh1790      - Perform BOX test.
+*              sh6idnpt    - Put a new intpt to given intdat.
+*              sh6idput    - Put contence of one intdat in an other intdat.
+*              sh6idlis    - Compute list elements from given intdat.
+*              sh6idalledg - Uppdate edges from given intdat.
+*              freeEdge   - Free space occupied by given edge.
+*              freePoint  - Free space occupied by given point.
+*              freeCurve  - Free space occupied by given curve.
+*              freeObject - Free space occupied by given object.
+*              freeIntdat - Free space occupied by given intdat.
+*              newEdge    - Create new edge-structure.
+*              hp_newIntpt   - Create new intersection point-structure.
+*              newObject  - Create new object.
+*
+* WRITTEN BY : Arne Laksaa, 05.89.
+*              UJK, 06.91 newi
+*********************************************************************
+*/
+{
+  int kstat = 0;		/* Local status variable.                 */
+  int kpos = 0;			/* Position of error.                     */
+  int ktotal = 1;		/* Make totally expanded box.             */
+  double tpar;			/* Help variable used for parameter value
+				   and geometric distance.                */
+  SISLObject *po1_kreg=NULL;    /* Pointer to first object converted to
+				   k-regular basis.                       */
+  SISLObject *po2_kreg=NULL;    /* Pointer to second object converted to
+				   k-regular basis.                       */
+  double *nullp = NULL;
+  int idummy;
+  
+  /* Ensure K-regularity on B-spline basis ________________*/
+  if (po1->iobj == SISLCURVE) 
+    {
+       if (po1->c1->cuopen == SISL_CRV_PERIODIC)
+	 {
+	    if ((po1_kreg = newObject (SISLCURVE)) == NULL)
+	      goto err101;
+	    make_cv_kreg(po1->c1, &po1_kreg->c1, &kstat);
+	    if (kstat < 0) goto error;
+	 }
+       else po1_kreg = po1;
+       
+    }
+  else if (po1->iobj == SISLSURFACE) 
+    {
+       if (po1->s1->cuopen_1 == SISL_CRV_PERIODIC ||
+	   po1->s1->cuopen_2 == SISL_CRV_PERIODIC)
+	 {
+	    if ((po1_kreg = newObject (SISLSURFACE)) == NULL)
+	      goto err101;
+	    make_sf_kreg(po1->s1, &po1_kreg->s1, &kstat);
+	    if (kstat < 0) goto error;
+	 }
+       else po1_kreg = po1;
+    }
+  else po1_kreg = po1;
+  
+  
+  
+  if (po2->iobj == SISLCURVE) 
+    {
+       if (po2->c1->cuopen == SISL_CRV_PERIODIC)
+	 {
+	    if ((po2_kreg = newObject (SISLCURVE)) == NULL)
+	      goto err101;
+	    make_cv_kreg(po2->c1, &po2_kreg->c1, &kstat);
+	    if (kstat < 0) goto error;
+	 }
+       else po2_kreg = po2;
+    }
+  else if (po2->iobj == SISLSURFACE) 
+    {
+       if (po2->s1->cuopen_1 == SISL_CRV_PERIODIC ||
+	   po2->s1->cuopen_2 == SISL_CRV_PERIODIC)
+	 {
+	    if ((po2_kreg = newObject (SISLSURFACE)) == NULL)
+	      goto err101;
+	    make_sf_kreg(po2->s1, &po2_kreg->s1, &kstat);
+	    if (kstat < 0) goto error;
+	 }
+       else po2_kreg = po2;
+    }
+  
+  else po2_kreg = po2;
+  
+  /* End of ensure K-regularity on B-spline basis ________________*/
+  
+  
+  if (po1_kreg->iobj == SISLPOINT && po2_kreg->iobj == SISLPOINT)
+    {
+      /* Control the dimension of the two points. */
+
+      if (po1_kreg->p1->idim != po2_kreg->p1->idim)
+	goto err106;
+
+      /* Computing the distanse beetween the points. */
+
+      tpar = s6dist (po1_kreg->p1->ecoef, po2_kreg->p1->ecoef, po1_kreg->p1->idim);
+
+      if (tpar <= aepsge)
+	{
+	  SISLIntpt *qt = NULL;
+
+	  *jstat = 1;		/* Mark intersection found. */
+	  /* UJK , newi */
+	  /* Making intersection point. */
+
+	  qt = hp_newIntpt (0, &tpar, DNULL, SI_ORD,
+			    SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
+			    0, 0, nullp, nullp);
+	  if (qt == NULL)
+	    goto err101;
+
+	  /* Uppdating pintdat. */
+
+	  sh6idnpt (pintdat, &qt, 1, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	}
+      else
+	*jstat = 0;
+    }
+  else
+    {
+      /* Test if intersection is possible (perform box-test).  */
+
+      sh1790 (po1_kreg, po2_kreg, ktotal, aepsge, &kstat);
+      if (kstat < 0)
+	goto error;
+
+      /* We may have four different values on kstat.
+	 kstat = 0 : Intersection not possible.
+	 kstat = 1 : The two boxes overlap.
+	 kstat = 2 : The two "bezier" boxes is just touching.
+	 kstat = 3 : The two boxes is both inside a microbox of aepsge. */
+
+
+      if (kstat)
+	{
+	  int ki, kj;		/* Counters.                      */
+	  int kedg = 0;		/* Number of parameter direction. */
+	  SISLEdge *qedge[2];	/* Edges for use in s1862().      */
+	  SISLObject *qo1 = NULL;	/* Help pointer.                  */
+	  SISLObject *qo2 = NULL;	/* Help pointer.                  */
+	  SISLIntdat *qintdat = NULL;	/* Intdat for use in recurson.    */
+
+	  qedge[0] = qedge[1] = NULL;
+	  *jstat = 0;
+
+	  for (kj = 0, qo1 = po1_kreg, qo2 = po2_kreg; kj < 2; kj++, qo1 = po2_kreg, qo2 = po1_kreg)
+	    if (qo1->iobj == SISLPOINT)
+	      qedge[kj] = NULL;	/* Not necessary to compute edge intersection.*/
+	    else if (qo1->iobj == SISLCURVE)
+	      {
+		if ((qedge[kj] = newEdge (2)) == NULL)
+		  goto err101;
+
+		for (ki = 0; ki < 2; ki++)
+		  {
+		    if (qo1->edg[ki] == NULL)
+		      {
+			if ((qo1->edg[ki] = newObject (SISLPOINT)) == NULL)
+			  goto err101;
+
+			/* Pick out end point from a curve. */
+
+			s1438 (qo1->c1, ki, &(qo1->edg[ki]->p1), &tpar, &kstat);
+			if (kstat < 0)
+			  goto error;
+		      }
+		    else
+		      tpar = (ki == 0 ? qo1->c1->et[qo1->c1->ik - 1] :
+			      qo1->c1->et[qo1->c1->in]);
+
+		    /* Recursiv computing of end intersection. */
+
+		    sh1761 (kj == 0 ? qo1->edg[ki] : qo2, kj == 0 ? qo2 : qo1->edg[ki],
+			    aepsge, &qintdat, &kstat);
+		    if (kstat < 0)
+		      goto error;
+
+
+		    if (kstat)
+		      {
+			*jstat = 1;	/* Mark intersection found. */
+
+			/* Put intersection found on edges into pintdat. */
+
+
+			/* Get parameter border values of qo2. */
+
+			/* UJK , newi */
+			sh1782 (po1_kreg, po2_kreg, aepsge, qintdat, kedg, tpar,
+				pintdat, &idummy, &kstat);
+			if (kstat < 0)
+			  goto error;
+
+
+			/* Uppdate edge structure. */
+			s6idedg (po1_kreg, po2_kreg, kj + 1, 1, tpar, *pintdat,
+			  &qedge[kj]->prpt[ki], &qedge[kj]->ipoint, &kstat);
+			if (kstat < 0)
+			  goto error;
+		      }
+
+		    if (qintdat != NULL)
+		      freeIntdat (qintdat);
+		    qintdat = NULL;
+		  }
+		kedg++;
+	      }
+
+	    else if (qo1->iobj == SISLSURFACE)
+	      {
+		int kpar;	/* Parameter direction.            */
+
+		if ((qedge[kj] = newEdge (4)) == NULL)
+		  goto err101;
+
+		for (ki = 0; ki < 4; ki++)
+		  {
+		    if (qo1->edg[ki] == NULL)
+		      {
+			if ((qo1->edg[ki] = newObject (SISLCURVE)) == NULL)
+			  goto err101;
+
+			/* Pick out edge curve from a surface. */
+
+			s1435 (qo1->s1, ki, &(qo1->edg[ki]->c1), &tpar, &kstat);
+			if (kstat < 0)
+			  goto error;
+		      }
+		    else
+		      tpar = (ki == 0 ? qo1->s1->et2[qo1->s1->ik2 - 1] :
+			      (ki == 1 ? qo1->s1->et1[qo1->s1->in1] :
+			       (ki == 2 ? qo1->s1->et2[qo1->s1->in2] :
+				qo1->s1->et1[qo1->s1->ik1 - 1])));
+
+		    /* Recursiv computing of edge intersection. */
+
+		    if (kj == 0)
+		      sh1761 (qo1->edg[ki], qo2, aepsge, &qintdat, &kstat);
+		    else
+		      sh1761 (qo2, qo1->edg[ki], aepsge, &qintdat, &kstat);
+		    if (kstat < 0)
+		      goto error;
+
+
+		    if (kstat)
+		      {
+			*jstat = 1;	/* Mark intersection found. */
+
+			/* Compute Parameter direction of edge. */
+
+			kpar = ((ki == 0 || ki == 2) ? 2 : 1);
+
+
+			/* Put intersection found on edges into pintdat. */
+
+			/* UJK , newi */
+			sh1782 (po1_kreg, po2_kreg, aepsge, qintdat, kpar + kedg - 1, tpar,
+				pintdat, &idummy, &kstat);
+			if (kstat < 0)
+			  goto error;
+
+
+			/* Uppdate edge structure. */
+			s6idedg (po1_kreg, po2_kreg, kj + 1, kpar, tpar, *pintdat,
+			  &qedge[kj]->prpt[ki], &qedge[kj]->ipoint, &kstat);
+			if (kstat < 0)
+			  goto error;
+		      }
+
+		    if (qintdat != NULL)
+		      freeIntdat (qintdat);
+		    qintdat = NULL;
+		  }
+		kedg += 2;
+	      }
+
+	    else
+	      goto err121;
+
+	  /* Before we enter internal intersection and subdivision we
+	     initiate pointers to top level objects. */
+
+	  if (po1_kreg->o1 == NULL)
+	    po1_kreg->o1 = po1_kreg;
+	  if (po2_kreg->o1 == NULL)
+	    po2_kreg->o1 = po2_kreg;
+
+	  /* Find the intersections in the inner of the object.  */
+
+	  /* NEWI (ujk) Must treat helppoint on edges */
+	  if (qedge[0] != NULL)
+	    freeEdge (qedge[0]);
+	  qedge[0] = NULL;
+	  if (qedge[1] != NULL)
+	    freeEdge (qedge[1]);
+	  qedge[1] = NULL;
+
+	  if (po1_kreg->iobj == SISLPOINT)
+	    qedge[0] = NULL;
+	  else if ((qedge[0] = newEdge (2 * po1_kreg->iobj)) == NULL)
+	    goto err101;
+
+	  if (po2_kreg->iobj == SISLPOINT)
+	    qedge[1] = NULL;
+	  else if ((qedge[1] = newEdge (2 * po2_kreg->iobj)) == NULL)
+	    goto err101;
+
+	  sh6idalledg (po1_kreg, po2_kreg, *pintdat, qedge, &kstat);
+	  if (kstat < 0)
+	    goto error;
+
+	  sh1762 (po1_kreg, po2_kreg, aepsge, pintdat, qedge, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	  else if (kstat)
+	    *jstat = 1;
+
+
+	  /* Free the edges used in s1762. */
+
+	  if (qedge[0] != NULL)
+	    freeEdge (qedge[0]);
+	  qedge[0] = NULL;
+	  if (qedge[1] != NULL)
+	    freeEdge (qedge[1]);
+	  qedge[1] = NULL;
+
+
+	  /* UJK, edge reduction rules */
+	     sh6edgred (po1_kreg, po2_kreg, (*pintdat), &kstat); 
+
+	  /* Organize the list in pintdat. */
+	    sh6idlis (po1_kreg, po2_kreg, pintdat, aepsge, &kstat);
+	  if (kstat < 0)
+	    goto error;
+
+          /* Convert any degenerate intersection curves (Intlists)
+	     to intersection points (Intpts).
+	     This may be necessary when
+	     either of the intersection objects po1_kreg and po2_kreg
+	     are parametrically degenerate. */
+/*
+	  sh6degen(po1_kreg,po2_kreg,pintdat,aepsge,&kstat);
+	  if (kstat < 0) goto error;
+*/
+	}
+      else
+	*jstat = 0;
+    }
+
+  goto out;
+
+  /* Error in space allocation.  */
+
+err101:*jstat = -101;
+  s6err ("sh1761", *jstat, kpos);
+  goto out;
+
+  /* Error. Dimensions conflicting.  */
+
+err106:*jstat = -106;
+  s6err ("sh1761", *jstat, kpos);
+  goto out;
+
+  /* Error. Kind of object does not exist.  */
+
+err121:*jstat = -121;
+  s6err ("sh1761", *jstat, kpos);
+  goto out;
+
+  /* Error in lower order routine.  */
+
+error:*jstat = kstat;
+  s6err ("sh1761", *jstat, kpos);
+  goto out;
+
+  out: 
+     /* Kill kreg temporary geometry */
+     if (po1_kreg && po1_kreg != po1)
+       {
+	  freeObject(po1_kreg);
+	  po1_kreg = NULL;
+       }
+     
+     if (po2_kreg && po2_kreg != po2)
+       {
+	  freeObject(po2_kreg);
+	  po2_kreg = NULL;
+	  
+       }
+     
+}

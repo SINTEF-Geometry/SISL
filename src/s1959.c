@@ -1,0 +1,242 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1959.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+#define S1959
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+s1959(SISLPoint *ppoint, SISLCurve *pcurve, double *gpos, int *jstat)
+#else
+void s1959(ppoint,pcurve,gpos,jstat)
+     SISLPoint        *ppoint;
+     SISLCurve         *pcurve;
+     double       *gpos;
+     int          *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Estimate parameter of guess-point (used by closest point
+*              calculation).
+*
+*
+* INPUT      : ppoint   - Pointer to the point.
+*              pcurve    - Pointer to the curve.
+*
+* OUTPUT     : gpos    - Parameter of the found guess-point.
+*              jstat   - status messages  
+*                                = 0   : Guess-point found.
+*                                = 1   : Closest point as guess-point.
+*                                < 0   : error.
+*
+*
+* METHOD     : Quadrant analysis and Schoenberger equation.
+*
+*
+* REFERENCES :
+*
+*
+* WRITTEN BY : Michael Floater, SI, October 1991
+*                Based on Per Evensen's surface version s1960.
+*
+*********************************************************************
+*/                       
+{  
+  int kstat = 0;            /* Local status variable.                     */
+  int kpos = 0;             /* Position of error.                         */
+  int i;                    /* Running indexes                            */
+  int iind;                 /* Index variable                             */
+  int kk;                /* The polynomial order of the curve (pcurve) */
+  int nk;                /* The number of vertices of the curve (pcurve)  */
+  int dim;                  /* Dimension of space the curve lies in      */
+  double *et;              /* Knots for the curve (pcurve)               */
+  double *lpoint;           /* Coefficients of the point (ppoint)         */
+  double *scoef;            /* Coefficients of the curve (pcurve)         */
+  double tdist;             /* Distance variable                          */
+  double tmin;              /* Minimum distance variable                  */
+  double vec1[3],vec2[3];   /* Vectors defining the quadrants surrounding 
+                               a vertex                                  */
+  double vecp[3];           /* Relative point vector                      */
+  double lqua1=DNULL;
+  double lqua2=DNULL;
+                            /* Length of vec1 and vec2                   */
+  double lprj1=DNULL;
+  double lprj2=DNULL;
+                            /* Length of projection of vecp on 
+                               vec1 and vec2                             */
+  double svals,svale;       /* Local start and end parameter values      */
+ /* --------------------------------------------------------------------- */
+  
+  /* Test input.  */
+  if (ppoint->idim != pcurve->idim || pcurve->idim <= 1) goto err106;
+
+  /* Initialize local variables.  */
+  kk  = pcurve->ik;
+  nk  = pcurve->in;
+  et = pcurve->et;
+  scoef = pcurve->ecoef;
+  dim = pcurve->idim;
+  lpoint = ppoint->ecoef;
+   
+  /* Find vertex closest to point.  */
+  tdist=s6dist(scoef,lpoint,dim);
+  tmin=tdist;
+  iind = 0;
+  for (i=0; i<nk; i++)
+  {
+        tdist=s6dist(scoef,lpoint,dim);
+        if (tdist<tmin)
+        {
+           tmin=tdist;
+           iind = i;
+        }
+        scoef+=3;
+  }
+  
+  /* 
+  * Generate the "vectors of the quadrant".
+  
+                           
+                      
+           vec2              vec 1
+             <-------X------->
+closest            /     x
+     vertex (iind)        \ point
+                           
+  */
+  scoef = pcurve->ecoef;
+  
+  if (iind < (nk-1))
+     s6diff(&(scoef[(iind+1)*dim]),
+            &(scoef[iind*dim]),dim,vec1);
+  if (iind > 0)
+     s6diff(&(scoef[(iind-1)*dim]),
+            &(scoef[iind*dim]),dim,vec2);
+  
+  /* Generate the point - closest vertex vector. */
+  s6diff(lpoint,&(scoef[iind*dim]),dim,vecp);
+     
+  /* Calculate the length of the quadrant vectors. */
+  if (iind < (nk-1)) lqua1 = s6length(vec1,dim,&kstat);
+  if (iind > 0) lqua2 = s6length(vec2,dim,&kstat);
+
+  /* Calculate the length of the projection of 'vecp' on the quadrant 
+     vectors. */
+  if (iind < (nk-1)) lprj1 = s6lprj(vecp,vec1,dim);
+  if (iind > 0) lprj2 = s6lprj(vecp,vec2,dim);
+
+  /* Decide in which quadrant the point lies. */
+  if (iind == 0)
+  {
+     /* Point lies in 1. quadrant */
+     
+     /* Calculate knot values of vertex */
+     svals = s6schoen(et,kk,iind);
+     svale = s6schoen(et,kk,iind+1);
+     
+     /* Calculate estimated parameter values of point */
+     if (lqua1 != DNULL) (*gpos) = svals + (lprj1/lqua1)*(svale-svals);
+     else (*gpos) = svals;
+  }
+  else if (iind == (nk-1))
+  {
+     /* Point lies in 2. quadrant */
+     
+     /* Calculate knot values of vertices */
+     svals = s6schoen(et,kk,iind-1);
+     svale = s6schoen(et,kk,iind);
+     
+     /* Calculate estimated parameter values of point */
+     if (lqua2 != DNULL) (*gpos) = svals + ((lqua2-lprj2)/lqua2)*(svale-svals);
+     else (*gpos) = svals;
+  }
+  else if (iind > 0 && iind < (nk-1))
+  {
+     /* Evaluate 1. and 2. quadrant */
+     
+      if (lprj1 > lprj2)
+      {
+           /* Point lies in 1. quadrant */
+           
+           /* Calculate knot values of vertices */
+           svals = s6schoen(et,kk,iind);
+           svale = s6schoen(et,kk,iind+1);
+           
+           /* Calculate estimated parameter values of point */
+           if (lqua1 != DNULL) (*gpos) = svals + (lprj1/lqua1)*(svale-svals);
+           else (*gpos) = svals;
+      }
+      else if (lprj2 > lprj1)
+      {
+           /* Point lies in 2. quadrant */
+           
+           /* Calculate knot values of vertices */
+           svals = s6schoen(et,kk,iind-1);
+           svale = s6schoen(et,kk,iind);
+           
+           /* Calculate estimated parameter values of point */
+           if (lqua2 != DNULL) (*gpos) = svals + ((lqua2-lprj2)/lqua2)*(svale-svals);
+           else (*gpos) = svals;
+      }
+      else
+      {
+           /* lprj1 and lprj2 are both zero or equal. */
+           /* Choose the control point itself. */
+           
+           goto usvert;
+      }
+  }
+  else
+  {
+     /* Error */
+     goto usvert;
+  }
+  
+  /* Check that values are within parameter plane of curve. */
+  if ((*gpos)<et[kk-1]) (*gpos)=et[kk-1];
+  else if ((*gpos)>et[nk]) (*gpos)=et[nk];
+  *jstat = 0;
+  
+  /* Calculation completed.  */
+  goto out;
+  
+  /* No intermediate parameter value found,
+     use parameter value of closest vertex. */
+  usvert: *jstat = 1;
+           
+  /* Calculate knot value of closest vertex */
+  (*gpos) = s6schoen(et,kk,iind);
+
+  /* Check that values are within parameter plane of curve. */
+  if ((*gpos)<et[kk-1]) (*gpos)=et[kk-1];
+  else if ((*gpos)>et[nk]) (*gpos)=et[nk];
+
+  goto out;                  
+  
+ /* --------------------------------------------------------------------- */ 
+  /* Error in input. Dimension not equal to 1 */
+ err106: *jstat = -106;
+  s6err("s1959",*jstat,kpos);
+  goto out;   
+    
+ out:
+    return;
+}
+

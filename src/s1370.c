@@ -1,0 +1,247 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1370.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1370
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+s1370 (SISLCurve * pcurv, double earray[], int idim, int inarr,
+       int ratflag, SISLCurve ** rcurv, int *jstat)
+#else
+void
+s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
+     SISLCurve *pcurv;
+     double earray[];
+     int idim;
+     int inarr;
+     int ratflag;
+     SISLCurve ** rcurv;
+     int *jstat;
+#endif
+/*
+*********************************************************************
+*
+* PURPOSE    : To put a curve description into the implicit
+*              second order surface described by the input array.
+*
+* INPUT      : pcurv  - Pointer to input curve
+*              earray - The description of the input array
+*                       dimension (idim+1)x(idim+1) (xinarr)
+*              idim   - Put curve into implicit equation
+*              inarr  - Number of parallel matrices in earray.
+*                       inarr should be less or equal to 3.
+*              ratflag - If pcurv is nonrational it is ignored.
+*                        Otherwise:
+*                        If ratflag = 0 rcurv is the nonrational numerator
+*                        If ratflag = 1 rcurv is a full rational curve
+*
+* OUTPUT     : rcurv  - The resulting curve
+*              jstat  - status messages
+*                                         > 0      : warning
+*                                         = 0      : ok
+*                                         < 0      : error
+*
+* METHOD     : Dependent on the type of object we make:
+*
+*        F(S,T) = (P(s,t),1)  EARRAY (P(s,t),1)
+*
+*     by sampling enough point to use interpolation for reproduction.
+*
+* REFERENCES :
+*
+* CALLS      : s1893,s6err.
+*
+* WRITTEN BY : Tor Dokken, SI, Oslo , Norway
+* REVISED BY : Mike Floater, SI, Oslo 11/4/91 for rational curves
+* REVISED BY : Mike Floater, SI, Oslo 11/9/91 -- ratflag.
+* REVISED BY : Michael Floater, SI, June 92. The rational stuff
+*              was completely messed up after translation of
+*              the fortran part to c. But it works now.
+* REVISED BY : Christophe Birkeland, SI, July 1992.
+* REVISED BY : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
+*              jcurve removed, other minor changes
+*
+*********************************************************************
+*/
+{
+  int kpos = 0;
+  int kstat = 0;
+  SISLCurve *icurve = NULL;	/* Temporary SISLCurve. */
+  int kn;			/* Number of vertices of pcurv            */
+  int kk;			/* Order in  pcurv                        */
+  int kdim;			/* Number of dimesions in pcurv           */
+  int kdimp1;			/* Dimension of  earray should be kdim+1  */
+  double *st = NULL;		/* First knot vector is pcurv             */
+  double *scoef = NULL;		/* Vertices of pcurv                      */
+  int ikind;			/* kind of surface pcurv is               */
+  double *rscoef = NULL;	/* Scaled coefficients if pcurv is rational       */
+  double wmin, wmax;		/* min and max values of the weights if rational  */
+  double scale;			/* factor for scaling weights if rational         */
+  int i;			/* loop variable                          */
+  double *sarray = NULL;	/* Array for calculating denominator if used      */
+  int knarr;			/* Number of parallel arrays to use.              */
+  int nkind;			/* Kind of output curve (rcurf).                  */
+
+  *jstat = 0;
+
+  /* Make local pointers. */
+
+  kn = pcurv->in;
+  kk = pcurv->ik;
+  kdim = pcurv->idim;
+  st = pcurv->et;
+  ikind = pcurv->ikind;
+
+  kdimp1 = kdim + 1;
+
+  /* Test input. */
+
+  if (kdim != idim || (kdim != 2 && kdim != 3))
+    goto err104;
+  if (inarr < 1 || 3 < inarr) goto err172;
+
+  /* rational surfaces are a special case. */
+  if (ikind == 2 || ikind == 4)
+    {
+      kdim++;
+
+      /* scale the coeffs so that min. weight * max. weight = 1. */
+
+      rscoef = pcurv->rcoef;
+      wmin = rscoef[kdim-1];
+      wmax = rscoef[kdim-1];
+
+      for (i = 2*kdim-1; i < kn * kdim; i += kdim)
+	{
+	  if (rscoef[i] < wmin)
+	    wmin = rscoef[i];
+	  if (rscoef[i] > wmax)
+	    wmax = rscoef[i];
+	}
+      scale = (double) 1.0 / sqrt (wmin * wmax);
+      scoef = newarray (kn * kdim, DOUBLE);
+      if (scoef == NULL)
+	goto err101;
+
+      for (i = 0; i < kn * kdim; i++)
+        scoef[i] = rscoef[i] * scale;
+    }
+  else
+    scoef = pcurv->ecoef;
+
+  icurve = newCurve (kn, kk, st, scoef, 1, kdim, 1);
+  if (icurve == NULL)
+    goto err171;
+
+  icurve->cuopen = pcurv->cuopen;
+
+  if ((ikind == 2 || ikind == 4) && ratflag == 1)
+    {
+      /* Output curve will also be rational. */
+
+      nkind = 2;
+
+      /* Add an extra parallel array to pick up the weights
+	 of the subsequent homogeneous vertices of rcurv. */
+
+      knarr = inarr + 1;
+      sarray = new0array (kdimp1 * kdimp1 * knarr, DOUBLE);
+      if (sarray == NULL) goto err101;
+
+      memcopy (sarray, earray, kdimp1 * kdimp1 * inarr, double);
+      sarray[kdimp1 * kdimp1 * knarr - 1] = (double) 1.0;
+    }
+  else
+    {
+      nkind = 1;
+      knarr = inarr;
+      sarray = earray;
+    }
+
+  /* Put curve into implicit surface. */
+
+  s1893 (icurve, sarray, kdimp1, knarr, 0, 0, rcurv, &kstat);
+  if (kstat < 0) goto error;
+
+  if ((ikind == 2 || ikind == 4) && ratflag == 1)
+    {
+      /* Output from s1893 is a dim+1 non-rational curve. */
+      /* Convert homogeneous curve to rational form. */
+
+      (*rcurv)->idim --;
+      (*rcurv)->ikind = 2;
+    }
+
+  /* Free arrays. */
+
+  if (ikind == 2 || ikind == 4)
+    {
+      if (scoef) freearray (scoef);
+      if (ratflag) freearray (sarray);
+    }
+
+  if (*rcurv == NULL) goto err171;
+
+
+  /* Ok ! */
+
+  goto out;
+
+  /* Error in lower level function. */
+
+  error:
+    *jstat = kstat;
+    s6err ("s1370", *jstat, kpos);
+    goto out;
+
+  /* Allocation problems.    */
+
+  err101:
+    *jstat = -101;
+    s6err ("s1370", *jstat, kpos);
+    goto out;
+
+  /* Dimension not equal to 3.    */
+
+  err104:
+    *jstat = -104;
+    s6err ("s1370", *jstat, kpos);
+    goto out;
+
+  /* Could not create curve */
+
+  err171:
+    *jstat = -171;
+    s6err ("s1370", *jstat, kpos);
+    goto out;
+
+  /* Dimension inarr not equal to 1,2 or 3. */
+
+  err172:  
+    *jstat = -172;
+    s6err ("s1370", *jstat, kpos);
+    goto out;
+
+  out:
+  if (icurve != NULL) freeCurve (icurve);
+  return;
+}
+
+

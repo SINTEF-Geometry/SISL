@@ -1,0 +1,235 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1716.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1716
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void s1716(SISLCurve *pc1,SISLCurve *pc2,
+	   double aeps,SISLCurve **rcnew,int *jstat)
+#else
+void s1716(pc1,pc2,aeps,rcnew,jstat)
+     SISLCurve  *pc1;
+     SISLCurve  *pc2;
+     double aeps;
+     SISLCurve  **rcnew;
+     int    *jstat;
+#endif
+/*
+********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : To join the closest of one B-spline curve with the closest
+*              end of another B-spline curve by translating the second curve
+*              if the curves are closer to each other than aeps.
+*              If pc1 is to be joined at the start the direction of the
+*              curve is turned, and if pc2 is to be joined at the end
+*              the direction of this curve is turned. This means that
+*              pc1 always is at the beginning at the new curve.
+*              If aeps is to small to any joining a NULL pointer is returned.
+*
+*
+* INPUT      : pc1     - First curve to join.
+*              pc2     - Second curv to join.
+*              aeps    - The curves is to be joined if aeps is greater or
+*                        like the distance between the closest end.
+*                        If aeps is negativ the curve automaticaly is joined.
+*
+*
+*
+* OUTPUT     : rcnew   - The new joined curve.
+*              jstat   - status messages
+*                                         > 0      : warning
+*                                         = 0      : ok
+*                                         < 0      : error
+*
+*
+* METHOD     : First we are finding the smallest distens between
+*              curves. If this distens is smaller than aeps the curves
+*              are joining at the closest ends
+*
+*
+*
+* REFERENCES :
+*
+*-
+* CALLS      : newCurve  - Allocate space for a new curve-object.
+*              freeCurve - Free space occupied by given curve-object.
+*              s1715.c   - Join two curves at specified ends.
+*
+* WRITTEN BY : Arne Laksaa, SI, 88-06.
+*
+**********************************************************************/
+{
+  int kstat;              /* Local status variable.                  */
+  int kpos=0;             /* Position of error.                      */
+  int knr;                /* Number to mark type of junction.        */
+  int km11=0,km12=0;      /* Knot mutiplicety at the ends of
+			     the first curve.                        */
+  int km21=0,km22=0;      /* Knot mutiplicety at the ends of
+			     the second curve.                       */
+  int kdim;               /* Dimensjon of the space in whice curves 
+			     lies.                                   */
+  int kk1=pc1->ik;        /* The order of the first old curve.       */
+  int kk2=pc2->ik;        /* The order of the second old curve.      */
+  int kn1=pc1->in;        /* Number of vertices in the old curves.   */
+  int kn2=pc2->in;        /* Number of vertices in the old curves.   */
+  int ki,kj1,kj2;      /* Control variable in loop, and others.   */
+  double t1,tdel,tdelmin; /* The translation of the knots to the
+			     second curve.                           */
+  SISLCurve *qc=NULL;         /* Pointer to the new curve-object.        */
+  
+  /* Check that we have curves to join. */
+  
+  if (!pc1 || !pc2) goto err150;
+
+  /* Check that The curves is in the same room, have the same kdim. */
+  
+  if (pc1->idim != pc2->idim) goto err106;
+  else kdim = pc1->idim;
+  
+  /* Finding the knot multiplicity at the ends. */
+  
+  while (pc1->et[km11] == *pc1->et) km11++;
+  while (pc1->et[kn1+kk1-1-km12] == pc1->et[kn1+kk1-1]) km12++;
+  while (pc2->et[km21] == *pc2->et) km21++;
+  while (pc2->et[kn2+kk1-1-km22] == pc2->et[kn2+kk1-1]) km22++;
+  
+  /* Finding the smallest distance between the ends. */
+  
+  /* First we compute the square distance between the start of both
+     curves, Then we mark this to be the shortest. */
+  
+  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+    {
+      if (km11<kk1)  t1 = DNULL;
+      else           t1 = pc1->ecoef[kdim*(km11-kk1)+ki];
+      if (km21>=kk2) t1 -= pc2->ecoef[kdim*(km21-kk2)+ki];
+      tdel += t1*t1;
+    }
+  tdelmin = tdel;
+  knr = 0;
+  
+  /* The start of the first curve and the end of the second curve. */
+  
+  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+    {
+      if (km11<kk1)  t1 = DNULL;
+      else           t1 = pc1->ecoef[kdim*(km11-kk1)+ki];
+      if (km22>=kk2) t1 -= pc2->ecoef[kdim*(kn2-1-km22+kk2)+ki];
+      tdel += t1*t1;
+    }
+  if (tdel<tdelmin)
+    {
+      tdelmin = tdel;
+      knr = 1;
+    }
+  
+  /* The end of the first curve and the start of the second curve. */
+  
+  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+    {
+      if (km12<kk1)  t1 = DNULL;
+      else           t1 = pc1->ecoef[kdim*(kn1-1-km12+kk1)+ki];
+      if (km21>=kk2) t1 -= pc2->ecoef[kdim*(km21-kk2)+ki];
+      tdel += t1*t1;
+    }
+  if (tdel<tdelmin)
+    {
+      tdelmin = tdel;
+      knr = 2;
+    }
+  
+  /* The end of the first curve and the end of the second curve. */
+  
+  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+    {
+      if (km12<kk1)  t1 = DNULL;
+      else           t1 = pc1->ecoef[kdim*(kn1-1-km12+kk1)+ki];
+      if (km22>=kk2) t1 -= pc2->ecoef[kdim*(kn2-1-km22+kk2)+ki];
+      tdel += t1*t1;
+    }
+  if (tdel<tdelmin)
+    {
+      tdelmin = tdel;
+      knr = 3;
+    }
+  
+  
+  if (aeps < DNULL || aeps >= sqrt(tdelmin))
+    {
+      /* We mark what ends we are going to use in the junction.
+	 and then call a function to join the curves. */
+      
+      if (knr<2) kj1 = 0;
+      else        kj1 = 1;
+      
+      if (knr==0 || knr==2) kj2 = 0;
+      else                kj2 = 1;
+      
+      
+      s1715(pc1,pc2,kj1,kj2,&qc,&kstat);
+      if (kstat) goto err153;
+    } else
+      {
+	/* Aeps was to small We just have to return NULL. */
+	
+	qc = NULL;
+      }
+  
+  
+  /* Updating output. */
+  
+  *rcnew = qc;
+  *jstat = 0;
+  goto out;
+  
+  
+  /* Error. Subrutine error. */
+  
+ err153:
+  *jstat = kstat;
+  goto outfree;
+  
+  
+  /* Error. No curve to subdevice.  */
+  
+ err150:
+  *jstat = -150;
+  s6err("s1716",*jstat,kpos);
+  goto out;
+  
+  
+  /* Error. Different dimensjon of the room.  */
+  
+ err106:
+  *jstat = -106;
+  s6err("s1716",*jstat,kpos);
+  goto out;
+  
+  
+ outfree:
+  if(qc) freeCurve(qc);
+  
+  
+ out: 
+  return;
+}
+

@@ -1,0 +1,229 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1921.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1921
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void 
+s1921(SISLSurf *ps1,double edir[],int idim,double aepsco,double aepsge,
+	   int *jpt,double **gpar,int *jcrv,SISLIntcurve ***wcurve,int *jstat)
+#else
+void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
+     SISLSurf     *ps1;
+     double   edir[];
+     int      idim;
+     double   aepsco;
+     double   aepsge;
+     int      *jpt;
+     double   **gpar;
+     int      *jcrv;
+     SISLIntcurve ***wcurve;
+     int      *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*                                                                   
+* PURPOSE    : Find the extremal points/curves of the surface ps1 in 
+*              the direction edir.
+*
+*
+* INPUT      : ps1    - Pointer to the surface.
+*              edir   - The direction in which the extremal point(s)
+*                       and/or interval(s) are to be calculated. If
+*                       idim=1 a positive value indicates the maximum
+*                       of the B-spline function and a negative value
+*                       the minimum. If the dimension is greater that
+*                       1 the array contains the coordinates of the
+*                       direction vector.
+*              idim   - Dimension of the space in which the vector edir
+*                       lies.
+*              aepsco - Computational resolution.
+*              aepsge - Geometry resolution.
+*
+*
+*
+* OUTPUT     : jpt    - Number of single extremal points.
+*              gpar   - Array containing the parameter values of the
+*                       single extremal points in the parameter
+*                       area of the surface. The points lie continuous. 
+*                       Extremal curves are stored in wcurve.
+*              jcrv   - Number of extremal curves.
+*              wcurve - Array containing descriptions of the extremal
+*                       curves. The curves are only described by points
+*                       in the parameter area. The curve-pointers points
+*                       to nothing. (See descrjption of Intcurve
+*                       in intcurve.dcl).
+*              jstat  - status messages  
+*                                         > 0      : warning
+*                                         = 0      : ok
+*                                         < 0      : error
+*
+*
+* METHOD     : The scalar-product of the coefficients of the surface with
+*              the vector edir is calculated giving a surface with dimension
+*              1. Then the maxima of this surface is calculated.
+*              
+*
+*
+* REFERENCES :
+*
+*- 
+* CALLS      : s1880 - Put extremal points/intervals into output format.
+*              s1161 - Find maxima of one-dimensional object.
+*              s6scpr - Scalar-product between two vectors.
+*              newSurf    - Create new surface 
+*              newObject  - Create new object.
+*              newIntdat  - Create new max point .
+*              freeObject - Free the space occupied by a given object.
+*              freeIntdat  - Free space occupied by an extremal data.
+*
+* WRITTEN BY : Vibeke Skytt, SI, 88-10.
+* REVISED BY : Mike Floater, SI, 91-09.
+*
+*********************************************************************
+*/                                                               
+{                                                                     
+  int ikind;               /* Type of surface ps1 is.                     */
+  int kstat = 0;           /* Local status variable.                      */
+  int kpos = 0;            /* Position of error.                          */
+  int kn1,kn2;             /* Number of vertices of surface.              */
+  int kk1,kk2;             /* Order of surface.                           */
+  double tmax;             /* Estimate of maximal value of 1-dim. surface.*/
+  double *st1,*st2;        /* Pointer to knotvectors of surface.          */
+  double *scoef;           /* Pointer to vertices of surface.             */
+  double *sc = NULL;       /* Pointer to vertices of surface in maxima   
+			      calculation.                                */
+  double *spar = NULL;     /* Values of maxima in the parameter area of 
+			      the second object. Empty in this case.      */
+  double *s1,*s2,*sstop;   /* Pointers used to traverse double-arrays.    */
+  SISLIntdat *qintdat = NULL;  /* Pointer to max data structure.*/ 
+  SISLSurf *qs = NULL;         /* Pointer to 1-dim. surface in maxima-calculation.*/
+  SISLObject *qo1 = NULL;      /* Pointer to object in maxima-calculation.  */
+  
+  /* Check dimension.  */
+  
+  if (ps1 -> idim != idim) goto err106;
+  
+  /* Describe surface with local variables.  */
+  
+  kn1 = ps1 -> in1;
+  kn2 = ps1 -> in2;
+  kk1 = ps1 -> ik1;
+  kk2 = ps1 -> ik2;
+  st1 = ps1 -> et1;
+  st2 = ps1 -> et2;
+  ikind = ps1 -> ikind;
+  
+  if(ikind == 2 || ikind == 4)
+  {
+      scoef = ps1 -> rcoef;
+      /* Allocate space for coeffecients of new surface.  */
+      
+      if ((sc = newarray(2*kn1*kn2,double)) == NULL) goto err101; 
+      
+      /* Compute scalar-product of surface-vertices and direction vector. */
+      /* Copy over weights. */
+      
+      for (s1=scoef,s2=sc,sstop=s2+2*kn1*kn2; s2<sstop; s1+=idim+1,s2+=2)
+      {
+          *s2 = s6scpr(s1,edir,idim);
+	  *(s2+1) = *(s1+idim);
+      }
+  }
+  else
+  {
+      scoef = ps1 -> ecoef;
+      /* Allocate space for coeffecients of new surface.  */
+      
+      if ((sc = newarray(kn1*kn2,double)) == NULL) goto err101; 
+      
+      /* Compute scalar-product of surface-vertices and direction vector. */
+      
+      for (s1=scoef,s2=sc,sstop=s2+kn1*kn2; s2<sstop; s1+=idim,s2++)
+        *s2 = s6scpr(s1,edir,idim);
+  }
+
+  
+  /* Create new surface.  */
+  
+  qs = newSurf(kn1,kn2,kk1,kk2,st1,st2,sc,ps1->ikind,1,1);
+  if (qs == NULL) goto err101;
+  
+  /* Create new object and connect surface to object.  */
+  
+  qo1 = newObject(SISLSURFACE);
+  if (qo1 == NULL) goto err101;
+  qo1 -> s1 = qs;
+  
+  /* Find maxima.  */
+  
+  /* Find maxima. */
+  tmax = -(double)HUGE;
+  
+  s1161(qo1,&tmax,aepsge,&qintdat,&kstat);
+  if (kstat < 0) goto error;
+  
+  if (qintdat)
+    {
+      
+      /* Express maximal points/intervals on output format.  */
+      s1880(2,0,&qintdat->ipoint,qintdat->vpoint,&qintdat->ilist,qintdat->vlist
+	    ,jpt,gpar,&spar,jcrv,wcurve,&kstat);
+      if (kstat < 0) goto error;
+    }
+  
+  /* Extremal points/intervals found.  */
+  
+  *jstat = 0;
+  goto out;
+  
+  /* Error in space allocation.  */
+  
+ err101: *jstat = -101;
+  s6err("s1921",*jstat,kpos);
+  goto out;
+  
+  /* Dimensions conflicting.  */
+  
+ err106: *jstat = -106;
+  s6err("s1921",*jstat,kpos);
+  goto out;
+  
+  /* Error in lower level routine.  */
+  
+  error : *jstat = kstat;
+  s6err("s1921",*jstat,kpos);
+  goto out;
+  
+ out:
+  
+  /* Free allocated space.  */
+  
+  if (sc) freearray(sc);
+  if (spar) freearray(spar);
+  if (qo1) freeObject(qo1);
+  if (qintdat) freeIntdat(qintdat);
+  
+  return;
+}                                               
+                                           
+                                        

@@ -1,0 +1,179 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1935.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1935
+
+#include "sislP.h"
+
+
+#if defined(SISLNEEDPROTOTYPES)
+void s1935 (double et1[], int in1, double et2[], int in2, 
+	    double *knt[], int *in, int ik, int *jstat)
+#else
+void
+s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
+     double *et1;
+     int in1;
+     double *et2;
+     int in2;
+     double *knt[];
+     int *in;
+     int ik;
+     int *jstat;
+
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE: To produce a knot vector that is the union of two knot
+*	   vectors. The original knot vectors and the produced knot
+*	   vector are of the same order.
+*
+*
+* INPUT:   et1	- The first knot vector.
+*	   in1	- The number of degrees of freedom in the
+*	          B-basis given by the first knot vector.
+*	   et2	- The second knot vector.
+*	   in2	- The number of degrees of freedom in the
+*		  B-basis given by the second knot vector.
+*	   ik	- The order of the knot vector to be produced.
+*
+* OUTPUT:  jstat - Output status:
+*                   < 0: Error.
+*		    = 0: Ok.
+*                   > 0: Warning.
+*
+* METHOD:
+*
+* REFERENCES:  Fortran version:
+*              T.Dokken, SI, 1981-11
+*
+* CALLS: s6err.
+*
+* WRITTEN BY:  Christophe R. Birkeland, SI, 1991-07
+* CORRECTED BY: Vibeke Skytt, SI, 92-10. Removed exact test on equality
+*                                        of knots.
+* CORRECTED BY: Christophe R. Birkeland, SI, 93-05. 
+*         Reinstalled exact test on equality of knots. Necessary
+*         for correct working of routine s1931-s1937.
+*
+*********************************************************************
+*/
+{
+  int kpos = 0;			/* Error position indicator.		*/
+  int pek1, pek2;		/* Index for array et1 and et2. 	*/
+  int stop1;			/* Length of et1, equals in1+ik.	*/
+  int stop2;			/* Length of et2, equals in2+ik.	*/
+  double curr;			/* Parameter used in calculation of
+				   new knots.				*/
+
+  *jstat = 0;
+
+  /* Test if legal input */
+
+  if (ik < 1) goto err110;
+  if ((in1 < ik) || (in2 < ik)) goto err111;
+
+
+  /* Allocate array for new knot vector */
+
+  if((*knt = newarray (2 * ik + in1 + in2, DOUBLE))==NULL) goto err101;
+
+  /* Test if input knot vectors degenerate */
+
+  if (et1[ik - 1] >= et1[in1]) goto err112;
+
+  if (et2[ik - 1] >= et2[in2]) goto err112;
+
+  /* PRODUCTION OF KNOTS */
+
+  *in = 0;
+  curr = MIN (et1[0], et2[0]);
+  pek1 = 0;
+  pek2 = 0;
+  stop1 = in1 + ik;
+  stop2 = in2 + ik;
+
+  while ((pek1 < stop1) && (pek2 < stop2))
+    {
+      /* Test if error in knot vector */
+
+      if ((et1[pek1] < curr) || (et2[pek2] < curr)) goto err112;
+
+      if (et1[pek1]==curr) pek1++;
+      if (et2[pek2]==curr) pek2++;
+      (*knt)[*in] = curr;
+      (*in) ++;
+      curr = MIN (et1[pek1], et2[pek2]);
+    }
+
+  /* Some knots may remain in one of the arrays */
+
+  if ((pek1 < stop1) || (pek2 < stop2))
+    {
+      if (pek1 >= stop1)
+	{
+	  for (; pek2 < stop2; pek2++, (*in) ++)
+	    (*knt)[*in] = et2[pek2];
+	}
+      else
+	for (; pek1 < stop1; pek1++, (*in) ++)
+	  (*knt)[*in] = et1[pek1];
+    }
+
+  /* Knots produced */
+
+  *in -=ik;
+  *knt = increasearray (*knt, *in +ik, DOUBLE);
+  if (*knt == NULL) goto err101;
+  goto out;
+
+
+  /* Memory error */
+
+  err101:
+    *jstat = -101;
+    s6err ("s1935", *jstat, kpos);
+    goto out;
+
+  /* Error in description of B-spline curve: Order less than 1.*/
+
+  err110:
+    *jstat = -110;
+    s6err ("s1935", *jstat, kpos);
+    goto out;
+
+  /* No. of vertices less than order. */
+
+  err111:
+    *jstat = -111;  
+    s6err ("s1935", *jstat, kpos);
+    goto out;
+
+  /* Error in knot vector */
+
+  err112:
+    *jstat = -112;
+    s6err ("s1935", *jstat, kpos);
+    goto out;
+
+  out:
+    return;
+}

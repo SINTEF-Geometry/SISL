@@ -1,0 +1,296 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1958.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1958
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+s1958(SISLSurf *psurf,double epoint[],int idim,double aepsco,double aepsge,
+           double gpar[],double *dist,int *jstat)
+#else
+void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
+     SISLSurf    *psurf;
+     double   epoint[];
+     int      idim;
+     double   aepsco;
+     double   aepsge;
+     double   gpar[];
+     double   *dist;
+     int      *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*                                                                   
+* PURPOSE    : Find the closest point between the surface psurf
+*              and the point epoint.
+*              The method is fast and should work well
+*              in clear cut cases but does not guarantee finding
+*              the right solution. As long as it doesn't fail,
+*              it will find exactly one point.
+*
+*
+*
+* INPUT      : psurf  - Pointer to the surface in the closest point problem.
+*              epoint - The point in the closest point problem.
+*              idim   - Dimension of the space in which epoint lies.
+*              aepsco - Computational resolution.
+*              aepsge - Geometry resolution.
+*
+*
+*
+* OUTPUT     : gpar   - Array(2) containing the parameter values of the
+*                       closest point in the parameter space
+*                       of the surface.
+*              dist   - The closest distance between point and the surface.
+*              jstat  - status messages  
+*                                         > 0      : warning
+*                                         = 0      : Solution in interior 
+*                                         = 1      : Solution at an edge 
+*                                         = 2      : Solution at a corner 
+*                                         < 0      : error
+*
+*
+* METHOD     : Find an initial guess solution by finding, essentially,
+*              the closest control point to the given point
+*              and estimating the corresponding parameter pair, s1959.
+*              This pair is then the starting point for a Newton
+*              iteration in s1773. The distance of this solution
+*              is then compared with the distance of the edge curves
+*              (from the given point) found by s1957
+*              and the minimum is returned.
+*
+*
+* REFERENCES :
+*
+*- 
+* CALLS      : s1960,s1773,newPoint,freePoint,
+*              s1957,freeCurve,s1436,s1437.
+*
+* WRITTEN BY : Michael Floater, SI, 91-10.
+*
+*********************************************************************
+*/                                                               
+{                                                                     
+  double clspt[3];          /* Coeffs. of potential closest point.       */
+  double newdist,cldist;    /* Distances of edges from epoint.           */
+  double enext[2];          /* Initial guess for iteration               */
+  double estart[2],eend[2]; /* Parameter area for Newton iteration.      */
+  double *et1=NULL;         /* Knot vector in u direc.                   */
+  double *et2=NULL;         /* Knot vector in v direc.                   */
+  int ik1;                  /* Order of curve in u direction.            */
+  int ik2;                  /* Order of curve in v direction.            */
+  int in1;                  /* No. control points of curve in u direec.  */
+  int in2;                  /* No. control points of curve in v direec.  */
+  int kleft1=0,kleft2=0;    /* Dummies used in evualation.               */
+  int kstat = 0;            /* Local status variable.                    */
+  int clkstat = 0;          /* Local status variable.                    */
+  int kpos = 0;             /* Error position.                           */
+  double gpos[2];           /* Parameters of closest point on surface.   */
+  double clgpos[2];         /* Current parameters of cl. pt. on surface. */
+  double crvpar;            /* Parameter of closest point on an edge.    */
+  SISLPoint *ppoint=NULL;   /* epoint in SISLPoint form.                 */
+  SISLCurve *pcurve=NULL;   /* An edge of the surface.                   */
+  
+  /* Test input.  */
+  
+  if (idim != 3) goto err105;
+  if (psurf->idim != idim) goto err106;
+
+
+  /* Set up local variables. */
+
+  ik1 = psurf->ik1;
+  ik2 = psurf->ik2;
+  in1 = psurf->in1;
+  in2 = psurf->in2;
+  et1 = psurf->et1;
+  et2 = psurf->et2;
+
+  /* First of all, find the closest point on the boundary.
+     This is done by calling s1957 on each of the four edges. */
+
+  /* Find closest point of edge 0. */
+  
+  s1437(psurf,et1[ik1-1],&pcurve,&kstat);
+  if (kstat < 0) goto error;
+
+  s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&cldist,&clkstat);
+  if (kstat < 0) goto error;
+  if(pcurve != NULL)
+  {
+    freeCurve(pcurve);
+    pcurve = NULL;  
+  }
+  clgpos[0] = et1[ik1-1];
+  clgpos[1] = crvpar;
+  clkstat++;
+
+  /* Find closest point of edge 1. */
+  
+  s1437(psurf,et1[in1],&pcurve,&kstat);
+  if (kstat < 0) goto error;
+
+  s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&newdist,&kstat);
+  if (kstat < 0) goto error;
+  if(pcurve != NULL)
+  {
+    freeCurve(pcurve);
+    pcurve = NULL;
+  }
+  if(newdist < cldist)
+  {
+      cldist = newdist;
+      clgpos[0] = et1[in1];
+      clgpos[1] = crvpar;
+      clkstat = kstat+1;
+  }
+
+  /* Find closest point of edge 2. */
+  
+  s1436(psurf,et2[ik2-1],&pcurve,&kstat);
+  if (kstat < 0) goto error;
+
+  s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&newdist,&kstat);
+  if (kstat < 0) goto error;
+  if(pcurve != NULL)
+  {
+    freeCurve(pcurve);
+    pcurve = NULL;
+  }
+
+  if(newdist < cldist)
+  {
+      cldist = newdist;
+      clgpos[0] = crvpar;
+      clgpos[1] = et2[ik2-1];
+      clkstat = kstat+1;
+  }
+
+  /* Find closest point of edge 3. */
+  
+  s1436(psurf,et2[in2],&pcurve,&kstat);
+  if (kstat < 0) goto error;
+
+  s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&newdist,&kstat);
+  if (kstat < 0) goto error;
+  if(pcurve != NULL) freeCurve(pcurve);
+
+  if(newdist < cldist)
+  {
+      cldist = newdist;
+      clgpos[0] = crvpar;
+      clgpos[1] = et2[in2];
+      clkstat = kstat+1;
+  }
+
+
+
+  /* Next, try the interior of the surface by Newton iteration. */
+
+  ppoint = newPoint(epoint,idim,1);
+  if(ppoint == NULL) goto err101;
+
+  /* Find a good guess point based on finding the closest control
+     point and its corresponding parameter values. */
+
+  s1960(ppoint,psurf,enext,&kstat);
+  if(kstat < 0) goto error;
+
+  /* Do the Newton iteration. */
+    
+  estart[0] = et1[ik1-1];
+  estart[1] = et2[ik2-1];
+  eend[0] = et1[in1];
+  eend[1] = et2[in2];
+
+  s1773(ppoint,psurf,aepsge,estart,eend,enext,gpos,&kstat);
+  if(kstat >= 0)
+  {
+    
+      /* Closest point found. */
+      /* Find distance and compare with edges. */
+    
+      s1424(psurf,0,0,gpos,&kleft1,&kleft2,clspt,&kstat);
+      if (kstat < 0) goto error;
+      
+      newdist = s6dist(epoint,clspt,idim);
+
+      if(newdist < cldist)
+      {
+          cldist = newdist;
+          clgpos[0] = gpos[0];
+          clgpos[1] = gpos[1];
+          clkstat = 0;
+      }
+
+    
+  }
+
+  
+  /* Closest point found. Return point is in interior, on an edge,
+     or at a corner. */
+
+  *dist = cldist;
+  gpar[0] = clgpos[0];
+  gpar[1] = clgpos[1];
+
+  *jstat = clkstat;
+
+  goto out;
+ 
+
+
+  /* Error in space allocation.  */
+  
+ err101: *jstat = -101;
+  s6err("s1958",*jstat,kpos);
+  goto out;
+  
+  /* Error in input. Dimension not equal to 3.  */
+  
+ err105: *jstat = -105;
+  s6err("s1958",*jstat,kpos);
+  goto out;
+  
+  /* Dimensions conflicting.  */
+  
+ err106: *jstat = -106;
+  s6err("s1958",*jstat,kpos);
+  goto out;
+  
+  /* Error in lower level routine.  */
+  
+  error : *jstat = kstat;
+  s6err("s1958",*jstat,kpos);
+  goto out;
+  
+ out:
+  
+  /* Free allocated space.  */
+  
+  if (ppoint != NULL) freePoint(ppoint);
+  
+  return;
+}                                               
+                                           
+                       
+

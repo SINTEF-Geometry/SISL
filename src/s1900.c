@@ -1,0 +1,216 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+
+#include "copyright.h"
+
+/*
+ *
+ * $Id: s1900.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ *
+ */
+
+
+#define S1900
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+   s1900 (double param[], double knots[], double econd[], int ntype[],
+       int inpt, int ik, int idim, int iopen,
+       double *cendpar, SISLCurve ** rcurve,
+       double **gpar, int *jnbpar, int *jstat)
+#else
+void
+s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
+       cendpar, rcurve, gpar, jnbpar, jstat)
+     double param[];
+     double knots[];
+     double econd[];
+     int ntype[];
+     int inpt;
+     int ik;
+     int idim;
+     int iopen;
+     double *cendpar;
+     SISLCurve **rcurve;
+     double **gpar;
+     int *jnbpar;
+     int *jstat;
+#endif
+/*
+*********************************************************************
+*
+* PURPOSE    : Compute a B-spline curve interpolating a set of points.
+*              The points can be assigned derivative conditions. The
+*              curve can be open, closed, or closed and periodic.
+*
+* INPUT      : param - The parametrization of the point set.
+*	       knots - The knot vector for the point set.
+*              econd  - Array of interpolation conditions. Dimension
+*                       is inpt*idim.
+*              ntype  - Array containing kind of condition. Dimension
+*                       is inpt.
+*                       =  0 : A point is given.
+*                       =  d : The d'th derivatative condition to the
+*                              previous point is given.
+*                       = -d : The d'th derivatative condition to the
+*                              next point is given.
+*              inpt   - Number of interpolation conditions.
+*              ik     - Order of interpolating curve.
+*              idim   - Dimension of geometry space.
+*              iopen - Indicates if the curve is to be open, closed or
+*                       periodic.
+*
+* OUTPUT     : cendpar - End parameter of parametrization.
+*              rcurve  - Interpolating curve.
+*	       gpar    - The distinct parameter values.
+*	       jnbpar  - Number of distinct parameter values.
+*              jstat   - status messages
+*                        = 1      : Specified parametrization method
+*                                   replaced by cord length parametrization.
+*                                         = 0      : ok
+*                                         < 0      : error
+*
+* METHOD     :
+*
+* REFERENCES :
+*
+* CALLS      : s1908, s1891, s1713, s1750
+*
+* WRITTEN BY : Vibeke Skytt, SI, 91-04.
+* REVISED BY : Trond Vidar Stensby, SI, 91-07
+*
+*********************************************************************
+*/
+{
+  int kstat = 0;		/* Status variable.                             */
+  int kpos = 0;
+  int ki;			/* Counter.                                     */
+  int knpt;			/* Number of accepted interpolation conditions. */
+  int kn;			/* Number of coefficients of B-spline curve.    */
+  int kordr;			/* Local order of curve.                        */
+  int kright = 1;		/* One equation system to solve in interpolation. */
+  int knlr = 0;			/* Indicates shape of interpolation matrix.     */
+  int knrc = 0;			/* Indicates shape of interpolation matrix.     */
+  double *scoef = NULL;		/* Coefficients of curve.                          */
+  int *ltype = NULL;		/* Type of accepted interpolation conditions.   */
+  double *scond = NULL;		/* Array containing interpolation conditions.   */
+  double *lpar = NULL;		/* Array containing new parameter valued. */
+  int *sder = NULL;		/* Vector of derivative indicators.                */
+  SISLCurve *qc = NULL;		/* Interpolation curve.                */
+  SISLCurve *qc2 = NULL;	/* Interpolation curve. */
+
+  *jstat = 0;
+
+  /* Test interpolation conditions */
+
+  s1908 (econd, ntype, param, inpt, ik, idim, iopen,
+	 &scond, &ltype, &lpar, &knpt, &kstat);
+  if (kstat < 0) goto error;
+
+  /* Allocate scratch for derivative indicator. */
+
+  if ((sder = newarray (knpt, INT)) == NULL)
+    goto err101;
+
+  for (ki = 0; ki < knpt; ki++)
+    sder[ki] = (int) fabs ((double) ltype[ki]);
+
+  /* Set local order.  */
+
+  kordr = MIN (ik, knpt);
+
+  if (iopen != SISL_CRV_OPEN)
+    {
+      knlr = kordr / 2;
+      knrc = kordr - knlr - 1;
+      knpt--;
+    }
+  /* Perform interpolation.  */
+
+  s1891 (lpar, scond, idim, knpt, kright, sder, iopen, knots,
+	 &scoef, &kn, kordr, knlr, knrc, &kstat);
+  if (kstat < 0) goto error;
+
+  /* Express the curve as a curve object.  */
+
+  qc = newCurve (kn, kordr, knots, scoef, 1, idim, 1);
+  if (qc == NULL) goto err101;
+
+  if (!(iopen == SISL_CRV_OPEN))
+    {
+      /* A closed, non-periodic curve is expected. Pick the part of the
+	 interpolation curve that has got a full basis.  */
+
+      s1713 (qc, knots[kordr - 1], knots[kn], &qc2, &kstat);
+      if (kstat < 0) goto error;
+
+      if (qc != NULL) freeCurve (qc);
+      qc = qc2;
+    }
+
+  if (kordr < ik)
+    {
+      /* The order of the curve is less than expected. Increase the order. */
+
+      qc2 = NULL;
+      s1750 (qc, ik, &qc2, &kstat);
+      if (kstat < 0) goto error;
+      if (qc != NULL) freeCurve (qc);
+      qc = qc2;
+    }
+
+  /* Set open/closed parameter of curve.  */
+
+  qc->cuopen = iopen;
+
+  /* Interpolation performed. */
+
+  /* Find distinct parameter values. */
+
+  *gpar = lpar;
+
+  *jnbpar = 1;
+  for (ki = 1; lpar[ki] < *cendpar; ki++)
+    {
+      if (lpar[ki - 1] < lpar[ki])
+	(*gpar)[(*jnbpar)++] = lpar[ki];
+    }
+  (*gpar)[(*jnbpar)++] = lpar[ki];
+
+  *gpar = increasearray (*gpar, *jnbpar, DOUBLE);
+
+  *rcurve = qc;
+  goto out;
+
+  /* Error in scratch allocation.  */
+
+  err101:
+    *jstat = -101;
+    s6err ("s1900", *jstat, kpos);
+    goto out;
+
+  /* Error in lower level routine. */
+
+  error:
+    *jstat = kstat;
+    s6err ("s1900", *jstat, kpos);
+    goto out;
+
+out:
+  /* Free scratch occupied by local arrays. */
+
+  if (scond != NULL)    freearray (scond);
+  if (scoef != NULL)    freearray (scoef);
+  if (sder != NULL)     freearray (sder);
+  if (ltype != NULL)    freearray (ltype);
+
+  return;
+}
