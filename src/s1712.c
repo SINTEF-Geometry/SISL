@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1712.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1712.c,v 1.2 1994-05-16 13:24:41 boh Exp $
  *
  */
 
@@ -24,7 +24,7 @@
 void
 s1712 (SISLCurve * pc, double abeg, double aend, SISLCurve ** rcnew, int *jstat)
 #else
-void 
+void
 s1712 (pc, abeg, aend, rcnew, jstat)
      SISLCurve *pc;
      double abeg;
@@ -86,10 +86,10 @@ s1712 (pc, abeg, aend, rcnew, jstat)
 
   /* Check that the intersection points are interior points. */
 
-  if ((abeg < pc->et[0] && DNEQUAL(abeg,pc->et[0])) || 
+  if ((abeg < pc->et[0] && DNEQUAL(abeg,pc->et[0])) ||
       (abeg > pc->et[pc->in+pc->ik-1] && DNEQUAL(abeg,pc->et[pc->in+pc->ik-1])))
     goto err151;
-  if ((aend < pc->et[0] && DNEQUAL(aend,pc->et[0])) || 
+  if ((aend < pc->et[0] && DNEQUAL(aend,pc->et[0])) ||
       (aend > pc->et[pc->in+pc->ik-1] && DNEQUAL(aend,pc->et[pc->in+pc->ik-1])))
     goto err151;
 
@@ -103,23 +103,23 @@ s1712 (pc, abeg, aend, rcnew, jstat)
       double delta = pc->et[pc->in] - pc->et[pc->ik - 1];
 
       if (abeg > aend)	kturn = 1;
-      
+
       if (abeg < pc->et[pc->ik - 1] && DNEQUAL(abeg, pc->et[pc->ik - 1]))
 	abeg += delta;
       if (abeg > pc->et[pc->in] || DEQUAL(abeg, pc->et[pc->in]))
 	abeg -= delta;
-      
+
       if (aend < pc->et[pc->ik - 1] && DNEQUAL(aend, pc->et[pc->ik - 1]))
 	aend += delta;
       if (aend > pc->et[pc->in] && DNEQUAL(aend, pc->et[pc->in]))
 	aend -= delta;
-      
+
       if ((abeg > aend && !kturn) || (abeg < aend && kturn))
 	 kturn = 1;
-      else 
+      else
 	 kturn = 0;
   }
-  
+
   /* Find the smaller and greater of the intersection points. */
 
   if (abeg < aend)
@@ -157,8 +157,14 @@ s1712 (pc, abeg, aend, rcnew, jstat)
   /* Then we divide at the last point. The curve to left is the new curve.*/
 
   s1710 (q2, tend, &q1, &q3, &kstat);
-  if (kstat)
+  if (kstat < 0)
     goto err153;
+  /* BOH, periodicity */
+  if (kstat && !q1 && q3)
+  {
+    q1 = q3;
+    q3 = NULL;
+  }
 
   /* The curve is turned if nessesary. */
 
