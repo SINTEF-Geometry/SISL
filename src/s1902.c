@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1902.c,v 1.3 1995-12-01 15:10:04 jka Exp $
+ * $Id: s1902.c,v 1.4 1995-12-12 14:59:53 jka Exp $
  *
  */
 
@@ -71,8 +71,6 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
 *
 * WRITTEN BY :	Vibeke Skytt, SI, 91-03
 * REVISED BY :	Trond Vidar Stensby, SI, 91-06
-* REVISED BY :  Johannes Kaasa, SINTEF, 95-11 (Problems with the knot vector
-*               in case of periodicity).
 *
 *********************************************************************
 */
@@ -198,7 +196,7 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       if (ik % 2 == 0)
 	{
 	  /* The order of the B-spline curve is even.
-	     Make the ik - 1 first knots as a shift of the last knots.  */
+	     Make the in - 1 first knots as a shift of the last knots.  */
 	   
 	  for (ki = 0, kpar = (in - ik + 1); ki < (ik - 1); ki++, kpar++)
 	    (*eknots)[ki] = epar[kpar] - tparint;
