@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1365.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1365.c,v 1.2 1994-06-03 08:20:35 vsk Exp $
  *
  */
 
@@ -69,7 +69,7 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
 * METHOD     : The 4 edge curves of the surface are extracted. Offset curves
 *              of these 4 edge curves are approximated and a common
 *              basis for the two pairs of opposite offset curves is calculated.
-*              Vertices are recomputed. Finally data-reduction is performed.
+*              Vertices are recomputed. 
 *
 * EXAMPLE OF USE:
 *
@@ -83,13 +83,10 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
 *              s1933     - Put a set of curves on a common basis.
 *              s1366     - Create a B-spline surface approximating the offset
 *                          surface of a B-spline surface
-*              s1345     - Data reduction of a B-spline surface. 
 *
 * WRITTEN BY : Per Evensen,  SI, 89-3.
 * REWISED BY : Per Evensen,  SI, 90-9; Corrected start/end parameter values of
 *                                      common curves.
-* REWISED BY : Vibeke Skytt, SINTEF, 9403. Introduced data reduction and freed
-*                                          scratch used by local curves.
 *
 *********************************************************************
 */
@@ -117,43 +114,19 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
 			   direction.                                     */
   double *sknot13=NULL;/* Pointer to common knot-vector of edge curves along
 			  1. parameter direction. */
-  double *scoef13=NULL;/* Pointer to vertices expressed in same basis of edge
-			  curves along 1. parameter direction. */
   double *sknot24=NULL;/* Pointer to common knot-vector of edge curves along
 			  2. parameter direction. */
-  double *scoef24=NULL;/* Pointer to vertices expressed in same basis of edge
-			  curves along 2. parameter direction. */
-  int kj,kk;            /* Loop controller. */
-  double tepsge = (double)0.5*aepsge;  /* Local tolerance.             */
-  SISLSurf *qs = NULL;                 /* Intermediate offset surface. */
-  double seps[3];
-  double sedgeeps[12];
-  int ledgefix[4];
-  int kopt;
-  int ktmax;
-  double smaxerr[3];
+  int  kk;              /* Loop controller. */
   
   /* Initialization of variables */
   kdim = ps -> idim;
-  for (kk=0; kk<4; kk++) 
+  for (kk=0; kk<4; kk++)  
   {
      nder[kk] = 1;
      pc[kk] = NULL;
      rc[kk] = NULL;
   }
   for (kk=0; kk<3; kk++) snorm[kk] = DNULL;
-  
-  /* Set parameters for the data reduction. */
-  
-  for (kk=0; kk<idim; kk++)
-     seps[kk] = pow(tepsge, (double)1/(double)idim);
-  for (kj=0; kj<4; kj++)
-  {
-     ledgefix[kj] = 0;
-     for (kk=0; kk<kdim; kk++) sedgeeps[kj*4+kk] = DNULL;
-  }
-  kopt = 3;
-  ktmax = 20;
   
   /* Fetch the 4 edge-curves of surface */
   
@@ -167,7 +140,7 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
   
   for (kk=0; kk<4; kk++)
     {
-      s1360(pc[kk],toffset,tepsge,snorm,amax,kdim,&rc[kk],&kstat);
+      s1360(pc[kk],toffset,aepsge,snorm,amax,kdim,&rc[kk],&kstat);
       if (kstat<0) goto error;
     }
   
@@ -198,16 +171,9 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
   /* Create a B-spline surface approximating the offset surface of a B-spline
      surface. */
   
-  s1366(ps,aoffset,tepsge,amax,idim,sknot13,kn13,kord13,
-	sknot24,kn24,kord24,&qs,&kstat);
+  s1366(ps,aoffset,aepsge,amax,idim,sknot13,kn13,kord13,
+	sknot24,kn24,kord24,rs,&kstat);
   if (kstat<0) goto error;
-  
-  /* Try to reduce the amount of data necessary to represent the
-     surface. */
-  
-  s1345(qs, seps, ledgefix, sedgeeps, REL_COMP_RES, kopt, ktmax, rs, 
-	smaxerr, &kstat);
-  if (kstat < 0) goto error;
   
   /* Surface approximated. */
   
@@ -221,12 +187,13 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
   goto out;
   
   out: 
-     if (qs != NULL) freeSurf(qs);
      for (kk=0; kk<4; kk++)
      {
 	if (pc[kk] != NULL) freeCurve(pc[kk]);
 	if (rc[kk] != NULL) freeCurve(rc[kk]);
      }
+     if (sknot13 != NULL) freearray(sknot13);
+     if (sknot24 != NULL) freearray(sknot24);
      
      return;
 }
