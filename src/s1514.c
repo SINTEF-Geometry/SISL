@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1514.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1514.c,v 1.2 1994-12-01 13:30:08 pfu Exp $
  *
  */
 
@@ -21,11 +21,11 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1514 (SISLSurf * ps1, double *eyepoint, int idim, double aepsco, double aepsge,
        double amax, SISLIntcurve * pintcr, int icur, int igraph, int *jstat)
 #else
-void 
+void
 s1514 (ps1, eyepoint, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jstat)
      SISLSurf *ps1;
      double *eyepoint;
@@ -82,6 +82,7 @@ s1514 (ps1, eyepoint, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jstat)
 *                                    object point to NULL.
 *                         = 0      : ok
 *                         < 0      : error
+*                         = -185   : No points produced on intersection curve.
 *
 *
 * METHOD     : An implicit description of the problem is made and then
