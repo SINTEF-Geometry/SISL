@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1711.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1711.c,v 1.2 1994-06-13 08:14:51 boh Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1711(SISLSurf *ps,int ipar,double apar,SISLSurf **rsnew1,SISLSurf **rsnew2,int *jstat)
 #else
 void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
@@ -36,7 +36,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 ********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Subdivide a B-spline surface at a given parameter-value
 *	       and a given direction.
 *
@@ -50,7 +50,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 *
 * OUTPUT     : rsnew1	- First part of the subdivided surface.
 *              rsnew2	- Second part of the subdivided surface.
-*              jstat	- status messages  
+*              jstat	- status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -109,7 +109,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
   SISLSurf *q1=NULL;	/* Pointer to new surface-object.	*/
   SISLSurf *q2=NULL;	/* Pointer to new surface-object.	*/
   double salfa_local[5];/* Local help array.			*/
- 
+
  /* if ps is rational, do subdivision in homogeneous coordinates */
  /* just need to set up correct dim and kind for the new surfaces at end of routine */
   if(kind == 2 || kind == 4)
@@ -124,11 +124,11 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
   }
 
   /* Check that we have a surface to subdivide. */
-  
+
   if (!ps) goto err150;
-  
+
   /* Making constants and ponters to mark direction.  */
-  
+
   if (ipar==1)
     {
       /* If ipar is 1 we have to split the "three" dimentional
@@ -136,7 +136,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 	 the distance beetween each element in the clumn.
 	 For each element in the column we have to treat a part
 	 of a line, to march along the line we use k1m.*/
-      
+
       st = ps->et1;
       stsec = ps->et2;
       kn = ps->in1;
@@ -145,7 +145,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
       kksec = ps->ik2;
       k1m = kdim;
       k4m = kdim*kn;
-    } 
+    }
   else
     {
       /* If ipar is 2 we have to split the "three" dimentional
@@ -153,7 +153,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 	 the distance beetween each element in the line.
 	 For each element in the line we have to treat a part
 	 of a column, to march along the column we use k1m.*/
-	
+
       st = ps->et2;
       stsec = ps->et1;
       kn = ps->in2;
@@ -163,29 +163,29 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
       k1m = kdim*knsec;
       k4m = kdim;
     }
-  
+
   /* Check that the intersection point is an interior point. */
-  
+
   if ((apar < *st  && DNEQUAL(apar, *st)) ||
-      (apar > st[kn+kk-1] && DNEQUAL(apar, st[kn+kk-1])))	
+      (apar > st[kn+kk-1] && DNEQUAL(apar, st[kn+kk-1])))
 	  						goto err158;
-  
+
   /* Allocate space for the kk elements which may not be zero in eache
      line of the basic transformation matrix.*/
-  
+
   if (kk > 5)
   {
      if ((salfa = newarray (kk, double)) == NULL)	goto err101;
   }
   else salfa = salfa_local;
-  
+
   /* Find the number of the knots which is smaller or like
      the intersection point, and how many knots we have to insert.*/
-  
+
   s1 = st;
   kv = kk;	/* The maximum number of knots we have to insert. */
-  
-  if ((apar > s1[0] && DNEQUAL(apar, s1[0])) && 
+
+  if ((apar > s1[0] && DNEQUAL(apar, s1[0])) &&
       (apar < s1[kn+kk-1] && DNEQUAL(apar, s1[kn+kk-1])))
   {
      /* Using binear search*/
@@ -194,16 +194,16 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
      knum = (kj1+kj2)/2;
      while (knum != kj1)
      {
-	if ((s1[knum] < apar ) && DNEQUAL(s1[knum], apar)) 
+	if ((s1[knum] < apar ) && DNEQUAL(s1[knum], apar))
 	   kj1=knum; else kj2=knum;
 	knum = (kj1+kj2)/2;
      }
      knum++;           /* The smaller knots.*/
-     
-     while (DEQUAL(s1[knum], apar)) 
+
+     while (DEQUAL(s1[knum], apar))
      {
 	apar = s1[knum];
-	knum++; 
+	knum++;
 	kv--;
      }
      /* The knots thats like the */
@@ -226,32 +226,32 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 	knum--;
   }
   /* Find the number of vertices in the two new curves. */
-  
+
   kn1 = knum + kv - kk;
   kn2 = kn + kk - knum;
-  
+
   /* Allocating the new arrays to the two new curves. */
-  
+
   if ((st1=newarray(kn1+kk,double))==NULL) goto err101;
   if ((st1sec=newarray(knsec+kksec,double))==NULL) goto err101;
   if ((st2=newarray(kn2+kk,double))==NULL) goto err101;
   if ((st2sec=newarray(knsec+kksec,double))==NULL) goto err101;
   if ((scoef1=newarray(kn1*kdim*knsec,double))==NULL) goto err101;
   if ((scoef2=newarray(kn2*kdim*knsec,double))==NULL) goto err101;
-  
+
   /* Copying the knotvectors from the old curve to the new curves */
-  
+
   memcopy(st1,st,kn1,double);
   memcopy(st2+kk,st+knum,kn2,double);
   memcopy(st1sec,stsec,knsec+kksec,double);
   memcopy(st2sec,stsec,knsec+kksec,double);
-  
+
   /* Updating the knotvectors by inserting the new k-touple knot */
-  
+
   for(s2=st1+kn1,s3=st2,s4=s3+kk;s3<s4;s2++,s3++) *s2 = *s3 = apar;
-  
+
   /* Copying the coefisientvectors to the new curves.*/
-  
+
   if (ipar == 1)
     for (ki=0; ki<knsec; ki++)
       {
@@ -266,18 +266,18 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
       memcopy(scoef2,scoef+kdim*(knum-kk)*knsec,
 	      kdim*kn2*knsec,double);
     }
-  
+
   /* Updating the coefisientvectors to the new surfaces.*/
-  
+
   /* Updating the first surface. */
-  
+
   /* If we imagine that the matrix is turned in such a way that we are
      splitting it along a column, then for each element in the column
      we have to treat a par of a line, to march along the line
      in the first new matrix we use k1m, And we use k3m as a mark
      at the end of the column in this new matrix.*/
-  
-  if(ipar==1) 
+
+  if(ipar==1)
     {
       k2m=kdim*kn1;
       k3m=kdim*kn1*knsec;
@@ -302,31 +302,31 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 	 starting at zero but at -knum.
 	 s1=scoef1+ki*k1m  Pointer at the first vertice to
 	 change. */
-      
+
       /* Using the Oslo-algorithm to make a transformation-vector
 	 from the old vertices to one new vertice. */
-      
+
       kmy=ki;
       s1700(kmy,kk,kn,++kv1,&kpl,&kfi,&kla,st,apar,salfa,&kstat);
       if (kstat) goto err153;
-      
+
       /* Compute the knsec*kdim vertices with the "same index". */
-      
+
       for (s2=s1,s3=s2+k3m,ki2=0; s2<s3; s2+=k2m,ki2+=k4m)
 	for (kj=0,s4=s2; kj<kdim; kj++,s4++)
 	  for (*s4=0,kj1=kfi,kj2=kfi+kpl; kj1<=kla;kj1++,kj2++)
 	    *s4 += salfa[kj2] * scoef[k1m*kj1+ki2+kj];
     }
-  
+
   /* And the second surface. */
-  
+
   /* If we imagine that the matrix is turned in such a way that we are
      splitting it along a column, then for each element in the column
      we have to treat a par of a line, to march along the line
      in the second new matrix we use k1m, And we use k3m as a mark
      at the end of the column in this new matrix.*/
-  
-  if(ipar==1) 
+
+  if(ipar==1)
     {
       k2m=kdim*kn2;
       k3m=kdim*kn2*knsec;
@@ -336,7 +336,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
       k2m=kdim;
       k3m=kdim*knsec;
     }
-  
+
   for (ki1=min(kn1+kv-1,kn+kv),s1=scoef2; ki<ki1; ki++,s1+=k1m)
     {
       /* Initialising:
@@ -347,84 +347,85 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 	 last vertice we have, kn+kv.
 	 s1=scoef2	  Pointer at the first vertice to
 	 change. */
-      
-      
+
+
       /* Using the Oslo-algorithm to make a transformation-vector
 	 from the old vertices to one new vertice. */
-      
+
       s1700(kmy,kk,kn,kv1--,&kpl,&kfi,&kla,st,apar,salfa,&kstat);
       if (kstat) goto err153;
-      
-      
+
+
       /* Compute the knsec*kdim vertices with the "same index". */
-      
+
       for (s2=s1,s3=s2+k3m,ki2=0; s2<s3; s2+=k2m,ki2+=k4m)
 	for (kj=0,s4=s2; kj<kdim; kj++,s4++)
 	  for (*s4=0,kj1=kfi,kj2=kfi+kpl; kj1<=kla;kj1++,kj2++)
 	    *s4 += salfa[kj2] * scoef[k1m*kj1+ki2+kj];
     }
-  
-  
+
+
   /* Allocating new surface-objects.*/
  /* use ps->idim rather than kdim in case ps is rational  */
-  
-  
+
+
   if (ipar==1)
-    {
-      if ((q1=newSurf(kn1,knsec,kk,kksec,st1,st1sec,
-		      scoef1,newkind,ps->idim,2)) == NULL) goto err101;
-      if ((q2=newSurf(kn2,knsec,kk,kksec,st2,st2sec,
-		      scoef2,newkind,ps->idim,2)) == NULL) goto err101;
-    } else
-      {
-	if ((q1=newSurf(knsec,kn1,kksec,kk,st1sec,st1,
-			scoef1,newkind,ps->idim,2)) == NULL) goto err101;
-	if ((q2=newSurf(knsec,kn2,kksec,kk,st2sec,st2,
-			scoef2,newkind,ps->idim,2)) == NULL) goto err101;
-      }
-  
-  
+  {
+    if ((q1=newSurf(kn1,knsec,kk,kksec,st1,st1sec,
+                    scoef1,newkind,ps->idim,0)) == NULL) goto err101;
+    if ((q2=newSurf(kn2,knsec,kk,kksec,st2,st2sec,
+                    scoef2,newkind,ps->idim,0)) == NULL) goto err101;
+  }
+  else
+  {
+    if ((q1=newSurf(knsec,kn1,kksec,kk,st1sec,st1,
+                    scoef1,newkind,ps->idim,0)) == NULL) goto err101;
+    if ((q2=newSurf(knsec,kn2,kksec,kk,st2sec,st2,
+                    scoef2,newkind,ps->idim,0)) == NULL) goto err101;
+  }
+
+
   /* Updating output. */
-  
+
   *rsnew1 = q1;
   *rsnew2 = q2;
   *jstat = 0;
   goto out;
-  
-  
+
+
   /* Error. Error in lower level function. */
-  
+
  err153: *jstat = kstat;
   goto outfree;
-  
-  
+
+
   /* Error. No surface to subdevice.  */
-  
+
  err150: *jstat = -150;
-  s6err("s1711",*jstat,kpos);  
+  s6err("s1711",*jstat,kpos);
   goto out;
-  
-  
+
+
   /* Error. The intersection-point is outside the surface.  */
-  
+
  err158: *jstat = -158;
-  s6err("s1711",*jstat,kpos);  
+  s6err("s1711",*jstat,kpos);
   goto out;
-  
-  
+
+
   /* Error. Allocation error, not enough memory.  */
-  
+
  err101: *jstat = -101;
-  s6err("s1711",*jstat,kpos);  
+  s6err("s1711",*jstat,kpos);
   goto outfree;
-  
-  
+
+
 outfree:
    if(q1) freeSurf(q1);
-   if(q2) freeSurf(q2);   
-   
+   if(q2) freeSurf(q2);
+
    /* Free local used memory. */
-  
+
 out:
    if(!q1)
    {
@@ -432,16 +433,15 @@ out:
       if (st1sec) freearray(st1sec);
       if (scoef1) freearray(scoef1);
    }
-   
+
    if(!q2)
    {
       if (st2) freearray(st2);
       if (st2sec) freearray(st2sec);
       if (scoef2) freearray(scoef2);
    }
-   
+
    if (kk > 5 && salfa)
       freearray (salfa);
    return;
 }
-
