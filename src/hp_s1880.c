@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: hp_s1880.c,v 1.2 1995-01-26 09:02:02 pfu Exp $
+ * $Id: hp_s1880.c,v 1.3 1995-03-17 09:31:32 ujk Exp $
  *
  */
 
@@ -126,7 +126,7 @@ void
   int jlist = pintdat->ilist;
   SISLIntlist **vlist = pintdat->vlist;
   SISLObject *qo2 = NULL;
-  int kdir;
+  int kdir,kdir1,kdir2;
   int exact=FALSE, exact_treat=FALSE;
   int log_test = 0;
   double dummy;
@@ -278,14 +278,21 @@ void
 
 
 	exact = FALSE;
-
+	/* UJK, March 1995, when curve type is 9 and the curve is
+	   an iso-line in both surfaces, we want to return both
+	   ppar1 and ppar2. The logic is simple:
+	   kdir1 > -1 (ie eq 0 or 1) means constant in 1. surf.
+	   kdir2 > -1 (ie eq 2 or 3) means constant in 2. surf. 
+	   The object space curve pgeom is picked from the 1. surf
+	   if kdir1 is set and from 2. surf if only kdir2 is set. */
+	
 	/* UJK, January 1993, if exact curve mark it with type 9. */
 	if (exact_treat &&
 	    kj == 2 &&
 	    (qpfirst->curve_dir[(*vlist)->ind_first] & log_test))
 	{
-
-
+	   
+	   kdir1 = kdir2 = -1;
 	   /* Constant parameter curve */
 	   for (kdir = 0; kdir < qpfirst->ipar; kdir++)
 	      if (qpfirst->curve_dir[(*vlist)->ind_first] &
@@ -293,32 +300,36 @@ void
 	      {
 		 exact = TRUE;
 		 ktype = 9;
-		 break;
+		 if (kdir >= po1->iobj) kdir2 = kdir;
+		 else                   kdir1 = kdir;
 	      }
 	}
-
-
+	
+	if (kdir1>-1) kdir = kdir1;
+	else          kdir = kdir2;
+	
 	/* Create new intersection curve.  */
 	*ucrv = newIntcurve (kj, ipar1, ipar2, spar1, spar2, ktype);
 	if (*ucrv == NULL)
 	   goto err101;
-
+	
 	/* Copy pretopology */
 	memcopy((*ucrv)->pretop,(*vlist)->pretop,4,int);
-
-
+	
+	
 	/* UJK, January 1993, if exact curve mark it with type 9. */
 	if (exact)
 	{
-
-	   pick_crv_sf (po1, qo2, kdir, qpfirst,
+	   
+	   pick_crv_sf (po1, qo2, kdir, qpfirst, 
 			qplast, &(*ucrv)->pgeom, &kstat);
 	   if (kstat < 0)
 	      goto error;
-
+	   
 	   /* UJK, Pick 2D line  */
-
-	   if (kdir >= po1->iobj)
+	   
+	   if (kdir2 >= po1->iobj)
+	   {
 	      s1602(&(qpfirst->epar[po1->iobj]),
 		    &(qplast->epar[po1->iobj]),
 		    2,
@@ -327,8 +338,11 @@ void
 		    &dummy,
 		    &(*ucrv)->ppar2,
 		    &kstat);
-
-	   else
+	      if (kstat < 0) goto error;
+	   }
+	   
+	   if (kdir1 >= 0)
+	   {
 	      s1602(qpfirst->epar,
 		    qplast->epar,
 		    2,
@@ -337,12 +351,13 @@ void
 		    &dummy,
 		    &(*ucrv)->ppar1,
 		    &kstat);
-
-	   if (kstat < 0) goto error;
-
+	      
+	      if (kstat < 0) goto error;
+	   }
+	   
 	}
-
-
+	
+	
 	ucrv++;
 	(*jcrv)++;
      }
