@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6drawseq.c,v 1.2 1994-12-19 09:04:01 pfu Exp $
+ * $Id: s6drawseq.c,v 1.3 1994-12-19 16:58:19 pfu Exp $
  *
  */
 
@@ -21,8 +21,8 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-extern void s6move(DOUBLE,DOUBLE,DOUBLE);
-extern void s6line(DOUBLE,DOUBLE,DOUBLE);
+extern void s6move(DOUBLE[]);
+extern void s6line(DOUBLE[]);
 #else
 extern void s6move();
 extern void s6line();
@@ -83,12 +83,12 @@ void s6drawseq(epoint,ipoint)
 
   /* Position pen at start of the broken line.  */
 
-  s6move(epoint[0],epoint[1],epoint[2]);
+  s6move(epoint);
 
   /* Draw sequence of line-segments.  */
 
   for (ki=1,spoint=epoint+3; ki<ipoint; ki++,spoint+=3)
-    s6line(spoint[0],spoint[1],spoint[2]);
+    s6line(spoint);
 
   return;
 }
