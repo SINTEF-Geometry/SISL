@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1372.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1372.c,v 1.2 1994-11-14 13:05:40 pfu Exp $
  *
  */
 
@@ -20,8 +20,8 @@
 
 #include "sislP.h"
 
-#if defined(SISLNEEDPROTOTYPES)	
-void 
+#if defined(SISLNEEDPROTOTYPES)
+void
 sh1372(SISLCurve *pc1,double epoint[],double edirec[],double aradiu,int idim,
 	   double aepsco,double aepsge,
 	int trackflag,int *jtrack,SISLTrack ***wtrack,
@@ -50,10 +50,10 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find all intersections between a curve and a cylinder if
-*              the dimension is equal to three and a curve and a circle 
-*              if the dimension is two.
+*              the dimension is equal to three (other dimensions are not
+*              handled).
 *
 *
 *
@@ -61,8 +61,8 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *              epoint - SISLPoint on cylinder axis
 *              edirec - Direction of cylinder axis
 *              aradiu - Radius of the circle or sphere
-*              idim   - Dimension of the space in which the plane/line
-*                       lies. idim should be equal to two or three.
+*              idim   - Dimension of the space in which the cyliner lies.
+*                       idim should be equal to three.
 *              aepsco - Computational resolution.
 *              aepsge - Geometry resolution.
 *              trackflag - If true, create tracks.
@@ -74,7 +74,7 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *              jpt    - Number of single intersection points.
 *              gpar   - Array containing the parameter values of the
 *                       single intersection points in the parameter
-*                       interval of the curve. The points lie continuous. 
+*                       interval of the curve. The points lie continuous.
 *                       Intersection curves are stored in wcurve.
 *              pretop - Topology info. for single intersection points.
 *              *jcrv  - Number of intersection curves.
@@ -83,26 +83,26 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *                       in the parameter interval. The curve-pointers points
 *                       to nothing. (See description of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
 *
 *
 * METHOD     : The vertices of the curve is put into the equation of the
-*              sphere/circle achieving a curve in the one-dimentional space.
+*              cylinder achieving a curve in the one-dimentional space.
 *              The zeroes of this curve is found.
 *
 *
 * REFERENCES :
 *
-*- 
+*-
 * CALLS      : sh1761      - Find point/curve intersections.
 *              hp_s1880      - Put intersections into output format.
 *              s1322      - Make matrix description of cylinder
 *              s1370      - Put curve into implicit surface/curve
 *              make_cv_kreg - Ensure k-regularity of input curve.
-*              newCurve   - Create new curve.                        
+*              newCurve   - Create new curve.
 *              newPoint   - Create new point.
 *              newObject  - Create new object.
 *              freeObject - Free the space occupied by a given object.
@@ -110,25 +110,27 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *
 * WRITTEN BY : Tor Dokken, SI, 88-05.
 * REWRITTEN BY : Bjoern Olav Hoset, SI, 89-06.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Updated header
+*              and comments to reflect the fact that only 3D input is handled.
 *
 *********************************************************************
-*/                                                               
-{                                                                     
+*/
+{
   double *nullp = NULL;
   int kstat = 0;          /* Local status variable.                       */
   int kpos = 0;           /* Position of error.                           */
   int kdim=1;             /* Dimension of curve in curve/point intersection.*/
   double sarray[16];      /* Array for represetnation of implicit surface */
   double spoint[1];       /* SISLPoint in curve/point intersection.           */
-  double *spar = NULL;    /* Values of intersections in the parameter 
+  double *spar = NULL;    /* Values of intersections in the parameter
 			     area of the second object. Empty in this case. */
-  SISLCurve *qc = NULL;       /* Pointer to curve in 
+  SISLCurve *qc = NULL;       /* Pointer to curve in
 			     curve/point intersection.  */
   SISLPoint *qp = NULL;       /* Pointer to point in
 			     curve/point intersection.  */
-  SISLObject *qo1 = NULL;     /* Pointer to object in 
+  SISLObject *qo1 = NULL;     /* Pointer to object in
 			     object/point intersection.*/
-  SISLObject *qo2 = NULL;     /* Pointer to object in 
+  SISLObject *qo2 = NULL;     /* Pointer to object in
 			     object/point intersection.*/
   SISLIntdat *qintdat = NULL; /* Pointer to intersection data */
   int      ksurf=0;         /* Dummy number of Intsurfs. */
@@ -137,7 +139,7 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   SISLObject *track_obj=NULL;
   SISLCurve *qkreg=NULL; /* Input surface ensured k-regularity. */
 
-  /* -------------------------------------------------------- */  
+  /* -------------------------------------------------------- */
 
   if (pc1->cuopen == SISL_CRV_PERIODIC)
   {
@@ -153,13 +155,13 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   * Create new object and connect curve to object.
   * ------------------------------------------------
   */
-  
+
   if (!(track_obj = newObject (SISLCURVE)))
     goto err101;
   track_obj->c1 = pc1;
 
-  /* 
-   * Check dimension.  
+  /*
+   * Check dimension.
    * ----------------
    */
 
@@ -170,24 +172,24 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   if ( idim != 3) goto err104;
   if (qkreg -> idim != idim) goto err103;
 
-  /* 
-   * Make a matrix of dimension (idim+1)(idim+1) to describe the circle/sphere
+  /*
+   * Make a matrix of dimension (idim+1)(idim+1) to describe the cyliner
    * -------------------------------------------------------------------------
    */
 
   s1322(epoint,edirec,aradiu,idim,kdim,sarray,&kstat);
   if (kstat<0) goto error;
 
-  /* 
-   * Put curve into curve into cylinder equation 
+  /*
+   * Put curve into curve into cylinder equation
    * -------------------------------------------
-   */ 
+   */
 
   s1370(qkreg,sarray,idim,kdim,0,&qc,&kstat);
   if (kstat<0) goto error;
 
-  /* 
-   * Create new object and connect curve to object.  
+  /*
+   * Create new object and connect curve to object.
    * ----------------------------------------------
    */
 
@@ -205,8 +207,8 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   if(!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
-  /* 
-   * Find intersections.  
+  /*
+   * Find intersections.
    * -------------------
    */
 
@@ -217,7 +219,7 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   int_join_per( &qintdat,track_obj,track_obj,nullp,kdeg,aepsge,&kstat);
   if (kstat < 0)
     goto error;
-  
+
   /* Create tracks */
   if (trackflag && qintdat)
     {
@@ -228,8 +230,8 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 	goto error;
     }
 
-  /* 
-   * Express intersections on output format.  
+  /*
+   * Express intersections on output format.
    * ---------------------------------------
    */
 
@@ -239,9 +241,9 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 	       1,0,qintdat,jpt,gpar,&spar,pretop,jcrv,wcurve,&ksurf,&wsurf,&kstat);
       if (kstat < 0) goto error;
     }
-  
-  /* 
-   * Intersections found.  
+
+  /*
+   * Intersections found.
    * --------------------
    */
 
@@ -250,7 +252,7 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 
   /* Error in space allocation.  */
 
- err101: *jstat = -101;    
+ err101: *jstat = -101;
         s6err("sh1372",*jstat,kpos);
         goto out;
 
@@ -262,7 +264,7 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 
   /* Dimension not equal to two or three.  */
 
- err104: *jstat = -104;                          
+ err104: *jstat = -104;
         s6err("sh1372",*jstat,kpos);
         goto out;
 
@@ -290,7 +292,4 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   if (qkreg != NULL && qkreg != pc1) freeCurve(qkreg);
 
 return;
-}                                               
-                                           
-                       
-
+}
