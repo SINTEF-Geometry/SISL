@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.3 1994-11-07 09:30:02 vsk Exp $
+ * $Id: sh1762.c,v 1.4 1994-11-08 08:38:51 vsk Exp $
  *
  */
 
@@ -3435,8 +3435,11 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
        else
 	  qd2 = (po2->iobj == SISLCURVE ? po2->c1->pdir : po2->s1->pdir);
        
-
-      if (vedge[0]->ipoint + vedge[1]->ipoint > 0)
+       knum = 0;
+       if (vedge[0] != NULL) knum += vedge[0]->ipoint;
+       if (vedge[1] != NULL) knum += vedge[1]->ipoint;
+       
+      if (knum > 0)
 	{
 	  /* Organize intersection points on an array. */
 
