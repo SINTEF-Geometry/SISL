@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1001.c,v 1.4 1994-11-30 13:08:40 pfu Exp $
+ * $Id: s1001.c,v 1.5 1994-11-30 13:56:04 pfu Exp $
  *
  */
 
@@ -93,6 +93,8 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
   int kn2;			/* Number of vertices in 2. par. dir.  */
   int cuopen_1, cuopen_2;	/* Open flags for the new surface.     */
   int change_1,change_2;	/* Flag, need to change surf in dir ?  */
+  int wholeperi1 = FALSE;       /* Flag, pick whole peri. param. range */
+  int wholeperi2 = FALSE;       /* Flag, pick whole peri. param. range */
   double *st1=NULL;		/* Knot vector in 1. par. dir.         */
   double *st2=NULL;		/* Knot vector in 2. par. dir.         */
   double *scoef1 = NULL;	/* Coefficients of input curve to
@@ -121,26 +123,27 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
   kleft4=ps->in2;
   change_1 = change_2 = TRUE;
 
-  if ( min1 == ps->et1[ps->ik1 -1]  &&  max1 == ps->et1[ps->in1]
-       /* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
-	  AND re-inserted again (PFU 30/11-94) - see comment in header. */
-       &&
-       s6knotmult(ps->et1,ps->ik1,ps->in1,
-		  &kleft1,ps->et1[ps->ik1-1],&kstat) == ps->ik1 &&
-       s6knotmult(ps->et1,ps->ik1,ps->in1,
-		  &kleft2,ps->et1[ps->in1],&kstat) == ps->ik1) /* END of TAKEN OUT*/
-    change_1 = FALSE;
+  if ( min1 == ps->et1[ps->ik1 -1]  &&  max1 == ps->et1[ps->in1] )
+  {
+    if ( s6knotmult(ps->et1,ps->ik1,ps->in1,
+		    &kleft1,ps->et1[ps->ik1-1],&kstat) == ps->ik1 &&
+	 s6knotmult(ps->et1,ps->ik1,ps->in1,
+		    &kleft2,ps->et1[ps->in1],&kstat) == ps->ik1 )
+      change_1 = FALSE;
+    else
+      wholeperi1 = ( ps->cuopen_1 == SISL_SURF_PERIODIC );
+  }
 
-
-  if ( min2 == ps->et2[ps->ik2 -1]  &&  max2 == ps->et2[ps->in2]
-       /* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
-	  AND re-inserted again (PFU 30/11-94) - see comment in header. */
-       &&
-       s6knotmult(ps->et2,ps->ik2,ps->in2,
-		  &kleft3,ps->et2[ps->ik2-1],&kstat) == ps->ik2 &&
-       s6knotmult(ps->et2,ps->ik2,ps->in2,
-		  &kleft4,ps->et2[ps->in2],&kstat) == ps->ik2) /* END of TAKEN OUT*/
-    change_2 = FALSE;
+  if ( min2 == ps->et2[ps->ik2 -1]  &&  max2 == ps->et2[ps->in2] )
+  {
+    if ( s6knotmult(ps->et2,ps->ik2,ps->in2,
+		    &kleft3,ps->et2[ps->ik2-1],&kstat) == ps->ik2 &&
+	 s6knotmult(ps->et2,ps->ik2,ps->in2,
+		    &kleft4,ps->et2[ps->in2],&kstat) == ps->ik2 )
+      change_2 = FALSE;
+    else
+      wholeperi2 = ( ps->cuopen_2 == SISL_SURF_PERIODIC );
+  }
 
   if (change_1)
     {
@@ -176,7 +179,10 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        kn2 = ps->in2;
        st1 = qc2->et;
        st2 = ps->et2;
-       cuopen_1 = qc2->cuopen;
+       if ( wholeperi1 )
+	 cuopen_1 = SISL_SURF_CLOSED;
+       else
+	 cuopen_1 = qc2->cuopen;
 
        /* Free curve used as input to s1712. */
        if (qc1)
@@ -216,7 +222,10 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        kn2 = qc3->in;
        st2 = qc3->et;
        scoef = qc3->ecoef;
-       cuopen_2 = qc3->cuopen;
+       if ( wholeperi2 )
+	 cuopen_2 = SISL_SURF_CLOSED;
+       else
+	 cuopen_2 = qc3->cuopen;
 
        /* Free curve used as input to s1712. */
        if (qc1)
