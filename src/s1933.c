@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1933.c,v 1.2 1994-08-16 08:35:57 pfu Exp $
+ * $Id: s1933.c,v 1.3 2000-09-25 07:38:05 vsk Exp $
  *
  */
 
@@ -234,7 +234,7 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
   /* Set greatest distance for two knots to be regarded
    * as the same knot					*/
 
-  tepsco = (double) 0.0001 * (stop - start);
+  tepsco = (double) 0.00000000000001 * (stop - start);
 
   /* Loop runing through all the knots of the union knot
    * vector and moving knots when possible		*/
