@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2505.c,v 1.7 1995-06-29 12:08:46 jka Exp $
+ * $Id: s2505.c,v 1.8 1995-08-01 10:38:10 jka Exp $
  *
  */
 
@@ -100,47 +100,36 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
 *
 * WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
 * CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
-*                 Error in explicit curvature.
-* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.          Date: 1995-06
 *                 Used absolute valute in square for principal curvature.
+* CORRECTED BY :  Johannes Kaasa, SINTEF, Oslo, Norway.            Date: 1995-8
+*                 Calculated the fundamental form coefficients by
+*                 calls to s2513.
 *****************************************************************************
 */
 {
-  double a,b;             /* Temporary variables.                                */
-  double hx,hy,
-    hxx,hyy,hxy;         /* The derivatives of the 1D surface, h(x,y).      */
-  double E,F,G;           /* The coefficents of the first fundamental form,
-			     that is, E = <Xu,Xu>, F = <Xu,Xv>  and
-			     G = <Xv,Xv>.                                    */
-  double e,f,g;          /* The coefficents of the second fundamental form,
-			    that is, e = <N,Xuu>, f = <N,Xuv> and
-			    g = <N,Xvv>.                                     */
-  double gc;             /* Gaussian curvature.                              */
-  double mc;             /* Mean curvature.                                  */
+   double fundform[6]; /* The coefficients of the fundamental forms.
+			  The sequence is: E, F, G, e, f, g.         */
+   double gc;          /* Gaussian curvature.                        */
+   double mc;          /* Mean curvature.                            */
 
 
 
-  if (surf->idim == 1) /* 1D surface */
-  {
-    hx  = derive[1];
-    hy  = derive[2];
-    hxx = derive[3];
-    hxy = derive[4];
-    hyy = derive[5];
+   if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
+   {   
+      s2513(surf, der, 0, derive, normal, fundform, jstat);
+      if (*jstat < 0) goto error;
+      
+      gc = (fundform[3]*fundform[5]-fundform[4]*fundform[4])
+	 /((fundform[0]*fundform[2] - fundform[1]*fundform[1])*
+	   (fundform[0]*fundform[2] - fundform[1]*fundform[1]));
+      mc = 0.5*(fundform[3]*fundform[2] - 2*fundform[4]*fundform[1] 
+			    + fundform[5]*fundform[0])
+	 /((fundform[0]*fundform[2] - fundform[1]*fundform[1])
+	   *sqrt(fundform[0]*fundform[2] - fundform[1]*fundform[1]));
 
-
-    a = (1+hx*hx+hy*hy);
-    gc = (hxx*hyy-hxy*hxy)/(a*a);
-
-    b = sqrt(a*a*a);
-
-    a = (1.0 + hx*hx)*hyy - 2.0*hx*hy*hxy + (1.0 + hy*hy)*hxx;
-
-    mc = 0.5*a/b;
-
-    *absCurvature = fabs(mc + sqrt(fabs(mc*mc - gc))) +
+      *absCurvature = fabs(mc + sqrt(fabs(mc*mc - gc))) +
        fabs(mc - sqrt(fabs(mc*mc - gc)));
-  }
+   }
 
   else if (surf->idim == 2) /* 2D surface */
   {
@@ -148,47 +137,10 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
 
     *absCurvature = 0.0;
   }
-  else if (surf->idim == 3) /* 3D surface */
-  {
-    /* E = <Xu,Xu> */
-    E = derive[3]*derive[3]+derive[4]*derive[4]+derive[5]*derive[5];
-
-    /* F = <Xu,Xv> */
-    F = derive[3]*derive[6]+derive[4]*derive[7]+derive[5]*derive[8];
-
-    /* G = <Xv,Xv> */
-    G = derive[6]*derive[6]+derive[7]*derive[7]+derive[8]*derive[8];
-
-    /* b = EG + F^2. */
-    b = E*G-F*F;
-
-    /* e = <N,Xuu> (/ sqrt(E*G-F*F)) */
-    e = normal[0]*derive[9]+normal[1]*derive[10]+normal[2]*derive[11];
-
-    /* f = <N,Xuv> (/ sqrt(E*G-F*F)) */
-    f = normal[0]*derive[12]+normal[1]*derive[13]+normal[2]*derive[14];
-
-    /* g = <N,Xvv> (/ sqrt(E*G-F*F)) */
-    g = normal[0]*derive[15]+normal[1]*derive[16]+normal[2]*derive[17];
-
-    /* Compute absolute curvature = |k1| + |k2|. */
-
-    gc = (e*g-f*f)/(b*b);
-
-    a = 0.5*(e*G - 2.0*f*F + g*E);
-    b = b*sqrt(b);
-
-    mc = a/b;
-
-    *absCurvature = fabs(mc + sqrt(fabs(mc*mc - gc))) +
-       fabs(mc - sqrt(fabs(mc*mc - gc)));
-  }
   else /* When surf->idim != 1,2 or 3 */
   {
     goto err105;
   }
-
-
 
 
   /* Successful computations  */
@@ -200,6 +152,10 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
   /* Error in input, surf->idim != 1,2 or 3 */
 err105:
   *jstat = -105;
+  s6err("s2505",*jstat,0);
+  goto out;
+  
+error:
   s6err("s2505",*jstat,0);
   goto out;
 
