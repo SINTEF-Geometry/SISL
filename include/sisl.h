@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.39 1999-11-19 11:20:32 jka Exp $
+ * $Id: sisl.h,v 1.40 1999-11-19 12:10:42 jka Exp $
  *
  */
 
@@ -1016,6 +1016,10 @@ void s2550(SISLCurve *, double [], int, double [], int *);
 extern
 #endif
 void s2553(SISLCurve *, double [], int, double [], int *);
+#ifndef  S2556
+extern
+#endif
+void s2556(SISLCurve *, double [], int, double [], int *);
 #ifndef  S6DRAWSEQ
 extern
 #endif
@@ -1700,6 +1704,10 @@ void s2550();
 extern
 #endif
 void s2553();
+#ifndef  S2556
+extern
+#endif
+void s2556();
 #ifndef  S6DRAWSEQ
 extern
 #endif
