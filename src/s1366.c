@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1366.c,v 1.4 1994-09-19 13:21:23 pfu Exp $
+ * $Id: s1366.c,v 1.5 1994-09-20 06:51:46 pfu Exp $
  *
  */
 
@@ -123,10 +123,10 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   int km1=1;         /* Counter of points in 1. parameter direction. */
   int km2=1;         /* Counter of points in 2. parameter direction. */
   int kain=0;        /* Array index. */
-  int kmaxis;        /* Number of vertices space is allocated for       */
-  int kmaxik1;       /* Number of vertices along first parameter direction which
+  int kmaxis=128;    /* Number of vertices space is allocated for       */
+  int kmaxik1=16;    /* Number of vertices along first parameter direction which
 			space is allocated for. */
-  int kmaxik2;       /* Number of vertices along second parameter direction which
+  int kmaxik2=16;    /* Number of vertices along second parameter direction which
 			space is allocated for. */
   int kpar=3;        /* Flag determining the parametrization of the data-points.
 			= 1: Mean accumulated cord length parametrization.
@@ -158,10 +158,6 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 
   /* Initialization of variables */
   kdim = ps -> idim;
-
-  kmaxis = 100;
-  kmaxik1 = 10;
-  kmaxik2 = 10;
   tepsco = (double)0.000001;
 
   for (ki=0; ki<3; ki++) seps[ki] = aepsge;
@@ -238,7 +234,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       /* Possibly increase size of arrays. */
       if (knbpnt>=kmaxis)
       {
-	kmaxis += 100;
+	kmaxis += 128;
 	spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
 	if ( spnt == NULL )  goto err101;
 	stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
@@ -252,7 +248,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       /* Possibly increase size of arrays. */
       if (km1>=kmaxik1)
       {
-	kmaxik1 = km1 + 10;	/* kmaxik += 10; (PFU 19/09-94) */
+	kmaxik1 = km1 + 16;	/* kmaxik += 10; (PFU 19/09-94) */
 	spar1 = increasearray(spar1,kmaxik1,DOUBLE);
 	if ( spar1 == NULL )  goto err101;
       }
@@ -296,7 +292,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       /* Possibly increase size of arrays. */
       if (knbpnt>=kmaxis)
       {
-	kmaxis += 100;
+	kmaxis += 128;
 	spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
 	if ( spnt == NULL )  goto err101;
 	stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
@@ -310,7 +306,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       /* Possibly increase size of arrays. */
       if (km2>=kmaxik2)
       {
-	kmaxik2 = km2 + 10;  /* kmaxik += 10; (PFU 19/09-94) */
+	kmaxik2 = km2 + 16;  /* kmaxik += 10; (PFU 19/09-94) */
 	spar2 = increasearray(spar2,kmaxik2,DOUBLE);
 	if ( spar1 == NULL )  goto err101;
       }
@@ -348,7 +344,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 	  /* Possibly increase size of arrays. */
 	  if (knbpnt>=kmaxis)
 	  {
-	    kmaxis += 100;
+	    kmaxis += 128;
 	    spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
 	    if ( spnt == NULL )  goto err101;
 	    stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
