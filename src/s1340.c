@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1340.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1340.c,v 1.2 1994-07-05 11:34:56 pfu Exp $
  *
  */
 
@@ -70,14 +70,14 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 *			 the beginning of the knot interval.
 *                        The (0 - (startfix-1)) derivatives will be kept fixed.
 *                        If startfix <0, this routine will set it to 0.
-*                        If startfix< the order of the curve, this routine 
+*                        If startfix< the order of the curve, this routine
 *                        will set it to the order.
 *
 *	   endfix      - the number of derivatives to be kept fixed at
 *		         the end of the knot interval.
 *                        The (0 - (endfix-1)) derivatives will be kept fixed.
 *                        If endfix <0, this routine will set it to 0.
-*                        If endfix< the order of the curve, this routine 
+*                        If endfix< the order of the curve, this routine
 *                        will set it to the order.
 *
 *	   epsco       - real number used to check equality between real
@@ -157,6 +157,8 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 *
 * Written by: Knut Moerken, University of Oslo, November 1992, based
 *             on an earlier Fortran version by the same author.
+* CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to NULL)
+*      in 'ranking' to avoid potential memory leak when exiting through 'out'.
 *
 *********************************************************************
 */
@@ -187,6 +189,11 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   int pos=0;			/* Parameter to s6err.                  */
   SISLCurve *qc_kreg = NULL;    /* Non-periodic version of the input curve. */
 
+
+  /* Initialize ranking pointers in case we exit through 'out' (PFU 05/07-94) */
+  ranking.prio = NULL;
+  ranking.groups = NULL;
+
   /* Initialize maxerr to zero. */
 
   for (i=0; i<dim; i++) maxerr[i] = 0.;
@@ -203,23 +210,23 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   }
 
   /* Make sure that the input curve is non-periodic.  */
- 
+
   if (oldcurve->cuopen == SISL_CRV_PERIODIC)
   {
      make_cv_kreg(oldcurve, &qc_kreg, &lstat);
      if (lstat < 0) goto error;
-     
+
      /* The input curve is closed and periodic. Make sure that the
 	endpoints of the curve is still matching by fixing the
 	position and the derivative in the endpoints of the curve.
 	The change made to startfix and endfix is only locallly. */
-     
+
      startfix = MAX(startfix, 2);
      endfix = MAX(endfix, 2);
   }
-  else 
+  else
      qc_kreg = oldcurve;
-  
+
   /* Allocate space for some local arrays. */
 
   local_err = newarray(dim, double);
@@ -232,7 +239,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   if (lepsco == NULL) goto err101;
 
   /* ranking is of type rank_info which is a struct described in s1353. */
- 
+
   ranking.prio = newarray(MAX(n1-k,1), int);
   if (ranking.prio == NULL) goto err101;
 
@@ -385,11 +392,11 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   }
 
   /* Set periodicity flag.  */
-  
-  if (oldcurve->cuopen == SISL_CRV_CLOSED || 
+
+  if (oldcurve->cuopen == SISL_CRV_CLOSED ||
       oldcurve->cuopen == SISL_CRV_PERIODIC)
      (*newcurve)->cuopen = SISL_CRV_CLOSED;
-  
+
   /* Success */
 
   *stat = 0;
@@ -421,10 +428,3 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
   return;
 }
-
-
-
-
-
-
-
