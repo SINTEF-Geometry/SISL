@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1787.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1787.c,v 1.2 1994-12-22 11:57:30 pfu Exp $
  *
  */
 
@@ -103,14 +103,14 @@ void
   /* ----------------------------------------------------------------------  */
 
   /* Don't make pretop for help points ! */
-  /* Oh, yes ??!!, 2D is some nice case !*/
+  /* Oh, yes ?, 2D is some nice case ! */
   /* if (sh6ishelp (pintpt))
      {
      *jstat = 0;
      goto out;
      }
      */
-  
+
   /* Set pointers into the arrays storing pre-topology information. */
   if (po1->iobj == SISLSURFACE)
     {
@@ -162,7 +162,7 @@ void
 
   for(i=0; i<kdim; i++)
       tpoint[i]=ret_val[i];
- 
+
 
   /* Fetch geometry information, surface.  */
   sh6getgeom ((po1->iobj == SISLSURFACE) ? po1 : po2,
@@ -173,7 +173,7 @@ void
 
   for(i=0; i<kdim*3; i++)
        sder[i]=ret_val[i];
- 
+
 /* Set normal vector from the 2D tangent vectors. */
 
   cross = sder[kdim]*sder[2*kdim+1] + sder[kdim+1]*sder[2*kdim];
@@ -199,7 +199,7 @@ void
 	}
 
     }
-  else if (qs->pdir && qs->pdir->ecoef && 
+  else if (qs->pdir && qs->pdir->ecoef &&
 	   (DNEQUAL(qs->pdir->ecoef[0],DNULL) ||
 	    DNEQUAL(qs->pdir->ecoef[1],DNULL)))
     {
@@ -210,7 +210,7 @@ void
 	  */
        in_out[0] =  (double)1.0;
        in_out[1] = -(double)1.0;
-	  
+
        if (s6scpr(qs->pdir->ecoef,in_out,kdim) > 0)
 	  {
 	     *ll1 = SI_UNDEF;
@@ -243,7 +243,7 @@ void
 		   if (*lr2 != SI_IN) *lr2 = SI_IN;
 		}
 	  }
-       
+
     }
 
   /* Update pretopology of intersection point.  */
