@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2543.c,v 1.6 1995-09-22 13:22:10 jka Exp $
+ * $Id: s2543.c,v 1.7 1996-08-02 07:29:05 jka Exp $
  *
  */
 
@@ -28,8 +28,8 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
  void s2543(surf, ider, derive, normal, k1, k2, d1, d2, jstat)
       SISLSurf *surf;
       int ider;
-      double derive[],
-      double normal[],
+      double derive[];
+      double normal[];
       double *k1;
       double *k2;
       double d1[];
