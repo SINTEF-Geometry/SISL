@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1421.c,v 1.2 1994-06-30 08:22:21 vsk Exp $
+ * $Id: s1421.c,v 1.3 1994-06-30 13:11:43 vsk Exp $
  *
  */
 #define S1421
@@ -432,13 +432,13 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
     {
       double tlen1,tlen2,tnorm,tang=(double)0.0;
       
-      s6crss(eder+kdim,eder+2*kdim,enorm);
+      s6crss(eder+ps1->idim,eder+2*ps1->idim,enorm);
       
       /*  Make length of tangents and normal */
       
-      tlen1 = s6length(eder+kdim,kdim,&kstat);
-      tlen2 = s6length(eder+2*kdim,kdim,&kstat);
-      tnorm = s6length(enorm,kdim,&kstat);
+      tlen1 = s6length(eder+ps1->idim,ps1->idim,&kstat);
+      tlen2 = s6length(eder+2*ps1->idim,ps1->idim,&kstat);
+      tnorm = s6length(enorm,ps1->idim,&kstat);
       
       /*  Calculate angle between tangents */
       
