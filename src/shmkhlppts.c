@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shmkhlppts.c,v 1.2 1994-09-21 11:39:00 pfu Exp $
+ * $Id: shmkhlppts.c,v 1.3 1994-09-27 09:18:47 pfu Exp $
  *
  */
 
@@ -178,8 +178,7 @@ shmkhlppts (po1, po2, aepsge, rintdat, vedge, jnewpt, jstat)
   for (; ki < knum; ki++ )
     {
 
-      qpt = up[ki];  /* Moved from "step clausule(s)" of for loop to avoid
-			over-running 'up' (PFU 21/09-94 ) */
+      if (ki >= 0) qpt = up[ki];
 
       /* Browse on the dimension of geometry space and the type of
          the input objects.     */
