@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1613.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1613.c,v 1.2 1995-12-01 13:51:29 jka Exp $
  *
  */
 
@@ -143,7 +143,7 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
     {
       kpar = kncoef;
       if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == NULL) goto err101;
-      memcopy(gpoint,pc->ecoef,kpar*kdim,DOUBLE);
+      memcopy(*gpoint,pc->ecoef,kpar*kdim,DOUBLE);
       *jnbpnt = kpar;
       *jstat = 0;
       goto out;
