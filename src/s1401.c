@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1401.c,v 1.2 1994-11-15 12:00:27 pfu Exp $
+ * $Id: s1401.c,v 1.3 1994-11-29 09:07:49 pfu Exp $
  *
  */
 
@@ -87,7 +87,7 @@ void s1401(vcurve,etwist,rsurf,jstat)
 *                        Computational Geometry for Design and Manufacture
 *              J. Hahn : Filling Polygonal Holes with Rectangular Patches
 *
-* USE        : 3D geometry only.
+* USE        : 3D non-rational geometry only.
 *
 *-
 * CALLS      : s1221 - Evaluate curve at a given parameter value.
