@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1352.c,v 1.3 1994-07-07 11:29:47 pfu Exp $
+ * $Id: s1352.c,v 1.4 1994-08-11 11:50:55 pfu Exp $
  *
  */
 
@@ -118,7 +118,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 * WRITTEN BY : Knut Moerken, University of Oslo, July 1992, based
 *              on an earlier Fortran version.
 * Changed by: Paal Fugelli, SINTEF, 1994-07.
-*             Added code at end to to fix remove memory leakage problem.
+*             Added code at end to to fix memory leakage problem.
 *
 *********************************************************************
 */
