@@ -30,7 +30,11 @@ LINKLIBS=
 include local_settings
 
 ifdef USE_OPEN_GL
-  GRAPHICS_LIBS=-lglut -lGLU -lGL
+  ifdef WINDOWS_TYPE_PLATFORM
+    GRAPHICS_LIBS=glut32.lib opengl32.lib
+  else
+    GRAPHICS_LIBS=-lglut -lGLU -lGL
+  endif
 endif
 
 ifdef WINDOWS_TYPE_PLATFORM
@@ -119,7 +123,7 @@ LIBNAME		=
 
 ifdef WINDOWS_TYPE_PLATFORM
 #ifeq "$(PLATFORM)" "winnt"
-  LIBNAME	=$(notdir $(shell pwd))_$(MODE).lib
+  LIBNAME	=lib$(notdir $(shell pwd))_$(MODE).lib
 endif
 
 ifeq "$(PLATFORM)" "linux"
@@ -155,7 +159,8 @@ all:		lib
 
 .PHONY:		all clean
 
-clean:;		rm -f $(wildcard lib/*.o lib/*.a lib/*.lib) $(CXXAPPS)
+clean:;		rm -f $(wildcard lib/*.o lib/*.a lib/*.lib) $(CXXAPPS) \
+			$(addsuffix .exe, $(CXXAPPS))
 
 lib:		$(LIBNAME)
 
@@ -187,11 +192,11 @@ lib/%.o:	src/%.cpp
 $(CXXAPPS):	$(LIBNAME)
 		$(CXX) $(CXXOPTS) -c $(notdir $@.cpp) -o lib/$@.o
   ifdef WINDOWS_TYPE_PLATFORM
-		@mv $*.obj $@.o 
+		@mv $@.obj lib/$@.o 
 		$(LDXX) $(LDXXFLAGS) -out:$@ \
 		$(addprefix $(LIBPATH_PREFIX), $(LINKDIRS)) lib/$@.o \
 		$(addsuffix _$(MODE).lib, $(addprefix lib, $(LINKLIBS))) $(GRAPHICS_LIBS)
-		@cp -p $@ $@.exe
+		@mv $@ $@.exe
 
   else 
 		$(LDXX) $(LDXXFLAGS) $(addprefix $(LIBPATH_PREFIX), $(LINKDIRS)) lib/$@.o\
