@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1720.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1720.c,v 1.2 1994-10-21 16:36:25 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1720(SISLCurve *pc,int ider,SISLCurve **rcnew,int *jstat)
 #else
 void s1720(pc,ider,rcnew,jstat)
@@ -70,13 +70,18 @@ void s1720(pc,ider,rcnew,jstat)
 * WRITTEN BY : Arne Laksaa, SI, 88-06.
 * REVISED BY : Johannes Kaasa, SI, May 1992 (Added the NURBS handling.
 *              Remark that the ider-th derivate of a NURBS curve of order
-*              k has order (ider + 1)*k - ider. Remark also that we have to 
+*              k has order (ider + 1)*k - ider. Remark also that we have to
 *              use a completely different method for NURBS).
 * REVISED BY : Christophe Birkeland, SI, 92-07 (remove unnecessary
 *              knots in this routine (not in s1905), also testing if
 *              ider=0).
 * REVISED BY : Christophe Rene Birkeland, SINTEF, May 1993.
 *              *jstat = 0   in start of routine.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Oct. 1994.  Changed icopy
+*              flag from '1' to '2' for 'qc1' in the NURBS case - to reduce
+*              memory needs and remove memory leak from 'scoef' and 'st'.
+*              NOTE: this routine doesn't handle closed case correctly and
+*              it also doesn't handle the periodic NURBS case correctly.
 *
 **********************************************************************/
 {
@@ -92,7 +97,7 @@ void s1720(pc,ider,rcnew,jstat)
   double *st=NULL;       /* The first new knot-vector.              */
   double *scoef=NULL;    /* The first new vertice.                  */
   SISLCurve *q1=NULL;    /* Pointer to new curve-object.            */
-  
+
   /* NURBS variables: */
   SISLCurve *rat=NULL;   /* The denominator curve.                  */
   double *ratcoef=NULL;  /* The vertices of rat.                    */
@@ -112,19 +117,19 @@ void s1720(pc,ider,rcnew,jstat)
   int ki;                /* Index in for loop.                      */
 
   /* Initialization */
-  
+
   *jstat = 0;
 
   /* Check that we have a curve to differentiable. */
-  
+
   if (!pc) goto err150;
-  
+
   /* Check that the number of derivation is legal. */
-  
+
   if (ider < 0) goto err156;
-		
+
   /* If ider = 0; just copy input-curve to output and return */
-  
+
   if (ider == 0)
   {
      if (pc->ikind == 2 || pc->ikind == 4)
@@ -141,38 +146,38 @@ void s1720(pc,ider,rcnew,jstat)
      }
      goto out;
   }
-		
+
   if (pc->ikind == 2 || pc->ikind == 4)
   {
-     
+
      /* NURBS curve. */
-     
+
      rdim = kdim + 1;
-     
+
      /* Make the denominator curve. */
-     
+
      ratcoef = newarray(pc->in, DOUBLE);
      for (kj=0; kj<pc->in; kj++)
 	ratcoef[kj] = pc->rcoef[(kj + 1)*rdim - 1];
      rat = newCurve(pc->in, pc->ik, pc->et, ratcoef, 1, 1, 1);
-     
+
      /* Make resolution for testing of knot equality. */
-     
+
      eps = fabs(pc->et[pc->in] - pc->et[pc->ik - 1])*REL_PAR_RES;
-     
+
      /* Make the new knot vector. */
-     
+
      kn = 0;
      kk = (ider + 1)*pc->ik - ider;
      multadd = ider*pc->ik;
      st = newarray((2 + pc->in - pc->ik)*kk, DOUBLE);
-     
+
      for (newcurr=0; newcurr<kk; newcurr++)
      {
 	st[newcurr] = pc->et[pc->ik - 1];
         kn++;
      }
-	
+
      oldcurr = pc->ik;
      oldprev = oldcurr;
      while ((pc->et[oldcurr] + eps) < pc->et[pc->in])
@@ -193,20 +198,20 @@ void s1720(pc,ider,rcnew,jstat)
 	newcurr += mult;
 	oldprev = oldcurr;
      }
-     
+
      for (kj=0; kj<kk; kj++)
 	st[newcurr + kj] = pc->et[pc->in];
-     
+
      /* Calculate parameter values and derivate indicators. */
-     
+
      s1890(st, kk, kn, &par, &der, &kstat);
      if (kstat < 0) goto error;
-     
+
      /* Calculate interpolation points. */
-     
+
      deriv = newarray((ider + 1)*kdim, DOUBLE);
      tau = newarray(kn*rdim, DOUBLE);
-     
+
      for (kj=0; kj<kn; kj++)
      {
 	s1221(rat, 0, par[kj], &left, &denom, &kstat);
@@ -218,17 +223,18 @@ void s1720(pc,ider,rcnew,jstat)
            tau[kj*rdim + ki] = deriv[ider*kdim + ki]*denom;
         tau[kj*rdim + kdim] = denom;
      }
-	
+
      /* Make the new curve description. */
-     
+
      s1891(par, tau, rdim, kn, 1, der, TRUE, st, &scoef, &kn,
 	   kk, 0, 0, &kstat);
      if (kstat < 0) goto error;
-     
-     q1 = newCurve(kn, kk, st, scoef, pc->ikind, pc->idim, 1);
-  
+
+     q1 = newCurve(kn, kk, st, scoef, pc->ikind, pc->idim, 2);
+     /* (Note, copy == 2, so don't free 'st' or 'scoef' on exit). */
+
      /* Free allocated geometry. */
-     
+
      if (rat != NULL) freeCurve(rat);
      rat = NULL;
      if (ratcoef != NULL) freearray(ratcoef);
@@ -241,126 +247,126 @@ void s1720(pc,ider,rcnew,jstat)
      deriv = NULL;
      if (tau != NULL) freearray(tau);
      tau = NULL;
-  
+
   }
   else
   {
      /* Not NURBS. */
-  
+
      /* Find the number of vertices kn and the order kk for
         the derivative curve. */
-  
+
      if (ider >= pc->ik)
        {
          kn = pc->in + pc->ik -1;
          kk = 1;
-       } 
+       }
      else
        {
          kn = pc->in + ider;
          kk = pc->ik - ider;
        }
-  
+
      /* Allocating the new arrays to the new curve. */
-  
+
      if ((st=newarray(kn+kk,double))==NULL) goto err101;
      if ((scoef=new0array(kn*kdim,double))==NULL) goto err101;
-  
+
      /* Copying the knot vectors from the old curve to the new curve. */
-  
+
      memcopy(st,pc->et,kn+kk,double);
-  
+
      /* Copying the coeffisient vector from the old curve to the new curve.*/
-  
+
      if (ider < pc->ik) memcopy(scoef,pc->ecoef,pc->in*kdim,double);
-  
+
      /* Here we are computing a new coeffecient vector for each round. */
-  
+
      if (ider < pc->ik)
        for (kj=1; kj<=ider; kj++)
          {
 	   kk =pc->ik - kj;      /* The new order of the curve. */
-	
+
 	   s1 = scoef + (pc->in-1+kj)*kdim; /* The last new vertice. */
-	
+
 	   /* Here I just refere to the referenses.
 	      The new vertices are computig from back to front,
 	      and the "last" kdim vertices is beeing computed outside
 	      the main loop because we did not have scoef[-1],
 	      instead we use zeroes. */
-	
+
 	   for (s3=st+pc->in-1+kj; st<s3; s3--,s1-=2*kdim)
              {
 	       tdel = s3[kk] - *s3;
-	    
+
 	       if (DNEQUAL(tdel,DNULL))
 	         for (s2=s1+kdim; s1<s2; s1++)
 		   *s1=(*s1-s1[-kdim])*kk/tdel;
 	       else
 	         for (s2=s1+kdim; s1<s2; s1++) *s1 = DNULL;
              }
-	
+
 	   tdel = s3[kk] - *s3;
-	
+
 	   if (DNEQUAL(tdel,DNULL))
 	     for (s2=s1+kdim; s1<s2; s1++) *s1 = *s1*kk/tdel;
 	   else
              for (s2=s1+kdim; s1<s2; s1++) *s1 = DNULL;
-	
+
          }
-  
+
      /* Allocating new curve-object.*/
-  
-     if ((q1=newCurve(kn-2,kk,&st[1],&scoef[pc->idim],1,pc->idim,1)) 
+
+     if ((q1=newCurve(kn-2,kk,&st[1],&scoef[pc->idim],1,pc->idim,1))
 	 == NULL) goto err101;
      freearray(st);
-     freearray(scoef);  
+     freearray(scoef);
   }
-  
+
 
   /* Remove unnessesary internal knots and vertises. */
-  
+
   s1705(q1,&kstat);
   if (kstat < 0) goto error;
-  
+
   /* Set periodicity flag if cyclic curve.  */
-		 
+
   test_cyclic_knots(q1->et,q1->in,q1->ik,&kstat);
   if (kstat<0) goto error;
   if (kstat == 2) q1->cuopen = SISL_CRV_PERIODIC;
 
   /* Updating output. */
-  
+
   *rcnew = q1;
   goto out;
-  
+
   /* Error. Error in lower level function. */
-  
+
  error:
   *jstat = kstat;
   goto outfree;
-  
+
   /* Error. No curve to subdevice.  */
-  
+
  err150:
   *jstat = -150;
   s6err("s1720",*jstat,kpos);
   goto out;
-  
+
   /* Error. Ileagal number of derevatives.  */
-  
+
  err156:
   *jstat = -156;
   s6err("s1720",*jstat,kpos);
   goto out;
-  
+
   /* Error. Allocation error, not enough memory.  */
-  
+
  err101:
   *jstat = -101;
   s6err("s1720",*jstat,kpos);
   goto outfree;
-  
+
  outfree:
   if(q1) freeCurve(q1);
   else
@@ -368,9 +374,8 @@ void s1720(pc,ider,rcnew,jstat)
       if (st) freearray(st);
       if (scoef) freearray(scoef);
     }
-  
+
   /* Free local used memory. */
-  
+
  out: return;
 }
-
