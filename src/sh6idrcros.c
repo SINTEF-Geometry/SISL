@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idrcros.c,v 1.2 1994-09-05 14:46:46 pfu Exp $
+ * $Id: sh6idrcros.c,v 1.3 1998-03-31 13:06:13 jka Exp $
  *
  */
 
@@ -73,7 +73,7 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 * REFERENCES :
 *
 *
-* CALLS      : s1221, s1421, s6degnorm, s6scpr, s6length, sh6idkpt.
+* CALLS      : s1221, s1424, s6degnorm, s6scpr, s6length, sh6idkpt.
 *
 *
 * WRITTEN BY : Vibeke Skytt, SI, 12.92.
@@ -94,8 +94,8 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
    int kmin;           /* Number of minimum parameter point.        */
    double tmin;        /* Length of minimum parameter point as vector. */
    double thelp;       /* Help parameter. Length of vector.         */
-   double sder1[18];   /* Position, derivative etc. of object 1.    */
-   double sder2[18];   /* Position, derivative etc. of object 2.    */
+   double sder1[27];   /* Position, derivative etc. of object 1.    */
+   double sder2[27];   /* Position, derivative etc. of object 2.    */
    double stang1[3];   /* Tangent in first parameter dir., deg. surf. */
    double stang2[3];   /* Tangent in second parameter dir., deg. surf. */
    double snorm[3];    /* Normal of degenerated surface.            */
@@ -191,9 +191,10 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
    else if (po1->iobj == SISLSURFACE)
    {
       kdim = po1->s1->idim;
-      s1421(po1->s1,2,vcross[kmin]->epar,&kleft1,&kleft2,sder1,
-	    snorm,&kstat);
+      s1424(po1->s1,2,2,vcross[kmin]->epar,&kleft1,&kleft2,sder1,
+	    &kstat);
       if (kstat < 0) goto error;
+      s6crss(sder1+kdim, sder1+2*kdim, snorm);
 
       /* Check if the surface is degenerated in the wanted parameter
 	 direction.   */
@@ -221,9 +222,10 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
    }
    else if (po2->iobj == SISLSURFACE)
    {
-      s1421(po2->s1,2,vcross[kmin]->epar+k1par,&kleft1,&kleft2,sder2,
-	    snorm,&kstat);
+      s1424(po2->s1,2,2,vcross[kmin]->epar+k1par,&kleft1,&kleft2,sder2,
+	    &kstat);
       if (kstat < 0) goto error;
+      s6crss(sder2+kdim, sder2+2*kdim, snorm);
 
       /* Check if the surface is degenerated in the wanted parameter
 	 direction.   */
@@ -257,35 +259,40 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 	 same "parameter direction" in both objects.  */
 
       for (ki=0; ki<incross; ki++)
-	 for (kj=1; kj<incross; kj++)
-	 {
-	    if (DNEQUAL(vcross[ki]->epar[kdir1],vcross[kj]->epar[kdir1]) &&
-		DNEQUAL(vcross[ki]->epar[k1par+kdir2],
-			vcross[kj]->epar[k1par+kdir2]))
+	{
+	  for (kj=1; kj<incross; kj++)
 	    {
-	       /* A pair is found. Check if the pair should be removed. */
+	      if (DNEQUAL(vcross[ki]->epar[kdir1],vcross[kj]->epar[kdir1]) &&
+		  DNEQUAL(vcross[ki]->epar[k1par+kdir2],
+			  vcross[kj]->epar[k1par+kdir2]))
+		{
+		  /* A pair is found. Check if the pair should be removed. */
 
-	       if ((vcross[ki]->epar[kdir1] - vcross[kj]->epar[kdir1]) *
-		   (vcross[ki]->epar[k1par+kdir2] -
-		    vcross[kj]->epar[k1par+kdir2]) < 0)
-	       {
-		  /* Remove the points. First make sure that vpt will
-		     not point to killed points.  */
+		  if ((vcross[ki]->epar[kdir1] - vcross[kj]->epar[kdir1]) *
+		      (vcross[ki]->epar[k1par+kdir2] -
+		       vcross[kj]->epar[k1par+kdir2]) < 0)
+		    {
+		      /* Remove the points. First make sure that vpt will
+			 not point to killed points.  */
 
-		  for (kl=0; kl<inpt; kl++)
-		     if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
-			vpt[kl] = NULL;
+		      for (kl=0; kl<inpt; kl++)
+			if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
+			  vpt[kl] = NULL;
 
-		  sh6idkpt(pintdat,&vcross[ki],1,&kstat);
-		  if (kstat < 0) goto error;
+		      sh6idkpt(pintdat,&vcross[ki],1,&kstat);
+		      if (kstat < 0) goto error;
 
-		  sh6idkpt(pintdat,&vcross[kj],1,&kstat);
-		  if (kstat < 0) goto error;
+		      sh6idkpt(pintdat,&vcross[kj],1,&kstat);
+		      if (kstat < 0) goto error;
 
-		  *jstat = 1;
-	       }
+		      *jstat = 1;
+		      break;
+		    }
+		}
 	    }
-	 }
+	  if (kj < incross)
+	    break;           /* The cross intersection is removed */
+	}
 
       if (*jstat == 1) goto out;  /* Points removed.  */
    }
@@ -295,34 +302,39 @@ void sh6idrmcross(po1, po2, pintdat, vcross, incross, vpt, inpt,jstat)
 	 same "parameter direction" in both objects.  */
 
       for (ki=0; ki<incross; ki++)
-	 for (kj=1; kj<incross; kj++)
-	 {
-	    if (DNEQUAL(vcross[ki]->epar[kdir1],vcross[kj]->epar[kdir1]) &&
-		DNEQUAL(vcross[ki]->epar[k1par+kdir2],
-			vcross[kj]->epar[k1par+kdir2]))
+	{
+	  for (kj=1; kj<incross; kj++)
 	    {
-	       /* A pair is found. Check if the pair should be removed. */
+	      if (DNEQUAL(vcross[ki]->epar[kdir1],vcross[kj]->epar[kdir1]) &&
+		  DNEQUAL(vcross[ki]->epar[k1par+kdir2],
+			  vcross[kj]->epar[k1par+kdir2]))
+		{
+		  /* A pair is found. Check if the pair should be removed. */
 
-	       if ((vcross[ki]->epar[kdir1] - vcross[kj]->epar[kdir1]) *
-		   (vcross[ki]->epar[k1par+kdir2] -
-		    vcross[kj]->epar[k1par+kdir2]) > 0)
-	       {
-		  /* Remove the points. First make sure that vpt will
-		     not point to killed points. */
+		  if ((vcross[ki]->epar[kdir1] - vcross[kj]->epar[kdir1]) *
+		      (vcross[ki]->epar[k1par+kdir2] -
+		       vcross[kj]->epar[k1par+kdir2]) > 0)
+		    {
+		      /* Remove the points. First make sure that vpt will
+			 not point to killed points. */
 
-		  for (kl=0; kl<inpt; kl++)
-		     if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
-			vpt[kl] = NULL;
+		      for (kl=0; kl<inpt; kl++)
+			if (vpt[kl] == vcross[ki] || vpt[kl] == vcross[kj])
+			  vpt[kl] = NULL;
 
-		  sh6idkpt(pintdat,&vcross[ki],1,&kstat);
-		  if (kstat < 0) goto error;
+		      sh6idkpt(pintdat,&vcross[ki],1,&kstat);
+		      if (kstat < 0) goto error;
 
-		  sh6idkpt(pintdat,&vcross[kj],1,&kstat);
-		  if (kstat < 0) goto error;
+		      sh6idkpt(pintdat,&vcross[kj],1,&kstat);
+		      if (kstat < 0) goto error;
 
-		  *jstat = 1;
-	       }
+		      *jstat = 1;
+		      break;
+		    }
+		}
 	    }
+	  if (kj < incross)
+	    break;           /* The cross intersection is removed */
 	 }
 
       if (*jstat == 1) goto out;  /* Points removed.  */
