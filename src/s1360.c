@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1360.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1360.c,v 1.2 1995-01-26 15:39:11 pfu Exp $
  *
  */
 
@@ -37,14 +37,14 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 #endif
 /*
 *********************************************************************
-*                                                                   
-* PURPOSE    : To create a B-spline approximating the offset curve of
-*              a B-spline curve. The curve must have continous first
-*              derivative if the offset is different from zero. If the 
-*              offset is zero then the position must be continous.
-*                           *             
 *
-* INPUT      : pc     - The input B-spline curve.   
+* PURPOSE    : To create a B-spline approximating the offset curve of
+*              a NURBS curve. The curve must have continous first
+*              derivative if the offset is different from zero. If the
+*              offset is zero then the position must be continous.
+*                           *
+*
+* INPUT      : pc     - The input NURBS curve.
 *              aoffset- The offset distance.
 *                       If idim=2 a positive signe on this value put the
 *                       offset on the side of the positive normal vector,
@@ -60,8 +60,8 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 *                       SISLbox side is used.
 *              idim   - The dimension of the space (2 or 3).
 *
-* OUTPUT     : 
-*              jstat  - status messages  
+* OUTPUT     :
+*              jstat  - status messages
 *                            > 0      : warning
 *                            = 0      : ok
 *                            = -1     : curve is degenrate.
@@ -69,7 +69,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 *                            < 0      : error
 *              rc     - Pointer the approximated offset curve
 *
-* METHOD     : 
+* METHOD     :
 *
 * EXAMPLE OF USE:
 *              SISLCurve *qr;
@@ -79,10 +79,10 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 *
 * REFERENCES :
 *
-*-                                                 
+*-
 * CALLS      : s1307, s1311, s1361, s1362, s6norm, s6length,
 *              s6dist,s6ang,s6scpr,s6diff,s6err
-*              
+*
 *
 * WRITTEN BY : Tor Dokken, SI, Oslo, Norway. 24. May 1988
 * REVISED BY : Michael Floater, SI, Oslo, 6/2/92.
@@ -145,26 +145,26 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
   double tdist;       /* Distance */
   double tang;        /* Angle */
   double tnew;        /* New increment */
-  double tdum;        /* Temporary variable */  
+  double tdum;        /* Temporary variable */
   double tl1,tl2;     /* Vector lengths */
   double tscal;       /* Scalar product */
-  
+
   /* Test that dimension is 2 or 3 */
   if (idim !=2 && idim !=3) goto err105;
-  
+
   if (aepsge <= DNULL) goto err184;
-  
-  
-  
+
+
+
   /* Make maximal step length based on box-size of surface */
-  
+
   sh1992cu(pc,0,aepsge,&kstat);
   if (kstat < 0) goto error;
-  
+
   tmax = MAX(pc->pbox->e2max[0][0] - pc->pbox->e2min[0][0],
 	     pc->pbox->e2max[0][1] - pc->pbox->e2min[0][1]);
   tmax = MAX(tmax,pc->pbox->e2max[0][2] - pc->pbox->e2min[0][2]);
-  
+
   /* Check for degenerate curve. */
 
   if(tmax == DNULL)
@@ -173,139 +173,139 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
       *jstat = -1;
       goto out;
   }
-  
+
   if (amax>DNULL) tmax = MIN(tmax,amax);
   /* Copy curve attributes to local parameters.  */
-  
+
   kn    = pc -> in;
   kk    = pc -> ik;
   st    = pc -> et;
   scoef = pc -> ecoef;
   kdim  = pc -> idim;
-  
+
   kmaxinf = 100;
-  
+
   /* Allocate space for storage of points,tangents, curvature and radius of
      curvature */
-  
-  s3dinf = newarray((3*kdim+1)*kmaxinf,DOUBLE);                               
+
+  s3dinf = newarray((3*kdim+1)*kmaxinf,DOUBLE);
   if (s3dinf == NULL) goto err101;
-  
+
   /* Allocate space for parametrization array */
-  
+
   spar = newarray(kmaxinf,DOUBLE);
   if (spar == NULL) goto err101;
-  
+
   /* Store knot values at start of curve */
-  
+
   tx1     = st[kk-1];
   spar[0] = tx1;
-  
-  
+
+
   /* Make start point and intital step length */
-  
+
   kder = 2;
-  
+
   s1362(pc,aoffset,enorm,idim,kder,tx1,&kleftend,sder,&kstat);
   if (kstat<0) goto error;
-  
+
   /* Calculate unit tangent and radius of curvature */
-  
+
   s1307(sder,kdim,s3dinf,&kstat);
   if (kstat<0) goto error;
   knbinf = 1;
-  
+
   /* Calculate step length based on curvature */
-  
+
   tstep = s1311(s3dinf[3*kdim],aepsge,tmax,&kstat);
   if (kstat<0) goto error;
-  
+
   /* Remember length of start tangent, end of zero segment */
-  
+
   tlengthend = s6length(sder+kdim,kdim,&kstat);
-  if (kstat<0) goto error;                                            
-  
+  if (kstat<0) goto error;
+
   /* While end not reached */
-  
-  
+
+
   while (tx1 < st[kn])
     {
-      
+
       /*  Find candidate end point, make sure that no breaks in tangent or
 	  curvature exists between start and endpoints of the segment      */
-      
+
       /*  Make step length equal to aepsge if the length is zero */
-      
+
       /*  Find parameter value of candidate end point of segment */
-      
+
       if (DEQUAL(tlengthend,DNULL))
-        { 
+        {
 	  /* Step equal to computer resolution */
 	  tincre = tx1*((double)1.0+REL_COMP_RES);
         }
       else
         tincre = tstep/tlengthend;
-      
+
       /*  Make sure that we don't pass any knots */
-      
+
       tx2 = MIN(tx1 + tincre,st[kleftend+1]);
-      
-      
+
+
       /*  While segement not accepted */
-      
+
       notaccepted = 1;
-      
+
       while(notaccepted==1)
         {
-	  
+
 	  /* Make end point of segment, and store it */
-	  
+
 	  if (knbinf+2>=kmaxinf)
             {
 	      kmaxinf = kmaxinf + 100;
 	      s3dinf = increasearray(s3dinf,(3*kdim+1)*kmaxinf,DOUBLE);
 	      spar   = increasearray(spar,kmaxinf,DOUBLE);
             }
-	  
+
 	  /* Check multiplicity of end point of segment make sure that if
 	     the multiplicity is greater than kk that we calculate derivatives
 	     from the left. */
-	  
+
 	  kmult = s6knotmult(st,kk,kn,&kleft,tx2,&kstat);
 	  if (tx2 >= st[kn]) kmult = 0;
 	  if (kmult > kk-2)
 	    {
 	      /* Check right and left hand derivatives of curve */
-	      
+
 	      s1227(pc,2,tx2,&kleft,sder2,&kstat);
 	      if (kstat<0) goto error;
-	      
+
 	      s1221(pc,2,tx2,&kleft,sder1,&kstat);
 	      if (kstat<0) goto error;
-	      
+
 	      tl1 = s6length(sder1+kdim,kdim,&kstat1);
 	      tl2 = s6length(sder2+kdim,kdim,&kstat2);
 	      tscal = s6scpr(sder1+kdim,sder2+kdim,kdim);
 	      tdum = MAX(tl1,tl2);
 	      if (kstat1<0 || kstat2<0) goto error;
-	      
+
 	      if(DEQUAL(tl1*tl2+tdum,tscal+tdum)) kmult = 0; /* G1 continuity*/
 	    }
-	  
+
 	  /* Make correct value of kleftend */
-	  
+
 	  s1219(st,kk,kn,&kleftend,tx2,&kstat);
 	  if (kstat<0) goto error;
-	  
-	  
+
+
 	  /* Real offset, test multiplicity before calculation */
-	  
+
           if (kmult > kk-2) tdum = tx2 * ((double)1.0-REL_COMP_RES);
           else tdum = tx2;
-	  
+
           /* We have the right value of kleftend, if no offset and
              break then s1362 will decrease kleft */
-	  
+
           if (aoffset != DNULL)
 	    {
               s1362(pc,aoffset,enorm,idim,kder,tdum,&kleft,sder,&kstat);
@@ -318,55 +318,55 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 	      s1221(pc,2,tx2,&kleft,sder,&kstat);
 	      if (kstat<0) goto error;
 	    }
-	  
+
 	  /* Remember length of start tangent, end of zero segment */
-	  
+
 	  tlengthend = s6length(sder+kdim,kdim,&kstat);
 	  if (kstat<0) goto error;
-	  
-	  
-	  
+
+
+
 	  /* Calculate unit tangent and radius of curvature */
-	  
+
 	  s1307(sder,kdim,s3dinf+(3*kdim+1)*knbinf,&kstat);
 	  if (kstat<0) goto error;
-	  
+
 	  /* Decide if Hermit shape acceptable and find position and tangent
 	     at midpoint of segment */
-	  
+
 	  start = s3dinf + (3*kdim+1)*(knbinf-1);
-	  
+
 	  s1361(start,start+(3*kdim+1),kdim,smidd,smtang,&kstat);
 	  if (kstat<0) goto error;
-	  
+
 	  /* Iterate to midpoint of segment, start from middle of [tx1,tx2].
 	     The iteration is performed to find the intersection between the
 	     plane described by smidd and smtang. */
-	  
+
 	  txm = (tx1+tx2)/(double)2.0;
-	  
+
 	  kcont = 1;
 	  kdiv  = 0;
-	  
+
 	  knbit = 0;
 	  while (kcont==1)
             {
-	      
+
 	      /* Calculate position and tangent at txm */
-	      
+
 	      s1362(pc,aoffset,enorm,idim,kder,txm,&kleft,sder,&kstat);
 	      if (kstat<0) goto error;
-	      
+
 	      /* Make difference of calculated point and smidd, project this
 		 onto the normal of the plane. */
-	      
+
 	      s6diff(sder,smidd,kdim,sdiff);
 	      tproj1 = s6scpr(sdiff,smtang,kdim);
 	      tproj2 = s6scpr(&sder[kdim],smtang,kdim);
-	      
+
 	      /* If tproj2==0 then curve tangent normal to plane, half step
 		 length */
-	      
+
 	      if (DEQUAL(tproj2,DNULL))
                 {
 		  kdiv  = 1;
@@ -381,7 +381,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 		  txm = MIN(tx2,txm);
 		  tlast = fabs(tproj1);
                 }
-	      
+
 	      else if (fabs(tproj1)>=tlast)
                 {
 		  /* Not convergence any longer */
@@ -402,14 +402,14 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
             }
 	  /* Find how close the midpoint position and tangent of the segement
 	     is to the true curve */
-	  
+
 	  tdist = s6dist(sder,smidd,kdim);
-	  
+
 	  tang  = s6ang(&sder[kdim],smtang,kdim);
-	  
+
 	  /* If the point is not within the resolution treat it as divergence, except
 	     when the segment length is less than aepsge */
-	  
+
 	  if ((s6dist(start,smidd,kdim) <= aepsge) &&
 	      (s6dist(start+(3*kdim+1),smidd,kdim) <= aepsge))
 	    {
@@ -419,10 +419,10 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
             {
 	      kdiv = 1;
             }
-	  
+
 	  /* Dependent on previous conditions decide if the segment is acceptable
 	     or not */
-	  
+
 	  if (kdiv==0)
             {
 	      /* Segement acceptable */
@@ -433,23 +433,23 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 	      /* Segment unacceptable. Remember that the error of the Hermit
 		 interpolation is O(h**4). Thus taking this into consideration
 		 we can determin the new parameter interval. */
-	      
+
 	      tfak = MAX(tdist/aepsge,(double)1.0);
 	      tfak = (double)2.0*pow(tfak,ONE_FOURTH);
-	      
+
 	      tnew = MIN(tincre/(double)2.0,(tx2-tx1)/tfak);
 	      if (DEQUAL(tmax+tnew,tmax+tincre)) goto err179;
 	      tincre = tnew;
 	      tx2 = tx1 + tincre;
             }
         }
-      
+
       /*  Store segment information */
-      
+
       if (kmult>kk-2)
 	{
           /* End of segment is possible break, add exstra version of point */
-	  
+
           if (aoffset != DNULL)
 	    {
 	      spar[knbinf] = tx2-(double)0.1*(tx2-spar[knbinf-1]);
@@ -458,88 +458,88 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 	    }
           else
 	    {
-	      spar[knbinf] = tx2;     
+	      spar[knbinf] = tx2;
 	      memcopy(sder,sder1,3*kdim,DOUBLE);/*Copy right hand derivatives*/
 	    }
-	  
+
           knbinf++;
-	  
+
 	  /* Remember length of start tangent, end of zero segment */
-	  
+
 	  tlengthend = s6length(sder+kdim,kdim,&kstat);
 	  if (kstat<0) goto error;
-	  
+
 	  /* Calculate unit tangent and radius of curvature */
-	  
+
 	  s1307(sder,kdim,s3dinf+(3*kdim+1)*knbinf,&kstat);
 	  if (kstat<0) goto error;
 	}
-      
+
       /*  Make knots */
       spar[knbinf] = tx2;
-      
+
       if (kstat<0) goto error;
       knbinf += 1;
-      
-      /*  Make new step length */ 
-      
+
+      /*  Make new step length */
+
       /*  Calculate step length based on curvature */
-      
+
       tstep = s1311(s3dinf[(3*kdim+1)*knbinf-1],aepsge,tmax,&kstat);
       if (kstat<0) goto error;
-      
+
       /*  Update start parameter value of segment */
-      
+
       tx1 = tx2;
     }
-  
-  
+
+
   /*  Interpolate offset curve */
-  
+
   /* UJK, 92.04. : s1312 and s1359 shadow functions
      s1312(s3dinf,kdim,knbinf,kpar,spar,rc,&kstat); */
   s1359(s3dinf,aepsge,kdim,knbinf,kpar,spar,rc,&kstat);
   if (kstat < 0) goto error;
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Error in memory allocation */
-  
- err101: 
+
+ err101:
   *jstat = -101;
   s6err("s1360",*jstat,kpos);
   goto out;
-  
+
   /* Error in input, dimension not equal to 2 or 3 */
-  
- err105: 
+
+ err105:
   *jstat = -105;
   s6err("s1360",*jstat,kpos);
   goto out;
-  
-  
- err179: 
+
+
+ err179:
   *jstat = -179;
   s6err("s1360",*jstat,kpos);
   goto out;
-  
+
   /* Negative aepsge */
-  
- err184: 
+
+ err184:
   *jstat = -184;
   s6err("s1360",*jstat,kpos);
   goto out;
-  
+
   /* Error in lower level function */
-  
- error:  
+
+ error:
   *jstat = kstat;
   s6err("s1360",*jstat,kpos);
   goto out;
-  
+
  out:
   if (s3dinf != NULL) freearray(s3dinf);
   if (spar   != NULL) freearray(spar);
   return;
-}          
+}
