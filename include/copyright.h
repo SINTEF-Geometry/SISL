@@ -3,8 +3,8 @@
 /*****************************************************************************/
 /*                                                                           */
 /*                                                                           */
-/* (c) Copyright 1989,1990,1991,1992 by                                      */
-/*     Senter for Industriforskning, Oslo, Norway                            */
+/* (c) Copyright 1993,1994 by                                                */
+/*     SINTEF, Oslo, Norway                                                  */
 /*     All rights reserved.                                                  */
 /*                                                                           */
 /*  THIS SOFTWARE IS FURNISHED UNDER A LICENSE AND MAY BE USED AND COPIED    */
@@ -14,12 +14,12 @@
 /*  OTHER PERSON.  NO TITLE TO AND OWNERSHIP OF  THE  SOFTWARE IS  HEREBY    */
 /*  TRANSFERRED.                                                             */
 /*                                                                           */
-/*  SENTER FOR INDUSTRIFORSKNING  MAKES NO WARRANTY OF ANY KIND WITH REGARD  */
-/*  TO THIS SOFTWARE,INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES   */
-/*  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.                 */
-/*  Senter for Industriforskning shall not be liable for errors contained    */
-/*  herein or direct, special, incidental or consequential damages in        */
-/*  connection with furnishing, performance, or use of this material.        */
+/*  SINTEF MAKES NO WARRANTY OF ANY KIND WITH REGARD TO THIS SOFTWARE,       */
+/*  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF                 */
+/*  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.                    */
+/*  SINTEF shall not be liable for errors contained herein or direct,        */
+/*  special, incidental or consequential damages in connection with          */
+/*  furnishing, performance, or use of this material.                        */
 /*                                                                           */
 /*                                                                           */
 /*****************************************************************************/
