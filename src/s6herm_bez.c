@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6herm_bez.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6herm_bez.c,v 1.2 1994-11-30 16:43:04 pfu Exp $
  *
  */
 
@@ -37,7 +37,7 @@ void s6hermite_bezier(s,a,b,idim,c,jstat)
 *********************************************************************
 *
 * PURPOSE     : Returning the Hermite interpolant to the restriction of the
-*               surface s to line segment [a,b]. 
+*               surface s to line segment [a,b].
 *               The Hermite interpolant is a Bezier
 *               curve of degree 3 parametrized over the intervall [0,1].
 *
@@ -63,10 +63,11 @@ void s6hermite_bezier(s,a,b,idim,c,jstat)
 *
 *-
 * CALLS      :
-*              
+*
 *
 * WRITTEN BY : Kyrre Strom, SI, 93-01.
-* MODIFIED BY :
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov.1994. Initialized
+*              'jstat' to zero when no error.
 *
 **********************************************************************/
 {
@@ -79,56 +80,57 @@ void s6hermite_bezier(s,a,b,idim,c,jstat)
   if (s->idim != idim) goto error;
 
   if ( idim > 3)
-    {
-      derive = newarray(3*idim,double);
-      if (derive == NULL) goto err101;
-    }
+  {
+    derive = newarray(3*idim,double);
+    if (derive == NULL) goto err101;
+  }
   else
     derive = dblocal;
 
   /* evaluate s and its derivative at a */
 
-  s1424(s,1,1,a,&left1,&left2,derive,&kstat); 
+  s1424(s,1,1,a,&left1,&left2,derive,&kstat);
   if (kstat < 0) goto error;
   for (i=0; i < idim; i++)
-    {
-      c[i] = derive[i];
-      c[idim+i] = c[i] + (derive[idim+i]*(b[0]-a[0]) 
-			  + derive[2*idim+i]*(b[1]-a[1]))/3.0;
-    }
+  {
+    c[i] = derive[i];
+    c[idim+i] = c[i] + (derive[idim+i]*(b[0]-a[0])
+			+ derive[2*idim+i]*(b[1]-a[1]))/3.0;
+  }
 
   /* evaluate s and its derivative at b */
 
-  s1424(s,1,1,b,&left1,&left2,derive,&kstat); 
+  s1424(s,1,1,b,&left1,&left2,derive,&kstat);
   if (kstat < 0) goto error;
   for (i=0; i < idim; i++)
-    {
-      c[3*idim+i] = derive[i];
-      c[2*idim+i] = c[3*idim+i] - (derive[idim+i]*(b[0]-a[0]) 
-			  + derive[2*idim+i]*(b[1]-a[1]))/3.0;
-    }
+  {
+    c[3*idim+i] = derive[i];
+    c[2*idim+i] = c[3*idim+i] - (derive[idim+i]*(b[0]-a[0])
+				 + derive[2*idim+i]*(b[1]-a[1]))/3.0;
+  }
 
-   goto out;
+  *jstat = 0;
+  goto out;
 
-   /* Error in space allocation.  */
+  /* Error in space allocation.  */
 
-   err101 : *jstat = -101;
-   goto out;
-
-
-   /* Error in lower level routine.  */
-
-   error : *jstat = kstat;
-   goto out;
+  err101 :
+    *jstat = -101;
+    goto out;
 
 
- out:
+  /* Error in lower level routine.  */
 
-  if (derive != NULL && derive != dblocal)
-    freearray(derive);
+  error :
+    *jstat = kstat;
+    goto out;
+
+
+  out :
+
+    if (derive != NULL && derive != dblocal)
+      freearray(derive);
+
   return;
 
 }
-
-		      
-  
