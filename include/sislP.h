@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.38 1995-11-02 14:46:33 jka Exp $
+ * $Id: sislP.h,v 1.39 1997-12-30 10:01:47 jka Exp $
  *
  */
 
@@ -424,11 +424,17 @@ enum
 
 /* Set value of PI/2, PI, 3PI/2 and 2PI */
 
+/* #ifndef PIHALF
+   #define PIHALF       (double)M_PI_2
+   #endif
+   #ifndef PI
+   #define PI           (double)M_PI
+   #endif                            */
 #ifndef PIHALF
-#define PIHALF       (double)M_PI_2
+#define PIHALF       (double)1.57079632679489661923
 #endif
 #ifndef PI
-#define PI           (double)M_PI
+#define PI           (double)3.14159265358979323846
 #endif
 #ifndef THREEPIHALF
 #define THREEPIHALF  (double)4.71238898038468985769
@@ -437,8 +443,8 @@ enum
 #define TWOPI        (double)6.28318530717958647692
 #endif
 #ifndef ROTM
-/*#define ROTM         (double)0.70710678118654752440*/
-#define ROTM         (double)M_SQRT1_2
+#define ROTM         (double)0.70710678118654752440
+/* #define ROTM         (double)M_SQRT1_2 */
 #endif
 #ifndef SIMPLECASE
 #define SIMPLECASE   (double)0.75
@@ -1399,14 +1405,14 @@ void s2535(SISLSurf *, int, int, int *, int *, SISLSurf ***, int *);
 #ifndef  S2541
 extern
 #endif
-void s2541(SISLSurf *surf, 
-           void evalp(SISLSurf *, int, int, int, double [], int *, int *, 
+void s2541(SISLSurf *surf,
+           void evalp(SISLSurf *, int, int, int, double [], int *, int *,
 		      double *, int *),
 	 int, int, int, double [], int, int, double **, int *);
 #ifndef  S2543
 extern
 #endif
-void s2543(SISLSurf *, int, double [], double [], double *, double *, 
+void s2543(SISLSurf *, int, double [], double [], double *, double *,
 	   double [], double [], int *);
 #ifndef  S6ADDCURVE
 extern
