@@ -400,7 +400,7 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	if (kstat < 0) goto error;
 	if (ki == 0)
 	{
-	   s1770_2D_s6sekant1(pcurve1,pcurve2,par_val,c_d[2],&dist,aepsge,
+	   s1770_2D_s6sekant1(pcurve1,pcurve2,par_val,c_d[0],&dist,aepsge,
 			   astart1,astart2,aend1,aend2,c1,c2,norm,&kstat);
 	   if (kstat < 0) goto error;
 
