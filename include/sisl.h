@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.27 1995-08-21 13:42:15 jka Exp $
+ * $Id: sisl.h,v 1.28 1995-08-25 12:43:26 jka Exp $
  *
  */
 
@@ -1049,6 +1049,10 @@ void s2504(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 extern
 #endif
 void s2506(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+#ifndef  S2508
+extern
+#endif
+void s2508(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2532
 extern
 #endif
@@ -1769,6 +1773,10 @@ void s2504();
 extern
 #endif
 void s2506();
+#ifndef  S2508
+extern
+#endif
+void s2508();
 #ifndef  S2532
 extern
 #endif
