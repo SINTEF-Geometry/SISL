@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6floop.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6floop.c,v 1.2 1994-09-05 14:59:51 pfu Exp $
  *
  */
 
@@ -22,7 +22,7 @@
 
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
       sh6floop(SISLIntpt *vedgept[],int inum,int *jpt,int *jstat)
 #else
 void sh6floop(vedgept,inum,jpt,jstat)
@@ -30,7 +30,7 @@ void sh6floop(vedgept,inum,jpt,jstat)
    int       inum;
    int       *jpt;
    int       *jstat;
-#endif   
+#endif
 /*
 *********************************************************************
 *
@@ -55,53 +55,55 @@ void sh6floop(vedgept,inum,jpt,jstat)
 *
 *
 *
-* METHOD     : 
+* METHOD     :
 *
 *
 * REFERENCES :
 *
 * WRITTEN BY : Vibeke Skytt, SI, 11.92.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994.  Initialized
+*              gnext.
 *
 *********************************************************************
 */
-{ 
+{
    int kstat2 = -1;   /* Status of traversing the first list.           */
    int kpt = 0;       /* Current number of intersections in first loop. */
    int ki,kj;         /* Counters.                                      */
    SISLIntpt *qstart; /* First intersection point around the edges.     */
    SISLIntpt *qprev;  /* Previous intersection point found.             */
    SISLIntpt *qt;     /* Current intersection point in list.            */
-   SISLIntpt *qnext;  /* The next point to enter the list.              */
+   SISLIntpt *qnext = NULL;  /* The next point to enter the list.              */
    SISLIntpt *qhelp;  /* Help point used in sorting vedgept.            */
- 
+
    /* Check if there is a list.  */
-   
+
    *jpt = 0;
    if (inum == 0) goto out;
-   
+
    /* Set start point. */
-   
+
    qstart = vedgept[0];
-   
+
    /* Traverse the edge intersections to fetch a list starting in qstart.
       The elements in the list must lie on the edges of the objects.    */
-   
+
    for (qprev=NULL, qt=qstart; ; qt=vedgept[kpt])
    {
       if (kstat2 == 0)
       {
 	 /* Open list. Travers in the opposite direction.  */
-	 
+
 	 qt = qstart;
 	 qprev = (kpt > 0) ? vedgept[1] : NULL;
       }
-      
+
       for (ki=0; ki<qt->no_of_curves; ki++)
       {
 	 /* Search all curves in this points to find the list.  */
-	 
+
 	 qnext = sh6getnext(qt,ki);
-	 
+
 	 if (qnext == NULL)
 	 {
 	    kstat2 = 0; break;  /* No point.  */
@@ -112,35 +114,35 @@ void sh6floop(vedgept,inum,jpt,jstat)
 	 {
 	    kstat2 = 1; break;  /* A closed loop is found.  */
 	 }
-	 
+
 	 /* An intersection is found. Check if it lies on the current
 	    edges.               */
-				   
+
 	 for (kj=kpt+1; kj<inum; kj++)
 	    if (qnext == vedgept[kj]) break;
-	 
+
 	 if (kj == inum) continue;  /* The point lies not at an edge. */
-	 
+
 	 /* Change position in the array in such a way that the members
 	    of the list are placed first.  */
-	 
+
 	 kpt++;
 	 qhelp = vedgept[kj];
 	 vedgept[kj] = vedgept[kpt];
 	 vedgept[kpt] = qhelp;
-	 
+
 	 /* Set previous pointer.  */
-	 
+
 	 qprev = qt;
-	 
+
 	 /* Check if we are finished or may continue with the next point. */
-	 
-	 if (qnext == NULL || (qnext == qstart && qnext != qprev) || 
+
+	 if (qnext == NULL || (qnext == qstart && qnext != qprev) ||
 	     qprev == qt) break;
       }
-      
+
       /* Check if we have found the entire list.  */
-      
+
       if (qnext == qstart || kpt >= inum) break;
       else if (ki == qt->no_of_curves)
       {
@@ -148,9 +150,9 @@ void sh6floop(vedgept,inum,jpt,jstat)
 	 else break;
       }
    }
-   
+
    /* Set number of points in list and output status.  */
-   
+
    *jpt = kpt + 1;
    if (kpt == 0) *jstat = 2;
    else if (kstat2 == 1) *jstat = 1;
