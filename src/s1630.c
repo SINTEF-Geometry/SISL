@@ -14,7 +14,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
    s1630(double epoint[],int inbpnt,double astpar,int iopen,int idim,int ik,
 	   SISLCurve **rc,int *jstat)
 #else
@@ -30,14 +30,14 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
 #endif
 /*
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To calculate a B-spline curve using the input points as
 *              controlling vertices. The distances between the points are
-*              used as parametrization.  
-*                                                            
+*              used as parametrization.
+*
 *
 * INPUT      : epoint - The array containing the points to be used as
-*                       controlling vertices of the B-spline curve.  
+*                       controlling vertices of the B-spline curve.
 *              inbpnt - No. of points in epoint.
 *              astpar - Parameter value to be used at the start of the curve.
 *              iopen  - Open/close condition (Open=1,Closed=0,Periodic=-1)
@@ -58,8 +58,8 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
 * EXAMPLE OF USE:
 *
 * REFERENCES :
-*                       
-*-                                                 
+*
+*-
 * CALLS      : s6dist,s1902,s1713,s1750,newCurve,s6err
 *
 *
@@ -69,7 +69,8 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
 * REWISED BY: Vibeke Skytt, 03.94. This routine corresponds to s1604,
 *                                  but differ in the use of the parameter
 *                                  iopen.
-*
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway. 24/08-1994. Changed
+*              icopy param. (from 0 to 2) to fix memory leak.
 *********************************************************************
 */
 {
@@ -82,7 +83,7 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   int ki;             /* Counter for loop control                        */
   int kopen;          /* Local open/closed parameter. Closed,
 			 non-periodic is treated as an open curve.       */
-  
+
   double *spara=NULL; /* Pointer to parameterization array               */
   double *scoef=NULL; /* Pointer to vertex array                         */
   double *sknot=NULL; /* Pointer to knot vector                          */
@@ -90,67 +91,67 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   double tlastpar;    /* Last value in the parameterization array        */
   SISLCurve *qc=NULL;
   SISLCurve *qc2 = NULL;
-  
+
   /* Set local open/closed parameter. */
-  
+
   kopen = (iopen == SISL_CRV_PERIODIC) ? 0 : 1;
-  
-  
+
+
   /* Control input     */
-  
+
   kk = ik;
-  if  (inbpnt < kk) 
+  if  (inbpnt < kk)
     kk = inbpnt;
-  
+
   if  (kk < 2) goto err109;
-  
+
   if  (iopen != SISL_CRV_OPEN && iopen != SISL_CRV_CLOSED
        && iopen != SISL_CRV_PERIODIC) goto err113;
-  
+
   /* Allocate space for parameterization    */
-  
+
   spara = newarray(inbpnt+1,DOUBLE);
   if (spara == NULL) goto err101;
-  
+
   /* Calculate parameterization  */
-  
+
   spara[0] = astpar;
   tlastpar = astpar;
-  
-  for (ki=1; ki<inbpnt; ki++) 
+
+  for (ki=1; ki<inbpnt; ki++)
     {
       tdist = s6dist(&epoint[ki*idim-idim],&epoint[ki*idim],idim);
       tlastpar = tlastpar + tdist;
       spara[ki] = tlastpar;
     }
-  
-  
-  /* Calculate distance from first to last point and update 
+
+
+  /* Calculate distance from first to last point and update
      parameterization array. To be useded if closed curve   */
-  
+
   tdist = s6dist(epoint,&epoint[(inbpnt-1)*idim],idim);
   tlastpar = tlastpar + tdist;
-  spara[inbpnt] = tlastpar;      
-  
-  
+  spara[inbpnt] = tlastpar;
+
+
   /* Find the knot vector     */
-  
+
   s1902(spara,inbpnt+(iopen==SISL_CRV_CLOSED),kk,kopen,&sknot,&kstat);
   if (kstat < 0 || sknot == NULL) goto error;
-  
+
   /* Allocate space for verice array   */
-  
+
   scoef = newarray((inbpnt+kk-1)*idim,DOUBLE);
   if (scoef == NULL) goto err101;
-  
-  /* Copy vertices */  
-  
+
+  /* Copy vertices */
+
   memcopy (scoef,epoint,inbpnt*idim,DOUBLE);
   kn = inbpnt;
-  
+
   /* In case of closed curve, add the (kk-1) first points to the vertice
      array.    */
-  
+
   if (iopen == SISL_CRV_PERIODIC)
     {
       memcopy(&scoef[inbpnt*idim],epoint,(kk-1)*idim,DOUBLE);
@@ -161,17 +162,17 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
      memcopy(&scoef[inbpnt*idim],epoint,idim,DOUBLE);
      kn += 1;
   }
-  
+
   /* Make curve */
-  /* VSK, MESZ. Do not copy arrays. 
+  /* VSK, MESZ. Do not copy arrays.
   qc = newCurve(kn,kk,sknot,scoef,1,idim,1);  */
-  qc = newCurve(kn,kk,sknot,scoef,1,idim,0);
-  if (!qc) goto err101;  
-	   
+  qc = newCurve(kn,kk,sknot,scoef,1,idim,2); /* icopy=2, PFU 24/08-94 */
+  if (!qc) goto err101;
+
   qc->cuopen = iopen;
-  
+
   /* Increase the order if the order was lowered when controlling input */
-  
+
   if (kk < ik)
     {
 				/* -> guen: inserted acc. to SCCS */
@@ -193,42 +194,42 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
 				/* -> guen: removed acc. to SCCS  */
 				/*  if (qc) *rc = qc;             */
 				/* -> guen: inserted acc. to SCCS */
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Error in memory allocation */
-  
- err101: 
+
+ err101:
   *jstat = -101;
   s6err("s1630",*jstat,kpos);
   goto out;
-  
+
   /* Error in input, order less than 2 */
-  
- err109: 
+
+ err109:
   *jstat = -109;
   s6err("s1630",*jstat,kpos);
   goto out;
-  
+
   /* Error in input, unknown kind of curve */
-  
- err113: 
+
+ err113:
   *jstat = -113;
   s6err("s1630",*jstat,kpos);
   goto out;
-  
-  
-  /* Error in lower level function */  
-  
- error:  
+
+
+  /* Error in lower level function */
+
+ error:
   *jstat = kstat;
-  s6err("s1630",*jstat,kpos); 
+  s6err("s1630",*jstat,kpos);
   goto out;
-  
+
  out:
   if (spara  != NULL) freearray(spara);
   /* if (scoef  != NULL) freearray(scoef); (Freed by freeCurve(qc). */
-  if (qc != NULL) freeCurve(qc);		      
+  if (qc != NULL) freeCurve(qc);
   return;
-}    
+}
