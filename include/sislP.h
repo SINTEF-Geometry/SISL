@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.28 1995-08-23 09:26:40 boh Exp $
+ * $Id: sislP.h,v 1.29 1995-08-23 10:38:40 jka Exp $
  *
  */
 
@@ -560,6 +560,10 @@ void freeTrimpar(SISLTrimpar *);
 extern
 #endif
 void freeTrack(SISLTrack * ptrack);
+#ifndef make3D
+extern
+#endif
+void make3D(SISLSurf *, SISLSurf **, int *);
 #ifndef S1119
 extern
 #endif
@@ -2444,6 +2448,10 @@ void freeTrimpar();
 extern
 #endif
 void freeTrack();
+#ifndef make_3D
+extern
+#endif
+void make_3D();
 #ifndef S1119
 extern
 #endif
