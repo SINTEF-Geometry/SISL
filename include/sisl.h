@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.1 1994-04-21 12:10:39 boh Exp $
+ * $Id: sisl.h,v 1.2 1994-04-28 10:51:31 vsk Exp $
  *
  */
 
@@ -226,6 +226,14 @@ enum
 {
   SI_UNDEF, SI_IN, SI_OUT, SI_ON, SI_AT
 };
+
+#define SISL_CRV_PERIODIC -1
+#define SISL_CRV_OPEN 1
+#define SISL_CRV_CLOSED 0
+
+#define SISL_SURF_PERIODIC -1
+#define SISL_SURF_OPEN 1
+#define SISL_SURF_CLOSED 0
 
  /*
  * Required for C++ 2.0 and later version

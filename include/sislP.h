@@ -14,7 +14,7 @@
 #include "sisl.h" 
 /*
  *
- * $Id: sislP.h,v 1.1 1994-04-21 12:10:39 boh Exp $
+ * $Id: sislP.h,v 1.2 1994-04-28 10:51:35 vsk Exp $
  *
  */
 
@@ -323,14 +323,6 @@ enum
 #define SISLPOINT    0
 #define SISLCURVE    1
 #define SISLSURFACE  2
-
-#define SISL_CRV_PERIODIC -1
-#define SISL_CRV_OPEN 1
-#define SISL_CRV_CLOSED 0
-
-#define SISL_SURF_PERIODIC -1
-#define SISL_SURF_OPEN 1
-#define SISL_SURF_CLOSED 0
 
 /* The resolution of double precision numbers */
 
