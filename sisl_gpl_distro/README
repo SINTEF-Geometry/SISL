@@ -12,10 +12,11 @@ doc/       - documentation: manual and users guide.
 Makefiles are provided in each of the directories containing source code.  In
 Linux, just type 'make lib' in each directory.  In windows, you might do the
 same in CygWin (untested as of yet), or you might have to define a project in 
-Visual Studio.
+Visual Studio.  To make the viewer, type 'make sisl_view_demo' in the 'viewer'
+directory.
 
 The code in the 'sisl' directory does not link with anything else and should 
-be compiled first.  
+be compiled first. 
 
 The code in the 'streaming' directory links with 'sisl'.
 
