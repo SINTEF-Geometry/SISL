@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1390.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1390.c,v 1.2 1994-09-26 12:15:22 pfu Exp $
  *
  */
 
@@ -21,10 +21,10 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1390 (SISLCurve * pc1[], SISLSurf ** ps1, int nder[], int *jstat)
 #else
-void 
+void
 s1390 (pc1, ps1, nder, jstat)
      SISLCurve *pc1[];
      SISLSurf **ps1;
@@ -104,6 +104,10 @@ s1390 (pc1, ps1, nder, jstat)
 * Written by   : Morten Daehlen, SI, Aug. 88.
 * Rewritten by : Christophe R. Birkeland, SI, Aug. 91.(Routine s1922)
 * Revised by:    Christophe Rene Birkeland, SI, May. 93.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994. Removed
+*          memory leak from 'cpar', multiple free's of '(n)surf13' and
+*          '(n)surf24' and relocated some of the memory free'ing to reduce
+*          the memory requirements.
 *
 *********************************************************************
 */
@@ -172,7 +176,7 @@ s1390 (pc1, ps1, nder, jstat)
   *jstat = 0;
 
 
-  /* 
+  /*
    * Initialization
    * ---------------
    */
@@ -186,7 +190,7 @@ s1390 (pc1, ps1, nder, jstat)
   n012 = n01 + n2;
 
 
-  /* 
+  /*
    * Check input: derivative order and all input curves
    * --------------------------------------------------
    */
@@ -239,7 +243,7 @@ s1390 (pc1, ps1, nder, jstat)
   ord24 = MAX( n0+n2, ord24);
 
 
-  /* 
+  /*
    * Spline lofted surface between curve 1 and 3.
    * --------------------------------------------
    */
@@ -274,9 +278,9 @@ s1390 (pc1, ps1, nder, jstat)
 
       if (ki > 0)
 	{
-	  /* 
+	  /*
 	   * Derivative directions along curve 3
-	   * must be turned for use in call s1333 
+	   * must be turned for use in call s1333
 	   * -------------------------------------
 	   */
 
@@ -287,16 +291,17 @@ s1390 (pc1, ps1, nder, jstat)
 	}
     }
 
-  /* 
+  /*
    * LOFTING in 1. par. dir. using curve 1 and 3
    * -------------------------------------------
    */
 
   s1333 (inbcrv13, vpcrv13, type, stpar, iopen, ord24, 0,
 	 &surf13, &cpar, &kstat);
+  if (cpar) freearray(cpar);  /* Not used (PFU 26/09-94) */
   if (kstat < 0) goto error;
 
-  /* 
+  /*
    * DEGREE raising if  necessary, first check that
    * order in 1. par. direction is right.
    * ----------------------------------------------
@@ -307,14 +312,18 @@ s1390 (pc1, ps1, nder, jstat)
   if (surf13->ik1 != ord13) goto err160;
 
   if (order2 > surf13->ik2)
+  {
     s1387 (surf13, ord13, order2, &nsurf13, &kstat);
+    if (surf13) freeSurf(surf13);  /* Not needed anymore (PFU 26/09-94) */
+  }
   else
     nsurf13 = surf13;
+  surf13 = NULL;  /* Just in case */
   if (kstat < 0) goto error;
 
-  /* 
+  /*
    * Derivative direction along curve 3
-   * must be turned back to original direction 
+   * must be turned back to original direction
    * ------------------------------------------
    */
 
@@ -327,8 +336,8 @@ s1390 (pc1, ps1, nder, jstat)
     }
 
 
-  /* 
-   * Spline lofted surface between curve 4 and 2. 
+  /*
+   * Spline lofted surface between curve 4 and 2.
    * --------------------------------------------
    */
 
@@ -360,9 +369,9 @@ s1390 (pc1, ps1, nder, jstat)
 	  break;
 	}
 
-      /* 
+      /*
        * Derivative direction along curve 2
-       * must be turned for use in call s1333 
+       * must be turned for use in call s1333
        * ------------------------------------
        */
 
@@ -375,16 +384,17 @@ s1390 (pc1, ps1, nder, jstat)
 	}
     }
 
-  /* 
+  /*
    * LOFTING in 2. par. dir. using curve 2 and 4
    * -------------------------------------------
    */
 
-  s1333 (inbcrv24, vpcrv24, type, stpar, iopen, ord13, 0, 
+  s1333 (inbcrv24, vpcrv24, type, stpar, iopen, ord13, 0,
 	 &surf24, &cpar, &kstat);
+  if (cpar) freearray(cpar);  /* Not used (PFU 26/09-94) */
   if (kstat < 0) goto error;
 
-  /* 
+  /*
    * DEGREE raising if  necessary, first check that
    * order in 1. par. direction is right.
    * ----------------------------------------------
@@ -395,15 +405,19 @@ s1390 (pc1, ps1, nder, jstat)
   if (surf24->ik1 != ord24) goto err160;
 
   if (order2 > surf24->ik2)
+  {
     s1387 (surf24, ord24, order2, &nsurf24, &kstat);
+    if (surf24) freeSurf(surf24);  /* Not needed anymore (PFU 26/09-94) */
+  }
   else
     nsurf24 = surf24;
+  surf24 = NULL;
   if (kstat < 0) goto error;
 
 
-  /* 
+  /*
    * Derivative direction along curve 2
-   * must be turned back to original direction 
+   * must be turned back to original direction
    * ------------------------------------------
    */
 
@@ -415,8 +429,8 @@ s1390 (pc1, ps1, nder, jstat)
 	crv2ki->ecoef[kj] = -crv2ki->ecoef[kj];
     }
 
-  /* 
-   * Normalize knot vectors 
+  /*
+   * Normalize knot vectors
    * ----------------------
    */
 
@@ -430,7 +444,7 @@ s1390 (pc1, ps1, nder, jstat)
   if (kstat < 0) goto error;
 
 
-  /* 
+  /*
    * Next we find union of knot-vectors nsurf13->et1 and nsurf24->et2,
    * and union of knot-vectors nsurf13->et2 and nsurf24->et1.
    * -----------------------------------------------------------------
@@ -447,7 +461,7 @@ s1390 (pc1, ps1, nder, jstat)
     goto error;
 
 
-  /* 
+  /*
    * Represent the two surfaces with common refined knot-vectors
    * ------------------------------------------------------------
    */
@@ -461,8 +475,8 @@ s1390 (pc1, ps1, nder, jstat)
     goto error;
 
 
-  /* 
-   * Allocate array scoef 
+  /*
+   * Allocate array scoef
    * -------------------
    */
 
@@ -471,8 +485,8 @@ s1390 (pc1, ps1, nder, jstat)
     goto err101;
 
 
-  /* 
-   * Match vertices from surface 1 and 2 
+  /*
+   * Match vertices from surface 1 and 2
    * ------------------------------------
    */
 
@@ -496,8 +510,8 @@ s1390 (pc1, ps1, nder, jstat)
 	}
     }
 
-  /* 
-   * Generate the new surface 
+  /*
+   * Generate the new surface
    * ------------------------
    */
 
@@ -544,14 +558,11 @@ s1390 (pc1, ps1, nder, jstat)
     goto out;
 
   out:
-    if (surf13 != NULL) freeSurf (surf13);
     if (nsurf13 != NULL) freeSurf (nsurf13);
-    if (surf24 != NULL) freeSurf (surf24);
     if (nsurf24 != NULL) freeSurf (nsurf24);
     if (ew != NULL) freearray (ew);
     if (srfr1 != NULL) freearray (srfr1);
     if (srfr2 != NULL) freearray (srfr2);
-    if (cpar != NULL) freearray (cpar);
     if (rc1 != NULL) freeCurve(rc1);
     if (rc2 != NULL) freeCurve(rc2);
 
