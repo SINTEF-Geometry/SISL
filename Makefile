@@ -223,14 +223,14 @@ ifeq "$(PLATFORM)" "hp-pa"
   LDXX		=$(CXX)
 
   ifeq "$(MODE)" "opt"
-    CXXFLAGS		=-O -G +DAportable
+    CXXFLAGS		=-O -G +DAportable -AA
     CXXDEFS		=-DHP -D$(EX)
   else
-    CXXFLAGS		=-g -G +DAportable
+    CXXFLAGS		=-g -G +DAportable -AA
     CXXDEFS		=-DHP -DCHECKLEVEL4 -DHP_ACC_Cplusplus -DHP_Cplusplus
   endif
 
-  LDXXFLAGS		=-g -z -G +DAportable
+  LDXXFLAGS		=-g -z -G +DAportable -AA
 endif
 
 
