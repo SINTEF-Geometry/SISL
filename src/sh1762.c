@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.15 2003-02-14 12:42:26 vsk Exp $
+ * $Id: sh1762.c,v 1.16 2004-01-21 13:49:30 vsk Exp $
  *
  */
 
@@ -3472,6 +3472,21 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 		     tstart2, tend1, tend2, spar[0], spar[1], spar, spar + 1, &kstat);
 	      if (kstat < 0)
 		goto error;
+
+	      if (kstat == 2)
+		{
+		  /* Search for a better start point for the
+		     iteration. */
+		  sh6cvvert(po1->c1, po2->c1, spar, spar+1);
+
+		  /* Iterate. */
+		  kstat = 0;
+		  s1770 (po1->o1->c1, po2->o1->c1, aepsge, tstart1,
+			 tstart2, tend1, tend2, spar[0], spar[1],  
+			 spar, spar + 1, &kstat);
+		  if (kstat < 0)
+		    { kpos=__LINE__; goto error; }
+		}
 
 	      if (kstat == 1)
 		/*Intersection point found. Control edges. */
