@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1340.c,v 1.2 1994-07-05 11:34:56 pfu Exp $
+ * $Id: s1340.c,v 1.3 1994-08-15 13:21:53 pfu Exp $
  *
  */
 
@@ -159,6 +159,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 *             on an earlier Fortran version by the same author.
 * CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to NULL)
 *      in 'ranking' to avoid potential memory leak when exiting through 'out'.
+*      Removed several other memory leaks.
 *
 *********************************************************************
 */
@@ -180,6 +181,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
                                    estimates.                            */
   double *l2err = NULL;
   double *lepsco = NULL;
+  double *temp_err = NULL;
   SISLCurve *tempcurve = NULL;  /* Variables that are used for storing
                                    temporary curves.                     */
   SISLCurve  *helpcurve = NULL;
@@ -190,7 +192,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   SISLCurve *qc_kreg = NULL;    /* Non-periodic version of the input curve. */
 
 
-  /* Initialize ranking pointers in case we exit through 'out' (PFU 05/07-94) */
+  /* Initialize ranking ptrs in case of early exit through 'out' (PFU 05/07-94) */
   ranking.prio = NULL;
   ranking.groups = NULL;
 
@@ -205,6 +207,8 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   {
     *newcurve = newCurve(n1, k, oldcurve->et, oldcurve->ecoef,
 			 oldcurve->ikind, oldcurve->idim, 1);
+    if (*newcurve == NULL)  goto err101;
+
     *stat = 0;
     goto out;
   }
@@ -213,27 +217,24 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
   if (oldcurve->cuopen == SISL_CRV_PERIODIC)
   {
-     make_cv_kreg(oldcurve, &qc_kreg, &lstat);
-     if (lstat < 0) goto error;
+    make_cv_kreg(oldcurve, &qc_kreg, &lstat);
+    if (lstat < 0) goto error;
 
-     /* The input curve is closed and periodic. Make sure that the
-	endpoints of the curve is still matching by fixing the
-	position and the derivative in the endpoints of the curve.
-	The change made to startfix and endfix is only locallly. */
+    /* The input curve is closed and periodic. Make sure that the
+       endpoints of the curve is still matching by fixing the
+       position and the derivative in the endpoints of the curve.
+       The change made to startfix and endfix is only locallly. */
 
-     startfix = MAX(startfix, 2);
-     endfix = MAX(endfix, 2);
+    startfix = MAX(startfix, 2);
+    endfix = MAX(endfix, 2);
   }
   else
-     qc_kreg = oldcurve;
+    qc_kreg = oldcurve;
 
   /* Allocate space for some local arrays. */
 
-  local_err = newarray(dim, double);
-  if (local_err == NULL) goto err101;
-
-  l2err = newarray(dim, double);
-  if (l2err == NULL) goto err101;
+  temp_err = newarray(dim, double);
+  if (temp_err == NULL) goto err101;
 
   lepsco = newarray(dim, double);
   if (lepsco == NULL) goto err101;
@@ -280,7 +281,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   /* Based on the computed ranking, we remove as close to maxi knots
      from oldcurve as possible, but such that we can always compute an
      approximation to oldcurve on the reduced knot vector, with error less
-     than eps. */
+     than eps.  newcurve will be created with icopy==1.  */
 
   s1354(qc_kreg, qc_kreg, &ranking, eps, lepsco, startfix, endfix,
 	mini, maxi, newcurve, maxerr, &lstat);
@@ -320,21 +321,33 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
          we can from newcurve and in this way determining an even shorter
 	 knot vector.
 	 First we iterate in s1354 to see how many knots we can remove
-	 and store the approximation to newcurve in tempcurve. */
+	 and store the approximation to newcurve in helpcurve (will be
+	 created with icopy==1). */
 
       mini = 0; maxi = (*newcurve)->in - k + 1;
       s1354(*newcurve, *newcurve, &ranking, eps, lepsco, startfix,
-	    endfix, mini, maxi, &tempcurve, local_err, &lstat);
+	    endfix, mini, maxi, &helpcurve, temp_err, &lstat);
       if (lstat < 0) goto error;
 
-      /* Now, we have no guarantee that tempcurve is closer to oldcurve
+      /* Now, we have no guarantee that helpcurve is closer to oldcurve
          than the tolerance so we compute a new approximation to oldcurve
-         on the knot vector of tempcurve and store this in tempcurve. */
+         on the knot vector of helpcurve and store this in tempcurve (with
+	 icopy==1).
+	 Must make sure that local_err is free'ed if allocated from last
+	 iteration. */
 
-      sh1365(qc_kreg, tempcurve->et, k, tempcurve->in,
+      if (local_err != NULL) freearray(local_err);
+
+      sh1365(qc_kreg, helpcurve->et, k, helpcurve->in,
 	     startfix, endfix, &tempcurve,
 	     &local_err, &l2err, &lstat);
       if (lstat < 0) goto error;
+
+      /* Don't need l2err or helpcurve anymore. */
+
+      freearray(l2err);
+      freeCurve(helpcurve);
+      helpcurve = NULL;
 
       /* We must now check if the new tempcurve is within the tolerance. */
       i = 0;
@@ -367,8 +380,13 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 	    startfix, endfix, mini, maxi, &helpcurve, maxerr, &lstat);
       if (lstat < 0) goto error;
 
-      if (tempcurve != NULL) freeCurve(tempcurve);
+      if (tempcurve != NULL)
+      {
+	freeCurve(tempcurve);
+	tempcurve = NULL;
+      }
       *newcurve = helpcurve;
+      helpcurve = NULL;
     }
     else
     {
@@ -381,6 +399,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
       if (*newcurve != NULL) freeCurve(*newcurve);
       *newcurve = tempcurve;
+      tempcurve = NULL;
     }
 
     /* Now we must check if it is time to stop. */
@@ -395,7 +414,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
   if (oldcurve->cuopen == SISL_CRV_CLOSED ||
       oldcurve->cuopen == SISL_CRV_PERIODIC)
-     (*newcurve)->cuopen = SISL_CRV_CLOSED;
+    (*newcurve)->cuopen = SISL_CRV_CLOSED;
 
   /* Success */
 
@@ -404,27 +423,30 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
   /* Error in allocation of memory. */
 
- err101:
+err101:
   *stat = -101;
   s6err("s1340", *stat, pos);
   goto out;
 
   /* Error in lower level routine. */
 
- error:
+error:
   *stat = lstat;
   s6err("s1340", *stat, pos);
   goto out;
 
   /* Clear up and free memory before exit. */
 
- out:
+out:
+  if (temp_err != NULL) freearray(temp_err);
   if (local_err != NULL) freearray(local_err);
   if (l2err != NULL) freearray(l2err);
   if (lepsco != NULL) freearray(lepsco);
   if (ranking.prio != NULL) freearray(ranking.prio);
   if (ranking.groups != NULL) freearray(ranking.groups);
   if (qc_kreg != NULL && qc_kreg != oldcurve) freeCurve(qc_kreg);
+  if (helpcurve != NULL && helpcurve != (*newcurve)) freeCurve(helpcurve);
+  if (tempcurve != NULL && tempcurve != (*newcurve)) freeCurve(tempcurve);
 
   return;
 }
