@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1440.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1440.c,v 1.2 1994-11-29 10:06:50 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1440(SISLSurf *ps1,SISLSurf **rs2,int *jstat)
 #else
 void s1440(ps1,rs2,jstat)
@@ -33,7 +33,7 @@ void s1440(ps1,rs2,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Interchange the two parameter directions used in the
 *              mathematical description of a surface and thereby
 *              change the direction of the normal vector of the surface.
@@ -46,7 +46,7 @@ void s1440(ps1,rs2,jstat)
 *
 * OUTPUT     : rs2    - Pointer to the surface with interchanged
 *                       parameter directions.
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -64,14 +64,16 @@ void s1440(ps1,rs2,jstat)
 *
 * WRITTEN BY : Vibeke Skytt, SI, 88-11.
 * REVISED BY : Johannes Kaasa, SI, 91-09 (Introduced NURBS).
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Added
+*              handling of 'cuopen' flags.
 *
 *********************************************************************
 */
 {
   int kpos = 0;          /* Position of error.                  */
   double *ssurf = NULL;  /* Pointer to vertices of new surface. */
-  int kdim;              /* Local (rational) dimension.         */  
-  double *vert;          /* Pointer to vertices.                */ 
+  int kdim;              /* Local (rational) dimension.         */
+  double *vert;          /* Pointer to vertices.                */
 
   /* Check for rational surface. */
 
@@ -87,36 +89,41 @@ void s1440(ps1,rs2,jstat)
     }
 
   /* Allocate scratch for vertices of new surface.  */
-  
+
   ssurf = newarray(ps1->in1*ps1->in2*kdim,double);
   if (ssurf == NULL) goto err101;
-  
+
   /* Change parameter directions of vertices.  */
-  
+
   s6chpar(vert,ps1->in1,ps1->in2,kdim,ssurf);
-  
+
   /* Create output surface.  */
-  
+
   *rs2 = NULL;
   if ((*rs2 = newSurf(ps1->in2,ps1->in1,ps1->ik2,ps1->ik1,ps1->et2,
 		      ps1->et1,ssurf,ps1->ikind,ps1->idim,1)) == NULL) goto err101;
-  
+
+  /* Set periodicity flag */
+
+  (*rs2)->cuopen_1 = ps1->cuopen_2;
+  (*rs2)->cuopen_2 = ps1->cuopen_1;
+
   /* Parameter directions changed.  */
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Error in space allocation.  */
-  
+
  err101: *jstat = -101;
   s6err("s1440",*jstat,kpos);
   goto out;
-  
+
  out:
-  
+
   /* Free space occupied by local array.  */
-  
+
   if (ssurf != NULL) freearray(ssurf);
-  
+
   return;
 }
