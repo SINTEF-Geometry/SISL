@@ -285,8 +285,16 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
    
    /* The surface does not have principal curvatures. */
    war100:
-      *k1 = 0.0;
-   *k2 = 0.0;
+      if !(sqrt_arg < 0.)
+      {
+	 *k1 = (- b /(2.*a);
+	 *k2 = *k1;
+      }
+      else
+      {
+	 *k1 = 0.0;
+	 *k2 = 0.0;
+      }
    d1[0] = 1.0;
    d1[1] = 0.0;
    d2[0] = 0.0;
