@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: intjoinper.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: intjoinper.c,v 1.2 1999-05-21 08:44:22 jka Exp $
  *
  */
 
@@ -495,7 +495,6 @@ void
 		       pcurr = pnext;
 		       pnext = pother;
 		    }		     
-		 }
 		 
 		 sh6connect(plast_1, pfirst_2, &kstat);
 		 if (kstat != 0) goto error;
@@ -541,6 +540,7 @@ void
 		 /* Reset to start */
 		 ki = -1;
 		 break; /* kj loop */
+		 }
 	      } /* End of else not same curve */
 	      
 	   } /* if hit */

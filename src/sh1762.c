@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.9 1999-01-15 10:17:25 jka Exp $
+ * $Id: sh1762.c,v 1.10 1999-05-21 08:42:51 jka Exp $
  *
  */
 
@@ -58,6 +58,8 @@ static void sh1762_s9edgpscon (SISLEdge *, double, SISLSurf *, int, SISLIntdat *
 static void sh1762_s9simple (SISLObject *, SISLObject *, SISLEdge *[], int *);
 static void sh1762_s9reex (SISLObject *, SISLObject *, SISLEdge *[], double, SISLIntdat *, int *);
 static void sh1762_s9ptiter (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge *[], int *);
+static int sh1762_is_taboo(SISLSurf *, SISLSurf *, SISLIntpt *, int, int *);
+static double sh1762_sflength(SISLSurf *, int, int *);
 #else
 static void sh1762_s9mic ();
 static void sh1762_s9num ();
@@ -74,6 +76,8 @@ static void sh1762_s9edgpscon ();
 static void sh1762_s9simple ();
 static void sh1762_s9reex ();
 static void sh1762_s9ptiter ();
+static int sh1762_is_taboo();
+static double sh1762_sflength();
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -95,7 +99,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 *
 *********************************************************************
 *          NOTE : Comments for further developments/tasks starts
-*                 with <comment-sign> UPDATE :
+*                 with /* UPDATE :
 *
 *
 * PURPOSE    : SISLObject - object intersection. Treat the inner of the
@@ -1135,6 +1139,102 @@ out:if (spar != NULL)
 }
 
 #if defined(SISLNEEDPROTOTYPES)
+static double sh1762_sflength(SISLSurf *psurf, int idir, int *jstat)
+#else
+static double sh1762_sflength(psurf, idir, jstat)
+    SISLSurf *psurf;
+    int idir;
+    int *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Estimate the surface length in a given parameter direction.
+*
+*
+*
+* INPUT      : psurf  - The surface.
+*              idir   - The parameter direction.
+*
+*
+* OUTPUT     : return value - Estimated surface length.
+*              jstat  - status messages
+*                         = 0     : no error.
+*                         < 0     : error
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 99-05.
+*
+*********************************************************************
+*/
+{
+  int kstat = 0;
+  int kleft1 = 0, kleft2 = 0;
+  int ki;
+  int kdim = psurf->idim;
+  double spar[2];  /* Parameter value in which to evaluate. */
+  double sint[2];  /* Interval between parameter values.    */
+  double sder[12]; /* Points on the surface.                */
+  int kneval;      /* Number of points to evaluate.         */
+  double tlength = 0.0;  /* Estimated length of surface.    */
+
+  kneval = (idir == 1) ? psurf->ik1 : psurf->ik2;
+  kneval = max(2, min(kneval, 4));
+
+  /* Set first parameter in which to evaluate. */
+  if (idir == 1)
+    {
+      spar[0] = psurf->et1[psurf->ik1-1];
+      spar[1] = (double)0.5*(psurf->et2[psurf->ik2-1]+psurf->et2[psurf->in2]);
+
+      sint[0] = (psurf->et1[psurf->in1] - spar[0])/(double)(kneval-1);
+      sint[1] = 0.0;
+    }
+  else
+    {
+      spar[0] = (double)0.5*(psurf->et1[psurf->ik1-1]+psurf->et1[psurf->in1]);
+      spar[1] = psurf->et2[psurf->ik2-1];
+
+      sint[0] = 0.0;
+      sint[1] = (psurf->et2[psurf->in2] - spar[0])/(double)(kneval-1);
+    }
+
+  /* Evaluate points. */
+
+  for (ki=0; ki<kneval; ki++, spar[0]+=sint[0], spar[1]+=sint[1])
+    {
+      s1424(psurf, 0, 0, spar, &kleft1, &kleft2, sder+ki*kdim, &kstat);
+      if (kstat < 0)
+	goto error;
+    }
+
+  /*  Compute the distance between the points. */
+
+  for (tlength=0.0, ki=1; ki<kneval; ki++)
+    tlength += s6dist(sder+(ki-1)*kdim, sder+ki*kdim, kdim);
+
+  *jstat = 0;
+  goto out;
+
+  /* Error in lower level routine.  */
+  error:
+  *jstat = kstat;
+  s6err ("sh1762_sflength", *jstat, 0);
+  goto out;
+
+  out:
+  return tlength;
+}
+  
+#if defined(SISLNEEDPROTOTYPES)
 static void
 sh1762_s9num (SISLObject * po, SISLObject * poref, int *jdiv, int *jstat)
 #else
@@ -1179,6 +1279,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
 *********************************************************************
 */
 {
+  int kstat = 0;
   int kgtpi1=0, kgtpi2=0;
   double tang1=DNULL, tang2=DNULL;
   int not_case_2d;
@@ -1274,18 +1375,37 @@ sh1762_s9num (po, poref, jdiv, jstat)
     }
   else if (po->iobj == SISLSURFACE)
     {
-      if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1))
+	double tsfp1, tsfp2, tref;
+	tref = 5.0;
+
+	tsfp1 = sh1762_sflength(po->s1, 1, &kstat);
+	if (kstat < 0)
+	  goto error;
+
+	tsfp2 = sh1762_sflength(po->s1, 2, &kstat);
+	if (kstat < 0)
+	  goto error;
+
+	if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
+	  !(po->s1->ik1 == 2 && tsfp1 < tref*tsfp2))
 	*jdiv = 1;
 
       else
 	*jdiv = 0;
 
-      if (s1791 (po->s1->et2, po->s1->ik2, po->s1->in2))
+	if (s1791 (po->s1->et2, po->s1->ik2, po->s1->in2) &&
+	  !(po->s1->ik2 == 2 && tsfp2 < tref*tsfp1))
 	*jdiv += 2;
 
     }
   goto out;
 
+
+  /* Error in lower level routine. */
+  error:
+  *jstat = kstat;
+  s6err ("sh1762_s9num", *jstat, 0);
+  goto out;
 
   /* Error. Kind of object does not exist.  */
 err121:
@@ -1295,8 +1415,160 @@ err121:
 out:;
 }
 
+#if defined(SISLNEEDPROTOTYPES)
+static int 
+sh1762_is_taboo(SISLSurf *psurf1, SISLSurf *psurf2, SISLIntpt *pintpt, 
+		int idir, int *jstat)
+#else
+static int
+sh1762_is_taboo(psurf1, psurf2 ,pintpt, idir, jstat)
+    SISLSurf *psurf1;
+    SISLSurf *psurf2;
+    SISLIntpt *pintpt;
+    int idir;
+    int *jstat;
+#endif
+
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Check if the intersection curve passing through
+*	       the point is always parallel to an iso-curve. 
+*
+*
+*
+* INPUT      : psurf1   - 1. surface in intersection problem.
+*              psurf2   - 2. surface in intersection problem or NULL.
+*              pintpt   - Intersection point.
+*              idir     - Parameter direction in surface.
+*
+*
+* OUTPUT     : return value : 1 = is taboo point, 0 = no taboo point
+*              jstat    - Status messages
+*                          = 0     : OK
+*                          < 0     : error
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 99-05.
+*
+*********************************************************************
+*/
+{
+   static double parallel    = 0.01;
+   static double fuzzy_angle = 1e-4;
+   static double tol = (double) 1000000.0 * REL_COMP_RES;
+
+   int kstat = 0;
+   int is_taboo = 0;
+   double derivs1[9], derivs2[9], norm[3], nor1[3], nor2[3], angle;
+   double abs_tang1[2], abs_tang2[2];
+   double tmax;
+   int ilfs = 0, ilft = 0;
+
+   if (psurf1->idim == 2)
+     return 0;
+
+   /* Test input. */
+
+   if (psurf2 && (psurf1->idim != psurf2->idim || psurf1->idim != 3))
+     goto err104;
+
+   if (!psurf2 && psurf1->idim != 1)
+     goto err105;
+
+   if (psurf2)
+     {
+       /* Evaluate the intersection point in both surfaces. */
+
+       s1421(psurf1, 1, &pintpt->epar[0], &ilfs, &ilft, derivs1, norm, &kstat);
+       if (kstat < 0)
+	 goto error;
+
+       s1421(psurf2, 1, &pintpt->epar[2], &ilfs, &ilft, derivs2, norm, jstat);
+       if (kstat < 0)
+	 goto error;
+
+       s6crss(derivs2+3, derivs2+6, nor2);
+       s6crss(derivs1+3, derivs1+6, nor1);
+
+       /* If we have a singularity, we don't declare it as taboo. */
+
+       angle = s6ang(nor1, nor2, 3);
+
+       abs_tang1[0] = fabs(s6scpr(derivs1+6, nor2, 3));
+       abs_tang1[1] = fabs(s6scpr(derivs1+3, nor2, 3));
+
+       abs_tang2[0] = fabs(s6scpr(nor1, derivs2+6, 3));
+       abs_tang2[1] = fabs(s6scpr(nor1, derivs2+3, 3));
+
+       if (angle < fuzzy_angle)
+	 is_taboo = 0;
+       else if (idir == 1 && abs_tang1[0] < parallel*abs_tang1[1])
+	 is_taboo = 1;
+       else if (idir == 2 && abs_tang1[1] < parallel*abs_tang1[0])
+	 is_taboo = 1;
+       else 
+	 is_taboo = 0;
+     }
+   else 
+     {
+       /* Evaluate the intersection point. */
+
+       s1421(psurf1, 1, &pintpt->epar[0], &ilfs, &ilft, derivs1, norm, &kstat);
+       if (kstat < 0)
+	 goto error;
+
+       /* If we have a singularity, we don't declare it as taboo. */
+
+       tmax = sqrt(derivs1[1]*derivs1[1] + derivs1[2]*derivs1[2]);
+       if (tmax < tol)
+	  /* The length of the surface normal is less than the 
+	     given tolerance*/
+	is_taboo = 0;
+
+       else if (idir == 1 && fabs(derivs1[2]) < parallel*tmax)
+	 is_taboo = 1;
+       else if (idir == 2 && fabs(derivs1[1]) < parallel*tmax)
+	 is_taboo = 1;
+       else 
+	 is_taboo = 0;
+     }
+
+   *jstat = 0;
+   goto out;
+
+   /* Error in lower order routine. */
+  error:
+  *jstat = kstat;
+  s6err ("sh1762_is_taboo", *jstat, 0);
+   goto out;
+
+  /* Error. Dimension not equal to 3.  */
+err104:
+  *jstat = -104;
+  s6err ("sh1762_is_taboo", *jstat, 0);
+   goto out;
+
+  /* Error. Conflicting dimensions.  */
+err105:
+  *jstat = -105;
+  s6err ("sh1762_is_taboo", *jstat, 0);
+   goto out;
+
+out:
+   return is_taboo;
+}
 
 
+
 #if defined(SISLNEEDPROTOTYPES)
 static void
 sh1762_s9subdivpt (SISLObject * po1, SISLObject * po2, double aepsge,
@@ -1693,6 +1965,18 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		    if (pcurr->epar[kpar] < sstart[0]+tdel1 ||
 			pcurr->epar[kpar] > send[0]-tdel1) continue;
 
+		    /* Check if the intersection curve passing through
+		       the point is always parallel to an iso-curve. */
+		    
+		    if (sh1762_is_taboo(qo1->s1, 
+					(qo2->iobj == SISLSURFACE) ? 
+					qo2->s1 : NULL, 
+					pcurr, 1, &kstat))
+		      continue;
+
+		    if (kstat < 0)
+		      goto error;
+
 		    if (pcurr->iinter == SI_SING)
 		    {
 		       /* Test if the singular/near singular point is the one
@@ -1722,7 +2006,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		 and distinguish between ordinary intersection points and
 		 singular or almost singular (touchy) points. */
 
-	      /* Loop for edges no 1 and 3*/
+	      /* Loop for edges no 2 and 4*/
 	      for (kj = 1; kj < 4; kj += 2)
 		 /* Loop for all points on edge*/
 		 for (qptedg = vedge[iobj - 1]->prpt[kj]; qptedg != NULL;
@@ -1734,6 +2018,18 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
 		    if (pcurr->epar[kpar+1] < sstart[1]+tdel2 ||
 			pcurr->epar[kpar+1] > send[1]-tdel2) continue;
+
+		    /* Check if the intersection curve passing through
+		       the point is always parallel to an iso-curve. */
+		    
+		    if (sh1762_is_taboo(qo1->s1,  
+					(qo2->iobj == SISLSURFACE) ? 
+					qo2->s1 : NULL, 
+					pcurr, 2, &kstat))
+		      continue;
+
+		    if (kstat < 0)
+		      goto error;
 
 		    if (pcurr->iinter == SI_SING)
 		    {
@@ -2992,7 +3288,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
 	    /* TESTING UJK !!!!!!!!!!!!!!!!!!!!!
-	       UJK, August 92, 1D crvs may be "degenerate",
+	    /* UJK, August 92, 1D crvs may be "degenerate",
 	       continue when iteration fails */
 	    if (kstat != 1 && po1->p1->idim == 1)
 	    {
@@ -4445,12 +4741,12 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT &&
 	   po1->p1->idim == 3)) && kxintercept && xc > 7 && xc % 2 == 0)
   {
-    if (po1->iobj == SISLSURFACE)
+    if (po1->iobj == SISLSURFACE) 
       {
 	qs1 = po1->s1;
 	pp1 = po2->p1;
       }
-    else
+    else 
       {
 	qs1 = po2->s1;
 	pp1 = po1->p1;
@@ -4479,7 +4775,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   the point  */
 	for (ind1=0; ind1<kpt; ind1++)
 	  {
-	    s1421(qs1, 0, spar+2*ind1, &kleft, &kleft2, sder1,
+	    s1421(qs1, 0, spar+2*ind1, &kleft, &kleft2, sder1, 
 		  snorm1, &kstat);
 	    if (s6dist(pp1->ecoef, sder1, kdim) <= aepsge)
 	      break;
@@ -4489,7 +4785,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	  {
 	    for (ind3=0; ind3<ucurve[ind2]->ipoint; ind3++)
 	      {
-		s1421(qs1, 0, ucurve[ind2]->epar1+2*ind3, &kleft, &kleft2,
+		s1421(qs1, 0, ucurve[ind2]->epar1+2*ind3, &kleft, &kleft2, 
 		      sder1, snorm1, &kstat);
 		if (s6dist(pp1->ecoef, sder1, kdim) <= aepsge)
 		  break;
@@ -4512,7 +4808,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	  freeIntcrvlist(ucurve, kcrv);
       }
     qs1 = NULL;
-  }
+  }  
   else kstat = 1;
 
 
@@ -4803,15 +5099,15 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
      /* Test if this is a singular situation. */
 
-     if (s6ang(sder1+qs->idim, sder1+2*qs->idim, qs->idim) <=
+     if (s6ang(sder1+qs->idim, sder1+2*qs->idim, qs->idim) <= 
 	 ANGULAR_TOLERANCE &&
-	 s6ang(sder2+qs->idim, sder2+2*qs->idim, qs->idim) <=
+	 s6ang(sder2+qs->idim, sder2+2*qs->idim, qs->idim) <= 
 	 ANGULAR_TOLERANCE)
      {
 	/* Perform marching to check if there is coincidence between
 	   the intersection points. */
 
-	 /* fprintf(stdout,"Try coincidence marching \n");
+	 /* fprintf(stdout,"Try coincidence marching \n"); 
 	 fprintf(stdout,"%7.13f %7.13f %7.13f %7.13f \n",qs->et1[0],
 		 qs->et1[qs->in1],qs->et2[0],qs->et2[qs->in2]); */
 
