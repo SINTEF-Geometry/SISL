@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.24 1995-08-10 09:03:03 jka Exp $
+ * $Id: sisl.h,v 1.25 1995-08-10 09:20:15 jka Exp $
  *
  */
 
@@ -838,15 +838,6 @@ void s1733(SISLSurf *,int,int,double *,double *,double *,double *,
 extern
 #endif
 void s1750(SISLCurve *,int,SISLCurve **,int *);
-#ifndef  S1771
-extern
-#endif
-void s1771(SISLPoint *,SISLCurve *,double,double,double,double,double *,int *);
-#ifndef  S1773
-extern
-#endif
-void s1773(SISLPoint *,SISLSurf *,double,double [],double [],double [],
-	   double [],int *);
 #ifndef  S1850
 extern
 #endif
@@ -1588,14 +1579,6 @@ void s1733();
 extern
 #endif
 void s1750();
-#ifndef  S1771
-extern
-#endif
-void s1771();
-#ifndef  S1773
-extern
-#endif
-void s1773();
 #ifndef  S1850
 extern
 #endif
