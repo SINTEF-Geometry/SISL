@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1386.c,v 1.2 1994-10-21 15:55:08 pfu Exp $
+ * $Id: s1386.c,v 1.3 1994-10-21 16:30:52 pfu Exp $
  *
  */
 
@@ -94,8 +94,9 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 *              leakage problems.  Initialized 'rsnew'.  Increased the size
 *              of 'scoef' for non-rationals by 'kn2*ider1*ps->idim', since the
 *              first call to s1720() will increase "in" by ider1.
-*              Added handling of periodicity for non-rationals, periodic NURBS
-*              are still NOT handled correctly.
+*              NOTE: closed and periodic case isn't handled correctly by this
+*              routine and it will have to be handled separatly for NURBS and
+*              polynomial case.
 *
 **********************************************************************/
 {
@@ -417,12 +418,6 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 
      *rsnew = newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,ps->ikind,(ps->idim),1);
      if (*rsnew == NULL) goto err101;
-
-     /* Set the open/closed/periodic flags of the new surface.
-	The knots and coefs will be correct since s1720() handles it correctly. */
-
-     (*rsnew)->cuopen_1 = ps->cuopen_1;
-     (*rsnew)->cuopen_2 = ps->cuopen_2;
 
   }
 
