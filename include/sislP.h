@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.37 1995-10-26 10:08:26 jka Exp $
+ * $Id: sislP.h,v 1.38 1995-11-02 14:46:33 jka Exp $
  *
  */
 
@@ -615,6 +615,11 @@ extern
 #endif
 void s1223(double [],double [],int,int,int,int,int,int,double [],
 	   int,int,double [],int *);
+#ifndef  S1224
+extern
+#endif
+void s1224(double [],double [],int,int,int,int,int, int,double [],int,
+	   double [],int *);
 #ifndef  S1232
 extern
 #endif
@@ -2529,6 +2534,10 @@ void s1222();
 extern
 #endif
 void s1223();
+#ifndef  S1224
+extern
+#endif
+void s1224();
 #ifndef  S1232
 extern
 #endif
