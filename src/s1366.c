@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1366.c,v 1.2 1994-04-22 07:21:02 vsk Exp $
+ * $Id: s1366.c,v 1.3 1994-08-16 08:35:12 pfu Exp $
  *
  */
 
@@ -23,7 +23,7 @@
 #if defined(SISLNEEDPROTOTYPES)
 void s1366(SISLSurf *ps, double aoffset, double aepsge, double amax, int idim,
 	   double *eknot13, int in13, int ik13,
-	   double *eknot24, int in24, int ik24, 
+	   double *eknot24, int in24, int ik24,
 	   SISLSurf **rs, int *jstat)
 #else
 void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
@@ -46,7 +46,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To create a B-spline approximating the offset surface of
 *              a B-spline surface.
 *
@@ -76,8 +76,8 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 *                       parameter direction.
 *              ik24   - Order of knot-vector along second parameter direction.
 *
-* OUTPUT     : 
-*              jstat  - status messages  
+* OUTPUT     :
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -85,7 +85,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 *
 * METHOD     : Points, derivatives, cross derivatives and normals are calcu-
 *              lated on selected points on the surface. The selected points
-*              corresponds to parameter-pairs of all specific values of the    
+*              corresponds to parameter-pairs of all specific values of the
 *              knot-vector. The offset values of these points are calculated.
 *
 * EXAMPLE OF USE:
@@ -95,14 +95,15 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 *
 *
 *-
-* CALLS      : s1367     - Evaluate the surface at a given parameter pair 
+* CALLS      : s1367     - Evaluate the surface at a given parameter pair
 *                          value.
 *              s1347     - Interpolate a bicubic hermite spline-approximation
 *                          surface.
 *
 * WRITTEN BY : Per Evensen,  SI, 89-4.
 * REWISED BY : Per Evensen,  SI, 90-9 Corrected pointers.
-*
+* REWISED BY : Paal Fugelli, SINTEF, 1994-07 Added free'ing of allocated
+*              memory (at end) to fix memory leakage problem.
 *********************************************************************
 */
 {
@@ -112,11 +113,11 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   int ki;            /* Loop controller. */
   int kk1;           /* Loop controller. */
   int kk2;           /* Loop controller. */
-  
+
   int kder = 1;      /* Number of derivatives necessary to achieve.      */
   int klfs=0;       /* Pointer to knot interval.                        */
   int klft=0;       /* Pointer to knot interval.                        */
-  int knbpnt=0;      /* Number of points stored. */ 
+  int knbpnt=0;      /* Number of points stored. */
   int km1=1;         /* Counter of points in 1. parameter direction. */
   int km2=1;         /* Counter of points in 2. parameter direction. */
   int kain=0;        /* Array index. */
@@ -150,230 +151,240 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   double *scrss=NULL; /* Pointer to cross derivatives. */
   double spar[2];    /* Parameter value at where to evaluate surface.    */
   double sder[27];   /* Pointer to array containing the derivatives.     */
-  
+
   /* Initialization of variables */
   kdim = ps -> idim;
-  
+
   kmaxis = 100;
   kmaxik = 10;
   tepsco = (double)0.000001;
-  
+
   for (ki=0; ki<3; ki++) seps[ki] = aepsge;
-  
+
   for (ki=0; ki<4; ki++) lend[ki] = 1;
-  
+
   for (ki=0; ki<12; ki++) sedgeps[ki] = aepsge;
-  
+
   /* Allocate space for storage of points, derivatives and cross-derivatives. */
-  
+
   spnt = newarray(kdim*kmaxis,DOUBLE);
   if (spnt == NULL) goto err101;
-  
+
   stng1 = newarray(kdim*kmaxis,DOUBLE);
   if (stng1 == NULL) goto err101;
-  
+
   stng2 = newarray(kdim*kmaxis,DOUBLE);
   if (stng2 == NULL) goto err101;
-  
+
   scrss = newarray(kdim*kmaxis,DOUBLE);
   if (scrss == NULL) goto err101;
-  
+
   /* Allocate space for storage of parametrization in 1. direction. */
-  
+
   spar1 = newarray(kmaxik,DOUBLE);
   if (spar1 == NULL) goto err101;
-  
+
   /* Allocate space for storage of parametrization in 2. direction. */
-  
+
   spar2 = newarray(kmaxik,DOUBLE);
   if (spar2 == NULL) goto err101;
-  
+
   /* Initiate parameter value in first and second parameter direction. */
   spar[0] = eknot13[ik13-1];
   spar[1] = eknot24[ik24-1];
-  
+
   /* Evaluate the surface (ps) at the parameter value spar.  */
   s1367(ps,aoffset,aepsge,idim,spar,kder,&klfs,&klft,sder,&kstat);
   if (kstat<0) goto error;
-  
+
   /* Store information about points, derivatives and cross-derivative. */
   for (ki=0; ki<idim; ki++)
-    {
-      spnt[kain] = sder[ki];
-      stng1[kain] = sder[ki+idim];
-      stng2[kain] = sder[ki+2*idim];
-      scrss[kain] = sder[ki+3*idim];
-      kain += 1;
-    }
-  
+  {
+    spnt[kain] = sder[ki];
+    stng1[kain] = sder[ki+idim];
+    stng2[kain] = sder[ki+2*idim];
+    scrss[kain] = sder[ki+3*idim];
+    kain += 1;
+  }
+
   /* Store parametrization along both parameter directions. */
   spar1[km1-1] = spar[0];
   spar2[km2-1] = spar[1];
-  
+
   knbpnt += 1;
-  
+
   for (kk1=ik13; kk1<=in13; kk1++)
+  {
+
+    /* check if current knot-value in first parameter direction is
+       equal the previous or not. */
+    if (DNEQUAL(spar[0],eknot13[kk1]))
     {
-      
-      /* check if current knot-value in first parameter direction is 
-	 equal the previous or not. */
-      if (DNEQUAL(spar[0],eknot13[kk1]))
-        {
-	  
-	  /* Evaluate the surface (ps) at the parameter value spar.  */
-	  spar[0] = eknot13[kk1];
-	  s1367(ps,aoffset,aepsge,idim,spar,kder,&klfs,&klft,sder,&kstat);
-	  if (kstat<0) goto error;
-	  
-	  /* Store information about points, derivatives and cross-derivative. */
-	  knbpnt += 1;
-	  km1 += 1;
-	  
-	  /* Possibly increase size of arrays. */
-	  if (knbpnt>=kmaxis)
-            {
-	      kmaxis += 100;
-	      spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
-	      stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
-	      stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
-	      scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
-            }
-	  
-	  /* Possibly increase size of arrays. */
-	  if (km1>=kmaxik)
-            {
-	      kmaxik += 10;
-	      spar1 = increasearray(spar1,kmaxik,DOUBLE);
-            }
-	  
-	  for (ki=0; ki<idim; ki++)
-	    {
-              spnt[kain] = sder[ki];
-              stng1[kain] = sder[ki+idim];
-              stng2[kain] = sder[ki+2*idim];
-              scrss[kain] = sder[ki+3*idim];
-              kain += 1;
-	    }
-	  
-	  /* Store parametrization along 1. parameter direction. */
-	  spar1[km1-1] = spar[0];
-        }
+
+      /* Evaluate the surface (ps) at the parameter value spar.  */
+      spar[0] = eknot13[kk1];
+      s1367(ps,aoffset,aepsge,idim,spar,kder,&klfs,&klft,sder,&kstat);
+      if (kstat<0) goto error;
+
+      /* Store information about points, derivatives and cross-derivative. */
+      knbpnt += 1;
+      km1 += 1;
+
+      /* Possibly increase size of arrays. */
+      if (knbpnt>=kmaxis)
+      {
+	kmaxis += 100;
+	spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
+	stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
+	stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
+	scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
+      }
+
+      /* Possibly increase size of arrays. */
+      if (km1>=kmaxik)
+      {
+	kmaxik += 10;
+	spar1 = increasearray(spar1,kmaxik,DOUBLE);
+      }
+
+      for (ki=0; ki<idim; ki++)
+      {
+	spnt[kain] = sder[ki];
+	stng1[kain] = sder[ki+idim];
+	stng2[kain] = sder[ki+2*idim];
+	scrss[kain] = sder[ki+3*idim];
+	kain += 1;
+      }
+
+      /* Store parametrization along 1. parameter direction. */
+      spar1[km1-1] = spar[0];
     }
-  
+  }
+
   for (kk2=ik24; kk2<=in24; kk2++)
+  {
+
+    /* check if current knot-value in second parameter direction is
+       equal the previous or not. */
+    if (DNEQUAL(spar[1],eknot24[kk2]))
     {
-      
-      /* check if current knot-value in second parameter direction is 
-	 equal the previous or not. */
-      if (DNEQUAL(spar[1],eknot24[kk2]))
-        {
-	  
-	  /* Initiate parameter value in first parameter direction. */
-	  spar[0] = eknot13[ik13-1];
-	  klfs = 0;
-	  
+
+      /* Initiate parameter value in first parameter direction. */
+      spar[0] = eknot13[ik13-1];
+      klfs = 0;
+
+      /* Evaluate the surface (ps) at the parameter value spar.  */
+      spar[1] = eknot24[kk2];
+      s1367(ps,aoffset,aepsge,idim,spar,kder,&klfs,&klft,sder,&kstat);
+      if (kstat<0) goto error;
+
+      /* Store information about points, derivatives and cross-derivative. */
+      knbpnt += 1;
+      km2 += 1;
+
+      /* Possibly increase size of arrays. */
+      if (knbpnt>=kmaxis)
+      {
+	kmaxis += 100;
+	spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
+	stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
+	stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
+	scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
+      }
+
+      /* Possibly increase size of arrays. */
+      if (km2>=kmaxik)
+      {
+	kmaxik += 10;
+	spar2 = increasearray(spar2,kmaxik,DOUBLE);
+      }
+
+      for (ki=0; ki<idim; ki++)
+      {
+	spnt[kain] = sder[ki];
+	stng1[kain] = sder[ki+idim];
+	stng2[kain] = sder[ki+2*idim];
+	scrss[kain] = sder[ki+3*idim];
+	kain += 1;
+      }
+
+      /* Store parametrization along 1. parameter direction. */
+      spar2[km2-1] = spar[1];
+
+      for (kk1=ik13; kk1<=in13; kk1++)
+      {
+
+	/* check if current knot-value in first parameter direction is
+	   equal the previous or not. */
+	if (DNEQUAL(spar[0],eknot13[kk1]))
+	{
+	  spar[0] = eknot13[kk1];
+
 	  /* Evaluate the surface (ps) at the parameter value spar.  */
-	  spar[1] = eknot24[kk2];
-	  s1367(ps,aoffset,aepsge,idim,spar,kder,&klfs,&klft,sder,&kstat);
+	  s1367(ps,aoffset,aepsge,idim,spar,kder,
+		&klfs,&klft,sder,&kstat);
 	  if (kstat<0) goto error;
-	  
-	  /* Store information about points, derivatives and cross-derivative. */
+
+	  /* Store information about points, derivatives and
+	     cross-derivative. */
 	  knbpnt += 1;
-	  km2 += 1;
-	  
+
 	  /* Possibly increase size of arrays. */
 	  if (knbpnt>=kmaxis)
-            {
-	      kmaxis += 100;
-	      spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
-	      stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
-	      stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
-	      scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
-            }
-	  
-	  /* Possibly increase size of arrays. */
-	  if (km2>=kmaxik)
-            {
-	      kmaxik += 10;
-	      spar2 = increasearray(spar2,kmaxik,DOUBLE);
-            }
-	  
+	  {
+	    kmaxis += 100;
+	    spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
+	    stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
+	    stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
+	    scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
+	  }
+
 	  for (ki=0; ki<idim; ki++)
-	    {
-              spnt[kain] = sder[ki];
-              stng1[kain] = sder[ki+idim];
-              stng2[kain] = sder[ki+2*idim];
-              scrss[kain] = sder[ki+3*idim];
-              kain += 1;
-	    }
-	  
-	  /* Store parametrization along 1. parameter direction. */
-	  spar2[km2-1] = spar[1];
-	  
-	  for (kk1=ik13; kk1<=in13; kk1++)
-	    {
-	      
-              /* check if current knot-value in first parameter direction is 
-                 equal the previous or not. */
-              if (DNEQUAL(spar[0],eknot13[kk1]))
-		{
-                  spar[0] = eknot13[kk1];
-		  
-                  /* Evaluate the surface (ps) at the parameter value spar.  */
-                  s1367(ps,aoffset,aepsge,idim,spar,kder,
-                        &klfs,&klft,sder,&kstat);
-                  if (kstat<0) goto error;
-		  
-                  /* Store information about points, derivatives and 
-                     cross-derivative. */
-                  knbpnt += 1;
-		  
-                  /* Possibly increase size of arrays. */
-                  if (knbpnt>=kmaxis)
-		    {
-                      kmaxis += 100;
-                      spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
-                      stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
-                      stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
-                      scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
-		    }
-		  
-                  for (ki=0; ki<idim; ki++)
-		    {
-		      spnt[kain] = sder[ki];
-		      stng1[kain] = sder[ki+idim];
-		      stng2[kain] = sder[ki+2*idim];
-		      scrss[kain] = sder[ki+3*idim];
-		      kain += 1;
-		    }
-		}
-	    }
-        }
+	  {
+	    spnt[kain] = sder[ki];
+	    stng1[kain] = sder[ki+idim];
+	    stng2[kain] = sder[ki+2*idim];
+	    scrss[kain] = sder[ki+3*idim];
+	    kain += 1;
+	  }
+	}
+      }
     }
-  
+  }
+
   /* Compute a bicubic hermite spline-approximation to the position and
      derivative data given by spnt, stng1, stng2 and scrss. */
-  
+
   s1347(spnt,stng1,stng2,scrss,km1,km2,idim,kpar,spar1,spar2,seps,lend,
 	sedgeps,tepsco,kopt,ktmax,rs,smxerr,&kstat);
   if (kstat<0) goto error;
-  
+
   /* Surface approximated. */
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Error in memory allocation */
-  
-  err101: *jstat = -101;
+
+err101:
+  *jstat = -101;
   s6err("s1366",*jstat,kpos);
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
-  error : *jstat = kstat;
+
+error:
+  *jstat = kstat;
   s6err("s1366",*jstat,kpos);
   goto out;
-  
-  out: return;
+
+out:
+  if (spnt != NULL) freearray(spnt);
+  if (stng1 != NULL) freearray(stng1);
+  if (stng2 != NULL) freearray(stng2);
+  if (scrss != NULL) freearray(scrss);
+  if (spar1 != NULL) freearray(spar1);
+  if (spar2 != NULL) freearray(spar2);
+
+  return;
 }
