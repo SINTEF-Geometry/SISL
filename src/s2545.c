@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.2 1995-10-03 13:35:57 jka Exp $
+ * $Id: s2545.c,v 1.3 1995-10-12 12:06:01 jka Exp $
  *
  */
 
@@ -155,6 +155,19 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 
 	 s1421(surf, 1, par, &leftknot1, &leftknot2, derive, normal, stat);
 	 if (*stat < 0) goto error;
+	 
+	 if (surf->idim == 1)
+	 {
+	    normal[0] = - derive[1];
+	    normal[1] = - derive[2];
+	    normal[2] = 1.;
+	 }
+	 else if (surf->idim == 2)
+	 {
+	    normal[0] = 0.;
+	    normal[1] = 0.;
+	    normal[2] = 1.;
+	 }
 
 	 length = s6norm(normal, 3, Nnormal, stat);
 	 if (*stat < 0) goto error;
