@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1352.c,v 1.2 1994-06-20 10:36:45 vsk Exp $
+ * $Id: s1352.c,v 1.3 1994-07-07 11:29:47 pfu Exp $
  *
  */
 
@@ -42,7 +42,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * Purpose: To compute a variable tolerance, eps, along a knot vector. This
 *          tolerance will be used for knot removal of tensor product B-spline
 *          surfaces. The tolerance is to be lefteps at the left end of the
@@ -94,7 +94,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 *          rightfix    - similar to leftfix.
 *
 *
-* Output: 
+* Output:
 *          eps         - double array of length dim containing the computed
 *                        tolerance vector.
 *
@@ -117,14 +117,16 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 *
 * WRITTEN BY : Knut Moerken, University of Oslo, July 1992, based
 *              on an earlier Fortran version.
+* Changed by: Paal Fugelli, SINTEF, 1994-07.
+*             Added code at end to to fix remove memory leakage problem.
 *
 *********************************************************************
-*/                                     
+*/
 {
   int ih = 3*MAX(leftfix, rightfix) + 2; /* Size of knot vector.       */
   double *th = NULL;			 /* Knot vector.               */
   double *hcoef = NULL;			 /* B-spline coefficients.     */
-  double *w = NULL;			 /* Work array for s1221.      */ 
+  double *w = NULL;			 /* Work array for s1221.      */
 
   SISLCurve *hspline = NULL;             /* Object that will be used
 					    for storing the perfect
@@ -168,7 +170,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 
   hcoef = new0array(2*MAX(leftfix, rightfix)+1, double);
   if (hcoef == NULL) goto err101;
-  
+
   hcoef[leftfix] = 1.0;
 
   /* Determine the knot vector. */
@@ -325,7 +327,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
       hcoef[leftfix] = 0.0;
       hcoef[rightfix] = 1.0;
 
-      /* For simplicity we also free the old spline object. */
+      /* For simplicity we also free the old spline object (has icopy==0). */
 
       freeCurve(hspline);
       hspline = newCurve(2*rightfix+1, rightfix+1, th, hcoef, 1, 1, 0);
@@ -404,11 +406,11 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
   if (w != NULL) freearray(w);
   if (hspline != NULL) freeCurve(hspline);
 
+  /* Must also remove knots and coefs because hspline had icopy==0. */
+
+  if (th != NULL) freearray(th);
+  if (hcoef != NULL) freearray(hcoef);
+
   return;
 
 }
-
-
-
-
-
