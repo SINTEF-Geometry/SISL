@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1860.c,v 1.2 1995-01-26 10:28:50 pfu Exp $
+ * $Id: s1860.c,v 1.3 1995-01-26 10:41:13 pfu Exp $
  *
  */
 
@@ -105,8 +105,8 @@ void s1860(ps,eview,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 
   if ( wsurf != NULL )
   {
-    for(i=0; i<jsurf; i++)
-      freeIntsurf(wsurf[i]);
+    for( i=0;  i < jsurf;  i++ )
+      if ( wsurf[i] != NULL )  freeIntsurf(wsurf[i]);
     freearray(wsurf);
   }
 
