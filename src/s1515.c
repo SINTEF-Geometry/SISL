@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1515.c,v 1.4 1994-12-01 13:17:02 pfu Exp $
+ * $Id: s1515.c,v 1.5 1994-12-19 16:50:56 pfu Exp $
  *
  */
 
@@ -22,14 +22,14 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-s1515 (SISLSurf * ps1, double *qpoint, double *bvec, int idim, double aepsco, double aepsge,
+s1515 (SISLSurf * ps1, double qpoint[], double bvec[], int idim, double aepsco, double aepsge,
        double amax, SISLIntcurve * pintcr, int icur, int igraph, int *jstat)
 #else
 void
 s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jstat)
      SISLSurf *ps1;
-     double *qpoint;
-     double *bvec;
+     double qpoint[];
+     double bvec[];
      int idim;
      double aepsco;
      double aepsge;
