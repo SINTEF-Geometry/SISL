@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1401.c,v 1.3 1994-11-29 09:07:49 pfu Exp $
+ * $Id: s1401.c,v 1.4 1997-01-15 11:22:35 jka Exp $
  *
  */
 
@@ -154,6 +154,7 @@ void s1401(vcurve,etwist,rsurf,jstat)
 
   /* TEST !!! */
 
+  /*
   kder = 1;
   for (ki=0; ki<4; ki++)
     {
@@ -173,6 +174,7 @@ void s1401(vcurve,etwist,rsurf,jstat)
       s1221(vcurve[2*kj+1],kder,tpar,&kleft,sder+kdim,&kstat);
       if (kstat < 0) goto error;
     }
+  */
 
 
   /* Set up blending functions.  */
