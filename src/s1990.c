@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1990.c,v 1.3 2001-03-19 15:58:58 afr Exp $
+ * $Id: s1990.c,v 1.4 2005-01-06 10:55:07 vsk Exp $
  *
  */
 
@@ -418,8 +418,16 @@ void s1990(ps,aepsge,jstat)
 		  
 		  /* Computing the center coordinates.*/
 		  
+	          double sin_tang = sin(tang);                     /*@  hke  */
+	          double delta    = (tang - ps->pdir->aang)/2.0;   /*@  hke  */
+
+	          t1 = sin(delta)/sin_tang;                        /*@  hke  */
+	          t2 = sin(tang - delta)/sin_tang;                 /*@  hke  */
+
+		  /*
 		  t1 = (tang - ps->pdir->aang)/((double)2*tang);
 		  t2 = (double)1 - t1;
+		  */
 		  
 		  for (tlen=DZERO,k2=0; k2<kdim; k2++)
 		    {
