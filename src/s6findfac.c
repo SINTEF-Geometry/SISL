@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6findfac.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6findfac.c,v 1.2 1994-11-07 08:47:24 vsk Exp $
  *
  */
 
@@ -91,7 +91,7 @@ void s6findfac(evecu,evecv,evecw,etang,idim,isign,coef1,coef2,coef3,jstat)
   
   /* Test input.  */
 
-  if (idim != 3) goto err104;
+  /* if (idim != 3) goto err104; */
   
   /* Set output to zero. */
 
