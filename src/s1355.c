@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1355.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1355.c,v 1.2 1994-11-08 12:49:33 poeh Exp $
  *
  */
 
@@ -51,11 +51,13 @@ void s1355(pc,eeps,epar,im,jstat)
 *                   = 0 : Ok.
 *                   > 0 : Warning:
 *
-* Method: 
+* Method:
 *
 * Calls: s1707, s1720, s6err
 *
 * Written by: C.R. Birkeland, Si, April 1993.
+* Changed by: Per OEyvind, SINTEF, 1994-11.
+*             Added input check for invalid Eeps values.
 **********************************************************
 */
 {
@@ -76,13 +78,13 @@ void s1355(pc,eeps,epar,im,jstat)
   double *maxtab = NULL;
   double *neweps = NULL;
   SISLCurve *oc=NULL;      /* Local SISL-curve                             */
-  
+
   /* Check input-curve. */
 
   if (!pc) goto err150;
   s1707(pc, &stat);
   if (stat<0) goto error;
-  
+
   /* Check other input */
 
   if (pc->in < pc->ik || pc->ik < 1 || idim < 1) goto err103;
@@ -132,7 +134,7 @@ void s1355(pc,eeps,epar,im,jstat)
       for(i=help*idim, k=0; k<ik-1; i+=idim, k++)
 	for(j=0; j<idim; j++)
 	  maxtab[j] = MAX( maxtab[j], fabs(coeff[i+j]) );
-      
+
       /* Find maximum interval between two parametervalues,
        * in interval [ et(start), et(end) ].
        * Minimum step (Set a little bit larger than 'end - start' */
@@ -145,6 +147,11 @@ void s1355(pc,eeps,epar,im,jstat)
 	}
       maxstep = pow(maxstep, 0.25);
 
+      /* Validate maxstep (and thus eeps) */
+
+      if (DEQUAL(maxstep, 0.0))
+        goto err103;
+
       /* Max. distance between parametervalues in interval
        * [start, end] must not exceed maxstep.
        * Generate the necessary parametervalues            */
@@ -154,13 +161,13 @@ void s1355(pc,eeps,epar,im,jstat)
 	  par[number] = start;
 	  start += maxstep;
 	  number++;
-	  
+
 	  /* Make sure array for parametervalues is large enough */
 
 	  if (number+1>=parlen)
 	    {
 	      parlen = 2*parlen;
-	      if ((par = increasearray(par, parlen, double)) == NULL) 
+	      if ((par = increasearray(par, parlen, double)) == NULL)
 		goto err101;
             }
 	}
@@ -190,31 +197,31 @@ void s1355(pc,eeps,epar,im,jstat)
   *im = number+1;
 
   /* Success ! */
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* Allocation error. */
 
- err101: 
+ err101:
    *jstat = -101;
    s6err("s1355",*jstat,kpos);
    goto out;
-  
+
   /* Error in input */
 
-  err103: 
-    *jstat = -103; 
+  err103:
+    *jstat = -103;
     s6err("s1355",*jstat,kpos);
     goto out;
-  
+
   /* Empty curve. */
 
-  err150: 
+  err150:
     *jstat = -150;
     s6err("s1355",*jstat,kpos);
     goto out;
-  
+
   /* Error in lower level routine. */
 
   error:
