@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1834.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1834.c,v 1.2 1994-07-07 08:17:39 mif Exp $
  *
  */
 
@@ -94,7 +94,9 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 *              sh1834_s9mat3d - Set up rotation matrix for 3 dimensional space.
 *                              
 * WRITTEN BY : Vibeke Skytt, SI, 88-06.
-* REWISED BY : Vibeke Skytt, SI, 91-01.
+* REVISED BY : Vibeke Skytt, SI, 91-01.
+* REVISED BY : Mike Floater, SI, 94-07. Updated for rationals
+*                                        (s1834 didn't need changing).
 *
 *********************************************************************
 */
@@ -112,6 +114,12 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   SISLObject *qo2=NULL; /* Second object after rotation.         */
   /*  long time_before;
   long time_used=0; */
+
+  double *rc1,*rc2;     /* Pointers to homogeneous coefficients. */
+  double *rcoef1=NULL;  /* Possibly homogeneous coefficients.    */
+  double *rcoef2=NULL;  /* Possibly homogeneous coefficients.    */
+  int ikind1, ikind2;   /* Kinds of objects 1 and 2.             */
+  int i,i1,i2,j,k;      /* Loop variables.                       */
   
   /* Test input.  */
   
@@ -123,22 +131,30 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      kn1 = po1->c1->in;
      sc1 = po1->c1->ecoef;
+     rc1 = po1->c1->rcoef;
+     ikind1 = po1->c1->ikind;
   }
   else if (po1->iobj == SISLSURFACE)
   {
      kn1 = po1->s1->in1*po1->s1->in2;
      sc1 = po1->s1->ecoef;
+     rc1 = po1->s1->rcoef;
+     ikind1 = po1->s1->ikind;
   }
   
   if (po2->iobj == SISLCURVE)
   {
      kn2 = po2->c1->in;
      sc2 = po2->c1->ecoef;
+     rc2 = po2->c1->rcoef;
+     ikind2 = po2->c1->ikind;
   }
   else if (po2->iobj == SISLSURFACE)
   {
      kn2 = po2->s1->in1*po2->s1->in2;
      sc2 = po2->s1->ecoef;
+     rc2 = po2->s1->rcoef;
+     ikind2 = po2->s1->ikind;
   }  
   
   /* Allocate space for local parameters.  */
@@ -183,10 +199,49 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   if ((qo1 = newObject(po1->iobj)) == NULL) goto err101;
   if ((qo2 = newObject(po2->iobj)) == NULL) goto err101;
   
+  if(ikind1 == 2 || ikind1 == 4)
+  {
+      if ((rcoef1 = newarray((idim+1)*kn1,DOUBLE)) == NULL) goto err101;
+      for(i=0,i1=0,i2=0; i<kn1; i++)
+      {
+	  k = i1 + idim;
+	  for(j=0; j<idim; j++, i1++, i2++)
+	  {
+	      rcoef1[i1] = scoef1[i2] * rc1[k];
+	  }
+	  rcoef1[i1] = rc1[k];
+	  i1++;
+      }
+  }
+  else
+  {
+      rcoef1 = scoef1;
+  }
+
+  if(ikind2 == 2 || ikind2 == 4)
+  {
+      if ((rcoef2 = newarray((idim+1)*kn2,DOUBLE)) == NULL) goto err101;
+      for(i=0,i1=0,i2=0; i<kn2; i++)
+      {
+	  k = i1 + idim;
+	  for(j=0; j<idim; j++, i1++, i2++)
+	  {
+	      rcoef2[i1] = scoef2[i2] * rc2[k];
+	  }
+	  rcoef2[i1] = rc2[k];
+	  i1++;
+      }
+  }
+  else
+  {
+      rcoef2 = scoef2;
+  }
+
+
   if (po1->iobj == SISLCURVE)
   {
      if ((qo1->c1 = newCurve(po1->c1->in,po1->c1->ik,po1->c1->et,
-			     scoef1,po1->c1->ikind,idim,0)) == NULL)
+			     rcoef1,po1->c1->ikind,idim,0)) == NULL)
 	goto err101;
      /* printf("Rotated box test. Curve - "); */
   }
@@ -194,7 +249,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      if ((qo1->s1 = newSurf(po1->s1->in1,po1->s1->in2,po1->s1->ik1,
 			    po1->s1->ik2,po1->s1->et1,po1->s1->et2,
-			     scoef1,po1->s1->ikind,idim,0)) == NULL)
+			     rcoef1,po1->s1->ikind,idim,0)) == NULL)
 	goto err101;
      /* printf("Rotated box test. Surface - "); */
      
@@ -203,7 +258,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   if (po2->iobj == SISLCURVE)
   {
      if ((qo2->c1 = newCurve(po2->c1->in,po2->c1->ik,po2->c1->et,
-			     scoef2,po2->c1->ikind,idim,0)) == NULL)
+			     rcoef2,po2->c1->ikind,idim,0)) == NULL)
 	goto err101;
      /* printf("curve. "); */
   }
@@ -211,7 +266,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      if ((qo2->s1 = newSurf(po2->s1->in1,po2->s1->in2,po2->s1->ik1,
 			    po2->s1->ik2,po2->s1->et1,po2->s1->et2,
-			     scoef2,po2->s1->ikind,idim,0)) == NULL)
+			     rcoef2,po2->s1->ikind,idim,0)) == NULL)
 	goto err101;
      /* printf("surface. "); */
   } 
@@ -256,6 +311,8 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   if (qo2 != NULL) freeObject(qo2);
   if (scoef1 != NULL) freearray(scoef1);
   if (scoef2 != NULL) freearray(scoef2);
+  if (rcoef1 != NULL) freearray(rcoef1);
+  if (rcoef2 != NULL) freearray(rcoef2);
   if (smat != NULL) free0array(smat);
   
   return;
