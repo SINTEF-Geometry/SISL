@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.8 1994-09-01 11:51:41 pfu Exp $
+ * $Id: sislP.h,v 1.9 1994-11-07 09:33:14 vsk Exp $
  *
  */
 
@@ -951,6 +951,10 @@ void s1787(SISLSurf *,double,double,double [],double [],double [],int *);
 extern
 #endif
 void s1788(SISLSurf *,SISLSurf *,double,double [],double [],double [],int *);
+#ifndef  S1789
+extern
+#endif
+void  s1789(SISLPoint *,SISLSurf *,double ,double [],double [],int *);   
 #ifndef  S1790
 extern
 #endif
