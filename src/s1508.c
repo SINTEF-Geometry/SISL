@@ -62,6 +62,10 @@ s1508(inbcrv, vpcurv, par_arr,
 *              will be the interpolating direction, second parameter-
 *              direction will be along the input curves.
 *
+* REFERENCES :
+*
+*-
+*
 * CALLS      : s1931,s1917,s1918,s1358,s6err.
 *
 * WRITTEN BY : Michael Floater, SI, Oslo, October 1993.
