@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.4 1995-10-12 13:34:09 jka Exp $
+ * $Id: s2545.c,v 1.5 1995-10-12 14:02:16 jka Exp $
  *
  */
 
@@ -127,7 +127,7 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 
    /* Allocate the output. */
 
-   incr = (export_par_val? 5 : 3);
+   incr = (export_par_val? (surf->idim + 2) : surf->idim);
 
    if (((*garr) = newarray(incr*(n_u + 1)*(n_v + 1), double)) == NULL)
       goto err101;
