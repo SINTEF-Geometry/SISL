@@ -14,7 +14,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.21 1995-02-08 10:02:50 vsk Exp $
+ * $Id: sislP.h,v 1.22 1995-06-30 14:03:59 jka Exp $
  *
  */
 
