@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1902.c,v 1.5 1995-12-13 10:03:19 jka Exp $
+ * $Id: s1902.c,v 1.6 1997-01-07 14:16:35 jka Exp $
  *
  */
 
@@ -90,7 +90,7 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
   double tval2;			/* End parameter value.            		*/
   double tparint;		/* The parameter interval. (closed)		*/
   double tdum;			/* Help parameter used for parameter interval.	*/
-  double dummy;
+  double dummy1, dummy2;
   double delta;
   int count1;
 
@@ -131,18 +131,23 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
 	  /* The order is even.
 	     Place the internal knots at the parameter values.  */
 
-	  dummy = (double)0.5 * (epar[smult] + tval1);
+	  dummy1 = (double)0.5 * (epar[smult] + tval1);
+	  dummy2 = (double)0.5 * (epar[in -emult - 1] +tval2);
+	  if (dummy1 == dummy2)
+	    {
+	      dummy1 = (epar[smult] + tval1 + tval1)/(double)3;
+	      dummy2 = (epar[in -emult - 1] + tval2 + tval2)/(double)3;
+	    }
 	  for (count1 = 0; count1 < smult - kk2; count1++, ki++)
-	    (*eknots)[ki] = dummy;
+	    (*eknots)[ki] = dummy1;
 
 	  for (kpar = smult + MAX (0, kk2 - smult), kstop = in -emult -
 	       MAX (0, kk2 - emult);
 	       kpar < kstop; kpar++, ki++)
 	    (*eknots)[ki] = epar[kpar];
 
-	  dummy = (double)0.5 * (epar[in -emult - 1] +tval2);
 	  for (count1 = 0; count1 < emult - kk2; count1++, ki++)
-	    (*eknots)[ki] = dummy;
+	    (*eknots)[ki] = dummy2;
 	}
       else
 	{
@@ -152,10 +157,10 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
 	  if (smult - kk2 > 0)
 	    {
 	      delta = (epar[smult] - tval1) / (smult - kk2 + 1);
-	      dummy = tval1 + delta;
+	      dummy1 = tval1 + delta;
 	      for (count1 = 0; count1 < smult - kk2;
-		   count1++, dummy += delta, ki++)
-		(*eknots)[ki] = dummy;
+		   count1++, dummy1 += delta, ki++)
+		(*eknots)[ki] = dummy1;
 	    }
 
 	  for (kpar = smult + MAX (0, kk2 - smult), kstop = in -emult -
@@ -166,10 +171,10 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
 	  if (emult - kk2 > 0)
 	    {
 	      delta = (tval2 - epar[in -emult - 1]) / (emult - kk2 + 1);
-	      dummy = epar[in -emult - 1] +delta;
-	      for (count1 = 0; count1 < emult - kk2; count1++, dummy +=
+	      dummy2 = epar[in -emult - 1] +delta;
+	      for (count1 = 0; count1 < emult - kk2; count1++, dummy2 +=
 		   delta, ki++)
-		(*eknots)[ki] = dummy;
+		(*eknots)[ki] = dummy2;
 	    }
 	}
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1905.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1905.c,v 1.2 1997-01-07 14:16:47 jka Exp $
  *
  */
 
@@ -267,6 +267,11 @@ s1905 (econd1, ntype1, inpt1, ik, idim, iopen, gcond2, mtype2, jnpt2, jstat)
 	      memcopy ((*gcond2) + ki * idim, sdum, idim, DOUBLE);
 	      (*mtype2)[kj] = (kder == 0) ? -(*mtype2)[ki] : (*mtype2)[ki];
 	      (*mtype2)[ki] = kder;
+	      if (kder == 0)
+		{
+		  for (kj++; kj<ki; kj++)
+		    (*mtype2)[kj] *= -1;
+		}
 	    }
 	}
       kneg = 0;
