@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1233.c,v 1.1 1994-09-28 12:02:20 pfu Exp $
+ * $Id: s1233.c,v 1.2 1994-10-19 12:21:36 pfu Exp $
  *
  */
 
@@ -34,9 +34,9 @@ void s1233(pc,afak1,afak2,rc,jstat)
 /*
 *********************************************************************
 *
-* PURPOSE    : To extend a B-spline curve at the start and/or the end
-*              of the curve by continuing the polynomial behaviour of
-*              the curve.
+* PURPOSE    : To extend a B-spline curve (i.e. NOT rationals) at the start
+*              and/or the end of the curve by continuing the polynomial
+*              behaviour of the curve.
 *
 * INPUT      : pc     - Pointer to the curve that will be extended.
 *              afak1  - How much the curve is to be stretched at the
@@ -64,7 +64,7 @@ void s1233(pc,afak1,afak2,rc,jstat)
 *              3. The transformation matrix is inverted and used to update the
 *                 ik first vertices.
 *              4. The transformation matrix for the ik last vertices between
-*                 the newd and the old knot vector is made.
+*                 the new and the old knot vector is made.
 *              5. The transformation matrix is inverted and used to update the
 *                 ik last vertices.
 *              6. The knot vector is updated.
@@ -72,8 +72,8 @@ void s1233(pc,afak1,afak2,rc,jstat)
 * CALLS      : make_cv_kreg,s1219,s1701,s6lufacp,s6lusolp,s6err.
 *
 * Written by : Paal Fugelli, SINTEF, Oslo, Norway, Sept-1992. Adapted from
-*              old s1233() written by Vibeke Skytt and s1333_cyclic() written
-*              by Tor Dokken.
+*              a FORTRAN based s1233() written by Vibeke Skytt and s1333_cyclic()
+*              written by Tor Dokken.
 *
 *********************************************************************
 */
@@ -150,14 +150,14 @@ void s1233(pc,afak1,afak2,rc,jstat)
   salloc = new0array(3*kn + 9*kk + 4*kk*kk + kdim*kn, DOUBLE);
   if ( salloc == NULL ) goto err101;
 
-  ext = salloc;
-  smatrix = ext + kn + kk;         /* Size kn+kk */
-  salfa = smatrix + 4*kk*kk;       /* Max size 4*kk*kk */
-  scoef = salfa + kk;              /* Size kk */
-  sb    = scoef + kdim*kn;         /* Size kdim*kn */
-  sp    = sb + 2*kk;               /* Size 2*kk */
-  st    = sp + kk;                 /* Size kk */
-  stx   = st + kn + 2*kk;          /* Size kn + 2*kk */
+  ext = salloc;                    /* Size kn+kk */
+  smatrix = ext + kn + kk;         /* Max size 4*kk*kk */
+  salfa = smatrix + 4*kk*kk;       /* Size kk */
+  scoef = salfa + kk;              /* Size kdim*kn */
+  sb    = scoef + kdim*kn;         /* Size 2*kk */
+  sp    = sb + 2*kk;               /* Size kk */
+  st    = sp + kk;                 /* Size kn + 2*kk */
+  stx   = st + kn + 2*kk;          /* Size kn + kk */
 
 
 

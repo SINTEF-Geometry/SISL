@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1851.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1851.c,v 1.2 1994-10-19 12:23:07 pfu Exp $
  *
  */
 
@@ -43,7 +43,7 @@ void s1851(ps1,epoint,enorm,idim,aepsco,aepsge,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find all intersections between a tensor-product surface
 *              and a plane.
 *
@@ -61,7 +61,7 @@ void s1851(ps1,epoint,enorm,idim,aepsco,aepsge,
 * OUTPUT     : *jpt   - Number of single intersection points.
 *              gpar   - Array containing the parameter values of the
 *                       single intersection points in the parameter
-*                       plane of the surface. The points lie continuous. 
+*                       plane of the surface. The points lie continuous.
 *                       Intersection curves are stored in wcurve.
 *              *jcrv  - Number of intersection curves.
 *              wcurve  - Array containing descriptions of the intersection
@@ -69,7 +69,7 @@ void s1851(ps1,epoint,enorm,idim,aepsco,aepsge,
 *                       in the parameter plane. The curve-pointers points
 *                       to nothing. (See description of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -85,22 +85,23 @@ void s1851(ps1,epoint,enorm,idim,aepsco,aepsge,
 * CALLS      : sh1851, s6err.
 *
 * WRITTEN BY : Christophe Rene Birkeland, SINTEF, 93-06.
-*
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Oct. 1994.
+*              Initialized 'jsurf'.
 *
 *********************************************************************
 */
-{            
+{
   int kstat = 0;              /* Local status variable.                      */
   int kpos = 0;               /* Position of error.                          */
   int i;
   int trackflag = 0;
   int jtrack;
   SISLTrack **wtrack=NULL;
-  int jsurf;
+  int jsurf = 0;
   SISLIntsurf **wsurf=NULL;
   int *pretop=NULL;
 
-  sh1851(ps1, epoint, enorm, idim, aepsco, aepsge,trackflag, &jtrack, 
+  sh1851(ps1, epoint, enorm, idim, aepsco, aepsge,trackflag, &jtrack,
 	 &wtrack,jpt, gpar,&pretop,jcrv,wcurve,&jsurf,&wsurf,&kstat);
   if(kstat < 0) goto error;
 
@@ -110,19 +111,19 @@ void s1851(ps1,epoint,enorm,idim,aepsco,aepsge,
     freeIntsurf(wsurf[i]);
   if(wsurf != NULL) freearray(wsurf);
 
-  if(jsurf > 0) 
+  if(jsurf > 0)
     *jstat=10;
-  else 
+  else
     *jstat = 0;
   goto out;
 
   /* Error in lower level routine.  */
 
-  error : 
+  error :
     *jstat = kstat;
     s6err("s1851",*jstat,kpos);
     goto out;
 
   out:
     return;
-}                                               
+}
