@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1014.c,v 1.3 1994-11-16 14:31:54 pfu Exp $
+ * $Id: s1014.c,v 1.4 1994-11-16 15:11:37 pfu Exp $
  *
  */
 #define S1014
@@ -99,16 +99,17 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
 * WRITTEN BY : Johannes Kaasa, SI, April 1992.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Clearified
 *              header and added allocation of 'center' after changing function
-*              interface declaration.
+*              interface declaration.  Initialized 'p1' and 'kstat' and fixed
+*              memory leak from 'p1'.
 *
 *********************************************************************
 */
 {
 
-  int kstat;          /* Status variable                                  */
+  int kstat=0;        /* Status variable                                  */
   int kpos=0;         /* Position of error                                */
 
-  SISLPoint *p1;      /* SISLPoint form of eps1.                          */
+  SISLPoint *p1=NULL; /* SISLPoint form of eps1.                          */
   double tpar1;       /* Test parameter on curve 1.                       */
   int kder = 1;       /* Number of derivatives.                           */
   int kleft1=0;       /* Pointer to the interval in the knot vector.      */
@@ -299,7 +300,9 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
   s6err("s1014",*jstat,kpos);
   goto out;
 
- out:    if (sval1 != NULL) freearray(sval1);
+ out:
+  if (sval1 != NULL) freearray(sval1);
+  if (p1 != NULL ) freePoint(p1);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
