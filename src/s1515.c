@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1515.c,v 1.3 1994-12-01 13:14:06 pfu Exp $
+ * $Id: s1515.c,v 1.4 1994-12-01 13:17:02 pfu Exp $
  *
  */
 
@@ -76,7 +76,6 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 *                       of the surface is added.
 *
 * OUTPUT:      jstat  - status messages
-*                         = 4      : No points produced on intersection curve.
 *                         = 3      : Iteration stopped due to singular
 *                                    point or degenerate surface. A part
 *                                    of intersection curve may have been
@@ -85,6 +84,7 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 *                                    object point to NULL.
 *                         = 0      : ok
 *                         < 0      : error
+*                         = -185   : No points produced on intersection curve.
 *
 *
 * METHOD     : An implicit description of the problem is made and then
@@ -97,9 +97,6 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 * CALLS      : s6err, s1313
 * WRITTEN BY : Mike Floater, SI, Oslo, Norway, 31 . January 1991
 *                a modification of s1319
-* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Now gives
-*              a warning (jstat==4) if no curve has been produces (used to
-*              be error jstat==-185).
 *
 *********************************************************************
 */
