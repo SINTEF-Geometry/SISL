@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.9 2001-03-20 09:02:53 afr Exp $
+ * $Id: s1313.c,v 1.10 2004-10-20 13:21:19 afr Exp $
  *
  */
 
@@ -21,9 +21,9 @@
 #include "sislP.h"
 
 /*
-* Forward declarations.
-* ---------------------
-*/
+ * Forward declarations.
+ * ---------------------
+ */
 #if defined(SISLNEEDPROTOTYPES)
 static void s1313_s9constline(SISLSurf *,double [],int,double,
 			      SISLIntcurve *,int,int,int *);
@@ -33,10 +33,10 @@ static void s1313_s9constline();
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-     s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
-	   double amax,SISLIntcurve *pintcr,int icur,int igraph,int *jstat)
+s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
+      double amax,SISLIntcurve *pintcr,int icur,int igraph,int *jstat)
 #else
-void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
+     void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
      SISLSurf     *ps1;
      double   eimpli[];
      int      ideg;
@@ -48,7 +48,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
      int      igraph;
      int      *jstat;
 #endif
-/*
+     /*
 *********************************************************************
 *
 *********************************************************************
@@ -225,16 +225,16 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   double *sgpar2=SISL_NULL;     /* Parameter pairs of guide point in surf 2  */
   double *sgpar=SISL_NULL;      /* guide points used                         */
   double *sgd1 = SISL_NULL;     /* 0-2 derivative of guide point + normal
-			      of first object                           */
+				   of first object                           */
   double spnt1[33];        /* Info on current point in first surface    */
   double spnt2[33];        /* Info on boundary point in first surface   */
   double sipnt1[33];       /* Info on iteration point in first surface  */
-                           /* For spnt1, sipnt1, the                    */
-                           /* information is stored 3-tuppels in the    */
-                           /* following sequence                        */
-                           /* Position, (1,0)-der, (0,1)-der,           */
-                           /* (2,0)-der, (1,1)-der, (0,2)-der and normal*/
-                           /* This is compatible with output of s1421   */
+  /* For spnt1, sipnt1, the                    */
+  /* information is stored 3-tuppels in the    */
+  /* following sequence                        */
+  /* Position, (1,0)-der, (0,1)-der,           */
+  /* (2,0)-der, (1,1)-der, (0,2)-der and normal*/
+  /* This is compatible with output of s1421   */
   double snorm1[3];        /* Normal vector of implicit surface         */
   double snorm2[3];        /* Normal vector of implicit surface         */
   double startg[3];        /* Start tangent of iteration                */
@@ -242,12 +242,12 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   double *snxt1;           /* SISLPoint in ps1 we have accepted          */
   double *snxp1;           /* Parameter value belonging to snxt1        */
   double *s3dinf=SISL_NULL;     /* Pointer to array used for storing 3-D position
-			      tangent, curvature and radius of curvature found
-			      during the marching process if possible */
+				   tangent, curvature and radius of curvature found
+				   during the marching process if possible */
   double *sp1inf=SISL_NULL;     /* Pointer to array used for storing position
-			      tangent, curvature and radius of curvature found
-			      in the first parameter plane during the
-			      marching process */
+				   tangent, curvature and radius of curvature found
+				   in the first parameter plane during the
+				   marching process */
   double start1[33];       /* Description of start point in ps1      */
   double stpar1[2];        /* Parameter pair belonging to start1        */
   double sdum1[3],sdum2[3];/* Dummy vectors                             */
@@ -410,34 +410,34 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 
       if (ideg == 1003 || ideg == 1004 || ideg == 1005)
-        {
-          /*  Find length of normal vector and tangent vectors */
+	{
+	  /*  Find length of normal vector and tangent vectors */
 
-          tlnorm = s6length(&sgd1[kl+ksizem3],kdim,&kstat);
-          tltan1 = s6length(&sgd1[kl+kdim],kdim,&kstat);
-          tltan2 = s6length(&sgd1[kl+kdim+kdim],kdim,&kstat);
+	  tlnorm = s6length(&sgd1[kl+ksizem3],kdim,&kstat);
+	  tltan1 = s6length(&sgd1[kl+kdim],kdim,&kstat);
+	  tltan2 = s6length(&sgd1[kl+kdim+kdim],kdim,&kstat);
 
-          /*  The cross product satisifes the follwing conditions:
-              length(axb) = length(a) length(b) sin(angle(a,b)).
+	  /*  The cross product satisifes the follwing conditions:
+	      length(axb) = length(a) length(b) sin(angle(a,b)).
 	      Thus the angle between the two vectors can be found, close to 0
 	      sin(a) is a good approximation of a
 	  */
-          if (tlnorm == (double)0.0 || tltan1 ==(double)0.0 || tltan2 == (double)0.0)
-              tang = (double)0.0;
-          else
-              tang = tlnorm/(tltan1*tltan2);
+	  if (tlnorm == (double)0.0 || tltan1 ==(double)0.0 || tltan2 == (double)0.0)
+	    tang = (double)0.0;
+	  else
+	    tang = tlnorm/(tltan1*tltan2);
 
 	  /* Silhouette line calculation no normal can be found in implicit surface
 	     accept point as candidate start point if tang greater tha angular
 	     resolution */
 
 	  if (tang >= ANGULAR_TOLERANCE) kstart = ki+1;
-         }
+	}
       else
-        {
+	{
 	  /* Make direction of intersection curve */
 
-          s1306(&sgd1[kl],&sgpar[kj],eimpli,ideg,s3dinf,sp1inf,&kstat);
+	  s1306(&sgd1[kl],&sgpar[kj],eimpli,ideg,s3dinf,sp1inf,&kstat);
 	  if (kstat < 0) goto error;
 
 
@@ -445,11 +445,11 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 	  if (kstat != 2)
 	    {
-                if (ki == 0) kfirst = 1;
-                else if (ki == kpoint-1) klast = kpoint;
-                else  kstart = ki+1;
+	      if (ki == 0) kfirst = 1;
+	      else if (ki == kpoint-1) klast = kpoint;
+	      else  kstart = ki+1;
 	    }
-        }
+	}
     }
 
   /* Check if only degenerate points or singularities exist on the
@@ -467,33 +467,33 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
       else goto interpolate;
     }
 
-    /* To speed up the marching process when many guide points are given,
-       remove guide points that are not at the start, end or the start point */
+  /* To speed up the marching process when many guide points are given,
+     remove guide points that are not at the start, end or the start point */
 
-    if (kpoint >2 && (kstart==1 || kstart==kpoint) )
-        {
-        /*  No internal guide point necessary, copy last point
-            to second point */
+  if (kpoint >2 && (kstart==1 || kstart==kpoint) )
+    {
+      /*  No internal guide point necessary, copy last point
+	  to second point */
 
-        memcopy(sgd1+ksize,sgd1+ksize*(kpoint-1),ksize,DOUBLE);
-        memcopy(sgpar+2,sgpar+2*(kpoint-1),2,DOUBLE);
+      memcopy(sgd1+ksize,sgd1+ksize*(kpoint-1),ksize,DOUBLE);
+      memcopy(sgpar+2,sgpar+2*(kpoint-1),2,DOUBLE);
 
-        if (kstart ==  kpoint) kstart = 2;
-        kpoint = 2;
-        }
-    else if (kpoint>2)
-        {
-        /*Internal guide point exists, copy this to second position and
-          copy end point to third position */
+      if (kstart ==  kpoint) kstart = 2;
+      kpoint = 2;
+    }
+  else if (kpoint>2)
+    {
+      /*Internal guide point exists, copy this to second position and
+	copy end point to third position */
 
-        memcopy(sgd1+ksize,sgd1+ksize*(kstart-1),ksize,DOUBLE);
-        memcopy(sgpar+2,sgpar+2*(kstart-1),2,DOUBLE);
+      memcopy(sgd1+ksize,sgd1+ksize*(kstart-1),ksize,DOUBLE);
+      memcopy(sgpar+2,sgpar+2*(kstart-1),2,DOUBLE);
 
-        memcopy(sgd1+2*ksize,sgd1+ksize*(kpoint-1),ksize,DOUBLE);
-        memcopy(sgpar+4,sgpar+2*(kpoint-1),2,DOUBLE);
+      memcopy(sgd1+2*ksize,sgd1+ksize*(kpoint-1),ksize,DOUBLE);
+      memcopy(sgpar+4,sgpar+2*(kpoint-1),2,DOUBLE);
 
-        kpoint = 3;
-        kstart = 2;
+      kpoint = 3;
+      kstart = 2;
     }
 
 
@@ -585,7 +585,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
     {
 
       if (kdir == 2)
-        {
+	{
 
 	  /* Remember result of marching in first direction */
 
@@ -605,39 +605,39 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 	  /* First interchange 3-D info */
 
 	  for (sp1=s3dinf,sp2=s3dinf+10*(knbinf-1) ; sp1<sp2 ; sp1+=10,sp2-=10)
-            {
+	    {
 	      memcopy(stdum,sp1,  10,DOUBLE);
 	      memcopy(sp1  ,sp2,  10,DOUBLE);
 	      memcopy(sp2  ,stdum,10,DOUBLE);
-            }
+	    }
 
 	  for (sp1=s3dinf+3;sp1<s3dinf+10*knbinf;sp1+=10)
-            {
+	    {
 	      sp1[0] = - sp1[0];
 	      sp1[1] = - sp1[1];
 	      sp1[2] = - sp1[2];
-            }
+	    }
 
 	  /* Then interchange info in parameter plane */
 
 	  for (sp1=sp1inf,sp2=sp1inf+7*(knbinf-1) ; sp1<sp2 ; sp1+=7,sp2-=7)
-            {
+	    {
 	      memcopy(stdum,sp1  ,7,DOUBLE);
 	      memcopy(sp1  ,sp2  ,7,DOUBLE);
 	      memcopy(sp2  ,stdum,7,DOUBLE);
-            }
+	    }
 
 	  for (sp1=sp1inf+2;sp1<sp1inf+7*knbinf;sp1+=7)
-            {
+	    {
 	      sp1[0] = - sp1[0];
 	      sp1[1] = - sp1[1];
 	      sp1[2] = - sp1[2];
-            }
+	    }
 
 	  /* Turn direction of remembered start tangent */
 
 	  for (ki=0;ki<3;ki++)
-            startg[ki] = -startg[ki];
+	    startg[ki] = -startg[ki];
 
 
 	  /* Update spnt1 and  spar1 to have the start point values */
@@ -653,7 +653,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 	  /*      Update step length */
 	  tstep = tstartstp;
-        }
+	}
 
 
       stang = s3dinf + 10*(knbinf-1) + 3;
@@ -714,7 +714,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		      kstpch = 1;
 		      snxt1 = sgd1 + ksize*kguide;
 		      snxp1 = sgpar + 2*kguide;
-                      tstep = MIN(tstep,t1distgd);
+		      tstep = MIN(tstep,t1distgd);
 		    }
 		}
 	    }
@@ -747,7 +747,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		      kstpch = -1;
 		      snxt1 = sgd1 + ksize*(kguide-2);
 		      snxp1 = sgpar + 2*(kguide-2);
-                      tstep = MIN(tstep,t2distgd);
+		      tstep = MIN(tstep,t2distgd);
 		    }
 		}
 	    }
@@ -760,7 +760,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 	      kpos = 60;
 	      tdum = s9adsimp(spnt1,spar1,eimpli,ideg,start1,stpar1,stang,sptang,
-			     tstep,&kstat);
+			      tstep,&kstat);
 	      if (kstat < 0) goto error;
 	      if (kstat == 1)
 		{
@@ -769,7 +769,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		  kstpch = 3;
 		  snxt1 = start1;
 		  snxp1 = stpar1;
-                  tstep = MIN(tstep,tdum);
+		  tstep = MIN(tstep,tdum);
 		}
 	    }
 
@@ -796,18 +796,18 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 	     koutside_resolution==0 : Segment outside resolution
 	     koutside_resolution!=0 : Segment inside resolution
-	     */
+	  */
 
 	  koutside_resolution = 0;
 
 	  /* Make sure that there is enough space for one more point */
 	  if (knbinf>=kmaxinf)
 	    {
-              kmaxinf = kmaxinf + 100;
-              s3dinf = increasearray(s3dinf,((3*kdim+1)*kmaxinf),DOUBLE);
-              if (s3dinf==SISL_NULL) goto err101;
-              sp1inf = increasearray(sp1inf,7*kmaxinf,DOUBLE);
-              if (sp1inf==SISL_NULL) goto err101;
+	      kmaxinf = kmaxinf + 100;
+	      s3dinf = increasearray(s3dinf,((3*kdim+1)*kmaxinf),DOUBLE);
+	      if (s3dinf==SISL_NULL) goto err101;
+	      sp1inf = increasearray(sp1inf,7*kmaxinf,DOUBLE);
+	      if (sp1inf==SISL_NULL) goto err101;
 	    }
 
 	  /* Make description of candidate endpoint if it exists and store it */
@@ -953,8 +953,8 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		       * change to much. We set a limit of approximately PI/3
 		       * by testing on a cosin value of 0.5
 		       * Make normal vectors in implicit surface for both points
-                       * Make also sure that the curve in the parameter plane
-                       * does not turn more than 90 degrees.
+		       * Make also sure that the curve in the parameter plane
+		       * does not turn more than 90 degrees.
 		       */
 
 		      s1331(spnt1,eimpli,ideg,-1,tval,snorm1,&kstat);
@@ -962,24 +962,24 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		      s1331(spnt2,eimpli,ideg,-1,tval,snorm2,&kstat);
 		      if (kstat < 0) goto error;
 
-                    if(ideg == 1003 || ideg == 1004 || ideg == 1005)
-                      {
-		        tdum = s6scpr(snorm1,snorm2,kdim);
-                      }
-                    else
-                      {
-	                s6crss(spnt1+ksizem3,snorm1,sdum1);
-		        (void)s6norm(sdum1,kdim,sdum1,&kstat);
-		        if (kstat < 0) goto error;
-		        s6crss(sipnt1+ksizem3,snorm2,sdum2);
-		        (void)s6norm(sdum2,kdim,sdum2,&kstat);
-		        if (kstat < 0) goto error;
+		      if(ideg == 1003 || ideg == 1004 || ideg == 1005)
+			{
+			  tdum = s6scpr(snorm1,snorm2,kdim);
+			}
+		      else
+			{
+			  s6crss(spnt1+ksizem3,snorm1,sdum1);
+			  (void)s6norm(sdum1,kdim,sdum1,&kstat);
+			  if (kstat < 0) goto error;
+			  s6crss(sipnt1+ksizem3,snorm2,sdum2);
+			  (void)s6norm(sdum2,kdim,sdum2,&kstat);
+			  if (kstat < 0) goto error;
 
-		        tdum = s6scpr(sdum1,sdum2,kdim);
-                      }
+			  tdum = s6scpr(sdum1,sdum2,kdim);
+			}
 
-                      s6diff(spar2,spar1,2,sdum1);
-                      tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
+		      s6diff(spar2,spar1,2,sdum1);
+		      tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
 
 		      if (tdum == DZERO)
 			{
@@ -1053,225 +1053,225 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		}
 
 	      /* If the segment is accepted. check if we cross the
-                  boundary of the patch  */
+		 boundary of the patch  */
 
-              if (kstpch !=0 && koutside_resolution == 1)
-	        {
+	      if (kstpch !=0 && koutside_resolution == 1)
+		{
 
-/*               Check if curve between start and endpoint cross the
-                 boundary */
+		  /*               Check if curve between start and endpoint cross the
+				   boundary */
 
-                 memcopy(siparmid,sipar1,2,double);
+		  memcopy(siparmid,sipar1,2,double);
 
-	          s1305(spar1,spar2,sval1,sval2,&kbound,sipar1,&kstat);
-	          if (kstat<0) goto error;
-
-
-          if(kstat==0 || kstat==4)
-              {
-              /* Set pointer to tangents at start point */
-              ki = 7*(knbinf-1)+2;
-
-              if( (DEQUAL(spar1[1]+tref2,sval2[0]+tref2) && sp1inf[ki+1]>DZERO) ||
-	          (DEQUAL(spar1[1]+tref2,sval2[1]+tref2) && sp1inf[ki+1]<DZERO) ||
-	          (DEQUAL(spar1[0]+tref1,sval1[0]+tref1) && sp1inf[ki]>DZERO) ||
-                  (DEQUAL(spar1[0]+tref1,sval1[1]+tref1) && sp1inf[ki]<DZERO)
-
-                )
-                   kstat = 1;
-             }
-	          krem1 = kstat;
+		  s1305(spar1,spar2,sval1,sval2,&kbound,sipar1,&kstat);
+		  if (kstat<0) goto error;
 
 
+		  if(kstat==0 || kstat==4)
+		    {
+		      /* Set pointer to tangents at start point */
+		      ki = 7*(knbinf-1)+2;
 
-/*               Check if curve between start and  midd point cross the
-                 boundary */
+		      if( (DEQUAL(spar1[1]+tref2,sval2[0]+tref2) && sp1inf[ki+1]>DZERO) ||
+			  (DEQUAL(spar1[1]+tref2,sval2[1]+tref2) && sp1inf[ki+1]<DZERO) ||
+			  (DEQUAL(spar1[0]+tref1,sval1[0]+tref1) && sp1inf[ki]>DZERO) ||
+			  (DEQUAL(spar1[0]+tref1,sval1[1]+tref1) && sp1inf[ki]<DZERO)
 
-	          s1305(spar1,siparmid,sval1,sval2,&kbound,sipar1,&kstat);
-	          if (kstat<0) goto error;
-                  krem2 = kstat;
-
-	          /* We now have the following cases:
-	          kstat == 0 : Line between epar1 and epar2 outside,
-	          If this happens when kdir=1, then
-	          just forget the start point. If it happens
-	          when kdir=2, then we just stop the marching.
-	          kstat == 1 : Line between epar1 and epar2 inside.
-	          Continue iteration.
-	          kstat == 2 : We step out of the patch. Clip to the edge
-	          of the patch. Update start point.
-	          kstat == 3 : We step into the patch. Clip to the edge
-	          of the patch. Update endpoint
-	          kstat == 4 : We go from the boundary and out. Try next
-	          iteration direction.
-
-	          */
-	        if (krem1==0 || krem2==0)
-	          {
-	            if (kdir==1) knbinf--;
-	            goto nextdir;
-	          }
-	        else if ((krem1 !=1 || krem2 !=1) && krem1 != 4 && krem2 !=4)
-	          {
-
-		    /* If we clip to the boundary, forget any guide point
-                       identified. The actual action is dependent on which
-                       of the points spar2 or sipar1 indicates the crossing */
-
-                    kstat1 = 0;
-                    if (krem2==2 || krem2==3)
-                        {
-		        s9clipimp(spar1,siparmid,ps1,eimpli,ideg,sval1,sval2,
-			          aepsge,sipnt1,sipar1,&kstat);
-	                if (kstat<0) goto error;
-                        if (krem2==3 && kstat==1) kstpch = 4;
-                        kstat1 = kstat;
-                        krem = krem2;
-                        }
-                    if (kstat1 != 1 && (krem1 ==2 || krem1==3))
-                        {
-		        s9clipimp(spar1,spar2,ps1,eimpli,ideg,sval1,sval2,
-			          aepsge,sipnt1,sipar1,&kstat);
-	                if (kstat<0) goto error;
-                        if (krem1==3 && kstat==1) kstpch = 4;
-                        kstat1 = kstat;
-                        krem = krem1;
-                        }
-
-                 if (kstat1 == 1)
-                    {
-		    /* Check that the relationship between the two surfaces
-		    * has not been interchanged, by making the cross product
-		    * of the normal vectors in current point and the point
-		    * found by iteration. Then make the scalar product of
-		    * these vectors. If the scalar product is negative then
-		    * we have either jumped to another branch or passed a
-		    * singularity, iterprete this as the iteration has diverged
-		    * In addition we don't want the direction of the tangents
-		    * change to much. We set a limit of approximately PI/3
-	            * by testing on a cosin value of 0.5
-		    * Make normal vectors in implicit surface for both points
-                    * Make also sure that the curve in the parameter plane
-                    * does not turn more than 90 degrees.
-		    */
-
-		    s1331(spnt1,eimpli,ideg,-1,tval,snorm1,&kstat);
-		    if (kstat < 0) goto error;
-		    s1331(sipnt1,eimpli,ideg,-1,tval,snorm2,&kstat);
-		    if (kstat < 0) goto error;
-
-                    if(ideg == 1003 || ideg == 1004 || ideg == 1005)
-                      {
-		        tdum = s6scpr(snorm1,snorm2,kdim);
-                      }
-                    else
-                      {
-	                s6crss(spnt1+ksizem3,snorm1,sdum1);
-		        (void)s6norm(sdum1,kdim,sdum1,&kstat);
-		        if (kstat < 0) goto error;
-		        s6crss(sipnt1+ksizem3,snorm2,sdum2);
-		        (void)s6norm(sdum2,kdim,sdum2,&kstat);
-		        if (kstat < 0) goto error;
-
-		        tdum = s6scpr(sdum1,sdum2,kdim);
-                      }
-
-
-                    /* Check that sipar1 lies on the same side of spar1 as
-                    the tangent at spar1 */
-
-                    s6diff(sipar1,spar1,2,sdum1);
-                    tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
-                }
-
-	            /* An intersection point has only been found when kstat==1
-	            */
-	            if (kstat1==1 && tdump >= (double)0.0 && tdum > (double)0.5)
-		      {
-		        /* If krem=3 we step into the patch, if krem=2 we step
-		           out of the patch */
-
-		        if (krem==2 || krem==3)
-		          {
-		            /* Since we clip, set kstpch=0, no guide point reached */
-
-		            /* If krem==3 we step into the patch, make new
-			       start point of segment */
-
-		            if (krem==3) knbinf--;
-
-		            memcopy(spnt2,sipnt1,ksize,DOUBLE);
-		            memcopy(spar2,sipar1,2,DOUBLE);
-
-		            s1306(sipnt1,sipar1,eimpli,ideg,s3dinf+10*knbinf,
-		                  sp1inf+7*knbinf,&kstat);
-		            if (kstat<0) goto error;
-
-
-		            /* Make sure that the tangents of previous and the new point
-			       point in the same direction */
-
-		            if (knbinf>0)
-			      tdum = s6scpr(s3dinf+10*(knbinf-1)+3,
-			  	     s3dinf+10*knbinf+3,kdim);
-    		            else
-			      tdum = s6scpr(startg,s3dinf+3,kdim);
-
-
-		            if (tdum < DZERO)
-			      {
-			        /* Change tangent direction 3-D and in
-                                   parameter plane
-			        */
-			        sp1 = s3dinf + 10*knbinf + 3;
-			        sp1[0] = -sp1[0];
-			        sp1[1] = -sp1[1];
-			        sp1[2] = -sp1[2];
-			        sp1 = sp1inf + 7*knbinf + 2;
-			        sp1[0] = -sp1[0];
-			        sp1[1] = -sp1[1];
-			      }
-
-                          /* If the new end point tangent points out go
-                             to next direction */
-
-              ki = 7*knbinf;
-              if( (sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] < DZERO) ||
-	          (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] > DZERO) ||
-                  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] < DZERO) ||
-	          (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] > DZERO)   )
-                      {
-                      knbinf++;
-                      goto nextdir;
-                      }
-              else if(krem == 2 &&
-                 ((sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] >= DZERO) ||
-	          (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] <= DZERO) ||
-                  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] >= DZERO) ||
-	          (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] <=DZERO)    ))
-                      {
-                      /* We were marching out ou the patch, but the tangent
-                         points in, half step length */
-                         kstpch = 0;
-                       }
+			  )
+			kstat = 1;
+		    }
+		  krem1 = kstat;
 
 
 
-		          }
-		      }
+		  /*               Check if curve between start and  midd point cross the
+				   boundary */
 
-                   else
-                     {
-	              /* Divergence or point on wrong side in the parameter
-                       plane or 3-d */
-                       kstpch = 0;
-                       koutside_resolution = 0;
-                     }
-                  }
-	        else if (krem1==4 || krem2==4)
-	            goto nextdir;
+		  s1305(spar1,siparmid,sval1,sval2,&kbound,sipar1,&kstat);
+		  if (kstat<0) goto error;
+		  krem2 = kstat;
 
-              }
+		  /* We now have the following cases:
+		     kstat == 0 : Line between epar1 and epar2 outside,
+		     If this happens when kdir=1, then
+		     just forget the start point. If it happens
+		     when kdir=2, then we just stop the marching.
+		     kstat == 1 : Line between epar1 and epar2 inside.
+		     Continue iteration.
+		     kstat == 2 : We step out of the patch. Clip to the edge
+		     of the patch. Update start point.
+		     kstat == 3 : We step into the patch. Clip to the edge
+		     of the patch. Update endpoint
+		     kstat == 4 : We go from the boundary and out. Try next
+		     iteration direction.
+
+		  */
+		  if (krem1==0 || krem2==0)
+		    {
+		      if (kdir==1) knbinf--;
+		      goto nextdir;
+		    }
+		  else if ((krem1 !=1 || krem2 !=1) && krem1 != 4 && krem2 !=4)
+		    {
+
+		      /* If we clip to the boundary, forget any guide point
+			 identified. The actual action is dependent on which
+			 of the points spar2 or sipar1 indicates the crossing */
+
+		      kstat1 = 0;
+		      if (krem2==2 || krem2==3)
+			{
+			  s9clipimp(spar1,siparmid,ps1,eimpli,ideg,sval1,sval2,
+				    aepsge,sipnt1,sipar1,&kstat);
+			  if (kstat<0) goto error;
+			  if (krem2==3 && kstat==1) kstpch = 4;
+			  kstat1 = kstat;
+			  krem = krem2;
+			}
+		      if (kstat1 != 1 && (krem1 ==2 || krem1==3))
+			{
+			  s9clipimp(spar1,spar2,ps1,eimpli,ideg,sval1,sval2,
+				    aepsge,sipnt1,sipar1,&kstat);
+			  if (kstat<0) goto error;
+			  if (krem1==3 && kstat==1) kstpch = 4;
+			  kstat1 = kstat;
+			  krem = krem1;
+			}
+
+		      if (kstat1 == 1)
+			{
+			  /* Check that the relationship between the two surfaces
+			   * has not been interchanged, by making the cross product
+			   * of the normal vectors in current point and the point
+			   * found by iteration. Then make the scalar product of
+			   * these vectors. If the scalar product is negative then
+			   * we have either jumped to another branch or passed a
+			   * singularity, iterprete this as the iteration has diverged
+			   * In addition we don't want the direction of the tangents
+			   * change to much. We set a limit of approximately PI/3
+			   * by testing on a cosin value of 0.5
+			   * Make normal vectors in implicit surface for both points
+			   * Make also sure that the curve in the parameter plane
+			   * does not turn more than 90 degrees.
+			   */
+
+			  s1331(spnt1,eimpli,ideg,-1,tval,snorm1,&kstat);
+			  if (kstat < 0) goto error;
+			  s1331(sipnt1,eimpli,ideg,-1,tval,snorm2,&kstat);
+			  if (kstat < 0) goto error;
+
+			  if(ideg == 1003 || ideg == 1004 || ideg == 1005)
+			    {
+			      tdum = s6scpr(snorm1,snorm2,kdim);
+			    }
+			  else
+			    {
+			      s6crss(spnt1+ksizem3,snorm1,sdum1);
+			      (void)s6norm(sdum1,kdim,sdum1,&kstat);
+			      if (kstat < 0) goto error;
+			      s6crss(sipnt1+ksizem3,snorm2,sdum2);
+			      (void)s6norm(sdum2,kdim,sdum2,&kstat);
+			      if (kstat < 0) goto error;
+
+			      tdum = s6scpr(sdum1,sdum2,kdim);
+			    }
+
+
+			  /* Check that sipar1 lies on the same side of spar1 as
+			     the tangent at spar1 */
+
+			  s6diff(sipar1,spar1,2,sdum1);
+			  tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
+			}
+
+		      /* An intersection point has only been found when kstat==1
+		       */
+		      if (kstat1==1 && tdump >= (double)0.0 && tdum > (double)0.5)
+			{
+			  /* If krem=3 we step into the patch, if krem=2 we step
+			     out of the patch */
+
+			  if (krem==2 || krem==3)
+			    {
+			      /* Since we clip, set kstpch=0, no guide point reached */
+
+			      /* If krem==3 we step into the patch, make new
+				 start point of segment */
+
+			      if (krem==3) knbinf--;
+
+			      memcopy(spnt2,sipnt1,ksize,DOUBLE);
+			      memcopy(spar2,sipar1,2,DOUBLE);
+
+			      s1306(sipnt1,sipar1,eimpli,ideg,s3dinf+10*knbinf,
+				    sp1inf+7*knbinf,&kstat);
+			      if (kstat<0) goto error;
+
+
+			      /* Make sure that the tangents of previous and the new point
+				 point in the same direction */
+
+			      if (knbinf>0)
+				tdum = s6scpr(s3dinf+10*(knbinf-1)+3,
+					      s3dinf+10*knbinf+3,kdim);
+			      else
+				tdum = s6scpr(startg,s3dinf+3,kdim);
+
+
+			      if (tdum < DZERO)
+				{
+				  /* Change tangent direction 3-D and in
+				     parameter plane
+				  */
+				  sp1 = s3dinf + 10*knbinf + 3;
+				  sp1[0] = -sp1[0];
+				  sp1[1] = -sp1[1];
+				  sp1[2] = -sp1[2];
+				  sp1 = sp1inf + 7*knbinf + 2;
+				  sp1[0] = -sp1[0];
+				  sp1[1] = -sp1[1];
+				}
+
+			      /* If the new end point tangent points out go
+				 to next direction */
+
+			      ki = 7*knbinf;
+			      if( (sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] < DZERO) ||
+				  (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] > DZERO) ||
+				  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] < DZERO) ||
+				  (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] > DZERO)   )
+				{
+				  knbinf++;
+				  goto nextdir;
+				}
+			      else if(krem == 2 &&
+				      ((sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] >= DZERO) ||
+				       (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] <= DZERO) ||
+				       (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] >= DZERO) ||
+				       (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] <=DZERO)    ))
+				{
+				  /* We were marching out ou the patch, but the tangent
+				     points in, half step length */
+				  kstpch = 0;
+				}
+
+
+
+			    }
+			}
+
+		      else
+			{
+			  /* Divergence or point on wrong side in the parameter
+			     plane or 3-d */
+			  kstpch = 0;
+			  koutside_resolution = 0;
+			}
+		    }
+		  else if (krem1==4 || krem2==4)
+		    goto nextdir;
+
+		}
 
 	      /* Update step length if new endpoint is to be found */
 
@@ -1348,7 +1348,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
       /* End inside */
       /* INSIDE TEST REMOVED BECAUSE OF CHANGED STRATEGY
 	 }
-	 */
+      */
     nextdir:;
       /* End two step directions */
     }
@@ -1357,11 +1357,11 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
   /* In certain cases too many marched point may be found. These cases are:
 
-     - Open curve and start of marching first guide point
-     - Open curve and start of marching last guide point
-     - Closed curve and this found in second marching direction
+  - Open curve and start of marching first guide point
+  - Open curve and start of marching last guide point
+  - Closed curve and this found in second marching direction
 
-     In these cases some of the found points have to be discarded */
+  In these cases some of the found points have to be discarded */
 
   scorpnt = s3dinf;
   scorpar = sp1inf;
@@ -1372,34 +1372,34 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
       /*  Open curve */
 
       if ( (kstart==1 && kgd1 == kpoint) ||
-	  (kstart==kpoint && kgd1==1)      )
-        {
+	   (kstart==kpoint && kgd1==1)      )
+	{
 	  /*  First marching direction traced curve */
 
 	  knbinf = knb1;
-        }
+	}
       else if ( (kstart==1 && kguide==kpoint) ||
-	       (kstart==kpoint && kguide==1)    )
-        {
+		(kstart==kpoint && kguide==1)    )
+	{
 	  /* Second marching direction traced curve */
 
 	  scorpnt = scorpnt + 10*(knb1-1);
 	  scorpar = scorpar +  7*(knb1-1);
 	  knbinf  = knbinf - knb1 + 1;
-        }
+	}
     }
   else if (kpoint>1)
     {
       /*  Closed curve, correct if result of second marching direction */
 
       if (kdir != 1)
-        {
+	{
 	  /* Second marching direction, disc ard result of first direction */
 
 	  scorpnt = scorpnt + 10*(knb1-1);
 	  scorpar = scorpar +  7*(knb1-1);
 	  knbinf  = knbinf - knb1 + 1;
-        }
+	}
     }
 
   /* A curve is traced out only if at least two points are found, if less
@@ -1459,14 +1459,14 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 	    }
 	}
     }
-/*  Dont use s9constline for the silhouette curves -- it won't work! */
+  /*  Dont use s9constline for the silhouette curves -- it won't work! */
   else if(pintcr->ipoint > 1 && ideg < 1003)
     {
 
       /* If no points produced on intersection curve */
 
       s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
-		  icur,igraph,&kstat);
+			icur,igraph,&kstat);
       if (kstat<0) goto error;
       if (kstat==0) goto err185;
     }
@@ -1478,61 +1478,61 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
   goto out;
 
-/* Iteration can not continue */
-war03:  *jstat = 3;
-        goto out;
+  /* Iteration can not continue */
+ war03:  *jstat = 3;
+  goto out;
 
-/* Error in space allocation */
-err101: *jstat = -101;
-        s6err("s1313",*jstat,kpos);
-        goto out;
+  /* Error in space allocation */
+ err101: *jstat = -101;
+  s6err("s1313",*jstat,kpos);
+  goto out;
 
-/* Error in surface description parameter direction does not exist */
-err123: *jstat = -123;
-        s6err("s1313",*jstat,kpos);
-        goto out;
+  /* Error in surface description parameter direction does not exist */
+ err123: *jstat = -123;
+  s6err("s1313",*jstat,kpos);
+  goto out;
 
 
-/* Error - SISL_NULL pointer was given */
-err150 :
+  /* Error - SISL_NULL pointer was given */
+  err150 :
     *jstat = -150;
-    s6err("s1313",*jstat,kpos);
-    goto out;
+  s6err("s1313",*jstat,kpos);
+  goto out;
 
 
-/* Only degenerate or singular guide points */
-err185: *jstat = -185;
-goto out;
+  /* Only degenerate or singular guide points */
+ err185: *jstat = -185;
+  goto out;
 
 
-/* Error in lower leve function */
-error:
-        *jstat = kstat;
-        s6err("s1313",*jstat,kpos);
-goto out;
+  /* Error in lower leve function */
+ error:
+  *jstat = kstat;
+  s6err("s1313",*jstat,kpos);
+  goto out;
 
-out:
+ out:
 
-/* Free allocated space */
+  /* Free allocated space */
 
-if (sgpar  != SISL_NULL) freearray(sgpar);
-if (sgd1   != SISL_NULL) freearray(sgd1);
-if (s3dinf != SISL_NULL) freearray(s3dinf);
-if (sp1inf != SISL_NULL) freearray(sp1inf);
-if (spar   != SISL_NULL) freearray(spar);
+  if (sgpar  != SISL_NULL) freearray(sgpar);
+  if (sgd1   != SISL_NULL) freearray(sgd1);
+  if (s3dinf != SISL_NULL) freearray(s3dinf);
+  if (sp1inf != SISL_NULL) freearray(sp1inf);
+  if (spar   != SISL_NULL) freearray(spar);
 
 
-return;
+  return;
 }
 
 #if defined(SISLNEEDPROTOTYPES)
 static void
-  s1313_s9constline(SISLSurf *ps1,double eimpli[],int ideg,
-		    double aepsge,SISLIntcurve *pintcr,int icur,
-		    int igraph,int *jstat)
+s1313_s9constline(SISLSurf *ps1,double eimpli[],int ideg,
+		  double aepsge,SISLIntcurve *pintcr,int icur,
+		  int igraph,int *jstat)
 #else
-static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
-			      icur,igraph,jstat)
+     static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
+				   icur,igraph,jstat)
      SISLSurf     *ps1;
      double   eimpli[];
      int      ideg;
@@ -1542,7 +1542,7 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
      int      igraph;
      int      *jstat;
 #endif
-/*
+     /*
 *********************************************************************
 *
 * PURPOSE    : To check if the parameter pairs describe an intersection
@@ -1769,21 +1769,21 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
   for (ki=0 ; ki <kn ; ki++)
     {
       if (kk>1)
-        {
+	{
 	  /* Make parameter value to use for calculation of curve point */
 
 	  for (kl=1,kj=ki+1,tsum=(double)0.0 ; kl<kk ; kl++)
-            tsum += st[kj++];
+	    tsum += st[kj++];
 
 	  tsum = tsum/(kk-1);
-        }
+	}
       else
-        tsum = st[ki];
+	tsum = st[ki];
 
       tval = tsum;
 
       for (kj=0 ; kj<2 ; kj++)
-        {
+	{
 	  /* Calculate point on curve */
 
 	  s1221(qc2,1,tval,&kleft,sder,&kstat);
@@ -1798,7 +1798,7 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
 
 	  tdist = fabs(s1309(sder,snorm,eimpli,ideg,&kstat));
 	  if (kstat<0) goto error;
-          if (kstat==2) goto war00;
+	  if (kstat==2) goto war00;
 
 	  /* Both the position of the two points should be within the relative
 	     computer resolution for the point to be accepted. Correspondingly the
@@ -1806,7 +1806,7 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
 	     should be within the computer resolution to be accepted. */
 
 	  if (DNEQUAL(tdist+tmax,tmax))
-            goto war00;
+	    goto war00;
 
 	  /* Distance within tolerance, check that the angle between surface
 	     normal and curve tangent is PIHALF, if both these vectors have a
@@ -1819,7 +1819,7 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
 	      if (DNEQUAL(fabs(tang),PIHALF) ) goto war00;
 	    }
 	  tval = (tsumold+tsum)/(double)2.0;
-        }
+	}
       tsumold = tsum;
     }
 
@@ -1834,13 +1834,13 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
       if (kstat < 0) goto error;
 
       if (knbpnt>1)
-        {
+	{
 	  /* Draw curve */
 
 	  s6move(spoint);
 	  for (ki=1,sp1=spoint+3 ; ki<knbpnt ; ki++,sp1+=3)
-            s6line(sp1);
-        }
+	    s6line(sp1);
+	}
       freearray(spoint);
     }
 
@@ -1859,21 +1859,21 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
       double svert[4],sknot[4];
 
       if (kdir==1)
-        {
+	{
 	  svert[0] = svert[2] = (tmin1+tmax1)/(double)2.0;
 	  svert[1] = tmin2;
 	  svert[3] = tmax2;
 	  sknot[0] = sknot[1] = tmin2;
 	  sknot[2] = sknot[3] = tmax2;
-        }
+	}
       else
-        {
+	{
 	  svert[0] = tmin1;
 	  svert[2] = tmax1;
 	  svert[1] = svert[3] = (tmin2+tmax2)/(double)2.0;
 	  sknot[0] = sknot[1] = tmin1;
 	  sknot[2] = sknot[3] = tmax1;
-        }
+	}
       qp1cur = newCurve(2,2,sknot,svert,1,2,1);
       if (qp1cur==SISL_NULL) goto err101;
       pintcr -> ppar1 = qp1cur;
@@ -1883,28 +1883,28 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
   *jstat = 1;
   goto out;
 
-/* Iteration can not continue */
-war00:  *jstat = 0;
-        goto out;
+  /* Iteration can not continue */
+ war00:  *jstat = 0;
+  goto out;
 
 
-/* Error in space allocation */
-err101: *jstat = -101;
-        s6err("s1313",*jstat,kpos);
-        goto out;
+  /* Error in space allocation */
+ err101: *jstat = -101;
+  s6err("s1313",*jstat,kpos);
+  goto out;
 
-/* Error in surface description parameter direction does not exist */
-err123: *jstat = -123;
-        s6err("s1313_s9constline",*jstat,kpos);
-goto out;
+  /* Error in surface description parameter direction does not exist */
+ err123: *jstat = -123;
+  s6err("s1313_s9constline",*jstat,kpos);
+  goto out;
 
-/* Error in lower leve function */
-error:
-        *jstat = kstat;
-        s6err("s1313_s9constline",*jstat,kpos);
-goto out;
+  /* Error in lower leve function */
+ error:
+  *jstat = kstat;
+  s6err("s1313_s9constline",*jstat,kpos);
+  goto out;
 
-out:;
-if (qc1 != SISL_NULL) freeCurve(qc1);
-if (qc2 != SISL_NULL) freeCurve(qc2);
+ out:;
+  if (qc1 != SISL_NULL) freeCurve(qc1);
+  if (qc2 != SISL_NULL) freeCurve(qc2);
 }
