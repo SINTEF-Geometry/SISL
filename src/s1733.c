@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1733.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1733.c,v 1.2 1994-10-19 15:30:55 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1733(SISLSurf *ps,int icont1,int icont2,double *cstart1,double *cend1,
 	   double *cstart2,double *cend2,double *gcoef,int *jstat)
 #else
@@ -80,6 +80,9 @@ void s1733(ps,icont1,icont2,cstart1,cend1,cstart2,cend2,gcoef,jstat)
 * WRITTEN BY : Arne Laksaa, SI, 88-11.
 * REVISED BY : Johannes Kaasa, SI, May 1992 (Introduced NURBS).
 * REVISED BY : Christophe Birkeland, SI, July 92
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Oct. 1994. Added lower
+*              bound checks on 'icont1' and 'icont2' and corrected upper
+*              bound checks from "<=" to "<" - caused memory problems.
 *
 **********************************************************************/
 {
@@ -95,9 +98,9 @@ void s1733(ps,icont1,icont2,cstart1,cend1,cstart2,cend2,gcoef,jstat)
   double *scoef;    /* Vertices.                           */
 
   *jstat = 0;
-  
+
   /* Check if the surface is rational. */
-  
+
   if (ps->ikind == 2 || ps->ikind == 4)
   {
      kdim = ps->idim + 1;
@@ -108,37 +111,38 @@ void s1733(ps,icont1,icont2,cstart1,cend1,cstart2,cend2,gcoef,jstat)
      kdim = ps->idim;
      scoef = ps->ecoef;
   }
-  
+
   /* Check that we have a Bezier patch to treat. */
-  
-  if (icont1 <= ps->in1/ps->ik1 && icont2 <= ps->in2/ps->ik2)
+
+  if ( icont1 >= 0  &&  icont2 >= 0  &&
+       icont1 < ps->in1/ps->ik1  &&  icont2 < ps->in2/ps->ik2 )
     {
       /* Finding the first and last element in ps->et1 with the
 	 start1 value. */
-      
+
       kfi1 = icont1*ps->ik1;
       kla1 = kfi1 + ps->ik1;
-      
+
       /* Updating the start1 and the end1 parameter value
 	 to the patch. */
-      
+
       *cstart1 = ps->et1[kfi1];
       *cend1 = ps->et1[kla1+1];
-      
+
       /* Finding the first and last element in ps->et2 with the
 	 start2 value. */
-      
+
       kfi2 = icont2*ps->ik2;
       kla2 = kfi2 + ps->ik2;
-      
+
       /* Updating the start2 and the end2 parameter value
 	 to the patch. */
-      
+
       *cstart2 = ps->et2[kfi2];
       *cend2 = ps->et2[kla2+1];
-      
+
       /* Updating the vertices to the Bezier curve. */
-      
+
       for (ki=0;ki < ps->ik2;ki++)
 	memcopy(gcoef+ki*kdim*ps->ik1,
 		&scoef[((kfi2+ki)*ps->in1 + kfi1)*kdim],
@@ -147,11 +151,8 @@ void s1733(ps,icont1,icont2,cstart1,cend1,cstart2,cend2,gcoef,jstat)
   else
     {
       /* Error, no patch to return. */
-      
+
       *jstat = -152;
       s6err("s1733",*jstat,kpos);
     }
 }
-
-
-
