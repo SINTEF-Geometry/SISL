@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1023.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1023.c,v 1.2 1994-08-24 15:19:46 pfu Exp $
  *
  */
 
@@ -22,24 +22,24 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-s1023(double center[], double axis[], double equator[], int latitude, 
+s1023(double center[], double axis[], double equator[], int latitude,
 	  int longitude, SISLSurf **sphere, int *stat)
 #else
-void s1023(center, axis, equator, latitude, longitude, sphere, stat) 
+void s1023(center, axis, equator, latitude, longitude, sphere, stat)
      double center[];
      double axis[];
      double equator[];
      int latitude;
      int longitude;
      SISLSurf  **sphere;
-     int    *stat;      
+     int    *stat;
 #endif
 /*
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To describe octants of a sphere as a NURBS. This can also
 *              be used to describe the complete sphere.
-*             
+*
 *
 * INPUT      : center        - Center point of the sphere
 *              axis          - Axis of the sphere (towards the north pole)
@@ -57,22 +57,23 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
 *                              This is counted counter-clockwise from equator
 *
 *
-* OUTPUT     : 
-*              stat          - status messages  
+* OUTPUT     :
+*              stat          - status messages
 *                                             > 0      : warning
 *                                             = 0      : ok
 *                                             < 0      : error
 *              spher         - Pointer to the sphere produced
 *
-* METHOD     : 
+* METHOD     :
 *
 *
 * REFERENCES :
 *
-*-                                      
-* CALLS      : 
+*-
+* CALLS      :
 *
 * WRITTEN BY : Johannes Kaasa, SI, Oslo, Norway, Jan. 93
+* Revised by : Paal Fugelli and Johannes Kaasa, SINTEF, Oslo, Norway, 08-94.
 *
 *********************************************************************
 */
@@ -100,11 +101,11 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
 
    /* Do necessary initiation and allocation. */
 
-   *sphere = NULL;   
+   *sphere = NULL;
    weight = (double)1.0/sqrt(2.0);
    in1 = 1 + 2*latitude;
    in2 = 1 + 2*longitude;
-   
+
    radius = s6length(equator, 3, &kstat);
    if (kstat < 0) goto error;
    norm = s6length(axis, 3, &kstat);
@@ -116,13 +117,13 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
    if (kstat < 0) goto error;
    for (ki = 0; ki < 3; ki++)
       z_axis[ki] = radius*z_axis[ki]/norm;
-   
+
    if((et1 = newarray(in1 + ik1, DOUBLE)) == NULL) goto err101;
    if((et2 = newarray(in2 + ik2, DOUBLE)) == NULL) goto err101;
    if((rcoef = newarray(4*in1*in2, DOUBLE)) == NULL) goto err101;
-   
+
    /* Initiate the knot vectors. */
-   
+
    for (ki = 0; ki < ik1; ki++)
       et1[ki] = (double)0.;
    for (ki = 0; ki < latitude; ki++)
@@ -140,7 +141,7 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
       et2[ik2 + 2*ki + 1] = (ki + 1)*PIHALF;
    }
    et2[in2 + ik2 - 1] = longitude*PIHALF;
-   
+
    /* Initiate the coefficient vector. */
 
    for (ki = 0; ki < in2; ki++)
@@ -149,49 +150,49 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
 	 w2 = weight;
       else
          w2 = (double)1.;
-	 
+
       if (ki == 0 || ki == 1 || ki == 7 || ki == 8)
 	 y_comp = (double)1.;
       else if (ki == 3 || ki == 4 || ki == 5)
 	 y_comp = - (double)1.;
       else
          y_comp = (double)0.;
-	 
+
       if (ki == 1 || ki == 2 || ki == 3)
 	 z_comp = (double)1.;
       else if (ki == 5 || ki == 6 || ki == 7)
 	 z_comp = - (double)1.;
       else
          z_comp = (double)0.;
-	 
+
       for (kj = 0; kj < in1; kj++)
       {
 	 if (kj == 1 || kj == 3)
 	    w1 = weight;
 	 else
 	    w1 = (double)1.;
-	    
+
 	 if (kj == 0 || kj == 1)
 	    x_comp = (double)1.;
 	 else if (kj == 3 || kj == 4)
 	    x_comp = - (double)1.;
 	 else
 	    x_comp = (double)0.;
-	    
+
+	 w1 *= w2;
+
          if (kj == 0 || kj == 4)
 	 {
-	    w1 = (double)1.;
 	    for (kl = 0; kl < 3; kl++)
-	       rcoef[4*(ki*in1 + kj) + kl] = center[kl] + x_comp*x_axis[kl];
+	       rcoef[4*(ki*in1 + kj) + kl] = w1*(center[kl] + x_comp*x_axis[kl]);
          }
 	 else
 	 {
-            w1 *= w2;
 	    for (kl = 0; kl < 3; kl++)
-	       rcoef[4*(ki*in1 + kj) + kl] = center[kl] + w1*(x_comp*x_axis[kl] 
+	       rcoef[4*(ki*in1 + kj) + kl] =  w1*(center[kl] + x_comp*x_axis[kl]
 	                        + y_comp*equator[kl] + z_comp*z_axis[kl]);
 	 }
-	 rcoef[4*(ki*in1 + kj) + 3] = w1;	 
+	 rcoef[4*(ki*in1 + kj) + 3] = w1;
       }
    }
    (*sphere) = newSurf(in1, in2, ik1, ik2, et1, et2, rcoef, kind, 3, 1);
@@ -199,26 +200,25 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
 
    if (et1 != NULL) freearray(et1);
    if (et2 != NULL) freearray(et2);
-   if (rcoef != NULL) freearray(rcoef);		      
-  
+   if (rcoef != NULL) freearray(rcoef);
+
    *stat = 0;
    goto out;
-  
+
    /* Error in curve allocation.  */
-  
-   err101: 
+
+   err101:
       *stat = -101;
       s6err("s1023",*stat,kpos);
       goto out;
-      
+
    /* Error in lower level routine. */
-      
+
    error:
       *stat = kstat;
       s6err("s1023", *stat, kpos);
       goto out;
-  
-   out:  
+
+   out:
       return;
 }
-    
