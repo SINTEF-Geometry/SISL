@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1762.c,v 1.2 1994-05-02 08:43:09 vsk Exp $
  *
  */
 
@@ -3157,22 +3157,6 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 		   *jstat = 0;
 		   goto out;
 		}
-
-		if (kstat == 2)
-		{
-		   /* No intersection point is found. Try again with a new
-		      start point to the iteration.  */
-
-		   sh6closevert(po1->c1,po2->s1,&spar[kturn2],&spar[kturn1]);
-		   /* UJK, sept 92 Remember if s1772 is called
-		      with kstat!= 0, quick method is used */
-		   kstat = 0;
-		   s1772 (po1->o1->c1, po2->o1->s1, aepsge, tstart, sstart, tend, send,
-			  spar[kturn2], &spar[kturn1],
-			  &spar[kturn2], &spar[kturn1], &kstat);
-		   if (kstat < 0)
-		      goto error;
-	        }
 
 	      if (kstat == 1)
 		/*Intersection point found. Control edges. */
