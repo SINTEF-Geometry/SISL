@@ -11,7 +11,7 @@
 
 /*
  *
- *
+ * $Id:
  *
  */
 
@@ -37,6 +37,8 @@ s1508(inbcrv, vpcurv, par_arr,
 /*
 *********************************************************************
 *
+*********************************************************************
+*
 * PURPOSE    : To create a rational B-spline lofted surface
 *              from a set of rational B-spline input-curves.
 *
@@ -57,7 +59,7 @@ s1508(inbcrv, vpcurv, par_arr,
 *              The resulting curves are given to an interpolation
 *              routine that calculates the B-spline vertices of the
 *              resulting spline lofted surface.
-*              The surface will be C^1 and cubic in the lofting direction.
+*              The surface will be C1 and cubic in the lofting direction.
 *              Throughout these routines, first parameter direction
 *              will be the interpolating direction, second parameter-
 *              direction will be along the input curves.
@@ -65,7 +67,6 @@ s1508(inbcrv, vpcurv, par_arr,
 * REFERENCES :
 *
 *-
-*
 * CALLS      : s1931,s1917,s1918,s1358,s6err.
 *
 * WRITTEN BY : Michael Floater, SI, Oslo, October 1993.
