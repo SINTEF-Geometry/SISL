@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2508.c,v 1.2 1995-08-08 11:51:04 jka Exp $
+ * $Id: s2508.c,v 1.3 1995-09-22 12:24:31 jka Exp $
  *
  */
 
@@ -40,8 +40,9 @@ s2508(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 ***************************************************************************
 *
 ***************************************************************************
-*  PURPOSE      :  To compute the Mehlum curvature M(u,v) of a Surface for
-*                  given values (u,v) = (parvalue[0],parvalue[1]), where:
+*  PURPOSE      :  To compute the second order Mehlum curvature M(u,v) of a 
+*                  surface for given values (u,v) = (parvalue[0],parvalue[1]), 
+*                  where:
 *
 *                          et1[leftknot1] <= parvalue[0] < et1[leftknot1+1],
 *                          et2[leftknot2] <= parvalue[1] < et2[leftknot2+1].

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2509.c,v 1.1 1995-08-08 11:49:44 jka Exp $
+ * $Id: s2509.c,v 1.2 1995-09-22 12:25:47 jka Exp $
  *
  */
 
@@ -37,8 +37,8 @@ s2509(SISLSurf *surf, int ider, double derive[], double normal[],
 ***************************************************************************
 *
 ***************************************************************************
-*  PURPOSE      :  To compute the Mehlum curvature M(u,v) of a Surface for
-*                  given values (u,v). This is a lower level routine, used
+*  PURPOSE      :  To compute the second Mehlum curvature M(u,v) of a surface 
+*                  for given values (u,v). This is a lower level routine, used
 *                  for evaluation of many M(u,v)'s.
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
