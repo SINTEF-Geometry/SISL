@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2502.c,v 1.2 1995-01-18 13:14:49 pfu Exp $
+ * $Id: s2502.c,v 1.3 1995-01-18 13:20:09 pfu Exp $
  *
  */
 
@@ -137,8 +137,7 @@ void
     }
     else if (kistat != 2) /* The surface is not degenerate */
     {
-      s2503(surf, der, parvalue, derive, normal, leftknot1, leftknot2,
-	    meancurvature, &kistat);
+      s2503(surf, der, parvalue, derive, normal, meancurvature, &kistat);
 
       if (kistat < 0)
 	goto error;
