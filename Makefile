@@ -401,7 +401,7 @@ GLOBALLIBDIRS     =
 endif
 
 ifndef DEPLIBSSYSTEM
-DEPLIBSSYSTEM =m
+DEPLIBSSYSTEM =
 endif
 
 ifndef SYSTEMINCLUDEDIRS
@@ -413,7 +413,7 @@ SYSTEMLIBDIRS     =
 endif
 
 
-CLIBS =
+CLIBS		= $(foreach lib, $(DEPLIBSLOCAL),-l$(lib)) $(foreach lib, $(DEPLIBSGLOBAL),-l$(lib)) $(foreach lib, $(DEPLIBSSYSTEM),-l$(lib))
 
 
 
@@ -469,6 +469,12 @@ ifeq "$(PLATFORM)" "winnt"
   CXXLIBPATH	=-LIBPATH:lib/$(PLATFORM)/$(MODE) $(foreach lib, $(DEPLIBSLOCAL),-LIBPATH:../$(lib)/lib/$(PLATFORM)/$(MODE)) $(foreach lib, $(GLOBALLIBDIRS),-LIBPATH:$(lib)/$(GLOBALPLATFORM)/$(MODE)) $(foreach lib, $(SYSTEMLIBDIRS),-LIBPATH:$(lib))
 else
   CXXLIBPATH	=-Llib/$(PLATFORM)/$(MODE) $(foreach lib, $(DEPLIBSLOCAL),-L../$(lib)/lib/$(PLATFORM)/$(MODE)) $(foreach lib, $(GLOBALLIBDIRS),-L$(lib)/$(GLOBALPLATFORM)/$(MODE)) $(foreach lib, $(SYSTEMLIBDIRS),-L$(lib))
+endif
+
+ifeq "$(PLATFORM)" "winnt"
+  CLIBPATH	=-LIBPATH:lib/$(PLATFORM)/$(MODE) $(foreach lib, $(DEPLIBSLOCAL),-LIBPATH:../$(lib)/lib/$(PLATFORM)/$(MODE)) $(foreach lib, $(GLOBALLIBDIRS),-LIBPATH:$(lib)/$(GLOBALPLATFORM)/$(MODE)) $(foreach lib, $(SYSTEMLIBDIRS),-LIBPATH:$(lib))
+else
+  CLIBPATH	=-Llib/$(PLATFORM)/$(MODE) $(foreach lib, $(DEPLIBSLOCAL),-L../$(lib)/lib/$(PLATFORM)/$(MODE)) $(foreach lib, $(GLOBALLIBDIRS),-L$(lib)/$(GLOBALPLATFORM)/$(MODE)) $(foreach lib, $(SYSTEMLIBDIRS),-L$(lib))
 endif
 
 
