@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1319.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1319.c,v 1.2 1994-12-01 14:07:14 pfu Exp $
  *
  */
 
@@ -41,7 +41,7 @@ void s1319(ps1,eview,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To march the silhouette curve described by an intersection
 *              curve object, a B-spline surface and a view direction.
 *
@@ -54,12 +54,12 @@ void s1319(ps1,eview,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *              aepsge - Geometry resolution.
 *              amax   - Maximal allowed step length. If amax <=aepsge
 *                       amax is neglected.
-*              icur   - Indicator telling if a 3-D curve is to be made 
+*              icur   - Indicator telling if a 3-D curve is to be made
 *                        0 - Don't make 3-D curve
 *                        1 - Make 3-D curve
 *                        2 - Make 3-D curve and curves in parameter plane
 *              igraph - Indicator telling if the curve is to be outputted
-*                       through function calls:   
+*                       through function calls:
 *                        0 - don't output curve through function call
 *                        1 - output as straight line segments through
 *                            s6move and s6line.
@@ -72,7 +72,7 @@ void s1319(ps1,eview,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                       and possibly the curve in the parameter plane
 *                       of the surface is added.
 *
-* OUTPUT:      jstat  - status messages  
+* OUTPUT:      jstat  - status messages
 *                         = 3      : Iteration stopped due to singular
 *                                    point or degenerate surface. A part
 *                                    of intersection curve may have been
@@ -81,6 +81,7 @@ void s1319(ps1,eview,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                                    object point to NULL.
 *                         = 0      : ok
 *                         < 0      : error
+*                         = -185   : No points produced on intersection curve.
 *
 *
 * METHOD     : An implicit description of the problem is made and then
@@ -95,54 +96,54 @@ void s1319(ps1,eview,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *
 *********************************************************************
 */
-{            
+{
   int kpos=0;         /* Position of error                                  */
   int kdeg=1003;      /* The degree of the implicit equation of the plane   */
   int kstat;          /* Local status variable                              */
   double simpli[4];   /* Array containing the implicit description of plane */
   double snorm[3];    /* Normalized version of normal vector                */
-  
-  
-  
+
+
+
   if (idim != 3) goto err104;
-  
+
   /* Normalize normal vector */
-  
+
   (void)s6norm(eview,idim,snorm,&kstat);
-  
+
   simpli[0] = snorm[0];
   simpli[1] = snorm[1];
   simpli[2] = snorm[2];
-  
+
   /* Make intersection of implicit surface and B-spline surface */
-  
+
   s1313(ps1,simpli,kdeg,aepsco,aepsge,amax,pintcr,icur,igraph,&kstat);
   if (kstat == -185) goto err185;
   if (kstat < 0) goto error;
-  
+
   *jstat = kstat;
   goto out;
-  
+
   /* Dimension not 3 */
-  
- err104: 
-  *jstat = -104;                
+
+ err104:
+  *jstat = -104;
   s6err("s1319",*jstat,kpos);
   goto out;
-  
+
   /* Couldn't march */
-  
+
  err185:
   *jstat = -185;
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
- error: 
-  *jstat = kstat;     
+
+ error:
+  *jstat = kstat;
   s6err("s1319",*jstat,kpos);
   goto out;
-  
+
  out:
   return;
-}                                               
+}

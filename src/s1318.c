@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1318.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1318.c,v 1.2 1994-12-01 14:06:45 pfu Exp $
  *
  */
 
@@ -46,7 +46,7 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To march an intersection curve desribed by parameter pairs
 *              in an intersection curve object, a B-spline surface and
 *              a TORUS.
@@ -62,12 +62,12 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
 *              aepsge - Geometry resolution.
 *              amax   - Maximal allowed step length. If amax <=aepsge
 *                       amax is neglected.
-*              icur   - Indicator telling if a 3-D curve is to be made 
+*              icur   - Indicator telling if a 3-D curve is to be made
 *                        0 - Don't make 3-D curve
 *                        1 - Make 3-D curve
 *                        2 - Make 3-D curve and curves in parameter plane
 *              igraph - Indicator telling if the curve is to be outputted
-*                       through function calls:   
+*                       through function calls:
 *                        0 - don't output curve through function call
 *                        1 - output as straight line segments through
 *                            s6move and s6line.
@@ -80,7 +80,7 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
 *                       and possibly the curve in the parameter plane
 *                       of the surface is added.
 *
-* OUTPUT:      jstat  - status messages  
+* OUTPUT:      jstat  - status messages
 *                         = 3      : Iteration stopped due to singular
 *                                    point or degenerate surface. A part
 *                                    of intersection curve may have been
@@ -89,10 +89,11 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
 *                                    object point to NULL.
 *                         = 0      : ok
 *                         < 0      : error
+*                         = -185   : No points produced on intersection curve.
 *
 *
 * METHOD     : An implicit description of the cone is made and then
-*              a routine for intersecting implicit represented geometry     
+*              a routine for intersecting implicit represented geometry
 *              by a B-spline surface is used.
 *
 * REFERENCES :
@@ -103,71 +104,71 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
 *
 *********************************************************************
 */
-{            
+{
   int kpos=0;         /* Position of error                                  */
   int kdeg=2;         /* The degree of the implicit equation of the plane   */
   int kstat;          /* Local status variable                              */
   double simpli[8];   /* Array containing the implicit description of sphere*/
   double snorm[3];    /* Nomalized normal vector                            */
-  
+
   if (idim != 3) goto err104;
-  
+
   /* Make description of TORUS */
-  
+
   (void)s6norm(enorm,idim,snorm,&kstat);
   if (kstat<0) goto error;
-  
-  if (kstat == 0          || 
-      DEQUAL(abigr,DNULL) || 
-      DEQUAL(asmalr,DNULL)) goto err177; 
-  
+
+  if (kstat == 0          ||
+      DEQUAL(abigr,DNULL) ||
+      DEQUAL(asmalr,DNULL)) goto err177;
+
   /* Put the information concerning the torus in the following sequence
      into simpli: Center, normal, big radius, small radius */
-  
+
   memcopy(simpli,ecentr,3,DOUBLE);
   memcopy(simpli+3,snorm,3,DOUBLE);
   simpli[6] = abigr;
   simpli[7] = asmalr;
-  
+
   /* Indicate the the information concerns a torus by putting kdeg=1001 */
   kdeg = 1001;
-  
+
   /* Make intersection of implicit surface and B-spline surface */
-  
+
   s1313(ps1,simpli,kdeg,aepsco,aepsge,amax,pintcr,icur,igraph,&kstat);
   if (kstat == -185) goto err185;
   if (kstat < 0) goto error;
-  
+
   *jstat = kstat;
   goto out;
-  
+
   /* Dimension not 3 */
-  
- err104: 
-  *jstat = -104;                
+
+ err104:
+  *jstat = -104;
   s6err("s1318",*jstat,kpos);
   goto out;
-  
+
   /* Error in torus description */
-  
- err177: 
-  *jstat = -177;                
+
+ err177:
+  *jstat = -177;
   s6err("s1318",*jstat,kpos);
   goto out;
-  
+
   /* Couldn't march */
-  
+
  err185:
   *jstat = -185;
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
- error: 
-  *jstat = kstat;     
+
+ error:
+  *jstat = kstat;
   s6err("s1318",*jstat,kpos);
   goto out;
-  
+
  out:
   return;
-}                                               
+}
