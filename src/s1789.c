@@ -40,7 +40,7 @@ void
 *
 *********************************************************************
 *
-* PURPOSE    : Test if a point and a surface in 2D coincide beetween
+* PURPOSE    : Test if a point and a surface coincide beetween
 *              two intersection points.
 *              This function is used when the partial derivatives
 *              of the surface are matching for both
@@ -67,6 +67,7 @@ void
 * REFERENCES :
 *
 * WRITTEN BY : Vibeke Skytt, SINTEF Oslo, Norway. 10.94
+* REVISED BY : Vibeke Skytt, 03.98.  Use test also in 3D case.
 *
 *********************************************************************
 */
@@ -139,9 +140,10 @@ void
 
    tref = MAX(st1[kn1]-st1[kk1-1],st2[kn2]-st2[kk2-1]);
 
-   /* Check that dimension are 2 */
+   /* Check dimension  */
 
-   if (ppoint->idim != 2 || kdims != 2) goto err108;
+   if (ppoint->idim != kdims || (kdims != 2 && kdims != 3))
+     goto err105;
 
    sstart[0] = st1[kk1-1];
    sstart[1] = st2[kk2-1];
@@ -171,25 +173,37 @@ void
 	 surface in this point must be almost parallel. Find the factor
 	 that makes the partial derivatives sum up to zero (approximately). */
 
-      if (DEQUAL(sders[2]+tref,tref) && DEQUAL(sders[3]+tref,tref)) break;
+     if (kdims == 2)
+       {
+	 if (DEQUAL(sders[kdims]+tref,tref) && 
+	     DEQUAL(sders[kdims+1]+tref,tref) &&
+	     DEQUAL(sders[kdims+2]+tref,tref)) break;
 
-      if (sders[2] >= sders[3])
-      {
-	 if (DEQUAL(sders[4]+tref,sders[2]+tref))
-	    tbeta = (double)0.5;
+	 if (sders[2] >= sders[3])
+	   {
+	     if (DEQUAL(sders[4]+tref,sders[2]+tref))
+	       tbeta = (double)0.5;
+	     else
+	       tbeta = (double)1/((double)1 - (sders[4]/sders[2]));
+	   }
 	 else
-	    tbeta = (double)1/((double)1 - (sders[4]/sders[2]));
-      }
-      else
-      {
-	 if (DEQUAL(sders[5]+tref,sders[3]+tref))
-	    tbeta = (double)0.5;
-	 else
-	    tbeta = (double)1/((double)1 - (sders[5]/sders[3]));
-      }
+	   {
+	     if (DEQUAL(sders[5]+tref,sders[3]+tref))
+	       tbeta = (double)0.5;
+	     else
+	       tbeta = (double)1/((double)1 - (sders[5]/sders[3]));
+	   } 
 
-      spardir[0] = (double)1-tbeta;
-      spardir[1] = tbeta;
+
+	 spardir[0] = (double)1-tbeta;
+	 spardir[1] = tbeta;
+       }
+     else
+       {
+	 spardir[0] = epar2[0]-epar1[0];
+	 spardir[1] = epar2[1]-epar1[1];
+       }
+
       tdot = s6norm(spardir, 2, spardir,&kstat);
       if (tdot < REL_PAR_RES)
       {
@@ -198,7 +212,7 @@ void
       }
 
       for (ki=0; ki<kdims; ki++)
-	 stanc[ki] = spardir[0]*sders[2+ki] + spardir[1]*sders[4+ki];
+	 stanc[ki] = spardir[0]*sders[kdims+ki] + spardir[1]*sders[2*kdims+ki];
 
       tdot = s6scpr(stanc, sdiff, kdims);
       if (tdot < DNULL)
@@ -240,6 +254,16 @@ void
 
       spos2[0] = spos1[0] + tincre*spardir[0];
       spos2[1] = spos1[1] + tincre*spardir[1];
+
+     /* Make sure not to jump out of the surface */
+     if (epar2[0] > epar1[0] && spos2[0] >= epar2[0] ||
+	 epar2[0] < epar1[0] && spos2[0] <= epar2[0] ||
+	 epar2[1] > epar1[1] && spos2[1] >= epar2[1] ||
+	 epar2[1] < epar1[1] && spos2[1] <= epar2[1])
+       {
+	 spos2[0] = epar2[0];
+	 spos2[1] = epar2[1];
+       }
 
       if (s6dist(spos1, spos2, kdims) > s6dist(spos1, epar2, kdims))
 	 memcopy(spos2, epar2, 2, DOUBLE);
@@ -336,7 +360,7 @@ void
 
 	 /* Test whether the marching has advanced. */
 
-	 if (s6dist(spos1, spos, kdims) < REL_PAR_RES) goto war01;
+	 if (s6dist(spos1, spos, 2) < REL_PAR_RES) goto war01;
 
          /* Free memory occupied by local curve. */
 
@@ -360,9 +384,9 @@ void
    war01: *jstat = 0;
    goto out;
 
-   /* Error in input, dimension not equal to 2 */
+   /* Error in input, dimension not equal to 2 or 3 */
 
-   err108: *jstat = -108;
+   err105: *jstat = -105;
    s6err("s1789",*jstat,kpos);
    goto out;
 
