@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2510.c,v 1.1 1995-10-03 11:36:40 jka Exp $
+ * $Id: s2510.c,v 1.2 1995-10-03 12:16:02 jka Exp $
  *
  */
 
@@ -46,7 +46,6 @@ void
 *
 *                          et1[leftknot1] <= parvalue[0] < et1[leftknot1+1],
 *                          et2[leftknot2] <= parvalue[1] < et2[leftknot2+1].
-*                  See also s2509().
 *
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
