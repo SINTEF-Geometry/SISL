@@ -40,13 +40,12 @@ void s1542(pc1,m,x,eder,jstat)
 *
 * INPUT      : pc1    - Pointer to the curve to evaluate.
 *              m      - Number of grid points.
-*              x      - Array of values of the grid.
+*              x      - Array of parameter values of the grid.
 *
 * OUTPUT     : eder   - Array where the derivatives of the curve
 *                       are placed, dimension
 *                         idim * (ider+1) * m.
-*                       The sequence is position,first derivative,
-*                       second derivative, etc. at point x[0],
+*                       The sequence is position at point x[0],
 *                       followed by the same information at x[1],
 *                       etc.
 *              jstat  - status messages
