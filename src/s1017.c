@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1017.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1017.c,v 1.2 1994-11-17 11:59:23 pfu Exp $
  *
  */
 
@@ -24,7 +24,7 @@
 void
 s1017 (SISLCurve * pc, SISLCurve ** rc, double apar, int *jstat)
 #else
-void 
+void
 s1017 (pc, rc, apar, jstat)
      int *jstat;
      double apar;
@@ -69,6 +69,10 @@ s1017 (pc, rc, apar, jstat)
 * WRITTEN BY : Arne Laksaa, SI, 88-11.
 * CHANGED BY : Ulf J. Krystad, SI, 92-01
 *              Treatment of periodic curves.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Undefined
+*              symbol 's1017knots()' changed to 's1018()'. Closed ('cuopen'
+*              flag=0) and 'ikind' flag are now handled correctly. Fixed memory
+*              problem for rationals.  Cleaned up a bit.
 *
 **********************************************************************/
 {
@@ -91,10 +95,15 @@ s1017 (pc, rc, apar, jstat)
   double *salfa = NULL;		/* A line of the trans.-matrix.               */
   double *scoef = NULL;		/* The first new vertice.                     */
   double *sp;			/* Help array for use in s1701.               */
+  double *ecoef;                /* Pointer to input curve ecoef/rcoef vector. */
   SISLCurve *qc = NULL;		/* Pointer to new curve-object.               */
 
 
+
+  /* Make sure the returned pointer is valid. */
+
   *rc = NULL;
+
 
   /* Check that we have a curve. */
 
@@ -102,10 +111,19 @@ s1017 (pc, rc, apar, jstat)
     goto err150;
 
 
+  /* Find the number of vertices in the new curve. */
+
+  kn1 = kn + 1;
+
+  if ( kn1 <= 0 )
+    goto err150;
+
+
+
   /* Periodicity treatment -------------------------- */
   if (pc->cuopen == SISL_CRV_PERIODIC)
     {
-      s1017knots (pc, &apar, 1, rc, &kstat);
+      s1018(pc, &apar, 1, rc, &kstat);
       if (kstat < 0)
 	goto err153;
       goto out;
@@ -118,10 +136,17 @@ s1017 (pc, rc, apar, jstat)
   if (apar < *(pc->et) || apar > *(pc->et + kn + kk - 1))
     goto err158;
 
+
   /* Check if the curve is rational.  */
 
   if (pc->ikind == 2 || pc->ikind == 4)
+  {
+    ecoef = pc->rcoef;
     kdim++;
+  }
+  else
+    ecoef = pc->ecoef;
+
 
   /* Allocate space for the kk elements which may not be zero in eache
      line of the basic transformation matrix and for a help array of
@@ -139,7 +164,7 @@ s1017 (pc, rc, apar, jstat)
 
   if (apar > pc->et[0] && apar < pc->et[kn + kk - 1])
     {
-      /* Using binear search*/
+      /* Using binary search*/
       kj1 = 0;
       kj2 = kk + kn - 1;
       knum = (kj1 + kj2) / 2;
@@ -154,39 +179,32 @@ s1017 (pc, rc, apar, jstat)
       knum++;			/* The smaller knots. */
 
       while (s1[knum] == apar)
-	/* The knots thats like the intersection point. */
+	/* The knots that are equal to the intersection point. */
 	knum++;
     }
   else if (apar == pc->et[0])
     {
       knum = 0;
       while (s1[knum] == apar)
-	/* The knots thats like the intersection point. */
+	/* The knots that are equal to the intersection point. */
 	knum++;
     }
   else if (apar == pc->et[kn + kk - 1])
     {
       knum = 0;
       while (s1[knum] < apar)
-	/* The knots thats like the intersection point. */
+	/* The knots that are less than or equal to the intersection point. */
 	knum++;
     }
-
-  /* Find the number of vertices in the new curve. */
-
-  kn1 = kn + 1;
 
 
 
   /* Allocating the new arrays to the new curve. */
 
-  if (kn1 > 0)
-    {
-      if ((scoef = newarray (kn1 * kdim, double)) == NULL)
-	goto err101;
-      if ((st = newarray (kn1 + kk, double)) == NULL)
-	goto err101;
-    }
+  if ((scoef = newarray (kn1 * kdim, double)) == NULL)
+    goto err101;
+  if ((st = newarray (kn1 + kk, double)) == NULL)
+    goto err101;
 
 
   /* Copying the knotvectors, all but the intersection point from
@@ -198,13 +216,15 @@ s1017 (pc, rc, apar, jstat)
     memcopy (st + knum + 1, pc->et + knum, kn + kk - knum, double);
 
 
-  /* Copying the coefisientvector to the new curve.*/
+  /* Copying the coefisientvector to the new curve.  (Here 'ecoef' points
+     to 'pc->rcoef' or 'pc->ecoef' depening on if 'pc' is rational or not). */
 
   kch = knum - kk + 1;
+
   if (kch > 0)
-    memcopy (scoef, pc->ecoef, kdim * kch, double);
+    memcopy (scoef, ecoef, kdim * kch, double);
   if (knum < kn1)
-    memcopy (scoef + kdim * knum, pc->ecoef + kdim * (knum - 1),
+    memcopy (scoef + kdim * knum, ecoef + kdim * (knum - 1),
 	     kdim * (kn1 - knum), double);
 
 
@@ -237,18 +257,21 @@ s1017 (pc, rc, apar, jstat)
 
       for (kj = 0; kj < kdim; kj++, s1++)
 	for (*s1 = 0, kj1 = kfi, kj2 = kfi + kpl; kj1 <= kla; kj1++, kj2++)
-	  *s1 += salfa[kj2] * pc->ecoef[kj1 * kdim + kj];
+	  *s1 += salfa[kj2] * ecoef[kj1 * kdim + kj];
     }
 
 
 
   /* Allocating new curve-objects.*/
 
-  if (kn1 > 0)
-    if ((qc = newCurve (kn1, kk, st, scoef, 1, pc->idim, 2)) == NULL)
-      goto err101;
+
+  if ((qc = newCurve (kn1, kk, st, scoef, pc->ikind, pc->idim, 2)) == NULL)
+    goto err101;
+
 
   /* Updating output. */
+
+  qc->cuopen = pc->cuopen;  /* Ok since only internal knots can be inserted. */
 
   *rc = qc;
 
