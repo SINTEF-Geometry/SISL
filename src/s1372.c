@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1372.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1372.c,v 1.2 1994-11-14 13:04:48 pfu Exp $
  *
  */
 
@@ -20,7 +20,7 @@
 
 #include "sislP.h"
 
-#if defined(SISLNEEDPROTOTYPES)	
+#if defined(SISLNEEDPROTOTYPES)
 void s1372(SISLCurve *pc1,double epoint[],double edirec[],double aradiu,
 	   int idim,double aepsco,double aepsge,
 	   int *jpt,double **gpar,int *jcrv,SISLIntcurve ***wcurve,int *jstat)
@@ -44,9 +44,9 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find all intersections between a curve and a cylinder if
-*              the dimension is equal to three and a curve and a circle 
+*              the dimension is equal to three and a curve and a circle
 *              if the dimension is two.
 *
 *
@@ -65,7 +65,7 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 * OUTPUT     : *jpt   - Number of single intersection points.
 *              gpar   - Array containing the parameter values of the
 *                       single intersection points in the parameter
-*                       interval of the curve. The points lie continuous. 
+*                       interval of the curve. The points lie continuous.
 *                       Intersection curves are stored in wcurve.
 *              *jcrv  - Number of intersection curves.
 *              wcurve  - Array containing descriptions of the intersection
@@ -73,7 +73,7 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *                       in the parameter interval. The curve-pointers points
 *                       to nothing. (See description of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -86,14 +86,15 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 *
 * REFERENCES : Main routine written by Tor Dokken, SI, 1988.
 *
-* CALLS      : sh1372, s6err.
+* CALLS      : sh1371,sh1372, s6err.
 *
 * WRITTEN BY : Christophe Rene Birkeland, SINTEF, 93-06.
-*
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Updated to
+*              handle 2D input.
 *
 *********************************************************************
-*/                                                               
-{                                                                     
+*/
+{
   int kstat = 0;           /* Local status variable.                       */
   int kpos = 0;            /* Position of error.                           */
   int trackflag = 0;
@@ -101,27 +102,32 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   int *pretop=NULL;
   SISLTrack **wtrack=NULL;
 
-  sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
-	 trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
+
+  if ( idim == 2 )
+    sh1371(pc1,epoint,aradiu,idim,aepsco,aepsge,
+	   trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
+  else
+    sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
+	   trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
   if(kstat < 0) goto error;
 
   if(pretop != NULL) freearray(pretop);
-	      
-  /* 
-   * Intersections found.  
+
+  /*
+   * Intersections found.
    * --------------------
    */
 
   *jstat = 0;
   goto out;
-  
+
   /* Error in lower level routine.  */
 
-  error : 
+  error :
     *jstat = kstat;
     s6err("s1372",kstat,kpos);
     goto out;
 
   out:
     return;
-}                                               
+}
