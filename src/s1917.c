@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1917.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1917.c,v 1.2 1994-08-02 13:25:03 pfu Exp $
  *
  */
 
@@ -88,6 +88,8 @@ s1917 (inbcrv, ecoef, in2, idim, eptyp, astpar, iopen,
 * CALLS      : s6err.
 *
 * WRITTEN BY :  Trond Vidar Stensby, SI, 1991-07
+* Revised by : Paal Fugelli, SINTEF, Oslo 02/08-1994.  Changed order of
+*              occurence of test conditions to avoid overrunning array bounds.
 *
 *********************************************************************
 */
@@ -392,10 +394,10 @@ s1917 (inbcrv, ecoef, in2, idim, eptyp, astpar, iopen,
   /* To get an interpolation problem solvable without pivotation,
      last interpolation condition must be interpolation of position. */
 
-  for (kl = knumb - 2; (*par)[kl] >= (*par)[knumb - 1] && (*der)[kl] != 0 &&
-       kl >= 1; kl--) ;
+  for (kl = knumb - 2; kl >= 1 && (*par)[kl] >= (*par)[knumb - 1] &&
+       (*der)[kl] != 0; kl--) ;
 
-  if ((*par)[kl] >= (*par)[knumb - 1] && kl >= 1)
+  if (kl >= 1 && (*par)[kl] >= (*par)[knumb - 1])
     {
       /* Interpolation of position at end not last condition.
 	 Interchange conditions. */
@@ -436,10 +438,10 @@ s1917 (inbcrv, ecoef, in2, idim, eptyp, astpar, iopen,
      next last interpolation condition should be interpolation of
      tangent if such interpolation is specified. */
 
-  for (kl = knumb - 3; (*par)[kl] >= (*par)[knumb - 2] && kl >= 1 &&
+  for (kl = knumb - 3; kl >= 1 && (*par)[kl] >= (*par)[knumb - 2] &&
        (*der)[kl] != 1; kl--) ;
 
-  if ((*par)[kl] >= (*par)[knumb - 2] && kl >= 1)
+  if (kl >= 1 && (*par)[kl] >= (*par)[knumb - 2])
     {
       /* More than one interpolation condition at the end, and interpolation
 	 of tangent at end not last but one condition. */
