@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.4 1994-12-01 14:05:58 pfu Exp $
+ * $Id: s1313.c,v 1.5 1994-12-01 14:10:17 pfu Exp $
  *
  */
 
@@ -1479,16 +1479,17 @@ err101: *jstat = -101;
         s6err("s1313",*jstat,kpos);
         goto out;
 
+/* Error in surface description parameter direction does not exist */
+err123: *jstat = -123;
+        s6err("s1313",*jstat,kpos);
+        goto out;
+
+
 /* Error - NULL pointer was given */
 err150 :
     *jstat = -150;
     s6err("s1313",*jstat,kpos);
     goto out;
-
-/* Error in surface description parameter direction does not exist */
-err123: *jstat = -123;
-        s6err("s1313",*jstat,kpos);
-goto out;
 
 
 /* Only degenerate or singular guide points */
