@@ -14,7 +14,7 @@
 #include "sisl.h" 
 /*
  *
- * $Id: sislP.h,v 1.2 1994-04-28 10:51:35 vsk Exp $
+ * $Id: sislP.h,v 1.3 1994-05-02 08:50:43 vsk Exp $
  *
  */
 
@@ -1349,6 +1349,11 @@ extern
 #endif
 void s6findfac(double [],double [],double [],double [],int,int,
 	       double *,double *,double *,int *);
+#ifndef S6FNDINTVL
+extern
+#endif
+void s6fndintvl(double *et,int ik,int in,int *ileft,
+	      double ax1,double ax2,int mu_max,int *jstat);
 #ifndef S6HERM
 extern
 #endif
