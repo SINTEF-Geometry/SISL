@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2545.c,v 1.6 1997-10-31 09:04:36 jka Exp $
+ * $Id: s2545.c,v 1.7 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -117,7 +117,7 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
    double derive[9];      /* Surface evaluation.              */
    double normal[3];      /* Surface normal.                  */
    double Nnormal[3];     /* Normalized normal.               */
-   double *offset = NULL; /* Offset distances.                */
+   double *offset = SISL_NULL; /* Offset distances.                */
 
 
    /* Generate the scalar valued curvature grid with parameter values. */
@@ -130,7 +130,7 @@ s2545(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
 
    incr = (export_par_val? (surf->idim + 2) : surf->idim);
 
-   if (((*garr) = newarray(incr*(n_u + 1)*(n_v + 1), double)) == NULL)
+   if (((*garr) = newarray(incr*(n_u + 1)*(n_v + 1), double)) == SISL_NULL)
       goto err101;
 
    /* Generate the focal points. */

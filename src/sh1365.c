@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1365.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1365.c,v 1.2 2001-03-19 15:59:03 afr Exp $
  *
  */
 
@@ -116,13 +116,13 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
   int kcopy = 1;            /* Copy input arrays when creating a
 			       B-spline curve.      */
   int kn = pcurve->in;      /* Number of vertices of input curve.    */
-  double *scoef = NULL;     /* Coeffecient array of approximating curve. */
-  double *sa = NULL;        /* Transformation matrix.  */
-  double *sb = NULL;
-  int *lfirst = NULL;
-  int *llast = NULL;
-  int *l2sta = NULL;
-  double *sc = NULL;
+  double *scoef = SISL_NULL;     /* Coeffecient array of approximating curve. */
+  double *sa = SISL_NULL;        /* Transformation matrix.  */
+  double *sb = SISL_NULL;
+  int *lfirst = SISL_NULL;
+  int *llast = SISL_NULL;
+  int *l2sta = SISL_NULL;
+  double *sc = SISL_NULL;
   int kk = pcurve->ik;
   int knh = in - ileftfix - irightfix;
 
@@ -132,12 +132,12 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
 
   /* Allocate scratch for error estimates.  */
 
-  if ((*gmaxerr = new0array(kdim,DOUBLE)) == NULL) goto err101;
-  if ((*gl2err = new0array(kdim,DOUBLE)) == NULL) goto err101;
+  if ((*gmaxerr = new0array(kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((*gl2err = new0array(kdim,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Allocate scratch for coefficients of approximating spline.  */
 
-  if ((scoef = newarray(in*kdim,DOUBLE)) == NULL) goto err101;
+  if ((scoef = newarray(in*kdim,DOUBLE)) == SISL_NULL) goto err101;
   
   /* If kn = in then pcurve->et = etau, and the problem is
      trivial, the solution is the input spline itself resulting in
@@ -149,7 +149,7 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
      
      /* Express the approximating curve as a curve.  */
      
-     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == NULL)
+     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == SISL_NULL)
 	goto err101;
      (*rnewcurve)->cuopen = pcurve->cuopen;
   }     
@@ -169,11 +169,11 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
 	of length kn indicating the position of the first nonzero element
 	of each row of sb.    */
      
-     if ((sa = newarray(kn*ik,DOUBLE)) == NULL) goto err101;
-     if ((sb = newarray(in*ik,DOUBLE)) == NULL) goto err101;
-     if ((lfirst = newarray(kn,INT)) == NULL) goto err101;
-     if ((llast = newarray(kn,INT)) == NULL) goto err101;
-     if ((l2sta = newarray(kn,INT)) == NULL) goto err101;
+     if ((sa = newarray(kn*ik,DOUBLE)) == SISL_NULL) goto err101;
+     if ((sb = newarray(in*ik,DOUBLE)) == SISL_NULL) goto err101;
+     if ((lfirst = newarray(kn,INT)) == SISL_NULL) goto err101;
+     if ((llast = newarray(kn,INT)) == SISL_NULL) goto err101;
+     if ((l2sta = newarray(kn,INT)) == SISL_NULL) goto err101;
      
      /* Compute the refinement matrix sa from etau to pcurve->et.  */
      
@@ -197,7 +197,7 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
 	   This is necessary since the right-hand-side of the problem
 	   will be adjusted and the original data should not be altered. */
 	
-	if ((sc = newarray(kn*kdim,DOUBLE)) == NULL) goto err101;
+	if ((sc = newarray(kn*kdim,DOUBLE)) == SISL_NULL) goto err101;
 	memcopy(sc,pcurve->ecoef,kn*kdim,DOUBLE);
      
 	/* Enforce the side conditions.  */
@@ -241,7 +241,7 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
 
      /* Express the approximating curve as a curve.  */
      
-     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == NULL)
+     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == SISL_NULL)
 	goto err101;
      (*rnewcurve)->cuopen = pcurve->cuopen;
      
@@ -279,13 +279,13 @@ void sh1365(pcurve,etau,ik,in,ileftfix,
 
     /* Free scratch occupied by local arrays.  */
 
-    if (scoef != NULL) freearray(scoef);
-    if (sc != NULL) freearray(sc);
-    if (sa != NULL) freearray(sa);
-    if (sb != NULL) freearray(sb);
-    if (lfirst != NULL) freearray(lfirst);
-    if (llast != NULL) freearray(llast);
-    if (l2sta != NULL) freearray(l2sta);
+    if (scoef != SISL_NULL) freearray(scoef);
+    if (sc != SISL_NULL) freearray(sc);
+    if (sa != SISL_NULL) freearray(sa);
+    if (sb != SISL_NULL) freearray(sb);
+    if (lfirst != SISL_NULL) freearray(lfirst);
+    if (llast != SISL_NULL) freearray(llast);
+    if (l2sta != SISL_NULL) freearray(l2sta);
   
     return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1384.c,v 1.2 1994-06-20 06:39:44 vsk Exp $
+ * $Id: s1384.c,v 1.3 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -124,7 +124,7 @@ void s1384(pcurve,psurf,idim,iside,ax,ileftc,ilefts1,ilefts2,
 *
 * WRITTEN BY : Tor Dokken, SI, Oslo, Norway, October 1988
 * REVISED BY : Christophe rene Birkeland, SINTEF Oslo, May 1993
-*              Testing for NULL (array sders and sderc)
+*              Testing for SISL_NULL (array sders and sderc)
 *
 *********************************************************************
 */                                     
@@ -139,8 +139,8 @@ void s1384(pcurve,psurf,idim,iside,ax,ileftc,ilefts1,ilefts2,
   double sdumc[8];    /* Values from curve calculation                   */
   double sdums[30];   /* Values from surface calcualtion                 */
   double snorm[3];    /* Normal to tangent vector                        */
-  double *sders=NULL; /* Values and derivatives on surface               */
-  double *sderc=NULL; /* Values and derivatives on curve                 */
+  double *sders=SISL_NULL; /* Values and derivatives on surface               */
+  double *sderc=SISL_NULL; /* Values and derivatives on curve                 */
   double tduds,tdvds; /* Derivatives of curve                            */
   double tddudss,tddvdss; /* Derivatives of curve                        */
   double *sdpdu,*sdpdv;/* Pointers to derivatives of surface             */
@@ -160,14 +160,14 @@ void s1384(pcurve,psurf,idim,iside,ax,ileftc,ilefts1,ilefts2,
   
   if (knum1>8)
   {
-    if((sderc = newarray(knum1,DOUBLE)) == NULL) goto err101;
+    if((sderc = newarray(knum1,DOUBLE)) == SISL_NULL) goto err101;
   }
   else  
     sderc = sdumc;
   
   if (knum2>30)
   {
-    if((sders = newarray(knum2,DOUBLE)) == NULL) goto err101;
+    if((sders = newarray(knum2,DOUBLE)) == SISL_NULL) goto err101;
   }
   else   
     sders = sdums;
@@ -269,7 +269,7 @@ void s1384(pcurve,psurf,idim,iside,ax,ileftc,ilefts1,ilefts2,
   
   if (kstat<0) goto error;
   
-  if (DEQUAL(tlsn,DNULL)) tlsn = (double)1.0;
+  if (DEQUAL(tlsn,DZERO)) tlsn = (double)1.0;
   
   s6crss(eder+idim,snorm,edern);
   
@@ -384,11 +384,11 @@ void s1384(pcurve,psurf,idim,iside,ax,ileftc,ilefts1,ilefts2,
   
     if (knum1>8)
       { 
-        if (sderc != NULL) freearray(sderc);
+        if (sderc != SISL_NULL) freearray(sderc);
       }
     if (knum2>30) 
       {
-        if (sders != NULL) freearray(sders);
+        if (sders != SISL_NULL) freearray(sders);
       }
     return;
 }

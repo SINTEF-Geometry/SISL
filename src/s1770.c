@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1770.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1770.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 #define S1770
@@ -112,7 +112,7 @@ void s1770(pcurve1,pcurve2,aepsge,astart1,astart2,
   double td[2],t1[2],tdn[2];/* Distances between old and new parameter
 			       value in the two parameter directions.      */
   double tprev;             /* Previous difference between the curves.     */
-  double *sval1=NULL;       /* Value ,first and second derivatie on curve 1*/ 
+  double *sval1=SISL_NULL;       /* Value ,first and second derivatie on curve 1*/ 
   double *sval2;            /* Value ,first and second derivatie on curve 1*/ 
   double *sdiff;            /* Difference between the curves               */
   
@@ -136,7 +136,7 @@ void s1770(pcurve1,pcurve2,aepsge,astart1,astart2,
   /* Allocate local used memory */
   
   sval1 = newarray((2*kder+5)*kdim,double);
-  if (sval1 == NULL) goto err101;
+  if (sval1 == SISL_NULL) goto err101;
   
   sval2 = sval1 + (kder+2)*kdim;
   sdiff = sval2 + (kder+2)*kdim;
@@ -182,7 +182,7 @@ void s1770(pcurve1,pcurve2,aepsge,astart1,astart2,
       
       /* Check if the direction of the step have change. */
       
-      kdir = (s6scpr(td,tdn,2) >= DNULL);     /* 0 if changed. */
+      kdir = (s6scpr(td,tdn,2) >= DZERO);     /* 0 if changed. */
       
       /* Ordinary converging. */
       
@@ -249,7 +249,7 @@ void s1770(pcurve1,pcurve2,aepsge,astart1,astart2,
   s6err("s1770",*jstat,kpos);
   goto out;                  
   
- out:    if (sval1 != NULL) freearray(sval1);
+ out:    if (sval1 != SISL_NULL) freearray(sval1);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -402,10 +402,10 @@ static void s1770_s9dir(cdist,cdiff1,cdiff2,gdiff,eval1,eval2,idim)
   
   tdet = t2*t2 - t1*t3;
   
-  if (DEQUAL(tdet,DNULL))
+  if (DEQUAL(tdet,DZERO))
     {
-      *cdiff1 = DNULL;
-      *cdiff2 = DNULL;
+      *cdiff1 = DZERO;
+      *cdiff2 = DZERO;
     }
   else 
     {

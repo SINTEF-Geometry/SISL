@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1018.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1018.c,v 1.2 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -88,15 +88,15 @@ s1018 (pc, epar, inpar, rcnew, jstat)
   int kn1;			/* Number of vertices in the new curve .      */
   double tstart, tend;		/* Endparameters of curve.                    */
   double tpar;			/* Parameter value of knot to insert.         */
-  double *st = NULL;		/* The new knot-vector.                       */
-  double *sp = NULL;		/* To use in s1701.c                          */
-  double *salfa = NULL;		/* A line of the trans.-matrix.               */
-  double *scoef = NULL;		/* The new vertices.                          */
-  double *coef = NULL;		/* The old vertices.                          */
-  SISLCurve *q1 = NULL;		/* Pointer to new curve-object.               */
+  double *st = SISL_NULL;		/* The new knot-vector.                       */
+  double *sp = SISL_NULL;		/* To use in s1701.c                          */
+  double *salfa = SISL_NULL;		/* A line of the trans.-matrix.               */
+  double *scoef = SISL_NULL;		/* The new vertices.                          */
+  double *coef = SISL_NULL;		/* The old vertices.                          */
+  SISLCurve *q1 = SISL_NULL;		/* Pointer to new curve-object.               */
   /* Periodicity treatment --------------------------                         */
-  double *st2 = NULL;		/* The new knot-vector.                    */
-  double *scoef2 = NULL;	/* The new vertices.                       */
+  double *st2 = SISL_NULL;		/* The new knot-vector.                    */
+  double *scoef2 = SISL_NULL;	/* The new vertices.                       */
   double t1;			/* Start of knot vector                    */
   double t2;			/* Start of full basis part of knot vector */
   double t3;			/* End  of full basis part of knot vector  */
@@ -105,10 +105,10 @@ s1018 (pc, epar, inpar, rcnew, jstat)
   double mod_neg;		/* parametervalue shifted tmod left        */
   double mod_pos;		/* parametervalue shifted tmod right       */
   int no_neg, no_pos;		/* Nmb of Xtra parval. to insert (lft,rght)*/
-  double *negpar = NULL;	/* Array of parameter values shift lft  */
-  double *pospar = NULL;	/* Array of parameter values shift rght */
-  double *pararr = NULL;	/* Pointer to parameter array treated   */
-  double *periodarr = NULL;	/* Total parameter array, periodic case*/
+  double *negpar = SISL_NULL;	/* Array of parameter values shift lft  */
+  double *pospar = SISL_NULL;	/* Array of parameter values shift rght */
+  double *pararr = SISL_NULL;	/* Pointer to parameter array treated   */
+  double *periodarr = SISL_NULL;	/* Total parameter array, periodic case*/
   /* --------------------------------------------------------- */
 
   /* Check that we have a curve to treat. */
@@ -145,9 +145,9 @@ s1018 (pc, epar, inpar, rcnew, jstat)
 
       no_neg = 0;
       no_pos = 0;
-      if ((negpar = newarray (inpar, double)) == NULL)
+      if ((negpar = newarray (inpar, double)) == SISL_NULL)
 	goto err101;
-      if ((pospar = newarray (inpar, double)) == NULL)
+      if ((pospar = newarray (inpar, double)) == SISL_NULL)
 	goto err101;
 
 
@@ -169,7 +169,7 @@ s1018 (pc, epar, inpar, rcnew, jstat)
 	    }
 	}
 
-      if ((periodarr = newarray (inpar + no_neg + no_pos, double)) == NULL)
+      if ((periodarr = newarray (inpar + no_neg + no_pos, double)) == SISL_NULL)
 	goto err101;
       memcopy (periodarr, negpar, no_neg, double);
       memcopy (periodarr + no_neg, epar, inpar, double);
@@ -196,9 +196,9 @@ s1018 (pc, epar, inpar, rcnew, jstat)
      line of the basic transformation matrix, and space for new knots
      to use in s1701.c */
 
-  if ((salfa = newarray (kk, double)) == NULL)
+  if ((salfa = newarray (kk, double)) == SISL_NULL)
     goto err101;
-  if ((sp = newarray (kk, double)) == NULL)
+  if ((sp = newarray (kk, double)) == SISL_NULL)
     goto err101;
 
   /* Find the number of vertices in the new curve. */
@@ -207,9 +207,9 @@ s1018 (pc, epar, inpar, rcnew, jstat)
 
   /* Allocating the new arrays to the new curve. */
 
-  if ((st = newarray (kn1 + kk, double)) == NULL)
+  if ((st = newarray (kn1 + kk, double)) == SISL_NULL)
     goto err101;
-  if ((scoef = new0array (kn1 * kdim, double)) == NULL)
+  if ((scoef = new0array (kn1 * kdim, double)) == SISL_NULL)
     goto err101;
 
   /* Making the new knotvectors. */
@@ -259,9 +259,9 @@ s1018 (pc, epar, inpar, rcnew, jstat)
       kn1 -= no_pos + no_neg;
       /* Allocating the new arrays to the new curve. */
 
-      if ((st2 = newarray (kn1 + kk, double)) == NULL)
+      if ((st2 = newarray (kn1 + kk, double)) == SISL_NULL)
 	goto err101;
-      if ((scoef2 = new0array (kn1 * kdim, double)) == NULL)
+      if ((scoef2 = new0array (kn1 * kdim, double)) == SISL_NULL)
 	goto err101;
       memcopy (st2, st + no_neg, kn1 + kk, double);
       memcopy (scoef2, scoef + no_neg * kdim, kn1 * kdim, double);
@@ -273,13 +273,13 @@ s1018 (pc, epar, inpar, rcnew, jstat)
 
       /* Allocating new curve-objects.*/
 
-      if ((q1 = newCurve(kn1,kk,st2,scoef2,pc->ikind,pc->idim,2)) == NULL)
+      if ((q1 = newCurve(kn1,kk,st2,scoef2,pc->ikind,pc->idim,2)) == SISL_NULL)
 	goto err101;
     }
   else
     {
       /* Allocating new curve-objects.*/
-      if ((q1 = newCurve (kn1, kk, st, scoef, pc->ikind, pc->idim, 2)) == NULL)
+      if ((q1 = newCurve (kn1, kk, st, scoef, pc->ikind, pc->idim, 2)) == SISL_NULL)
 	goto err101;
     }
 

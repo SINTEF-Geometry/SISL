@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1785.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1785.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 #define S1785
@@ -142,8 +142,8 @@ void
       double snext[3];    /* Existing iteration point on  surface            */
       double spos[3];     /* New iteration  point on surface                 */
       double snext2[2];   /* Help parameter values.                          */
-      SISLPoint *qpoint=NULL;
-      SISLCurve *qc = NULL;   /* Constant parameter curve.                       */
+      SISLPoint *qpoint=SISL_NULL;
+      SISLCurve *qc = SISL_NULL;   /* Constant parameter curve.                       */
       
       *jstat = 0;
       
@@ -321,7 +321,7 @@ void
 	 
 	 /* Find parameter value of candidate end point of segment */
 	 
-	 if (DEQUAL(tlengthend,DNULL))
+	 if (DEQUAL(tlengthend,DZERO))
 	    tincre = REL_PAR_RES;
 	 else
 	    tincre = tstep/tlengthend;
@@ -343,14 +343,14 @@ void
 	    /* Find closest point on surface to sderc */
 	    
 	    qpoint = newPoint(sderc,kdimc,0);
-	    if (qpoint==NULL) goto err101;
+	    if (qpoint==SISL_NULL) goto err101;
 	    
 	    snext2[0] = snext[0];
 	    snext2[1] = snext[1];
 	    s1773(qpoint,psurf,aepsge,sstart,send,snext2,spos,&kstat);
 	    if(kstat<0) goto error;
 	    
-	    freePoint(qpoint);  qpoint = NULL;
+	    freePoint(qpoint);  qpoint = SISL_NULL;
 	    
 	    /* Calculate point and derivatives in surface */
 	    
@@ -416,14 +416,14 @@ void
 	       /* Find closest point on surface to sderc */
 	       
 	       qpoint = newPoint(sderc,kdimc,0);
-	       if (qpoint==NULL) goto err101;
+	       if (qpoint==SISL_NULL) goto err101;
 	       
 	       snext2[0] = snext[0];
 	       snext2[1] = snext[1];
 	       s1773(qpoint,psurf,aepsge,sstart,send,snext2,snext2,&kstat);
 	       if(kstat<0) goto error;
 	       
-	       freePoint(qpoint);  qpoint = NULL;
+	       freePoint(qpoint);  qpoint = SISL_NULL;
 	       
 	       /* Calculate point and derivatives in surface */
 	       
@@ -470,7 +470,7 @@ void
 	       
 	       /* Free constant parameter curve.  */
 	       
-	       if (qc != NULL) freeCurve(qc);  qc = NULL;
+	       if (qc != SISL_NULL) freeCurve(qc);  qc = SISL_NULL;
 	    }
 	    
 	    /* Check if any parameter lines of the surface is crossed in the 2. 
@@ -521,14 +521,14 @@ void
 	       /* Find closest point on surface to sderc */
 	       
 	       qpoint = newPoint(sderc,kdimc,0);
-	       if (qpoint==NULL) goto err101;
+	       if (qpoint==SISL_NULL) goto err101;
 	       
 	       snext2[0] = snext[0];
 	       snext2[1] = snext[1];
 	       s1773(qpoint,psurf,aepsge,sstart,send,snext2,snext2,&kstat);
 	       if(kstat<0) goto error;
 	       
-	       freePoint(qpoint);  qpoint = NULL;
+	       freePoint(qpoint);  qpoint = SISL_NULL;
 	       
 	       /* Calculate point and derivatives in surface */
 	       
@@ -575,7 +575,7 @@ void
 	       
 	       /* Free constant parameter curve.  */
 	       
-	       if (qc != NULL) freeCurve(qc);  qc = NULL;
+	       if (qc != SISL_NULL) freeCurve(qc);  qc = SISL_NULL;
 	    }
 	 }
       }

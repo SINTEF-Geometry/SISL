@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: pickcrvsf.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: pickcrvsf.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -79,8 +79,8 @@ int ipar;
   int first_const;      /* Flag, const first direction or not             */
   double tpar;          /* Parameter value of curve in constant parameter
 			   direction.                                     */
-  SISLSurf *ps1=NULL;   /* Pointer to surf to pick crv from               */
-  SISLCurve *pick_crv=NULL;/* Picked curve before trimming.               */
+  SISLSurf *ps1=SISL_NULL;   /* Pointer to surf to pick crv from               */
+  SISLCurve *pick_crv=SISL_NULL;/* Picked curve before trimming.               */
   /* -------------------------------------------------------------------- */
   if (ipar < 0 || ipar >= po1->iobj + po2->iobj) goto errinp;
 
@@ -123,7 +123,7 @@ int ipar;
     {
        /* Return the whole curve */
        (*rcrv)  = pick_crv;
-       pick_crv = NULL;
+       pick_crv = SISL_NULL;
     }
   
   
@@ -133,7 +133,7 @@ int ipar;
        /* Return the whole curve, but turn it first */
        /* Return the whole curve */
        (*rcrv)  = pick_crv;
-       pick_crv = NULL;
+       pick_crv = SISL_NULL;
        s1706(*rcrv); 
     } 
   else

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.7 1995-01-26 07:50:43 pfu Exp $
+ * $Id: s1313.c,v 1.8 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -100,7 +100,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                                    of intersection curve may have been
 *                                    traced out. If no curve is traced out
 *                                    the curve pointers in the Intcurve
-*                                    object point to NULL.
+*                                    object point to SISL_NULL.
 *                         = 3      : Marching not succeded
 *                         = 0      : ok
 *                         < 0      : error
@@ -150,7 +150,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                   Improved the routine for parallel silhouettes (ideg=1003) and
 *                   added perspective and circular silhouettes (ideg=1004,ideg=1005)
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Dec. 1994.  Added check for
-*              NULL 'pintcr' and to avoid re-generating the geometry when it has
+*              SISL_NULL 'pintcr' and to avoid re-generating the geometry when it has
 *              already been generated in the topology part (constant curve, type 9).
 *              This fixes memory problems.
 *
@@ -195,8 +195,8 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 			      in first marching direction               */
   int kgd1=0;              /* Remeber last guide point used in first
 			      marching direction                        */
-  double *scorpnt=NULL;    /* Corrected marching points                 */
-  double *scorpar=NULL;    /* Corrected marching parameter values       */
+  double *scorpnt=SISL_NULL;    /* Corrected marching points                 */
+  double *scorpar=SISL_NULL;    /* Corrected marching parameter values       */
   double smidd[6];         /* Description of midpoint and tangent of
 			      current Bezier segment                    */
   double tcurstep;         /* Current step length                       */
@@ -214,17 +214,17 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   double tstartstp;        /* Start step length                         */
   double trad;             /* Radius of curvature                       */
   double tval[6];             /* Dummy array in s1331                  */
-  double *spar=NULL;       /* Parametrization of points in Hermit interp*/
+  double *spar=SISL_NULL;       /* Parametrization of points in Hermit interp*/
   double spar1[2];         /* Parameter pair of current point surface 1 */
   double spar2[2];         /* Parameter pair of boundarypoint surface 1 */
   double siparmid[2];      /* Parameter value at middle of Bezier segment*/
   double sipar1[2];        /* Parameter pair iteration point surface  1 */
   double simiddpnt[10];    /* Middle point and tangent of segment       */
   double simiddpar[7];     /* Parameter value at middle point of segment*/
-  double *sgpar1=NULL;     /* Parameter pairs of guide point in surf 1  */
-  double *sgpar2=NULL;     /* Parameter pairs of guide point in surf 2  */
-  double *sgpar=NULL;      /* guide points used                         */
-  double *sgd1 = NULL;     /* 0-2 derivative of guide point + normal
+  double *sgpar1=SISL_NULL;     /* Parameter pairs of guide point in surf 1  */
+  double *sgpar2=SISL_NULL;     /* Parameter pairs of guide point in surf 2  */
+  double *sgpar=SISL_NULL;      /* guide points used                         */
+  double *sgd1 = SISL_NULL;     /* 0-2 derivative of guide point + normal
 			      of first object                           */
   double spnt1[33];        /* Info on current point in first surface    */
   double spnt2[33];        /* Info on boundary point in first surface   */
@@ -241,10 +241,10 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
   double *snxt1;           /* SISLPoint in ps1 we have accepted          */
   double *snxp1;           /* Parameter value belonging to snxt1        */
-  double *s3dinf=NULL;     /* Pointer to array used for storing 3-D position
+  double *s3dinf=SISL_NULL;     /* Pointer to array used for storing 3-D position
 			      tangent, curvature and radius of curvature found
 			      during the marching process if possible */
-  double *sp1inf=NULL;     /* Pointer to array used for storing position
+  double *sp1inf=SISL_NULL;     /* Pointer to array used for storing position
 			      tangent, curvature and radius of curvature found
 			      in the first parameter plane during the
 			      marching process */
@@ -252,8 +252,8 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   double stpar1[2];        /* Parameter pair belonging to start1        */
   double sdum1[3],sdum2[3];/* Dummy vectors                             */
   double tdum,tdump;       /* Dummy variable                            */
-  double *sp1=NULL;        /* Pointer used when moving information      */
-  double *sp2=NULL;        /* Pointer used when moving information      */
+  double *sp1=SISL_NULL;        /* Pointer used when moving information      */
+  double *sp2=SISL_NULL;        /* Pointer used when moving information      */
   double stdum[10];        /* Dummy array used when moving information  */
   double *stang;           /* Pointer to tangent of current point       */
   double *sptang;          /* Pointer to tangent in parameter plane     */
@@ -261,13 +261,13 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   double t1distgd,t2distgd;/* Distances to guide points                 */
   double tlnorm;           /* Length of normal vector                   */
   double tltan1,tltan2;    /* Tangent lengths                           */
-  SISLCurve *q3dcur=NULL;/* Pointer to 3-D curve                     */
-  SISLCurve *qp1cur=NULL;/* Pointer to curve in first parameter plane*/
+  SISLCurve *q3dcur=SISL_NULL;/* Pointer to 3-D curve                     */
+  SISLCurve *qp1cur=SISL_NULL;/* Pointer to curve in first parameter plane*/
 
 
   *jstat = 0;
 
-  if (pintcr == NULL)  goto err150;
+  if (pintcr == SISL_NULL)  goto err150;
 
 
   /* Check if the geometry already has been generated in the topology part.
@@ -286,7 +286,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 	     ps1->pbox->e2max[0][1] - ps1->pbox->e2min[0][1]);
   tmax = MAX(tmax,ps1->pbox->e2max[0][2] - ps1->pbox->e2min[0][2]);
 
-  if (amax>DNULL) tmax = MIN(tmax,amax);
+  if (amax>DZERO) tmax = MIN(tmax,amax);
 
 
   /* If ideg=1,2 or 1001 then only derivatives up to second order
@@ -322,9 +322,9 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   /* Initiate pointers to intersection curve and intersection curve in
      parameter plane */
 
-  pintcr -> pgeom = NULL;
-  pintcr -> ppar1 = NULL;
-  pintcr -> ppar2 = NULL;
+  pintcr -> pgeom = SISL_NULL;
+  pintcr -> ppar1 = SISL_NULL;
+  pintcr -> ppar2 = SISL_NULL;
 
 
   /* Initiate parameter direction boundaries */
@@ -360,7 +360,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
   /* To support closed curve the first guide point must be copied after
      the last guide point */
 
-  if((sgpar=newarray(2*kpoint+2,DOUBLE)) == NULL) goto err101;
+  if((sgpar=newarray(2*kpoint+2,DOUBLE)) == SISL_NULL) goto err101;
   memcopy(sgpar,sgpar1,2*kpoint,DOUBLE);
   if (ktype ==2 || ktype == 3)
     {
@@ -384,9 +384,9 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
   kmaxinf = 100;
   s3dinf = newarray(10*kmaxinf,DOUBLE);
-  if (s3dinf == NULL) goto err101;
+  if (s3dinf == SISL_NULL) goto err101;
   sp1inf = newarray(7*kmaxinf,DOUBLE);
-  if (sp1inf == NULL) goto err101;
+  if (sp1inf == SISL_NULL) goto err101;
 
   /* Evaluate 0-1-2nd. derivative + normal of all guide points in the surface,
      first allocate arrays for storing the information, check that the points
@@ -394,7 +394,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
      and the surface defines a tangent direction in the curve */
 
   sgd1 = newarray(ksize*kpoint,DOUBLE);
-  if (sgd1==NULL) goto err101;
+  if (sgd1==SISL_NULL) goto err101;
 
   kpos = 5;
 
@@ -520,7 +520,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
   /* Iterate intersection point down to the intersection curve */
 
-  tstep = DNULL;
+  tstep = DZERO;
   s9iterimp(s3dinf,spnt1,spar1,ps1,eimpli,ideg,tstep,
 	    aepsge,sipnt1,sipar1,&kstat);
   if (kstat < 0) goto error;
@@ -803,9 +803,9 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 	    {
               kmaxinf = kmaxinf + 100;
               s3dinf = increasearray(s3dinf,((3*kdim+1)*kmaxinf),DOUBLE);
-              if (s3dinf==NULL) goto err101;
+              if (s3dinf==SISL_NULL) goto err101;
               sp1inf = increasearray(sp1inf,7*kmaxinf,DOUBLE);
-              if (sp1inf==NULL) goto err101;
+              if (sp1inf==SISL_NULL) goto err101;
 	    }
 
 	  /* Make description of candidate endpoint if it exists and store it */
@@ -828,7 +828,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		tdum = s6scpr(startg,s3dinf+3,kdim);
 
 
-	      if (tdum < DNULL)
+	      if (tdum < DZERO)
 		{
 		  /* Change tangent direction 3-D and in parameter plane */
 		  sp1 = s3dinf + 10*knbinf + 3;
@@ -862,7 +862,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		  s1361(start,start+10,3,smidd,smidd+3,&kstat);
 		  if (kstat<0) goto error;
 
-		  tcurstep = DNULL;
+		  tcurstep = DZERO;
 		  spoint = smidd;
 		}
 	      else
@@ -979,7 +979,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
                       s6diff(spar2,spar1,2,sdum1);
                       tdump = s6scpr(sdum1,sp1inf+7*(knbinf-1)+2,2);
 
-		      if (tdum == DNULL)
+		      if (tdum == DZERO)
 			{
 			  double tl1,tl2;
 
@@ -989,7 +989,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 			  tl1 = s6length(sdum1,kdim,&kstat);
 			  tl2 = s6length(sdum2,kdim,&kstat);
 
-			  if (tl1 == DNULL || tl2 == DNULL)
+			  if (tl1 == DZERO || tl2 == DZERO)
 			    koutside_resolution = 1;
 			  else
 			    {
@@ -1032,7 +1032,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 		    tdum = s6scpr(startg,s3dinf+3,kdim);
 
 
-		  if (tdum < DNULL)
+		  if (tdum < DZERO)
 		    {
 		      /* Change tangent direction 3-D and in parameter plane */
 		      sp1 = s3dinf + 10*knbinf + 3;
@@ -1070,10 +1070,10 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
               /* Set pointer to tangents at start point */
               ki = 7*(knbinf-1)+2;
 
-              if( (DEQUAL(spar1[1]+tref2,sval2[0]+tref2) && sp1inf[ki+1]>DNULL) ||
-	          (DEQUAL(spar1[1]+tref2,sval2[1]+tref2) && sp1inf[ki+1]<DNULL) ||
-	          (DEQUAL(spar1[0]+tref1,sval1[0]+tref1) && sp1inf[ki]>DNULL) ||
-                  (DEQUAL(spar1[0]+tref1,sval1[1]+tref1) && sp1inf[ki]<DNULL)
+              if( (DEQUAL(spar1[1]+tref2,sval2[0]+tref2) && sp1inf[ki+1]>DZERO) ||
+	          (DEQUAL(spar1[1]+tref2,sval2[1]+tref2) && sp1inf[ki+1]<DZERO) ||
+	          (DEQUAL(spar1[0]+tref1,sval1[0]+tref1) && sp1inf[ki]>DZERO) ||
+                  (DEQUAL(spar1[0]+tref1,sval1[1]+tref1) && sp1inf[ki]<DZERO)
 
                 )
                    kstat = 1;
@@ -1216,7 +1216,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 			      tdum = s6scpr(startg,s3dinf+3,kdim);
 
 
-		            if (tdum < DNULL)
+		            if (tdum < DZERO)
 			      {
 			        /* Change tangent direction 3-D and in
                                    parameter plane
@@ -1234,19 +1234,19 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
                              to next direction */
 
               ki = 7*knbinf;
-              if( (sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] < DNULL) ||
-	          (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] > DNULL) ||
-                  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] < DNULL) ||
-	          (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] > DNULL)   )
+              if( (sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] < DZERO) ||
+	          (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] > DZERO) ||
+                  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] < DZERO) ||
+	          (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] > DZERO)   )
                       {
                       knbinf++;
                       goto nextdir;
                       }
               else if(krem == 2 &&
-                 ((sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] >= DNULL) ||
-	          (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] <= DNULL) ||
-                  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] >= DNULL) ||
-	          (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] <=DNULL)    ))
+                 ((sp1inf[ki+1] <= sval2[0] && sp1inf[ki+3] >= DZERO) ||
+	          (sp1inf[ki+1] >= sval2[1] && sp1inf[ki+3] <= DZERO) ||
+                  (sp1inf[ki  ] <= sval1[0] && sp1inf[ki+2] >= DZERO) ||
+	          (sp1inf[ki  ] >= sval1[1] && sp1inf[ki+2] <=DZERO)    ))
                       {
                       /* We were marching out ou the patch, but the tangent
                          points in, half step length */
@@ -1275,7 +1275,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 	      if (kstpch==0)
 		{
-		  if (tdist<DNULL)
+		  if (tdist<DZERO)
 		    {
 		      tnew = tstep/(double)10.0;
 		    }
@@ -1427,7 +1427,7 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 
 
 	  spar = newarray(knbinf,DOUBLE);
-	  if (spar == NULL) goto err101;
+	  if (spar == SISL_NULL) goto err101;
 
 	  s1359(scorpnt,aepsge,kdim,knbinf,kpar,spar,&q3dcur,&kstat);
 	  if (kstat < 0) goto error;
@@ -1491,7 +1491,7 @@ err123: *jstat = -123;
         goto out;
 
 
-/* Error - NULL pointer was given */
+/* Error - SISL_NULL pointer was given */
 err150 :
     *jstat = -150;
     s6err("s1313",*jstat,kpos);
@@ -1513,11 +1513,11 @@ out:
 
 /* Free allocated space */
 
-if (sgpar  != NULL) freearray(sgpar);
-if (sgd1   != NULL) freearray(sgd1);
-if (s3dinf != NULL) freearray(s3dinf);
-if (sp1inf != NULL) freearray(sp1inf);
-if (spar   != NULL) freearray(spar);
+if (sgpar  != SISL_NULL) freearray(sgpar);
+if (sgd1   != SISL_NULL) freearray(sgd1);
+if (s3dinf != SISL_NULL) freearray(s3dinf);
+if (sp1inf != SISL_NULL) freearray(sp1inf);
+if (spar   != SISL_NULL) freearray(spar);
 
 
 return;
@@ -1634,12 +1634,12 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
   double sider[3];         /* SISLPoint on implicit surface                 */
   double snorm[3];         /* Normal on implicit surface                */
   double tsumold,tsum,tval;/* Parameter values                    */
-  double *sgpar1=NULL;     /* Parameter pairs of guide point in surf 1  */
-  double *sgpar2=NULL;     /* Parameter pairs of guide point in surf 2  */
-  SISLCurve *qc1=NULL;         /* Pointer to 3-D curve                     */
-  SISLCurve *qc2=NULL;         /* Pointer to 3-D curve                     */
+  double *sgpar1=SISL_NULL;     /* Parameter pairs of guide point in surf 1  */
+  double *sgpar2=SISL_NULL;     /* Parameter pairs of guide point in surf 2  */
+  SISLCurve *qc1=SISL_NULL;         /* Pointer to 3-D curve                     */
+  SISLCurve *qc2=SISL_NULL;         /* Pointer to 3-D curve                     */
 
-  SISLCurve *qp1cur=NULL;      /* Pointer to curve in first parameter plane*/
+  SISLCurve *qp1cur=SISL_NULL;      /* Pointer to curve in first parameter plane*/
 
 
 
@@ -1665,9 +1665,9 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
   /* Initiate pointers to intersection curve and intersection curve in
      parameter plane */
 
-  pintcr -> pgeom = NULL;
-  pintcr -> ppar1 = NULL;
-  pintcr -> ppar2 = NULL;
+  pintcr -> pgeom = SISL_NULL;
+  pintcr -> ppar1 = SISL_NULL;
+  pintcr -> ppar2 = SISL_NULL;
 
 
   /* Initiate parameter direction boundaries */
@@ -1847,7 +1847,7 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
       /* Set pointer to 3-D curve */
 
       pintcr -> pgeom = qc2;
-      qc2 = NULL;
+      qc2 = SISL_NULL;
     }
 
   if (icur == 2)
@@ -1873,7 +1873,7 @@ static void s1313_s9constline(ps1,eimpli,ideg,aepsge,pintcr,
 	  sknot[2] = sknot[3] = tmax1;
         }
       qp1cur = newCurve(2,2,sknot,svert,1,2,1);
-      if (qp1cur==NULL) goto err101;
+      if (qp1cur==SISL_NULL) goto err101;
       pintcr -> ppar1 = qp1cur;
     }
 
@@ -1903,6 +1903,6 @@ error:
 goto out;
 
 out:;
-if (qc1 != NULL) freeCurve(qc1);
-if (qc2 != NULL) freeCurve(qc2);
+if (qc1 != SISL_NULL) freeCurve(qc1);
+if (qc2 != SISL_NULL) freeCurve(qc2);
 }

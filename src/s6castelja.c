@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6castelja.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6castelja.c,v 1.2 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -92,7 +92,7 @@ void s6deCasteljau(C,a,b,t,k,D,jstat)
   int r,j,kk=k*k,kr;
   double alpha;
   double Al[16];
-  double* A = NULL;
+  double* A = SISL_NULL;
 
 
   *jstat = 1;
@@ -101,7 +101,7 @@ void s6deCasteljau(C,a,b,t,k,D,jstat)
   if (k > 4 )
     {
       A = newarray(kk,double);
-      if (A == NULL) goto err101;
+      if (A == SISL_NULL) goto err101;
     }
   else
     A = Al;
@@ -129,7 +129,7 @@ void s6deCasteljau(C,a,b,t,k,D,jstat)
   goto out;
 
  out: 
-  if (A != NULL && A != Al)
+  if (A != SISL_NULL && A != Al)
     freearray(A);
   return ;
 }

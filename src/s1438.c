@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1438.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1438.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -76,14 +76,14 @@ void s1438(pc,iedge,rpedge,cpar,jstat)
     {
       *cpar = pc->et[pc->ik - 1];
       
-      if (((*rpedge) = newPoint(pc->ecoef,pc->idim,1)) == NULL)
+      if (((*rpedge) = newPoint(pc->ecoef,pc->idim,1)) == SISL_NULL)
 	goto err101;
     }
   else if (iedge == 1)
     {
       *cpar = pc->et[pc->in];
       
-      if (((*rpedge)=newPoint(pc->ecoef+pc->idim*(pc->in-1),pc->idim,1))==NULL)
+      if (((*rpedge)=newPoint(pc->ecoef+pc->idim*(pc->in-1),pc->idim,1))==SISL_NULL)
 	goto err101;
     }
   else goto err141;

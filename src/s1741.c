@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1741.c,v 1.2 1997-05-14 12:48:49 jka Exp $
+ * $Id: s1741.c,v 1.3 2001-03-19 15:58:53 afr Exp $
  *
  */
 
@@ -183,10 +183,10 @@ void s1741(po1,po2,aepsge,jstat)
       
       /* Computing the angle beetween the senters of the two cones. */
       
-      for (tang=DNULL,k1=0;k1<po1->c1->idim;k1++)
+      for (tang=DZERO,k1=0;k1<po1->c1->idim;k1++)
 	tang += po1->c1->pdir->ecoef[k1]*po2->c1->pdir->ecoef[k1];
       
-      if (tang >= DNULL)  tang = min((double)1.0,tang);
+      if (tang >= DZERO)  tang = min((double)1.0,tang);
       else                tang = max((double)-1.0,tang);
       
       tang = acos(tang);
@@ -249,10 +249,10 @@ void s1741(po1,po2,aepsge,jstat)
       
       /* Computing the angle beetween the senters of the two cones. */
       
-      for (tang=DNULL,k1=0;k1<po1->s1->idim;k1++)
+      for (tang=DZERO,k1=0;k1<po1->s1->idim;k1++)
 	tang += po1->s1->pdir->ecoef[k1]*po2->s1->pdir->ecoef[k1];
       
-      if (tang >= DNULL)  tang = min((double)1.0,tang);
+      if (tang >= DZERO)  tang = min((double)1.0,tang);
       else                tang = max((double)-1.0,tang);
       
       tang = acos(tang);
@@ -321,10 +321,10 @@ void s1741(po1,po2,aepsge,jstat)
       
       /* Computing the angle beetween the senters of the two cones. */
       
-      for (tang=DNULL,k1=0;k1<qo2->s1->idim;k1++)
+      for (tang=DZERO,k1=0;k1<qo2->s1->idim;k1++)
 	tang += qo2->s1->pdir->ecoef[k1]*qo1->c1->pdir->ecoef[k1];
       
-      if (tang >= DNULL) tang = min((double)1.0,tang);
+      if (tang >= DZERO) tang = min((double)1.0,tang);
       else               tang = max((double)-1.0,tang);
       
       tang = acos(tang);

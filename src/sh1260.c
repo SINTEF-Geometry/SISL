@@ -81,9 +81,9 @@ void sh1260(aconst,vcurve,icurve,jstat)
                                                             interval of 1. curve. */
   double tpar2 = *(vcurve[0]->et + vcurve[0]->in);       /* End of parameter
                                                             interval of 1. curve. */
-  double *sder1 = NULL;  /* Value of 1. curve in start of parameter interval.   */
-  double *sder2 = NULL;  /* Value of 1. curve in end of parameter interval.     */
-  double *sdiff = NULL;  /* Difference vector between endpoints of 1. curve.    */
+  double *sder1 = SISL_NULL;  /* Value of 1. curve in start of parameter interval.   */
+  double *sder2 = SISL_NULL;  /* Value of 1. curve in end of parameter interval.     */
+  double *sdiff = SISL_NULL;  /* Difference vector between endpoints of 1. curve.    */
   double tdiff;          /* Length of sdiff.  */
   double t1,t2;          /* Length of the components of the tangent vectors in the 
                             endpoints along sdiff, compared with the length of sdiff.*/
@@ -107,9 +107,9 @@ void sh1260(aconst,vcurve,icurve,jstat)
   /* Allocate scratch for value and derivatives of the first curve
      in the endpoints.  */
 
-  if ((sder1 = newarray(2*kdim,DOUBLE)) == NULL) goto err101;
-  if ((sder2 = newarray(2*kdim,DOUBLE)) == NULL) goto err101;
-  if ((sdiff = newarray(kdim,DOUBLE)) == NULL) goto err101;
+  if ((sder1 = newarray(2*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((sder2 = newarray(2*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((sdiff = newarray(kdim,DOUBLE)) == SISL_NULL) goto err101;
 
   /* Evaluate the first curve in the endpoints.  */
 
@@ -207,9 +207,9 @@ void sh1260(aconst,vcurve,icurve,jstat)
     
     /* Free space occupied by local arrays and curves.  */
 
-    if (sder1 != NULL) freearray(sder1);
-  if (sder2 != NULL) freearray(sder2);
-  if (sdiff != NULL) freearray(sdiff);
+    if (sder1 != SISL_NULL) freearray(sder1);
+  if (sder2 != SISL_NULL) freearray(sder2);
+  if (sdiff != SISL_NULL) freearray(sdiff);
   
   return;
 }     

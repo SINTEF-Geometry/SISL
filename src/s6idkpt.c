@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idkpt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idkpt.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -39,10 +39,10 @@ void s6idkpt(pintdat,pintpt,rtpt,rfpt,jstat)
 * PURPOSE    : To remove an intersection point pintpt from pintdat.
 *              Pintpt is than killed. If there is a point pointing on
 *              pintdat ptpt is set to point to this point otherwise
-*              ptpt is NULL. If pintdat is pointing to a point pfpt is
-*              set to point to this point otherwise pfpt is NULL.
-*              If pintdat is empty pintdat is killed and set to NULL.
-*              pintpt is set to NULL.
+*              ptpt is SISL_NULL. If pintdat is pointing to a point pfpt is
+*              set to point to this point otherwise pfpt is SISL_NULL.
+*              If pintdat is empty pintdat is killed and set to SISL_NULL.
+*              pintpt is set to SISL_NULL.
 *
 *
 *
@@ -75,15 +75,15 @@ void s6idkpt(pintdat,pintpt,rtpt,rfpt,jstat)
   int ki;              /* Counters.    */
   int knum;
   
-  (*rtpt) = (*rfpt) = NULL;
+  (*rtpt) = (*rfpt) = SISL_NULL;
   *jstat = 0;
   
   /* We have to be sure that we have an intdat structure. */
   
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
     goto out;
   
-  if ((*pintpt) == NULL)
+  if ((*pintpt) == SISL_NULL)
     {
       *jstat = 1;
       goto out;
@@ -112,20 +112,20 @@ void s6idkpt(pintdat,pintpt,rtpt,rfpt,jstat)
     {
       (*pintdat)->vpoint[knum] = (*pintdat)->vpoint[(*pintdat)->ipoint-1];
       ((*pintdat)->ipoint)--;
-      (*pintdat)->vpoint[(*pintdat)->ipoint] = NULL;
+      (*pintdat)->vpoint[(*pintdat)->ipoint] = SISL_NULL;
       
-      if ((*rtpt) != NULL)
-	(*rtpt) ->pcurve = NULL;
+      if ((*rtpt) != SISL_NULL)
+	(*rtpt) ->pcurve = SISL_NULL;
       
       if ((*pintdat)->ipoint == 0)
 	{
 	  freeIntdat(*pintdat);
-	  (*pintdat) = NULL;
+	  (*pintdat) = SISL_NULL;
 	}
     }
   
   freeIntpt(*pintpt);
-  (*pintpt) = NULL;
+  (*pintpt) = SISL_NULL;
   
  out: ;
 }

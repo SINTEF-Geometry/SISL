@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6floop.c,v 1.2 1994-09-05 14:59:51 pfu Exp $
+ * $Id: sh6floop.c,v 1.3 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -73,7 +73,7 @@ void sh6floop(vedgept,inum,jpt,jstat)
    SISLIntpt *qstart; /* First intersection point around the edges.     */
    SISLIntpt *qprev;  /* Previous intersection point found.             */
    SISLIntpt *qt;     /* Current intersection point in list.            */
-   SISLIntpt *qnext = NULL;  /* The next point to enter the list.              */
+   SISLIntpt *qnext = SISL_NULL;  /* The next point to enter the list.              */
    SISLIntpt *qhelp;  /* Help point used in sorting vedgept.            */
 
    /* Check if there is a list.  */
@@ -88,14 +88,14 @@ void sh6floop(vedgept,inum,jpt,jstat)
    /* Traverse the edge intersections to fetch a list starting in qstart.
       The elements in the list must lie on the edges of the objects.    */
 
-   for (qprev=NULL, qt=qstart; ; qt=vedgept[kpt])
+   for (qprev=SISL_NULL, qt=qstart; ; qt=vedgept[kpt])
    {
       if (kstat2 == 0)
       {
 	 /* Open list. Travers in the opposite direction.  */
 
 	 qt = qstart;
-	 qprev = (kpt > 0) ? vedgept[1] : NULL;
+	 qprev = (kpt > 0) ? vedgept[1] : SISL_NULL;
       }
 
       for (ki=0; ki<qt->no_of_curves; ki++)
@@ -104,7 +104,7 @@ void sh6floop(vedgept,inum,jpt,jstat)
 
 	 qnext = sh6getnext(qt,ki);
 
-	 if (qnext == NULL)
+	 if (qnext == SISL_NULL)
 	 {
 	    kstat2 = 0; break;  /* No point.  */
 	 }
@@ -137,7 +137,7 @@ void sh6floop(vedgept,inum,jpt,jstat)
 
 	 /* Check if we are finished or may continue with the next point. */
 
-	 if (qnext == NULL || (qnext == qstart && qnext != qprev) ||
+	 if (qnext == SISL_NULL || (qnext == qstart && qnext != qprev) ||
 	     qprev == qt) break;
       }
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1349.c,v 1.2 1994-08-02 12:45:49 pfu Exp $
+ * $Id: s1349.c,v 1.3 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -61,11 +61,11 @@ void s1349(inbcrv,vpcrv,jstat)
 *********************************************************************
 */
 {
-  SISLCurve **wp = NULL;      /* Local pointer to current curve.           */
-  SISLCurve *qc2 = NULL;      /* Pointer to new curve-object.              */
+  SISLCurve **wp = SISL_NULL;      /* Local pointer to current curve.           */
+  SISLCurve *qc2 = SISL_NULL;      /* Pointer to new curve-object.              */
   int kvert;              /* No. of vertices in current curve.           */
   int kord;               /* Order of current curve.                     */
-  double *sknot = NULL;   /* Pointer to knot-vector of current curve.    */
+  double *sknot = SISL_NULL;   /* Pointer to knot-vector of current curve.    */
   int kk,kr;              /* Loop controllers.                           */
   double *sp1,*sp2;       /* Pointers to sknot.                          */
   int kmul1,kmul2;        /*                                             */
@@ -110,7 +110,7 @@ void s1349(inbcrv,vpcrv,jstat)
           if (kstat<0) goto error;
 	  if ((*wp)) freeCurve(*wp);  /* PFU 02/08-1994 */
           *wp = qc2;
-          qc2 = NULL;
+          qc2 = SISL_NULL;
 	}
       wp++;
     }

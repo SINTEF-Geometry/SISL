@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6getmain.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6getmain.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -35,7 +35,7 @@ sh6getmain (pt)
 *
 * PURPOSE    : Given a help point, find the unique main point it is
 *              linked to. If there is no such main point, return
-*              NULL.
+*              SISL_NULL.
 *
 *
 * INPUT      : pt       - Pointer to the Intpt.
@@ -57,12 +57,12 @@ sh6getmain (pt)
   int ki;			/* Loop control */
   int kstat;			/* Local status */
   int more = TRUE;		/* Loop control */
-  SISLIntpt *mainpt = NULL;
-  SISLIntpt *pt1 = NULL;
-  SISLIntpt *pt2 = NULL;
-  SISLIntpt *prev = NULL;
-  SISLIntpt *pcurr = NULL;
-  SISLIntpt *pnext = NULL;
+  SISLIntpt *mainpt = SISL_NULL;
+  SISLIntpt *pt1 = SISL_NULL;
+  SISLIntpt *pt2 = SISL_NULL;
+  SISLIntpt *prev = SISL_NULL;
+  SISLIntpt *pcurr = SISL_NULL;
+  SISLIntpt *pnext = SISL_NULL;
   /* ------------------------------------------------------------- */
 
 
@@ -104,7 +104,7 @@ sh6getmain (pt)
 		    {
 		      prev = pcurr;
 		      pcurr = pnext;
-		      pnext = NULL;
+		      pnext = SISL_NULL;
 		    }
 		}
 	      else
@@ -133,7 +133,7 @@ sh6getmain (pt)
 		      {
 			prev = pcurr;
 			pcurr = pnext;
-			pnext = NULL;
+			pnext = SISL_NULL;
 		      }
 		  }
 		else
@@ -146,7 +146,7 @@ sh6getmain (pt)
   goto out;
 
   /* ------------------------------------------------------------- */
-error:mainpt = NULL;
+error:mainpt = SISL_NULL;
   s6err ("sh6getmain", kstat, 0);
   goto out;
 

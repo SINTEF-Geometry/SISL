@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: destruct.c,v 1.2 1994-09-02 07:51:48 pfu Exp $
+ * $Id: destruct.c,v 1.3 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -71,7 +71,7 @@ void freeCurve(pcurve)
 
     freearray(pcurve->et);
     freearray(pcurve->ecoef);
-    if ( pcurve->rcoef != NULL )  freearray(pcurve->rcoef);
+    if ( pcurve->rcoef != SISL_NULL )  freearray(pcurve->rcoef);
   }
   else if ( pcurve->ikind == 2  ||  pcurve->ikind == 4 )
   {
@@ -87,7 +87,7 @@ void freeCurve(pcurve)
     /* Free direction structure. */
 
     if ( pcurve->pdir->ecoef )  freearray(pcurve->pdir->ecoef);
-    if ( pcurve->pdir->esmooth != NULL )  freearray(pcurve->pdir->esmooth);
+    if ( pcurve->pdir->esmooth != SISL_NULL )  freearray(pcurve->pdir->esmooth);
     freearray(pcurve->pdir);
   }
 
@@ -167,7 +167,7 @@ void freeEdge(pedge)
       /* Traverse the list connected to edge nr ki and free the elements. */
 
       p1 = *pel;
-      while (p1 != NULL)
+      while (p1 != SISL_NULL)
 	{
 	  p2 = p1 -> pnext;
 	  freePtedge(p1);
@@ -237,11 +237,11 @@ void freeIntcrvlist(viclist,icrv)
 	  if (viclist[ki])
 	    {
 	      freeIntcurve(viclist[ki]);
-	      viclist[ki] = NULL;
+	      viclist[ki] = SISL_NULL;
 	    }
 	}
       freearray(viclist);
-      viclist = NULL;
+      viclist = SISL_NULL;
     }
 }
 
@@ -333,7 +333,7 @@ void freeIntdat(pintdat)
 {
   int ki;                    /* Counter.                                     */
 
-  if (pintdat == NULL) goto out;
+  if (pintdat == SISL_NULL) goto out;
 
   /* First free the space occupied by the Intpt's pointed at by
      the array vpoint.                                                       */
@@ -458,8 +458,8 @@ void freeIntpt(ppt)
   if (ppt->geo_data_1)  freearray(ppt->geo_data_1);
   if (ppt->geo_data_2)  freearray(ppt->geo_data_2);
 
-  if(ppt->trim[0] != NULL) freeTrimpar(ppt->trim[0]);
-  if(ppt->trim[1] != NULL) freeTrimpar(ppt->trim[1]);
+  if(ppt->trim[0] != SISL_NULL) freeTrimpar(ppt->trim[0]);
+  if(ppt->trim[1] != SISL_NULL) freeTrimpar(ppt->trim[1]);
 
   /* Free the instance pointed at by ppt. */
 
@@ -504,10 +504,10 @@ void freeIntsurf(intsurf)
 */
 {
 
-  /* Free the arrays if not NULL. */
+  /* Free the arrays if not SISL_NULL. */
 
-  if(intsurf->epar != NULL) freearray(intsurf->epar);
-  if(intsurf->const_par != NULL) freearray(intsurf->const_par);
+  if(intsurf->epar != SISL_NULL) freearray(intsurf->epar);
+  if(intsurf->const_par != SISL_NULL) freearray(intsurf->const_par);
 
   /* Free the instance pointed at by intsurf. */
 
@@ -660,14 +660,14 @@ void freeObject(pobj)
   /* Free point, curve or surface represented by pobj.                */
 
   if (pobj -> iobj == SISLPOINT)
-    { if (pobj -> p1 != NULL) freePoint(pobj -> p1); }
+    { if (pobj -> p1 != SISL_NULL) freePoint(pobj -> p1); }
   else if (pobj -> iobj == SISLCURVE)
-    { if (pobj -> c1 != NULL) freeCurve(pobj -> c1); }
+    { if (pobj -> c1 != SISL_NULL) freeCurve(pobj -> c1); }
   else if (pobj -> iobj == SISLSURFACE)
-    { if (pobj -> s1 != NULL) freeSurf(pobj -> s1);  }
+    { if (pobj -> s1 != SISL_NULL) freeSurf(pobj -> s1);  }
 
   for (ki=0; ki<4; ki++)
-    if (pobj->edg[ki] != NULL) freeObject(pobj->edg[ki]);
+    if (pobj->edg[ki] != SISL_NULL) freeObject(pobj->edg[ki]);
 
   /* Free instance of object. */
 
@@ -715,9 +715,9 @@ void freePoint(ppoint)
 {
    int ki;   /* Counter.  */
 
-  if (ppoint != NULL)
+  if (ppoint != SISL_NULL)
     {
-      if (ppoint -> pbox != NULL)
+      if (ppoint -> pbox != SISL_NULL)
       {
 	 if (ppoint->pbox->emax) freearray(ppoint->pbox->emax);
 	 if (ppoint->pbox->emin) freearray(ppoint->pbox->emin);
@@ -732,7 +732,7 @@ void freePoint(ppoint)
 
       if ((ppoint -> idim > 3) &&
 	  (ppoint -> icopy != 0) &&
-	  (ppoint -> ecoef != NULL))
+	  (ppoint -> ecoef != SISL_NULL))
 	freearray(ppoint -> ecoef);	/* Free array.  */
 
       freearray(ppoint);		/* Free instance of point. */
@@ -836,7 +836,7 @@ void freeSurf(psurf)
     freearray(psurf->et1);
     freearray(psurf->et2);
     freearray(psurf->ecoef);
-    if ( psurf->rcoef != NULL )  freearray(psurf->rcoef);
+    if ( psurf->rcoef != SISL_NULL )  freearray(psurf->rcoef);
   }
   else if ( psurf->ikind == 2  ||  psurf->ikind == 4 )
   {
@@ -853,7 +853,7 @@ void freeSurf(psurf)
     /* Free direction structure. */
 
     if ( psurf->pdir->ecoef )  freearray(psurf->pdir->ecoef);
-    if ( psurf->pdir->esmooth != NULL )  freearray(psurf->pdir->esmooth);
+    if ( psurf->pdir->esmooth != SISL_NULL )  freearray(psurf->pdir->esmooth);
     freearray(psurf->pdir);
   }
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1172.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1172.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -135,7 +135,7 @@ void s1172(pcurve,astart,aend,anext,cpos,jstat)
       
       /* Check if the direction of the step have change. */
       
-      kdir = (td*tdn >= DNULL);     /* 0 if changed. */
+      kdir = (td*tdn >= DZERO);     /* 0 if changed. */
       
       if (tdist <= tprev || kdir)
 	{
@@ -297,12 +297,12 @@ static void s1172_s9dir(cdiff,evals)
    b = evals[2];
    c = b*b - 2.0*a*evals[1];
    
-   if (fabs(b) > DNULL)  d = -evals[1]/b;
+   if (fabs(b) > DZERO)  d = -evals[1]/b;
    else                  d = 0.0;
    
    
-   if (c < DNULL)                    *cdiff = d;
-   else if (fabs(a) > DNULL)
+   if (c < DZERO)                    *cdiff = d;
+   else if (fabs(a) > DZERO)
    {
       c = sqrt(c);
       d1 = (-b + c)/a;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6affdist.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6affdist.c,v 1.2 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -60,7 +60,7 @@ double s6affdist(e1,e2,emat,idim)
 */
 {
    int ki,kj;              /* Counters.  */
-   double tdist = DNULL;   /* Distance.  */
+   double tdist = DZERO;   /* Distance.  */
    
    for (ki=0; ki<idim; ki++)
       for (kj=0; kj<idim; kj++)

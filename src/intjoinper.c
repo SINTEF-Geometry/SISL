@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: intjoinper.c,v 1.2 1999-05-21 08:44:22 jka Exp $
+ * $Id: intjoinper.c,v 1.3 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -99,9 +99,9 @@ void
   SISLIntpt *pfirst_2;		/* First point in a list, periodicity     */
   SISLIntpt *plast_1;		/* Last point in a list, periodicity      */
   SISLIntpt *plast_2;		/* Last point in a list, periodicity      */
-  double *curve_val_3d  = NULL; /* Pos, tang and curvature ,3d    */
-  double *curve_val_2d_1= NULL; /* Pos, tang and curvature ,2d    */
-  double *curve_val_2d_2= NULL; /* Pos, tang and curvature ,2d    */
+  double *curve_val_3d  = SISL_NULL; /* Pos, tang and curvature ,3d    */
+  double *curve_val_2d_1= SISL_NULL; /* Pos, tang and curvature ,2d    */
+  double *curve_val_2d_2= SISL_NULL; /* Pos, tang and curvature ,2d    */
   double delta_par[4];          /* Delta vector in par space, periodicity */
   double *delta_1=delta_par;    /* Delta vector in par space, periodicity */
   double *delta_2=delta_par+2;  /* Delta vector in par space, periodicity */
@@ -123,18 +123,18 @@ void
 				   only done in surf/surf cases.          */
   int cas;                      /* Flag, surf surf, surf analytic, other. */ 
   double epar[2];
-  double *nullp = NULL;
-  SISLIntpt *pturn=NULL;	/* Last point in a list, periodicity      */
+  double *nullp = SISL_NULL;
+  SISLIntpt *pturn=SISL_NULL;	/* Last point in a list, periodicity      */
   int log_1, log_2;             /* To test on an edge curve lies along
 				   the same parameter direction.          */
   int kp,no_par,index_1;
   double min_par[4],max_par[4],legal_min[4],legal_max[4];
-  SISLObject *qo=NULL;
+  SISLObject *qo=SISL_NULL;
   /* -------------------------------------------------------------------- */ 
        
   /* If we do not have any intersection data we just return. */     
   
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
      goto out;
   if ((*pintdat)->ipoint <=1)
      goto out;
@@ -236,10 +236,10 @@ void
 	      /* Select midpoint. */
 	      epar[0] = (pfirst_1->epar[0] + plast_1->epar[0])/2.0;
 	      epar[1] = (pfirst_1->epar[1] + plast_1->epar[1])/2.0;
-	      pturn = hp_newIntpt (2, epar, DNULL, SI_ORD,
+	      pturn = hp_newIntpt (2, epar, DZERO, SI_ORD,
 				   SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 				   0, 0, nullp, nullp);
-	      if (pturn == NULL)
+	      if (pturn == SISL_NULL)
 		 goto err101;
 	      
 	      sh6evalint (po1, po2, eimpli, ideg, pturn, aepsge,
@@ -273,7 +273,7 @@ void
 		 }
 	      }		 
 	      if (pturn) freeIntpt(pturn);
-	      pturn = NULL;
+	      pturn = SISL_NULL;
 	      
 	   }
 	}

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6mvec.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6mvec.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -71,7 +71,7 @@ void s6mvec(emat,evec1,inbvec,evec2)
         {
 	  kp = ki;
 	  
-	  tdum = DNULL;
+	  tdum = DZERO;
 	  for (kj=0;kj<3;kj++)
             {
 	      tdum += emat[kp]*svec1[kj];
@@ -83,13 +83,13 @@ void s6mvec(emat,evec1,inbvec,evec2)
         }
       /*  Check if the bottom row is 0,0,0,1 */                     
       
-      if (DNEQUAL(emat[3],DNULL) || DNEQUAL(emat[7],DNULL) ||
-	  DNEQUAL(emat[11],DNULL) || DNEQUAL(emat[15],(double)1.0))
+      if (DNEQUAL(emat[3],DZERO) || DNEQUAL(emat[7],DZERO) ||
+	  DNEQUAL(emat[11],DZERO) || DNEQUAL(emat[15],(double)1.0))
         {
 	  /* Compute last element of vector */
 	  
 	  tdum = evec1[0]*emat[3] + evec1[1]*emat[7] + evec1[2]*emat[11];
-	  if (DNEQUAL(tdum,DNULL))
+	  if (DNEQUAL(tdum,DZERO))
             {
 	      for (ki=0;ki<3;ki++)
 		svec2[ki] /= tdum;

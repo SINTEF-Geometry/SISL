@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1788.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1788.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -114,12 +114,12 @@ void s1788(ps1,ps2,aepsge,epar,gpar1,gpar2,jstat)
   double *spar21,*spar22;/* Pointers to arrays                         */
 
   /* UJK, Nov 1990 */
-  /*  double *spar=NULL; */
-  double *spar1=NULL;     /* Pointer to allocated values for parameter values*/
-  double *spar2=NULL;     /* Pointer to allocated values for parameter values*/
+  /*  double *spar=SISL_NULL; */
+  double *spar1=SISL_NULL;     /* Pointer to allocated values for parameter values*/
+  double *spar2=SISL_NULL;     /* Pointer to allocated values for parameter values*/
 
   SISLCurve *qcrv;           /* Curve in parameter plane                    */
-  SISLIntcurve *qintcr=NULL; /* Intersection curve object            */
+  SISLIntcurve *qintcr=SISL_NULL; /* Intersection curve object            */
   
   /* Find limits of parameter plane */
   
@@ -170,16 +170,16 @@ void s1788(ps1,ps2,aepsge,epar,gpar1,gpar2,jstat)
   
   /* Make an intersection curve object with the parameter value */
   /* UJK, Nov 1990 */  
-  /*  if ((spar=newarray(4,DOUBLE))==NULL) goto err101;
+  /*  if ((spar=newarray(4,DOUBLE))==SISL_NULL) goto err101;
       memcopy(spar,epar,4,DOUBLE); */
-  if ((spar1=newarray(2,DOUBLE))==NULL) goto err101;
+  if ((spar1=newarray(2,DOUBLE))==SISL_NULL) goto err101;
   memcopy(spar1,epar,2,DOUBLE);
-  if ((spar2=newarray(2,DOUBLE))==NULL) goto err101;
+  if ((spar2=newarray(2,DOUBLE))==SISL_NULL) goto err101;
   memcopy(spar2,epar+2,2,DOUBLE);
   
   /* UJK, Nov 1990 */  
-  /* if((qintcr = newIntcurve(1,2,2,epar,epar+2,0)) == NULL) goto err101; */
-  if((qintcr = newIntcurve(1,2,2,spar1,spar2,0)) == NULL) goto err101;
+  /* if((qintcr = newIntcurve(1,2,2,epar,epar+2,0)) == SISL_NULL) goto err101; */
+  if((qintcr = newIntcurve(1,2,2,spar1,spar2,0)) == SISL_NULL) goto err101;
   
   kcur = 2;
   kgraph = 0;
@@ -194,14 +194,14 @@ void s1788(ps1,ps2,aepsge,epar,gpar1,gpar2,jstat)
   /* Identify first and last parameter pair in the intersection curve */
   
   qcrv = qintcr -> ppar1;
-  if (qcrv == NULL) goto war00;
+  if (qcrv == SISL_NULL) goto war00;
   
   spar11 = qcrv -> ecoef;
   spar21 = spar11 + 2*(qcrv->in)-2;
   
   
   qcrv = qintcr -> ppar2;
-  if (qcrv == NULL) goto war00;
+  if (qcrv == SISL_NULL) goto war00;
   
   spar12 = qcrv -> ecoef;
   spar22 = spar12 + 2*(qcrv->in)-2;
@@ -392,5 +392,5 @@ void s1788(ps1,ps2,aepsge,epar,gpar1,gpar2,jstat)
   goto out;
 
  out:
-  if (qintcr != NULL) freeIntcurve(qintcr);
+  if (qintcr != SISL_NULL) freeIntcurve(qintcr);
 }

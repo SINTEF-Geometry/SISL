@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1834.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1834.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -115,7 +115,7 @@ void s1834(ecoef1,in1,ecoef2,in2,idim,edir1,edir2,jstat)
   double *smin2,*smax2; /* Extremal values of second rotated box. */
   double *s1,*s2,*s3,*s4;  /* Pointers used to traverse arrays.  */
   
-  smat = smin1 = smin2 = smax1 = smax2 = NULL;
+  smat = smin1 = smin2 = smax1 = smax2 = SISL_NULL;
   
   /* Test input.  */
   
@@ -128,8 +128,8 @@ void s1834(ecoef1,in1,ecoef2,in2,idim,edir1,edir2,jstat)
   smax1 = newarray(idim,double);
   smax2 = newarray(idim,double);
   smat = new0array(idim*idim,double);
-  if (smin1 == NULL || smin2 == NULL || smax1 == NULL ||
-      smax2 == NULL || smat == NULL) goto err101;
+  if (smin1 == SISL_NULL || smin2 == SISL_NULL || smax1 == SISL_NULL ||
+      smax2 == SISL_NULL || smat == SISL_NULL) goto err101;
   
   /* Initialize min and max vectors.  */
   
@@ -247,11 +247,11 @@ void s1834(ecoef1,in1,ecoef2,in2,idim,edir1,edir2,jstat)
   
   /* Free space occupied by local arrays.  */
   
-  if (smin1 != NULL) freearray(smin1);
-  if (smin2 != NULL) freearray(smin2);
-  if (smax1 != NULL) freearray(smax1);
-  if (smax2 != NULL) freearray(smax2);
-  if (smat != NULL) free0array(smat);
+  if (smin1 != SISL_NULL) freearray(smin1);
+  if (smin2 != SISL_NULL) freearray(smin2);
+  if (smax1 != SISL_NULL) freearray(smax1);
+  if (smax2 != SISL_NULL) freearray(smax2);
+  if (smat != SISL_NULL) free0array(smat);
   
   return;
 }
@@ -354,12 +354,12 @@ static void s1834_s9mat3d(emat,edir1,edir2)
   
   /* Set up rotation matrix.  */
   
-  if ((DEQUAL(tleng1,DNULL) || DEQUAL(tl1,DNULL)) && DEQUAL(tleng2,DNULL))
+  if ((DEQUAL(tleng1,DZERO) || DEQUAL(tl1,DZERO)) && DEQUAL(tleng2,DZERO))
     
     /* The rotation matrix is the identity matrix.  */
     
     emat[0] = emat[4] = emat[8] = (double)1.0;
-  else if (DEQUAL(tleng1,DNULL) || DEQUAL(tl1,DNULL))
+  else if (DEQUAL(tleng1,DZERO) || DEQUAL(tl1,DZERO))
     {
       
       /* The rotation matrix is supposed to rotate edir1 to be parallell
@@ -370,7 +370,7 @@ static void s1834_s9mat3d(emat,edir1,edir2)
       tb3 = sdir[2];
       tl3 = sqrt(tb1*tb1+tb2*tb2);
       
-      if (DEQUAL(tl3,DNULL)) emat[0] = emat[4] = emat[8] = (double)1.0;
+      if (DEQUAL(tl3,DZERO)) emat[0] = emat[4] = emat[8] = (double)1.0;
       else
 	{
 	  s1      = emat;    
@@ -379,7 +379,7 @@ static void s1834_s9mat3d(emat,edir1,edir2)
 	  *(s1++) = tb3;
 	  *(s1++) = -tb2/tl3;
 	  *(s1++) = tb1/tl3;  
-	  *(s1++) = DNULL;
+	  *(s1++) = DZERO;
 	  *(s1++) = -tb1*tb3/tl3;
 	  *(s1++) = -tb2*tb3/tl3;  
 	  *(s1++) = tl3;
@@ -391,7 +391,7 @@ static void s1834_s9mat3d(emat,edir1,edir2)
       td2 = (ta3*edir1[1] - ta2*edir1[2])/tl1;
       tl2 = sqrt(td1*td1+td2*td2);
       
-      if (DEQUAL(tl2,DNULL))
+      if (DEQUAL(tl2,DZERO))
 	{
 	  
 	  /* The normal snorm is rotated to be parallell to the z-axis. */
@@ -400,7 +400,7 @@ static void s1834_s9mat3d(emat,edir1,edir2)
 	  *(s1++) = tl1;
 	  *(s1++) = -ta1*ta2/tl1;
 	  *(s1++) = -ta1*ta3/tl1;
-	  *(s1++) = DNULL;
+	  *(s1++) = DZERO;
 	  *(s1++) = ta3/tl1;
 	  *(s1++) = -ta2/tl1;
 	  *(s1++) = ta1;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1780.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1780.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -107,7 +107,7 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
   double *ret_norm;		/* Pointer to geo data from sh6getgeom     */
   double *sptpar = pintpt->epar;/* Parameter array of int.pt.        */
   SISLIntpt *uintpt[2];		/* Pointer to new intersection points.     */
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
 
   /* Don't make pretop for help points ! */
   if (sh6ishelp (pintpt))
@@ -163,7 +163,7 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
       /* Perform marching in positive direction of the first curve.  */
 
       kdir1 = 1;
-      kdir2 = (s6scpr (stang1, stang2, kdim) >= DNULL) ? 1 : -1;
+      kdir2 = (s6scpr (stang1, stang2, kdim) >= DZERO) ? 1 : -1;
 
       /* Check if the intersection point is situated at the endpoint
 	 of a curve.             */
@@ -219,7 +219,7 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	         information in one direction of the curves.             */
 
 	      if ((stang1[0] * stang2[1] - stang1[1] * stang2[0]) * (double) kdir2
-		  < DNULL)
+		  < DZERO)
 		lright[0] = SI_OUT;
 	      else
 		lright[0] = SI_IN;
@@ -234,10 +234,10 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		{
 		  /* Create help point. Set pre-topology data as SI_UNDEF. */
 
-		  uintpt[kpos] = NULL;
-		  if ((uintpt[kpos] = hp_newIntpt (2, slast, DNULL, -SI_ORD,
+		  uintpt[kpos] = SISL_NULL;
+		  if ((uintpt[kpos] = hp_newIntpt (2, slast, DZERO, -SI_ORD,
 				     SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
-					       0, 0, nullp, nullp)) == NULL)
+					       0, 0, nullp, nullp)) == SISL_NULL)
 		    goto err101;
 
 		  kpos++;
@@ -303,7 +303,7 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	         information in one direction of the curves.             */
 
 	      if ((stang1[0] * stang2[1] - stang1[1] * stang2[0]) * (double) kdir2
-		  < DNULL)
+		  < DZERO)
 		lleft[0] = SI_OUT;
 	      else
 		lleft[0] = SI_IN;
@@ -318,10 +318,10 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		{
 		  /* Create help point. Set pre-topology data as SI_UNDEF. */
 
-		  uintpt[kpos] = NULL;
-		  if ((uintpt[kpos] = hp_newIntpt (2, slast, DNULL, -SI_ORD,
+		  uintpt[kpos] = SISL_NULL;
+		  if ((uintpt[kpos] = hp_newIntpt (2, slast, DZERO, -SI_ORD,
 				     SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
-					       0, 0, nullp, nullp)) == NULL)
+					       0, 0, nullp, nullp)) == SISL_NULL)
 		    goto err101;
 
 		  kpos++;
@@ -333,7 +333,7 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
     {
       /* The pretopology may be computed using local information. */
 
-      if (stang1[0] * stang2[1] - stang1[1] * stang2[0] < DNULL)
+      if (stang1[0] * stang2[1] - stang1[1] * stang2[0] < DZERO)
 	{
 	  lleft[0] = SI_IN;
 	  lright[0] = SI_OUT;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1954.c,v 1.2 1994-08-31 14:33:11 pfu Exp $
+ * $Id: s1954.c,v 1.3 2001-03-19 15:58:57 afr Exp $
  *
  */
 
@@ -101,9 +101,9 @@ void s1954(psurf,epoint,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   int kdim = 1;             /* Dimension of curve in extremal problem.   */
   double tradius = 0;       /* Radius of hyper-sphere describing point.  */
   double tdir = -1;         /* Direction of extremal value.              */
-  double *sarray = NULL;    /* Matrix describing hyper-sphere.           */
-  SISLSurf *qs = NULL;      /* Surface of which to find extremal points. */
-  SISLSurf *qkreg = NULL;   /* Input surface with k-regularity ensured.  */
+  double *sarray = SISL_NULL;    /* Matrix describing hyper-sphere.           */
+  SISLSurf *qs = SISL_NULL;      /* Surface of which to find extremal points. */
+  SISLSurf *qkreg = SISL_NULL;   /* Input surface with k-regularity ensured.  */
   int ratflag = 0;          /* Flag to indicate if surface is rational.  */
   int ki;                   /* Counter.                                  */
 
@@ -132,7 +132,7 @@ void s1954(psurf,epoint,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
 
   /* Allocate space for array describing a hyper-sphere.  */
 
-  if ( (sarray = newarray((idim+1)*(idim+1), DOUBLE)) == NULL )  goto err101;
+  if ( (sarray = newarray((idim+1)*(idim+1), DOUBLE)) == SISL_NULL )  goto err101;
 
   /* Make a matrix of dimension (idim+1)*(idim+1) to describe
      the hyper-shpere.                                        */

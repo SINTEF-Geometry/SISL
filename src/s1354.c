@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1354.c,v 1.2 1994-08-15 13:55:52 pfu Exp $
+ * $Id: s1354.c,v 1.3 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -212,20 +212,20 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 				/* For the use of the other variables,
 				   see the code below.              */
   int i, start, stop, indx, count, r, p, hn;
-  SISLCurve *hcurve = NULL;
+  SISLCurve *hcurve = SISL_NULL;
   double h;
-  double *local_err = NULL, *l2_err = NULL, *ltau = NULL;
+  double *local_err = SISL_NULL, *l2_err = SISL_NULL, *ltau = SISL_NULL;
 
   /* Allocate memory for the local arrays. */
 
   del_array = newarray(mprio-k, char);
-  if (del_array == NULL) goto err101;
+  if (del_array == SISL_NULL) goto err101;
 
   /* In case we do not enter the while loop at all we must give newcurve
      a value. */
 
   *newcurve = newCurve(mprio, k, rankcurve->et, rankcurve->ecoef, 1, dim, 1);
-  if (newcurve == NULL) goto err101;
+  if (newcurve == SISL_NULL) goto err101;
 
   /* Iterate by binary search until the lower and upper bound on how many
      knots to include are essentially equal. */
@@ -294,9 +294,9 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
     /* The new knot vector is stored in ltau.  It might already be allocated
        from the last iteration, so free it first if required. */
 
-    if (ltau != NULL) freearray(ltau);
+    if (ltau != SISL_NULL) freearray(ltau);
     ltau = newarray(hn+k, double);
-    if (ltau == NULL) goto err101;
+    if (ltau == SISL_NULL) goto err101;
 
     /* Set the first and last k knots. */
 
@@ -321,8 +321,8 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
        Must remember to free local_err and l2_err since there will be
        a memory leak if they were allocated in the previous iteration. */
 
-    if (local_err != NULL) freearray(local_err);
-    if (l2_err != NULL) freearray(l2_err);
+    if (local_err != SISL_NULL) freearray(local_err);
+    if (l2_err != SISL_NULL) freearray(l2_err);
 
     sh1365(oldcurve, ltau, k, hn, startfix, endfix,
 	   &hcurve, &local_err, &l2_err, &lstat);
@@ -355,8 +355,8 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 	 indicate that an upper bound for the number of knots to
 	 remove is antrem. */
 
-      if (hcurve != NULL) freeCurve(hcurve);
-      hcurve = NULL;
+      if (hcurve != SISL_NULL) freeCurve(hcurve);
+      hcurve = SISL_NULL;
       maxi = antrem;
     }
     else
@@ -367,9 +367,9 @@ void s1354(oldcurve, rankcurve, ranking, eps, epsco,
 	 error in maxerr. */
 
       mini = antrem;
-      if (*newcurve != NULL) freeCurve(*newcurve);
+      if (*newcurve != SISL_NULL) freeCurve(*newcurve);
       *newcurve = hcurve;
-      hcurve = NULL;
+      hcurve = SISL_NULL;
       for (i=0; i<dim; i++)  maxerr[i] = local_err[i];
     }
 
@@ -400,11 +400,11 @@ err:
   /* Clean up before exit. */
 
 out:
-  if (hcurve != NULL) freeCurve(hcurve);
-  if (del_array != NULL) freearray(del_array);
-  if (local_err != NULL) freearray(local_err);
-  if (l2_err != NULL) freearray(l2_err);
-  if (ltau != NULL) freearray(ltau);
+  if (hcurve != SISL_NULL) freeCurve(hcurve);
+  if (del_array != SISL_NULL) freearray(del_array);
+  if (local_err != SISL_NULL) freearray(local_err);
+  if (l2_err != SISL_NULL) freearray(l2_err);
+  if (ltau != SISL_NULL) freearray(ltau);
 
   return;
 }

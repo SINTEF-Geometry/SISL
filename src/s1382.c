@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1382.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1382.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -111,14 +111,14 @@ s1382 (psurf, eview, idim, rsurf, jstat)
   int kp;			/* Index of points put into conic equation          */
   int klfs = 0;			/* Pointer into knot vector                         */
   int klft = 0;			/* Pointer into knot vector                         */
-  double *st1 = NULL;		/* First knot vector is psurf                       */
-  double *st2 = NULL;		/* Second knot vector is psurf                      */
-  double *sval1 = NULL;		/* Array of values of surface put into torus eq.    */
-  double *sval2 = NULL;
-  double *sval3 = NULL;
-  double *sgt1 = NULL;		/* Knot vector in first parameter direction of
+  double *st1 = SISL_NULL;		/* First knot vector is psurf                       */
+  double *st2 = SISL_NULL;		/* Second knot vector is psurf                      */
+  double *sval1 = SISL_NULL;		/* Array of values of surface put into torus eq.    */
+  double *sval2 = SISL_NULL;
+  double *sval3 = SISL_NULL;
+  double *sgt1 = SISL_NULL;		/* Knot vector in first parameter direction of
 				   surface put into torus equation                  */
-  double *sgt2 = NULL;		/* Knot vector in second parameter direction of
+  double *sgt2 = SISL_NULL;		/* Knot vector in second parameter direction of
 				   surface put into torus equation                  */
   double sder[12];		/* SISLPoint on the surface                             */
   double spar[2];		/* Current parameter pair                           */
@@ -128,11 +128,11 @@ s1382 (psurf, eview, idim, rsurf, jstat)
   double tutv[3];		/* T_u x T_v  in rational case                      */
   double tvt[3];		/* T_v x T    in rational case                      */
   double ttu[3];		/* T   x T_u  in rational case                      */
-  double *par1 = NULL;
-  double *par2 = NULL;
-  int *der1 = NULL;
-  int *der2 = NULL;
-  SISLSurf *tempsurf = NULL;	/* only used for rational surfaces                  */
+  double *par1 = SISL_NULL;
+  double *par2 = SISL_NULL;
+  int *der1 = SISL_NULL;
+  int *der2 = SISL_NULL;
+  SISLSurf *tempsurf = SISL_NULL;	/* only used for rational surfaces                  */
 
   *jstat = 0;
 
@@ -167,7 +167,7 @@ s1382 (psurf, eview, idim, rsurf, jstat)
 
       tempsurf = newSurf (kn1, kn2, kk1, kk2, st1, st2, psurf->rcoef,
 			  ikind - 1, kdim + 1, 0);
-      if (tempsurf == NULL)
+      if (tempsurf == SISL_NULL)
 	goto err171;
       tempsurf->cuopen_1 = psurf->cuopen_1;
       tempsurf->cuopen_2 = psurf->cuopen_2;
@@ -217,7 +217,7 @@ s1382 (psurf, eview, idim, rsurf, jstat)
   /* Allocate array for values of surface put into torus equation */
 
   sval1 = newarray (kjkn1 * kjkn2, DOUBLE);
-  if (sval1 == NULL)
+  if (sval1 == SISL_NULL)
     goto err101;
 
 
@@ -284,9 +284,9 @@ s1382 (psurf, eview, idim, rsurf, jstat)
   if (kstat < 0)
     goto error;
 
-  *rsurf = NULL;
+  *rsurf = SISL_NULL;
   *rsurf = newSurf (kjkn1, kjkn2, kjkk1, kjkk2, sgt1, sgt2, sval3, 1, 1, 1);
-  if (*rsurf == NULL)
+  if (*rsurf == SISL_NULL)
     goto err171;
   (*rsurf)->cuopen_1 = psurf->cuopen_1;
   (*rsurf)->cuopen_2 = psurf->cuopen_2;
@@ -327,25 +327,25 @@ out:
 
   /* Release allocated arrays */
 
-  if (sgt1 != NULL)
+  if (sgt1 != SISL_NULL)
     freearray (sgt1);
-  if (sgt2 != NULL)
+  if (sgt2 != SISL_NULL)
     freearray (sgt2);
-  if (sval1 != NULL)
+  if (sval1 != SISL_NULL)
     freearray (sval1);
-  if (sval2 != NULL)
+  if (sval2 != SISL_NULL)
     freearray (sval2);
-  if (sval3 != NULL)
+  if (sval3 != SISL_NULL)
     freearray (sval3);
-  if (par1 != NULL)
+  if (par1 != SISL_NULL)
     freearray(par1);
-  if (par2 != NULL)
+  if (par2 != SISL_NULL)
     freearray(par2);
-  if (der1 != NULL)
+  if (der1 != SISL_NULL)
     freearray(der1);
-  if (der2 != NULL)
+  if (der2 != SISL_NULL)
     freearray(der2);
-  if ((ikind == 2 || ikind == 4) && (tempsurf != NULL))
+  if ((ikind == 2 || ikind == 4) && (tempsurf != SISL_NULL))
     freeSurf (tempsurf);
 
   return;

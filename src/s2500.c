@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2500.c,v 1.7 1995-06-30 11:17:01 jka Exp $
+ * $Id: s2500.c,v 1.8 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -143,7 +143,7 @@ s2500(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
   if (ider != 0) goto err178;
 
 
-  if (surf == NULL)  goto err150;
+  if (surf == SISL_NULL)  goto err150;
   else
   {
     /* Compute derivates and normal. */
@@ -182,7 +182,7 @@ war002:
   *jstat = 2;
   goto out;
 
-  /* Error. Input (surface) pointer is NULL. */
+  /* Error. Input (surface) pointer is SISL_NULL. */
 err150:
   *jstat = -150;
   s6err("s2500", *jstat, 0);

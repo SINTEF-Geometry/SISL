@@ -114,7 +114,7 @@ void
    double tdot;        /* Scalar product to test direction of vectors.      */
    double td;          /* Distance between current and last point.          */
    double s3dinf2[10]; /* Marching information to decide step length.       */
-   SISLCurve *qc = NULL;   /* Constant parameter curve.                       */
+   SISLCurve *qc = SISL_NULL;   /* Constant parameter curve.                       */
 
    *jstat = 0;
 
@@ -215,7 +215,7 @@ void
 	 stanc[ki] = spardir[0]*sders[kdims+ki] + spardir[1]*sders[2*kdims+ki];
 
       tdot = s6scpr(stanc, sdiff, kdims);
-      if (tdot < DNULL)
+      if (tdot < DZERO)
       {
 	 stanc[0] *= -(double)1;
 	 stanc[1] *= -(double)1;
@@ -364,8 +364,8 @@ void
 
          /* Free memory occupied by local curve. */
 
-        if (qc != NULL) freeCurve(qc);
-        qc = NULL;
+        if (qc != SISL_NULL) freeCurve(qc);
+        qc = SISL_NULL;
       }
 
       /* Update start parameter of step. */
@@ -398,7 +398,7 @@ void
 
 
    out:
-      if (qc != NULL) freeCurve(qc);
+      if (qc != SISL_NULL) freeCurve(qc);
 
       return;
 }

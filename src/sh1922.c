@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1922.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1922.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -98,9 +98,9 @@ void sh1922(et,im,ik,etau,in,ea,nfirst,nlast,jstat)
    int kmu;
    int kmuprm;
    int knu;
-   double *sah = NULL;
+   double *sah = SISL_NULL;
    
-   if ((sah = new0array(ik,DOUBLE)) == NULL) goto err101;
+   if ((sah = new0array(ik,DOUBLE)) == SISL_NULL) goto err101;
    
    /* The first and last few rows of the refinement matrix ea may contain
       only zeroes. The first task is to find the first and the last
@@ -190,7 +190,7 @@ void sh1922(et,im,ik,etau,in,ea,nfirst,nlast,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (sah != NULL) freearray(sah);
+      if (sah != SISL_NULL) freearray(sah);
 	  
       return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1715.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1715.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -97,10 +97,10 @@ void s1715(pc1,pc2,iend1,iend2,rcnew,jstat)
   double tdel;            /* The translation of the knots to the
 			     second curve.                              */
   double *s1,*s2,*s3; 	  /* Pointers used in loop.                     */
-  double *stran=NULL;     /* The translation vector to vertices.        */
-  double *st=NULL;        /* The new knot-vector.                       */
-  double *scoef=NULL;     /* The new vertice.                           */
-  SISLCurve *qc=NULL;     /* Pointer to the new curve-object.           */
+  double *stran=SISL_NULL;     /* The translation vector to vertices.        */
+  double *st=SISL_NULL;        /* The new knot-vector.                       */
+  double *scoef=SISL_NULL;     /* The new vertice.                           */
+  SISLCurve *qc=SISL_NULL;     /* Pointer to the new curve-object.           */
   
   int ktype;              /* Type of curves:                            */
                           /* = 1 : Both are B-splines                   */
@@ -151,7 +151,7 @@ void s1715(pc1,pc2,iend1,iend2,rcnew,jstat)
   
   /* Allocate a kdim array to store the translation of the second curv.*/
   
-  if ((stran=newarray(kdim,double)) == NULL) goto err153;
+  if ((stran=newarray(kdim,double)) == SISL_NULL) goto err153;
   
   /* Checking the order of the curves, and raise the order if nessesary.*/
   
@@ -204,8 +204,8 @@ void s1715(pc1,pc2,iend1,iend2,rcnew,jstat)
   
   /* Allocating the new arrays to the new curve. */
   
-  if ((st=newarray(kn+kk,double))==NULL) goto err101;
-  if ((scoef=newarray(kn*routdim,double))==NULL) goto err101;
+  if ((st=newarray(kn+kk,double))==SISL_NULL) goto err101;
+  if ((scoef=newarray(kn*routdim,double))==SISL_NULL) goto err101;
   
   /* Copying the knotvectors from the old curve to the new curves */
   /****************************************************************/
@@ -330,7 +330,7 @@ void s1715(pc1,pc2,iend1,iend2,rcnew,jstat)
   for (s2=s1+routdim*max(0,kk-km1); s1<s2; s1+=routdim)
     {
       for (ki=0; ki<kdim; ki++)
-        s1[ki] = DNULL;
+        s1[ki] = DZERO;
       if (ktype != 1)
         s1[kdim] = 1.;
     }
@@ -339,7 +339,7 @@ void s1715(pc1,pc2,iend1,iend2,rcnew,jstat)
   
   for (ki=0; ki<kdim; ki++)
     {
-      if (km2<kk) stran[ki] = DNULL;
+      if (km2<kk) stran[ki] = DZERO;
       else
 	stran[ki] = iend2? pc2->ecoef[kdim*(kn2-max(0,km2-kk)-1)+ki]:
 	  pc2->ecoef[kdim*max(0,km2-kk)+ki];
@@ -447,10 +447,10 @@ void s1715(pc1,pc2,iend1,iend2,rcnew,jstat)
   
   if (ktype == 1)
     {
-      if ((qc=newCurve(kn,kk,st,scoef,1,kdim,2)) == NULL) goto err101;
+      if ((qc=newCurve(kn,kk,st,scoef,1,kdim,2)) == SISL_NULL) goto err101;
     }
   else
-      if ((qc=newCurve(kn,kk,st,scoef,2,kdim,2)) == NULL) goto err101;
+      if ((qc=newCurve(kn,kk,st,scoef,2,kdim,2)) == SISL_NULL) goto err101;
   
   /* Updating output. */
   

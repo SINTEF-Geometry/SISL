@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6getprev.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6getprev.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -58,7 +58,7 @@ int sh6getprev(pt1,pt2)
 
    index = -1;
 
-   if(pt1 == NULL || pt2 == NULL) goto out;
+   if(pt1 == SISL_NULL || pt2 == SISL_NULL) goto out;
 
    ncurv = pt1->no_of_curves;  /* note ncurv can be zero */
 

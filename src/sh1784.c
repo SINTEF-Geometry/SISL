@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1784.c,v 1.2 1999-01-15 10:13:19 jka Exp $
+ * $Id: sh1784.c,v 1.3 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -158,14 +158,14 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
   double tlengthend;		/* Length of 1st derivative at end of segment */
   double tincre;		/* Parameter value increment */
   double tsmax, tcmax;		/* Local maximal step length based of boxsizes of objects */
-  double tdist = DNULL;		/* Distance */
+  double tdist = DZERO;		/* Distance */
   double sstart[2];		/* Lower boundary of parameter intervals */
   double send[2];		/* Upper bounadry of parameter intervals */
   double snext[3];		/* Existing iteration point on  surface            */
   double spos[3];		/* New iteration  point on surface                 */
   double snext2[2];		/* Help parameter values.                          */
-  SISLPoint *qpoint = NULL;
-  SISLCurve *qc = NULL;		/* Constant parameter curve.                       */
+  SISLPoint *qpoint = SISL_NULL;
+  SISLCurve *qc = SISL_NULL;		/* Constant parameter curve.                       */
 
   /* Pointer to curve evaluator routine of the curve.  */
 
@@ -311,7 +311,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
          curvature exists between start and endpoints of the segment     */
       /* Make step length equal to resolution if the length is zero */
 
-      if (DEQUAL (tlengthend, DNULL))
+      if (DEQUAL (tlengthend, DZERO))
 	tincre = REL_PAR_RES;
       else
 	tincre = tstep / tlengthend;
@@ -345,7 +345,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 	  if (DNEQUAL(tx1,tfirst) || ki>0)
 	  {
 	     tangdot = s6scpr(stangprev, sderc+kdimc, kdimc);
-	     while (tangdot < DNULL)
+	     while (tangdot < DZERO)
 	     {
 		/* The step is not legal. Reduce step length. */
 
@@ -371,7 +371,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 	  /* Find closest point on surface to sderc */
 
 	  qpoint = newPoint (sderc, kdimc, 0);
-	  if (qpoint == NULL)
+	  if (qpoint == SISL_NULL)
 	    goto err101;
 
 	  snext2[0] = snext[0];
@@ -381,7 +381,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 	    goto error;
 
 	  freePoint (qpoint);
-	  qpoint = NULL;
+	  qpoint = SISL_NULL;
 
 	  /* Check to see if we have crossed an edge of the
 	     surface, i.e. we have gone outside the parameter
@@ -475,7 +475,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 	      /* Find closest point on surface to sderc */
 
 	      qpoint = newPoint (sderc, kdimc, 0);
-	      if (qpoint == NULL)
+	      if (qpoint == SISL_NULL)
 		goto err101;
 
 	      snext2[0] = snext[0];
@@ -485,7 +485,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 		goto error;
 
 	      freePoint (qpoint);
-	      qpoint = NULL;
+	      qpoint = SISL_NULL;
 
 	      /* Calculate point and derivatives in surface */
 
@@ -515,7 +515,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 		 /* Relax the point on the curve down to the surface. */
 
 		 qpoint = newPoint (sderc, kdimc, 0);
-		 if (qpoint == NULL)
+		 if (qpoint == SISL_NULL)
 		    goto err101;
 
 		 spos[0] = snext2[0];
@@ -525,7 +525,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 		    goto error;
 
 		 freePoint (qpoint);
-		 qpoint = NULL;
+		 qpoint = SISL_NULL;
 	      }
 
 	      /* Calculate point and derivatives in the surface.  */
@@ -552,9 +552,9 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 
 	      /* Free constant parameter curve.  */
 
-	      if (qc != NULL)
+	      if (qc != SISL_NULL)
 		freeCurve (qc);
-	      qc = NULL;
+	      qc = SISL_NULL;
 	    }
 
 	  /* Check if any parameter lines of the surface is crossed in the 2.
@@ -618,7 +618,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 	      /* Find closest point on surface to sderc */
 
 	      qpoint = newPoint (sderc, kdimc, 0);
-	      if (qpoint == NULL)
+	      if (qpoint == SISL_NULL)
 		goto err101;
 
 	      snext2[0] = snext[0];
@@ -628,7 +628,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 		goto error;
 
 	      freePoint (qpoint);
-	      qpoint = NULL;
+	      qpoint = SISL_NULL;
 
 	      /* Calculate point and derivatives in surface */
 
@@ -658,7 +658,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 		 /* Relax the point on the curve down to the surface. */
 
 		 qpoint = newPoint (sderc, kdimc, 0);
-		 if (qpoint == NULL)
+		 if (qpoint == SISL_NULL)
 		    goto err101;
 
 		 spos[0] = snext2[0];
@@ -668,7 +668,7 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 		    goto error;
 
 		 freePoint (qpoint);
-		 qpoint = NULL;
+		 qpoint = SISL_NULL;
 	      }
 
 
@@ -696,9 +696,9 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 
 	      /* Free constant parameter curve.  */
 
-	      if (qc != NULL)
+	      if (qc != SISL_NULL)
 		freeCurve (qc);
-	      qc = NULL;
+	      qc = SISL_NULL;
 	    }
 
 	  /* Save tangent of curve.  */

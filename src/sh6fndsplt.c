@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6fndsplt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6fndsplt.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -85,8 +85,8 @@ sh6findsplit (ps1, ps2, aepsge, jstat)
    double simpli[16];   /* Array containing torus info.      */
    double splitgeom[16];         /* Matrix description of a sphere
 				    or cylinder.                   */
-   SISLSurf *qs1 = NULL; /* 1D surface.                     */
-   SISLSurf *qs2 = NULL; /* 1D surface.                     */
+   SISLSurf *qs1 = SISL_NULL; /* 1D surface.                     */
+   SISLSurf *qs2 = SISL_NULL; /* 1D surface.                     */
       
    /* Still overlap. Try to find splitting geometry object. */
    

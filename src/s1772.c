@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1772.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1772.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 #define S1772
@@ -133,7 +133,7 @@ void s1772(pcurve,psurf,aepsge,astart1,estart2,aend1,eend2,
   int g_up,ng_up,g_dir;     /* Changing direction in geometric space.      */
   int order;		    /* Order of methode.			   */
   int sing = 0;		    /* Mark that singularity has ocured.	   */	
-  double *c0=NULL;          /* Value  of curve.				   */ 
+  double *c0=SISL_NULL;          /* Value  of curve.				   */ 
   double *c_t;		    /* First derivatiev of curve.		   */ 
   double *c_tt;		    /* Second derivatiev of curve.		   */ 
   double *s0;               /* Value of surf. 				   */
@@ -176,7 +176,7 @@ void s1772(pcurve,psurf,aepsge,astart1,estart2,aend1,eend2,
   if (dim > 3)
   {
      c0 = newarray((15)*dim,double);
-     if (c0 == NULL) goto err101;
+     if (c0 == SISL_NULL) goto err101;
   }
   else
      c0 = local;
@@ -231,7 +231,7 @@ void s1772(pcurve,psurf,aepsge,astart1,estart2,aend1,eend2,
   /* Correct if we are not inside the parameter intervall. */
   
   s6crss(s_u,s_v,norm);
-  g_up = ((s6scpr(diff,norm,dim) >= DNULL) ? 1 : -1);
+  g_up = ((s6scpr(diff,norm,dim) >= DZERO) ? 1 : -1);
   copy2(d,c_d,3);
   s1772_s9corr(d,par_val, astart1,aend1,estart2,eend2,&corr);
   prev_dist = dist;
@@ -273,10 +273,10 @@ void s1772(pcurve,psurf,aepsge,astart1,estart2,aend1,eend2,
 	else
 	{
 	   s6crss(s_u,s_v,norm);
-	   ng_up = ((s6scpr(diff,norm,dim) >= DNULL) ? 1 : -1);
+	   ng_up = ((s6scpr(diff,norm,dim) >= DZERO) ? 1 : -1);
 	   
 	   g_dir = (ng_up+g_up != 0);			/* 0 if changed. */
-	   p_dir = (s6scpr(c_d,nc_d,3) >= DNULL);	/* 0 if changed. */
+	   p_dir = (s6scpr(c_d,nc_d,3) >= DZERO);	/* 0 if changed. */
 	   
 	   if (!order && g_dir && (!p_dir || dist > 0.3*prev_dist))
 	   {
@@ -407,7 +407,7 @@ not_singular:
     goto out;                  
   
   out:
-    if (c0 != local && c0 != NULL) freearray(c0);
+    if (c0 != local && c0 != SISL_NULL) freearray(c0);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -814,7 +814,7 @@ static void s1772_s6sekant1(pcurve,psurf,par_val,delta,dist,aepsge,
   double new_cu_val;	    /* New parameter value on curve.		   */
   double *diff;		    /* Difference vector between curve surface.    */
   double y[2],new_y,delta_y;/* Signed distance.				   */
-  SISLPoint *pt=NULL;	    /* Point for use in closest point point/surface*/
+  SISLPoint *pt=SISL_NULL;	    /* Point for use in closest point point/surface*/
   int cu_left = 0;	    /* Keep left knot information for evaluator.   */
   int s_left1 = 0;	    /* Keep left knot information for evaluator.   */
   int s_left2 = 0;	    /* Keep left knot information for evaluator.   */
@@ -828,7 +828,7 @@ static void s1772_s6sekant1(pcurve,psurf,par_val,delta,dist,aepsge,
   dim = pcurve->idim;
   diff = c0 + dim;
    
-  if ((pt = newPoint(c0,dim,0)) == NULL) goto err101;
+  if ((pt = newPoint(c0,dim,0)) == SISL_NULL) goto err101;
 
   if (delta == 0.0) delta =1e-15;
   
@@ -1151,7 +1151,7 @@ static int s1772_s6local_pretop(dist,diff,normal,f,f_t,f_tt,s,s_u,s_v,s_uu,
   int ki;		/* Counter.					*/
   int return_val;	/* For return value.				*/
   double a1,a2,a3,a4;   /* Matrix.					*/
-  double *S_u = NULL;	/* Normalized s_u.				*/
+  double *S_u = SISL_NULL;	/* Normalized s_u.				*/
   double *S_v;		/* Normalized s_v.				*/
   double *S_uxS_v;	/* Cross between S_u and S_v.			*/
   double *s_d;		/* Second derevative in diriction f_t.		*/
@@ -1168,7 +1168,7 @@ static int s1772_s6local_pretop(dist,diff,normal,f,f_t,f_tt,s,s_u,s_v,s_uu,
   if (dim > 3)
   {
      S_u = newarray(5*dim+2,double);
-     if (S_u == NULL) goto err101;
+     if (S_u == SISL_NULL) goto err101;
   }
   else
      S_u  = local;
@@ -1224,7 +1224,7 @@ static int s1772_s6local_pretop(dist,diff,normal,f,f_t,f_tt,s,s_u,s_v,s_uu,
     goto out;
 
   out:
-    if (S_u != local && S_u != NULL) freearray(S_u);
+    if (S_u != local && S_u != SISL_NULL) freearray(S_u);
     return return_val;
 }
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1323.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1323.c,v 1.2 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -147,7 +147,7 @@ void s1323(etop,eaxis,econe,idim,inumb,carray,jstat)
   
   for (ki=0;ki<kstop;ki++)
     {
-      carray[ki] = DNULL;
+      carray[ki] = DZERO;
     }
   
   /* Normalize direction vector of axis */
@@ -166,7 +166,7 @@ void s1323(etop,eaxis,econe,idim,inumb,carray,jstat)
   tcost2 = temp*temp;
   
   /* Test if cone degenerate */
-  if (DEQUAL(tcost2,DNULL)) goto err174;
+  if (DEQUAL(tcost2,DZERO)) goto err174;
   
   /* Make diagonal elements */
   

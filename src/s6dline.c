@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6dline.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6dline.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -80,13 +80,13 @@ double s6dline(estart,eend,epoint,idim,jstat)
    double tpar;           /* Parameter of closest point.      */
    double tdist;          /* Distance between point and line. */
    double t1;             /* Scalar product.                  */
-   double *sline = NULL;  /* Line vector.                     */
-   double *sdiff = NULL;  /* Difference vector.               */
+   double *sline = SISL_NULL;  /* Line vector.                     */
+   double *sdiff = SISL_NULL;  /* Difference vector.               */
    
    /* Allocate scratch for local vectors.  */
    
-   if ((sline = newarray(idim,DOUBLE)) == NULL) goto err101;
-   if ((sdiff = newarray(idim,DOUBLE)) == NULL) goto err101;
+   if ((sline = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
+   if ((sdiff = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Compute help vectors.  */
    
@@ -133,8 +133,8 @@ double s6dline(estart,eend,epoint,idim,jstat)
    out :
       /* Free space occupied by local arrays.  */
       
-      if (sline != NULL) freearray(sline); 
-      if (sdiff != NULL) freearray(sdiff);
+      if (sline != SISL_NULL) freearray(sline); 
+      if (sdiff != SISL_NULL) freearray(sdiff);
 			 
       return tdist;
  }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1332.c,v 1.2 1994-10-13 15:54:06 pfu Exp $
+ * $Id: s1332.c,v 1.3 2001-03-19 15:58:45 afr Exp $
  *
  */
 
@@ -71,20 +71,20 @@ void s1332(pc1,pc2,aepsge,ep,rs,jstat)
 *********************************************************************
 */
 {
-  double *sknot1 = NULL;  /* Pointer to knot-vector of curve 1.         */
-  double *scoef1 = NULL;  /* Pointer to vertices of curve 1.            */
-  double *rcoef1 = NULL;  /* Pointer to rational vertices of curve 1.   */
+  double *sknot1 = SISL_NULL;  /* Pointer to knot-vector of curve 1.         */
+  double *scoef1 = SISL_NULL;  /* Pointer to vertices of curve 1.            */
+  double *rcoef1 = SISL_NULL;  /* Pointer to rational vertices of curve 1.   */
   int kord1;              /* Order of curve 1.                          */
   int kn1;                /* Number of vertices of curve 1.             */
-  double *sknot2 = NULL;  /* Pointer to knot-vector of curve 2.         */
-  double *scoef2 = NULL;  /* Pointer to vertices of curve 2.            */
-  double *rcoef2 = NULL;  /* Pointer to rational vertices of curve 2.   */
+  double *sknot2 = SISL_NULL;  /* Pointer to knot-vector of curve 2.         */
+  double *scoef2 = SISL_NULL;  /* Pointer to vertices of curve 2.            */
+  double *rcoef2 = SISL_NULL;  /* Pointer to rational vertices of curve 2.   */
   int kord2;              /* Order of curve 2.                          */
   int kn2;                /* Number of vertices of curve 2.             */
   int kdim;               /* Dimension of the space in which the
 			     curves lies.                               */
   int rdim;               /* Dimension of rational space.               */
-  double *scoef = NULL;   /* Pointer to vertex array for surface        */
+  double *scoef = SISL_NULL;   /* Pointer to vertex array for surface        */
   double *sp,*spc1,*spc2; /* Pointers to scoef, scoef1 snd scoef2.      */
   double *spnt;           /* Pointer to epoint.                         */
   int ki,kj,kp;           /* Loop controllers.                          */
@@ -92,12 +92,12 @@ void s1332(pc1,pc2,aepsge,ep,rs,jstat)
   int kstat = 0;          /* Status variable                            */
   int kpos = 0;           /* Position of error                          */
 
-  double *weight1 = NULL; /* Rational weights in first direction        */
-  double *weight2 = NULL; /* Rational weights in second direction       */
+  double *weight1 = SISL_NULL; /* Rational weights in first direction        */
+  double *weight2 = SISL_NULL; /* Rational weights in second direction       */
   double weight;          /* Tensor product weights                     */
 
 
-  *rs = NULL;
+  *rs = SISL_NULL;
 
   /* The curves must have the same dimension      */
   if (pc1 -> idim != pc2 -> idim) goto err106;

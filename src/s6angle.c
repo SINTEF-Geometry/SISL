@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6angle.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6angle.c,v 1.2 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -93,7 +93,7 @@ double s6angle(evec1,evec2,enorm,idim,jstat)
   tlength2 = s6length(sb,idim,&kstat2);
   
   if (!kstat1 || !kstat2)
-    tang = DNULL;
+    tang = DZERO;
   else
     {
       tcos = tscpr1/(tlength1*tlength2);
@@ -103,7 +103,7 @@ double s6angle(evec1,evec2,enorm,idim,jstat)
     }
   
   s6crss(sa,sb,sn);
-  if (s6scpr(sn,enorm,idim) < DNULL) tang = TWOPI - tang;
+  if (s6scpr(sn,enorm,idim) < DZERO) tang = TWOPI - tang;
   
   *jstat = 0;
   goto out;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idput.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idput.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -78,13 +78,13 @@ void s6idput(rintdat,pintdat,inr,apar,jstat)
   int kpos=0;                     /* Position of error.                   */
   int ki,kj;                    /* Counters                             */
   int kant;                     /* Number of parameters in new points.  */
-  double *spar = NULL;          /* Storing uppdated parametervalues.    */
-  SISLIntpt **uintpt = NULL; /* Pointers to new intersection points. */
+  double *spar = SISL_NULL;          /* Storing uppdated parametervalues.    */
+  SISLIntpt **uintpt = SISL_NULL; /* Pointers to new intersection points. */
   
   
   /* We have to be sure that we have an intdat structure. */
   
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     {
       *jstat = 0;
       goto out;
@@ -100,12 +100,12 @@ void s6idput(rintdat,pintdat,inr,apar,jstat)
   
   /* Allocating an array for intersection points. */
   
-  if ((uintpt = newarray(pintdat->ipoint,SISLIntpt *)) == NULL)
+  if ((uintpt = newarray(pintdat->ipoint,SISLIntpt *)) == SISL_NULL)
     goto err101;
   
   /* Allocating an array for parametervalues. */
   
-  if ((spar = newarray(kant,double)) == NULL)
+  if ((spar = newarray(kant,double)) == SISL_NULL)
     goto err101;
   
   
@@ -136,7 +136,7 @@ void s6idput(rintdat,pintdat,inr,apar,jstat)
   /* Than we can uppdate all pcurve pointers (lists). */
   
   for (ki=0; ki<pintdat->ipoint; ki++)
-    if (pintdat->vpoint[ki]->pcurve != NULL)
+    if (pintdat->vpoint[ki]->pcurve != SISL_NULL)
       {
 	for (kj=0;kj<pintdat->ipoint;kj++)
 	  if (pintdat->vpoint[ki]->pcurve == pintdat->vpoint[kj])
@@ -176,6 +176,6 @@ error: *jstat = kstat;
         s6err("s6idput",*jstat,kpos);
         goto out;
 
- out: if (uintpt != NULL) freearray(uintpt);
-      if (spar   != NULL) freearray(spar);
+ out: if (uintpt != SISL_NULL) freearray(uintpt);
+      if (spar   != SISL_NULL) freearray(spar);
 }

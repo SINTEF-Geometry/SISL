@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1604.c,v 1.2 1994-08-24 07:35:20 pfu Exp $
+ * $Id: s1604.c,v 1.3 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -86,13 +86,13 @@ void s1604(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   int kpos=0;         /* Position of error                               */
   int ki;             /* Counter for loop control                        */
 
-  double *spara=NULL; /* Pointer to parameterization array               */
-  double *scoef=NULL; /* Pointer to vertex array                         */
-  double *sknot=NULL; /* Pointer to knot vector                          */
+  double *spara=SISL_NULL; /* Pointer to parameterization array               */
+  double *scoef=SISL_NULL; /* Pointer to vertex array                         */
+  double *sknot=SISL_NULL; /* Pointer to knot vector                          */
   double tdist;       /* Distance */
   double tlastpar;    /* Last value in the parameterization array        */
-  SISLCurve *qc=NULL;
-  SISLCurve *qc2 = NULL;
+  SISLCurve *qc=SISL_NULL;
+  SISLCurve *qc2 = SISL_NULL;
 
 
   /* Control input     */
@@ -122,7 +122,7 @@ void s1604(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   /* Allocate space for parameterization    */
 
   spara = newarray(inbpnt+1,DOUBLE);
-  if (spara == NULL) goto err101;
+  if (spara == SISL_NULL) goto err101;
 
   /* Calculate parameterization  */
 
@@ -148,12 +148,12 @@ void s1604(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   /* Find the knot vector     */
 
   s1902(spara,inbpnt,kk,iopen,&sknot,&kstat);
-  if (kstat < 0 || sknot == NULL) goto error;
+  if (kstat < 0 || sknot == SISL_NULL) goto error;
 
   /* Allocate space for verice array   */
 
   scoef = newarray((inbpnt+kk-1)*idim,DOUBLE);
-  if (scoef == NULL) goto err101;
+  if (scoef == SISL_NULL) goto err101;
 
   /* Copy vertices */
 
@@ -186,7 +186,7 @@ void s1604(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
       if (kstat < 0)
 	goto error;
 
-      if (qc != NULL)
+      if (qc != SISL_NULL)
 	freeCurve (qc);
       qc = qc2;
     }
@@ -208,7 +208,7 @@ void s1604(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   else
     {
       *rc = qc;
-      qc = NULL;
+      qc = SISL_NULL;
     }
 				/* <- guen: inserted acc. to SCCS */
 				/* -> guen: removed acc. to SCCS  */
@@ -248,8 +248,8 @@ void s1604(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   goto out;
 
  out:
-  if (spara  != NULL) freearray(spara);
-  /* if (scoef  != NULL) freearray(scoef); (Freed by freeCurve(qc). */
-  if (qc != NULL) freeCurve(qc);
+  if (spara  != SISL_NULL) freearray(spara);
+  /* if (scoef  != SISL_NULL) freearray(scoef); (Freed by freeCurve(qc). */
+  if (qc != SISL_NULL) freeCurve(qc);
   return;
 }

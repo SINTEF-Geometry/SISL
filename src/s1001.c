@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1001.c,v 1.6 1994-12-12 08:45:43 vsk Exp $
+ * $Id: s1001.c,v 1.7 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -95,15 +95,15 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
   int change_1,change_2;	/* Flag, need to change surf in dir ?  */
   int wholeperi1 = FALSE;       /* Flag, pick whole peri. param. range */
   int wholeperi2 = FALSE;       /* Flag, pick whole peri. param. range */
-  double *st1=NULL;		/* Knot vector in 1. par. dir.         */
-  double *st2=NULL;		/* Knot vector in 2. par. dir.         */
-  double *scoef1 = NULL;	/* Coefficients of input curve to
+  double *st1=SISL_NULL;		/* Knot vector in 1. par. dir.         */
+  double *st2=SISL_NULL;		/* Knot vector in 2. par. dir.         */
+  double *scoef1 = SISL_NULL;	/* Coefficients of input curve to
 			           refinement in 1. par. dir.          */
-  double *scoef2 = NULL;	/* Coefficients of refined surface.    */
-  double *scoef  = NULL;	/* Coefficients of refined surface.    */
-  SISLCurve *qc1 = NULL;	/* Input curve to pick curve.          */
-  SISLCurve *qc2 = NULL;	/* Output curve from pick curve.       */
-  SISLCurve *qc3 = NULL;	/* Output curve from pick curve.       */
+  double *scoef2 = SISL_NULL;	/* Coefficients of refined surface.    */
+  double *scoef  = SISL_NULL;	/* Coefficients of refined surface.    */
+  SISLCurve *qc1 = SISL_NULL;	/* Input curve to pick curve.          */
+  SISLCurve *qc2 = SISL_NULL;	/* Output curve from pick curve.       */
+  SISLCurve *qc3 = SISL_NULL;	/* Output curve from pick curve.       */
   double *oldcoef;           	/* Pointer to vertices of old surf.    */
   /* ----------------------------------------------------------------- */
 
@@ -149,7 +149,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
     {
        /* Treat the first parameter direction of the
 	  surface. First express the surface as a curve.  */
-       if ((scoef1 = newarray (kdim * ps->in1 * ps->in2, double)) == NULL)
+       if ((scoef1 = newarray (kdim * ps->in1 * ps->in2, double)) == SISL_NULL)
 	 goto err101;
 
        /* Change parameter directions of surface.  */
@@ -157,7 +157,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
 
        /* Create curve.  */
        qc1 = newCurve (ps->in1, ps->ik1, ps->et1, scoef1, 1, kdim * ps->in2, 0);
-       if (qc1 == NULL)
+       if (qc1 == SISL_NULL)
 	 goto err101;
        qc1->cuopen = ps->cuopen_1;
 
@@ -169,7 +169,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        /* Change parameter directions of the coefficient array of
 	  the refined curve.     */
 
-       if ((scoef2 = newarray (qc2->in *ps->in2 * kdim, DOUBLE)) == NULL)
+       if ((scoef2 = newarray (qc2->in *ps->in2 * kdim, DOUBLE)) == SISL_NULL)
 	 goto err101;
        s6chpar (qc2->ecoef, ps->in2, qc2->in, kdim, scoef2);
 
@@ -187,7 +187,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        /* Free curve used as input to s1713. */
        if (qc1)
 	 freeCurve (qc1);
-       qc1 = NULL;
+       qc1 = SISL_NULL;
     }
 
   else
@@ -208,7 +208,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
 	  surface. First express the surface as a curve.  */
 
        if ((qc1 = newCurve (kn2, ps->ik2, st2, scoef2, 1, kn1 * kdim, 0))
-	   == NULL)
+	   == SISL_NULL)
 	 goto err101;
        qc1->cuopen = ps->cuopen_2;
 
@@ -230,7 +230,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
        /* Free curve used as input to s1713. */
        if (qc1)
 	 freeCurve (qc1);
-       qc1 = NULL;
+       qc1 = SISL_NULL;
     }
   else
     {
@@ -240,7 +240,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
 
   /* Express result as a surface.  */
   if ((*rsnew = newSurf (kn1, kn2, ps->ik1, ps->ik2, st1, st2,
-			 scoef, kkind, ps->idim, 1)) == NULL)
+			 scoef, kkind, ps->idim, 1)) == SISL_NULL)
     goto err101;
 
 
@@ -274,8 +274,8 @@ error:
        {
 	  if (scoef1) freearray (scoef1);
 	  if (scoef2) freearray (scoef2);
-	  scoef1 = NULL;
-	  scoef2 = NULL;
+	  scoef1 = SISL_NULL;
+	  scoef2 = SISL_NULL;
        }
 
      if (qc1) freeCurve (qc1);

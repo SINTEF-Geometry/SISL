@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1425.c,v 1.2 1995-11-29 14:39:01 jka Exp $
+ * $Id: s1425.c,v 1.3 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -258,7 +258,7 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 			 This is an array of dimension [kn2*kn1*kdim].   */
   double tt;          /* Dummy variable used for holding an array element
 			 in a for loop.                                  */
-  double *ebder=NULL; /* Pointer to an array of dimension
+  double *ebder=SISL_NULL; /* Pointer to an array of dimension
 			 [max(kk1*(ider1+1),kk2*(ider2+1))] which will
 			 contain the values and ider first derivatives of
 			 the kk1 (kk2) nonzero B-splines at epar[0] (epar[1]).
@@ -267,11 +267,11 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 			 first nonzero B-spline, then the same for the
 			 second nonzero B-spline and so on.              */
   
-  double *ew=NULL;    /* Pointer to an array of dimension [kk1*(ider1+1)*kdim]
+  double *ew=SISL_NULL;    /* Pointer to an array of dimension [kk1*(ider1+1)*kdim]
 			 which will be used to store the result of the first
 			 matrix multiplication in (2) above. This array is
 			 initialized to all zeros.                       */
-  double *sder=NULL;  /* Pointer to array used for storage of points, if
+  double *sder=SISL_NULL;  /* Pointer to array used for storage of points, if
 			 non rational sder points to eder, if rational sder
 			 has to be allocated to make room for the homogenous
 			 coordinate */
@@ -297,7 +297,7 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
     {
       scoef = ps1 -> rcoef;
       kdim +=1;
-      if((sder=newarray(kdim*(ider1+1)*(ider2+1),DOUBLE)) == NULL)
+      if((sder=newarray(kdim*(ider1+1)*(ider2+1),DOUBLE)) == SISL_NULL)
 	goto err101;
     }
   else
@@ -331,36 +331,36 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
   
   if (knumb1>49)
   {
-    if((ebder=newarray(knumb1,double)) == NULL) goto err101;
+    if((ebder=newarray(knumb1,double)) == SISL_NULL) goto err101;
   }
   else
     {
       ebder = &sdum1[0];
       for (ki=0;ki<knumb1;ki++)
-	ebder[ki] = DNULL;
+	ebder[ki] = DZERO;
     }
   
-  if (ebder == NULL) goto err101;
+  if (ebder == SISL_NULL) goto err101;
   
   /* Only allocate ew if sdum2 too small */
   
   knumb2 = (kk1*(kder2+1)*kdim);
   if (knumb2>147)
   {
-    if((ew=new0array(knumb2,double)) == NULL) goto err101;
+    if((ew=new0array(knumb2,double)) == SISL_NULL) goto err101;
   }
   else	
     { 
       ew = &sdum2[0];
       for (ki=0;ki<knumb2;ki++)
-	sdum2[ki] = DNULL;
+	sdum2[ki] = DZERO;
     }
   
-  if (ew == NULL) goto err101;
+  if (ew == SISL_NULL) goto err101;
   
   /* Set all the elements of sder to 0. */
   
-  for (ki=0; ki<(ider2+1)*(ider1+1)*kdim; ki++) sder[ki] = DNULL;
+  for (ki=0; ki<(ider2+1)*(ider1+1)*kdim; ki++) sder[ki] = DZERO;
   
   /* If the left hand derivative at epar[1] is to be calculated, this can be
      done by forgetting all polynomial segments starting in epar[1] or
@@ -530,7 +530,7 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 		      kdim,DOUBLE);
 	    else
 	      for (kl=0;kl<kdim;kl++)     
-		*(sder+kdim*(ki+kj*(ider1+1))+kl) = DNULL;
+		*(sder+kdim*(ki+kj*(ider1+1))+kl) = DZERO;
 	  }
       }
   /* Free memory. */
@@ -542,18 +542,18 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
     {
       s6sratder(sder,ps1->idim,ider1,ider2,eder,&kstat);
       if (kstat<0) goto error;
-      if(sder != NULL) freearray(sder);
+      if(sder != SISL_NULL) freearray(sder);
     }
   
   /* Only free ew and ebder if the were allocated by newarray */
   
   if (knumb1 > 49)
     {
-      if(ebder != NULL) freearray(ebder);
+      if(ebder != SISL_NULL) freearray(ebder);
     }
   if (knumb2 > 147)
     {
-      if(ew != NULL) freearray(ew);
+      if(ew != SISL_NULL) freearray(ew);
     }
   
   /* Successful computations.  */

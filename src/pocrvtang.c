@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: pocrvtang.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: pocrvtang.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -81,7 +81,7 @@ void
   double diff[2];              /* Difference vector.                           */
   double sder[4];              /* Result from s1221.                           */
   double trans_arr[9];         /* Matrix describe the curve product (s1893)    */
-  SISLCurve *testcurve = NULL; /* The curve to iterate on.                     */
+  SISLCurve *testcurve = SISL_NULL; /* The curve to iterate on.                     */
   SISLPoint *p1 = newPoint (&zero, 1, 0);
   /* ------------------------------------------------------------------------- */
   
@@ -90,12 +90,12 @@ void
   if (pcurve->idim != kdim) goto err105;
   
   /* Set up matrix */
-  trans_arr[0] = DNULL;
+  trans_arr[0] = DZERO;
   trans_arr[1] = -1;
-  trans_arr[2] = DNULL;
+  trans_arr[2] = DZERO;
   trans_arr[3] = 1;
-  trans_arr[4] = DNULL;
-  trans_arr[5] = DNULL;
+  trans_arr[4] = DZERO;
+  trans_arr[5] = DZERO;
   trans_arr[6] = -point[1];
   trans_arr[7] =  point[0];
   trans_arr[8] = 1;

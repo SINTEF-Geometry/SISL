@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1500.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1500.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -139,7 +139,7 @@ void s1500(base,norm,axisA,alpha,ratio,idim,inumb,carray,jstat)
   
   for (ki=0;ki<kstop;ki++)
     {
-      carray[ki] = DNULL;
+      carray[ki] = DZERO;
     }
   
   /* Normalise direction vector of cone axis */

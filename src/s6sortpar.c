@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6sortpar.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6sortpar.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -79,11 +79,11 @@ void s6sortpar(evec1,epar1,ipar,idim,evec2,epar2,jstat)
 {
   int ki,kj;            /* Counters.  */
   double tpar;          /* Intermediate storage of double.  */
-  double *svec = NULL;  /* Intermediate storage of double vector.  */
+  double *svec = SISL_NULL;  /* Intermediate storage of double vector.  */
   
   /* Allocate scratch for local array.  */
 
-  if ((svec = newarray(idim,DOUBLE)) == NULL) goto err101;
+  if ((svec = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Move input arrays to output arrays.  */
 
@@ -124,7 +124,7 @@ void s6sortpar(evec1,epar1,ipar,idim,evec2,epar2,jstat)
   
   /* Free space occupied by local array.  */
 
-  if (svec != NULL) freearray(svec);
+  if (svec != SISL_NULL) freearray(svec);
   
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1025.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1025.c,v 1.2 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -92,13 +92,13 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
   int kn2;			/* Number of vertices in 2. par. dir.  */
   double *st1;			/* Knot vector in 1. par. dir.         */
   double *st2;			/* Knot vector in 2. par. dir.         */
-  double *scoef1 = NULL;	/* Coefficients of input curve to
+  double *scoef1 = SISL_NULL;	/* Coefficients of input curve to
 			           refinement in 1. par. dir.          */
-  double *scoef2 = NULL;	/* Coefficients of refined surface.    */
+  double *scoef2 = SISL_NULL;	/* Coefficients of refined surface.    */
   double *scoef;		/* Coefficients of refined surface.    */
-  SISLCurve *qc1 = NULL;	/* Input curve to refinement in 1. par. dir.    */
-  SISLCurve *qc2 = NULL;	/* Output curve from refinement in 1. par. dir. */
-  SISLCurve *qc3 = NULL;	/* Output curve from refinement in 2. par. dir. */
+  SISLCurve *qc1 = SISL_NULL;	/* Input curve to refinement in 1. par. dir.    */
+  SISLCurve *qc2 = SISL_NULL;	/* Output curve from refinement in 1. par. dir. */
+  SISLCurve *qc3 = SISL_NULL;	/* Output curve from refinement in 2. par. dir. */
   double *oldcoef;           	/* Pointer to vertices of old surf.                */
 
 
@@ -118,7 +118,7 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
      /* Insert knots in the first parameter direction of the
 	 surface. First express the surface as a curve.  */
 
-      if ((scoef1 = newarray (kdim * ps->in1 * ps->in2, double)) == NULL)
+      if ((scoef1 = newarray (kdim * ps->in1 * ps->in2, double)) == SISL_NULL)
 	goto err101;
 
       /* Change parameter directions of surface.  */
@@ -128,7 +128,7 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
       /* Create curve.  */
 
       qc1 = newCurve (ps->in1, ps->ik1, ps->et1, scoef1,1, kdim * ps->in2, 0);
-      if (qc1 == NULL)
+      if (qc1 == SISL_NULL)
 	goto err101;
 
       /* Set periodicity flag of curve.  */
@@ -144,7 +144,7 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
       /* Change parameter directions of the coefficient array of
          the refined curve.     */
 
-      if ((scoef2 = newarray (qc2->in *ps->in2 * kdim, DOUBLE)) == NULL)
+      if ((scoef2 = newarray (qc2->in *ps->in2 * kdim, DOUBLE)) == SISL_NULL)
 	goto err101;
       s6chpar (qc2->ecoef, ps->in2, qc2->in, kdim, scoef2);
 
@@ -157,9 +157,9 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
 
       /* Free curve used as input to the knotinsertion for curves. */
 
-      if (qc1 != NULL)
+      if (qc1 != SISL_NULL)
 	freeCurve (qc1);
-      qc1 = NULL;
+      qc1 = SISL_NULL;
     }
   else
     {
@@ -178,7 +178,7 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
 	 surface. First express the surface as a curve.           */
 
       if ((qc1 = newCurve (kn2, ps->ik2, st2, scoef2, 1, kn1 * kdim, 0))
-	  == NULL)
+	  == SISL_NULL)
 	goto err101;
 
       /* Set periodicity flag of curve.  */
@@ -203,7 +203,7 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
   /* Express result as a surface.  */
 
   if ((*rsnew = newSurf (kn1, kn2, ps->ik1, ps->ik2, st1, st2,
-			 scoef, kkind, ps->idim, 1)) == NULL)
+			 scoef, kkind, ps->idim, 1)) == SISL_NULL)
     goto err101;
 
   /* Copy periodicity flag from input surface.  */
@@ -229,15 +229,15 @@ error:*jstat = kstat;
 out:
   /* Free scratch occupied by local arrays and objects.  */
 
-  if (inpar1 > 0 && scoef1 != NULL)
+  if (inpar1 > 0 && scoef1 != SISL_NULL)
     freearray (scoef1);
-  if (inpar1 > 0 && scoef2 != NULL)
+  if (inpar1 > 0 && scoef2 != SISL_NULL)
     freearray (scoef2);
-  if (qc1 != NULL)
+  if (qc1 != SISL_NULL)
     freeCurve (qc1);
-  if (qc2 != NULL)
+  if (qc2 != SISL_NULL)
     freeCurve (qc2);
-  if (qc3 != NULL)
+  if (qc3 != SISL_NULL)
     freeCurve (qc3);
 
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1602.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1602.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -80,9 +80,9 @@ void s1602(estapt,endpt,ik,idim,astpar,cendpar,rc,jstat)
   int kvert;          /* Counter for position in vertex array            */
   int kpos=0;         /* Position of error                               */
   
-  double *st=NULL;    /* Pointer to the first element of the knot vector
+  double *st=SISL_NULL;    /* Pointer to the first element of the knot vector
 			 of the curve.                                   */
-  double *scoef=NULL; /* Pointer to the first element of the curve's
+  double *scoef=SISL_NULL; /* Pointer to the first element of the curve's
 			 B-spline coefficients.                          */
   double tdist;       /* Distance                                        */
   double tdel;        /* Delta x, y , ....                               */
@@ -99,7 +99,7 @@ void s1602(estapt,endpt,ik,idim,astpar,cendpar,rc,jstat)
   /* Make knots. First allocate space */
   
   st = newarray(ik*2,DOUBLE);
-  if (st == NULL) goto err101;
+  if (st == SISL_NULL) goto err101;
   
   for (kit=0; kit<ik; kit++) 
     {
@@ -112,7 +112,7 @@ void s1602(estapt,endpt,ik,idim,astpar,cendpar,rc,jstat)
   /* First allocate space for vertices */ 
   
   scoef = newarray(ik*idim,DOUBLE);
-  if (scoef == NULL) goto err101;
+  if (scoef == SISL_NULL) goto err101;
   
   /* Find first and last vertex. */ 
   
@@ -134,9 +134,9 @@ void s1602(estapt,endpt,ik,idim,astpar,cendpar,rc,jstat)
   
   /* Make the curve */
   
-  *rc = NULL;              
+  *rc = SISL_NULL;              
   *rc = newCurve(ik,ik,st,scoef,1,idim,1);
-  if (*rc == NULL) goto err101;                
+  if (*rc == SISL_NULL) goto err101;                
   
   *cendpar = st[ik];
   *jstat = 0;
@@ -163,8 +163,8 @@ void s1602(estapt,endpt,ik,idim,astpar,cendpar,rc,jstat)
   goto out;                          
     
  out:
-  if (st     != NULL) freearray(st);
-  if (scoef  != NULL) freearray(scoef);
+  if (st     != SISL_NULL) freearray(st);
+  if (scoef  != SISL_NULL) freearray(scoef);
   return;
 }          
                     

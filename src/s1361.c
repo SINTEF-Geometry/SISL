@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1361.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1361.c,v 1.2 2001-03-19 15:58:47 afr Exp $
  *
  */
 #define S1361
@@ -74,14 +74,14 @@ void s1361(epnt1,epnt2,idim,gmidd,gmtang,jstat)
   
   tscal1  = s6scpr(epnt1+idim,epnt2+idim,idim);
   
-  if (tscal1 >= DNULL)
+  if (tscal1 >= DZERO)
     tscal1  = MIN((double)1.0,tscal1);
   else
     tscal1  = MAX((double)-1.0,tscal1);
   
   ta1 = acos(tscal1);
   
-  if (fabs(ta1) < ANGULAR_TOLERANCE) ta1 = DNULL;
+  if (fabs(ta1) < ANGULAR_TOLERANCE) ta1 = DZERO;
   
   
   /* Make distance between epnt1 and epnt2 */
@@ -90,7 +90,7 @@ void s1361(epnt1,epnt2,idim,gmidd,gmtang,jstat)
   
   /* Make tangent lengths for start and end points */
   
-  if (DNEQUAL(ta1,DNULL))
+  if (DNEQUAL(ta1,DZERO))
     {
       /*  Make tangents based on radius of curvature */
       
@@ -102,9 +102,9 @@ void s1361(epnt1,epnt2,idim,gmidd,gmtang,jstat)
      make a controlled tangent when the radius is zero or almost zero  */
   
   /* UJK, October 90, must include the case negative curvature */
-  if (DEQUAL(ta1,DNULL) || tang1 > tdist || epnt1[3*idim] <= DNULL)
+  if (DEQUAL(ta1,DZERO) || tang1 > tdist || epnt1[3*idim] <= DZERO)
     tang1 = tdist/(double)3.0;
-  if (DEQUAL(ta1,DNULL) || tang2 > tdist || epnt2[3*idim] <= DNULL) 
+  if (DEQUAL(ta1,DZERO) || tang2 > tdist || epnt2[3*idim] <= DZERO) 
     tang2 = tdist/(double)3.0;
   
   
@@ -112,9 +112,9 @@ void s1361(epnt1,epnt2,idim,gmidd,gmtang,jstat)
      between line 1 and 2 and between line 2 and 3. Make length of line 3
      */
   
-  tscal1 = DNULL;
-  tscal2 = DNULL;
-  tlength = DNULL;
+  tscal1 = DZERO;
+  tscal2 = DZERO;
+  tlength = DZERO;
   
   for (ki=0;ki<idim;ki++)
     {
@@ -134,17 +134,17 @@ void s1361(epnt1,epnt2,idim,gmidd,gmtang,jstat)
       
     }                                                      
   tlength = sqrt(tlength);
-  if (DEQUAL(tlength,DNULL)) tlength = (double)1.0;
+  if (DEQUAL(tlength,DZERO)) tlength = (double)1.0;
   
   tscal1 = tscal1/tlength;
   tscal2 = tscal2/tlength;
 
-  if (tscal1 >= DNULL)
+  if (tscal1 >= DZERO)
     tscal1  = MIN((double)1.0,tscal1);
   else
     tscal1  = MAX((double)-1.0,tscal1);
 
-  if (tscal2 >= DNULL)
+  if (tscal2 >= DZERO)
     tscal2  = MIN((double)1.0,tscal2);
   else
     tscal2  = MAX((double)-1.0,tscal2);

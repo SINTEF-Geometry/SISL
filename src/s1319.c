@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1319.c,v 1.2 1994-12-01 14:07:14 pfu Exp $
+ * $Id: s1319.c,v 1.3 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -78,7 +78,7 @@ void s1319(ps1,eview,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                                    of intersection curve may have been
 *                                    traced out. If no curve is traced out
 *                                    the curve pointers in the Intcurve
-*                                    object point to NULL.
+*                                    object point to SISL_NULL.
 *                         = 0      : ok
 *                         < 0      : error
 *                         = -185   : No points produced on intersection curve.

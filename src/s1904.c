@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1904.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1904.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -99,7 +99,7 @@ s1904 (epar, in, ik, cuopen, eknots, jstat)
       /* O P E N   C U R V E */
 
       *eknots = newarray (in +ik, DOUBLE);
-      if (*eknots == NULL)
+      if (*eknots == SISL_NULL)
 	goto err101;
 
       tdegree = (double) (ik - 1);
@@ -160,7 +160,7 @@ s1904 (epar, in, ik, cuopen, eknots, jstat)
       /* C L O S E D   C U R V E */
 
       *eknots = newarray (in +2 * ik, DOUBLE);
-      if (*eknots == NULL)
+      if (*eknots == SISL_NULL)
 	goto err101;
 
       kstop = in +2 * ik - 1;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1930.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1930.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -115,7 +115,7 @@ void sh1930(ea,nfirst,nlast,ed,ec,ik,in,im,idim,ilend,irend,jstat)
    int kjst;
    int knk1;
    double th;
-   double *shelp = NULL;
+   double *shelp = SISL_NULL;
 
    /* Check input.  */
    
@@ -123,7 +123,7 @@ void sh1930(ea,nfirst,nlast,ed,ec,ik,in,im,idim,ilend,irend,jstat)
 
    /* Allocate scratch for help array and set to zero. */
 			    
-   if ((shelp = new0array(idim,DOUBLE)) == NULL) goto err101;
+   if ((shelp = new0array(idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Make adjustments for the fact that ec[0],...,ec[ilend-1] are known
       This is done by going through the rows of the coefficient matrix until
@@ -222,7 +222,7 @@ void sh1930(ea,nfirst,nlast,ed,ec,ik,in,im,idim,ilend,irend,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (shelp != NULL) freearray(shelp);
+      if (shelp != SISL_NULL) freearray(shelp);
 	  
       return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1779.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1779.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -118,7 +118,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
   SISLSurf *qs;			/* Pointer to the surface.                 */
   SISLIntpt *uintpt[2];		/* Array containing new intersection points. */
   SISLIntpt *qpt1, *qpt2;	/* Intersection points in list.            */
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   double sf_low_lim[2];
   double sf_high_lim[2];
 
@@ -209,7 +209,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	  /* Check if the intersection point is member of a list
              in this parameter direction of the curve. */
 
-	  qpt1 = qpt2 = NULL;
+	  qpt1 = qpt2 = SISL_NULL;
 	  kmarch = 1;
 
 	  /* UPDATE (ujk) : only one list ? */
@@ -218,9 +218,9 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	    goto error;
 
 	  kmarch = 0;
-	  if (qpt1 != NULL && qpt1->epar[kpar1] > sptpar[kpar1])
+	  if (qpt1 != SISL_NULL && qpt1->epar[kpar1] > sptpar[kpar1])
 	    *lr1 = SI_ON;
-	  else if (qpt2 != NULL && qpt2->epar[kpar1] > sptpar[kpar1])
+	  else if (qpt2 != SISL_NULL && qpt2->epar[kpar1] > sptpar[kpar1])
 	    *lr1 = SI_ON;
 	  else
 	    kmarch = 1;
@@ -272,7 +272,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		  /* Discuss tangent- and normal vector, and set up pre-topology
 	             in one direction of the curve. 		   */
 
-		  if (s6scpr (snorm, stang, kdim) > DNULL)
+		  if (s6scpr (snorm, stang, kdim) > DZERO)
 		    *lr1 = SI_OUT;
 		  else
 		    *lr1 = SI_IN;
@@ -285,10 +285,10 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		         be 1 for curve and 2 for surface (sh6getgeom). Should
 		         shevalc be used in stead of s1221 ? */
 
-		      uintpt[kpos] = NULL;
-		      if ((uintpt[kpos] = hp_newIntpt (3, slast, DNULL, -SI_ORD,
+		      uintpt[kpos] = SISL_NULL;
+		      if ((uintpt[kpos] = hp_newIntpt (3, slast, DZERO, -SI_ORD,
 					      lleft[0], lright[0], lleft[1],
-				    lright[1], 0, 0, nullp, nullp)) == NULL)
+				    lright[1], 0, 0, nullp, nullp)) == SISL_NULL)
 			goto err101;
 
 		      kpos++;
@@ -308,7 +308,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	  /* Check if the intersection point is member of a list
              in this parameter direction of the curve. */
 
-	  qpt1 = qpt2 = NULL;
+	  qpt1 = qpt2 = SISL_NULL;
 	  kmarch = 1;
 
 	  /* UPDATE (ujk) : only one list ? */
@@ -318,9 +318,9 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	    goto error;
 
 	  kmarch = 0;
-	  if (qpt1 != NULL && qpt1->epar[kpar1] < sptpar[kpar1])
+	  if (qpt1 != SISL_NULL && qpt1->epar[kpar1] < sptpar[kpar1])
 	    *ll1 = SI_ON;
-	  else if (qpt2 != NULL && qpt2->epar[kpar1] < sptpar[kpar1])
+	  else if (qpt2 != SISL_NULL && qpt2->epar[kpar1] < sptpar[kpar1])
 	    *ll1 = SI_ON;
 	  else
 	    kmarch = 1;
@@ -370,7 +370,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		  /* Discuss tangent- and normal vector, and set up pre-topology
 	             in one direction of the curve. 		   */
 
-		  if (s6scpr (snorm, stang, kdim) > DNULL)
+		  if (s6scpr (snorm, stang, kdim) > DZERO)
 		    *ll1 = SI_OUT;
 		  else
 		    *ll1 = SI_IN;
@@ -383,10 +383,10 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		         be 1 for curve and 2 for surface (sh6getgeom). Should
 		         shevalc be used in stead of s1221 ? */
 
-		      uintpt[kpos] = NULL;
-		      if ((uintpt[kpos] = hp_newIntpt (3, slast, DNULL, -SI_ORD,
+		      uintpt[kpos] = SISL_NULL;
+		      if ((uintpt[kpos] = hp_newIntpt (3, slast, DZERO, -SI_ORD,
 					      lleft[0], lright[0], lleft[1],
-				    lright[1], 0, 0, nullp, nullp)) == NULL)
+				    lright[1], 0, 0, nullp, nullp)) == SISL_NULL)
 			goto err101;
 
 		      kpos++;
@@ -400,7 +400,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
       /* Pre-topology data of the curve may be computed from
          local information. */
 
-      if (s6scpr (snorm, stang, kdim) > DNULL)
+      if (s6scpr (snorm, stang, kdim) > DZERO)
 	{
 	  *ll1 = SI_IN;
 	  *lr1 = SI_OUT;

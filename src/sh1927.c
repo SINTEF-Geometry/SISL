@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1927.c,v 1.2 1995-02-08 10:05:02 vsk Exp $
+ * $Id: sh1927.c,v 1.3 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -109,10 +109,10 @@ void sh1927(etau,ik,in,idim,pcurve,ilend,irend,ec,jstat)
    int kleft = ik - 1;
    double tm;
    double th;
-   double *sder=NULL;
-   double *sbder=NULL;
-   double *ssum = NULL;
-   double *shc = NULL;
+   double *sder=SISL_NULL;
+   double *sbder=SISL_NULL;
+   double *ssum = SISL_NULL;
+   double *shc = SISL_NULL;
 
    /* Test input.  */
 
@@ -121,11 +121,11 @@ void sh1927(etau,ik,in,idim,pcurve,ilend,irend,ec,jstat)
   
    /* Allocate scratch for local arrays.  */
    
-   if ((sder = newarray(idim*MAX(ilend,irend),DOUBLE)) == NULL)
+   if ((sder = newarray(idim*MAX(ilend,irend),DOUBLE)) == SISL_NULL)
       goto err101;
-   if ((sbder=newarray(ik*ik,DOUBLE)) == NULL) goto err101;
-   if ((ssum = newarray(idim,DOUBLE)) == NULL) goto err101;
-   if ((shc = newarray(MAX(1,irend)*idim,DOUBLE)) == NULL) goto err101;
+   if ((sbder=newarray(ik*ik,DOUBLE)) == SISL_NULL) goto err101;
+   if ((ssum = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
+   if ((shc = newarray(MAX(1,irend)*idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Check the input and adjust if necessary.  */
    
@@ -351,10 +351,10 @@ void sh1927(etau,ik,in,idim,pcurve,ilend,irend,ec,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (sder != NULL) freearray(sder);
-      if (sbder != NULL) freearray(sbder);
-      if (ssum != NULL) freearray(ssum);
-      if (shc != NULL) freearray(shc);
+      if (sder != SISL_NULL) freearray(sder);
+      if (sbder != SISL_NULL) freearray(sbder);
+      if (ssum != SISL_NULL) freearray(ssum);
+      if (shc != SISL_NULL) freearray(shc);
 
       return;
 }

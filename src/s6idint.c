@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idint.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idint.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -72,16 +72,16 @@ void s6idint(po1,po2,pintdat,rpt,iob)
   
   /* Initiate to emty list. */
   
-  *rpt = NULL;
+  *rpt = SISL_NULL;
   
   
   /* We have to be sure that we have an intdat structure. */
   
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     goto out;
   
   
-  if (po1 == NULL || po1->iobj == SISLPOINT)
+  if (po1 == SISL_NULL || po1->iobj == SISLPOINT)
     kpar1 = 0;
   else if (po1->iobj == SISLCURVE)
     {
@@ -99,7 +99,7 @@ void s6idint(po1,po2,pintdat,rpt,iob)
     }
   
   
-  if (po2 == NULL || po2->iobj == SISLPOINT)
+  if (po2 == SISL_NULL || po2->iobj == SISLPOINT)
     kpar2 = 0;
   else if (po2->iobj == SISLCURVE)
     {

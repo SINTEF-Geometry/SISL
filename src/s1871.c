@@ -81,15 +81,15 @@ void s1871(pc1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
   int kpos = 0;            /* Position of error.                           */
   int trackflag = 0;
   int jtrack;
-  int *pretop=NULL;
-  SISLTrack **wtrack=NULL;
+  int *pretop=SISL_NULL;
+  SISLTrack **wtrack=SISL_NULL;
   double aepsco = REL_COMP_RES;
 
   sh1871(pc1, pt1, idim, aepsco, aepsge, trackflag, &jtrack, &wtrack,
 	 jpt, gpar1, &pretop, jcrv, wcurve, &kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
   /*
    * Intersections found.

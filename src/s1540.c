@@ -100,7 +100,7 @@ s1540 ( et, ik, in, ax, im, ider, ebder, ileft, jstat )
   int i, j,k,kk;      /* Control variables in for loops and for stepping
                          through arrays.                                 */
   int size;           /* (ider+1) * ik.                                  */
-  double *eder = NULL;/* B-spline evaluationas at a single value.        */
+  double *eder = SISL_NULL;/* B-spline evaluationas at a single value.        */
   double tmpeder[10]; /* meaning: tmpeder[(ider+1)*ik]
 			 and assuming: ider <= 1 and ik <= 5             */
 

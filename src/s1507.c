@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1507.c,v 1.1 1999-01-18 13:12:37 jka Exp $
+ * $Id: s1507.c,v 1.2 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -103,7 +103,7 @@ void s1507(curves, nc, periodic, newcurves, jstat)
 
   *jstat = 0;
 
-  if( (curves2=newarray(nc,SISLCurve*)) == NULL) goto err101;
+  if( (curves2=newarray(nc,SISLCurve*)) == SISL_NULL) goto err101;
   memzero(curves2, nc, SISLCurve*);
 
   if (nc <= 0) goto err102;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: construct.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: construct.c,v 1.2 2001-03-19 15:58:39 afr Exp $
  *
  */
 
@@ -63,7 +63,7 @@ copyIntpt (ppt)
   /* Create copy.  */
 
   qcopy = newIntpt (ppt->ipar, ppt->epar, ppt->adist);
-  if (qcopy == NULL)
+  if (qcopy == SISL_NULL)
     goto err101;
 
   /* Set remaining parameter.  */
@@ -128,7 +128,7 @@ hp_copyIntpt (ppt)
 		       ppt->left_obj_2[0], ppt->right_obj_2[0],
 		       ppt->size_1, ppt->size_2, ppt->geo_data_1,
 		       ppt->geo_data_2);
-  if (qcopy == NULL)
+  if (qcopy == SISL_NULL)
     goto err101;
 
   /* Copy made.  */
@@ -199,7 +199,7 @@ newbox (idim)
 
   /* Allocate space for SISLbox structure.  */
 
-  if ((qnew = newarray (1, SISLbox)) != NULL)
+  if ((qnew = newarray (1, SISLbox)) != SISL_NULL)
     {
       /* Initialise new direction structure. */
 
@@ -210,21 +210,21 @@ newbox (idim)
 
       for (ki = 0; ki < 3; ki++)
 	{
-	  qnew->e2max[ki] = NULL;
-	  qnew->e2min[ki] = NULL;
-	  qnew->etol[ki] = DNULL;
+	  qnew->e2max[ki] = SISL_NULL;
+	  qnew->e2min[ki] = SISL_NULL;
+	  qnew->etol[ki] = DZERO;
 	}
 
-      if ((qnew->emax = newarray (knum, double)) == NULL)
+      if ((qnew->emax = newarray (knum, double)) == SISL_NULL)
 	{
 	  freearray (qnew);
-	  qnew = NULL;
+	  qnew = SISL_NULL;
 	}
-      else if ((qnew->emin = newarray (knum, double)) == NULL)
+      else if ((qnew->emin = newarray (knum, double)) == SISL_NULL)
 	{
 	  freearray (qnew->emax);
 	  freearray (qnew);
-	  qnew = NULL;
+	  qnew = SISL_NULL;
 	}
     }
   return (qnew);
@@ -303,14 +303,14 @@ newCurve (in, ik, et, ecoef, ikind, idim, icopy)
   int k1,k2;                    /* Superflous knots in the ends. */
   int kdim;			/* Dimension of space (also including potential
 				   homogenous coordinate        */
-  double *st = NULL;		/* Copy of knotvector.          */
-  double *rcoef = NULL;		/* Copy of vertices in rational case.  */
-  double *scoef = NULL;		/* Copy of vertices.            */
+  double *st = SISL_NULL;		/* Copy of knotvector.          */
+  double *rcoef = SISL_NULL;		/* Copy of vertices in rational case.  */
+  double *scoef = SISL_NULL;		/* Copy of vertices.            */
 
 
   /* Allocate space for curve.  */
 
-  if ((qnew = newarray (1, SISLCurve)) == NULL)
+  if ((qnew = newarray (1, SISLCurve)) == SISL_NULL)
     goto err101;
 
   if (ikind == 2 || ikind == 4)
@@ -346,8 +346,8 @@ newCurve (in, ik, et, ecoef, ikind, idim, icopy)
 
       /* Copy input arrays. First allocate space for new arrays. */
 
-      if ((st = newarray (in +ik, DOUBLE)) == NULL ||
-	  (scoef = newarray (in *kdim, DOUBLE)) == NULL)
+      if ((st = newarray (in +ik, DOUBLE)) == SISL_NULL ||
+	  (scoef = newarray (in *kdim, DOUBLE)) == SISL_NULL)
 	goto err101;
 
       /* Copy contents of arrays.  */
@@ -369,14 +369,14 @@ newCurve (in, ik, et, ecoef, ikind, idim, icopy)
   qnew->idim = idim;
   qnew->icopy = icopy;
   qnew->et = st;
-  qnew->pdir = NULL;
-  qnew->pbox = NULL;
+  qnew->pdir = SISL_NULL;
+  qnew->pbox = SISL_NULL;
 
   if (ikind == 2 || ikind == 4)
     {
       /* Calculate the weighted control points if the object is rational  */
       rcoef = newarray (in *idim, DOUBLE);
-      if (rcoef == NULL)
+      if (rcoef == SISL_NULL)
 	goto err101;
       for (i = 0, j = 0, J = 0, k = idim; i < in; i++, k += kdim)
 	{
@@ -392,7 +392,7 @@ newCurve (in, ik, et, ecoef, ikind, idim, icopy)
   else
     {
       qnew->ecoef = scoef;
-      qnew->rcoef = NULL;
+      qnew->rcoef = SISL_NULL;
     }
 
 
@@ -404,13 +404,13 @@ newCurve (in, ik, et, ecoef, ikind, idim, icopy)
 
   /* Error in space allocation. Return zero. */
 
-err101:if (qnew != NULL)
-          { freearray (qnew);  qnew = NULL;}  
-  if (st != NULL)
+err101:if (qnew != SISL_NULL)
+          { freearray (qnew);  qnew = SISL_NULL;}  
+  if (st != SISL_NULL)
     freearray (st);
-  if (rcoef != NULL)
+  if (rcoef != SISL_NULL)
     freearray (rcoef);
-  if (scoef != NULL)
+  if (scoef != SISL_NULL)
     freearray (scoef);
   goto out;
 
@@ -460,13 +460,13 @@ newdir (idim)
 
   /* Allocate space for direction structure.  */
 
-  if ((qnew = newarray (1, SISLdir)) != NULL)
+  if ((qnew = newarray (1, SISLdir)) != SISL_NULL)
     {
       /* Initialise new direction structure. */
 
       qnew->igtpi = 0;
-      qnew->esmooth = NULL;
-      if ((qnew->ecoef = newarray (idim, double)) == NULL)
+      qnew->esmooth = SISL_NULL;
+      if ((qnew->ecoef = newarray (idim, double)) == SISL_NULL)
 	freearray (qnew);
     }
   return (qnew);
@@ -521,13 +521,13 @@ newEdge (iedge)
   /* Allocate space for instance.  */
 
   pnew = newarray (1, SISLEdge);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   /* Allocate space for array of pointers to Ptedge. */
 
   pnew->prpt = newarray (iedge, SISLPtedge *);
-  if (pnew->prpt == NULL)
+  if (pnew->prpt == SISL_NULL)
     goto err101;
 
   /* Initiate the variables of the instance. */
@@ -537,7 +537,7 @@ newEdge (iedge)
 
   ppt = pnew->prpt;
   for (ki = 0; ki < iedge; ki++)
-    *(ppt++) = NULL;
+    *(ppt++) = SISL_NULL;
 
   /* Task done. */
 
@@ -545,7 +545,7 @@ newEdge (iedge)
 
   /* Error in space allocation. Retrun zero. */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -617,7 +617,7 @@ newIntcurve (ipoint, ipar1, ipar2, epar1, epar2, itype)
   /* Allocate space for the new Intcurve.  */
 
   qnew = newarray (1, SISLIntcurve);
-  if (qnew == NULL)
+  if (qnew == SISL_NULL)
     goto err101;
 
   /* Set variables of the intersection curve.  */
@@ -627,9 +627,9 @@ newIntcurve (ipoint, ipar1, ipar2, epar1, epar2, itype)
   qnew->ipar2 = ipar2;
   qnew->epar1 = epar1;
   qnew->epar2 = epar2;
-  qnew->pgeom = NULL;
-  qnew->ppar1 = NULL;
-  qnew->ppar2 = NULL;
+  qnew->pgeom = SISL_NULL;
+  qnew->ppar1 = SISL_NULL;
+  qnew->ppar2 = SISL_NULL;
   qnew->itype = itype;
 
   /* Task done.  */
@@ -638,7 +638,7 @@ newIntcurve (ipoint, ipar1, ipar2, epar1, epar2, itype)
 
   /* Error in space allocation. Return zero.  */
 
-err101:qnew = NULL;
+err101:qnew = SISL_NULL;
   goto out;
 
 out:return (qnew);
@@ -680,11 +680,11 @@ newIntdat ()
 *********************************************************************
 */
 {
-  SISLIntdat *pnew = NULL;	/* Local pointer to the instance.       */
+  SISLIntdat *pnew = SISL_NULL;	/* Local pointer to the instance.       */
 
   /* Allocate space for instance.                                      */
 
-  if ((pnew = newarray (1, SISLIntdat)) != NULL)
+  if ((pnew = newarray (1, SISLIntdat)) != SISL_NULL)
     {
       /* Initiate the variables of the instance.                   */
       pnew->ipmax = 20;
@@ -694,11 +694,11 @@ newIntdat ()
 
       /* Allocate space for array of pointers to Intlist.          */
 
-      if ((pnew->vlist = new0array (pnew->ilmax, SISLIntlist *)) != NULL)
+      if ((pnew->vlist = new0array (pnew->ilmax, SISLIntlist *)) != SISL_NULL)
 	{
 	  /* Allocate space for array of pointers to SISLIntpt     */
 	  if ((pnew->vpoint = new0array (pnew->ipmax, SISLIntpt *))
-	      != NULL) ;
+	      != SISL_NULL) ;
 
 	  /* Task done.                                        */
 
@@ -764,7 +764,7 @@ newIntlist (pfirst, plast, itype)
   /* Allocate space for the instance.  */
 
   pnew = newarray (1, SISLIntlist);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   /* Initialize.  */
@@ -780,7 +780,7 @@ newIntlist (pfirst, plast, itype)
 
   /* Error in space allocation. Return zero.  */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -836,7 +836,7 @@ newIntpt (ipar, epar, adist)
   /* Allocate space for instance of Intpt. */
 
   pnew = newarray (1, SISLIntpt);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   /* Initialize instance. First allocate space for parameter array. */
@@ -844,7 +844,7 @@ newIntpt (ipar, epar, adist)
   if (ipar > 0)
     {
       pnew->epar = newarray (ipar, DOUBLE);
-      if (pnew->epar == NULL)
+      if (pnew->epar == SISL_NULL)
 	goto err101;
     }
 
@@ -855,26 +855,26 @@ newIntpt (ipar, epar, adist)
   for (ki = 0; ki < ipar; ki++)
     pnew->epar[ki] = epar[ki];
   pnew->adist = adist;
-  pnew->pcurve = NULL;
+  pnew->pcurve = SISL_NULL;
   pnew->iinter = 0;
 
-  /* Set intersection atributes to NULL */
+  /* Set intersection atributes to SISL_NULL */
   pnew->no_of_curves_alloc = 0;
   pnew->no_of_curves = 0;
 
-  pnew->pnext = NULL;
-  pnew->curve_dir = NULL;
-  pnew->left_obj_1 = NULL;
-  pnew->left_obj_2 = NULL;
-  pnew->right_obj_1 = NULL;
-  pnew->right_obj_2 = NULL;
-  pnew->geo_data_1 = NULL;
+  pnew->pnext = SISL_NULL;
+  pnew->curve_dir = SISL_NULL;
+  pnew->left_obj_1 = SISL_NULL;
+  pnew->left_obj_2 = SISL_NULL;
+  pnew->right_obj_1 = SISL_NULL;
+  pnew->right_obj_2 = SISL_NULL;
+  pnew->geo_data_1 = SISL_NULL;
   pnew->size_1 = 0;
-  pnew->geo_data_2 = NULL;
+  pnew->geo_data_2 = SISL_NULL;
   pnew->size_2 = 0;
 
-  pnew->trim[0] = NULL;
-  pnew->trim[1] = NULL;
+  pnew->trim[0] = SISL_NULL;
+  pnew->trim[1] = SISL_NULL;
 
   /* Task done.  */
 
@@ -883,7 +883,7 @@ newIntpt (ipar, epar, adist)
 
   /* Error in space allocation. Return zero. */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -925,19 +925,19 @@ newIntsurf (pintlist)
 *********************************************************************
 */
 {
-  SISLIntsurf *pnew = NULL;	/* Local pointer to instance to create. */
-  SISLIntpt *qpt = NULL;	/* Local help pointer                   */
-  SISLIntpt *qpfirst = NULL;	/* Local help pointer                   */
-  SISLIntpt *qplast = NULL;	/* Local help pointer                   */
-  SISLIntpt *qprev = NULL;	/* Local help pointer                   */
-  SISLIntpt *qnext = NULL;	/* Local help pointer                   */
+  SISLIntsurf *pnew = SISL_NULL;	/* Local pointer to instance to create. */
+  SISLIntpt *qpt = SISL_NULL;	/* Local help pointer                   */
+  SISLIntpt *qpfirst = SISL_NULL;	/* Local help pointer                   */
+  SISLIntpt *qplast = SISL_NULL;	/* Local help pointer                   */
+  SISLIntpt *qprev = SISL_NULL;	/* Local help pointer                   */
+  SISLIntpt *qnext = SISL_NULL;	/* Local help pointer                   */
   int index, ipar, ipoint;
   int ki, kk, kdir;		/* Counter.                             */
   int dummy,kstat;
   double *stpar1, *stpar2;
   /* ------------------------------------------------------------------ */
 
-  if (pintlist == NULL)
+  if (pintlist == SISL_NULL)
     goto out;
 
   qpfirst = pintlist->pfirst;
@@ -954,7 +954,7 @@ newIntsurf (pintlist)
 
   /* Allocate space for instance of Intsurf. */
   pnew = newarray (1, SISLIntsurf);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   pnew->ipar = ipar;
@@ -962,14 +962,14 @@ newIntsurf (pintlist)
 
   /* First allocate space for parameter array. */
   pnew->epar = stpar1 = newarray (ipar * ipoint, DOUBLE);
-  if (pnew->epar == NULL)
+  if (pnew->epar == SISL_NULL)
     goto err101;
 
   /* Allocate space for constant direction array. */
   /* UJK, sept 92 */
   /* pnew->const_par = newarray (ipar, int); */
   pnew->const_par = newarray (ipoint, int);
-  if (pnew->const_par == NULL)
+  if (pnew->const_par == SISL_NULL)
     goto err101;
 
   /* Fill in arrays */
@@ -1006,7 +1006,7 @@ newIntsurf (pintlist)
 
   /* Error in space allocation. Return zero. */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -1062,7 +1062,7 @@ newTrimpar (pt, par)
   /* Allocate space for instance of Trimpar. */
 
   newtrim = newarray (1, SISLTrimpar);
-  if (newtrim == NULL)
+  if (newtrim == SISL_NULL)
     goto err101;
 
   /* Initialize the variables of the instance. */
@@ -1077,7 +1077,7 @@ newTrimpar (pt, par)
 
   /* Error in space allocation. Return zero. */
 
-err101:newtrim = NULL;
+err101:newtrim = SISL_NULL;
   goto out;
 
 out:return (newtrim);
@@ -1156,7 +1156,7 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
   /* Allocate space for instance of Intpt. */
 
   pnew = new0array (1, SISLIntpt);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   /* Initialize parameters concerning the size of arrays describing
@@ -1166,26 +1166,26 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
   pnew->no_of_curves_alloc = 4;
   pnew->no_of_curves = 0;
 
-  if ((pnew->pnext = newarray (pnew->no_of_curves_alloc, SISLIntpt *)) == NULL)
+  if ((pnew->pnext = newarray (pnew->no_of_curves_alloc, SISLIntpt *)) == SISL_NULL)
     goto err101;
-  if ((pnew->curve_dir = newarray (pnew->no_of_curves_alloc, INT)) == NULL)
+  if ((pnew->curve_dir = newarray (pnew->no_of_curves_alloc, INT)) == SISL_NULL)
     goto err101;
-  if ((pnew->left_obj_1 = newarray (pnew->no_of_curves_alloc, INT)) == NULL)
+  if ((pnew->left_obj_1 = newarray (pnew->no_of_curves_alloc, INT)) == SISL_NULL)
     goto err101;
-  if ((pnew->left_obj_2 = newarray (pnew->no_of_curves_alloc, INT)) == NULL)
+  if ((pnew->left_obj_2 = newarray (pnew->no_of_curves_alloc, INT)) == SISL_NULL)
     goto err101;
-  if ((pnew->right_obj_1 = newarray (pnew->no_of_curves_alloc, INT)) == NULL)
+  if ((pnew->right_obj_1 = newarray (pnew->no_of_curves_alloc, INT)) == SISL_NULL)
     goto err101;
-  if ((pnew->right_obj_2 = newarray (pnew->no_of_curves_alloc, INT)) == NULL)
+  if ((pnew->right_obj_2 = newarray (pnew->no_of_curves_alloc, INT)) == SISL_NULL)
     goto err101;
 
   /* Initialize instance. First allocate space for parameter array. */
 
-  pnew->epar = NULL;
+  pnew->epar = SISL_NULL;
   if (ipar > 0)
     {
       pnew->epar = newarray (ipar, DOUBLE);
-      if (pnew->epar == NULL)
+      if (pnew->epar == SISL_NULL)
 	goto err101;
     }
 
@@ -1196,7 +1196,7 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
   for (ki = 0; ki < ipar; ki++)
     pnew->epar[ki] = epar[ki];
   pnew->adist = adist;
-  pnew->pcurve = NULL;
+  pnew->pcurve = SISL_NULL;
   pnew->edge_1 = 0;
   pnew->edge_2 = 0;
   pnew->iinter = itype;
@@ -1211,7 +1211,7 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
     }
   else
     {
-      pnew->geo_data_1 = NULL;
+      pnew->geo_data_1 = SISL_NULL;
       pnew->size_1 = 0;
     }
 
@@ -1223,7 +1223,7 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
     }
   else
     {
-      pnew->geo_data_2 = NULL;
+      pnew->geo_data_2 = SISL_NULL;
       pnew->size_2 = 0;
     }
 
@@ -1234,12 +1234,12 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
   *(pnew->right_obj_2) = iright2;
 
   for (ki = 0; ki < pnew->no_of_curves_alloc; ki++)
-    pnew->pnext[ki] = NULL;
+    pnew->pnext[ki] = SISL_NULL;
 
-  /*  for (ki=0; ki<6; ki++) pnew -> geo_aux[ki] = DNULL; */
+  /*  for (ki=0; ki<6; ki++) pnew -> geo_aux[ki] = DZERO; */
 
-  pnew->trim[0] = NULL;
-  pnew->trim[1] = NULL;
+  pnew->trim[0] = SISL_NULL;
+  pnew->trim[1] = SISL_NULL;
 
   /* Init the left/right evaluator to default value zero. */
   pnew->iside_1 = 0;
@@ -1251,7 +1251,7 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
 
   /* Error in space allocation. Return zero. */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -1314,7 +1314,7 @@ newTrack (psurf_1, psurf_2, pcurve_3d,
   /* Allocate space for instance of Intpt. */
 
   pnew = new0array (1, SISLTrack);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   /* Set atributes */
@@ -1338,7 +1338,7 @@ newTrack (psurf_1, psurf_2, pcurve_3d,
 
   /* Error in space allocation. Return zero. */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -1392,20 +1392,20 @@ newObject (iobj)
   SISLObject *qnew;		/* Local pointer to new object.  */
 
   qnew = newarray (1, SISLObject);
-  if (qnew == NULL)
+  if (qnew == SISL_NULL)
     goto out;
 
   qnew->iobj = iobj;
 
-  qnew->p1 = NULL;
-  qnew->c1 = NULL;
-  qnew->s1 = NULL;
-  qnew->o1 = NULL;
-  qnew->edg[0] = NULL;
-  qnew->edg[1] = NULL;
-  qnew->edg[2] = NULL;
-  qnew->edg[3] = NULL;
-  qnew->psimple = NULL;
+  qnew->p1 = SISL_NULL;
+  qnew->c1 = SISL_NULL;
+  qnew->s1 = SISL_NULL;
+  qnew->o1 = SISL_NULL;
+  qnew->edg[0] = SISL_NULL;
+  qnew->edg[1] = SISL_NULL;
+  qnew->edg[2] = SISL_NULL;
+  qnew->edg[3] = SISL_NULL;
+  qnew->psimple = SISL_NULL;
 
   /* Task done.  */
 
@@ -1458,12 +1458,12 @@ newPoint (ecoef, idim, icopy)
 */
 {
   SISLPoint *qnew;		/* Local pointer to new point.  */
-  double *scoef = NULL;		/* Copy of coordinates          */
+  double *scoef = SISL_NULL;		/* Copy of coordinates          */
 
 
   /* Allocate space for point.  */
 
-  if ((qnew = newarray (1, SISLPoint)) == NULL)
+  if ((qnew = newarray (1, SISLPoint)) == SISL_NULL)
     goto err101;
 
 
@@ -1473,7 +1473,7 @@ newPoint (ecoef, idim, icopy)
       /* Copy input array. First allocate space for new array. */
 
       if (idim < 4) 	scoef = qnew->ec;
-      else if ((scoef = newarray (idim, double)) == NULL) goto err101;
+      else if ((scoef = newarray (idim, double)) == SISL_NULL) goto err101;
 
       /* Copy contents of arrays.  */
 
@@ -1489,7 +1489,7 @@ newPoint (ecoef, idim, icopy)
   qnew->idim = idim;
   qnew->icopy = icopy;
   qnew->ecoef = scoef;
-  qnew->pbox = NULL;
+  qnew->pbox = SISL_NULL;
 
   /* Task done. */
 
@@ -1497,9 +1497,9 @@ newPoint (ecoef, idim, icopy)
 
   /* Error in space allocation. Return zero. */
 
-err101:if (qnew != NULL)
+err101:if (qnew != SISL_NULL)
     freearray (qnew);
-  qnew = NULL;
+  qnew = SISL_NULL;
   goto out;
 out:return qnew;
 }
@@ -1548,13 +1548,13 @@ newPtedge (ppt)
   /* Allocate space for the instance. */
 
   pnew = newarray (1, SISLPtedge);
-  if (pnew == NULL)
+  if (pnew == SISL_NULL)
     goto err101;
 
   /* Initialize instance.  */
 
   pnew->ppt = ppt;
-  pnew->pnext = NULL;
+  pnew->pnext = SISL_NULL;
 
   /* Task done.  */
 
@@ -1562,7 +1562,7 @@ newPtedge (ppt)
 
   /* Error in space allocation. Return zero. */
 
-err101:pnew = NULL;
+err101:pnew = SISL_NULL;
   goto out;
 
 out:return (pnew);
@@ -1645,14 +1645,14 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   int i, j, J, jj, k;		/* loop variables                      */
   int k1, k2;                   /* Superfluous knots at the ends.      */
   int kdim;			/* Dimension indicator.                */
-  double *st1 = NULL, *st2 = NULL;	/* Copy of knotvectors.        */
-  double *rcoef = NULL;		/* Copy of vertices in rational case.  */
-  double *scoef = NULL;		/* Copy of vertices.                   */
-  double *ucoef = NULL;         /* Utility coefficient array.          */
+  double *st1 = SISL_NULL, *st2 = SISL_NULL;	/* Copy of knotvectors.        */
+  double *rcoef = SISL_NULL;		/* Copy of vertices in rational case.  */
+  double *scoef = SISL_NULL;		/* Copy of vertices.                   */
+  double *ucoef = SISL_NULL;         /* Utility coefficient array.          */
 
   /* Allocate space for surface.  */
 
-  if ((qnew = newarray (1, SISLSurf)) == NULL)
+  if ((qnew = newarray (1, SISLSurf)) == SISL_NULL)
     goto err101;
 
   if (ikind == 2 || ikind == 4)
@@ -1695,7 +1695,7 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   if (k1 > 0 || k2 > 0)
   {
      s6chpar(ucoef, in2, in1, kdim, ecoef);
-     if (ucoef != NULL) freearray(ucoef);
+     if (ucoef != SISL_NULL) freearray(ucoef);
   }
 
   /* Count superfluous knots at ends in v parameter directions. */
@@ -1733,7 +1733,7 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
       st1 = newarray (in1 + ik1, DOUBLE);
       st2 = newarray (in2 + ik2, DOUBLE);
       scoef = newarray (in1 * in2 * kdim, DOUBLE);
-      if (st1 == NULL || st2 == NULL || scoef == NULL)
+      if (st1 == SISL_NULL || st2 == SISL_NULL || scoef == SISL_NULL)
 	goto err101;
 
       /* Copy contents of arrays.  */
@@ -1759,14 +1759,14 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   qnew->icopy = icopy;
   qnew->et1 = st1;
   qnew->et2 = st2;
-  qnew->pdir = NULL;
-  qnew->pbox = NULL;
+  qnew->pdir = SISL_NULL;
+  qnew->pbox = SISL_NULL;
 
   if (ikind == 2 || ikind == 4)
     {
       /* Calculate the weighted control points if the object is rational  */
       rcoef = newarray (in1 * in2 * idim, DOUBLE);
-      if (rcoef == NULL)
+      if (rcoef == SISL_NULL)
 	goto err101;
       for (i = 0, j = 0, J = 0, k = idim; i < in1 * in2; i++, k += kdim)
 	{
@@ -1782,7 +1782,7 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   else
     {
       qnew->ecoef = scoef;
-      qnew->rcoef = NULL;
+      qnew->rcoef = SISL_NULL;
     }
   
   /* UJK, 92.05.05 Default value must be set for cuopen */
@@ -1795,15 +1795,15 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
 
   /* Error in space allocation. Return zero. */
 
-err101:if (qnew != NULL)
+err101:if (qnew != SISL_NULL)
     freearray (qnew);
-  if (st1 != NULL)
+  if (st1 != SISL_NULL)
     freearray (st1);
-  if (st2 != NULL)
+  if (st2 != SISL_NULL)
     freearray (st2);
-  if (rcoef != NULL)
+  if (rcoef != SISL_NULL)
     freearray (rcoef);
-  if (scoef != NULL)
+  if (scoef != SISL_NULL)
     freearray (scoef);
   goto out;
 
@@ -1847,7 +1847,7 @@ copyCurve (pcurve)
 */
 {
   int kstat = 0;
-  SISLCurve *qc = NULL;
+  SISLCurve *qc = SISL_NULL;
   int knum;
   int ki;
   
@@ -1856,12 +1856,12 @@ copyCurve (pcurve)
   if (pcurve->ikind == 2 || pcurve->ikind == 4)
   {
      if ((qc = newCurve(pcurve->in, pcurve->ik, pcurve->et, pcurve->rcoef,
-			pcurve->ikind, pcurve->idim, 1)) == NULL) goto err101;
+			pcurve->ikind, pcurve->idim, 1)) == SISL_NULL) goto err101;
   }
   else
   {
      if ((qc = newCurve(pcurve->in, pcurve->ik, pcurve->et, pcurve->ecoef,
-			pcurve->ikind, pcurve->idim, 1)) == NULL) goto err101;
+			pcurve->ikind, pcurve->idim, 1)) == SISL_NULL) goto err101;
   }
   
   /* Set the open/closed flag. */
@@ -1870,14 +1870,14 @@ copyCurve (pcurve)
   
   /* Copy box and  cone information. */
   
-  if (pcurve->pbox != NULL)
+  if (pcurve->pbox != SISL_NULL)
   {
      /* Copy box information. */
      
-     if ((qc->pbox = newbox(pcurve->idim)) == NULL) 
+     if ((qc->pbox = newbox(pcurve->idim)) == SISL_NULL) 
      {
 	freeCurve(qc);
-	qc = NULL;
+	qc = SISL_NULL;
 	goto err101;
      }
      if (pcurve->idim == 3) knum = 9;
@@ -1896,7 +1896,7 @@ copyCurve (pcurve)
 	   if (kstat < 0)
 	   {
 	      freeCurve(qc);
-	      qc = NULL;
+	      qc = SISL_NULL;
 	      goto err101;
 	   }
 	   memcopy(qc->pbox->e2min[ki], pcurve->pbox->e2min[ki], knum,
@@ -1907,26 +1907,26 @@ copyCurve (pcurve)
      }
   }
   
-  if (pcurve->pdir != NULL)
+  if (pcurve->pdir != SISL_NULL)
   {
      /* Copy cone information. */
      
-     if ((qc->pdir = newdir(pcurve->idim)) == NULL)
+     if ((qc->pdir = newdir(pcurve->idim)) == SISL_NULL)
      {
 	freeCurve(qc);
-	qc = NULL;
+	qc = SISL_NULL;
 	goto err101;
      }
      qc->pdir->igtpi = pcurve->pdir->igtpi;
      qc->pdir->aang = pcurve->pdir->aang;
      memcopy(qc->pdir->ecoef, pcurve->pdir->ecoef, pcurve->idim, DOUBLE);
      
-     if (pcurve->pdir->esmooth != NULL)
+     if (pcurve->pdir->esmooth != SISL_NULL)
      {
-	if ((qc->pdir->esmooth = newarray(qc->in*qc->idim,DOUBLE)) == NULL)
+	if ((qc->pdir->esmooth = newarray(qc->in*qc->idim,DOUBLE)) == SISL_NULL)
 	{
 	   freeCurve(qc);
-	   qc = NULL;
+	   qc = SISL_NULL;
 	   goto err101;
 	}
 	memcopy(qc->pdir->esmooth, pcurve->pdir->esmooth, qc->in*qc->idim,
@@ -1982,7 +1982,7 @@ copySurface (psurf)
 */
 {
   int kstat = 0;
-  SISLSurf *qs = NULL;
+  SISLSurf *qs = SISL_NULL;
   int knum;
   int ki;
   
@@ -1992,13 +1992,13 @@ copySurface (psurf)
   {
      if ((qs = newSurf(psurf->in1, psurf->in2, psurf->ik1, psurf->ik2,
 		       psurf->et1, psurf->et2, psurf->rcoef,
-		       psurf->ikind, psurf->idim, 1)) == NULL) goto err101;
+		       psurf->ikind, psurf->idim, 1)) == SISL_NULL) goto err101;
   }
   else
   {
      if ((qs = newSurf(psurf->in1, psurf->in2, psurf->ik1, psurf->ik2,
 		       psurf->et1, psurf->et2, psurf->ecoef,
-		       psurf->ikind, psurf->idim, 1)) == NULL) goto err101;
+		       psurf->ikind, psurf->idim, 1)) == SISL_NULL) goto err101;
   }
   
   /* Set the open/closed flag. */
@@ -2008,14 +2008,14 @@ copySurface (psurf)
   
   /* Copy box and  cone information. */
   
-  if (psurf->pbox != NULL)
+  if (psurf->pbox != SISL_NULL)
   {
      /* Copy box information. */
      
-     if ((qs->pbox = newbox(psurf->idim)) == NULL) 
+     if ((qs->pbox = newbox(psurf->idim)) == SISL_NULL) 
      {
 	freeSurf(qs);
-	qs = NULL;
+	qs = SISL_NULL;
 	goto err101;
      }
      if (psurf->idim == 3) knum = 9;
@@ -2034,7 +2034,7 @@ copySurface (psurf)
 	   if (kstat < 0)
 	   {
 	      freeSurf(qs);
-	      qs = NULL;
+	      qs = SISL_NULL;
 	      goto err101;
 	   }
 	   memcopy(qs->pbox->e2min[ki], psurf->pbox->e2min[ki], knum,
@@ -2045,27 +2045,27 @@ copySurface (psurf)
      }
   }
   
-  if (psurf->pdir != NULL)
+  if (psurf->pdir != SISL_NULL)
   {
      /* Copy cone information. */
      
-     if ((qs->pdir = newdir(psurf->idim)) == NULL)
+     if ((qs->pdir = newdir(psurf->idim)) == SISL_NULL)
      {
 	freeSurf(qs);
-	qs = NULL;
+	qs = SISL_NULL;
 	goto err101;
      }
      qs->pdir->igtpi = psurf->pdir->igtpi;
      qs->pdir->aang = psurf->pdir->aang;
      memcopy(qs->pdir->ecoef, psurf->pdir->ecoef, psurf->idim, DOUBLE);
      
-     if (psurf->pdir->esmooth != NULL)
+     if (psurf->pdir->esmooth != SISL_NULL)
      {
 	if ((qs->pdir->esmooth = newarray(qs->in1*qs->in2*qs->idim,DOUBLE)) 
-	    == NULL)
+	    == SISL_NULL)
 	{
 	   freeSurf(qs);
-	   qs = NULL;
+	   qs = SISL_NULL;
 	   goto err101;
 	}
 	memcopy(qs->pdir->esmooth, psurf->pdir->esmooth, 

@@ -186,7 +186,7 @@ void s1522(normal, centre, ellipaxis, ratio, dim, ellipse, jstat)
   }
 
   (*ellipse) = newCurve(9, 3, et, coef, 2, dim, 1);
-  if ( (*ellipse) == NULL )  goto err101;
+  if ( (*ellipse) == SISL_NULL )  goto err101;
 
   (*ellipse)->cuopen = 0;
 

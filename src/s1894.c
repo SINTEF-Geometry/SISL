@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1894.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1894.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -130,7 +130,7 @@ s1894 (oknots, oik, oin, der1, der2, earray, dimp1, narr, nknots,
   /* Allocate space for new knot vector */
 
   (*nknots) = newarray ((oin + oik) * oik, DOUBLE);
-  if (*nknots == NULL)
+  if (*nknots == SISL_NULL)
     goto err101;
 
 
@@ -261,7 +261,7 @@ s1894 (oknots, oik, oin, der1, der2, earray, dimp1, narr, nknots,
 
   (*nin) -= (*nik);
   *nknots = increasearray (*nknots, (*nik) + (*nin), DOUBLE);
-  if (*nknots == NULL)
+  if (*nknots == SISL_NULL)
     goto err101;
 
   goto out;

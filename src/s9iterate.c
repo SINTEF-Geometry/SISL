@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9iterate.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s9iterate.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 #define S9ITERATE
@@ -178,7 +178,7 @@ void s9iterate(epoint,epnt1,epnt2,epar1,epar2,psurf1,psurf2,astep,aepsge,
       
       tdum = MAX(fabs(ta11),fabs(ta12));
       tdum = MAX(tdum,fabs(tb1));
-      if (tdum == DNULL) tdum = (double)1.0;
+      if (tdum == DZERO) tdum = (double)1.0;
       ta11 /= tdum;
       ta12 /= tdum;
       tb1  /= tdum;
@@ -188,7 +188,7 @@ void s9iterate(epoint,epnt1,epnt2,epar1,epar2,psurf1,psurf2,astep,aepsge,
       
       tdum = MAX(fabs(ta21),fabs(ta22));
       tdum = MAX(tdum,fabs(tb2));
-      if (tdum == DNULL) tdum = (double)1.0;
+      if (tdum == DZERO) tdum = (double)1.0;
       ta21 /= tdum;
       ta22 /= tdum;
       tb2  /= tdum;
@@ -200,13 +200,13 @@ void s9iterate(epoint,epnt1,epnt2,epar1,epar2,psurf1,psurf2,astep,aepsge,
       tdum  = MAX(fabs(ta12),tdum);
       tdum  = MAX(fabs(ta21),tdum);
       
-      if (DEQUAL((tdum+tdum1),tdum)) tdum1 =DNULL;
+      if (DEQUAL((tdum+tdum1),tdum)) tdum1 =DZERO;
       
       
       /* If tdum1 = 0.0, then the equation system is singular, 
 	 iteration not possible */
 
-      if (DNEQUAL(tdum1,DNULL))
+      if (DNEQUAL(tdum1,DZERO))
         {
 	  gpar1[0] += (tb1*ta22-tb2*ta12)/tdum1;
 	  gpar1[1] += (ta11*tb2-ta21*tb1)/tdum1;
@@ -239,12 +239,12 @@ void s9iterate(epoint,epnt1,epnt2,epar1,epar2,psurf1,psurf2,astep,aepsge,
       tdum  = MAX(fabs(ta12),tdum);
       tdum  = MAX(fabs(ta21),tdum);
       
-      if (DEQUAL((tdum+tdum2),tdum)) tdum2 =DNULL;
+      if (DEQUAL((tdum+tdum2),tdum)) tdum2 =DZERO;
       
       /* If tdum2 = 0.0, then the equation system is singular, 
 	 iteration not possible */
 
-      if (DNEQUAL(tdum2,DNULL))
+      if (DNEQUAL(tdum2,DZERO))
         {
 	  gpar2[0] += (tb1*ta22-tb2*ta12)/tdum2;
 	  gpar2[1] += (ta11*tb2-ta21*tb1)/tdum2;
@@ -282,7 +282,7 @@ void s9iterate(epoint,epnt1,epnt2,epar1,epar2,psurf1,psurf2,astep,aepsge,
 	  /* First iteration intitate distance variable, if the equation
 	     systems were not singular */
 
-	  if (DEQUAL(tdum1,DNULL) || DEQUAL(tdum2,DNULL)) goto war02;
+	  if (DEQUAL(tdum1,DZERO) || DEQUAL(tdum2,DZERO)) goto war02;
 	  tdist = tdum3;
 	  knbit = 1;
         }
@@ -300,7 +300,7 @@ void s9iterate(epoint,epnt1,epnt2,epar1,epar2,psurf1,psurf2,astep,aepsge,
 	      if (tdist <= aepsge)
                 {
 		  /* Distance within tolerance */
-		  if (DEQUAL(tdum1,DNULL) || DEQUAL(tdum2,DNULL))
+		  if (DEQUAL(tdum1,DZERO) || DEQUAL(tdum2,DZERO))
                     {
 		      /* Singular equation system */
 		      goto war01;

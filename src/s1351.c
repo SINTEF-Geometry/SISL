@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1351.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1351.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -77,7 +77,7 @@ void s1351(ep,ipar,im,idim,ik,rc,jstat)
   int stat = 0;                  /* Error-Status parameters       */ 
   int kpos = 0;
   int par=0;                     /* Type of parametrization       */
-  double *epar = NULL;           /* Parametrization array         */ 
+  double *epar = SISL_NULL;           /* Parametrization array         */ 
   int i;                         /* Loop index                    */ 
   int kpek1, kpek2;              /* Used in gen. of cord len. par.*/
 
@@ -88,7 +88,7 @@ void s1351(ep,ipar,im,idim,ik,rc,jstat)
 
   /* Allocate array for parametrization */
 
-  if( (epar = newarray(im, DOUBLE)) == NULL ) goto err101;
+  if( (epar = newarray(im, DOUBLE)) == SISL_NULL ) goto err101;
   epar[0] = (double) 0.0;
 
   /* Compute parametrization */
@@ -148,6 +148,6 @@ void s1351(ep,ipar,im,idim,ik,rc,jstat)
   /* Exit */
 
   out:
-    if(epar != NULL) freearray(epar);
+    if(epar != SISL_NULL) freearray(epar);
     return;
 }

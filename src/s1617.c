@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1617.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1617.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -107,7 +107,7 @@ void s1617(epoint, inbpnt, idim, eptyp, aepsge, econic,
 
   /* Discussion of the conic. */
 
-  if (tda == (double) 0.0)
+  if (DEQUAL(tda + (double) 1.0, (double) 1.0))
     {
       /* Degenerate conic. Produce straight line. */
 

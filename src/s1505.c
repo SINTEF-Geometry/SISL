@@ -135,12 +135,12 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
 			 This is an array of dimension [kn2*kn1*kdim].   */
   double tt;          /* Dummy variable used for holding an array element
 			 in a for loop.                                  */
-  double *ew=NULL;    /* Pointer to an array of dimension [kn1*(ider+1)*kdim]
+  double *ew=SISL_NULL;    /* Pointer to an array of dimension [kn1*(ider+1)*kdim]
 			 which will be used to store the result of the first
 			 matrix multiplication. */
-  double *sder=NULL;  /* Pointer to array used for storage of points, if
+  double *sder=SISL_NULL;  /* Pointer to array used for storage of points, if
 			 rational has room for homogenous coordinates. */
-  double *enorm=NULL; /* Array for surface normal. */
+  double *enorm=SISL_NULL; /* Array for surface normal. */
   int size;           /* Space occupied by points and derivs at one eval. */
   int sizeh;          /* Space occupied by homogeneous points and derivs . */
   int size1,size2;    /* Useful variables. */
@@ -175,8 +175,8 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
     scoef = ps1 -> ecoef;
   }
   sizeh = kdim*(ider+1)*(ider+2)/2;
-  if((sder=newarray(sizeh,DOUBLE)) == NULL) goto err101;
-  if((enorm=newarray(ps1->idim,DOUBLE)) == NULL) goto err101;
+  if((sder=newarray(sizeh,DOUBLE)) == SISL_NULL) goto err101;
+  if((enorm=newarray(ps1->idim,DOUBLE)) == SISL_NULL) goto err101;
 
   size = ps1->idim*(ider+1)*(ider+2)/2;
   size1 = (ider+1)*kk1;
@@ -185,7 +185,7 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
   /* Allocate space for B-spline values and derivatives and one work array. */
 
   knumb2 = kn1*(ider+1)*kdim;
-  if((ew=newarray(knumb2,DOUBLE)) == NULL) goto err101;
+  if((ew=newarray(knumb2,DOUBLE)) == SISL_NULL) goto err101;
 
   ederpos = 0;
   normpos = 0;
@@ -199,7 +199,7 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
        of the v = x[i2] isocurve. */
 
     /* Set all the elements of ew to 0. */
-    for(ki=0; ki<knumb2; ki++) ew[ki] = DNULL;
+    for(ki=0; ki<knumb2; ki++) ew[ki] = DZERO;
 
     /* ki steps through the appropriate kk2 rows of B-spline coefficients
        while kih2 steps through the B-spline value and derivatives for the
@@ -238,7 +238,7 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
       kleft1 = ileft1[i1];
 
       /* Set all the elements of sder to 0. */
-      for(ki=0; ki<sizeh; ki++) sder[ki] = DNULL;
+      for(ki=0; ki<sizeh; ki++) sder[ki] = DZERO;
 
       for(ky=0; ky<=ider; ky++)
       {
@@ -290,9 +290,9 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
   }
 
   /* Free memory. */
-  if(sder != NULL) freearray(sder);
-  if(enorm != NULL) freearray(enorm);
-  if (ew != NULL) freearray(ew);
+  if(sder != SISL_NULL) freearray(sder);
+  if(enorm != SISL_NULL) freearray(enorm);
+  if (ew != SISL_NULL) freearray(ew);
 
   goto out;
 

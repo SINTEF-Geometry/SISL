@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6getgeom.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6getgeom.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -48,7 +48,7 @@ void sh6getgeom(ob,obnr,pt,geom,norm,aepsge,jstat)
 *
 *
 * OUTPUT     : geom    	- Geometric data for object.
-*              geom2    - Normal if existing, otherwise NULL(dummy).
+*              geom2    - Normal if existing, otherwise SISL_NULL(dummy).
 *
 *
 * METHOD     : 
@@ -85,7 +85,7 @@ void sh6getgeom(ob,obnr,pt,geom,norm,aepsge,jstat)
       {
 	 case SISLPOINT:
 	    (*geom) = ob->p1->ecoef; 
-	    (*norm) = NULL;
+	    (*norm) = SISL_NULL;
             return;	    
 	 case SISLCURVE:
 	    val = newarray(2*dim,DOUBLE);
@@ -129,7 +129,7 @@ void sh6getgeom(ob,obnr,pt,geom,norm,aepsge,jstat)
    (*geom) = (obnr == 1 ? pt->geo_data_1 : pt->geo_data_2);
    
    if (ob->iobj == SISLSURFACE) (*norm) = (*geom) + kgeom - dim;
-   else				(*norm) = NULL;
+   else				(*norm) = SISL_NULL;
    goto out;
    
    err1: *jstat = kstat;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1233.c,v 1.2 1994-10-19 12:21:36 pfu Exp $
+ * $Id: s1233.c,v 1.3 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -78,24 +78,24 @@ void s1233(pc,afak1,afak2,rc,jstat)
 *********************************************************************
 */
 {
-  double *ext = NULL;                     /* Extended version of knot vector */
-  double *smatrix = NULL;                 /* Matrix converting between basises */
-  double *smatr1 = NULL;
-  double *smatr2 = NULL;                  /* Pointers to two conversion matrices */
-  double *salloc = NULL;                  /* Matrix for memory allocation */
-  double *salfa = NULL;                   /* The values of a discrete B-spline
+  double *ext = SISL_NULL;                     /* Extended version of knot vector */
+  double *smatrix = SISL_NULL;                 /* Matrix converting between basises */
+  double *smatr1 = SISL_NULL;
+  double *smatr2 = SISL_NULL;                  /* Pointers to two conversion matrices */
+  double *salloc = SISL_NULL;                  /* Matrix for memory allocation */
+  double *salfa = SISL_NULL;                   /* The values of a discrete B-spline
                                              calculation */
-  double *spek = NULL;                    /* Pointer used in traversing arrays */
-  double *sb = NULL;                      /* Right hand side of equation */
+  double *spek = SISL_NULL;                    /* Pointer used in traversing arrays */
+  double *sb = SISL_NULL;                      /* Right hand side of equation */
   double *sfrom, *sto;
   double *sp;                             /* Help array for s1701 */
-  double *stx = NULL;                     /* Knot vector after insertion of knots
+  double *stx = SISL_NULL;                     /* Knot vector after insertion of knots
                                              at start */
-  int    *mpiv=NULL;                      /* Pointer to pivotation array */
+  int    *mpiv=SISL_NULL;                      /* Pointer to pivotation array */
   SISLCurve *kreg;                        /* k-regular curve */
 
-  double *st = NULL;                      /* Internal version of et */
-  double *scoef = NULL;                   /* Copy of the vertices of the surface */
+  double *st = SISL_NULL;                      /* Internal version of et */
+  double *scoef = SISL_NULL;                   /* Copy of the vertices of the surface */
   int    kdim = pc->idim;
   int    kk = pc->ik;
   int    kn = pc->in;
@@ -115,7 +115,7 @@ void s1233(pc,afak1,afak2,rc,jstat)
 
 
   /* Ensure reasonable return value */
-  *rc = NULL;
+  *rc = SISL_NULL;
 
 
   /* Test input */
@@ -124,13 +124,13 @@ void s1233(pc,afak1,afak2,rc,jstat)
 
   if ( kn < kk ) goto err111;
 
-  if ( afak1 < DNULL || afak2 < DNULL )
+  if ( afak1 < DZERO || afak2 < DZERO )
   {
     /* Warning - so correct the factor(s) */
     *jstat = 1;
 
-    if ( afak1 < DNULL ) afak1 = DNULL;
-    if ( afak2 < DNULL ) afak2 = DNULL;
+    if ( afak1 < DZERO ) afak1 = DZERO;
+    if ( afak2 < DZERO ) afak2 = DZERO;
   }
 
 
@@ -143,12 +143,12 @@ void s1233(pc,afak1,afak2,rc,jstat)
   /* Alloocate array for pivotation vector */
 
   mpiv = new0array(2*kk, INT);
-  if ( mpiv == NULL ) goto err101;
+  if ( mpiv == SISL_NULL ) goto err101;
 
   /* Allocate space (en bloc) for the local vectors */
 
   salloc = new0array(3*kn + 9*kk + 4*kk*kk + kdim*kn, DOUBLE);
-  if ( salloc == NULL ) goto err101;
+  if ( salloc == SISL_NULL ) goto err101;
 
   ext = salloc;                    /* Size kn+kk */
   smatrix = ext + kn + kk;         /* Max size 4*kk*kk */
@@ -171,7 +171,7 @@ void s1233(pc,afak1,afak2,rc,jstat)
 
   tlen = ext[kn] - ext[kk-1];
 
-  if ( afak1 > DNULL )
+  if ( afak1 > DZERO )
   {
     /* Extend the basis at the start of the curve */
 
@@ -179,7 +179,7 @@ void s1233(pc,afak1,afak2,rc,jstat)
     for ( ki = 0; ki < kk; ki++ )  ext[ki] = tstart;
   }
 
-  if ( afak2 > DNULL )
+  if ( afak2 > DZERO )
   {
     /* Extend the basis at the end of the curve */
 
@@ -265,7 +265,7 @@ void s1233(pc,afak1,afak2,rc,jstat)
 
   /* Make matrix for the kk last vertices */
 
-  for ( ki=0,spek=smatrix; ki < kk*kk; ki++,spek++ ) *spek = DNULL;
+  for ( ki=0,spek=smatrix; ki < kk*kk; ki++,spek++ ) *spek = DZERO;
 
 
   for ( ki=kn-kk,spek=smatrix; ki < kn; ki++,spek+=kk )
@@ -366,8 +366,8 @@ void s1233(pc,afak1,afak2,rc,jstat)
 
   /* Free allocated scratch  */
 
-  if (salloc != NULL) freearray(salloc);
-  if (mpiv != NULL) freearray(mpiv);
+  if (salloc != SISL_NULL) freearray(salloc);
+  if (mpiv != SISL_NULL) freearray(mpiv);
 
   return;
 

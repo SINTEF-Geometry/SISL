@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1959.c,v 1.2 1994-12-02 14:01:40 pfu Exp $
+ * $Id: s1959.c,v 1.3 2001-03-19 15:58:58 afr Exp $
  *
  */
 #define S1959
@@ -76,11 +76,11 @@ void s1959(ppoint,pcurve,gpos,jstat)
   double vec1[3],vec2[3];   /* Vectors defining the quadrants surrounding
                                a vertex                                  */
   double vecp[3];           /* Relative point vector                      */
-  double lqua1=DNULL;
-  double lqua2=DNULL;
+  double lqua1=DZERO;
+  double lqua2=DZERO;
                             /* Length of vec1 and vec2                   */
-  double lprj1=DNULL;
-  double lprj2=DNULL;
+  double lprj1=DZERO;
+  double lprj2=DZERO;
                             /* Length of projection of vecp on
                                vec1 and vec2                             */
   double svals,svale;       /* Local start and end parameter values      */
@@ -154,7 +154,7 @@ closest            /     x
      svale = s6schoen(et,kk,iind+1);
 
      /* Calculate estimated parameter values of point */
-     if (lqua1 != DNULL) (*gpos) = svals + (lprj1/lqua1)*(svale-svals);
+     if (lqua1 != DZERO) (*gpos) = svals + (lprj1/lqua1)*(svale-svals);
      else (*gpos) = svals;
   }
   else if (iind == (nk-1))
@@ -166,7 +166,7 @@ closest            /     x
      svale = s6schoen(et,kk,iind);
 
      /* Calculate estimated parameter values of point */
-     if (lqua2 != DNULL) (*gpos) = svals + ((lqua2-lprj2)/lqua2)*(svale-svals);
+     if (lqua2 != DZERO) (*gpos) = svals + ((lqua2-lprj2)/lqua2)*(svale-svals);
      else (*gpos) = svals;
   }
   else if (iind > 0 && iind < (nk-1))
@@ -182,7 +182,7 @@ closest            /     x
            svale = s6schoen(et,kk,iind+1);
 
            /* Calculate estimated parameter values of point */
-           if (lqua1 != DNULL) (*gpos) = svals + (lprj1/lqua1)*(svale-svals);
+           if (lqua1 != DZERO) (*gpos) = svals + (lprj1/lqua1)*(svale-svals);
            else (*gpos) = svals;
       }
       else if (lprj2 > lprj1)
@@ -194,7 +194,7 @@ closest            /     x
            svale = s6schoen(et,kk,iind);
 
            /* Calculate estimated parameter values of point */
-           if (lqua2 != DNULL) (*gpos) = svals + ((lqua2-lprj2)/lqua2)*(svale-svals);
+           if (lqua2 != DZERO) (*gpos) = svals + ((lqua2-lprj2)/lqua2)*(svale-svals);
            else (*gpos) = svals;
       }
       else

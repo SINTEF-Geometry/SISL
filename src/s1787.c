@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1787.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1787.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -113,17 +113,17 @@ void s1787(ps,alevel,aepsge,epar,gpar1,gpar2,jstat)
   double tsum,*sp,*sq;
   double simpli[4];     /* Description of plane                        */
   double *st1,*st2,*scoef; /* Knots and vertices of input surface      */
-  double *s3coef=NULL;  /* 3-D coeff                                   */
+  double *s3coef=SISL_NULL;  /* 3-D coeff                                   */
 			   
   double tepsco = REL_COMP_RES;
   double tepsge;   
   double sval1[2];      /* Limits of parameter plane in first SISLdir      */
   double sval2[2];      /* Limits of parameter plane in second SISLdir     */
   double *spar1,*spar2; /* Pointers to arrays                          */
-  double *spar=NULL;    /* Pointer to allocated values for parameter values*/
-  SISLSurf *qs=NULL;    /* 3-D version of surface                     */
+  double *spar=SISL_NULL;    /* Pointer to allocated values for parameter values*/
+  SISLSurf *qs=SISL_NULL;    /* 3-D version of surface                     */
   SISLCurve *qcrv;          /* Curve in parameter plane                   */
-  SISLIntcurve *qintcr=NULL;/* Intersection curve object            */
+  SISLIntcurve *qintcr=SISL_NULL;/* Intersection curve object            */
   kk1   = ps -> ik1;
   kk2   = ps -> ik2;
   kn1   = ps -> in1;
@@ -138,7 +138,7 @@ void s1787(ps,alevel,aepsge,epar,gpar1,gpar2,jstat)
   
   /* Allocate array for 3-D representation of surface */
   
-  if((s3coef = newarray(kn1*kn2*3,DOUBLE)) == NULL) goto err101;
+  if((s3coef = newarray(kn1*kn2*3,DOUBLE)) == SISL_NULL) goto err101;
   
   sh1992su(ps,0,aepsge,&kstat);
   if (kstat < 0) goto error;
@@ -214,17 +214,17 @@ void s1787(ps,alevel,aepsge,epar,gpar1,gpar2,jstat)
   
   /* Make 3-D surface */
   
-  if((qs = newSurf(kn1,kn2,kk1,kk2,st1,st2,s3coef,1,3,1)) == NULL) goto err101;
+  if((qs = newSurf(kn1,kn2,kk1,kk2,st1,st2,s3coef,1,3,1)) == SISL_NULL) goto err101;
   
   kgraph = 0;
   kcur   = 3;
 
   /* Make an intersection curve object with the parameter value */
   
-  if ((spar=newarray(2,DOUBLE))==NULL) goto err101;
+  if ((spar=newarray(2,DOUBLE))==SISL_NULL) goto err101;
   memcopy(spar,epar,2,DOUBLE);
   
-  if((qintcr = newIntcurve(1,2,0,spar,NULL,0)) == NULL) goto err101;
+  if((qintcr = newIntcurve(1,2,0,spar,SISL_NULL,0)) == SISL_NULL) goto err101;
   
   kcur = 2;
   kgraph = 0;
@@ -236,7 +236,7 @@ void s1787(ps,alevel,aepsge,epar,gpar1,gpar2,jstat)
   /* Identify first and last parameter pair in the intersection curve */
   
   qcrv = qintcr -> ppar1;
-  if (qcrv == NULL) goto war00;
+  if (qcrv == SISL_NULL) goto war00;
   
   spar1 = qcrv -> ecoef;
   spar2 = spar1 + 2*(qcrv->in)-2;
@@ -417,7 +417,7 @@ void s1787(ps,alevel,aepsge,epar,gpar1,gpar2,jstat)
   goto out;
   
  out:
-  if (s3coef != NULL) freearray(s3coef);
-  if (qs     != NULL) freeSurf (qs);
-  if (qintcr != NULL) freeIntcurve(qintcr);
+  if (s3coef != SISL_NULL) freearray(s3coef);
+  if (qs     != SISL_NULL) freeSurf (qs);
+  if (qintcr != SISL_NULL) freeIntcurve(qintcr);
 }

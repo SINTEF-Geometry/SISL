@@ -95,16 +95,16 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
   int k1,k2;           /* The polynomial order of the surface in the two
 		 	 directions.                                     */
   int kdim;            /* The space dimension of the surface. */
-  double *ebder1=NULL; /* Triple array of dimension (ider+1)*k1*m1
+  double *ebder1=SISL_NULL; /* Triple array of dimension (ider+1)*k1*m1
                          containing dericatives of B-splines. */
-  double *ebder2=NULL; /* Triple array of dimension (ider+1)*k2*m2
+  double *ebder2=SISL_NULL; /* Triple array of dimension (ider+1)*k2*m2
                          containing dericatives of B-splines. */
-  int *ileft1=NULL;    /* Array of dimension m1 containing the left knots
+  int *ileft1=SISL_NULL;    /* Array of dimension m1 containing the left knots
                          of the B-splines in x. */
-  int *ileft2=NULL;    /* Array of dimension m2 containing the left knots
+  int *ileft2=SISL_NULL;    /* Array of dimension m2 containing the left knots
                          of the B-splines in y. */
-  double *et1=NULL;    /* x knot vector. */
-  double *et2=NULL;    /* y knot vector. */
+  double *et1=SISL_NULL;    /* x knot vector. */
+  double *et2=SISL_NULL;    /* y knot vector. */
 
 
   n1 = ps1 -> in1;
@@ -123,19 +123,19 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
 
   /* Pre-evaluate B-splines in x. */
   ebder1 = newarray((ider+1)*k1*m1,DOUBLE);
-  if(ebder1 == NULL) goto err101;
+  if(ebder1 == SISL_NULL) goto err101;
 
   ileft1 = newarray(m1,INT);
-  if(ileft1 == NULL) goto err101;
+  if(ileft1 == SISL_NULL) goto err101;
 
   s1504(et1,k1,n1,x,m1,ider,ebder1,ileft1,&kstat);
   if(kstat < 0) goto error;
 
   /* Pre-evaluate B-splines in y. */
   ebder2 = newarray((ider+1)*k2*m2,DOUBLE);
-  if(ebder2 == NULL) goto err101;
+  if(ebder2 == SISL_NULL) goto err101;
   ileft2 = newarray(m2,INT);
-  if(ileft2 == NULL) goto err101;
+  if(ileft2 == SISL_NULL) goto err101;
 
   s1504(et2,k2,n2,y,m2,ider,ebder2,ileft2,&kstat);
   if(kstat < 0) goto error;
@@ -147,10 +147,10 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
   if(kstat < 0) goto error;
 
   /* Free memory. */
-  if(ebder1 != NULL) freearray(ebder1);
-  if(ileft1 != NULL) freearray(ileft1);
-  if(ebder2 != NULL) freearray(ebder2);
-  if(ileft2 != NULL) freearray(ileft2);
+  if(ebder1 != SISL_NULL) freearray(ebder1);
+  if(ileft1 != SISL_NULL) freearray(ileft1);
+  if(ebder2 != SISL_NULL) freearray(ebder2);
+  if(ileft2 != SISL_NULL) freearray(ileft2);
 
   *jstat = 0;
   goto out;

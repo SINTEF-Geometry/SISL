@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1612.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1612.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -97,17 +97,17 @@ void s1612(pc,aepsge,gpoint,jnbpnt,jleng,jstat)
   int kvlast;         /* Position of last vertex in vertex array         */
   int kpos=0;         /* Position of error                               */
   
-  double *spoint=NULL;/* Pointer to array of points                      */
+  double *spoint=SISL_NULL;/* Pointer to array of points                      */
   double tdist;       /* Distance                                        */
   double tpar;        /* A parameter value of the curve                  */
-  double *sbreak = NULL;  /* Array containing kk-1 multiple knot         */
+  double *sbreak = SISL_NULL;  /* Array containing kk-1 multiple knot         */
   double *st;         /* Pointer to the first element of the knot vector
 			 of the curve. The knot vector has [kn+kk]
 			 elements.                                       */
   
   
-  SISLCurve *qcnew1=NULL; /* Pointer to first new  curve-object       */
-  SISLCurve *qcnew2=NULL; /* Pointer to second new curve-objec        */
+  SISLCurve *qcnew1=SISL_NULL; /* Pointer to first new  curve-object       */
+  SISLCurve *qcnew2=SISL_NULL; /* Pointer to second new curve-objec        */
   
   
   /* Check input   */

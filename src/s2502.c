@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2502.c,v 1.6 1995-01-23 09:18:08 pfu Exp $
+ * $Id: s2502.c,v 1.7 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -142,7 +142,7 @@ void
 
   if (ider != 0) goto err178;
 
-  if (surf == NULL)  goto err150;
+  if (surf == SISL_NULL)  goto err150;
   else
   {
     /* Compute derivates and normal. */
@@ -183,7 +183,7 @@ war002:
   *jstat = 2;
   goto out;
 
-  /* Error. Input (surface) pointer is NULL. */
+  /* Error. Input (surface) pointer is SISL_NULL. */
 err150:
   *jstat = -150;
   s6err("s2502", *jstat, 0);

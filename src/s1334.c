@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1334.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1334.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -107,11 +107,11 @@ void s1334(epoint,inbpnt,idim,nptyp,icnsta,icnend,iopen,ik,astpar,
 {
   int kpos = 0;
   int kstat = 0;
-  int *ltype = NULL;		/* The kind of interpolation conditions. */
+  int *ltype = SISL_NULL;		/* The kind of interpolation conditions. */
   int knpt;			/* Number of acepted interpolation conditions. */
-  double *lcond = NULL;		/* The number of acepted interpolation conditions. */
+  double *lcond = SISL_NULL;		/* The number of acepted interpolation conditions. */
 
-  int *ityp = NULL;
+  int *ityp = SISL_NULL;
   int ki;
 
   /* make compatible to old use of s1604 */
@@ -125,7 +125,7 @@ void s1334(epoint,inbpnt,idim,nptyp,icnsta,icnend,iopen,ik,astpar,
            qc as input to s1713 (and s1750) then has wrong flag !!*/
 
   ityp = newarray (inbpnt, INT);
-  if (ityp == NULL)
+  if (ityp == SISL_NULL)
     goto err101;
 
   for (ki=0; ki < inbpnt; ki++) ityp[ki] = (int)nptyp[ki];
@@ -166,15 +166,15 @@ void s1334(epoint,inbpnt,idim,nptyp,icnsta,icnend,iopen,ik,astpar,
   goto out;
   
  out:
-  if (ltype != NULL)
+  if (ltype != SISL_NULL)
     freearray (ltype);
 
 /* -> added, guen & ujk Wed Jul  1 18:48:27 MESZ 1992 */
-  if (ityp != NULL)
+  if (ityp != SISL_NULL)
     freearray (ityp);
 /* <- added, guen & ujk Wed Jul  1 18:48:27 MESZ 1992 */
 
-  if (lcond != NULL)
+  if (lcond != SISL_NULL)
     freearray (lcond);
     
   return;

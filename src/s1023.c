@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1023.c,v 1.2 1994-08-24 15:19:46 pfu Exp $
+ * $Id: s1023.c,v 1.3 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -85,9 +85,9 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
    int in2;              /* Number of vertices along the latitude.      */
    int ik1 = 3;          /* Order along the longitude.                  */
    int ik2 = 3;          /* Order along the latitude.                   */
-   double *et1 = NULL;   /* Knot vector along the longitude.            */
-   double *et2 = NULL;   /* Knot vector along the latitude.             */
-   double *rcoef = NULL; /* Coefficients of the sphere.                 */
+   double *et1 = SISL_NULL;   /* Knot vector along the longitude.            */
+   double *et2 = SISL_NULL;   /* Knot vector along the latitude.             */
+   double *rcoef = SISL_NULL; /* Coefficients of the sphere.                 */
    int kind = 2;         /* Rational Bspline surface.                   */
    double weight;        /* Rational weight.                            */
    double radius;        /* Radius of the sphere.                       */
@@ -101,7 +101,7 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
 
    /* Do necessary initiation and allocation. */
 
-   *sphere = NULL;
+   *sphere = SISL_NULL;
    weight = (double)1.0/sqrt(2.0);
    in1 = 1 + 2*latitude;
    in2 = 1 + 2*longitude;
@@ -118,9 +118,9 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
    for (ki = 0; ki < 3; ki++)
       z_axis[ki] = radius*z_axis[ki]/norm;
 
-   if((et1 = newarray(in1 + ik1, DOUBLE)) == NULL) goto err101;
-   if((et2 = newarray(in2 + ik2, DOUBLE)) == NULL) goto err101;
-   if((rcoef = newarray(4*in1*in2, DOUBLE)) == NULL) goto err101;
+   if((et1 = newarray(in1 + ik1, DOUBLE)) == SISL_NULL) goto err101;
+   if((et2 = newarray(in2 + ik2, DOUBLE)) == SISL_NULL) goto err101;
+   if((rcoef = newarray(4*in1*in2, DOUBLE)) == SISL_NULL) goto err101;
 
    /* Initiate the knot vectors. */
 
@@ -196,11 +196,11 @@ void s1023(center, axis, equator, latitude, longitude, sphere, stat)
       }
    }
    (*sphere) = newSurf(in1, in2, ik1, ik2, et1, et2, rcoef, kind, 3, 1);
-   if ((*sphere) == NULL) goto err101;
+   if ((*sphere) == SISL_NULL) goto err101;
 
-   if (et1 != NULL) freearray(et1);
-   if (et2 != NULL) freearray(et2);
-   if (rcoef != NULL) freearray(rcoef);
+   if (et1 != SISL_NULL) freearray(et1);
+   if (et2 != SISL_NULL) freearray(et2);
+   if (rcoef != SISL_NULL) freearray(rcoef);
 
    *stat = 0;
    goto out;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1355.c,v 1.2 1994-11-08 12:49:33 poeh Exp $
+ * $Id: s1355.c,v 1.3 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -73,11 +73,11 @@ void s1355(pc,eeps,epar,im,jstat)
   double end, start;       /* Used to determine sampling point parameters  */
   double maxstep;
   double *coeff;           /* Only used as pointer to curve coefficients   */
-  double *et = NULL;       /* Pointer to knotvector                        */
-  double *par = NULL;      /* Storage of SISL-curve parameters             */
-  double *maxtab = NULL;
-  double *neweps = NULL;
-  SISLCurve *oc=NULL;      /* Local SISL-curve                             */
+  double *et = SISL_NULL;       /* Pointer to knotvector                        */
+  double *par = SISL_NULL;      /* Storage of SISL-curve parameters             */
+  double *maxtab = SISL_NULL;
+  double *neweps = SISL_NULL;
+  SISLCurve *oc=SISL_NULL;      /* Local SISL-curve                             */
 
   /* Check input-curve. */
 
@@ -107,7 +107,7 @@ void s1355(pc,eeps,epar,im,jstat)
   par    = newarray(parlen, DOUBLE);
   maxtab = newarray(idim, DOUBLE);
   neweps = newarray(idim, DOUBLE);
-  if (maxtab == NULL || par == NULL || neweps == NULL) goto err101;
+  if (maxtab == SISL_NULL || par == SISL_NULL || neweps == SISL_NULL) goto err101;
 
   /* Do calculations here which may be done outside main loop */
 
@@ -167,7 +167,7 @@ void s1355(pc,eeps,epar,im,jstat)
 	  if (number+1>=parlen)
 	    {
 	      parlen = 2*parlen;
-	      if ((par = increasearray(par, parlen, double)) == NULL)
+	      if ((par = increasearray(par, parlen, double)) == SISL_NULL)
 		goto err101;
             }
 	}
@@ -192,7 +192,7 @@ void s1355(pc,eeps,epar,im,jstat)
     }
 
   par[number] = end;
-  if ((par = increasearray(par,number+1,DOUBLE)) == NULL) goto err101;
+  if ((par = increasearray(par,number+1,DOUBLE)) == SISL_NULL) goto err101;
   *epar = par;
   *im = number+1;
 
@@ -232,8 +232,8 @@ void s1355(pc,eeps,epar,im,jstat)
   /* Exit */
 
   out:
-    if( maxtab != NULL) freearray(maxtab);
-    if( neweps != NULL) freearray(neweps);
-    if( oc != NULL) freeCurve(oc);
+    if( maxtab != SISL_NULL) freearray(maxtab);
+    if( neweps != SISL_NULL) freearray(neweps);
+    if( oc != SISL_NULL) freeCurve(oc);
     return;
 }

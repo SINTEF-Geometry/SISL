@@ -109,15 +109,15 @@ void
   int knrc = 0;			/* Indicates shape of interpolation matrix.     */
   int kopen;                    /* Local open/closed parameter. Closed,
 				   non-periodic is treated as an open curve.*/
-  int *ltype = NULL;		/* Type of accepted interpolation conditions.   */
-  double *scond = NULL;		/* Array containing interpolation conditions.   */
-  double *spar1 = NULL;		/* Parametrization array of interpolation conditions. */
-  double *spar2 = NULL;		/* Parametrization array used to make knot vector. */
-  double *sknot = NULL;		/* Knot vector of curve.                           */
-  double *scoef = NULL;		/* Coefficients of curve.                          */
-  int *sder = NULL;		/* Vector of derivative indicators.                */
-  SISLCurve *qc = NULL;		/* Interpolation curve.                            */
-  SISLCurve *qc2 = NULL;	/* Interpolation curve.                            */
+  int *ltype = SISL_NULL;		/* Type of accepted interpolation conditions.   */
+  double *scond = SISL_NULL;		/* Array containing interpolation conditions.   */
+  double *spar1 = SISL_NULL;		/* Parametrization array of interpolation conditions. */
+  double *spar2 = SISL_NULL;		/* Parametrization array used to make knot vector. */
+  double *sknot = SISL_NULL;		/* Knot vector of curve.                           */
+  double *scoef = SISL_NULL;		/* Coefficients of curve.                          */
+  int *sder = SISL_NULL;		/* Vector of derivative indicators.                */
+  SISLCurve *qc = SISL_NULL;		/* Interpolation curve.                            */
+  SISLCurve *qc2 = SISL_NULL;	/* Interpolation curve.                            */
 
   *jstat = 0;
 
@@ -138,7 +138,7 @@ void
 
   /* Allocate scratch for derivative indicator. */
 
-  if ((sder = newarray (knpt, INT)) == NULL)
+  if ((sder = newarray (knpt, INT)) == SISL_NULL)
     goto err101;
 
   for (ki = 0; ki < knpt; ki++)
@@ -175,7 +175,7 @@ void
   /* Express the curve as a curve object.  */
 
   qc = newCurve (kn, kordr, sknot, scoef, 1, idim, 1);
-  if (qc == NULL) goto err101;
+  if (qc == SISL_NULL) goto err101;
 
   qc->cuopen = iopen;
 
@@ -183,11 +183,11 @@ void
     {
       /* The order of the curve is less than expected. Increase the order. */
 
-      qc2 = NULL;
+      qc2 = SISL_NULL;
       s1750 (qc, ik, &qc2, &kstat);
       if (kstat < 0) goto error;
 
-      if (qc != NULL) freeCurve (qc);
+      if (qc != SISL_NULL) freeCurve (qc);
       qc = qc2;
     }
 
@@ -229,17 +229,17 @@ error:
 out:
   /* Free scratch occupied by local arrays. */
 
-  if (spar2 != NULL)
+  if (spar2 != SISL_NULL)
     freearray (spar2);
-  if (scond != NULL)
+  if (scond != SISL_NULL)
     freearray (scond);
-  if (scoef != NULL)
+  if (scoef != SISL_NULL)
     freearray (scoef);
-  if (sknot != NULL)
+  if (sknot != SISL_NULL)
     freearray (sknot);
-  if (sder != NULL)
+  if (sder != SISL_NULL)
     freearray (sder);
-  if (ltype != NULL)
+  if (ltype != SISL_NULL)
     freearray (ltype);
 
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1880.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1880.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -110,13 +110,13 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
   
   /* Initiate output arrays.  */
   
-  *gpar1 = *gpar2 = NULL;  *wcrv = NULL;
+  *gpar1 = *gpar2 = SISL_NULL;  *wcrv = SISL_NULL;
   
   /* Allocate space for intersection curve array.  */
   
   *jcrv = *jlist;
   *wcrv = newarray(*jlist,SISLIntcurve*);
-  if ((*jcrv) > 0 && *wcrv == NULL) goto err101;
+  if ((*jcrv) > 0 && *wcrv == SISL_NULL) goto err101;
   
   /* Transfer curve-information from vlist array to wcrv array. */
   
@@ -134,8 +134,8 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
       if (kpoint == 0) goto err137;
       spar1 = newarray(ipar1*kpoint,double);
       spar2 = newarray(ipar2*kpoint,double);
-      if ((ipar1 > 0 && spar1 == NULL) ||
-	  (ipar2 > 0 && spar2 == NULL)) goto err101;
+      if ((ipar1 > 0 && spar1 == SISL_NULL) ||
+	  (ipar2 > 0 && spar2 == SISL_NULL)) goto err101;
       
       /* Collect parameter values of the points in this intersection list
 	 and distribute values to the objects in the intersection.         */
@@ -143,7 +143,7 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
       kj = 0;
       stpar1 = spar1;   
       stpar2 = spar2;
-      while (qpt != NULL && qpt -> ipar != -1)
+      while (qpt != SISL_NULL && qpt -> ipar != -1)
 	{
 	  stpar3 = qpt -> epar;
 	  for (kk=0; kk<ipar1; kk++) *(stpar1++) = *(stpar3++);
@@ -167,7 +167,7 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
       /* Create new intersection curve.  */
       
       *ucrv = newIntcurve(kj,ipar1,ipar2,spar1,spar2,ktype);
-      if (*ucrv == NULL) goto err101;
+      if (*ucrv == SISL_NULL) goto err101;
       
       kpt += kj;
       ucrv++;
@@ -182,8 +182,8 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
   
   *gpar1 = newarray(ipar1*kpt,double);
   *gpar2 = newarray(ipar2*kpt,double);
-  if ((ipar1*kpt > 0 && *gpar1 == NULL) 
-      || (ipar2*kpt > 0 && *gpar2 == NULL)) goto err101;
+  if ((ipar1*kpt > 0 && *gpar1 == SISL_NULL) 
+      || (ipar2*kpt > 0 && *gpar2 == SISL_NULL)) goto err101;
   
   /* Copy parameters of single intersection points into output-arrays. */
   
@@ -194,7 +194,7 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
   for (ki=0; ki<(*jpt); ki++)
     {
       qpt = *upt;     
-      if (qpt != NULL)
+      if (qpt != SISL_NULL)
 	{  
 	  if (qpt -> ipar != -1)
 	    {
@@ -218,21 +218,21 @@ void s1880(ipar1,ipar2,jpt,vpoint,jlist,vlist,jpar,gpar1,gpar2,jcrv,
   
   if (kj*ipar1 > 0)
     {
-      if ((*gpar1 = increasearray(*gpar1,kj*ipar1,double)) == NULL) goto err101;
+      if ((*gpar1 = increasearray(*gpar1,kj*ipar1,double)) == SISL_NULL) goto err101;
     }
   else 
     {
-      if (*gpar1 != NULL) freearray(*gpar1);
-      *gpar1 = NULL;
+      if (*gpar1 != SISL_NULL) freearray(*gpar1);
+      *gpar1 = SISL_NULL;
     }
   if (kj*ipar2 > 0)
     {
-      if ((*gpar2 = increasearray(*gpar2,kj*ipar2,double)) == NULL) goto err101;
+      if ((*gpar2 = increasearray(*gpar2,kj*ipar2,double)) == SISL_NULL) goto err101;
     }
   else 
     {
-      if (*gpar2 != NULL) freearray(*gpar2);
-      *gpar2 = NULL;
+      if (*gpar2 != SISL_NULL) freearray(*gpar2);
+      *gpar2 = SISL_NULL;
     }
   
   /* Intersections copied to output format.  */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1119.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1119.c,v 1.2 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -147,23 +147,23 @@ void s1119(ecoef,et1,et2,ik1,in1,ik2,in2,jsimple,jind1,jind2,jstat)
     for (s1=ecoef,kj=0; kj<in2 && ksimple; kj++)
       {
 	ksign = 0;
-	tfirst = DNULL;
+	tfirst = DZERO;
 	
 	for (ki=0; ki<in1-1 && ksimple; ki++,s1++)
 	  {
 	    tdiff = *(s1+1) - *s1;
-	    if (DEQUAL(tdiff,DNULL) )
+	    if (DEQUAL(tdiff,DZERO) )
 	      { 
 		if (kbez == 0) ksimple = 0;
 	      }
-	    else if (DEQUAL(tfirst,DNULL) )
+	    else if (DEQUAL(tfirst,DZERO) )
 	      {
 		/* First none-zero vector, save it. */
 		tfirst = tdiff;
 		tprev  = tdiff;
 	      }
 	    
-	    else if (tprev*tdiff < DNULL)
+	    else if (tprev*tdiff < DZERO)
 	      {
 		tprev = tdiff;
 		ksign++;
@@ -179,15 +179,15 @@ void s1119(ecoef,et1,et2,ik1,in1,ik2,in2,jsimple,jind1,jind2,jstat)
 	       parameter direction, we have found 
 	       the max on the edges. */ 
 	    kconvex1 = 0;
-	    kconcav1 = ((tfirst < DNULL) && kconcav1); 
+	    kconcav1 = ((tfirst < DZERO) && kconcav1); 
 	  }
 	else
 	  {
 	    
 	    kconvex1 = (((ksign == 0) || 
-			 (ksign == 1 && tfirst >= DNULL)) && kconvex1); 
+			 (ksign == 1 && tfirst >= DZERO)) && kconvex1); 
 	    kconcav1 = (((ksign == 0) || 
-			 (ksign == 1 && tfirst <= DNULL)) && kconcav1); 
+			 (ksign == 1 && tfirst <= DZERO)) && kconcav1); 
 	  }
 	
 	ksimple  = ((kconvex1 || kconcav1) && ksimple);
@@ -201,24 +201,24 @@ void s1119(ecoef,et1,et2,ik1,in1,ik2,in2,jsimple,jind1,jind2,jstat)
     for (kj=0; kj<in1 && ksimple; kj++)
       {
 	ksign = 0;
-	tfirst = DNULL;
+	tfirst = DZERO;
 	s1 = ecoef + kj;
 	
 	for (ki=0; ki<in2-1 && ksimple; ki++,s1+=in1)
 	  {
 	    tdiff = *(s1+in1) - *s1;
-	    if (DEQUAL(tdiff,DNULL) )
+	    if (DEQUAL(tdiff,DZERO) )
 	      { 
 		if (kbez == 0) ksimple = 0;
 	      }
-	    else if (DEQUAL(tfirst,DNULL) )
+	    else if (DEQUAL(tfirst,DZERO) )
 	      {
 		/* First none-zero vector, save it. */
 		tfirst = tdiff;
 		tprev  = tdiff;
 	      }
 	    
-	    else if (tprev*tdiff < DNULL)
+	    else if (tprev*tdiff < DZERO)
 	      {
 		tprev = tdiff;
 		ksign++;
@@ -233,15 +233,15 @@ void s1119(ecoef,et1,et2,ik1,in1,ik2,in2,jsimple,jind1,jind2,jstat)
 	       parameter direction, we have found 
 	       the max on the edges. */ 
 	    kconvex2 = 0;
-	    kconcav2 = ((tfirst < DNULL) && kconcav2); 
+	    kconcav2 = ((tfirst < DZERO) && kconcav2); 
 	  }
 	else
 	  {
 	    
 	    kconvex2 = (((ksign == 0) || 
-			 (ksign == 1 && tfirst >= DNULL)) && kconvex2); 
+			 (ksign == 1 && tfirst >= DZERO)) && kconvex2); 
 	    kconcav2 = (((ksign == 0) || 
-			 (ksign == 1 && tfirst <= DNULL)) && kconcav2); 
+			 (ksign == 1 && tfirst <= DZERO)) && kconcav2); 
 	  }
 	ksimple  = ((kconvex2 || kconcav2) && ksimple);
       }

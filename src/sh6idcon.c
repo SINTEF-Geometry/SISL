@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idcon.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idcon.c,v 1.2 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -42,7 +42,7 @@ sh6idcon (pintdat, pintpt1, pintpt2, jstat)
 *********************************************************************
 *
 * PURPOSE    : To connect two intersection points in pintdat into a list.
-*              If pintdat is NULL a new pintdat is also made.
+*              If pintdat is SISL_NULL a new pintdat is also made.
 *              If  one of pintpt is close to an other intersection point
 *              the object pintpt is pointing to is removed, and
 *              pintpt is set to point to the already inserted point.

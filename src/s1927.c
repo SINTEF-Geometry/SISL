@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1927.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1927.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -118,7 +118,7 @@ s1927 (w1, nur, ik, ed, w2, nrc, w3, nlr, ex, ey, jstat)
   /* Allocate output array ex */
 
   *ex = new0array (nn, DOUBLE);
-  if (*ex == NULL)
+  if (*ex == SISL_NULL)
     goto err101;
 
 

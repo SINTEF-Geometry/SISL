@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idklist.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idklist.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -36,7 +36,7 @@ void s6idklist(pintdat,pintlist,jstat)
 *                                                                   
 * PURPOSE    : To remove an intersection list including all intersection points
 *              in the list. The mother pintdat is updated.
-*              If pintdat is empty, pintdat is killed and set to NULL.
+*              If pintdat is empty, pintdat is killed and set to SISL_NULL.
 *
 *
 *
@@ -73,10 +73,10 @@ void s6idklist(pintdat,pintlist,jstat)
   
   /* We have to be sure that we have an intdat structure. */
   
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
     goto out;
   
-  if (pintlist == NULL)
+  if (pintlist == SISL_NULL)
     {
       *jstat = 1;
       goto out;
@@ -97,11 +97,11 @@ void s6idklist(pintdat,pintlist,jstat)
     *jstat = 1;
   else
     {
-      pintlist->plast->pcurve = NULL;
+      pintlist->plast->pcurve = SISL_NULL;
       
       /* Kill all points in the list. */
       for (ki=0,qkillpt=pintlist->pfirst,qnext=qkillpt->pcurve;
-	   qnext!=NULL;
+	   qnext!=SISL_NULL;
 	   qkillpt=qnext,qnext=qnext->pcurve)
 	{
 	  s6idkpt(pintdat,&qkillpt,&qdum1,&qdum2,&kstat);
@@ -111,11 +111,11 @@ void s6idklist(pintdat,pintlist,jstat)
       if (kstat < 0) goto error;
       
       /* Update pintdat. */
-      if ((*pintdat) != NULL)
+      if ((*pintdat) != SISL_NULL)
 	{
 	  (*pintdat)->vlist[knum] = (*pintdat)->vlist[(*pintdat)->ilist-1];
 	  ((*pintdat)->ilist)--;
-	  (*pintdat)->vlist[(*pintdat)->ilist] = NULL;
+	  (*pintdat)->vlist[(*pintdat)->ilist] = SISL_NULL;
 	}
       freeIntlist(pintlist);
     }

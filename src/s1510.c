@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1510.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1510.c,v 1.2 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -90,20 +90,20 @@ void s1510(ps,eyepoint,idim, aepsco, aepsge, jpt, gpar, jcrv, wcurve, jstat)
   int i;
   int trackflag = 0;
   int jtrack;
-  int *pretop=NULL;
-  SISLTrack **wtrack=NULL;
+  int *pretop=SISL_NULL;
+  SISLTrack **wtrack=SISL_NULL;
   int jsurf;
-  SISLIntsurf **wsurf=NULL;
+  SISLIntsurf **wsurf=SISL_NULL;
 
   sh1510(ps, eyepoint, idim, aepsco, aepsge,trackflag,&jtrack,&wtrack,
 	 jpt,gpar,&pretop,jcrv,wcurve,&jsurf,&wsurf,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
   for(i=0; i<jsurf; i++)
     freeIntsurf(wsurf[i]);
-  if(wsurf != NULL) freearray(wsurf);
+  if(wsurf != SISL_NULL) freearray(wsurf);
 
   if(jsurf > 0) 
     *jstat=10;

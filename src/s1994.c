@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1994.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1994.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -68,7 +68,7 @@ void s1994(s1,jstat)
   double tmaxt, tmaxs;
   double tmint, tmins;
   double tdiff;
-  double *scoef=NULL;
+  double *scoef=SISL_NULL;
   double noice = (double)100.0 * REL_COMP_RES;   /* Noice killer */ 
   
   /* Init to  simple case. */
@@ -112,18 +112,18 @@ void s1994(s1,jstat)
 
   /* ALA and UJK 30.10.90, remove noice near by zero */
   
-  if (fabs(tmint) < noice) tmint = DNULL; 
-  if (fabs(tmaxt) < noice) tmaxt = DNULL; 
-  if (fabs(tmins) < noice) tmins = DNULL; 
-  if (fabs(tmaxs) < noice) tmaxs = DNULL; 
+  if (fabs(tmint) < noice) tmint = DZERO; 
+  if (fabs(tmaxt) < noice) tmaxt = DZERO; 
+  if (fabs(tmins) < noice) tmins = DZERO; 
+  if (fabs(tmaxs) < noice) tmaxs = DZERO; 
 
 
   
   
   /* The first derivatives decide directions of possible intersection curves. */
-  if (kbez && (tmint*tmaxt >=DNULL || tmins*tmaxs >=DNULL)) 
+  if (kbez && (tmint*tmaxt >=DZERO || tmins*tmaxs >=DZERO)) 
     *jstat = 1;
-  else if (tmint*tmaxt > DNULL || tmins*tmaxs > DNULL) 
+  else if (tmint*tmaxt > DZERO || tmins*tmaxs > DZERO) 
     *jstat = 1;
   else if (tmint == tmaxt  || tmins == tmaxs) 
     *jstat = 1;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1856.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1856.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -93,14 +93,14 @@ void s1856(ps1,epoint,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   int kpos = 0;            /* Position of error.                           */
   int trackflag = 0;
   int jtrack;
-  int *pretop=NULL;
-  SISLTrack **wtrack=NULL;
+  int *pretop=SISL_NULL;
+  SISLTrack **wtrack=SISL_NULL;
 
   sh1856(ps1,epoint,edir,idim,aepsco,aepsge,trackflag,&jtrack,
 	 &wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
    
   /* 
    * Intersections found.  

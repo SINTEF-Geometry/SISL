@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1350.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1350.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -77,8 +77,8 @@ void s1350(ep,epar,im,idim,ik,rc,jstat)
   int in;
   int jidim;                     /*  j*idim                        */
   int jidimp1;                   /*  (j+1)*idim                    */
-  double *et = NULL;             /* Array for knotvector           */
-  double *ec = NULL;             /* Array for coefficients         */
+  double *et = SISL_NULL;             /* Array for knotvector           */
+  double *ec = SISL_NULL;             /* Array for coefficients         */
   double ikinv;                  /*   1. / ik                      */
   int kclosed;                   /* Used to test if the curve is closed. */
 
@@ -91,7 +91,7 @@ void s1350(ep,epar,im,idim,ik,rc,jstat)
   in = (ik-1)*im + 2 - ik;
   et = newarray(in+ik, DOUBLE);
   ec = newarray(in*idim, DOUBLE);
-  if (et==NULL || ec == NULL) goto err101;
+  if (et==SISL_NULL || ec == SISL_NULL) goto err101;
 
   /* Perform the one and only division required 
      in this routine */
@@ -137,7 +137,7 @@ void s1350(ep,epar,im,idim,ik,rc,jstat)
   /* Set last knot */
 
   et[kit] = ts;
-  if ((*rc = newCurve(in,ik,et,ec,1,idim,2)) == NULL)
+  if ((*rc = newCurve(in,ik,et,ec,1,idim,2)) == SISL_NULL)
         goto err101;
 
   /* Test if the input data is closed.  */
@@ -155,8 +155,8 @@ void s1350(ep,epar,im,idim,ik,rc,jstat)
 
   err101 :
     *jstat = -101;
-    if (et != NULL) freearray(et);  
-    if (ec != NULL) freearray(ec);
+    if (et != SISL_NULL) freearray(et);  
+    if (ec != SISL_NULL) freearray(ec);
     goto out;
 
   /* Error in input */

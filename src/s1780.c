@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1780.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1780.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 
@@ -79,8 +79,8 @@ void s1780(pc1,pc2,vipt,jstat)
   int kder;          /* Number of derivatives of curve to evaluate.       */
   int klefs = 0;     /* Parameter used when evaluating first curve.       */
   int kleft = 0;     /* Parameter used when evaluating second curve.      */
-  double *sder1 = NULL; /* Value of first curve in given parameter value. */
-  double *sder2 = NULL; /* Value of second curve in given parameter value.*/
+  double *sder1 = SISL_NULL; /* Value of first curve in given parameter value. */
+  double *sder2 = SISL_NULL; /* Value of second curve in given parameter value.*/
   double tpar1,tpar2;   /* Parameter values in intersection points.       */
   double tang;          /* An angel beetween to vectors.                  */
 
@@ -126,7 +126,7 @@ void s1780(pc1,pc2,vipt,jstat)
 
   /* Allocate space for local arrays.  */
 
-  if ((sder1 = newarray((2*(kder+1)*kdim),double)) == NULL) goto err101;
+  if ((sder1 = newarray((2*(kder+1)*kdim),double)) == SISL_NULL) goto err101;
   sder2 = sder1 + (kder+1)*kdim;
 
 
@@ -214,5 +214,5 @@ error : *jstat = kstat;
 
   /* Free space occupied by local arrays.  */
 
-  if (sder1 != NULL) freearray(sder1);
+  if (sder1 != SISL_NULL) freearray(sder1);
 }

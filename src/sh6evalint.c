@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6evalint.c,v 1.2 1994-09-05 14:33:08 pfu Exp $
+ * $Id: sh6evalint.c,v 1.3 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -84,11 +84,11 @@ sh6evalint (ob1, ob2, eimpli, ideg,
   int silhouett;		/* Flag silhouett case                    */
   int ki;			/* Variable used in loop                  */
   int ksize;			/* Size of output from s1421 or getgeom   */
-  double *geom1 = NULL;		/* Output values from s1421 or getgeom    */
+  double *geom1 = SISL_NULL;		/* Output values from s1421 or getgeom    */
   double con_tang[3];		/* Constant tangent.                      */
-  double *norm1 = NULL;		/* Output values from s1421 or getgeom    */
-  double *geom2 = NULL;		/* Output values from s1421 or getgeom    */
-  double *norm2 = NULL;		/* Output values from s1421 or getgeom    */
+  double *norm1 = SISL_NULL;		/* Output values from s1421 or getgeom    */
+  double *geom2 = SISL_NULL;		/* Output values from s1421 or getgeom    */
+  double *norm2 = SISL_NULL;		/* Output values from s1421 or getgeom    */
   double normimpl[3];		/* Normal of impl surf                    */
   double right_dir[3];		/* Right direction of 3D intersect. curve */
   double dot;			/* Scalar product */
@@ -97,8 +97,8 @@ sh6evalint (ob1, ob2, eimpli, ideg,
   double min_hp_ang = 0.00000000001;
   *jstat = 0;
   con_tang[0] = (double) 1.0;
-  con_tang[1] = DNULL;
-  con_tang[2] = DNULL;
+  con_tang[1] = DZERO;
+  con_tang[2] = DZERO;
 
 
   if (ob1->iobj != SISLSURFACE && ob1->iobj != SISLCURVE)
@@ -192,7 +192,7 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 	    if (kstat < 0)
 	      goto error;
 
-	    if ((dot = s6scpr (right_dir, *curve_3d + 3, 3)) < DNULL)
+	    if ((dot = s6scpr (right_dir, *curve_3d + 3, 3)) < DZERO)
 	      {
 		 /* Change direction for tangent */
 		 for (ki = 0; ki < 3; ki++)
@@ -223,9 +223,9 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 	      freearray (pt->geo_data_1);
 	    if (pt->geo_data_2)
 	      freearray (pt->geo_data_2);
-	    pt->geo_data_1 = NULL;
+	    pt->geo_data_1 = SISL_NULL;
 	    pt->size_1 = 0;
-	    pt->geo_data_2 = NULL;
+	    pt->geo_data_2 = SISL_NULL;
 	    pt->size_2 = 0;
 
 	    /* Get the right values are computed */
@@ -265,14 +265,14 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 		   freearray (pt->geo_data_1);
 		 if (pt->geo_data_2)
 		   freearray (pt->geo_data_2);
-		 pt->geo_data_1 = NULL;
+		 pt->geo_data_1 = SISL_NULL;
 		 pt->size_1 = 0;
-		 pt->geo_data_2 = NULL;
+		 pt->geo_data_2 = SISL_NULL;
 		 pt->size_2 = 0;
 
 
 		 if ((pt->geo_data_1 = newarray (ksize, DOUBLE))
-		     == NULL)
+		     == SISL_NULL)
 		   goto err101;
 		 pt->size_1 = ksize;
 		 geom1 = pt->geo_data_1;
@@ -336,7 +336,7 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 	       if (pt->iinter == SI_ORD) pt->iinter = SI_SING;
 	    }
 	    else
-	    if ((dot = s6scpr (right_dir, *curve_3d + 3, 3)) < DNULL)
+	    if ((dot = s6scpr (right_dir, *curve_3d + 3, 3)) < DZERO)
 	      {
 		 /* Change direction for tangent */
 		 for (ki = 0; ki < 3; ki++)

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1017.c,v 1.2 1994-11-17 11:59:23 pfu Exp $
+ * $Id: s1017.c,v 1.3 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -91,18 +91,18 @@ s1017 (pc, rc, apar, jstat)
   int ki;			/* Control variable in loop.                  */
   int kj, kj1, kj2;		/* Control variable in loop.                  */
   double *s1;           	/* Pointers used in loop.                     */
-  double *st = NULL;		/* The first new knot-vector.                 */
-  double *salfa = NULL;		/* A line of the trans.-matrix.               */
-  double *scoef = NULL;		/* The first new vertice.                     */
+  double *st = SISL_NULL;		/* The first new knot-vector.                 */
+  double *salfa = SISL_NULL;		/* A line of the trans.-matrix.               */
+  double *scoef = SISL_NULL;		/* The first new vertice.                     */
   double *sp;			/* Help array for use in s1701.               */
   double *ecoef;                /* Pointer to input curve ecoef/rcoef vector. */
-  SISLCurve *qc = NULL;		/* Pointer to new curve-object.               */
+  SISLCurve *qc = SISL_NULL;		/* Pointer to new curve-object.               */
 
 
 
   /* Make sure the returned pointer is valid. */
 
-  *rc = NULL;
+  *rc = SISL_NULL;
 
 
   /* Check that we have a curve. */
@@ -152,7 +152,7 @@ s1017 (pc, rc, apar, jstat)
      line of the basic transformation matrix and for a help array of
      kk elements.*/
 
-  if ((salfa = newarray (2 * kk, double)) == NULL)
+  if ((salfa = newarray (2 * kk, double)) == SISL_NULL)
     goto err101;
 
   sp = salfa + kk;
@@ -201,9 +201,9 @@ s1017 (pc, rc, apar, jstat)
 
   /* Allocating the new arrays to the new curve. */
 
-  if ((scoef = newarray (kn1 * kdim, double)) == NULL)
+  if ((scoef = newarray (kn1 * kdim, double)) == SISL_NULL)
     goto err101;
-  if ((st = newarray (kn1 + kk, double)) == NULL)
+  if ((st = newarray (kn1 + kk, double)) == SISL_NULL)
     goto err101;
 
 
@@ -265,7 +265,7 @@ s1017 (pc, rc, apar, jstat)
   /* Allocating new curve-objects.*/
 
 
-  if ((qc = newCurve (kn1, kk, st, scoef, pc->ikind, pc->idim, 2)) == NULL)
+  if ((qc = newCurve (kn1, kk, st, scoef, pc->ikind, pc->idim, 2)) == SISL_NULL)
     goto err101;
 
 

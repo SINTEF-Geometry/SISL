@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1990.c,v 1.2 1994-11-07 10:25:35 vsk Exp $
+ * $Id: s1990.c,v 1.3 2001-03-19 15:58:58 afr Exp $
  *
  */
 
@@ -97,7 +97,7 @@ void s1990(ps,aepsge,jstat)
   int k1,k2,k3,k4;  /* Control variables in loop. 			 */
   int ki;           /* Control variable in loop.  			 */
   int lcone[4];     /* Flag telling if the cone has been generated.       */
-  double *t=NULL;   /* Allocating t[5][kdim]. Five tangents around the
+  double *t=SISL_NULL;   /* Allocating t[5][kdim]. Five tangents around the
 		       patch, the first and the last is the same.         */
   double *tn;       /* Allocating tn[4][kdim]. Four normals in the corner
 		       of the patch.					 */
@@ -122,7 +122,7 @@ void s1990(ps,aepsge,jstat)
   
   /* Test if the surfaces already have been treated.  */
   
-  if (ps->pdir != NULL) goto out;
+  if (ps->pdir != SISL_NULL) goto out;
   
   /* Initialate dimentions. */
   
@@ -138,14 +138,14 @@ void s1990(ps,aepsge,jstat)
     
   /*Make a new direction cone. */
   
-  if ((ps->pdir = newdir(kdim)) == NULL) goto err101;
+  if ((ps->pdir = newdir(kdim)) == SISL_NULL) goto err101;
   
-  ps->pdir->aang = DNULL;
-  for (k1=0;k1<kdim;k1++) ps->pdir->ecoef[k1] = DNULL;
+  ps->pdir->aang = DZERO;
+  for (k1=0;k1<kdim;k1++) ps->pdir->ecoef[k1] = DZERO;
   
   /* Allocate scratch for smoothed coefficients.  */
   
-  if ((ps->pdir->esmooth = newarray(kn1*kn2*kdim,DOUBLE)) == NULL) goto err101;
+  if ((ps->pdir->esmooth = newarray(kn1*kn2*kdim,DOUBLE)) == SISL_NULL) goto err101;
   scoef = ps->pdir->esmooth;
   
   /* Compute coefficients of smoothed curve.  */
@@ -157,7 +157,7 @@ void s1990(ps,aepsge,jstat)
   
   /* Allocate local used matrices, t[5][kdim] and tn[4][kdim]. */
   
-  if ((t = newarray(14*kdim,double)) == NULL) goto err101;
+  if ((t = newarray(14*kdim,double)) == SISL_NULL) goto err101;
   tn   = t + 5*kdim;
   tsen = tn + 4*kdim;
   ttan = tsen + 4*kdim;
@@ -167,8 +167,8 @@ void s1990(ps,aepsge,jstat)
   for (kver=0; kver < (kn2-1); kver++)
     for (khor=0; khor < (kn1-1); khor++)
       {
-	slen[0] = slen[1] = slen[2] = slen[3] = DNULL;
-	scorn[0] = scorn[1] = scorn[2] = scorn[3] = DNULL;
+	slen[0] = slen[1] = slen[2] = slen[3] = DZERO;
+	scorn[0] = scorn[1] = scorn[2] = scorn[3] = DZERO;
 	
 	/* Here we make the tangents in each corner of the patch,
            and in direction with the clock. The first and the last
@@ -304,7 +304,7 @@ void s1990(ps,aepsge,jstat)
 	
 	for (kcount=0, ki=0, k1=0; k1 < kdim4; k1+=kdim, ki++)
 	  {
-	    for (tlen=DNULL,k2=0,k3=1,k4=2; k2 < kdim; k2++,k3++,k4++)
+	    for (tlen=DZERO,k2=0,k3=1,k4=2; k2 < kdim; k2++,k3++,k4++)
 	      {
 		if(k3 == kdim) k3 = 0;
 		if(k4 == kdim) k4 = 0;
@@ -332,7 +332,7 @@ void s1990(ps,aepsge,jstat)
 	  {
 	    /* Computing the center coordinates of the cone.*/
 	    
-	    for (tlen=DNULL,k1=0; k1 < kdim; k1++)
+	    for (tlen=DZERO,k1=0; k1 < kdim; k1++)
 	      {
 		tmin = (double)1.0;
 		tmax = - tmin;
@@ -346,7 +346,7 @@ void s1990(ps,aepsge,jstat)
 		tlen += ps->pdir->ecoef[k1]*ps->pdir->ecoef[k1];
 	      }
 	    tlen = sqrt(tlen);
-	    if (tlen > DNULL)
+	    if (tlen > DZERO)
 	      for (k1=0; k1 < kdim; k1++) ps->pdir->ecoef[k1] /= tlen;
 	    else
 	      /* KYS 070494 : 'continue' replaced by the following block {} */
@@ -363,19 +363,19 @@ void s1990(ps,aepsge,jstat)
 	    
 	    /* Computing the angle of the cone. */
 	    
-	    for (ps->pdir->aang=DNULL,k1=0; k1<kdim4; k1+=kdim)
+	    for (ps->pdir->aang=DZERO,k1=0; k1<kdim4; k1+=kdim)
 	      {
-		 for (tnlen=DNULL,tlen=DNULL,k2=0;k2<kdim;k2++)
+		 for (tnlen=DZERO,tlen=DZERO,k2=0;k2<kdim;k2++)
 		   {
 		      tlen += ps->pdir->ecoef[k2]*tn[k1+k2];
 		      tnlen += tn[k1+k2]*tn[k1+k2];
 		   }
 		
-		if (tlen >= DNULL) tlen = min((double)1.0,tlen);
+		if (tlen >= DZERO) tlen = min((double)1.0,tlen);
 		else               tlen = max((double)-1.0,tlen);
 		
 		tlen = acos(tlen);
-		if (sqrt(tnlen) < aepsge) tlen = DNULL;
+		if (sqrt(tnlen) < aepsge) tlen = DZERO;
 		
 		ps->pdir->aang = max(ps->pdir->aang,tlen);
 	      }
@@ -388,17 +388,17 @@ void s1990(ps,aepsge,jstat)
 	      /* Computing the angle beetween the senter of the cone
 		 and the normal. */
 	      
-	      for (tnlen=DNULL,tang=DNULL,k2=0;k2<kdim;k2++)
+	      for (tnlen=DZERO,tang=DZERO,k2=0;k2<kdim;k2++)
 		{
 		   tang += ps->pdir->ecoef[k2]*tn[k1+k2];
 		   tnlen += tn[k1+k2]*tn[k1+k2];
 		}
 	      
-	      if (tang >= DNULL) tang = MIN((double)1.0,tang);
+	      if (tang >= DZERO) tang = MIN((double)1.0,tang);
 	      else               tang = MAX((double)-1.0,tang);
 	      
 	      tang = acos(tang);
-	      if (sqrt(tnlen) < aepsge) tang = DNULL;
+	      if (sqrt(tnlen) < aepsge) tang = DZERO;
 	      
 	      if (tang + ps->pdir->aang >= PI)
 		{
@@ -421,7 +421,7 @@ void s1990(ps,aepsge,jstat)
 		  t1 = (tang - ps->pdir->aang)/((double)2*tang);
 		  t2 = (double)1 - t1;
 		  
-		  for (tlen=DNULL,k2=0; k2<kdim; k2++)
+		  for (tlen=DZERO,k2=0; k2<kdim; k2++)
 		    {
 		      ps->pdir->ecoef[k2] = 
 			ps->pdir->ecoef[k2]*t2 + tn[k1+k2]*t1;
@@ -462,9 +462,9 @@ void s1990(ps,aepsge,jstat)
 	{
 	  /* Degenerated to a point. */
 	  ps->pdir->igtpi = 0;
-	  ps->pdir->aang  = DNULL;
+	  ps->pdir->aang  = DZERO;
 	  ps->pdir->ecoef[0] = (double) 1.0;
-	  for (k1 = 1; k1 < kdim; k1++) ps->pdir->ecoef[k1] = DNULL;
+	  for (k1 = 1; k1 < kdim; k1++) ps->pdir->ecoef[k1] = DZERO;
 	}
       else
 	{
@@ -481,9 +481,9 @@ void s1990(ps,aepsge,jstat)
 	    {
 	      /* Degenerated to a line. */
 	      ps->pdir->igtpi = 0;
-	      ps->pdir->aang  = DNULL;
+	      ps->pdir->aang  = DZERO;
 	      ps->pdir->ecoef[0] = (double) 1.0;
-	      for (k1 = 1; k1 < kdim; k1++) ps->pdir->ecoef[k1] = DNULL;
+	      for (k1 = 1; k1 < kdim; k1++) ps->pdir->ecoef[k1] = DZERO;
 	    }
 	  else
 	    {
@@ -518,7 +518,7 @@ void s1990(ps,aepsge,jstat)
   /* Free local used memory. */
   
   out:    
-    if (t != NULL) freearray(t);
+    if (t != SISL_NULL) freearray(t);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -584,7 +584,7 @@ static void s1990_s9edg(et,etan,esen,aepsge,cang,idim,jstat)
   
   /* Normalizing the tangent. */
   
-  for (tlen = DNULL,ki=0; ki < idim; ki++)
+  for (tlen = DZERO,ki=0; ki < idim; ki++)
     {
       etan[ki] = et[ki];
       tlen += etan[ki]*etan[ki];
@@ -603,10 +603,10 @@ static void s1990_s9edg(et,etan,esen,aepsge,cang,idim,jstat)
   /* Computing the angle beetween the senter of the cone
      and the tangent. */
   
-  for (tang=DNULL,ki=0;ki<idim;ki++)
+  for (tang=DZERO,ki=0;ki<idim;ki++)
     tang += esen[ki]*etan[ki];
   
-  if (tang >= DNULL) tang = min((double)1.0,tang);
+  if (tang >= DZERO) tang = min((double)1.0,tang);
   else               tang = max((double)-1.0,tang);
   
   tang = acos(tang);
@@ -630,14 +630,14 @@ static void s1990_s9edg(et,etan,esen,aepsge,cang,idim,jstat)
       t1 = (tang - *cang)/((double)2*tang);
       t2 = (double)1 - t1;
       
-      for (tlen=DNULL,ki=0; ki<idim; ki++)
+      for (tlen=DZERO,ki=0; ki<idim; ki++)
         {
 	  esen[ki] = esen[ki]*t2 + etan[ki]*t1;
 	  tlen += esen[ki]*esen[ki];
         }
       tlen = sqrt(tlen);
       
-      if (tlen > DNULL)
+      if (tlen > DZERO)
 	for (ki=0; ki < idim; ki++) esen[ki] /= tlen;
       else
 	{

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1386.c,v 1.3 1994-10-21 16:30:52 pfu Exp $
+ * $Id: s1386.c,v 1.4 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -100,10 +100,10 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 *
 **********************************************************************/
 {
-  SISLCurve *qc1 = NULL;      /* Temporary curve                     */
-  SISLCurve *qc2 = NULL;      /* Temporary curve                     */
-  SISLCurve *qc3 = NULL;      /* Temporary curve                     */
-  SISLCurve *qc4 = NULL;      /* Temporary curve                     */
+  SISLCurve *qc1 = SISL_NULL;      /* Temporary curve                     */
+  SISLCurve *qc2 = SISL_NULL;      /* Temporary curve                     */
+  SISLCurve *qc3 = SISL_NULL;      /* Temporary curve                     */
+  SISLCurve *qc4 = SISL_NULL;      /* Temporary curve                     */
 
   int kk1;                    /* Order in first parameter direction  */
   int kk2;                    /* Order in second parameter direction */
@@ -112,18 +112,18 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   int kdim;                   /* Dimension used in temporary calc    */
   int kstat;                  /* Local parameter value               */
   int kpos=0;                 /* Position of error                   */
-  double *st1 = NULL;         /* Pointer to knot vector              */
-  double *st2 = NULL;         /* Pointer to knot vector              */
-  double *scoef = NULL;       /* Pointer to coefficients             */
+  double *st1 = SISL_NULL;         /* Pointer to knot vector              */
+  double *st2 = SISL_NULL;         /* Pointer to knot vector              */
+  double *scoef = SISL_NULL;       /* Pointer to coefficients             */
 
   /* NURBS variables: */
 
-  SISLSurf *rat=NULL;         /* The denominator surface.            */
-  double *ratcoef=NULL;       /* The vertices of rat.                */
+  SISLSurf *rat=SISL_NULL;         /* The denominator surface.            */
+  double *ratcoef=SISL_NULL;       /* The vertices of rat.                */
   int ki, kj, kl, km;         /* Index in for loop.                  */
   int rdim;                   /* Rational dimension.                 */
-  double *coef1 = NULL;       /* Pointer to coefficients.            */
-  double *coef2 = NULL;       /* Vertices after derivation in first
+  double *coef1 = SISL_NULL;       /* Pointer to coefficients.            */
+  double *coef2 = SISL_NULL;       /* Vertices after derivation in first
 				 direction.                          */
   double eps;                 /* Knot equality resolution.               */
   int multadd;                /* Added multiplicity of interior knots.   */
@@ -136,12 +136,12 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   int left1 = 0;              /* Interval indicator.                     */
   int left2 = 0;              /* Interval indicator.                     */
   double par[2];              /* Parameter values used for interpolation */
-  double *par1 = NULL;        /* Parameter values used for interpolation */
-  double *par2 = NULL;        /* Parameter values used for interpolation */
-  int *der1 = NULL;           /* The derivative indicators (= 0).        */
-  int *der2 = NULL;           /* The derivative indicators (= 0).        */
-  double *deriv = NULL;       /* The derivates returned by s1221.        */
-  double *tau = NULL;         /* Interpolation points.                   */
+  double *par1 = SISL_NULL;        /* Parameter values used for interpolation */
+  double *par2 = SISL_NULL;        /* Parameter values used for interpolation */
+  int *der1 = SISL_NULL;           /* The derivative indicators (= 0).        */
+  int *der2 = SISL_NULL;           /* The derivative indicators (= 0).        */
+  double *deriv = SISL_NULL;       /* The derivates returned by s1221.        */
+  double *tau = SISL_NULL;         /* Interpolation points.                   */
   int iopen = TRUE;           /* Open flag.                              */
   int in;                     /* Number of vertices in interpolation.    */
   int inlr = 0, inrc = 0;
@@ -149,7 +149,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 
   /* Check that we have a surface to differentiable. */
 
-  *rsnew = NULL;  /* Must be valid incase of error exit. */
+  *rsnew = SISL_NULL;  /* Must be valid incase of error exit. */
 
   if (!ps) goto err150;
 
@@ -173,7 +173,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 	ratcoef[kj] = ps->rcoef[(kj + 1)*rdim - 1];
      rat = newSurf(ps->in1,ps->in2, ps->ik1,ps->ik2, ps->et1,
 		   ps->et2,ratcoef, 1, 1, 1);
-     if (ratcoef != NULL) freearray(ratcoef);
+     if (ratcoef != SISL_NULL) freearray(ratcoef);
 
 
 
@@ -222,7 +222,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      /* Resize new knot vector st1 */
 
      st1 = increasearray(st1,kn1+kk1,DOUBLE);
-     if (st1 == NULL) goto err101;
+     if (st1 == SISL_NULL) goto err101;
 
      /* Calculate parameter values and derivate indicators. */
 
@@ -280,7 +280,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      /* Resize new knot vector st2 */
 
      st2 = increasearray(st2,kn2+kk2,DOUBLE);
-     if (st2 == NULL) goto err101;
+     if (st2 == SISL_NULL) goto err101;
 
      /* Calculate parameter values and derivate indicators. */
 
@@ -295,7 +295,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 
      deriv = newarray((ider1 + 1)*(ider2 + 1)*kdim, DOUBLE);
      tau = newarray(rdim*kn1*kn2, DOUBLE);
-     if (tau == NULL) goto err101;
+     if (tau == SISL_NULL) goto err101;
 
      km = 0;
      for (kj=0 ; kj<kn1 ; kj++)
@@ -335,7 +335,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 	   }
        }
 
-     if (scoef != NULL) freearray(scoef);
+     if (scoef != SISL_NULL) freearray(scoef);
 
      /* Solve the interpolation equation in the first parameter direction. */
 
@@ -361,7 +361,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      kdim = (ps->in1)*(ps->idim);
 
      qc1 = newCurve(ps->in2,ps->ik2,ps->et2,ps->ecoef,1,kdim,1);
-     if (qc1 == NULL) goto err101;
+     if (qc1 == SISL_NULL) goto err101;
 
      /* Make the derivative in the second parameter direction */
 
@@ -373,14 +373,14 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      kk2 = qc2 -> ik;
      kn2 = qc2 -> in;
      st2 = newarray(kk2+kn2,DOUBLE);
-     if (st2 == NULL) goto err101;
+     if (st2 == SISL_NULL) goto err101;
 
      memcopy(st2,qc2->et,kk2+kn2,DOUBLE);
 
      /* Allocate space for turned parameter directions */
 
      scoef = newarray((kn1*kn2 + kn2*ider1)*(ps->idim),DOUBLE);
-     if (scoef == NULL) goto err101;
+     if (scoef == SISL_NULL) goto err101;
 
      /* Turn parameter directions */
 
@@ -392,7 +392,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      kdim = kn2*(ps->idim);
 
      qc3 = newCurve(ps->in1,ps->ik1,ps->et1,scoef,1,kdim,1);
-     if (qc3 == NULL) goto err101;
+     if (qc3 == SISL_NULL) goto err101;
 
      /* Make the derivative in the first parameter direction */
 
@@ -405,7 +405,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      kk1 = qc4 -> ik;
      kn1 = qc4 -> in;
      st1 = newarray(kk1+kn1,DOUBLE);
-     if (st1 == NULL) goto err101;
+     if (st1 == SISL_NULL) goto err101;
 
      memcopy(st1,qc4->et,kk1+kn1,DOUBLE);
 
@@ -417,7 +417,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
      /* Create surface object containing the differentiated of the surface */
 
      *rsnew = newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,ps->ikind,(ps->idim),1);
-     if (*rsnew == NULL) goto err101;
+     if (*rsnew == SISL_NULL) goto err101;
 
   }
 
@@ -454,15 +454,15 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   /* Free local used memory. */
 
  out:
-  if (qc1 != NULL) freeCurve(qc1);
-  if (qc2 != NULL) freeCurve(qc2);
-  if (qc3 != NULL) freeCurve(qc3);
-  if (qc4 != NULL) freeCurve(qc4);
+  if (qc1 != SISL_NULL) freeCurve(qc1);
+  if (qc2 != SISL_NULL) freeCurve(qc2);
+  if (qc3 != SISL_NULL) freeCurve(qc3);
+  if (qc4 != SISL_NULL) freeCurve(qc4);
   if (ps->ikind != 2 && ps->ikind != 4)
   {
-     if (st1 != NULL) freearray(st1);
-     if (st2 != NULL) freearray(st2);
-     if (scoef != NULL) freearray(scoef);
+     if (st1 != SISL_NULL) freearray(st1);
+     if (st2 != SISL_NULL) freearray(st2);
+     if (scoef != SISL_NULL) freearray(scoef);
   }
   else
   {
@@ -473,9 +473,9 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
 
     if (rat) freeSurf(rat);
 
-    if (tau != NULL) freearray(tau);
+    if (tau != SISL_NULL) freearray(tau);
 
-    if (deriv != NULL) freearray(deriv);
+    if (deriv != SISL_NULL) freearray(deriv);
   }
 
   return;

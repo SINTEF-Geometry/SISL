@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1783.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1783.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -135,7 +135,7 @@ sh1783 (pc1, pc2, aepsge, epar, idir1, idir2, elast, enext, jstat)
   double txlengthend, tylengthend;	/* Length of 1st derivative at start of segment */
   double txincre, tyincre;	/* Parameter value increment */
   double txmax, tymax;		/* Local maximal step length                       */
-  double tdist = DNULL;		/* Distance */
+  double tdist = DZERO;		/* Distance */
   double tpos;			/* New iteration  point on curve pc2     */
 
   /* Pointer to curve evaluator routines */
@@ -276,12 +276,12 @@ sh1783 (pc1, pc2, aepsge, epar, idir1, idir2, elast, enext, jstat)
       /* Compute increment in the parameter values.  Use REL_PAR_RES if the
          tangent has zero length.  */
 
-      if (DEQUAL (txlengthend, DNULL))
+      if (DEQUAL (txlengthend, DZERO))
 	txincre = REL_PAR_RES;
       else
 	txincre = MIN (tstep / txlengthend, txmaxinc);
 
-      if (DEQUAL (tylengthend, DNULL))
+      if (DEQUAL (tylengthend, DZERO))
 	tyincre = REL_PAR_RES;
       else
 	tyincre = MIN (tstep / tylengthend, tymaxinc);
@@ -295,7 +295,7 @@ sh1783 (pc1, pc2, aepsge, epar, idir1, idir2, elast, enext, jstat)
 	{
 	  txincre = st1[kleftc1 + 1] - tx1;
 	  tstep = txincre * txlengthend;
-	  tyincre = (tylengthend > DNULL) ? tstep / tylengthend : REL_PAR_RES;
+	  tyincre = (tylengthend > DZERO) ? tstep / tylengthend : REL_PAR_RES;
 	  kchange = 0;
 	}
 
@@ -310,7 +310,7 @@ sh1783 (pc1, pc2, aepsge, epar, idir1, idir2, elast, enext, jstat)
 	{
 	  txincre = idir1 * (st1[kleftc1] - tx1);
 	  tstep = txincre * txlengthend;
-	  tyincre = (tylengthend > DNULL) ? tstep / tylengthend : REL_PAR_RES;
+	  tyincre = (tylengthend > DZERO) ? tstep / tylengthend : REL_PAR_RES;
 	  kchange = 0;
 	}
 
@@ -323,7 +323,7 @@ sh1783 (pc1, pc2, aepsge, epar, idir1, idir2, elast, enext, jstat)
 	{
 	  tyincre = st2[kleftc2 + 1] - ty1;
 	  tstep = tyincre * tylengthend;
-	  txincre = (txlengthend > DNULL) ? tstep / txlengthend : REL_PAR_RES;
+	  txincre = (txlengthend > DZERO) ? tstep / txlengthend : REL_PAR_RES;
 	  kchange = 1;
 	}
 
@@ -340,7 +340,7 @@ sh1783 (pc1, pc2, aepsge, epar, idir1, idir2, elast, enext, jstat)
 	{
 	  tyincre = idir2 * (st2[kleftc2] - ty1);
 	  tstep = tyincre * tylengthend;
-	  txincre = (txlengthend > DNULL) ? tstep / txlengthend : REL_PAR_RES;
+	  txincre = (txlengthend > DZERO) ? tstep / txlengthend : REL_PAR_RES;
 	  kchange = 1;
 	}
 
@@ -519,7 +519,7 @@ sh1783_s9relax (fevalc1, fevalc2, pc1, pc2, ider, aepsge, ax1, jleft1, eder1,
   int kstat = 0;		/* Status variable.  */
   double tstart;		/* Start parameter value of curve 2.  */
   double tend;			/* End parameter value of curve 2.    */
-  SISLPoint *qpoint = NULL;	/* SISLPoint instance used to represent point on curve 1. */
+  SISLPoint *qpoint = SISL_NULL;	/* SISLPoint instance used to represent point on curve 1. */
 
   /* Find endpoints of the parameter interval of curve 2.  */
 
@@ -534,7 +534,7 @@ sh1783_s9relax (fevalc1, fevalc2, pc1, pc2, ider, aepsge, ax1, jleft1, eder1,
   /* Find closest point on curve 2 to eder1 */
 
   qpoint = newPoint (eder1, pc1->idim, 0);
-  if (qpoint == NULL) goto err101;
+  if (qpoint == SISL_NULL) goto err101;
 
   s1771 (qpoint, pc2, aepsge, tstart, tend, anext, cx2, &kstat);
   if (kstat < 0)
@@ -561,7 +561,7 @@ error:
   goto out;
 
 out:
-  if (qpoint != NULL)
+  if (qpoint != SISL_NULL)
     freePoint (qpoint);
 
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1616.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1616.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -85,11 +85,11 @@ void s1616(epoint, inbpnt, idim, eptyp, econic, jstat)
   int kperm = 0;
   int ktyp;
   int kdir;
-  double *smatrix = NULL;
-  double *save = NULL;
-  double *sright = NULL;
+  double *smatrix = SISL_NULL;
+  double *save = SISL_NULL;
+  double *sright = SISL_NULL;
   double tx, ty, tdx, tdy;
-  int *npiv = NULL;
+  int *npiv = SISL_NULL;
   double solu[6];
   double tdiff;
   double tdum;
@@ -102,19 +102,19 @@ void s1616(epoint, inbpnt, idim, eptyp, econic, jstat)
   /* Allocate local arrays. */
 
   smatrix = newarray (inbpnt * inbpnt, DOUBLE);
-  if (smatrix == NULL)
+  if (smatrix == SISL_NULL)
     goto err101;
 
   sright = newarray (inbpnt, DOUBLE);
-  if (sright == NULL)
+  if (sright == SISL_NULL)
     goto err101;
 
   save = newarray (inbpnt * inbpnt, DOUBLE);
-  if (save == NULL)
+  if (save == SISL_NULL)
     goto err101;
 
   npiv = newarray (inbpnt, INT);
-  if (npiv == NULL)
+  if (npiv == SISL_NULL)
     goto error;
 
   kn = inbpnt + 1;
@@ -390,13 +390,13 @@ out:
 
   /* Free arrays. */
 
-  if (smatrix != NULL)
+  if (smatrix != SISL_NULL)
     freearray (smatrix);
-  if (save != NULL)
+  if (save != SISL_NULL)
     freearray (save);
-  if (sright != NULL)
+  if (sright != SISL_NULL)
     freearray (sright);
-  if (npiv != NULL)
+  if (npiv != SISL_NULL)
     freearray (npiv);
 
   return;

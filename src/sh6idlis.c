@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idlis.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idlis.c,v 1.2 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -92,7 +92,7 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 
   /* If we do not have any intersection data we just return. */
 
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
     goto out;
   if ((po1->iobj == SISLSURFACE && po1->s1->idim == 2) ||
       (po2->iobj == SISLSURFACE && po2->s1->idim == 2))
@@ -425,7 +425,7 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 		       
 		       if (((*pintdat)->vlist =
 			    increasearray ((*pintdat)->vlist, (*pintdat)->ilmax,
-					   SISLIntlist *)) == NULL)
+					   SISLIntlist *)) == SISL_NULL)
 			  goto err101;
 		    }
 		    
@@ -434,7 +434,7 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 		    
 		    /* Making a new list structure. */
 		    if (((*pintdat)->vlist[list_index] =
-			 newIntlist (pstart, prev, ktype)) == NULL)
+			 newIntlist (pstart, prev, ktype)) == SISL_NULL)
 		       goto err101;
 		    (*pintdat)->vlist[list_index]->inumb = knum;
 		    (*pintdat)->vlist[list_index]->ind_first = indstart;
@@ -462,7 +462,7 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 	      pstart = prev = (*pintdat)->vpoint[ki1];
 	      
 	      sh6getnhbrs (prev, &pcurr, &pnext, &kstat);
-	      if (kstat < 0 || pcurr == NULL)
+	      if (kstat < 0 || pcurr == SISL_NULL)
 		 goto error;
 	      knum = 1;
 	      
@@ -505,7 +505,7 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 		 
 		 if (((*pintdat)->vlist =
 		      increasearray ((*pintdat)->vlist, (*pintdat)->ilmax,
-				     SISLIntlist *)) == NULL)
+				     SISLIntlist *)) == SISL_NULL)
 		    goto err101;
 	      }
 	      
@@ -514,7 +514,7 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 	      
 	      /* Making a new list structure. */
 	      if (((*pintdat)->vlist[list_index] =
-		   newIntlist (pstart, prev, ktype)) == NULL)
+		   newIntlist (pstart, prev, ktype)) == SISL_NULL)
 		 goto err101;
 	      (*pintdat)->vlist[list_index]->inumb = knum;
 	      (*pintdat)->vlist[list_index]->ind_first = indstart;

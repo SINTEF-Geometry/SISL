@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1608.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1608.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -107,10 +107,10 @@ void s1608(pc1,pc2,aepsge,ep11,epf1,ep21,epf2,itype,idim,ik,rc,
 *********************************************************************
 */
 {
-  SISLIntcurve **qic1=NULL;  /* SISLObject containing intervals if any      */
-  SISLIntcurve **qic2=NULL;  /* SISLObject containing intervals if any      */
-  SISLIntcurve **qic3=NULL;  /* SISLObject containing intervals if any      */
-  SISLIntcurve **qic4=NULL;  /* SISLObject containing intervals if any      */
+  SISLIntcurve **qic1=SISL_NULL;  /* SISLObject containing intervals if any      */
+  SISLIntcurve **qic2=SISL_NULL;  /* SISLObject containing intervals if any      */
+  SISLIntcurve **qic3=SISL_NULL;  /* SISLObject containing intervals if any      */
+  SISLIntcurve **qic4=SISL_NULL;  /* SISLObject containing intervals if any      */
   
   int kstat;          /* Status variable                                   */
   int kpos=0;         /* Position of error                                 */
@@ -119,10 +119,10 @@ void s1608(pc1,pc2,aepsge,ep11,epf1,ep21,epf2,itype,idim,ik,rc,
   int kcrv3,kcrv4;    /* Number of intervals                               */
   int kpt1,kpt2,kpt3; /* Number of points                                  */
   int kpt4;           /* Loop variable                                     */
-  double *spar1=NULL; /* Pointer to parameter values                       */
-  double *spar2=NULL; /* Pointer to parameter values                       */
-  double *spar3=NULL; /* Pointer to parameter values                       */
-  double *spar4=NULL; /* Pointer to parameter values                       */
+  double *spar1=SISL_NULL; /* Pointer to parameter values                       */
+  double *spar2=SISL_NULL; /* Pointer to parameter values                       */
+  double *spar3=SISL_NULL; /* Pointer to parameter values                       */
+  double *spar4=SISL_NULL; /* Pointer to parameter values                       */
   
   /* Check dimensions */
   
@@ -251,14 +251,14 @@ void s1608(pc1,pc2,aepsge,ep11,epf1,ep21,epf2,itype,idim,ik,rc,
   goto out;
   
  out:
-  if (qic1  != NULL) freeIntcrvlist(qic1,kcrv1);
-  if (qic2  != NULL) freeIntcrvlist(qic2,kcrv2);
-  if (qic3  != NULL) freeIntcrvlist(qic3,kcrv3);
-  if (qic4  != NULL) freeIntcrvlist(qic4,kcrv4);
-  if (spar1 != NULL) freearray(spar1);
-  if (spar2 != NULL) freearray(spar2);
-  if (spar3 != NULL) freearray(spar3);
-  if (spar4 != NULL) freearray(spar4);
+  if (qic1  != SISL_NULL) freeIntcrvlist(qic1,kcrv1);
+  if (qic2  != SISL_NULL) freeIntcrvlist(qic2,kcrv2);
+  if (qic3  != SISL_NULL) freeIntcrvlist(qic3,kcrv3);
+  if (qic4  != SISL_NULL) freeIntcrvlist(qic4,kcrv4);
+  if (spar1 != SISL_NULL) freearray(spar1);
+  if (spar2 != SISL_NULL) freearray(spar2);
+  if (spar3 != SISL_NULL) freearray(spar3);
+  if (spar4 != SISL_NULL) freearray(spar4);
   
   return;
 }       

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1782.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1782.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -102,13 +102,13 @@ sh1782 (po1, po2, aepsge, pintdat, ipar, apar, rintdat, jnewpt, jstat)
   int kdim;			/* Dimension of geometry space.         */
   int knpoint;			/* Number of int.pt. in array.          */
   int knewpt = 0;		/* Number of new intersection points.   */
-  SISLIntpt **uintpt = NULL;	/* Array storing intersection points.   */
+  SISLIntpt **uintpt = SISL_NULL;	/* Array storing intersection points.   */
 
   *jnewpt = 0;
 
   /* Test if an intersection data structure exist.  */
 
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     {
       *jstat = 0;
       goto out;
@@ -186,7 +186,7 @@ sh1782 (po1, po2, aepsge, pintdat, ipar, apar, rintdat, jnewpt, jstat)
 error:*jstat = kstat;
   goto out;
 
-out:if (uintpt != NULL)
+out:if (uintpt != SISL_NULL)
     freearray (uintpt);
 }
 
@@ -311,7 +311,7 @@ sh1782_s9sf_pt (po1, po2, aepsge, rintdat, uintpt, kpoint, ipar, jstat)
 	    else
 	      tdum = -tsign * sder[2];
 
-	    if (tdum > DNULL)
+	    if (tdum > DZERO)
 	      sh6setdir (uintpt[klow], uintpt[khigh], &kstat);
 	    else if (tdum < 0)
 	      sh6setdir (uintpt[khigh], uintpt[klow], &kstat);
@@ -356,9 +356,9 @@ sh1782_s9sf_pt (po1, po2, aepsge, rintdat, uintpt, kpoint, ipar, jstat)
 
 		if (kant)
 		  {
-		    if ((double) kant * tdum > DNULL)
+		    if ((double) kant * tdum > DZERO)
 		      *edge_f = *edge_l = SI_RIGHT;
-		    else if ((double) kant * tdum < DNULL)
+		    else if ((double) kant * tdum < DZERO)
 		      *edge_f = *edge_l = SI_LEFT;
 
 		  }
@@ -763,9 +763,9 @@ sh1782_s9sf_sf (po1, po2, aepsge, rintdat, uintpt, kpoint, ipar, jstat)
 
 		if (kant)
 		  {
-		    if ((double) kant * tdum > DNULL)
+		    if ((double) kant * tdum > DZERO)
 		      *edge_f = *edge_l = SI_RIGHT;
-		    else if ((double) kant * tdum < DNULL)
+		    else if ((double) kant * tdum < DZERO)
 		      *edge_f = *edge_l = SI_LEFT;
 
 		  }

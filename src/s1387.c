@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1387.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1387.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -73,10 +73,10 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
 *
 **********************************************************************/
 {
-  SISLCurve *qc1 = NULL;	/* Temporary curve                          */
-  SISLCurve *qc2 = NULL;	/* Temporary curve                          */
-  SISLCurve *qc3 = NULL;	/* Temporary curve                          */
-  SISLCurve *qc4 = NULL;	/* Temporary curve                          */
+  SISLCurve *qc1 = SISL_NULL;	/* Temporary curve                          */
+  SISLCurve *qc2 = SISL_NULL;	/* Temporary curve                          */
+  SISLCurve *qc3 = SISL_NULL;	/* Temporary curve                          */
+  SISLCurve *qc4 = SISL_NULL;	/* Temporary curve                          */
   int kk1;			/* Order in first parameter direction       */
   int kk2;			/* Order in second parameter direction      */
   int kn1;			/* NumberOrder in first parameter direction */
@@ -84,8 +84,8 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   int kdim;			/* Dimension used in temporary calc         */
   int kstat = 0;		/* Local parameter value                    */
   int kpos = 0;			/* Position of error                        */
-  double *st1 = NULL, *st2 = NULL;	/* Pointers to knot vectors                 */
-  double *scoef = NULL;		/* Pointer to coefficients                  */
+  double *st1 = SISL_NULL, *st2 = SISL_NULL;	/* Pointers to knot vectors                 */
+  double *scoef = SISL_NULL;		/* Pointer to coefficients                  */
   int rdim;                     /* Potential rational dimension.            */
   double *rcoef;                /* Potential rational vertices.             */
 
@@ -121,7 +121,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   kdim = (ps->in1) * rdim;
 
   qc1 = newCurve (ps->in2, ps->ik2, ps->et2, rcoef, 1, kdim, 1);
-  if (qc1 == NULL)
+  if (qc1 == SISL_NULL)
     goto err171;
 
 
@@ -137,7 +137,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   kk2 = qc2->ik;
   kn2 = qc2->in;
   st2 = newarray (kk2 + kn2, DOUBLE);
-  if (st2 == NULL)
+  if (st2 == SISL_NULL)
     goto err101;
 
   memcopy (st2, qc2->et, kk2 + kn2, DOUBLE);
@@ -145,7 +145,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   /* Allocate space for turned parameter directions. */
 
   scoef = newarray (kn1 * kn2 * rdim, DOUBLE);
-  if (scoef == NULL)
+  if (scoef == SISL_NULL)
     goto err101;
 
 
@@ -159,7 +159,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   kdim = kn2 * rdim;
 
   qc3 = newCurve (ps->in1, ps->ik1, ps->et1, scoef, 1, kdim, 1);
-  if (qc3 == NULL)
+  if (qc3 == SISL_NULL)
     goto err101;
 
 
@@ -175,7 +175,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   kk1 = qc4->ik;
   kn1 = qc4->in;
   st1 = newarray (kk1 + kn1, DOUBLE);
-  if (st1 == NULL)
+  if (st1 == SISL_NULL)
     goto err101;
 
   memcopy (st1, qc4->et, kk1 + kn1, DOUBLE);
@@ -186,7 +186,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   /* Allocate space for turned parameter directions. */
 
   scoef = increasearray (scoef, kn1 * kn2 * rdim, DOUBLE);
-  if (scoef == NULL)
+  if (scoef == SISL_NULL)
     goto err101;
 
   s6chpar (qc4->ecoef, kn2, kn1, rdim, scoef);
@@ -195,7 +195,7 @@ void s1387(ps,ik1,ik2,rsnew,jstat)
   /* Create surface object containing the order elevated surface. */
 
   *rsnew = newSurf (kn1, kn2, kk1, kk2, st1, st2, scoef, (ps->ikind), (ps->idim), 1);
-  if (*rsnew == NULL)
+  if (*rsnew == SISL_NULL)
     goto err171;
   
   /* Set periodicity flag according to that of the input surface. */
@@ -244,19 +244,19 @@ error:
   /* Free local used memory. */
 
 out:
-  if (qc1 != NULL)
+  if (qc1 != SISL_NULL)
     freeCurve (qc1);
-  if (qc2 != NULL)
+  if (qc2 != SISL_NULL)
     freeCurve (qc2);
-  if (qc3 != NULL)
+  if (qc3 != SISL_NULL)
     freeCurve (qc3);
-  if (qc4 != NULL)
+  if (qc4 != SISL_NULL)
     freeCurve (qc4);
-  if (st1 != NULL)
+  if (st1 != SISL_NULL)
     freearray (st1);
-  if (st2 != NULL)
+  if (st2 != SISL_NULL)
     freearray (st2);
-  if (scoef != NULL)
+  if (scoef != SISL_NULL)
     freearray (scoef);
 
   return;

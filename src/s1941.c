@@ -58,20 +58,20 @@ void s1941(pcurve,icont,jstat)
 *********************************************************************
 */
 {
-  double *scycl=NULL;                    /* Cyclic version of knot vector */
-  double *smatrix=NULL;                   /* Matrix converting between baes */
-  double *smatr1=NULL;
-  double *smatr2=NULL;                    /* Pointers to two conversion matrices */
-  double *salloc=NULL;                    /* Matrix for memory allocation */
-  double *salfa=NULL;                     /* The values of a discrete B-spline
+  double *scycl=SISL_NULL;                    /* Cyclic version of knot vector */
+  double *smatrix=SISL_NULL;                   /* Matrix converting between baes */
+  double *smatr1=SISL_NULL;
+  double *smatr2=SISL_NULL;                    /* Pointers to two conversion matrices */
+  double *salloc=SISL_NULL;                    /* Matrix for memory allocation */
+  double *salfa=SISL_NULL;                     /* The values of a discrete B-spline
                                              calculation */
-  double *spek=NULL;                      /* Pointer used in traversing arrays */
-  double *scoef=NULL;                     /* Copy of the vertices of the surface */
-  double *sb=NULL;                        /* Right hand side of equation */
+  double *spek=SISL_NULL;                      /* Pointer used in traversing arrays */
+  double *scoef=SISL_NULL;                     /* Copy of the vertices of the surface */
+  double *sb=SISL_NULL;                        /* Right hand side of equation */
   double *sfrom,*sto;
   double *sp;                             /* Hlep array for s1701 */
-  double *st1=NULL;                       /* Internal version of et */
-  double *stx=NULL;                       /* Knot vector after insertion of knots
+  double *st1=SISL_NULL;                       /* Internal version of et */
+  double *stx=SISL_NULL;                       /* Knot vector after insertion of knots
                                              at start */
 
   int    kdim = pcurve->idim;
@@ -86,7 +86,7 @@ void s1941(pcurve,icont,jstat)
   int    kleft=0;                         /* Pointer into knot vector */
   int    kpl,kfi,kla;                     /* Pointers into conversion matrix */
   int    kstat;
-  int    *mpiv=NULL;                      /* Pointer to pivotation array */
+  int    *mpiv=SISL_NULL;                      /* Pointer to pivotation array */
   int    kpos = 0;
   int    knst1;                           /* NUmber of basis functions in st1 */
   int    knstx;                           /* Number of basis functions in stx */
@@ -112,10 +112,10 @@ void s1941(pcurve,icont,jstat)
   /* Alloocate array for pivotation vector */
 
   mpiv = new0array(2*kk,INT);
-  if (mpiv == NULL) goto err101;
+  if (mpiv == SISL_NULL) goto err101;
 
   salloc = new0array(3*kn+9*kk+4*kk*kk+kdim*kn,DOUBLE);
-  if (salloc == NULL) goto err101;
+  if (salloc == SISL_NULL) goto err101;
   scycl = salloc;                  /* Size kn+kk */
   smatrix = scycl + kn + kk;  /* Max size 4*kk*kk */
   salfa = smatrix + 4*kk*kk;     /* Size kk */
@@ -240,7 +240,7 @@ void s1941(pcurve,icont,jstat)
   /* Make matrix for the kk last vertices */
 
 
-  for (ki=0,spek=smatrix ; ki<kk*kk ; ki++,spek++) *spek = DNULL;
+  for (ki=0,spek=smatrix ; ki<kk*kk ; ki++,spek++) *spek = DZERO;
 
 
   for (ki=kn-kk ,spek=smatrix ; ki <kn ; ki++, spek+=kk)
@@ -324,8 +324,8 @@ void s1941(pcurve,icont,jstat)
  out:
 
   /* Free allocated scratch  */
-  if (salloc != NULL) freearray(salloc);
-  if (mpiv != NULL) freearray(mpiv);
+  if (salloc != SISL_NULL) freearray(salloc);
+  if (mpiv != SISL_NULL) freearray(mpiv);
 
   return;
 

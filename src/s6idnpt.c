@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idnpt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idnpt.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -36,7 +36,7 @@ void s6idnpt(pintdat,pintpt,itest,jstat)
 *********************************************************************
 *                                                                   
 * PURPOSE    : To insert a new intersection point into pintdat.
-*              If pintdat is NULL a new pintdat is also made.
+*              If pintdat is SISL_NULL a new pintdat is also made.
 *              If pintpt is close to an other intersection point
 *              the object pintpt is pointing to is freed, and
 *              pintpt is set to point to the already inserted point.
@@ -76,9 +76,9 @@ void s6idnpt(pintdat,pintpt,itest,jstat)
   
   /* We have to be sure that we have an intdat structure. */
   
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
     {
-      if (((*pintdat) = newIntdat()) == NULL) goto err101;
+      if (((*pintdat) = newIntdat()) == SISL_NULL) goto err101;
     }
   
   
@@ -114,7 +114,7 @@ void s6idnpt(pintdat,pintpt,itest,jstat)
       (*pintdat)->ipmax += 20;
       
       if (((*pintdat)->vpoint = increasearray((*pintdat)->vpoint,
-					      (*pintdat)->ipmax,SISLIntpt *)) == NULL) 
+					      (*pintdat)->ipmax,SISLIntpt *)) == SISL_NULL) 
 	goto err101;
     }
   

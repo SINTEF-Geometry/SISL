@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1923.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1923.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -133,7 +133,7 @@ void sh1923(ea,in,ik,nstart,jstat)
 	   definite matrix.  */
 	
 	tsum = ea[ki*ik+kik1] - tsum;
-	if (tsum <= DNULL) goto err106;
+	if (tsum <= DZERO) goto err106;
         ea[ki*ik+kik1] = sqrt(tsum);
      }
    

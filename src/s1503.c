@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1503.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1503.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -101,21 +101,21 @@ void s1503(ps1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
   int i;
   int trackflag = 0;
   int jtrack;
-  int *pretop=NULL;
+  int *pretop=SISL_NULL;
   int jsurf;
-  SISLIntsurf **wsurf=NULL;
-  SISLTrack **wtrack=NULL;
+  SISLIntsurf **wsurf=SISL_NULL;
+  SISLTrack **wtrack=SISL_NULL;
 
   sh1503(ps1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 	 trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,
 	 &jsurf,&wsurf,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
   for(i=0; i<jsurf; i++)
     freeIntsurf(wsurf[i]);
-  if(wsurf != NULL) freearray(wsurf);
+  if(wsurf != SISL_NULL) freearray(wsurf);
 
   if(jsurf > 0) 
     *jstat=10;

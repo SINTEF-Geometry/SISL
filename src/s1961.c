@@ -116,14 +116,14 @@ void s1961(ep,im,idim,ipar,epar,eeps,ilend,irend,iopen,afctol,
 ********************************************************************
 */
 {
-  double *maxerr = NULL;    /* Arrays used to store error estimates */
-  double *error1 = NULL;
+  double *maxerr = SISL_NULL;    /* Arrays used to store error estimates */
+  double *error1 = SISL_NULL;
   int i;
   int stat = 0;             /* Loop control variables               */
   int kpos = 0;
-  SISLCurve *ocurve = NULL; /* Local spline curve                   */
-  double *sp = NULL;        /* Extended data points in closed/periodic case. */
-  double *spar = NULL;      /* Extended par. values.                */
+  SISLCurve *ocurve = SISL_NULL; /* Local spline curve                   */
+  double *sp = SISL_NULL;        /* Extended data points in closed/periodic case. */
+  double *spar = SISL_NULL;      /* Extended par. values.                */
   
   /* Check Input */
   
@@ -136,12 +136,12 @@ void s1961(ep,im,idim,ipar,epar,eeps,ilend,irend,iopen,afctol,
      /* Add an extra point to the input points. First allocated scratch
 	for extended arrays. */
      
-     if ((sp = newarray((im+1)*idim, DOUBLE)) == NULL) goto err101;
+     if ((sp = newarray((im+1)*idim, DOUBLE)) == SISL_NULL) goto err101;
      memcopy(sp, ep, im*idim, DOUBLE);
      memcopy(sp+im*idim, ep, idim, DOUBLE);
      if (ipar == 3)
      {
-	if ((spar = newarray(im+1, DOUBLE)) == NULL) goto err101;
+	if ((spar = newarray(im+1, DOUBLE)) == SISL_NULL) goto err101;
 	memcopy(spar, epar, im, DOUBLE);
 	spar[im] = spar[im-1] + s6dist(sp+(im-1)*idim, sp+im*idim, idim);
      }
@@ -168,7 +168,7 @@ void s1961(ep,im,idim,ipar,epar,eeps,ilend,irend,iopen,afctol,
 
   error1 = newarray(idim, DOUBLE);
   maxerr = newarray(idim, DOUBLE);
-  if (error1 == NULL || maxerr == NULL) goto err101;
+  if (error1 == SISL_NULL || maxerr == SISL_NULL) goto err101;
   for (i=0; i<idim; i++)
     maxerr[i] = eeps[i]*afctol;
 
@@ -231,10 +231,10 @@ void s1961(ep,im,idim,ipar,epar,eeps,ilend,irend,iopen,afctol,
   /* Exit */
 
  out:
-  if (maxerr != NULL) freearray(maxerr);
-  if (error1 != NULL) freearray(error1);
-  if (ocurve != NULL) freeCurve(ocurve);
-  if (spar != NULL && spar != epar) freearray(spar);
-  if (sp != NULL && sp != ep) freearray(sp);
+  if (maxerr != SISL_NULL) freearray(maxerr);
+  if (error1 != SISL_NULL) freearray(error1);
+  if (ocurve != SISL_NULL) freeCurve(ocurve);
+  if (spar != SISL_NULL && spar != epar) freearray(spar);
+  if (sp != SISL_NULL && sp != ep) freearray(sp);
   return;
 }

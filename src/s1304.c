@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1304.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1304.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -155,8 +155,8 @@ void s1304(ep,eq,eparp,eparq,egeo3d,egeop,egeoq,jstat)
   
   for (ki=2;ki<7;ki++)
     {
-      egeop[ki] = DNULL;
-      egeoq[ki] = DNULL;
+      egeop[ki] = DZERO;
+      egeoq[ki] = DZERO;
     }
   
   /* Make position of intersection */
@@ -166,7 +166,7 @@ void s1304(ep,eq,eparp,eparq,egeo3d,egeop,egeoq,jstat)
       egeo3d[ki] = (double)0.5 * (ep[ki]+eq[ki]);
     }
   
-  for (ki=3;ki<10;ki++) egeo3d[ki] = DNULL;
+  for (ki=3;ki<10;ki++) egeo3d[ki] = DZERO;
   
   
   /* Nomalize derivative vectors */

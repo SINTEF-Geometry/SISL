@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6getothr.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6getothr.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -47,8 +47,8 @@ void sh6getother(pt,pt1,pt2,jstat)
 * OUTPUT     :  pt2     - Second neighbour if unique.
 *              jstat    - Error flag.
 *                         jstat =  0  => successful, unique neighbour
-*                         jstat =  1  => pt is end point, pt2 NULL
-*                         jstat =  2  => pt is junction point, pt2 NULL
+*                         jstat =  1  => pt is end point, pt2 SISL_NULL
+*                         jstat =  2  => pt is junction point, pt2 SISL_NULL
 *                         jstat = -1  => pt1 and pt2 are not connected
 *                         jstat = -2  => error in data structure.
 *                         jstat <  0  => error in lower level routine
@@ -69,7 +69,7 @@ void sh6getother(pt,pt1,pt2,jstat)
   int num;              /* count number of pointers    */
   int i;              /* Loop variable. */
   
-   *pt2 = NULL;
+   *pt2 = SISL_NULL;
    *jstat = 0;
   
   sh6getlist(pt,pt1,&index1,&index,&kstat);
@@ -83,7 +83,7 @@ void sh6getother(pt,pt1,pt2,jstat)
       /* UJK, don't pass singular point ! */
       if (pt->iinter == SI_SING)
       {
-	  *pt2 = NULL;
+	  *pt2 = SISL_NULL;
           *jstat = 2;
           goto out;
       }
@@ -100,7 +100,7 @@ void sh6getother(pt,pt1,pt2,jstat)
       if(num == 0) *jstat = 1; /* pt is an end point. */
       else if(num > 1) /* pt is a junction point. */
       {
-	  *pt2 = NULL;
+	  *pt2 = SISL_NULL;
           *jstat = 2;
       }
   }

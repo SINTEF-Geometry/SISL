@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1860.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1860.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -114,23 +114,23 @@ void sh1860(ps,eview,idim,aepsco,aepsge,
 				intersect point and surface problem lies.    */
   int ki;                    /* Loop control. */
   double nmax=1.0;           /* max absolute value of 1d surface. */
-  double *spar = NULL;       /* Dummy array containing parameter values of
+  double *spar = SISL_NULL;       /* Dummy array containing parameter values of
 				second object of single intersection points. */
   double spoint[1];          /* SISLPoint to intersect with object.              */
-  SISLSurf *qs = NULL;           /* Surface whose zeroes are the silhouette
+  SISLSurf *qs = SISL_NULL;           /* Surface whose zeroes are the silhouette
 				curves/points of the original surface.     */
-  SISLPoint *qp = NULL;          /* Pointer to point in 
+  SISLPoint *qp = SISL_NULL;          /* Pointer to point in 
 				surface/point intersection.  */
-  SISLObject *qo1 = NULL;        /* Pointer to surface in 
+  SISLObject *qo1 = SISL_NULL;        /* Pointer to surface in 
 				object/point intersection. */
-  SISLObject *qo2 = NULL;        /* Pointer to point in 
+  SISLObject *qo2 = SISL_NULL;        /* Pointer to point in 
 				object/point intersection    */
-  SISLIntdat *qintdat = NULL;    /* Intersection result */
+  SISLIntdat *qintdat = SISL_NULL;    /* Intersection result */
   int kdeg=1003;      
   double simpli[16];  
   double snorm[3];
-  SISLObject *track_obj=NULL;
-  SISLSurf *qkreg=NULL; /* Input surface ensured k-regularity. */
+  SISLObject *track_obj=SISL_NULL;
+  SISLSurf *qkreg=SISL_NULL; /* Input surface ensured k-regularity. */
 
   /* -------------------------------------------------------- */  
   /* UJK, aug 93, It seems that a tolerance of 10e-11 is make us
@@ -198,8 +198,8 @@ void sh1860(ps,eview,idim,aepsco,aepsge,
      int kleft=0;
      double qview[3];
      int kj;
-     SISLSurf *qstmp=NULL;
-     SISLSurf *qstmp_1d=NULL;
+     SISLSurf *qstmp=SISL_NULL;
+     SISLSurf *qstmp_1d=SISL_NULL;
      
      
      min1 = s1792(qkreg->et1,qkreg->ik1,qkreg->in1);
@@ -213,7 +213,7 @@ void sh1860(ps,eview,idim,aepsco,aepsge,
      
      s1001 (qkreg, min1, min2, max1, max2, &qstmp, &kstat);
      if (kstat < 0) goto error;
-     for (ki=0;ki<3;ki++)  qview[ki] = DNULL;
+     for (ki=0;ki<3;ki++)  qview[ki] = DZERO;
      
      nmax = (double)1.0;
      for (ki=0;ki<3;ki++)
@@ -225,11 +225,11 @@ void sh1860(ps,eview,idim,aepsco,aepsge,
 	   nmax = max(fabs(qstmp_1d->ecoef[kj]),nmax);
 	
 	if (qstmp_1d) freeSurf(qstmp_1d);
-	qstmp_1d  = NULL;
-	qview[ki] = DNULL;
+	qstmp_1d  = SISL_NULL;
+	qview[ki] = DZERO;
      }
      if (qstmp) freeSurf(qstmp);
-     qstmp = NULL;
+     qstmp = SISL_NULL;
   }
   /* End of change 01.02.93 ___________________*/
      
@@ -253,7 +253,7 @@ void sh1860(ps,eview,idim,aepsco,aepsge,
    */
 
   if(!(qo2 = newObject(SISLPOINT))) goto err101;
-  spoint[0] = DNULL;
+  spoint[0] = DZERO;
   if(!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
@@ -350,12 +350,12 @@ void sh1860(ps,eview,idim,aepsco,aepsge,
   if (qintdat) freeIntdat(qintdat);
   if (track_obj)
     {
-       track_obj->s1 = NULL;
+       track_obj->s1 = SISL_NULL;
        freeObject(track_obj);
     }
 
   /* Free local surface.  */
-    if (qkreg != NULL && qkreg != ps) freeSurf(qkreg);
+    if (qkreg != SISL_NULL && qkreg != ps) freeSurf(qkreg);
                                          
 return;
 }                                               

@@ -120,20 +120,20 @@ void s1968(ps,eeps,nend,iopen1,iopen2,edgeps,iopt,itmax,rs,jstat)
   int leftknot2 = 0;
   int side1 = 0;                /* Evaluation from what side           */
   int side2 = 0;
-  double *error1 = NULL;        /* For error bounds                    */
-  double *error2 = NULL;
-  double *error1472 = NULL;
-  double *newcoeff = NULL;
-  double *ep = NULL;            /* Used to store points                */
-  double *eder10 = NULL;        /* Used to store corresponding derivatives */
-  double *eder01 = NULL;
-  double *eder11 = NULL;
-  double *derive = NULL;
-  double *par1 = NULL;          /*  Used to store parametrizations      */
-  double *par2 = NULL;
-  SISLCurve *ocurve = NULL;
-  SISLSurf *osurf1 = NULL;
-  SISLSurf *osurf2 = NULL;
+  double *error1 = SISL_NULL;        /* For error bounds                    */
+  double *error2 = SISL_NULL;
+  double *error1472 = SISL_NULL;
+  double *newcoeff = SISL_NULL;
+  double *ep = SISL_NULL;            /* Used to store points                */
+  double *eder10 = SISL_NULL;        /* Used to store corresponding derivatives */
+  double *eder01 = SISL_NULL;
+  double *eder11 = SISL_NULL;
+  double *derive = SISL_NULL;
+  double *par1 = SISL_NULL;          /*  Used to store parametrizations      */
+  double *par2 = SISL_NULL;
+  SISLCurve *ocurve = SISL_NULL;
+  SISLSurf *osurf1 = SISL_NULL;
+  SISLSurf *osurf2 = SISL_NULL;
   double parvalue[2];
 
 
@@ -162,7 +162,7 @@ void s1968(ps,eeps,nend,iopen1,iopen2,edgeps,iopt,itmax,rs,jstat)
   error1 = newarray( idim, DOUBLE);
   error2 = newarray( idim, DOUBLE);
   error1472 = newarray( idim, DOUBLE);
-  if( error1 == NULL || error2 == NULL || error1472 == NULL )
+  if( error1 == SISL_NULL || error2 == SISL_NULL || error1472 == SISL_NULL )
     goto err101;
 
   /* First,  make sure both orders are higher or equal to 4 */
@@ -211,36 +211,36 @@ void s1968(ps,eeps,nend,iopen1,iopen2,edgeps,iopt,itmax,rs,jstat)
 
       ocurve = newCurve(osurf1->in2, osurf1->ik2, osurf1->et2,
 			osurf1->ecoef, 1, idim*osurf1->in1, 1);
-      if(ocurve == NULL) goto err101;
+      if(ocurve == SISL_NULL) goto err101;
 
       error1472 = increasearray(error1472, idim*osurf1->in1, DOUBLE);
-      if(error1472 == NULL) goto err101;
+      if(error1472 == SISL_NULL) goto err101;
       for(i=0; i<idim*osurf1->in1; i++)
 	error1472[i] = error1[i % idim];
       s1355(ocurve, error1472, &par2, &im2, &stat);
       if (stat<0) goto error;
       freeCurve(ocurve);
-      ocurve = NULL;
+      ocurve = SISL_NULL;
 
       /* Create curve equivalent and determine sample points
        * for 1. direction after transposing surface coefficients */
 
       newcoeff = newarray(idim * osurf1->in1 * osurf1->in2, DOUBLE);
-      if (newcoeff == NULL) goto err101;
+      if (newcoeff == SISL_NULL) goto err101;
       s6chpar(osurf1->ecoef, osurf1->in1, osurf1->in2, idim, newcoeff);
 
       ocurve = newCurve(osurf1->in1, osurf1->ik1, osurf1->et1,
 			newcoeff, 1, idim*osurf1->in2, 1);
-      if(ocurve == NULL) goto err101;
+      if(ocurve == SISL_NULL) goto err101;
 
       error1472 = increasearray(error1472, idim*osurf1->in2, DOUBLE);
-      if(error1472 == NULL) goto err101;
+      if(error1472 == SISL_NULL) goto err101;
       for(i=0; i<idim*osurf1->in2; i++)
 	error1472[i] = error1[i % idim];
       s1355(ocurve, error1472, &par1, &im1, &stat);
       if (stat<0) goto error;
       freeCurve(ocurve);
-      ocurve = NULL;
+      ocurve = SISL_NULL;
 
       /* Compute points and derivatives on the surface
        * at the points given by calculated par.values */
@@ -250,8 +250,8 @@ void s1968(ps,eeps,nend,iopen1,iopen2,edgeps,iopt,itmax,rs,jstat)
       eder10 = newarray( idim * im1 * im2, DOUBLE );
       eder01 = newarray( idim * im1 * im2, DOUBLE );
       eder11 = newarray( idim * im1 * im2, DOUBLE );
-      if (ep == NULL || eder10 == NULL || eder01 == NULL ||
-	  eder11 == NULL || derive == NULL) goto err101;
+      if (ep == SISL_NULL || eder10 == SISL_NULL || eder01 == SISL_NULL ||
+	  eder11 == SISL_NULL || derive == SISL_NULL) goto err101;
       index = 0;
       for(j=0; j<im2; j++)
 	{
@@ -324,7 +324,7 @@ void s1968(ps,eeps,nend,iopen1,iopen2,edgeps,iopt,itmax,rs,jstat)
     goto out;
 
   /*
-   * Error in input, pointer to SISLSurf was NULL pointer.
+   * Error in input, pointer to SISLSurf was SISL_NULL pointer.
    * -----------------------------------------------------
    */
 
@@ -349,19 +349,19 @@ void s1968(ps,eeps,nend,iopen1,iopen2,edgeps,iopt,itmax,rs,jstat)
    */
 
   out:
-    if(error1 != NULL)    freearray(error1);
-    if(error2 != NULL)    freearray(error2);
-    if(error1472 != NULL) freearray(error1472);
-    if(newcoeff != NULL)  freearray(newcoeff);
-    if(ep != NULL)        freearray(ep);
-    if(eder10 != NULL)    freearray(eder10);
-    if(eder01 != NULL)    freearray(eder01);
-    if(eder11 != NULL)    freearray(eder11);
-    if(derive != NULL)    freearray(derive);
-    if(par1 != NULL)      freearray(par1);
-    if(par2 != NULL)      freearray(par2);
-    if(osurf1 != NULL)    freeSurf(osurf1);
-    if(osurf2 != NULL)    freeSurf(osurf2);
+    if(error1 != SISL_NULL)    freearray(error1);
+    if(error2 != SISL_NULL)    freearray(error2);
+    if(error1472 != SISL_NULL) freearray(error1472);
+    if(newcoeff != SISL_NULL)  freearray(newcoeff);
+    if(ep != SISL_NULL)        freearray(ep);
+    if(eder10 != SISL_NULL)    freearray(eder10);
+    if(eder01 != SISL_NULL)    freearray(eder01);
+    if(eder11 != SISL_NULL)    freearray(eder11);
+    if(derive != SISL_NULL)    freearray(derive);
+    if(par1 != SISL_NULL)      freearray(par1);
+    if(par2 != SISL_NULL)      freearray(par2);
+    if(osurf1 != SISL_NULL)    freeSurf(osurf1);
+    if(osurf2 != SISL_NULL)    freeSurf(osurf2);
 
     return;
 }

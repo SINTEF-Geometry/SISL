@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1926.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1926.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -127,12 +127,12 @@ void sh1926(etau,ik,in,idim,et,ed,im,ea,nfirst,nlast,eb,n2sta,ec,jstat)
   int kik,kih,krh;
   double tw;
   double thelp;
-  double *swa = NULL;
+  double *swa = SISL_NULL;
   
   /* Allocate space for a local array of lenth in to be used during
      multiplication with dtau(-1/2).  */
   
-  if ((swa = newarray(in,DOUBLE)) == NULL)goto err101;
+  if ((swa = newarray(in,DOUBLE)) == SISL_NULL)goto err101;
   
   /* Initiate output arrays to zero.  */
   
@@ -193,7 +193,7 @@ void sh1926(etau,ik,in,idim,et,ed,im,ea,nfirst,nlast,eb,n2sta,ec,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (swa != NULL) freearray(swa);
+      if (swa != SISL_NULL) freearray(swa);
 	  
       return;
 }

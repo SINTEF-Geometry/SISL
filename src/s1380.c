@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1380.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1380.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -74,7 +74,7 @@ void s1380(ep,ev,im,idim,ipar,rcurve,jstat)
   int kpek1,kpek2;    /* Pointers into point array                   */
   int kstat;          /* Status variable                             */
   int kpos=0;         /* Position of error                           */
-  double *spar=NULL;  /* Pointer to parametrization array            */
+  double *spar=SISL_NULL;  /* Pointer to parametrization array            */
   
   
   
@@ -86,7 +86,7 @@ void s1380(ep,ev,im,idim,ipar,rcurve,jstat)
   /* Allocate array for parametrization */
   
   spar = newarray(im,DOUBLE);
-  if (spar == NULL) goto err101;
+  if (spar == SISL_NULL) goto err101;
   
   spar[0] = (double)0.0;
   
@@ -148,7 +148,7 @@ void s1380(ep,ev,im,idim,ipar,rcurve,jstat)
   
   
  out:
-  if (spar != NULL) freearray(spar);
+  if (spar != SISL_NULL) freearray(spar);
   
   return;
 }

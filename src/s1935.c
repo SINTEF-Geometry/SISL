@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1935.c,v 1.3 1994-07-25 10:47:18 pfu Exp $
+ * $Id: s1935.c,v 1.4 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -98,7 +98,7 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
 
   /* Allocate array for new knot vector */
 
-  if((*knt = newarray (2 * ik + in1 + in2, DOUBLE))==NULL) goto err101;
+  if((*knt = newarray (2 * ik + in1 + in2, DOUBLE))==SISL_NULL) goto err101;
 
   /* Test if input knot vectors degenerate */
 
@@ -147,7 +147,7 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
 
   *in -=ik;
   *knt = increasearray (*knt, *in +ik, DOUBLE);
-  if (*knt == NULL) goto err101;
+  if (*knt == SISL_NULL) goto err101;
   goto out;
 
 

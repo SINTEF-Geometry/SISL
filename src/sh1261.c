@@ -104,14 +104,14 @@ void sh1261(pcurve1,pcurve2,ecoef1,ik1,ecoef2,ik2,rcrtanc,jstat)
   double tmin1,tmax1;  /* Parameter interval of first derivative curve.   */
   double tmin2,tmax2;  /* Parameter interval of second derivative curve.  */
   double tval1,tval2;  /* Values of blending functions.   */
-  double *stunion = NULL;  /* Union of knot vectors of derivative curves. */
-  double *stcross = NULL;  /* Knot vector of cross tangent curve.         */
-  double *spar = NULL;     /* Array containing parameter values of 
+  double *stunion = SISL_NULL;  /* Union of knot vectors of derivative curves. */
+  double *stcross = SISL_NULL;  /* Knot vector of cross tangent curve.         */
+  double *spar = SISL_NULL;     /* Array containing parameter values of 
 			      interpolation points.       */
-  double *sbcoef = NULL;   /* Vertices of cross tangent curve.   */
-  double *spoint = NULL;   /* Interpolation points.       */
-  double *sder1 = NULL;
-  double *sder2 = NULL;    /* Value of second derivative curve.  */
+  double *sbcoef = SISL_NULL;   /* Vertices of cross tangent curve.   */
+  double *spoint = SISL_NULL;   /* Interpolation points.       */
+  double *sder1 = SISL_NULL;
+  double *sder2 = SISL_NULL;    /* Value of second derivative curve.  */
 
   /* Test input dimensions.  */
 
@@ -147,12 +147,12 @@ void sh1261(pcurve1,pcurve2,ecoef1,ik1,ecoef2,ik2,rcrtanc,jstat)
   
   /* Allocate scratch for local arrays.  */
 
-  if ((stcross = newarray(korder+knvert,DOUBLE)) == NULL) goto err101;
-  if ((spar = newarray(knvert,DOUBLE)) == NULL) goto err101;
-  if ((spoint = newarray(kdim*knvert,DOUBLE)) == NULL) goto err101;
-  if ((sder1 = newarray(kdim,DOUBLE)) == NULL) goto err101;
-  if ((sder2 = newarray(kdim,DOUBLE)) == NULL) goto err101;
-  if ((lder = new0array(knvert,INT)) == NULL) goto err101;
+  if ((stcross = newarray(korder+knvert,DOUBLE)) == SISL_NULL) goto err101;
+  if ((spar = newarray(knvert,DOUBLE)) == SISL_NULL) goto err101;
+  if ((spoint = newarray(kdim*knvert,DOUBLE)) == SISL_NULL) goto err101;
+  if ((sder1 = newarray(kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((sder2 = newarray(kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((lder = new0array(knvert,INT)) == SISL_NULL) goto err101;
   
   /* Produce knot vector of cross tangent curve.  */
 
@@ -208,7 +208,7 @@ void sh1261(pcurve1,pcurve2,ecoef1,ik1,ecoef2,ik2,rcrtanc,jstat)
   
   /* Create cross tangent curve.  */
     if ((*rcrtanc = newCurve(kn,korder,stcross,sbcoef,
-			   kind,kdim,kcopy)) == NULL) goto err101;
+			   kind,kdim,kcopy)) == SISL_NULL) goto err101;
     (*rcrtanc)->cuopen = MAX(pcurve1->cuopen,pcurve2->cuopen);
   
   /* Cross tangent curve produced. */
@@ -245,14 +245,14 @@ void sh1261(pcurve1,pcurve2,ecoef1,ik1,ecoef2,ik2,rcrtanc,jstat)
   out :     
     /* Free space occupied by local arrays.  */
 
-    if (stunion != NULL) freearray(stunion);
-  if (stcross != NULL) freearray(stcross);
-  if (sbcoef != NULL) freearray(sbcoef);
-  if (spar != NULL) freearray(spar);
-  if (spoint != NULL) freearray(spoint);
-  if (sder1 != NULL) freearray(sder1);
-  if (sder2 != NULL) freearray(sder2);
-  if (lder != NULL) freearray(lder);
+    if (stunion != SISL_NULL) freearray(stunion);
+  if (stcross != SISL_NULL) freearray(stcross);
+  if (sbcoef != SISL_NULL) freearray(sbcoef);
+  if (spar != SISL_NULL) freearray(spar);
+  if (spoint != SISL_NULL) freearray(spoint);
+  if (sder1 != SISL_NULL) freearray(sder1);
+  if (sder2 != SISL_NULL) freearray(sder2);
+  if (lder != SISL_NULL) freearray(lder);
   
   return;
 }
@@ -308,12 +308,12 @@ static void sh1261_s9evalbez(ecoef,iorder,amin,amax,apar,cvalue,jstat)
 */
 {
   int ki,kj;
-  double *scoef = NULL;
+  double *scoef = SISL_NULL;
   double tdist = amax - amin;
   
   /* Test input.  */
 
-  if ( DEQUAL(tdist,DNULL)  )
+  if ( DEQUAL(tdist,DZERO)  )
     {
       *cvalue = ecoef[0];
       *jstat = 1;
@@ -322,7 +322,7 @@ static void sh1261_s9evalbez(ecoef,iorder,amin,amax,apar,cvalue,jstat)
   
   /* Copy coeficient array to local array. First create local array.  */
 
-  if ((scoef = newarray(iorder,DOUBLE)) == NULL) goto err101;
+  if ((scoef = newarray(iorder,DOUBLE)) == SISL_NULL) goto err101;
   memcopy(scoef,ecoef,iorder,DOUBLE);
   
   /* Evaluate Bezier curve by subdividing in the parameter value apar. */
@@ -347,7 +347,7 @@ static void sh1261_s9evalbez(ecoef,iorder,amin,amax,apar,cvalue,jstat)
   out :
     /* Free space occupied by local array.  */
 
-    if (scoef != NULL) freearray(scoef);
+    if (scoef != SISL_NULL) freearray(scoef);
 
   return;
 }

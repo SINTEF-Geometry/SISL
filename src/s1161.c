@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1161.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1161.c,v 1.2 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -102,12 +102,12 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
   double tpar;         /* Help variable used for parameter value
 			  and geometric distance.                */
   SISLEdge   *qedge[2];        /* Edges for use in s1162().      */
-  SISLObject *qdum = NULL;     /* Dummy  pointer.                */
-  SISLObject *qob  = NULL;     /* Objects for use in recurson.   */
-  SISLIntdat *qintdat = NULL;  /* Intdat for use in recurson.    */
+  SISLObject *qdum = SISL_NULL;     /* Dummy  pointer.                */
+  SISLObject *qob  = SISL_NULL;     /* Objects for use in recurson.   */
+  SISLIntdat *qintdat = SISL_NULL;  /* Intdat for use in recurson.    */
   
-  qedge[0] = NULL;
-  qedge[1] = NULL;
+  qedge[0] = SISL_NULL;
+  qedge[1] = SISL_NULL;
   
   if (po1->iobj == SISLPOINT) 
     {
@@ -142,8 +142,8 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
 	  SISLIntpt *qt;
 	  
 	  /* Add maximum  point. */
-	  qt = newIntpt(0,cmax,DNULL);
-	  if (qt == NULL) goto err101;
+	  qt = newIntpt(0,cmax,DZERO);
+	  if (qt == SISL_NULL) goto err101;
 	  
 	  /* Uppdate pintdat. */
 	  s6idnpt(pintdat,&qt,1,&kstat);
@@ -168,7 +168,7 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
       /*Create a dummy object, to be used when calling 
 	the intersection routines
 	treating two objects.*/
-      if ((qdum = newObject(SISLPOINT)) == NULL) goto err101;
+      if ((qdum = newObject(SISLPOINT)) == SISL_NULL) goto err101;
       
       
       
@@ -176,7 +176,7 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
       kpar   = kedge/2;
       
       /* Create correct number of edges. */
-      if ((qedge[0] = newEdge(kedge)) == NULL) goto err101;
+      if ((qedge[0] = newEdge(kedge)) == SISL_NULL) goto err101;
       
       
       for (ki=0; ki<kedge; ki++)
@@ -186,7 +186,7 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
 	  kpar   = ((ki == kedge/2) ? kedge/2-1:kpar-1);
 	  
 	  /* Create one lower order helpobject */
-	  if ((qob = newObject(po1->iobj - 1)) == NULL) goto err101;	
+	  if ((qob = newObject(po1->iobj - 1)) == SISL_NULL) goto err101;	
 	  
 	  
 	  if (po1->iobj == SISLCURVE)
@@ -213,17 +213,17 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
 	    {
 	      
 	      /* New maximum found, delete old ones */
-	      if (*pintdat != NULL)
+	      if (*pintdat != SISL_NULL)
 		{
 		  freeIntdat(*pintdat);
-		  *pintdat = NULL;
+		  *pintdat = SISL_NULL;
 		}
 	      
-	      if (qedge[0] != NULL)
+	      if (qedge[0] != SISL_NULL)
 		{
 		  /*  Empty the edges */
 		  freeEdge(qedge[0]);
-		  if ((qedge[0] = newEdge(kedge)) == NULL) goto err101;	      
+		  if ((qedge[0] = newEdge(kedge)) == SISL_NULL) goto err101;	      
 		}
 	      
 	    }  
@@ -247,8 +247,8 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
 	      if (kstat < 0) goto error;
 	    }
 	  
-	  if (qintdat != NULL) freeIntdat(qintdat);
-	  qintdat = NULL;
+	  if (qintdat != SISL_NULL) freeIntdat(qintdat);
+	  qintdat = SISL_NULL;
 	  freeObject(qob);
 	}	  
       
@@ -259,7 +259,7 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
       /* Before we enter internal maximum and subdivision we
 	 initiate pointers to top level objects. */
       
-      if (po1->o1 == NULL) po1->o1 = po1;
+      if (po1->o1 == SISL_NULL) po1->o1 = po1;
       
       /* Find the maximums in the inner of the object.  */
       s1162(po1,cmax,aepsge,pintdat,qedge,klevel,knum,&kstat);
@@ -304,10 +304,10 @@ void s1161(po1,cmax,aepsge,pintdat,jstat)
   
  out:
   /* Free the edges used in s1162. */
-  if (qedge[0] != NULL) freeEdge(qedge[0]);
+  if (qedge[0] != SISL_NULL) freeEdge(qedge[0]);
   
   /* Free the dummy object(point). */
-  if (qdum != NULL) freeObject(qdum);
+  if (qdum != SISL_NULL) freeObject(qdum);
   
 }
 

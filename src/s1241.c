@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1241.c,v 1.3 1995-01-03 13:08:35 pfu Exp $
+ * $Id: s1241.c,v 1.4 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -90,11 +90,11 @@ void s1241(pcurve, point, dim, epsge, area, stat)
    double first_intgr;            /* First integration.               */
    double second_intgr;           /* Second integration.              */
    double dummy[3];               /* Dummy array.                     */
-   double* x_comp = NULL;         /* x-component of the coordinates.  */
-   double* y_comp = NULL;         /* y-component of the coordinates.  */
-   SISLCurve* non_rat_crv = NULL; /* Local non-rational curve.        */
-   SISLCurve* non_per_crv = NULL; /* Local non-periodic curve.        */
-   SISLCurve* local_crv = NULL;   /* Local curve (do not deallocate). */
+   double* x_comp = SISL_NULL;         /* x-component of the coordinates.  */
+   double* y_comp = SISL_NULL;         /* y-component of the coordinates.  */
+   SISLCurve* non_rat_crv = SISL_NULL; /* Local non-rational curve.        */
+   SISLCurve* non_per_crv = SISL_NULL; /* Local non-periodic curve.        */
+   SISLCurve* local_crv = SISL_NULL;   /* Local curve (do not deallocate). */
 
 
 
@@ -217,10 +217,10 @@ void s1241(pcurve, point, dim, epsge, area, stat)
    goto out;
 
   out:
-   if (non_rat_crv != NULL) freeCurve(non_rat_crv);
-   if (non_per_crv != NULL) freeCurve(non_per_crv);
-   if (x_comp != NULL) freearray(x_comp);
-   if (y_comp != NULL) freearray(y_comp);
+   if (non_rat_crv != SISL_NULL) freeCurve(non_rat_crv);
+   if (non_per_crv != SISL_NULL) freeCurve(non_per_crv);
+   if (x_comp != SISL_NULL) freearray(x_comp);
+   if (y_comp != SISL_NULL) freearray(y_comp);
 
    return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1333count.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1333count.c,v 1.2 2001-03-19 15:58:45 afr Exp $
  *
  */
 
@@ -60,7 +60,7 @@ void s1333_count(inbcrv,vpcurv,jcont,jstat)
   int kleft = 0;
   int kstat;
   int ki;
-  SISLCurve *curve=NULL;     /* Pointer to curve being tested */
+  SISLCurve *curve=SISL_NULL;     /* Pointer to curve being tested */
 
   *jcont = -1;
   

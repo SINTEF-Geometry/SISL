@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1955.c,v 1.2 1994-08-31 16:07:08 pfu Exp $
+ * $Id: s1955.c,v 1.3 2001-03-19 15:58:57 afr Exp $
  *
  */
 
@@ -104,19 +104,19 @@ void s1955(pc1,pc2,aepsco,aepsge,jpt,gpar1,gpar2,jcrv,wcurve,jstat)
   int ki,kj;                   /* Counters.                              */
   int kdim;                    /* Dimension of the space in which the
 				  curves lie.                            */
-  double *sorigo = NULL;       /* Array representing origo.              */
-  double *spar1 = NULL;        /* Parameter-values in the parameter
+  double *sorigo = SISL_NULL;       /* Array representing origo.              */
+  double *spar1 = SISL_NULL;        /* Parameter-values in the parameter
 				  interval of the first curve of the
 				  closest curve.                         */
-  double *spar2 = NULL;        /* Parameter-values in the parameter
+  double *spar2 = SISL_NULL;        /* Parameter-values in the parameter
 				  interval of the second curve of the
 				  closest curve.                         */
-  double *ssing = NULL;        /* Single closest points between
+  double *ssing = SISL_NULL;        /* Single closest points between
 				  difference surface and origo.          */
-  SISLSurf *qsdiff = NULL;         /* Difference surface.                    */
+  SISLSurf *qsdiff = SISL_NULL;         /* Difference surface.                    */
   SISLIntcurve *qcurve;            /* Pointer to closest curve.              */
-  SISLCurve *qkreg1 = NULL;    /* First incrv with ensured k-regular basis. */
-  SISLCurve *qkreg2 = NULL;    /* Second incrv with ensured k-regular basis. */
+  SISLCurve *qkreg1 = SISL_NULL;    /* First incrv with ensured k-regular basis. */
+  SISLCurve *qkreg2 = SISL_NULL;    /* Second incrv with ensured k-regular basis. */
   int k1=1,k2=2,k4=4;          /* Constants                              */
 
 
@@ -150,7 +150,7 @@ void s1955(pc1,pc2,aepsco,aepsge,jpt,gpar1,gpar2,jcrv,wcurve,jstat)
 
   /* Allocate space for the point origo.  */
 
-  if ( (sorigo = new0array(kdim, DOUBLE)) == NULL )  goto err101;
+  if ( (sorigo = new0array(kdim, DOUBLE)) == SISL_NULL )  goto err101;
 
   /* Generate the difference surface between the curves.  */
 
@@ -163,8 +163,8 @@ void s1955(pc1,pc2,aepsco,aepsge,jpt,gpar1,gpar2,jcrv,wcurve,jstat)
     /* The curves define a closest interval. Allocate space
        for points defining the interval.                      */
 
-    if ( (spar1 = newarray(k2, DOUBLE)) == NULL )  goto err101;
-    if ( (spar2 = newarray(k2, DOUBLE)) == NULL )  goto err101;
+    if ( (spar1 = newarray(k2, DOUBLE)) == SISL_NULL )  goto err101;
+    if ( (spar2 = newarray(k2, DOUBLE)) == SISL_NULL )  goto err101;
 
     if ( kstat == 1 )
     {
@@ -188,12 +188,12 @@ void s1955(pc1,pc2,aepsco,aepsge,jpt,gpar1,gpar2,jcrv,wcurve,jstat)
       spar2[1] = *(qkreg2->et + qkreg2->ik - 1);
     }
 
-    *wcurve = NULL;
-    if ( (*wcurve = newarray(k1, SISLIntcurve*)) == NULL )  goto err101;
+    *wcurve = SISL_NULL;
+    if ( (*wcurve = newarray(k1, SISLIntcurve*)) == SISL_NULL )  goto err101;
     *jcrv = 1;
 
-    **wcurve = NULL;
-    if ( (**wcurve = newIntcurve(k2,k1,k1,spar1,spar2,k4)) == NULL )  goto err101;
+    **wcurve = SISL_NULL;
+    if ( (**wcurve = newIntcurve(k2,k1,k1,spar1,spar2,k4)) == SISL_NULL )  goto err101;
 
   }
   else
@@ -229,9 +229,9 @@ void s1955(pc1,pc2,aepsco,aepsge,jpt,gpar1,gpar2,jcrv,wcurve,jstat)
 
       /* Allocate space for output of single closest points.  */
 
-      *gpar1 = *gpar2 = NULL;
-      if ( (*gpar1 = newarray(*jpt, DOUBLE)) == NULL )  goto err101;
-      if ( (*gpar2 = newarray(*jpt, DOUBLE)) == NULL )  goto err101;
+      *gpar1 = *gpar2 = SISL_NULL;
+      if ( (*gpar1 = newarray(*jpt, DOUBLE)) == SISL_NULL )  goto err101;
+      if ( (*gpar2 = newarray(*jpt, DOUBLE)) == SISL_NULL )  goto err101;
 
       /* Copy single closest points to output arrays.  */
 
@@ -252,9 +252,9 @@ void s1955(pc1,pc2,aepsco,aepsge,jpt,gpar1,gpar2,jcrv,wcurve,jstat)
 
       /* Allocate space for new parameter arrays.  */
 
-      spar1 = spar2 = NULL;
-      if ( (spar1 = newarray(qcurve->ipoint, DOUBLE)) == NULL )  goto err101;
-      if ( (spar2 = newarray(qcurve->ipoint, DOUBLE)) == NULL )  goto err101;
+      spar1 = spar2 = SISL_NULL;
+      if ( (spar1 = newarray(qcurve->ipoint, DOUBLE)) == SISL_NULL )  goto err101;
+      if ( (spar2 = newarray(qcurve->ipoint, DOUBLE)) == SISL_NULL )  goto err101;
 
       /* Copy parameter-values to new arrays.  */
 

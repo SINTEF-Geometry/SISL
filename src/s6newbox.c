@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6newbox.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6newbox.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -79,10 +79,10 @@ void s6newbox(pbox,inum,itype,aepsge,jstat)
    
    /* Test no such box exist, create the necessary arrays.  */
    
-   if (pbox->e2min[itype] == NULL)
+   if (pbox->e2min[itype] == SISL_NULL)
    {
-      if ((pbox->e2min[itype] = newarray(knum,DOUBLE)) == NULL) goto err101;
-      if ((pbox->e2max[itype] = newarray(knum,DOUBLE)) == NULL) goto err101;
+      if ((pbox->e2min[itype] = newarray(knum,DOUBLE)) == SISL_NULL) goto err101;
+      if ((pbox->e2max[itype] = newarray(knum,DOUBLE)) == SISL_NULL) goto err101;
    }
   
    /* Set the tolerance. */

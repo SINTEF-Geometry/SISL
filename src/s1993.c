@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1993.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1993.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -69,7 +69,7 @@ void s1993(c1,jstat)
   double tmax;
   double tmin;
   double tdiff;
-  double *scoef=NULL;
+  double *scoef=SISL_NULL;
   double noice = (double)100.0 * REL_COMP_RES;   /* Noice killer */ 
   /* ----------------------------------------------------------- */
   
@@ -94,14 +94,14 @@ void s1993(c1,jstat)
 	tmax = max(tmax,tdiff);
       }
   
-  if (fabs(tmin) < noice) tmin = DNULL; 
-  if (fabs(tmax) < noice) tmax = DNULL; 
+  if (fabs(tmin) < noice) tmin = DZERO; 
+  if (fabs(tmax) < noice) tmax = DZERO; 
   
   
   /* Simple case when no genuin zero's of first derivative. */
-  if (kbez && (tmin*tmax >=DNULL)) 
+  if (kbez && (tmin*tmax >=DZERO)) 
     *jstat = 1;
-  else if (tmin*tmax > DNULL) 
+  else if (tmin*tmax > DZERO) 
     *jstat = 1;
   else if (tmin == tmax)
     *jstat = 1;

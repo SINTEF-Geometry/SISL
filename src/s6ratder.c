@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6ratder.c,v 1.2 1994-07-07 14:45:36 pfu Exp $
+ * $Id: s6ratder.c,v 1.3 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -90,7 +90,7 @@ void s6ratder(eder,idim,ider,gder,jstat)
 * REWRITTEN BY : Michael Floater, SI, 25/8/92. Extend to arbitrary
 *                   number of derivatives (by Leibnitz). Finally!
 * REVISED BY : Paal Fugelli, SINTEF, 07/07-94. Added free'ing of binom and
-*              initiation to NULL to avoid memory leakage.
+*              initiation to SISL_NULL to avoid memory leakage.
 *********************************************************************
 */
 {
@@ -98,7 +98,7 @@ void s6ratder(eder,idim,ider,gder,jstat)
   double w0;           /* The denominator.                       */
   int ki;              /* Count through dimensions.              */
   int id;              /* Count through derivatives.             */
-  int *binom = NULL;   /* Array for binomial coefficients.       */
+  int *binom = SISL_NULL;   /* Array for binomial coefficients.       */
   double sum;          /* Binomial (Leibnitz) expansion.         */
   int idimp1;          /* idim + 1.                              */
   int iw;              /* Pointer to a weight.                   */
@@ -114,12 +114,12 @@ void s6ratder(eder,idim,ider,gder,jstat)
   /* Find denominator. */
 
   w0 = eder[idim];
-  if (DEQUAL(w0,DNULL)) w0 = (double)1.0;
+  if (DEQUAL(w0,DZERO)) w0 = (double)1.0;
 
   /* Set up initial binomial coefficient (1). */
 
   binom = newarray(ider+1, INT);
-  if(binom == NULL) goto err179;
+  if(binom == SISL_NULL) goto err179;
 
   binom[0] = 1;
 
@@ -197,7 +197,7 @@ void s6ratder(eder,idim,ider,gder,jstat)
 
 
 out:
-  if (binom != NULL) freearray(binom);
+  if (binom != SISL_NULL) freearray(binom);
 
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6edgred.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6edgred.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -71,11 +71,11 @@ sh6edgred (po1, po2, pintdat, jstat)
   int change = FALSE;
   int change_2 = FALSE;
   int num = 0;
-  SISLIntpt *pt1 = NULL;
-  SISLIntpt *pt2 = NULL;
-  SISLIntpt *pcurr = NULL;
+  SISLIntpt *pt1 = SISL_NULL;
+  SISLIntpt *pt2 = SISL_NULL;
+  SISLIntpt *pcurr = SISL_NULL;
 
-  if (pintdat != NULL)
+  if (pintdat != SISL_NULL)
     {
       do
 	{
@@ -112,7 +112,7 @@ sh6edgred (po1, po2, pintdat, jstat)
 				  pt2->iinter == SI_TRIM)
 				{
 				  sh6idunite (&pintdat, &pt1, &pcurr,
-					      DNULL, &kstat);
+					      DZERO, &kstat);
 				  if (kstat < 0)
 				    goto error;
 				  change = TRUE;
@@ -132,7 +132,7 @@ sh6edgred (po1, po2, pintdat, jstat)
 	      change = FALSE;
 	      for (i = 0; i < pintdat->ipoint; i++)
 		{
-		  pt1 = pt2 = NULL;
+		  pt1 = pt2 = SISL_NULL;
 		  pcurr = pintdat->vpoint[i];
 		  if (pcurr->iinter == SI_TRIM)
 		    {
@@ -153,7 +153,7 @@ sh6edgred (po1, po2, pintdat, jstat)
 				    {
 				       if (pt2)
 					  {
-					     pt2 = NULL;
+					     pt2 = SISL_NULL;
 					     break;
 					  }
 					  else
@@ -164,7 +164,7 @@ sh6edgred (po1, po2, pintdat, jstat)
 			  if (pt2)
 			    {
 			       /* sh6idunite (&pintdat, &pt2, &pcurr,
-				              DNULL, &kstat);  */
+				              DZERO, &kstat);  */
 			       /* UJK, 12.08.93  */
 			      /* sh6idkpt (&pintdat, &pcurr, 1, &kstat);
 			     sh6disconnect(pcurr,pt2,&kstat); */
@@ -228,7 +228,7 @@ sh6edgred (po1, po2, pintdat, jstat)
 		  if (gstat == 1)
 		  {
 		     double parval;
-		     SISLCurve *pcu=NULL;
+		     SISLCurve *pcu=SISL_NULL;
 		     if (pintdat->vpoint[i]->epar[0] == pt1->epar[0])
 		     {
 			parval = pintdat->vpoint[i]->epar[1];

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1346.c,v 1.3 1995-02-07 10:25:34 pfu Exp $
+ * $Id: s1346.c,v 1.4 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -163,18 +163,18 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   int fouridim=4*idim;
   int i;                      /* Loop control parameters              */
   int stat=0, kpos=0;         /* Error message parameters             */
-  double *par1 = NULL;
-  double *par2 = NULL;
-  double *knot1 = NULL;       /* Knot vectors in 1 and 2. par.dir.    */
-  double *knot2 = NULL;
-  double *error1 = NULL;      /* Arrays for error storage             */
-  double *error2 = NULL;
-  double *maxerr = NULL;
-  double *newcoeff = NULL;    /* Coefficients array                   */
-  SISLCurve *ocurve1 = NULL;  /* Used to store local curves           */
-  SISLCurve *ocurve2 = NULL;
-  SISLSurf *osurf1 = NULL;    /* Used to store local surfaces         */
-  SISLSurf *osurf2 = NULL;
+  double *par1 = SISL_NULL;
+  double *par2 = SISL_NULL;
+  double *knot1 = SISL_NULL;       /* Knot vectors in 1 and 2. par.dir.    */
+  double *knot2 = SISL_NULL;
+  double *error1 = SISL_NULL;      /* Arrays for error storage             */
+  double *error2 = SISL_NULL;
+  double *maxerr = SISL_NULL;
+  double *newcoeff = SISL_NULL;    /* Coefficients array                   */
+  SISLCurve *ocurve1 = SISL_NULL;  /* Used to store local curves           */
+  SISLCurve *ocurve2 = SISL_NULL;
+  SISLSurf *osurf1 = SISL_NULL;    /* Used to store local surfaces         */
+  SISLSurf *osurf2 = SISL_NULL;
 
   /* Check Input */
 
@@ -204,7 +204,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   knot1 = newarray(im1+2, DOUBLE);
   knot2 = newarray(im2+2, DOUBLE);
-  if(knot1 == NULL || knot2 == NULL) goto err101;
+  if(knot1 == SISL_NULL || knot2 == SISL_NULL) goto err101;
   memcopy(&knot1[1],par1,im1,DOUBLE);
   memcopy(&knot2[1],par2,im2,DOUBLE);
   knot1[0] = knot1[1];
@@ -213,7 +213,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   knot2[im2+1] = knot2[im2];
   osurf1 = newSurf(im1, im2, 2, 2, knot1, knot2, ep,
 		   1,idim, 1);
-  if (osurf1 == NULL) goto err101;
+  if (osurf1 == SISL_NULL) goto err101;
   if (knot1) freearray(knot1);
   if (knot2) freearray(knot2);
 
@@ -223,7 +223,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   maxerr = newarray(idim, DOUBLE);
   error1 = newarray(idim, DOUBLE);
   error2 = newarray(fouridim, DOUBLE);
-  if (error1 == NULL || error2 == NULL || maxerr == NULL)
+  if (error1 == SISL_NULL || error2 == SISL_NULL || maxerr == SISL_NULL)
     goto err101;
   for (i=0; i<fouridim; i++)
     {
@@ -244,10 +244,10 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   /* Free surface osurf1 */
 
-  if(osurf1 != NULL)
+  if(osurf1 != SISL_NULL)
     {
       freeSurf(osurf1);
-      osurf1 = NULL;
+      osurf1 = SISL_NULL;
     }
 
   /* Piecewise linear interpolant to the reduced
@@ -265,7 +265,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   /* Transpose result, store new coefficients in
    * array newcoeff */
 
-  if( (newcoeff = newarray(idim * in1 * newin2, DOUBLE)) == NULL )
+  if( (newcoeff = newarray(idim * in1 * newin2, DOUBLE)) == SISL_NULL )
     goto err101;
   s6chpar(ocurve1->ecoef, in1, newin2, idim, newcoeff);
 
@@ -278,10 +278,10 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   /* Free surface osurf2 */
 
-  if(osurf2 != NULL)
+  if(osurf2 != SISL_NULL)
     {
       freeSurf(osurf2);
-      osurf2 = NULL;
+      osurf2 = SISL_NULL;
     }
 
   /* Transpose back and get coefficients of bilinear
@@ -289,7 +289,7 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
 
   newcoeff = increasearray(newcoeff,
 			   idim * newin1 * newin2, DOUBLE);
-  if (newcoeff == NULL) goto err101;
+  if (newcoeff == SISL_NULL) goto err101;
   s6chpar(ocurve2->ecoef, newin2, newin1, idim, newcoeff);
 
   /* Store results as a surface */
@@ -297,9 +297,9 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   osurf1 = newSurf(newin1, newin2, ik1, ik2, ocurve2->et,
 		   ocurve1->et, newcoeff, 1, idim, 1);
 
-  free(newcoeff); newcoeff = NULL;
+  free(newcoeff); newcoeff = SISL_NULL;
 
-  if (osurf1 == NULL) goto err101;
+  if (osurf1 == SISL_NULL) goto err101;
 
   /* Set periodicity flag. */
 
@@ -355,18 +355,18 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
  out:
   /* Free SISL-curves allocated in this routine */
 
-  if(ocurve1 != NULL) freeCurve(ocurve1);
-  if(ocurve2 != NULL) freeCurve(ocurve2);
+  if(ocurve1 != SISL_NULL) freeCurve(ocurve1);
+  if(ocurve2 != SISL_NULL) freeCurve(ocurve2);
 
   /* Free SISL-surfaces allocated in this routine */
 
-  if(osurf1 != NULL) freeSurf(osurf1);
+  if(osurf1 != SISL_NULL) freeSurf(osurf1);
 
   /* Free arrays */
 
-  if(error1 != NULL) freearray(error1);
-  if(error2 != NULL) freearray(error2);
-  if(maxerr != NULL) freearray(maxerr);
+  if(error1 != SISL_NULL) freearray(error1);
+  if(error2 != SISL_NULL) freearray(error2);
+  if(maxerr != SISL_NULL) freearray(maxerr);
 
   if (ipar != 3)
     {

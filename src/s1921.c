@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1921.c,v 1.2 1994-08-31 08:07:30 pfu Exp $
+ * $Id: s1921.c,v 1.3 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -113,15 +113,15 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   double tmax;             /* Estimate of maximal value of 1-dim. surface.*/
   double *st1,*st2;        /* Pointer to knotvectors of surface.          */
   double *scoef;           /* Pointer to vertices of surface.             */
-  double *sc = NULL;       /* Pointer to vertices of surface in maxima
+  double *sc = SISL_NULL;       /* Pointer to vertices of surface in maxima
 			      calculation.                                */
-  double *spar = NULL;     /* Values of maxima in the parameter area of
+  double *spar = SISL_NULL;     /* Values of maxima in the parameter area of
 			      the second object. Empty in this case.      */
   double *s1,*s2,*sstop;   /* Pointers used to traverse double-arrays.    */
-  SISLIntdat *qintdat = NULL;  /* Pointer to max data structure.*/
-  SISLSurf *qs = NULL;         /* Pointer to 1-dim. surface in maxima-calculation.*/
-  SISLObject *qo1 = NULL;      /* Pointer to object in maxima-calculation.  */
-  SISLSurf *qkreg = NULL;      /* Input surface with k-regularity ensured.  */
+  SISLIntdat *qintdat = SISL_NULL;  /* Pointer to max data structure.*/
+  SISLSurf *qs = SISL_NULL;         /* Pointer to 1-dim. surface in maxima-calculation.*/
+  SISLObject *qo1 = SISL_NULL;      /* Pointer to object in maxima-calculation.  */
+  SISLSurf *qkreg = SISL_NULL;      /* Input surface with k-regularity ensured.  */
 
 
   /* Ensure k-regular input surface. */
@@ -157,7 +157,7 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
     scoef = qkreg -> rcoef;
     /* Allocate space for coeffecients of new surface.  */
 
-    if ( (sc = newarray(2*kn1*kn2, DOUBLE)) == NULL )  goto err101;
+    if ( (sc = newarray(2*kn1*kn2, DOUBLE)) == SISL_NULL )  goto err101;
 
     /* Compute scalar-product of surface-vertices and direction vector. */
     /* Copy over weights. */
@@ -173,7 +173,7 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
     scoef = qkreg -> ecoef;
     /* Allocate space for coeffecients of new surface.  */
 
-    if ( (sc = newarray(kn1*kn2, DOUBLE)) == NULL )  goto err101;
+    if ( (sc = newarray(kn1*kn2, DOUBLE)) == SISL_NULL )  goto err101;
 
     /* Compute scalar-product of surface-vertices and direction vector. */
 
@@ -185,12 +185,12 @@ void s1921(ps1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   /* Create new surface.  */
 
   qs = newSurf(kn1, kn2, kk1, kk2, st1, st2, sc, qkreg->ikind, 1, 1);
-  if ( qs == NULL )  goto err101;
+  if ( qs == SISL_NULL )  goto err101;
 
   /* Create new object and connect surface to object.  */
 
   qo1 = newObject(SISLSURFACE);
-  if ( qo1 == NULL )  goto err101;
+  if ( qo1 == SISL_NULL )  goto err101;
   qo1 -> s1 = qs;
 
   /* Find maxima.  */

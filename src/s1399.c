@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1399.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1399.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -49,12 +49,12 @@ void s1399(pc,astart,astop)
 {
   int  kk= pc->ik;             /* Order of the input curve.             */
   int  kn= pc->in;             /* Number of vertices in the input curve.*/
-  double *st=NULL;             /* Pointers used in loop.                */ 
+  double *st=SISL_NULL;             /* Pointers used in loop.                */ 
   double a,b;
   int ii, kpos=0, kstat=0;
   if (!pc) goto out;
   
-  if((st = newarray(kk+kn,DOUBLE)) == NULL) goto err101;
+  if((st = newarray(kk+kn,DOUBLE)) == SISL_NULL) goto err101;
   
   a = pc -> et[kk-1];
   b = pc -> et[kn];
@@ -73,6 +73,6 @@ void s1399(pc,astart,astop)
     goto out;
       
   out:
-    if (st != NULL) freearray(st);
+    if (st != SISL_NULL) freearray(st);
     return;
 }

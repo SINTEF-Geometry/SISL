@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1720.c,v 1.2 1994-10-21 16:36:25 pfu Exp $
+ * $Id: s1720.c,v 1.3 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -94,13 +94,13 @@ void s1720(pc,ider,rcnew,jstat)
   int kj;                /* Control variable in loop.               */
   double tdel;           /* Help variabel.                          */
   double *s1,*s2,*s3;    /* Pointers used in loop.                  */
-  double *st=NULL;       /* The first new knot-vector.              */
-  double *scoef=NULL;    /* The first new vertice.                  */
-  SISLCurve *q1=NULL;    /* Pointer to new curve-object.            */
+  double *st=SISL_NULL;       /* The first new knot-vector.              */
+  double *scoef=SISL_NULL;    /* The first new vertice.                  */
+  SISLCurve *q1=SISL_NULL;    /* Pointer to new curve-object.            */
 
   /* NURBS variables: */
-  SISLCurve *rat=NULL;   /* The denominator curve.                  */
-  double *ratcoef=NULL;  /* The vertices of rat.                    */
+  SISLCurve *rat=SISL_NULL;   /* The denominator curve.                  */
+  double *ratcoef=SISL_NULL;  /* The vertices of rat.                    */
   int rdim;              /* Rational dimension.                     */
   double eps;            /* Knot equality resolution.               */
   int multadd;           /* Added multiplicity of interior knots.   */
@@ -108,10 +108,10 @@ void s1720(pc,ider,rcnew,jstat)
   int oldprev;           /* Previous index in the original knots.   */
   int oldcurr;           /* Current index in the original knots.    */
   int newcurr;           /* Current index in the new knots.         */
-  double *par = NULL;    /* Parameter values used for interpolation */
-  int *der = NULL;       /* The derivative indicators (= 0).        */
-  double *deriv = NULL;  /* The derivates returned by s1221.        */
-  double *tau = NULL;    /* Interpolation points.                   */
+  double *par = SISL_NULL;    /* Parameter values used for interpolation */
+  int *der = SISL_NULL;       /* The derivative indicators (= 0).        */
+  double *deriv = SISL_NULL;  /* The derivates returned by s1221.        */
+  double *tau = SISL_NULL;    /* Interpolation points.                   */
   double denom;          /* The denominator.                        */
   int left = 0;          /* Interval indicator.                     */
   int ki;                /* Index in for loop.                      */
@@ -135,13 +135,13 @@ void s1720(pc,ider,rcnew,jstat)
      if (pc->ikind == 2 || pc->ikind == 4)
      {
 	if ((*rcnew=newCurve(pc->in,pc->ik,pc->et,pc->rcoef,
-			    pc->ikind,pc->idim,1)) == NULL)
+			    pc->ikind,pc->idim,1)) == SISL_NULL)
 	   goto err101;
      }
      else
      {
 	if ((*rcnew=newCurve(pc->in,pc->ik,pc->et,pc->ecoef,
-			    pc->ikind,pc->idim,1)) == NULL)
+			    pc->ikind,pc->idim,1)) == SISL_NULL)
 	   goto err101;
      }
      goto out;
@@ -235,18 +235,18 @@ void s1720(pc,ider,rcnew,jstat)
 
      /* Free allocated geometry. */
 
-     if (rat != NULL) freeCurve(rat);
-     rat = NULL;
-     if (ratcoef != NULL) freearray(ratcoef);
-     ratcoef = NULL;
-     if (par != NULL) freearray(par);
-     par = NULL;
-     if (der != NULL) freearray(der);
-     der = NULL;
-     if (deriv != NULL) freearray(deriv);
-     deriv = NULL;
-     if (tau != NULL) freearray(tau);
-     tau = NULL;
+     if (rat != SISL_NULL) freeCurve(rat);
+     rat = SISL_NULL;
+     if (ratcoef != SISL_NULL) freearray(ratcoef);
+     ratcoef = SISL_NULL;
+     if (par != SISL_NULL) freearray(par);
+     par = SISL_NULL;
+     if (der != SISL_NULL) freearray(der);
+     der = SISL_NULL;
+     if (deriv != SISL_NULL) freearray(deriv);
+     deriv = SISL_NULL;
+     if (tau != SISL_NULL) freearray(tau);
+     tau = SISL_NULL;
 
   }
   else
@@ -269,8 +269,8 @@ void s1720(pc,ider,rcnew,jstat)
 
      /* Allocating the new arrays to the new curve. */
 
-     if ((st=newarray(kn+kk,double))==NULL) goto err101;
-     if ((scoef=new0array(kn*kdim,double))==NULL) goto err101;
+     if ((st=newarray(kn+kk,double))==SISL_NULL) goto err101;
+     if ((scoef=new0array(kn*kdim,double))==SISL_NULL) goto err101;
 
      /* Copying the knot vectors from the old curve to the new curve. */
 
@@ -299,26 +299,26 @@ void s1720(pc,ider,rcnew,jstat)
              {
 	       tdel = s3[kk] - *s3;
 
-	       if (DNEQUAL(tdel,DNULL))
+	       if (DNEQUAL(tdel,DZERO))
 	         for (s2=s1+kdim; s1<s2; s1++)
 		   *s1=(*s1-s1[-kdim])*kk/tdel;
 	       else
-	         for (s2=s1+kdim; s1<s2; s1++) *s1 = DNULL;
+	         for (s2=s1+kdim; s1<s2; s1++) *s1 = DZERO;
              }
 
 	   tdel = s3[kk] - *s3;
 
-	   if (DNEQUAL(tdel,DNULL))
+	   if (DNEQUAL(tdel,DZERO))
 	     for (s2=s1+kdim; s1<s2; s1++) *s1 = *s1*kk/tdel;
 	   else
-             for (s2=s1+kdim; s1<s2; s1++) *s1 = DNULL;
+             for (s2=s1+kdim; s1<s2; s1++) *s1 = DZERO;
 
          }
 
      /* Allocating new curve-object.*/
 
      if ((q1=newCurve(kn-2,kk,&st[1],&scoef[pc->idim],1,pc->idim,1))
-	 == NULL) goto err101;
+	 == SISL_NULL) goto err101;
      freearray(st);
      freearray(scoef);
   }

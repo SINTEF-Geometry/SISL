@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1302.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1302.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -101,8 +101,8 @@ void s1302(pc,aepsge,angle,ep,eaxis,rs,jstat)
   double tlength;         /* Variable used for length calculation       */
   double tmaxl;           /* Variable used for accumulating max lengths */
   double treler;          /* Variable used for relative error           */
-  double *sucof=NULL;     /* Pointer to vertex array for surface        */
-  SISLCurve *pnorm=NULL;  /* Pointer to normalized circle segment       */
+  double *sucof=SISL_NULL;     /* Pointer to vertex array for surface        */
+  SISLCurve *pnorm=SISL_NULL;  /* Pointer to normalized circle segment       */
   double smat[16];        /* Transformation matrix                      */
   int    kstat;           /* Status variable                            */
   double tfak;            /* Value of cross product                     */
@@ -191,7 +191,7 @@ void s1302(pc,aepsge,angle,ep,eaxis,rs,jstat)
   
   /* Allocate vertex array for surface */
   sucof = newarray(kn1*kn2*kdim,DOUBLE);
-  if (sucof == NULL) goto err101;
+  if (sucof == SISL_NULL) goto err101;
   
   /* Make the surface vertices circle segment by circle segment */
   
@@ -255,8 +255,8 @@ void s1302(pc,aepsge,angle,ep,eaxis,rs,jstat)
   
   /* Free allocated arrays */
   
-  if (sucof != NULL) freearray(sucof);
-  if (pnorm != NULL) freeCurve(pnorm);
+  if (sucof != SISL_NULL) freearray(sucof);
+  if (pnorm != SISL_NULL) freeCurve(pnorm);
   
   return;
 }

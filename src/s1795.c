@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1795.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1795.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -80,7 +80,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
   int kver,khor;    /* The index to the vertice in the upper left corner 
 		       to the patch to treat.				 */
   int k1,k2,k3,k4;  /* Control variables in loop. 			 */
-  double *t=NULL;     /* Allocating t[5][kdim]. Five tangents around the
+  double *t=SISL_NULL;     /* Allocating t[5][kdim]. Five tangents around the
 			 patch, the first and the last is the same.         */
   double *tn;         /* Allocating tn[4][kdim]. Four normals in the corner
 		         of the patch.					 */
@@ -88,8 +88,8 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
   double *scen2;     /* The computed basis vector to the projection plan.*/
   double tlen;       /* The length of a vector.				 */
   double tang;	     /* An angle between two vectors.			 */
-  double tang1=DNULL;/* An angle between two vectors.			 */
-  double tang2=DNULL;/* An angle between two vectors.			 */
+  double tang1=DZERO;/* An angle between two vectors.			 */
+  double tang2=DZERO;/* An angle between two vectors.			 */
   double t1,t2;      /* Help variables.					 */
   double slen[5];   /* Distances between coefficients.                    */
   double scorn[4];  /* Angle between derivatives in corner of patch.      */
@@ -103,7 +103,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
   
   /* Allocate local used matrices, t[5][kdim] and tn[4][kdim]. */
   
-  if ((t = newarray(10*kdim,double)) == NULL) goto err101;
+  if ((t = newarray(10*kdim,double)) == SISL_NULL) goto err101;
   
   tn   = t + 5*kdim;
   
@@ -128,8 +128,8 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
   for (kver=0; kver < (kn2-1); kver++)
     for (khor=0; khor < (kn1-1); khor++)
       {
-	slen[0] = slen[1] = slen[2] = slen[3] = DNULL;
-	scorn[0] = scorn[1] = scorn[2] = scorn[3] = DNULL;
+	slen[0] = slen[1] = slen[2] = slen[3] = DZERO;
+	scorn[0] = scorn[1] = scorn[2] = scorn[3] = DZERO;
 	
 	/* Here we make the tangents in each corner of the patch,
            and in direction with the clock. The first and the last
@@ -169,7 +169,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
 	for (k1=0, ki=0; k1<kdim4; k1+=kdim, ki++)
 	  {
 	    
-	    for (tlen=DNULL,k2=0,k3=1,k4=2; k2 < kdim; k2++,k3++,k4++)
+	    for (tlen=DZERO,k2=0,k3=1,k4=2; k2 < kdim; k2++,k3++,k4++)
 	      {
 		
 		if(k3 == kdim) k3 = 0;
@@ -194,7 +194,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
 	    for (k2=1,k3=k1+1;k2<kdim;k2++,k3++)
 	      t2 += scen2[k2]*tn[k3];
 	    
-	    if (t2 <= DNULL) continue;
+	    if (t2 <= DZERO) continue;
 	    
 	    t1 = scen1[0]*tn[k1];
 	    for (k2=1,k3=k1+1;k2<kdim;k2++,k3++)
@@ -202,7 +202,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
 	    
 	    tang = t1/sqrt(t1*t1 + t2*t2);
 	    
-	    if (tang >= DNULL) tang = min((double)1,tang);
+	    if (tang >= DZERO) tang = min((double)1,tang);
 	    else               tang = max((double)-1,tang);
 	    
 	    tang = acos(tang);
@@ -227,8 +227,8 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
   for (kver=0; kver < (kn2-1); kver++)
     for (khor=0; khor < (kn1-1); khor++)
       {
-	slen[0] = slen[1] = slen[2] = slen[3] = DNULL;
-	scorn[0] = scorn[1] = scorn[2] = scorn[3] = DNULL;
+	slen[0] = slen[1] = slen[2] = slen[3] = DZERO;
+	scorn[0] = scorn[1] = scorn[2] = scorn[3] = DZERO;
 	
 	/* Here we make the tangents in each corner of the patch,
            and in direction with the clock. The first and the last
@@ -268,7 +268,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
 	for (k1=0, ki=0; k1<kdim4; k1+=kdim, ki++)
 	  {
 	    
-	    for (tlen=DNULL,k2=0,k3=1,k4=2; k2 < kdim; k2++,k3++,k4++)
+	    for (tlen=DZERO,k2=0,k3=1,k4=2; k2 < kdim; k2++,k3++,k4++)
 	      {
 		
 		if(k3 == kdim) k3 = 0;
@@ -294,7 +294,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
 	    for (k2=1,k3=k1+1;k2<kdim;k2++,k3++)
 	      t2 += scen2[k2]*tn[k3];
 	    
-	    if (t2 <= DNULL) continue;
+	    if (t2 <= DZERO) continue;
 	    
 	    t1 = scen1[0]*tn[k1];
 	    for (k2=1,k3=k1+1;k2<kdim;k2++,k3++)
@@ -302,7 +302,7 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
 	    
 	    tang = t1/sqrt(t1*t1+t2*t2);
 	    
-	    if (tang >= DNULL) tang = min((double)1,tang);
+	    if (tang >= DZERO) tang = min((double)1,tang);
 	    else               tang = max((double)-1,tang);
 	    
 	    tang = acos(tang);
@@ -332,5 +332,5 @@ void s1795(ps1,ps2,aepsge,aang,jstat)
   
   /* Free local used memory. */
   
-  out:    if (t != NULL) freearray(t);
+  out:    if (t != SISL_NULL) freearray(t);
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1615.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1615.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -68,7 +68,7 @@ void s1615(epoint, inbpnt, idim, eptyp, jstat)
 */
 {
   double svector[8];
-  double *spoint = NULL;
+  double *spoint = SISL_NULL;
   int ki, kk, kp, kki;
   int ktyp;
   double tcross;
@@ -85,7 +85,7 @@ void s1615(epoint, inbpnt, idim, eptyp, jstat)
   /* Allocate local array. */
 
   spoint = newarray (kdim * inbpnt, DOUBLE);
-  if (spoint == NULL)
+  if (spoint == SISL_NULL)
     goto err101;
 
 
@@ -204,7 +204,7 @@ out:
 
   /* Free local arrays. */
 
-  if (spoint != NULL)
+  if (spoint != SISL_NULL)
     freearray (spoint);
 
   return;

@@ -129,11 +129,11 @@ void sh1262(vcurve,iedge,inmbx,ecoef,jstat)
   double thelp1,thelp2,thelp3,thelp4;   /* Help variables in computation 
 					   of rang.    */
   double tnorm1,tnorm2;   /* Lenght of normals.        */
-  double *spar1 = NULL;   /* Startpoints of parameter intervals of 
+  double *spar1 = SISL_NULL;   /* Startpoints of parameter intervals of 
                              input curves.       */
-  double *spar2 = NULL;   /* Endpoints of parameter intervals of 
+  double *spar2 = SISL_NULL;   /* Endpoints of parameter intervals of 
                              input curves.       */
-  double *sder = NULL;    /* Result of curve evaluation. The values are
+  double *sder = SISL_NULL;    /* Result of curve evaluation. The values are
                              stored as follows : Value and first derivative
                              of all curves corresponding to an edge in
                              first endpoint, the same values in the second
@@ -155,9 +155,9 @@ void sh1262(vcurve,iedge,inmbx,ecoef,jstat)
   
   /* Allocate space for array containing results of curve evaluation.  */
   
-  if ((sder = newarray(12*kdim*iedge,DOUBLE)) == NULL) goto err101;
-  if ((spar1 = newarray(kncurve,DOUBLE)) == NULL) goto err101;
-  if ((spar2 = newarray(kncurve,DOUBLE)) == NULL) goto err101;  
+  if ((sder = newarray(12*kdim*iedge,DOUBLE)) == SISL_NULL) goto err101;
+  if ((spar1 = newarray(kncurve,DOUBLE)) == SISL_NULL) goto err101;
+  if ((spar2 = newarray(kncurve,DOUBLE)) == SISL_NULL) goto err101;  
   
   /* Evaluate boundary curves in the  endpoints.  */
 
@@ -306,7 +306,7 @@ void sh1262(vcurve,iedge,inmbx,ecoef,jstat)
       {
 	 if (ecoef[4*ki+kj] < MIN(ecoef[4*ki+3],ecoef[4*ki])-tfac ||
 	     ecoef[4*ki+kj] > MAX(ecoef[4*ki+3],ecoef[4*ki])+tfac ||
-	     ecoef[4*ki+kj] < DNULL)
+	     ecoef[4*ki+kj] < DZERO)
 	 {
 	    ecoef[4*ki+kj] = ((double)(3-kj)*ecoef[4*ki] +
 	       (double)kj*ecoef[4*ki+3])/(double)3.0;
@@ -353,9 +353,9 @@ void sh1262(vcurve,iedge,inmbx,ecoef,jstat)
     
     /* Free space occupied by local arrays.  */
 
-    if (sder != NULL) freearray(sder);
-  if (spar1 != NULL) freearray(spar1);
-  if (spar2 != NULL) freearray(spar2);
+    if (sder != SISL_NULL) freearray(sder);
+  if (spar1 != SISL_NULL) freearray(spar1);
+  if (spar2 != SISL_NULL) freearray(spar2);
 
   return;
 }
@@ -431,10 +431,10 @@ static void sh1262_s9blendcoef(evecu,evecv,etang,idim,isign,coef1,coef2,jstat)
   tdotvtang = (double)isign*s6scpr(evecv,etang,idim);
 
   tdiv = tdotuv*tdotuv - tdotuu*tdotvv;
-  if (DEQUAL(tdiv,DNULL))
+  if (DEQUAL(tdiv,DZERO))
     {
-      if (DEQUAL(tdotuu,DNULL) && DEQUAL(tdotvv,DNULL));
-      else if (DEQUAL(tdotuu,DNULL))
+      if (DEQUAL(tdotuu,DZERO) && DEQUAL(tdotvv,DZERO));
+      else if (DEQUAL(tdotuu,DZERO))
 	  *coef2 = s6length(etang,idim,&kstat)/sqrt(tdotvv);
       else
 	*coef1 = s6length(etang,idim,&kstat)/sqrt(tdotuu);
@@ -655,7 +655,7 @@ static void sh1262_s9blendder(ea,eb,ix,ieq,irang,astarti,aendi,astartj,aendj,eal
 		}
 	    }
       for (kh=0; kh<2; kh++)
-	if (DEQUAL(sdet[kh],DNULL)) sdet[kh] = (double)1.0;
+	if (DEQUAL(sdet[kh],DZERO)) sdet[kh] = (double)1.0;
       
       kcount = 0;
       

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1731.c,v 1.2 1994-10-19 16:25:50 pfu Exp $
+ * $Id: s1731.c,v 1.3 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -82,17 +82,17 @@ void s1731(ps,rsnew,jstat)
   int kdim=ps->idim;             /* Dimensjon of the space in whice surf lies.  */
   int kn1,kn2;                   /* Number of vertices in the new surface.      */
   double *s1,*s2,*s3;            /* Pointers used in loop.                      */
-  double *st1=NULL;              /* The new knot-vector.                        */
-  double *st2=NULL;              /* The new knot-vector.                        */
-  double *sp=NULL;               /* To use in s1701.c                           */
-  double *salfa=NULL;            /* A line of the trans.-matrix.                */
-  double *scoef=NULL;            /* The new vertice.                            */
-  double *scoefh=NULL;           /* A new vertice for help.                     */
-  SISLSurf *q1=NULL;             /* Pointer to new surf-object.                 */
+  double *st1=SISL_NULL;              /* The new knot-vector.                        */
+  double *st2=SISL_NULL;              /* The new knot-vector.                        */
+  double *sp=SISL_NULL;               /* To use in s1701.c                           */
+  double *salfa=SISL_NULL;            /* A line of the trans.-matrix.                */
+  double *scoef=SISL_NULL;            /* The new vertice.                            */
+  double *scoefh=SISL_NULL;           /* A new vertice for help.                     */
+  SISLSurf *q1=SISL_NULL;             /* Pointer to new surf-object.                 */
 
   double *rcoef;                 /* Potential rational vertices.                */
   int rdim;                      /* Potential rational dimension.               */
-  SISLSurf *qkreg=NULL;          /* Input surface made k-regular.               */
+  SISLSurf *qkreg=SISL_NULL;          /* Input surface made k-regular.               */
 
   /* Check that we have a surface to treat. */
 
@@ -126,8 +126,8 @@ void s1731(ps,rsnew,jstat)
      line of the basic transformation matrix, and space for new knots
      to use in s1701.c */
 
-  if ((salfa=newarray(kk1+kk2,double))==NULL) goto err101;
-  if ((sp=newarray(kk1+kk2,double))==NULL) goto err101;
+  if ((salfa=newarray(kk1+kk2,double))==SISL_NULL) goto err101;
+  if ((sp=newarray(kk1+kk2,double))==SISL_NULL) goto err101;
 
   /* Find the number of vertices in the first direction
      in the new surface. */
@@ -145,10 +145,10 @@ void s1731(ps,rsnew,jstat)
 
   /* Allocating the new arrays to the new surface. */
 
-  if ((st1=newarray(kn1+kk1,double))==NULL) goto err101;
-  if ((st2=newarray(kn2+kk2,double))==NULL) goto err101;
-  if ((scoefh=new0array(kn1*kn*rdim,double))==NULL) goto err101;
-  if ((scoef=new0array(kn1*kn2*rdim,double))==NULL) goto err101;
+  if ((st1=newarray(kn1+kk1,double))==SISL_NULL) goto err101;
+  if ((st2=newarray(kn2+kk2,double))==SISL_NULL) goto err101;
+  if ((scoefh=new0array(kn1*kn*rdim,double))==SISL_NULL) goto err101;
+  if ((scoef=new0array(kn1*kn2*rdim,double))==SISL_NULL) goto err101;
 
   /* Making the new knotvectors in the first direction */
 
@@ -209,7 +209,7 @@ void s1731(ps,rsnew,jstat)
 
   /* Allocating new surface-objects.*/
 
-  if ((q1=newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,qkreg->ikind,kdim,2)) == NULL)
+  if ((q1=newSurf(kn1,kn2,kk1,kk2,st1,st2,scoef,qkreg->ikind,kdim,2)) == SISL_NULL)
     goto err101;
 
   /* Updating output. */
@@ -247,7 +247,7 @@ void s1731(ps,rsnew,jstat)
   /* Free local used memory. */
 
  out:
-  if (qkreg != NULL && qkreg != ps) freeSurf(qkreg);
+  if (qkreg != SISL_NULL && qkreg != ps) freeSurf(qkreg);
   if (salfa)  freearray(salfa);
   if (sp)     freearray(sp);
   if (scoefh) freearray(scoefh);

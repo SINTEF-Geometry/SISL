@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1893.c,v 1.2 1994-09-21 16:51:05 pfu Exp $
+ * $Id: s1893.c,v 1.3 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -103,15 +103,15 @@ s1893 (orig, earray, dimp1, narr, der1, der2, ncurve, jstat)
   int count1, count2;		/* Loop control variables. */
   int count3=0;
   int kr, kl, kp;
-  int *der = NULL;		/* The derivative indicators. (0) */
+  int *der = SISL_NULL;		/* The derivative indicators. (0) */
 
-  double *nknots = NULL;	/* The new knot vector. */
-  double *coef = NULL;		/* Coefficients of the new B-spline curve. */
-  double *par = NULL;		/* Parameter values used for interpolation. */
-  double *deriv = NULL;		/* The derivates returned by s1221. */
-  double *val1 = NULL;		/* Extracted values from deriv. */
-  double *val2 = NULL;		/* Extracted values from deriv. */
-  double *tau = NULL;		/* Interpolation points. */
+  double *nknots = SISL_NULL;	/* The new knot vector. */
+  double *coef = SISL_NULL;		/* Coefficients of the new B-spline curve. */
+  double *par = SISL_NULL;		/* Parameter values used for interpolation. */
+  double *deriv = SISL_NULL;		/* The derivates returned by s1221. */
+  double *val1 = SISL_NULL;		/* Extracted values from deriv. */
+  double *val2 = SISL_NULL;		/* Extracted values from deriv. */
+  double *tau = SISL_NULL;		/* Interpolation points. */
   double sum;			/* Used for calculating F(t). */
   int kpos = 0;
   int kstat = 0;
@@ -145,19 +145,19 @@ s1893 (orig, earray, dimp1, narr, der1, der2, ncurve, jstat)
   /* Allocate arrays. */
 
   val1 = newarray (orig->idim + 1, DOUBLE);
-  if (val1 == NULL)
+  if (val1 == SISL_NULL)
     goto err101;
   val2 = newarray (orig->idim + 1, DOUBLE);
-  if (val2 == NULL)
+  if (val2 == SISL_NULL)
     goto err101;
   tau = new0array (nin * narr * narr, DOUBLE);
   /*  tau = newarray (nin * narr, DOUBLE);  (PFU 21/09-94) */
-  if (tau == NULL)
+  if (tau == SISL_NULL)
     goto err101;
 
   mder = max (der1, der2);
   deriv = newarray ((mder + 1) * orig->idim, DOUBLE);
-  if (deriv == NULL)
+  if (deriv == SISL_NULL)
     goto err101;
 
 
@@ -219,7 +219,7 @@ s1893 (orig, earray, dimp1, narr, der1, der2, ncurve, jstat)
     goto error;
 
   *ncurve = newCurve (nin, nik, nknots, coef, orig->ikind, narr, 2);
-  if (*ncurve == NULL)
+  if (*ncurve == SISL_NULL)
     goto err171;
   (*ncurve)->cuopen = orig->cuopen;
 
@@ -266,17 +266,17 @@ error:
   /* Free memory. */
 
 out:
-  if (val1 != NULL)
+  if (val1 != SISL_NULL)
     freearray (val1);
-  if (val2 != NULL)
+  if (val2 != SISL_NULL)
     freearray (val2);
-  if (der != NULL)
+  if (der != SISL_NULL)
     freearray (der);
-  if (par != NULL)
+  if (par != SISL_NULL)
     freearray (par);
-  if (deriv != NULL)
+  if (deriv != SISL_NULL)
     freearray (deriv);
-  if (tau != NULL)
+  if (tau != SISL_NULL)
     freearray (tau);
   return;
 }

@@ -97,7 +97,7 @@ void sh1831(pc1, pc2, isign, epoint, enorm, aepsge, jstat)
      tdist = s6scpr(sdiff, enorm, kdim);
      
      if (fabs(tdist) <= aepsge && !kbez1 && !(ki==0 || ki==pc1->in-1)) break;
-     ksign2 = (DEQUAL(tdist,DNULL)) ? 0 : ((tdist > 0) ? 1 : -1);
+     ksign2 = (DEQUAL(tdist,DZERO)) ? 0 : ((tdist > 0) ? 1 : -1);
      if (ksign1*ksign2 < 0) break;
      ksign1 = ksign2;
   }
@@ -115,7 +115,7 @@ void sh1831(pc1, pc2, isign, epoint, enorm, aepsge, jstat)
      tdist = s6scpr(sdiff, enorm, kdim);
      
      if (fabs(tdist) <= aepsge && !kbez2 && !(ki==0 || ki==pc2->in-1)) break;
-     ksign2 = (DEQUAL(tdist,DNULL)) ? 0 : ((tdist > 0) ? 1 : -1);
+     ksign2 = (DEQUAL(tdist,DZERO)) ? 0 : ((tdist > 0) ? 1 : -1);
      if (ksign1*ksign2 < 0) break;
      if (ksignprev*ksign1 > 0) break;
      ksign1 = ksign2;

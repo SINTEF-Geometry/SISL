@@ -79,8 +79,8 @@ s1508(inbcrv, vpcurv, par_arr,
   int kn1, kord1, knbcrv;
   int i,ki,kj,kk;         /* Loop variables. */
   SISLCurve *qc;	  /* Pointer to curve representing surface */
-  double *sknot1 = NULL;  /* Knot vector. */
-  double *scoef2 = NULL;  /* Pointer to vertices expressed in same basis  */
+  double *sknot1 = SISL_NULL;  /* Knot vector. */
+  double *scoef2 = SISL_NULL;  /* Pointer to vertices expressed in same basis  */
   int kstat = 0;	  /* Status variable. */
   int kpos = 0;		  /* Position of error. */
   int knbpar;		  /* Number of parameter values produced          */
@@ -93,7 +93,7 @@ s1508(inbcrv, vpcurv, par_arr,
   double *evnew;
   double *hvcoef;
 
-  SISLCurve **ratcurves=NULL;
+  SISLCurve **ratcurves=SISL_NULL;
 
 
 
@@ -132,22 +132,22 @@ s1508(inbcrv, vpcurv, par_arr,
   /* Allocate array for points and weights */
 
   epcoef    = newarray(kdim*inbcrv*kn1,DOUBLE);
-  if (epcoef == NULL) goto err101;
+  if (epcoef == SISL_NULL) goto err101;
 
   evcoef    = newarray(kdim*inbcrv*kn1,DOUBLE);
-  if (evcoef == NULL) goto err101;
+  if (evcoef == SISL_NULL) goto err101;
 
   epweight    = newarray(inbcrv*kn1,DOUBLE);
-  if (epweight == NULL) goto err101;
+  if (epweight == SISL_NULL) goto err101;
 
   evweight    = newarray(inbcrv*kn1,DOUBLE);
-  if (evweight == NULL) goto err101;
+  if (evweight == SISL_NULL) goto err101;
 
   epweight2    = newarray(inbcrv*kn1,DOUBLE);
-  if (epweight2 == NULL) goto err101;
+  if (epweight2 == SISL_NULL) goto err101;
 
   evweight2    = newarray(inbcrv*kn1,DOUBLE);
-  if (evweight2 == NULL) goto err101;
+  if (evweight2 == SISL_NULL) goto err101;
 
 
   for(ki=0,kj=0,kk=0; ki<inbcrv*kn1; ki++,kj+=(kdim+1),kk+=kdim)
@@ -193,7 +193,7 @@ s1508(inbcrv, vpcurv, par_arr,
   /* Allocate array for homogeneous derivatives. */
 
   hvcoef    = newarray(inbcrv*kn1*(kdim+1),DOUBLE);
-  if (hvcoef == NULL) goto err101;
+  if (hvcoef == SISL_NULL) goto err101;
 
   /* Use product rule to estimate derivatives for
      homogeneous coordinates. */
@@ -227,12 +227,12 @@ s1508(inbcrv, vpcurv, par_arr,
 
   *rsurf = newSurf (kn1, qc->in, kord1, qc->ik, sknot1, qc->et, qc->ecoef,
 		    kind, kdim, kcopy);
-  if (*rsurf == NULL)
+  if (*rsurf == SISL_NULL)
     goto err171;
 
   /* Release the curve object */
 
-  if (qc != NULL)
+  if (qc != SISL_NULL)
     freeCurve (qc);
 
 
@@ -273,26 +273,26 @@ error:
   /* Free allocated scratch  */
 
 out:
-  if (sknot1 != NULL)
+  if (sknot1 != SISL_NULL)
     freearray (sknot1);
-  if (scoef2 != NULL)
+  if (scoef2 != SISL_NULL)
     freearray (scoef2);
 
-  if (ratcurves != NULL)
+  if (ratcurves != SISL_NULL)
   {
     for(i=0; i<inbcrv; i++)
     {
-      if(ratcurves[i] != NULL) freeCurve(ratcurves[i]);
+      if(ratcurves[i] != SISL_NULL) freeCurve(ratcurves[i]);
     }
     freearray(ratcurves);
   }
-  if (epcoef != NULL) freearray(epcoef);
-  if (evcoef != NULL) freearray(evcoef);
-  if (epweight != NULL) freearray(epweight);
-  if (evweight != NULL) freearray(evweight);
-  if (epweight2 != NULL) freearray(epweight2);
-  if (evweight2 != NULL) freearray(evweight2);
-  if (hvcoef != NULL) freearray(hvcoef);
+  if (epcoef != SISL_NULL) freearray(epcoef);
+  if (evcoef != SISL_NULL) freearray(evcoef);
+  if (epweight != SISL_NULL) freearray(epweight);
+  if (evweight != SISL_NULL) freearray(evweight);
+  if (epweight2 != SISL_NULL) freearray(epweight2);
+  if (evweight2 != SISL_NULL) freearray(evweight2);
+  if (hvcoef != SISL_NULL) freearray(hvcoef);
 
   return;
 }

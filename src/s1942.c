@@ -108,11 +108,11 @@ void s1942(pc1,pc2,idim,ea,nstart,nstop,emxerr,el2err,jstat)
    double *sd = pc1->ecoef;
    double *stau = pc2->et;
    double *sc = pc2->ecoef;
-   double *stemp = NULL;
+   double *stemp = SISL_NULL;
    
    /* Allocate scratch for local array.  */
    
-   if ((stemp = newarray(idim,DOUBLE)) == NULL) goto err101;
+   if ((stemp = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
   
    /* Initiate arrays to zero.  */
    
@@ -164,7 +164,7 @@ void s1942(pc1,pc2,idim,ea,nstart,nstop,emxerr,el2err,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (stemp != NULL) freearray(stemp);
+      if (stemp != SISL_NULL) freearray(stemp);
 	  
       return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1369.c,v 1.3 1994-12-02 09:33:13 vsk Exp $
+ * $Id: sh1369.c,v 1.4 2001-03-19 15:59:03 afr Exp $
  *
  */
 
@@ -128,20 +128,20 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   double simpli[16];           /* Array for representation of torus-surface   */
   double snorm[3];            /* Normalized normal vector                    */
   double spoint[1];           /* SISLPoint in surface/point intersection.        */
-  double *spar = NULL;        /* Values of intersections in the parameter
+  double *spar = SISL_NULL;        /* Values of intersections in the parameter
 				 area of the second object.
 				 Empty in this case.   */
-  SISLSurf *qs = NULL;        /* Pointer to surface in
+  SISLSurf *qs = SISL_NULL;        /* Pointer to surface in
 			     surface/point intersection.*/
-  SISLPoint *qp = NULL;       /* Pointer to point in
+  SISLPoint *qp = SISL_NULL;       /* Pointer to point in
 			     surface/point intersection.  */
-  SISLObject *qo1 = NULL;     /* Pointer to surface in
+  SISLObject *qo1 = SISL_NULL;     /* Pointer to surface in
 			     object/point intersection. */
-  SISLObject *qo2 = NULL;     /* Pointer to point in
+  SISLObject *qo2 = SISL_NULL;     /* Pointer to point in
 			     object/point intersection    */
-  SISLIntdat *qintdat = NULL; /* Intersection result */
-  SISLObject *track_obj=NULL;
-  SISLSurf *qkreg=NULL; /* Input surface ensured k-regularity. */
+  SISLIntdat *qintdat = SISL_NULL; /* Intersection result */
+  SISLObject *track_obj=SISL_NULL;
+  SISLSurf *qkreg=SISL_NULL; /* Input surface ensured k-regularity. */
   double aepsge2;             /* 1 dimensional tolerance. */
 
   int ki;
@@ -222,7 +222,7 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
    */
 
   if(!(qo2 = newObject(SISLPOINT))) goto err101;
-  spoint[0] = DNULL;
+  spoint[0] = DZERO;
   if(!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
@@ -346,12 +346,12 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   if (qintdat) freeIntdat(qintdat);
   if (track_obj)
     {
-       track_obj->s1 = NULL;
+       track_obj->s1 = SISL_NULL;
        freeObject(track_obj);
     }
 
   /* Free local surface.  */
-    if (qkreg != NULL && qkreg != ps) freeSurf(qkreg);
+    if (qkreg != SISL_NULL && qkreg != ps) freeSurf(qkreg);
 
 return;
 }

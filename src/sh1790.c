@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1790.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1790.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -134,7 +134,7 @@ void sh1790(po1,po2,itype,aepsge,jstat)
   }
   else
   {
-     teps1 = DNULL;
+     teps1 = DZERO;
      if (po1->iobj == SISLPOINT || po2->iobj == SISLPOINT)
 	kpttest = 1;
   }

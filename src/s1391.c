@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1391.c,v 1.2 1994-09-27 09:24:58 pfu Exp $
+ * $Id: s1391.c,v 1.3 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -117,9 +117,9 @@ void s1391(pc,ws,icurv,nder,jstat)
    int kstat = 0;   /* Local status variable.  */
    int kpos = 0;
    int ki;
-   SISLCurve **qc1 = NULL;  /* Input curves to the
+   SISLCurve **qc1 = SISL_NULL;  /* Input curves to the
 			       preparation of curves function.         */
-   SISLCurve **qc2 = NULL;  /* Output curves from the
+   SISLCurve **qc2 = SISL_NULL;  /* Output curves from the
 			       preparation of curves function.         */
    fshapeProc fshape;
    /* #if defined(SISLNEEDPROTOTYPES)
@@ -129,8 +129,8 @@ void s1391(pc,ws,icurv,nder,jstat)
 #endif  */
    fshape = shape;
 
-   if ((qc1 = newarray(3*icurv, SISLCurve*)) == NULL) goto err101;
-   if ((qc2 = newarray(2*icurv, SISLCurve*)) == NULL) goto err101;
+   if ((qc1 = newarray(3*icurv, SISLCurve*)) == SISL_NULL) goto err101;
+   if ((qc2 = newarray(2*icurv, SISLCurve*)) == SISL_NULL) goto err101;
    memzero(qc1, 3*icurv, SISLCurve*);
    memzero(qc2, 2*icurv, SISLCurve*);
 
@@ -147,7 +147,7 @@ void s1391(pc,ws,icurv,nder,jstat)
    {
       qc1[3*ki] = pc[2*ki];
       qc1[3*ki+1] = pc[2*ki+1];
-      qc1[3*ki+2] = NULL;
+      qc1[3*ki+2] = SISL_NULL;
 
       s1720(qc1[3*ki], 1, qc1+3*ki+2, &kstat);
       if (kstat < 0) goto error;
@@ -192,12 +192,12 @@ void s1391(pc,ws,icurv,nder,jstat)
    out :
       for (ki=0; ki<icurv; ki++)
       {
-	 if (qc1[3*ki+2] != NULL) freeCurve(qc1[3*ki+2]);
-	 if (qc2[2*ki] != NULL) freeCurve(qc2[2*ki]);
-	 if (qc2[2*ki+1] != NULL) freeCurve(qc2[2*ki+1]);
+	 if (qc1[3*ki+2] != SISL_NULL) freeCurve(qc1[3*ki+2]);
+	 if (qc2[2*ki] != SISL_NULL) freeCurve(qc2[2*ki]);
+	 if (qc2[2*ki+1] != SISL_NULL) freeCurve(qc2[2*ki+1]);
       }
-      if (qc1 != NULL) freearray(qc1);
-      if (qc2 != NULL) freearray(qc2);
+      if (qc1 != SISL_NULL) freearray(qc1);
+      if (qc2 != SISL_NULL) freearray(qc2);
 
       return;
 }

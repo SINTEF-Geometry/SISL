@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1502.c,v 1.2 1994-11-14 15:28:12 pfu Exp $
+ * $Id: s1502.c,v 1.3 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -99,14 +99,14 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
   int kpos = 0;            /* Position of error.                           */
   int trackflag = 0;
   int jtrack;
-  int *pretop=NULL;
-  SISLTrack **wtrack=NULL;
+  int *pretop=SISL_NULL;
+  SISLTrack **wtrack=SISL_NULL;
 
   sh1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 	 trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
   /*
    * Intersections found.

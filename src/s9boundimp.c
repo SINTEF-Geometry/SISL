@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9boundimp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s9boundimp.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -201,7 +201,7 @@ void s9boundimp(epnt1,epar1,psurf1,eimpli,ideg,apar,idir,aepsge,
 	  /* First parameter is constant  */
 	  
 	  tdu = apar - gpar1[0];
-	  if (DNEQUAL(ta12,DNULL) )
+	  if (DNEQUAL(ta12,DZERO) )
 	    {
 	      tdv = (tb1-tdu*ta11)/ta12;
 	    }
@@ -218,7 +218,7 @@ void s9boundimp(epnt1,epar1,psurf1,eimpli,ideg,apar,idir,aepsge,
         {
 	  /* Second parameter direction constant */
 	  tdv = apar - gpar1[1];
-	  if (DNEQUAL(ta11,DNULL))
+	  if (DNEQUAL(ta11,DZERO))
 	    {
 	      tdu = (tb1-tdv*ta12)/ta11;
 	    }
@@ -258,7 +258,7 @@ void s9boundimp(epnt1,epar1,psurf1,eimpli,ideg,apar,idir,aepsge,
       
       knbit = knbit + 1;
       
-      if (DEQUAL(tcurdst,DNULL))
+      if (DEQUAL(tcurdst,DZERO))
         {
 	  /* Length is zero iteration has converged   */
 	  kcont = 0;

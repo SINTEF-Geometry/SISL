@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1712.c,v 1.2 1994-05-16 13:24:41 boh Exp $
+ * $Id: s1712.c,v 1.3 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -74,9 +74,9 @@ s1712 (pc, abeg, aend, rcnew, jstat)
   int kstat;			/* Local status variable.           */
   int kpos = 0;			/* Position of error.               */
   double tbeg, tend;		/* The less and greater point.      */
-  SISLCurve *q1 = NULL;		/* Pointer to new curve-object.     */
-  SISLCurve *q2 = NULL;		/* Pointer to new curve-object.     */
-  SISLCurve *q3 = NULL;		/* Pointer to new curve-object.     */
+  SISLCurve *q1 = SISL_NULL;		/* Pointer to new curve-object.     */
+  SISLCurve *q2 = SISL_NULL;		/* Pointer to new curve-object.     */
+  SISLCurve *q3 = SISL_NULL;		/* Pointer to new curve-object.     */
   int kturn = 0;
 
   /* Check that we have a curve to pick a part of. */
@@ -146,12 +146,12 @@ s1712 (pc, abeg, aend, rcnew, jstat)
   if (kstat && q1 && !q2)
     {
       q2 = q1;
-      q1 = NULL;
+      q1 = SISL_NULL;
     }
   else if (q1)
     {
       freeCurve (q1);
-      q1 = NULL;
+      q1 = SISL_NULL;
     }
 
   /* Then we divide at the last point. The curve to left is the new curve.*/
@@ -163,7 +163,7 @@ s1712 (pc, abeg, aend, rcnew, jstat)
   if (kstat && !q1 && q3)
   {
     q1 = q3;
-    q3 = NULL;
+    q3 = SISL_NULL;
   }
 
   /* The curve is turned if nessesary. */

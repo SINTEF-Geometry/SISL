@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1994.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1994.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -73,7 +73,7 @@ void sh1994(s1,aepsge,jstat)
   double tmaxt, tmaxs;
   double tmint, tmins;
   double tdiff;
-  double *scoef=NULL;
+  double *scoef=SISL_NULL;
   
   /* Init to  simple case. */
   *jstat = 1;
@@ -99,11 +99,11 @@ void sh1994(s1,aepsge,jstat)
   /* UJK, 91-10 */
   /* for (kj=0, scoef=s1->ecoef; kj<kn2; kj++,scoef++) */
   for (kj=0, scoef=s1->ecoef; kj<kn2; kj++,scoef=s1->ecoef+kn1*kj)
-     for (tdiff=DNULL, ki=1; ki<kn1; ki+=kh, scoef+=kh)
+     for (tdiff=DZERO, ki=1; ki<kn1; ki+=kh, scoef+=kh)
      {
 	for (kh=1; ki+kh<=kn1; kh++)
 	{
-	   if (tdiff*(*(scoef+kh) - *(scoef+kh-1)) < DNULL)
+	   if (tdiff*(*(scoef+kh) - *(scoef+kh-1)) < DZERO)
 	      {
 		 scoef += (kh-1);
 		 ki += (kh-1);
@@ -122,11 +122,11 @@ void sh1994(s1,aepsge,jstat)
      intervall of first derivative. */
   
   for (ki=0; ki<kn1; ki++)
-     for (tdiff=DNULL, kj=1, scoef=s1->ecoef+ki; kj<kn2; kj+=kh, scoef+=kh*kn1)
+     for (tdiff=DZERO, kj=1, scoef=s1->ecoef+ki; kj<kn2; kj+=kh, scoef+=kh*kn1)
      {
 	for (kh=1; kj+kh<=kn2; kh++)
 	{
-	   if (tdiff*(*(scoef+kh*kn1) - *(scoef+(kh-1)*kn1)) < DNULL)
+	   if (tdiff*(*(scoef+kh*kn1) - *(scoef+(kh-1)*kn1)) < DZERO)
 	      {
 		 scoef += (kh-1)*kn1;
 		 kj += (kh-1);
@@ -149,9 +149,9 @@ void sh1994(s1,aepsge,jstat)
   }
   
   /* The first derivatives decide directions of possible intersection curves. */
-  if (kbez && (tmint*tmaxt >=DNULL || tmins*tmaxs >=DNULL))
+  if (kbez && (tmint*tmaxt >=DZERO || tmins*tmaxs >=DZERO))
     *jstat = 1;
-  else if (tmint*tmaxt > DNULL || tmins*tmaxs > DNULL) 
+  else if (tmint*tmaxt > DZERO || tmins*tmaxs > DZERO) 
     *jstat = 1;
   else if (tmint == tmaxt  || tmins == tmaxs) 
     *jstat = 1;

@@ -113,24 +113,24 @@ void sh1263(vcurve,iedge,vboundc,jstat)
   double tonethird = (double)1.0/(double)3.0;  /* Constant used to check
 						  if tangent of position
 						  curve is too long.     */
-  double *scoef = NULL;     /* Array containing coefficients fo blending
+  double *scoef = SISL_NULL;     /* Array containing coefficients fo blending
 			       functions.                                */
   double (*s1)[4],(*s2)[4]; /* Pointers to coefficients of one blending
 			       function.                                 */
   
   SISLCurve* (*qc)[3];          /* Pointer to curves corresponding to one 
 			       edge of the vertex region.                */
-  SISLCurve **qcurve = NULL;    /* Array of pointers to reparametrized curves.*/
+  SISLCurve **qcurve = SISL_NULL;    /* Array of pointers to reparametrized curves.*/
   SISLCurve *qpt;               /* Pointer to current curve.                 */
   
   /* Allocate scratch for arrays used to store equation system.  */
 
-  if ((scoef = newarray(knmbx,DOUBLE)) == NULL) goto err101;
+  if ((scoef = newarray(knmbx,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Copy input curves to local arrays. First allocate scratch for
      pointer array.  */
 
-  if ((qcurve = newarray(3*iedge,SISLCurve*)) == NULL) goto err101;
+  if ((qcurve = newarray(3*iedge,SISLCurve*)) == SISL_NULL) goto err101;
   
   for (ki=0; ki<3*iedge; qpt++,ki++)
     {
@@ -139,7 +139,7 @@ void sh1263(vcurve,iedge,vboundc,jstat)
       /* Copy curve.  */
 
       if ((qcurve[ki] = newCurve(qpt->in,qpt->ik,qpt->et,qpt->ecoef,qpt->ikind,
-				 qpt->idim,kcopy)) == NULL) goto err101;
+				 qpt->idim,kcopy)) == SISL_NULL) goto err101;
      } 
 
   /* Make sure that all curves are represented with k-tupple knots in
@@ -221,13 +221,13 @@ void sh1263(vcurve,iedge,vboundc,jstat)
     
     /* Free space occupied by local arrays and curves.  */
 
-  if (scoef != NULL) freearray(scoef);
-  if (qcurve != NULL)
+  if (scoef != SISL_NULL) freearray(scoef);
+  if (qcurve != SISL_NULL)
     {
       for (ki=0; ki<3*iedge; ki+=3)
 	{
-	  if (qcurve[ki+1] != NULL) freeCurve(qcurve[ki+1]);
-	  if (qcurve[ki+2] != NULL) freeCurve(qcurve[ki+2]);
+	  if (qcurve[ki+1] != SISL_NULL) freeCurve(qcurve[ki+1]);
+	  if (qcurve[ki+2] != SISL_NULL) freeCurve(qcurve[ki+2]);
 	}
       freearray(qcurve);
     }

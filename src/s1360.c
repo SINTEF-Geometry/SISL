@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1360.c,v 1.3 1995-01-26 16:02:24 pfu Exp $
+ * $Id: s1360.c,v 1.4 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -123,9 +123,9 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
   double tproj2;      /* Projection of vector                            */
   double tlast;       /* Value in last itertion                          */
   double tfak;        /* Necessary reduction of interval length          */
-  double *s3dinf=NULL;/* Pointer to storage for point info (10 dobules pr
+  double *s3dinf=SISL_NULL;/* Pointer to storage for point info (10 dobules pr
 			 point when idim=3, 7 when idim=3)               */
-  double *spar=NULL;  /* Pointer to array for storage of knots           */
+  double *spar=SISL_NULL;  /* Pointer to array for storage of knots           */
   double *st;         /* Pointer to the first element of the knot vector
 			 of the curve. The knot vector has [kn+kk]
 			 elements.                                       */
@@ -153,7 +153,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
   /* Test that dimension is 2 or 3 */
   if (idim !=2 && idim !=3) goto err105;
 
-  if (aepsge <= DNULL) goto err184;
+  if (aepsge <= DZERO) goto err184;
 
 
 
@@ -168,14 +168,14 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 
   /* Check for degenerate curve. */
 
-  if(tmax == DNULL)
+  if(tmax == DZERO)
   {
       /* Curve is degenerate -- pc is just a point. */
       *jstat = -1;
       goto out;
   }
 
-  if (amax>DNULL) tmax = MIN(tmax,amax);
+  if (amax>DZERO) tmax = MIN(tmax,amax);
   /* Copy curve attributes to local parameters.  */
 
   kn    = pc -> in;
@@ -190,12 +190,12 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
      curvature */
 
   s3dinf = newarray((3*kdim+1)*kmaxinf,DOUBLE);
-  if (s3dinf == NULL) goto err101;
+  if (s3dinf == SISL_NULL) goto err101;
 
   /* Allocate space for parametrization array */
 
   spar = newarray(kmaxinf,DOUBLE);
-  if (spar == NULL) goto err101;
+  if (spar == SISL_NULL) goto err101;
 
   /* Store knot values at start of curve */
 
@@ -239,7 +239,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 
       /*  Find parameter value of candidate end point of segment */
 
-      if (DEQUAL(tlengthend,DNULL))
+      if (DEQUAL(tlengthend,DZERO))
         {
 	  /* Step equal to computer resolution */
 	  tincre = tx1*((double)1.0+REL_COMP_RES);
@@ -307,7 +307,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
           /* We have the right value of kleftend, if no offset and
              break then s1362 will decrease kleft */
 
-          if (aoffset != DNULL)
+          if (aoffset != DZERO)
 	    {
               s1362(pc,aoffset,enorm,idim,kder,tdum,&kleft,sder,&kstat);
 	      if (kstat<0) goto error;
@@ -368,7 +368,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 	      /* If tproj2==0 then curve tangent normal to plane, half step
 		 length */
 
-	      if (DEQUAL(tproj2,DNULL))
+	      if (DEQUAL(tproj2,DZERO))
                 {
 		  kdiv  = 1;
 		  kcont = 0;
@@ -451,7 +451,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
 	{
           /* End of segment is possible break, add exstra version of point */
 
-          if (aoffset != DNULL)
+          if (aoffset != DZERO)
 	    {
 	      spar[knbinf] = tx2-(double)0.1*(tx2-spar[knbinf-1]);
 	      s1362(pc,aoffset,enorm,idim,kder,tx2,&kleft,sder,&kstat);
@@ -540,7 +540,7 @@ void s1360(pc,aoffset,aepsge,enorm,amax,idim,rc,jstat)
   goto out;
 
  out:
-  if (s3dinf != NULL) freearray(s3dinf);
-  if (spar   != NULL) freearray(spar);
+  if (s3dinf != SISL_NULL) freearray(s3dinf);
+  if (spar   != SISL_NULL) freearray(spar);
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1796.c,v 1.2 2000-03-29 08:42:53 vsk Exp $
+ * $Id: s1796.c,v 1.3 2001-03-19 15:58:54 afr Exp $
  *
  */
 #define S1796
@@ -78,13 +78,13 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
   int kdim;	     /* Dimension of the space in which the objects lie. */
   int kin;           /* The index to the vertice to treat.               */
   int k1,k2;         /* Control variables in loop.                       */
-  double *t=NULL;    /* Tangent at each coeficient.                      */
+  double *t=SISL_NULL;    /* Tangent at each coeficient.                      */
   double tlen;       /* The length of a vector.                          */
   double *scen1;     /* The orginal basis vector to the projection plan. */
   double *scen2;     /* The computed basis vector to the projection plan.*/
   double tang;	     /* An angle between two vectors.		         */
-  double tang1=DNULL;/* An angle between two vectors.			 */
-  double tang2=DNULL;/* An angle between two vectors.			 */
+  double tang1=DZERO;/* An angle between two vectors.			 */
+  double tang2=DZERO;/* An angle between two vectors.			 */
   double t1,t2;      /* Help variables.				         */
   
   
@@ -95,7 +95,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
   
   /* Allocate local used array. */
   
-  if ((t = newarray(2*kdim,double)) == NULL) goto err101;
+  if ((t = newarray(2*kdim,double)) == SISL_NULL) goto err101;
   
   /* We have to turn the direction into the smallest angel. */
   
@@ -132,7 +132,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
 	 using the control polygon. The tangents are also normalized
 	 by deviding with its own length. */
       
-      for (tlen=DNULL,k1=0; k1 < kdim; k1++,k2++)
+      for (tlen=DZERO,k1=0; k1 < kdim; k1++,k2++)
 	{
 	  t[k1] = pc1->pdir->esmooth[k2+kdim] - pc1->pdir->esmooth[k2];
 	  tlen += t[k1]*t[k1];
@@ -149,7 +149,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
       for (k1=1; k1<kdim; k1++)
 	t2 += scen2[k1]*t[k1];
       
-      if (t2 <= DNULL) continue;
+      if (t2 <= DZERO) continue;
       
       t1 = scen1[0]*t[0];
       for (k1=1; k1<kdim; k1++)
@@ -157,7 +157,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
       
       tang = t1/sqrt(t1*t1 + t2*t2);
       
-      if (tang >= DNULL) tang = min((double)1,tang);
+      if (tang >= DZERO) tang = min((double)1,tang);
       else               tang = max((double)-1,tang);
       
       tang = acos(tang);
@@ -191,7 +191,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
 	 using the control polygon. The tangents are also normalized
 	 by deviding with its own length. */
       
-      for (tlen=DNULL,k1=0; k1 < kdim; k1++,k2++)
+      for (tlen=DZERO,k1=0; k1 < kdim; k1++,k2++)
 	{
 	  t[k1] = pc2->pdir->esmooth[k2+kdim] - pc2->pdir->esmooth[k2];
 	  tlen += t[k1]*t[k1];
@@ -209,7 +209,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
       for (k1=1; k1<kdim;k1++)
 	t2 += scen2[k1]*t[k1];
       
-      if (t2 <= DNULL) continue;
+      if (t2 <= DZERO) continue;
       
       t1 = scen1[0]*t[0];
       for (k1=1; k1<kdim; k1++)
@@ -217,7 +217,7 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
       
       tang = t1/sqrt(t1*t1 + t2*t2);
       
-      if (tang >= DNULL) tang = min((double)1,tang);
+      if (tang >= DZERO) tang = min((double)1,tang);
       else               tang = max((double)-1,tang);
       
       tang = acos(tang);
@@ -246,6 +246,6 @@ void s1796(pc1,pc2,aepsge,aang,jstat)
   
   /* Free local used memory. */
   
- out:    if (t != NULL) freearray(t);
+ out:    if (t != SISL_NULL) freearray(t);
   
 }

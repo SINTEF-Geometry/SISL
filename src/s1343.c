@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1343.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1343.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -88,14 +88,14 @@ void s1343(pc,eeps,ilend,irend,aepsco,itmax,rc,jstat)
   int kpos = 0;
   int km;
   int leftknot = 0;
-  double *error1 = NULL;
-  double *error2 = NULL;
-  double *epar = NULL;
-  double *derive = NULL;
-  double *kp = NULL;
-  double *kder = NULL;
-  SISLCurve *ocurve = NULL;
-  SISLCurve *qc_kreg = NULL;    /* Non-periodic version of the input curve. */
+  double *error1 = SISL_NULL;
+  double *error2 = SISL_NULL;
+  double *epar = SISL_NULL;
+  double *derive = SISL_NULL;
+  double *kp = SISL_NULL;
+  double *kder = SISL_NULL;
+  SISLCurve *ocurve = SISL_NULL;
+  SISLCurve *qc_kreg = SISL_NULL;    /* Non-periodic version of the input curve. */
   
   
   /* Check input-curve. */
@@ -135,7 +135,7 @@ void s1343(pc,eeps,ilend,irend,aepsco,itmax,rc,jstat)
       /* Curve is now a cubic spline 
        * Call reduction routine      */
 
-      if( (error2 = newarray( idim, DOUBLE )) == NULL) goto err101;
+      if( (error2 = newarray( idim, DOUBLE )) == SISL_NULL) goto err101;
       s1340( ocurve, eeps, ilend, irend, aepsco, itmax, rc, 
 	    error2, &stat);
       if (stat < 0) goto error;
@@ -147,7 +147,7 @@ void s1343(pc,eeps,ilend,irend,aepsco,itmax,rc,jstat)
 
   /* Set local tolerance */
 
-  if( (error1 = newarray(idim, DOUBLE)) == NULL) goto err101;
+  if( (error1 = newarray(idim, DOUBLE)) == SISL_NULL) goto err101;
 
   for (i=0; i<idim; i++)
     error1[i] = 0.5*eeps[i];
@@ -163,7 +163,7 @@ void s1343(pc,eeps,ilend,irend,aepsco,itmax,rc,jstat)
   derive = newarray( idim * 2, DOUBLE );
   kp     = newarray( idim * km, DOUBLE );
   kder   = newarray( idim * km, DOUBLE );
-  if (derive == NULL || kp == NULL || kder == NULL) goto err101;
+  if (derive == SISL_NULL || kp == SISL_NULL || kder == SISL_NULL) goto err101;
 
   for(i=0; i<km; i++)
     {
@@ -187,7 +187,7 @@ void s1343(pc,eeps,ilend,irend,aepsco,itmax,rc,jstat)
 
   /* Compute datareduction on the cubic hermite interpolant */
 
-  if( (error2 = newarray( idim, DOUBLE )) == NULL) goto err101;
+  if( (error2 = newarray( idim, DOUBLE )) == SISL_NULL) goto err101;
   s1340( ocurve, error1, ilend, irend, aepsco, itmax, rc, 
 	error2, &stat);
   if (stat < 0) goto error;
@@ -236,17 +236,17 @@ void s1343(pc,eeps,ilend,irend,aepsco,itmax,rc,jstat)
   out:
     /* Free allocated arrays */
 
-    if( error1 != NULL) freearray(error1);
-    if( error2 != NULL) freearray(error2);
-    if( epar   != NULL) freearray(epar);
-    if( derive != NULL) freearray(derive);
-    if( kp     != NULL) freearray(kp);
-    if( kder   != NULL) freearray(kder);
+    if( error1 != SISL_NULL) freearray(error1);
+    if( error2 != SISL_NULL) freearray(error2);
+    if( epar   != SISL_NULL) freearray(epar);
+    if( derive != SISL_NULL) freearray(derive);
+    if( kp     != SISL_NULL) freearray(kp);
+    if( kder   != SISL_NULL) freearray(kder);
 
     /* Free local SISL-curves */
 
-    if( ocurve != NULL) freeCurve(ocurve);
-    if (qc_kreg != NULL && qc_kreg != pc) freeCurve(qc_kreg);
+    if( ocurve != SISL_NULL) freeCurve(ocurve);
+    if (qc_kreg != SISL_NULL && qc_kreg != pc) freeCurve(qc_kreg);
 
     return;
 }

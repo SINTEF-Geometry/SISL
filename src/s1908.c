@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1908.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1908.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -104,32 +104,32 @@ s1908 (econd1, ntype1, epar, inpt1, ik, idim, iopen,
   int kder;			/* Order of differentiation.              */
   int lderarray[MAX_SIZE];
   int alloc_needed=FALSE;
-  int *lder = NULL;		/* Kind of derivative.                    */
-  double *sdum = NULL;	        /* Help array.                            */
+  int *lder = SISL_NULL;		/* Kind of derivative.                    */
+  double *sdum = SISL_NULL;	        /* Help array.                            */
   double tdist;                 /* Distance between first and last point. */
   double tref;                  /* Referance value.                       */
 
-  if ((sdum = newarray (idim, DOUBLE)) == NULL)
+  if ((sdum = newarray (idim, DOUBLE)) == SISL_NULL)
      goto err101;
 
   /* Allocate scratch for output arrays. Make sure that the arrays
      are large enough.  */
 
-  *gcond2 = NULL;
-  if ((*gcond2 = newarray (kmaxpt * idim, DOUBLE)) == NULL)
+  *gcond2 = SISL_NULL;
+  if ((*gcond2 = newarray (kmaxpt * idim, DOUBLE)) == SISL_NULL)
     goto err101;
-  *mtype2 = NULL;
-  if ((*mtype2 = newarray (kmaxpt, INT)) == NULL)
+  *mtype2 = SISL_NULL;
+  if ((*mtype2 = newarray (kmaxpt, INT)) == SISL_NULL)
     goto err101;
-  *mpar = NULL;
-  if ((*mpar = newarray (kmaxpt, DOUBLE)) == NULL)
+  *mpar = SISL_NULL;
+  if ((*mpar = newarray (kmaxpt, DOUBLE)) == SISL_NULL)
     goto err101;
 
   /* Allocate scratch for local arrays.  */
 
   if (ik > MAX_SIZE)
     {
-       if ((lder = new0array (ik, INT)) == NULL)
+       if ((lder = new0array (ik, INT)) == SISL_NULL)
          goto err101;
        alloc_needed = TRUE;
     }
@@ -344,6 +344,6 @@ s1908 (econd1, ntype1, epar, inpt1, ik, idim, iopen,
     /* Free scratch occupied by local array. */
 
     if (alloc_needed) freearray (lder);
-    if(sdum != NULL)  freearray(sdum);
+    if(sdum != SISL_NULL)  freearray(sdum);
     return;
 }

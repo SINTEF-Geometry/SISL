@@ -123,25 +123,25 @@ void s1943(pcurve,etau,ik,in,ileftfix,
 			       periodicity. */
   int knormr;               /* Number of rows of corner element of normal
 			       equations.                                */
-  double *scoef = NULL;     /* Coefficient array of approximating curve. */
-  double *sa = NULL;        /* Transformation matrix.  */
-  double *sa2 = NULL;       /* Transformation matrix. Copy of last part of sa.*/
-  double *sw1 = NULL;       /* Corner element due to continuity requirements. */
-  double *sb = NULL;        /* Coefficient matrix of the normal equations. */
-  double *sw2 = NULL;       /* Corner elements of normal equations.        */
-  double *sfac = NULL;      /* Factors used to implement continuity 
+  double *scoef = SISL_NULL;     /* Coefficient array of approximating curve. */
+  double *sa = SISL_NULL;        /* Transformation matrix.  */
+  double *sa2 = SISL_NULL;       /* Transformation matrix. Copy of last part of sa.*/
+  double *sw1 = SISL_NULL;       /* Corner element due to continuity requirements. */
+  double *sb = SISL_NULL;        /* Coefficient matrix of the normal equations. */
+  double *sw2 = SISL_NULL;       /* Corner elements of normal equations.        */
+  double *sfac = SISL_NULL;      /* Factors used to implement continuity 
 			       requirements.                               */
-  int *lfirst = NULL;       /* Integer array of dimension kn containing
+  int *lfirst = SISL_NULL;       /* Integer array of dimension kn containing
 			       pointers to the first nonzero element of each
 			       row of the B-spline refinement matrix, sa. from
 			       etau to pcurve->et.  */
-  int *lfirst2 = NULL;      /* Copy of last part of lfirst.               */
-  int *llast = NULL;        /* Pointer to the last nonzero element of sa. */
-  int *llast2 = NULL;       /* Copy of last part of llast to avoid destroing 
+  int *lfirst2 = SISL_NULL;      /* Copy of last part of lfirst.               */
+  int *llast = SISL_NULL;        /* Pointer to the last nonzero element of sa. */
+  int *llast2 = SISL_NULL;       /* Copy of last part of llast to avoid destroing 
 			       the original information of llast.         */
-  int *l2sta = NULL;        /* Pointer to the first non-zero element of the
+  int *l2sta = SISL_NULL;        /* Pointer to the first non-zero element of the
 			       coefficient matrix of the normal equations. */
-  double *sc = NULL;        /* Copy of coefficients of the input curve.    */
+  double *sc = SISL_NULL;        /* Copy of coefficients of the input curve.    */
   int kk = pcurve->ik;      /* Order of curves.                            */
   int knh;                  /* Size of coefficient matrix in matrix solver. */
 
@@ -171,7 +171,7 @@ void s1943(pcurve,etau,ik,in,ileftfix,
   
   /* Allocate scratch for coefficients of approximating spline.  */
 
-  if ((scoef = newarray(in*kdim,DOUBLE)) == NULL) goto err101;
+  if ((scoef = newarray(in*kdim,DOUBLE)) == SISL_NULL) goto err101;
   
   /* If kn = in then pcurve->et = etau and if no continuity 
      requirements are given, the problem is trivial. 
@@ -186,7 +186,7 @@ void s1943(pcurve,etau,ik,in,ileftfix,
      
      /* Express the approximating curve as a curve.  */
      
-     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == NULL)
+     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == SISL_NULL)
 	goto err101;
      (*rnewcurve)->cuopen = pcurve->cuopen;
      
@@ -211,9 +211,9 @@ void s1943(pcurve,etau,ik,in,ileftfix,
 	In the periodic case (continuity requirements are given) it is
 	necessary to allocate scratch for storing corner elements. */
      
-     if ((sa = newarray((kn+in)*ik+incont*incont,DOUBLE)) == NULL) goto err101;
+     if ((sa = newarray((kn+in)*ik+incont*incont,DOUBLE)) == SISL_NULL) goto err101;
      sb = sa + kn*ik;
-     if ((lfirst = newarray(3*kn,INT)) == NULL) goto err101;
+     if ((lfirst = newarray(3*kn,INT)) == SISL_NULL) goto err101;
      llast = lfirst + kn;
      l2sta = llast + kn;
      
@@ -243,11 +243,11 @@ void s1943(pcurve,etau,ik,in,ileftfix,
      {
 	
 	/* Allocate scratch for corner element matrix. */
-	if ((sa2 = new0array(knlr*(ik+incont)+knormr*in,DOUBLE)) == NULL) 
+	if ((sa2 = new0array(knlr*(ik+incont)+knormr*in,DOUBLE)) == SISL_NULL) 
 	   goto err101;
 	sw1 = sa2 + knlr*ik;
 	sw2 = sw1 + knlr*incont;
-	if ((lfirst2 = newarray(2*knlr,INT)) == NULL) goto err101;
+	if ((lfirst2 = newarray(2*knlr,INT)) == SISL_NULL) goto err101;
 	llast2 = lfirst2 + knlr;
      
      /* Save the content of sa to be used for estimating the error.  */
@@ -288,7 +288,7 @@ void s1943(pcurve,etau,ik,in,ileftfix,
 	   This is necessary since the right-hand-side of the problem
 	   will be adjusted and the original data should not be altered. */
 	
-	if ((sc = newarray(kn*kdim,DOUBLE)) == NULL) goto err101;
+	if ((sc = newarray(kn*kdim,DOUBLE)) == SISL_NULL) goto err101;
 	memcopy(sc,pcurve->ecoef,kn*kdim,DOUBLE);
      
 	/* Enforce the side conditions.  */
@@ -339,7 +339,7 @@ void s1943(pcurve,etau,ik,in,ileftfix,
 
      /* Express the approximating curve as a curve.  */
      
-     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == NULL)
+     if ((*rnewcurve = newCurve(in,ik,etau,scoef,kkind,kdim,kcopy)) == SISL_NULL)
 	goto err101;
      (*rnewcurve)->cuopen = pcurve->cuopen;
      
@@ -385,12 +385,12 @@ void s1943(pcurve,etau,ik,in,ileftfix,
 
     /* Free scratch occupied by local arrays.  */
 
-    if (scoef != NULL) freearray(scoef);
-    if (sc != NULL) freearray(sc);
-    if (sa != NULL) freearray(sa);
-    if (sa2 != NULL) freearray(sa2);
-    if (lfirst != NULL) freearray(lfirst);
-    if (lfirst2 != NULL) freearray(lfirst2);
+    if (scoef != SISL_NULL) freearray(scoef);
+    if (sc != SISL_NULL) freearray(sc);
+    if (sa != SISL_NULL) freearray(sa);
+    if (sa2 != SISL_NULL) freearray(sa2);
+    if (lfirst != SISL_NULL) freearray(lfirst);
+    if (lfirst2 != SISL_NULL) freearray(lfirst2);
   
     return;
 }

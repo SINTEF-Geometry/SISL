@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1365.c,v 1.3 1995-01-26 15:42:05 pfu Exp $
+ * $Id: s1365.c,v 1.4 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -112,9 +112,9 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
 			   direction.                                     */
   double tstart2,tend2; /* Endpoints of parameter interval in second
 			   direction.                                     */
-  double *sknot13=NULL;/* Pointer to common knot-vector of edge curves along
+  double *sknot13=SISL_NULL;/* Pointer to common knot-vector of edge curves along
 			  1. parameter direction. */
-  double *sknot24=NULL;/* Pointer to common knot-vector of edge curves along
+  double *sknot24=SISL_NULL;/* Pointer to common knot-vector of edge curves along
 			  2. parameter direction. */
   int  kk;              /* Loop controller. */
 
@@ -123,10 +123,10 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
   for (kk=0; kk<4; kk++)
   {
      nder[kk] = 1;
-     pc[kk] = NULL;
-     rc[kk] = NULL;
+     pc[kk] = SISL_NULL;
+     rc[kk] = SISL_NULL;
   }
-  for (kk=0; kk<3; kk++) snorm[kk] = DNULL;
+  for (kk=0; kk<3; kk++) snorm[kk] = DZERO;
 
   /* Fetch the 4 edge-curves of surface */
 
@@ -189,11 +189,11 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
   out:
      for (kk=0; kk<4; kk++)
      {
-	if (pc[kk] != NULL) freeCurve(pc[kk]);
-	if (rc[kk] != NULL) freeCurve(rc[kk]);
+	if (pc[kk] != SISL_NULL) freeCurve(pc[kk]);
+	if (rc[kk] != SISL_NULL) freeCurve(rc[kk]);
      }
-     if (sknot13 != NULL) freearray(sknot13);
-     if (sknot24 != NULL) freearray(sknot24);
+     if (sknot13 != SISL_NULL) freearray(sknot13);
+     if (sknot24 != SISL_NULL) freearray(sknot24);
 
      return;
 }

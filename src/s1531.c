@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1531.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1531.c,v 1.2 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -65,11 +65,11 @@ void s1531(ea,idim,in1,in2,eb,jstat)
   int idiff;           /*                                           */
   int kstat=0;         /* Status variable                           */
   int kpos=0;          /* Position of error                         */
-  double *mat=NULL;    /* Temporary output matrix                   */
+  double *mat=SISL_NULL;    /* Temporary output matrix                   */
 
 
   mat = newarray(idim*in1*in2, DOUBLE);
-  if(mat == NULL) goto err101;
+  if(mat == SISL_NULL) goto err101;
 
   i = 0;
   jbase = 0;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1381.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1381.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -96,7 +96,7 @@ void s1381(et,in,ik,gt,jkn,jkk,jstat)
   *jkn = (jkk-1)*(knumb-1) + jkk;
   
   sdum = newarray(*jkn+jkk,DOUBLE);
-  if (sdum == NULL) goto err101;
+  if (sdum == SISL_NULL) goto err101;
   
   *gt  = sdum; 
   

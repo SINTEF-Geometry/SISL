@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1353.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1353.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -133,31 +133,31 @@ void s1353(curve, eps, ranking, stat)
      are going to be solved. */
 
   c = newarray(dim*(k+1), double);
-  if (c == NULL) goto err101;
+  if (c == SISL_NULL) goto err101;
 
   /* hh will contain the last column of the coefficient matrix during
      elimination. */
 
   hh = newarray(k+1, double);
-  if (hh == NULL) goto err101;
+  if (hh == SISL_NULL) goto err101;
 
   /* mu will contain one of the two diagonals of the coefficient matrix. */
 
   mu = newarray(k+1, double);
-  if (mu == NULL) goto err101;
+  if (mu == SISL_NULL) goto err101;
 
   /* w will contain the weights of the interior knots (of type double). */
 
   w = newarray(dim*(n-k), double);
-  if (w == NULL) goto err101;
+  if (w == SISL_NULL) goto err101;
 
   /* e and s are auxialiary arrays. */
 
   e = newarray(dim, double);
-  if (e == NULL) goto err101;
+  if (e == SISL_NULL) goto err101;
 
   s = newarray(dim, double);
-  if (s == NULL) goto err101;
+  if (s == SISL_NULL) goto err101;
 
   /* Start the computation of the weights. We first compute real (not integer)
      weights, w. The weight of a knot is computed by removing it and computing
@@ -560,12 +560,12 @@ void s1353(curve, eps, ranking, stat)
   /* Clean up. */
 
  err:
-  if (c != NULL) freearray(c);
-  if (hh != NULL) freearray(hh);
-  if (mu != NULL) freearray(mu);
-  if (w != NULL) freearray(w);
-  if (e != NULL) freearray(e);
-  if (s != NULL) freearray(s);
+  if (c != SISL_NULL) freearray(c);
+  if (hh != SISL_NULL) freearray(hh);
+  if (mu != SISL_NULL) freearray(mu);
+  if (w != SISL_NULL) freearray(w);
+  if (e != SISL_NULL) freearray(e);
+  if (s != SISL_NULL) freearray(s);
 
   return;
 

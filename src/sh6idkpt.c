@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idkpt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idkpt.c,v 1.2 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -44,7 +44,7 @@ sh6idkpt (pintdat, pintpt, join, jstat)
 *              If pintpt has exactly two neighbours, they are joined
 *              together if the option join is selected.
 *              After disconnection is done, pintpt is killed. If pintdat
-*              is empty pintdat is killed and set to NULL.
+*              is empty pintdat is killed and set to SISL_NULL.
 *
 *
 *
@@ -57,7 +57,7 @@ sh6idkpt (pintdat, pintpt, join, jstat)
 *
 * OUTPUT  :    jstat    - status messages
 *                               = 2      : Pintpt is not in pintdat.
-*                               = 1      : Pintpt is NULL
+*                               = 1      : Pintpt is SISL_NULL
 *                               = 0      : OK!
 *                               < 0      : error
 *
@@ -79,9 +79,9 @@ sh6idkpt (pintdat, pintpt, join, jstat)
   int ki;			/* Counters.    */
   int knum;
   int kstat = 0;
-  SISLIntpt *pnhbr_1 = NULL;	/* First neighbour  */
-  SISLIntpt *pnhbr_2 = NULL;	/* Second neighbour */
-  SISLIntpt *help_pt = NULL;	/* help point */
+  SISLIntpt *pnhbr_1 = SISL_NULL;	/* First neighbour  */
+  SISLIntpt *pnhbr_2 = SISL_NULL;	/* Second neighbour */
+  SISLIntpt *help_pt = SISL_NULL;	/* help point */
   int crv_dir_1 = 0;
   int crv_dir_2 = 0;
   int index1 = 0;
@@ -91,7 +91,7 @@ sh6idkpt (pintdat, pintpt, join, jstat)
   
   *jstat = 0;
   
-  if ((*pintpt) == NULL)
+  if ((*pintpt) == SISL_NULL)
   {
      *jstat = 1;
      goto out;
@@ -168,10 +168,10 @@ sh6idkpt (pintdat, pintpt, join, jstat)
      }
   }
   
-  if ((*pintdat) == NULL)
+  if ((*pintdat) == SISL_NULL)
   {
      freeIntpt (*pintpt);
-     (*pintpt) = NULL;
+     (*pintpt) = SISL_NULL;
      
      *jstat = 1;
      goto out;
@@ -196,19 +196,19 @@ sh6idkpt (pintdat, pintpt, join, jstat)
   {
      (*pintdat)->vpoint[knum] = (*pintdat)->vpoint[(*pintdat)->ipoint - 1];
      ((*pintdat)->ipoint)--;
-     (*pintdat)->vpoint[(*pintdat)->ipoint] = NULL;
+     (*pintdat)->vpoint[(*pintdat)->ipoint] = SISL_NULL;
      
      
      
      if ((*pintdat)->ipoint == 0)
      {
 	freeIntdat (*pintdat);
-	(*pintdat) = NULL;
+	(*pintdat) = SISL_NULL;
      }
   }
   
   freeIntpt (*pintpt);
-  (*pintpt) = NULL;
+  (*pintpt) = SISL_NULL;
   goto out;
   
   

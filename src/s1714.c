@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1714.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1714.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -84,8 +84,8 @@ s1714 (pc, apar1, apar2, rcnew1, rcnew2, jstat)
 {
   int kstat;			/* Local status variable.        */
   int kpos = 0;			/* Position of error.            */
-  SISLCurve *q1 = NULL;		/* Pointer to new curve-object.  */
-  SISLCurve *q2 = NULL;		/* Pointer to new curve-object.  */
+  SISLCurve *q1 = SISL_NULL;		/* Pointer to new curve-object.  */
+  SISLCurve *q2 = SISL_NULL;		/* Pointer to new curve-object.  */
 
   /* Check that we have a curve to devide. */
 
@@ -120,7 +120,7 @@ s1714 (pc, apar1, apar2, rcnew1, rcnew2, jstat)
 
       if (q2)
 	freeCurve (q2);
-      q2 = NULL;
+      q2 = SISL_NULL;
 
       /* Split into two */
       s1710 (q1, apar2, rcnew1, rcnew2, &kstat);
@@ -129,7 +129,7 @@ s1714 (pc, apar1, apar2, rcnew1, rcnew2, jstat)
 
 	if (q1)
 	freeCurve (q1);
-      q1 = NULL;
+      q1 = SISL_NULL;
 
 
       *jstat = 0;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1362.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1362.c,v 1.2 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -133,7 +133,7 @@ void s1362(pc1,aoffset,enorm,idim,ider,ax,ileft,eder,jstat)
   
   if (idim !=2 && idim != 3) goto err105;
   
-  if (DEQUAL(aoffset,DNULL))
+  if (DEQUAL(aoffset,DZERO))
     {
       s1221(pc1,ider,ax,ileft,eder,&kstat);
       if (kstat<0) goto error;
@@ -144,7 +144,7 @@ void s1362(pc1,aoffset,enorm,idim,ider,ax,ileft,eder,jstat)
       if (kstat<0) goto error;
       
       tderl = s6length(sder+idim,idim,&kstat);
-      if (DEQUAL(tderl,DNULL)) tderl = (double)1.0;
+      if (DEQUAL(tderl,DZERO)) tderl = (double)1.0;
       
       /* The tangent length might be very different from 1. scale it and
 	 higher order derivatives to give tangent length one, this may give
@@ -187,7 +187,7 @@ void s1362(pc1,aoffset,enorm,idim,ider,ax,ileft,eder,jstat)
         }
       
       tl = s6length(snorm,idim,&kstat);
-      if (DEQUAL(tl,DNULL)) tl = (double)1.0;
+      if (DEQUAL(tl,DZERO)) tl = (double)1.0;
       
       /* Calculate position on offset curve */
       

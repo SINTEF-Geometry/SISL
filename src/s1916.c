@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1916.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1916.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -98,10 +98,10 @@ s1916 (inbcrv, et2, ecoef, in2, iord, idim, iopen, par, der, jstat)
   double tc;			/* Parameter value for current curve. */
   double tp;			/* Parameter value for previous curve. */
   double tf;			/* Parameter value for following curve. */
-  double *prev = NULL;		/* Vertices of previous curve. */
-  double *curr = NULL;		/* Vertices of current curve. */
-  double *deriv = NULL;		/* Vertices of derivative curve. */
-  double *follow = NULL;	/* Vertices of following curve. */
+  double *prev = SISL_NULL;		/* Vertices of previous curve. */
+  double *curr = SISL_NULL;		/* Vertices of current curve. */
+  double *deriv = SISL_NULL;		/* Vertices of derivative curve. */
+  double *follow = SISL_NULL;	/* Vertices of following curve. */
   int kstat = 0;
   int kpos = 0;
 
@@ -116,16 +116,16 @@ s1916 (inbcrv, et2, ecoef, in2, iord, idim, iopen, par, der, jstat)
   /* Allocate space for the curves. */
 
   prev = newarray (in2 * idim, DOUBLE);
-  if (prev == NULL)
+  if (prev == SISL_NULL)
     goto err101;
   curr = newarray (in2 * idim, DOUBLE);
-  if (curr == NULL)
+  if (curr == SISL_NULL)
     goto err101;
   deriv = newarray (in2 * idim, DOUBLE);
-  if (deriv == NULL)
+  if (deriv == SISL_NULL)
     goto err101;
   follow = newarray (in2 * idim, DOUBLE);
-  if (follow == NULL)
+  if (follow == SISL_NULL)
     goto err101;
 
   for (ki = 0; ki < inbcrv; ki++)
@@ -232,13 +232,13 @@ err186:
   goto out;
 
 out:
-  if (prev != NULL)
+  if (prev != SISL_NULL)
     freearray (prev);
-  if (curr != NULL)
+  if (curr != SISL_NULL)
     freearray (curr);
-  if (deriv != NULL)
+  if (deriv != SISL_NULL)
     freearray (deriv);
-  if (follow != NULL)
+  if (follow != SISL_NULL)
     freearray (follow);
 
   return;

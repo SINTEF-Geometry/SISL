@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1896.c,v 1.2 1994-08-31 14:34:15 pfu Exp $
+ * $Id: s1896.c,v 1.3 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -153,19 +153,19 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
   int kl, kr, kp;
   double parval[2];
   double sum;			/* Used for calculation of P(s,t). */
-  double *nknots1 = NULL;	/* New knots in first parameter direction. */
-  double *nknots2 = NULL;	/* New knots in second parameter direction. */
-  double *coef1 = NULL;		/* New coeficients */
-  double *coef2 = NULL;		/* New coeficients */
-  double *par1 = NULL;		/* Parameter values in first direction. */
-  double *par2 = NULL;		/* Parameter values in second direction. */
-  int *der1 = NULL;		/* Derivative indicators in first direction. */
-  int *der2 = NULL;		/* Derivative indicators in second direction.*/
-  double *deriv = NULL;		/* Derivatives returned by s1421. */
-  double *normal = NULL;	/* Normal returned by s1421. (not used) */
-  double *val1 = NULL;		/* Values extracted from deriv. */
-  double *val2 = NULL;		/* Values extracted from deriv. */
-  double *tau = NULL;		/* Interpolation points. */
+  double *nknots1 = SISL_NULL;	/* New knots in first parameter direction. */
+  double *nknots2 = SISL_NULL;	/* New knots in second parameter direction. */
+  double *coef1 = SISL_NULL;		/* New coeficients */
+  double *coef2 = SISL_NULL;		/* New coeficients */
+  double *par1 = SISL_NULL;		/* Parameter values in first direction. */
+  double *par2 = SISL_NULL;		/* Parameter values in second direction. */
+  int *der1 = SISL_NULL;		/* Derivative indicators in first direction. */
+  int *der2 = SISL_NULL;		/* Derivative indicators in second direction.*/
+  double *deriv = SISL_NULL;		/* Derivatives returned by s1421. */
+  double *normal = SISL_NULL;	/* Normal returned by s1421. (not used) */
+  double *val1 = SISL_NULL;		/* Values extracted from deriv. */
+  double *val2 = SISL_NULL;		/* Values extracted from deriv. */
+  double *tau = SISL_NULL;		/* Interpolation points. */
   int kstat = 0;
   int kpos = 0;
 
@@ -225,16 +225,16 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
   /* Allocate memory for point calculation. */
 
   val1 = newarray (dimp1, DOUBLE);
-  if (val1 == NULL) goto err101;
+  if (val1 == SISL_NULL) goto err101;
   val2 = newarray (dimp1, DOUBLE);
-  if (val2 == NULL) goto err101;
+  if (val2 == SISL_NULL) goto err101;
   tau = newarray (narr * nin1 * nin2, DOUBLE);
-  if (tau == NULL) goto err101;
+  if (tau == SISL_NULL) goto err101;
   maxder = max (max (mds1, mds2), max (mdt1, mdt2));
   deriv = newarray (osurf->idim * (maxder + 1) * (maxder + 2) / 2, DOUBLE);
-  if (deriv == NULL) goto err101;
+  if (deriv == SISL_NULL) goto err101;
   normal = newarray (osurf->idim * (maxder + 1) * (maxder + 2) / 2, DOUBLE);
-  if (normal == NULL) goto err101;
+  if (normal == SISL_NULL) goto err101;
 
   /* Calculate interpolation points. */
 
@@ -317,7 +317,7 @@ s1896 (osurf, earray, dimp1, narr, ders1, dert1, ders2, dert2, nsurf, jstat)
 
   *nsurf = newSurf (nin1, nin2, nik1, nik2, nknots1, nknots2,
 		    coef2, osurf->ikind, narr, 2);
-  if (*nsurf == NULL) goto err171;
+  if (*nsurf == SISL_NULL) goto err171;
 
   goto out;
 
@@ -352,16 +352,16 @@ error:
   /* Free pointers. */
 
 out:
-  if (coef1 != NULL)    freearray (coef1);
-  if (val1 != NULL)     freearray (val1);
-  if (val2 != NULL)     freearray (val2);
-  if (par1 != NULL)     freearray (par1);
-  if (par2 != NULL)     freearray (par2);
-  if (der1 != NULL)     freearray (der1);
-  if (der2 != NULL)     freearray (der2);
-  if (normal != NULL)   freearray (normal);
-  if (deriv != NULL)    freearray (deriv);
-  if (tau != NULL)      freearray (tau);
+  if (coef1 != SISL_NULL)    freearray (coef1);
+  if (val1 != SISL_NULL)     freearray (val1);
+  if (val2 != SISL_NULL)     freearray (val2);
+  if (par1 != SISL_NULL)     freearray (par1);
+  if (par2 != SISL_NULL)     freearray (par2);
+  if (der1 != SISL_NULL)     freearray (der1);
+  if (der2 != SISL_NULL)     freearray (der2);
+  if (normal != SISL_NULL)   freearray (normal);
+  if (deriv != SISL_NULL)    freearray (deriv);
+  if (tau != SISL_NULL)      freearray (tau);
 
   return;
 }

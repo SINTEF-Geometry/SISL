@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1936.c,v 1.3 1996-09-05 09:13:08 jka Exp $
+ * $Id: s1936.c,v 1.4 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -81,13 +81,13 @@ s1936 (crv, etd, ind, curvd, jstat)
   int iordr;			/* Order of curve		*/
   int idim;			/* Dimension of space where the
 				 * curve lies			*/
-  double *knt = NULL;		/* Original knot-vector. */
-  double *coef = NULL;		/* Original coefficient arrays.	*/
+  double *knt = SISL_NULL;		/* Original knot-vector. */
+  double *coef = SISL_NULL;		/* Original coefficient arrays.	*/
   double sum;			/* Used to compute vertices of
 				 * new curve			*/
   double sarray[MAX_SIZE];
   int alloc_needed=FALSE;
-  double *alfa = NULL;		/* Array needed in subroutine
+  double *alfa = SISL_NULL;		/* Array needed in subroutine
 				 * s1937 (Oslo-algorithm)	*/
 
   *jstat = 0;
@@ -116,7 +116,7 @@ s1936 (crv, etd, ind, curvd, jstat)
 
   if (iordr > MAX_SIZE)
     {
-       if ((alfa = newarray (iordr, DOUBLE)) == NULL)
+       if ((alfa = newarray (iordr, DOUBLE)) == SISL_NULL)
 	 goto err101;
        alloc_needed = TRUE;
     }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1012.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1012.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -83,8 +83,8 @@ void s1012(start_pos, axis_pos, axis_dir, frequency, numb_quad,
    int ik = 3;           /* Order of the helix.              */
    int kind = 2;         /* Rational B-spline curve.         */
    int dim = 3;          /* Dimension of geometry.           */
-   double *et = NULL;    /* Knot vector.                     */
-   double *rcoef = NULL; /* Vertices.                        */
+   double *et = SISL_NULL;    /* Knot vector.                     */
+   double *rcoef = SISL_NULL; /* Vertices.                        */
    double norm;          /* Norm of vector.                  */
    double radius;        /* Radius of the helix.             */
    double origo[3];      /* Local origo.                     */
@@ -171,9 +171,9 @@ void s1012(start_pos, axis_pos, axis_dir, frequency, numb_quad,
    }
    
    (*helix) = newCurve(in, ik, et, rcoef, kind, dim, 1);
-   if (et != NULL) freearray(et);
-   if (rcoef != NULL) freearray(rcoef);
-   if ((*helix) == NULL) goto err101;
+   if (et != SISL_NULL) freearray(et);
+   if (rcoef != SISL_NULL) freearray(rcoef);
+   if ((*helix) == SISL_NULL) goto err101;
   
    *stat = 0;
    goto out;

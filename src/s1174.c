@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1174.c,v 1.3 1994-11-21 13:27:30 poeh Exp $
+ * $Id: s1174.c,v 1.4 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -151,7 +151,7 @@ void s1174(psurf,estart,eend,enext,gpos,jstat)
 
       /* Check if the direction of the step have change. */
 
-      kdir = (s6scpr(td,tdn,2) >= DNULL);     /* 0 if changed. */
+      kdir = (s6scpr(td,tdn,2) >= DZERO);     /* 0 if changed. */
 
       if (tdist <= tprev || kdir)
 	{
@@ -351,10 +351,10 @@ static void s1174_s9dir(cdiff1,cdiff2,evals)
   tderxx = evals[3];
   tderxy = evals[4];
   tderyy = evals[5];
-  tdeltax = DNULL;
-  tdeltay = DNULL;
-  *cdiff1  = DNULL;
-  *cdiff2  = DNULL;
+  tdeltax = DZERO;
+  tdeltay = DZERO;
+  *cdiff1  = DZERO;
+  *cdiff2  = DZERO;
 
 
   /* Building the matrix. */

@@ -10,7 +10,7 @@
 
 /*
  *
- * $Id: s1225.c,v 1.2 1999-01-20 12:37:29 jka Exp $
+ * $Id: s1225.c,v 1.3 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -118,16 +118,16 @@ void s1225(curve,der,parvalue,leftknot,derive,curvature,
   int kstat=0;                /* local status variable */
   int kpos = 0;               /* local error position  */
   int iknot = 0;              /* local version of leftknot */
-  double *iderive = NULL;     /* pointer to array used to store the position
+  double *iderive = SISL_NULL;     /* pointer to array used to store the position
                                  and the first and second derivatives  */
-  double *egeo = NULL;        /* pointer to store curvature and radius of
+  double *egeo = SISL_NULL;        /* pointer to store curvature and radius of
                                  curvature */
 
   iderive= newarray(3*kdim,DOUBLE);
-  if (iderive == NULL)
+  if (iderive == SISL_NULL)
     goto err101;
   egeo= newarray(3*kdim+1,DOUBLE);
-  if (egeo == NULL)
+  if (egeo == SISL_NULL)
     goto err101;
 
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1925.c,v 1.2 1994-06-02 12:19:47 vsk Exp $
+ * $Id: s1925.c,v 1.3 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -142,8 +142,8 @@ s1925 (etau, epoint, inbpnt, eder, et, ebcoef, in, ik, iright, dim, ew1, nur,
   int store;
 
   double taui;			/* Parametrization value = etau[ii] 	*/
-  double *mcoef = NULL;		/* Arrays for internal use in 		*/
-  double *ebder = NULL;		/* this subroutine			*/
+  double *mcoef = SISL_NULL;		/* Arrays for internal use in 		*/
+  double *ebder = SISL_NULL;		/* this subroutine			*/
   double sarray[s1925_MAX_ARRAY_SIZE];
   int alloc_needed=FALSE;
   
@@ -212,7 +212,7 @@ s1925 (etau, epoint, inbpnt, eder, et, ebcoef, in, ik, iright, dim, ew1, nur,
   left = leftmin;
   if (ik > s1925_MAX_ARRAY_SIZE)
     {
-       if ((ebder = newarray (ik, DOUBLE)) == NULL)
+       if ((ebder = newarray (ik, DOUBLE)) == SISL_NULL)
 	 goto err101;
 	alloc_needed = TRUE;
     }
@@ -380,12 +380,12 @@ s1925 (etau, epoint, inbpnt, eder, et, ebcoef, in, ik, iright, dim, ew1, nur,
     {
        if (alloc_needed)
 	 {
-	    if ((ebder = increasearray(ebder,nn,DOUBLE)) == NULL)
+	    if ((ebder = increasearray(ebder,nn,DOUBLE)) == SISL_NULL)
 	      goto err101;
 	 }
        else
 	 {
-	    if ((ebder = newarray(nn,DOUBLE)) == NULL)
+	    if ((ebder = newarray(nn,DOUBLE)) == SISL_NULL)
 	      goto err101;
 	    alloc_needed = TRUE;
 	 }
@@ -406,10 +406,10 @@ s1925 (etau, epoint, inbpnt, eder, et, ebcoef, in, ik, iright, dim, ew1, nur,
 	for (jj = 0; jj < nn; jj++, store += dim)
 	  ebcoef[store] = mcoef[jj];
 
-        if(mcoef != NULL)       /* KYS 200594: healed memory leak */
+        if(mcoef != SISL_NULL)       /* KYS 200594: healed memory leak */
         {
           freearray(mcoef);
-          mcoef = NULL;
+          mcoef = SISL_NULL;
         }
       }
 
@@ -454,7 +454,7 @@ err165:
 out:
   if (alloc_needed)
     freearray (ebder);
-  if (mcoef != NULL)
+  if (mcoef != SISL_NULL)
     freearray (mcoef);
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2535.c,v 1.1 1995-08-21 13:24:25 jka Exp $
+ * $Id: s2535.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -88,8 +88,8 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
    int mult;          /* Knot multiplicity.                               */
    int u_mult;        /* Knot multiplicity giving a split in u direction. */
    int v_mult;        /* Knot multiplicity giving a split in v direction. */
-   double *u_splitpar = NULL; /* Split parameters in u direction.         */
-   double *v_splitpar = NULL; /* Split parameters in v direction.         */
+   double *u_splitpar = SISL_NULL; /* Split parameters in u direction.         */
+   double *v_splitpar = SISL_NULL; /* Split parameters in v direction.         */
    SISLSurf *u_surf;  /* Surface pointer used in the surface splitting.   */
    SISLSurf *u_lsurf; /* Surface pointer used in the surface splitting.   */
    SISLSurf *u_rsurf; /* Surface pointer used in the surface splitting.   */
@@ -99,7 +99,7 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
    
    /* Check input. */
    
-   if (surf == NULL || u_continuity < 0 || v_continuity < 0) 
+   if (surf == SISL_NULL || u_continuity < 0 || v_continuity < 0) 
       goto err150;
    
    /* Initiation and allocation of split parameters. */
@@ -108,9 +108,9 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
    v_mult = max(surf->ik2 - v_continuity, 1);
    
    if ((u_splitpar = newarray(((int) floor(surf->in1/u_mult)) - 1, DOUBLE)) 
-       == NULL) goto err101;
+       == SISL_NULL) goto err101;
    if ((v_splitpar = newarray(((int) floor(surf->in2/v_mult)) - 1, DOUBLE)) 
-       == NULL) goto err101;
+       == SISL_NULL) goto err101;
    
    *u_surfnumb = 0;
    *v_surfnumb = 0;
@@ -163,7 +163,7 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
    /* Allocate the output array. */
    
    if ((*patches = newarray((*u_surfnumb)*(*v_surfnumb), SISLSurf*)) 
-       == NULL) goto err101;
+       == SISL_NULL) goto err101;
    
    /* Split the surfaces. */
    
@@ -176,7 +176,7 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
       s1711(v_surf, 2, v_splitpar[ki], &v_lsurf, &v_rsurf, stat);
       if (*stat < 0) goto error;
       
-      if (v_surf != surf && v_surf != NULL) freeSurf(v_surf);
+      if (v_surf != surf && v_surf != SISL_NULL) freeSurf(v_surf);
       v_surf = v_rsurf;
       
       /* Split in u direction. */
@@ -187,7 +187,7 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
 	 s1711(u_surf, 1, u_splitpar[kj], &u_lsurf, &u_rsurf, stat);
 	 if (*stat < 0) goto error;
 	 
-	 if (u_surf != NULL) freeSurf(u_surf);
+	 if (u_surf != SISL_NULL) freeSurf(u_surf);
          u_surf = u_rsurf;
 	 
 	 (*patches)[ki*(*u_surfnumb) + kj] = u_lsurf;
@@ -206,7 +206,7 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
       s1711(u_surf, 1, u_splitpar[kj], &u_lsurf, &u_rsurf, stat);
       if (*stat < 0) goto error;
       
-      if (u_surf != surf && u_surf != NULL) freeSurf(u_surf);
+      if (u_surf != surf && u_surf != SISL_NULL) freeSurf(u_surf);
       u_surf = u_rsurf;
       
       (*patches)[(*v_surfnumb - 1)*(*u_surfnumb) + kj] = u_lsurf;
@@ -245,8 +245,8 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
    /* ---------------------- NORMAL EXIT ------------------------------- */
 
  out:
-   if (u_splitpar != NULL) freearray(u_splitpar);
-   if (v_splitpar != NULL) freearray(v_splitpar);
+   if (u_splitpar != SISL_NULL) freearray(u_splitpar);
+   if (v_splitpar != SISL_NULL) freearray(v_splitpar);
    return;
 
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1750.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1750.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 
@@ -69,21 +69,21 @@ void s1750(pc,ikh,rc,jstat)
 				 * call to s1753				*/
   int kpos = 0;			/* Error position indicator			*/
   int kstat = 0;		/* Status variable */
-  double *kcc = NULL;
-  double *kcw = NULL;		/* Arrays for internal use only			*/
-  double *orknot = NULL;	/* Used to store 'original' knot vector		*/
-  double *xtknot = NULL;	/* Used to store extended knot vector		*/
-  double *pointer = NULL;
-  double *orcoef = NULL;	/* Used to store 'original' coefficient matrix	*/
-  double *et = NULL;		/* Original knot vector				*/
-  double *ebcoef = NULL;	/* Vertices of original curve			*/
+  double *kcc = SISL_NULL;
+  double *kcw = SISL_NULL;		/* Arrays for internal use only			*/
+  double *orknot = SISL_NULL;	/* Used to store 'original' knot vector		*/
+  double *xtknot = SISL_NULL;	/* Used to store extended knot vector		*/
+  double *pointer = SISL_NULL;
+  double *orcoef = SISL_NULL;	/* Used to store 'original' coefficient matrix	*/
+  double *et = SISL_NULL;		/* Original knot vector				*/
+  double *ebcoef = SISL_NULL;	/* Vertices of original curve			*/
   int in;			/* Number of vertices of original curve		*/
   int ik;			/* Order of original curve			*/
   int idim;			/* Dimension of the space where the curve lie	*/
   int kdim;                     /* Potential rational dimension.                */
   int kind;                     /* Kind of curve, 2 and 4 are rationals.        */
-  double *iknt = NULL;		/* New knot vector				*/
-  double *icoef = NULL;		/* Coefficients of new curve			*/
+  double *iknt = SISL_NULL;		/* New knot vector				*/
+  double *icoef = SISL_NULL;		/* Coefficients of new curve			*/
   int inh;			/* Number of vertices produced			*/
 
   *jstat = 0;
@@ -115,7 +115,7 @@ void s1750(pc,ikh,rc,jstat)
   if (ikh == ik)
     {
       *rc = newCurve (in, ik, et, ebcoef, pc->ikind, idim, 1);
-      if (*rc == NULL) goto err171;
+      if (*rc == SISL_NULL) goto err171;
 
       /* If the input curve is periodic, the output curve is periodic. */
       (*rc)->cuopen = pc->cuopen;
@@ -130,12 +130,12 @@ void s1750(pc,ikh,rc,jstat)
 
   /* Allocate coefficients array for raised curve. */
 
-  if((icoef = newarray (inh * kdim, DOUBLE)) == NULL) goto err101;
+  if((icoef = newarray (inh * kdim, DOUBLE)) == SISL_NULL) goto err101;
 
   /* Allocate arrays for internal use. */
 
-  if((kcc = newarray (kdim * ikh, DOUBLE)) == NULL) goto err101;
-  if((kcw = newarray (kdim * ikh, DOUBLE)) == NULL) goto err101;
+  if((kcc = newarray (kdim * ikh, DOUBLE)) == SISL_NULL) goto err101;
+  if((kcw = newarray (kdim * ikh, DOUBLE)) == SISL_NULL) goto err101;
 
   /* Find vertices if  ikh = ik+1 */
 
@@ -145,7 +145,7 @@ void s1750(pc,ikh,rc,jstat)
       if (kstat < 0) goto error;
 
       *rc = newCurve (inh, ikh, iknt, icoef, pc->ikind, idim, 2);
-      if (*rc == NULL) goto err171;
+      if (*rc == SISL_NULL) goto err171;
 
       /* If the input curve is periodic, the output curve is periodic. */
       (*rc)->cuopen = pc->cuopen;
@@ -156,14 +156,14 @@ void s1750(pc,ikh,rc,jstat)
   /* Allocate arrays to store knot vector for use in s1755. */
 
   orknot = newarray ((in +ik) *(ikh - ik + 1), DOUBLE);
-  if (orknot == NULL) goto err101;
+  if (orknot == SISL_NULL) goto err101;
   xtknot = newarray ((in +ik) *(ikh - ik + 1), DOUBLE);
-  if (xtknot == NULL) goto err101;
+  if (xtknot == SISL_NULL) goto err101;
 
   /* Allocate array to store vertices. */
 
   orcoef = newarray (inh * kdim, DOUBLE);
-  if (orcoef == NULL) goto err101;
+  if (orcoef == SISL_NULL) goto err101;
 
   /* Initialize orknot and orcoef. */
 
@@ -214,7 +214,7 @@ void s1750(pc,ikh,rc,jstat)
    * Create new curve */
 
   *rc = newCurve (inh, ikh, iknt, icoef, pc->ikind, idim, 2);
-  if (*rc == NULL) goto err171;
+  if (*rc == SISL_NULL) goto err171;
 
   /* If the input curve is periodic, the output curve is periodic. */
   (*rc)->cuopen = pc->cuopen;
@@ -251,10 +251,10 @@ void s1750(pc,ikh,rc,jstat)
     goto out;
 
   out:
-    if (kcc != NULL)    freearray (kcc);
-    if (kcw != NULL)    freearray (kcw);
-    if (orknot != NULL) freearray (orknot);
-    if (xtknot != NULL) freearray (xtknot);
-    if (orcoef != NULL) freearray (orcoef);
+    if (kcc != SISL_NULL)    freearray (kcc);
+    if (kcw != SISL_NULL)    freearray (kcw);
+    if (orknot != SISL_NULL) freearray (orknot);
+    if (xtknot != SISL_NULL) freearray (xtknot);
+    if (orcoef != SISL_NULL) freearray (orcoef);
     return;
 }

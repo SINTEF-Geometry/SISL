@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idaledg.c,v 1.3 1997-12-28 19:16:46 jka Exp $
+ * $Id: sh6idaledg.c,v 1.4 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -83,9 +83,9 @@ void
   double *st[4];                /* Pointer to knot vector in each par. dir. */
   SISLObject *qob1, *qob2;	/* Help pointer to object.  */
   SISLObject *qob11, *qob21;	/* Help pointer to object.  */
-  SISLPtedge *pte = NULL;
-  SISLPtedge *prev = NULL;
-  SISLPtedge *pte1 = NULL;
+  SISLPtedge *pte = SISL_NULL;
+  SISLPtedge *prev = SISL_NULL;
+  SISLPtedge *pte1 = SISL_NULL;
   SISLIntpt *pmain;
   int notfound;
 
@@ -175,7 +175,7 @@ void
       for (kj = 0; kj < kedg; kj++)
 	{
 	  for (pte = wedge[kn]->prpt[kj], prev = pte;
-	       pte != NULL;)
+	       pte != SISL_NULL;)
 	    {
 	      notfound = TRUE;
 
@@ -231,7 +231,7 @@ void
 			 for (kj1 = 0; kj1 < kedg1 && notfound; kj1++)
 			 {
 			    for (pte1 = wedge[kn1]->prpt[kj1];
-			     pte1 != NULL && notfound;
+			     pte1 != SISL_NULL && notfound;
 			     pte1 = pte1->pnext)
 			       if (pte1->ppt == pmain)
 				  notfound = FALSE;

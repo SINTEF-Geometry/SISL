@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idget.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idget.c,v 1.2 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -91,11 +91,11 @@ sh6idget (po1, po2, ipar, apar, pintdat, rintdat, aepsge, jstat)
   double tlow, thigh;
   double help_arr[4];
   double thelp;
-  SISLIntpt *qpt = NULL, *pinter=NULL;
-  double *nullp = NULL;
+  SISLIntpt *qpt = SISL_NULL, *pinter=SISL_NULL;
+  double *nullp = SISL_NULL;
   int found = FALSE;
   int ind_div, ind_other;
-  SISLObject *qo_div = NULL, *qo_other = NULL;
+  SISLObject *qo_div = SISL_NULL, *qo_other = SISL_NULL;
   int kleftt = 0, klefts = 0;
   double point[3];
   int log_ind;
@@ -122,7 +122,7 @@ sh6idget (po1, po2, ipar, apar, pintdat, rintdat, aepsge, jstat)
    keep_first = 1;
     }
 
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     goto out;
 
   /* ----------------------------------------- */
@@ -199,10 +199,10 @@ sh6idget (po1, po2, ipar, apar, pintdat, rintdat, aepsge, jstat)
       {
 	/* Point found, insert */
 
-	pinter = hp_newIntpt (qpt->ipar, help_arr, DNULL, qpt->iinter,
+	pinter = hp_newIntpt (qpt->ipar, help_arr, DZERO, qpt->iinter,
 			      SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 			      0, 0, nullp, nullp);
-	if (pinter == NULL)
+	if (pinter == SISL_NULL)
 	  goto err101;
 
 	sh6insert (&pintdat, pintdat->vpoint[ki], qpt, &pinter, &kstat);
@@ -284,7 +284,7 @@ sh6idget (po1, po2, ipar, apar, pintdat, rintdat, aepsge, jstat)
 			 (keep_first ? pintdat->vpoint[ki]->geo_data_1 : nullp),
 			 (keep_first ? nullp : pintdat->vpoint[ki]->geo_data_2));
 
-      if (qpt == NULL)
+      if (qpt == SISL_NULL)
 	goto err101;
 
       sh6idnpt (rintdat, &qpt, 1, &kstat);

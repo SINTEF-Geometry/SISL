@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6scpr.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6scpr.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -50,7 +50,7 @@ double s6scpr(e1,e2,idim)
 */
 {
   register int ki;
-  register double tsum=DNULL; 
+  register double tsum=DZERO; 
 
   for (ki=0;ki<idim;ki++)
     tsum += e1[ki]*e2[ki];

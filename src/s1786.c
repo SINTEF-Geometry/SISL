@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1786.c,v 1.3 1999-01-15 11:58:18 jka Exp $
+ * $Id: s1786.c,v 1.4 2001-03-19 15:58:53 afr Exp $
  *
  */
 #define S1786
@@ -131,7 +131,7 @@ void s1786(pc1,pc2,aepsge,epar1,epar2,jstat)
   double txmax,tymax;        /* Local maximal step length                       */
   double tdist;       /* Distance */
   double tpos;        /* New iteration  point on curve pc2     */
-  SISLPoint *qpoint=NULL;
+  SISLPoint *qpoint=SISL_NULL;
 
  /* Pointer to curve evaluator routine of 2. curve.  */
 
@@ -293,12 +293,12 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
       /* Compute increment in the parameter values.  Use tminstep if the
          tangent has zero length.  */
 
-      if (DEQUAL(txlengthend,DNULL))
+      if (DEQUAL(txlengthend,DZERO))
 	  txincre = tminstep;
       else
         txincre = MIN(tstep/txlengthend,txmaxinc);
 
-      if (DEQUAL(tylengthend,DNULL))
+      if (DEQUAL(tylengthend,DZERO))
 	tyincre = tminstep;
       else
         tyincre = MIN(tstep/tylengthend,tymaxinc);
@@ -310,7 +310,7 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
 	{
 	  txincre = st1[kleftc1+1] - tx1;
 	  tstep = txincre*txlengthend;
-	  tyincre = (tylengthend > DNULL) ? tstep/tylengthend : tminstep;
+	  tyincre = (tylengthend > DZERO) ? tstep/tylengthend : tminstep;
 	  kchange = 0;
 	}
 
@@ -321,7 +321,7 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
 	{
 	  tyincre = kknot*(st2[kleftc2+kknot] - ty1);
 	  tstep = tyincre*tylengthend;
-	  txincre = (txlengthend > DNULL) ? tstep/txlengthend : tminstep;
+	  txincre = (txlengthend > DZERO) ? tstep/txlengthend : tminstep;
 	  kchange = 1;
 	}
 
@@ -332,7 +332,7 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
 	{
 	  tyincre = kknot*(st2[kleftc2+kknot] - ty1);
 	  tstep = tyincre*tylengthend;
-	  txincre = (txlengthend > DNULL) ? tstep/txlengthend : tminstep;
+	  txincre = (txlengthend > DZERO) ? tstep/txlengthend : tminstep;
 	  kchange = 1;
 	}
 
@@ -504,7 +504,7 @@ static void s1786_s9relax(fevalc1,fevalc2,pc1,pc2,ider,aepsge,ax1,jleft1,eder1,a
    int kstat = 0;         /* Status variable.  */
    double tstart;         /* Start parameter value of curve 2.  */
    double tend;           /* End parameter value of curve 2.    */
-   SISLPoint *qpoint = NULL;  /* SISLPoint instance used to represent point on curve 1. */
+   SISLPoint *qpoint = SISL_NULL;  /* SISLPoint instance used to represent point on curve 1. */
 
    /* Find endpoints of the parameter interval of curve 2.  */
 
@@ -521,7 +521,7 @@ static void s1786_s9relax(fevalc1,fevalc2,pc1,pc2,ider,aepsge,ax1,jleft1,eder1,a
    /* Find closest point on curve 2 to eder1 */
 
    qpoint = newPoint(eder1,pc1->idim,0);
-   if (qpoint==NULL) goto err101;
+   if (qpoint==SISL_NULL) goto err101;
 
    s1771(qpoint,pc2,aepsge,tstart,tend,anext,cx2,&kstat);
    if(kstat<0) goto error;
@@ -548,7 +548,7 @@ static void s1786_s9relax(fevalc1,fevalc2,pc1,pc2,ider,aepsge,ax1,jleft1,eder1,a
    goto out;
 
    out :
-     if (qpoint != NULL) freePoint(qpoint);
+     if (qpoint != SISL_NULL) freePoint(qpoint);
 
       return;
 }

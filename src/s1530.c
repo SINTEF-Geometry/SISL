@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1530.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1530.c,v 1.2 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -125,9 +125,9 @@ void s1530(ep,eder10,eder01,eder11,epar1,epar2,
   SISLCurve *rcurve;  /* Curve of dimension idim*im2                 */
   int kstat=0;        /* Status variable                             */
   int kpos=0;         /* Position of error                           */
-  double *ph=NULL;    /* Transposed positions (in rpos)              */
-  double *dh=NULL;    /* Transposed derivatives (in rder)            */
-  double *scoef=NULL; /* Transposed positions in rcurve              */
+  double *ph=SISL_NULL;    /* Transposed positions (in rpos)              */
+  double *dh=SISL_NULL;    /* Transposed derivatives (in rder)            */
+  double *scoef=SISL_NULL; /* Transposed positions in rcurve              */
   
   
   
@@ -171,7 +171,7 @@ void s1530(ep,eder10,eder01,eder11,epar1,epar2,
 
   (*rsurf) = newSurf(rcurve->in,rpos->in,rcurve->ik,rpos->ik,
 			rcurve->et,rpos->et,scoef,1,idim,1);
-  if((*rsurf) == NULL) goto err101;
+  if((*rsurf) == SISL_NULL) goto err101;
   
   /* Set periodicity flag. */
   
@@ -204,12 +204,12 @@ void s1530(ep,eder10,eder01,eder11,epar1,epar2,
   goto out;
   
  out:
-  if (rpos != NULL) freeCurve(rpos);
-  if (rder != NULL) freeCurve(rder);
-  if (rcurve != NULL) freeCurve(rcurve);
-  if (scoef != NULL) freearray(scoef);
-  if (ph != NULL) freearray(ph);
-  if (dh != NULL) freearray(dh);
+  if (rpos != SISL_NULL) freeCurve(rpos);
+  if (rder != SISL_NULL) freeCurve(rder);
+  if (rcurve != SISL_NULL) freeCurve(rcurve);
+  if (scoef != SISL_NULL) freearray(scoef);
+  if (ph != SISL_NULL) freearray(ph);
+  if (dh != SISL_NULL) freearray(dh);
   
   return;
 }

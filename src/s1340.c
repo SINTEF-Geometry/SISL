@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1340.c,v 1.4 1994-11-08 12:43:09 poeh Exp $
+ * $Id: s1340.c,v 1.5 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -157,7 +157,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 *
 * Written by: Knut Moerken, University of Oslo, November 1992, based
 *             on an earlier Fortran version by the same author.
-* CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to NULL)
+* CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to SISL_NULL)
 *      in 'ranking' to avoid potential memory leak when exiting through 'out'.
 *      Removed several other memory leaks.
 * CHANGED BY: Per OEyvind Hvidsten, SINTEF, 1994-11. Added a freeCurve
@@ -180,24 +180,24 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 				   removed.                              */
   int n2;
   int i, mini, maxi, indx;      /* Various auxiliary integer variables.  */
-  double *local_err = NULL;     /* Variables used for storing local error
+  double *local_err = SISL_NULL;     /* Variables used for storing local error
                                    estimates.                            */
-  double *l2err = NULL;
-  double *lepsco = NULL;
-  double *temp_err = NULL;
-  SISLCurve *tempcurve = NULL;  /* Variables that are used for storing
+  double *l2err = SISL_NULL;
+  double *lepsco = SISL_NULL;
+  double *temp_err = SISL_NULL;
+  SISLCurve *tempcurve = SISL_NULL;  /* Variables that are used for storing
                                    temporary curves.                     */
-  SISLCurve  *helpcurve = NULL;
+  SISLCurve  *helpcurve = SISL_NULL;
   rank_info ranking;            /* Variable used for holding ranking
                                    information (from s1353).             */
   int lstat=0;                  /* Local status variable.                */
   int pos=0;			/* Parameter to s6err.                  */
-  SISLCurve *qc_kreg = NULL;    /* Non-periodic version of the input curve. */
+  SISLCurve *qc_kreg = SISL_NULL;    /* Non-periodic version of the input curve. */
 
 
   /* Initialize ranking ptrs in case of early exit through 'out' (PFU 05/07-94) */
-  ranking.prio = NULL;
-  ranking.groups = NULL;
+  ranking.prio = SISL_NULL;
+  ranking.groups = SISL_NULL;
 
   /* Initialize maxerr to zero. */
 
@@ -210,7 +210,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   {
     *newcurve = newCurve(n1, k, oldcurve->et, oldcurve->ecoef,
 			 oldcurve->ikind, oldcurve->idim, 1);
-    if (*newcurve == NULL)  goto err101;
+    if (*newcurve == SISL_NULL)  goto err101;
 
     *stat = 0;
     goto out;
@@ -237,18 +237,18 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
   /* Allocate space for some local arrays. */
 
   temp_err = newarray(dim, double);
-  if (temp_err == NULL) goto err101;
+  if (temp_err == SISL_NULL) goto err101;
 
   lepsco = newarray(dim, double);
-  if (lepsco == NULL) goto err101;
+  if (lepsco == SISL_NULL) goto err101;
 
   /* ranking is of type rank_info which is a struct described in s1353. */
 
   ranking.prio = newarray(MAX(n1-k,1), int);
-  if (ranking.prio == NULL) goto err101;
+  if (ranking.prio == SISL_NULL) goto err101;
 
   ranking.groups = newarray(MAX(n1-k,1), int);
-  if (ranking.groups == NULL) goto err101;
+  if (ranking.groups == SISL_NULL) goto err101;
 
   /* lespco is needed in s1354. In component i we first store the l1-norm
      of the component i of the B-spline coefficients of oldcurve. */
@@ -339,7 +339,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 	 Must make sure that local_err is free'ed if allocated from last
 	 iteration. */
 
-      if (local_err != NULL) freearray(local_err);
+      if (local_err != SISL_NULL) freearray(local_err);
 
       sh1365(qc_kreg, helpcurve->et, k, helpcurve->in,
 	     startfix, endfix, &tempcurve,
@@ -350,7 +350,7 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
       freearray(l2err);
       freeCurve(helpcurve);
-      helpcurve = NULL;
+      helpcurve = SISL_NULL;
 
       /* We must now check if the new tempcurve is within the tolerance. */
       i = 0;
@@ -383,19 +383,19 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 	    startfix, endfix, mini, maxi, &helpcurve, maxerr, &lstat);
       if (lstat < 0) goto error;
 
-      if (*newcurve != NULL && *newcurve != tempcurve)
+      if (*newcurve != SISL_NULL && *newcurve != tempcurve)
       {
 	freeCurve(*newcurve);
-	*newcurve = NULL;
+	*newcurve = SISL_NULL;
       }
 
-      if (tempcurve != NULL)
+      if (tempcurve != SISL_NULL)
       {
 	freeCurve(tempcurve);
-	tempcurve = NULL;
+	tempcurve = SISL_NULL;
       }
       *newcurve = helpcurve;
-      helpcurve = NULL;
+      helpcurve = SISL_NULL;
     }
     else
     {
@@ -406,9 +406,9 @@ s1340(oldcurve, eps, startfix, endfix, epsco, itmax, newcurve,
 
       for (i=0; i<dim; i++) maxerr[i] = local_err[i];
 
-      if (*newcurve != NULL) freeCurve(*newcurve);
+      if (*newcurve != SISL_NULL) freeCurve(*newcurve);
       *newcurve = tempcurve;
-      tempcurve = NULL;
+      tempcurve = SISL_NULL;
     }
 
     /* Now we must check if it is time to stop. */
@@ -447,15 +447,15 @@ error:
   /* Clear up and free memory before exit. */
 
 out:
-  if (temp_err != NULL) freearray(temp_err);
-  if (local_err != NULL) freearray(local_err);
-  if (l2err != NULL) freearray(l2err);
-  if (lepsco != NULL) freearray(lepsco);
-  if (ranking.prio != NULL) freearray(ranking.prio);
-  if (ranking.groups != NULL) freearray(ranking.groups);
-  if (qc_kreg != NULL && qc_kreg != oldcurve) freeCurve(qc_kreg);
-  if (helpcurve != NULL && helpcurve != (*newcurve)) freeCurve(helpcurve);
-  if (tempcurve != NULL && tempcurve != (*newcurve)) freeCurve(tempcurve);
+  if (temp_err != SISL_NULL) freearray(temp_err);
+  if (local_err != SISL_NULL) freearray(local_err);
+  if (l2err != SISL_NULL) freearray(l2err);
+  if (lepsco != SISL_NULL) freearray(lepsco);
+  if (ranking.prio != SISL_NULL) freearray(ranking.prio);
+  if (ranking.groups != SISL_NULL) freearray(ranking.groups);
+  if (qc_kreg != SISL_NULL && qc_kreg != oldcurve) freeCurve(qc_kreg);
+  if (helpcurve != SISL_NULL && helpcurve != (*newcurve)) freeCurve(helpcurve);
+  if (tempcurve != SISL_NULL && tempcurve != (*newcurve)) freeCurve(tempcurve);
 
   return;
 }

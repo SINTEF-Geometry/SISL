@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: crvcrvtang.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: crvcrvtang.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 #define CRV_CRV_TANG
@@ -98,7 +98,7 @@ void
   double td[2],t1[2],tdn[2];/* Distances between old and new parameter
 			       value in the tree parameter directions.     */
   double tprev;             /* Previous difference between the curves.     */
-  double *sval =NULL;       /* Value ,first and second derivatiev of surf. */ 
+  double *sval =SISL_NULL;       /* Value ,first and second derivatiev of surf. */ 
   double *sdiff;            /* Difference between the point and the surf.  */
   double enext[2];          /* Parameter values                            */
   double snext[2];          /* Parameter values                            */
@@ -132,7 +132,7 @@ void
   /* Allocate local used memory */
   
   sval = newarray(4*kdim,double);
-  if (sval == NULL) goto err101;
+  if (sval == SISL_NULL) goto err101;
   
   sdiff = sval + 3*kdim;
   
@@ -176,7 +176,7 @@ void
       
       /* Check if the direction of the step have change. */
       
-      kdir = (s6scpr(td,tdn,2) >= DNULL);     /* 0 if changed. */
+      kdir = (s6scpr(td,tdn,2) >= DZERO);     /* 0 if changed. */
       
       /* Ordinary converging. */
       
@@ -240,7 +240,7 @@ void
   s6err("crv_crv_tang",*jstat,kpos);
   goto out;                  
   
- out:    if (sval != NULL) freearray(sval);
+ out:    if (sval != SISL_NULL) freearray(sval);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -397,10 +397,10 @@ static void c_c_t_s9dir(cdist,cdiff1,cdiff2,gdiff,eval1,eval2,eder1,eder2,idim)
   
   tdet = t1*t3 - t2*t2;
   
-  if (DEQUAL(tdet,DNULL))
+  if (DEQUAL(tdet,DZERO))
     {
-      *cdiff1 = DNULL;
-      *cdiff2 = DNULL;
+      *cdiff1 = DZERO;
+      *cdiff2 = DZERO;
     }
   else 
     {

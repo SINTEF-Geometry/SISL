@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6equal.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6equal.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -68,7 +68,7 @@ int s6equal(a1,a2,aref)
   tval += aref;
   tval -= aref;
   
-  return(DEQUAL(tval,DNULL));
+  return(DEQUAL(tval,DZERO));
 }
 
 

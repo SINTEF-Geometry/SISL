@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1790.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1790.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -91,7 +91,7 @@ void s1790(po1,po2,aepsge,jstat)
       
       /* Check if the SISLbox have been computed. */
       
-      if (po1->p1->pbox == NULL)
+      if (po1->p1->pbox == SISL_NULL)
 	{
 	  /* If not compute a box. */
 	  
@@ -117,7 +117,7 @@ void s1790(po1,po2,aepsge,jstat)
 	
 	/* Check if the SISLbox have been computed. */
 	
-	if (po1->c1->pbox == NULL)
+	if (po1->c1->pbox == SISL_NULL)
 	  {
 	    /* If not compute a box. */
 	    
@@ -144,7 +144,7 @@ void s1790(po1,po2,aepsge,jstat)
 	  
 	  /* Check if the SISLbox have been computed. */
 	  
-	  if (po1->s1->pbox == NULL)
+	  if (po1->s1->pbox == SISL_NULL)
 	    {
 	      /* If not compute a box. */
 	      
@@ -171,7 +171,7 @@ void s1790(po1,po2,aepsge,jstat)
       
       /* Check if the SISLbox have been computed. */
       
-      if (po2->p1->pbox == NULL)
+      if (po2->p1->pbox == SISL_NULL)
 	{
 	  /* If not compute a box. */
 	  
@@ -197,7 +197,7 @@ void s1790(po1,po2,aepsge,jstat)
 	
 	/* Check if the SISLbox have been computed. */
 	
-	if (po2->c1->pbox == NULL)
+	if (po2->c1->pbox == SISL_NULL)
 	  {
 	    /* If not compute a box. */
 	    
@@ -224,7 +224,7 @@ void s1790(po1,po2,aepsge,jstat)
 	  
 	  /* Check if the SISLbox have been computed. */
 	  
-	  if (po2->s1->pbox == NULL)
+	  if (po2->s1->pbox == SISL_NULL)
 	    {
 	      /* If not compute a box. */
 	      

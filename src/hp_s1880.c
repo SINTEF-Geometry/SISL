@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: hp_s1880.c,v 1.3 1995-03-17 09:31:32 ujk Exp $
+ * $Id: hp_s1880.c,v 1.4 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -125,7 +125,7 @@ void
   SISLIntpt **vpoint = pintdat->vpoint;
   int jlist = pintdat->ilist;
   SISLIntlist **vlist = pintdat->vlist;
-  SISLObject *qo2 = NULL;
+  SISLObject *qo2 = SISL_NULL;
   int kdir,kdir1,kdir2;
   int exact=FALSE, exact_treat=FALSE;
   int log_test = 0;
@@ -153,9 +153,9 @@ void
 
   /* Initiate output.  */
 
-  *gpar1 = *gpar2 = NULL;
-  *wcrv = NULL;
-  *wsurf = NULL;
+  *gpar1 = *gpar2 = SISL_NULL;
+  *wcrv = SISL_NULL;
+  *wsurf = SISL_NULL;
 
   *jcrv = 0;
   *jsurf = 0;
@@ -163,10 +163,10 @@ void
   /* Allocate space for intersection curve and surface array.  */
 
   *wcrv = newarray (jlist, SISLIntcurve *);
-  if (jlist > 0 && *wcrv == NULL)
+  if (jlist > 0 && *wcrv == SISL_NULL)
     goto err101;
   *wsurf = newarray (jlist, SISLIntsurf *);
-  if (jlist > 0 && *wcrv == NULL)
+  if (jlist > 0 && *wcrv == SISL_NULL)
     goto err101;
 
   /* Transfer curve-information from vlist array to wcrv and wsurf arrais. */
@@ -188,7 +188,7 @@ void
 	/* Create new intersection surf.  */
 
 	*usurf = newIntsurf(*vlist);
-	if (*usurf == NULL)
+	if (*usurf == SISL_NULL)
 	   goto err101;
 
 	/* Copy pretopology
@@ -218,8 +218,8 @@ void
 
 	spar1 = newarray (ipar1 * kpoint, double);
 	spar2 = newarray (ipar2 * kpoint, double);
-	if ((ipar1 > 0 && spar1 == NULL) ||
-	    (ipar2 > 0 && spar2 == NULL))
+	if ((ipar1 > 0 && spar1 == SISL_NULL) ||
+	    (ipar2 > 0 && spar2 == SISL_NULL))
 	   goto err101;
 
 	/* Collect parameter values of the points in this intersection list
@@ -228,7 +228,7 @@ void
 	kj = 0;
 	stpar1 = spar1;
 	stpar2 = spar2;
-	while (qpt != NULL && kj < kpoint)
+	while (qpt != SISL_NULL && kj < kpoint)
 	{
 	   stpar3 = qpt->epar;
 	   for (kk = 0; kk < ipar1; kk++)
@@ -310,7 +310,7 @@ void
 	
 	/* Create new intersection curve.  */
 	*ucrv = newIntcurve (kj, ipar1, ipar2, spar1, spar2, ktype);
-	if (*ucrv == NULL)
+	if (*ucrv == SISL_NULL)
 	   goto err101;
 	
 	/* Copy pretopology */
@@ -374,9 +374,9 @@ void
   *gpar1 = newarray (ipar1 * kpt, double);
   *gpar2 = newarray (ipar2 * kpt, double);
   *pretop = newarray (4 * kpt, int);
-  if ((ipar1 * kpt > 0 && *gpar1 == NULL)
-      || (ipar2 * kpt > 0 && *gpar2 == NULL)
-      || (4 * kpt > 0 && *pretop == NULL))
+  if ((ipar1 * kpt > 0 && *gpar1 == SISL_NULL)
+      || (ipar2 * kpt > 0 && *gpar2 == SISL_NULL)
+      || (4 * kpt > 0 && *pretop == SISL_NULL))
     goto err101;
 
   /* Copy parameters of single intersection points into output-arrays. */
@@ -388,7 +388,7 @@ void
   for (ki = 0; ki < jpt; ki++)
     {
       qpt = *vpoint;
-      if (qpt != NULL)
+      if (qpt != SISL_NULL)
 	{
 	  if (sh6ismain(qpt) && qpt->marker != -99)
 	    {
@@ -416,62 +416,62 @@ void
   {
      if ((*jcrv) > 0)
      {
-        if (((*wcrv) = increasearray (*wcrv, *jcrv, SISLIntcurve *)) == NULL)
+        if (((*wcrv) = increasearray (*wcrv, *jcrv, SISLIntcurve *)) == SISL_NULL)
            goto err101;
      }
      else
      {
-        if (*wcrv != NULL)
+        if (*wcrv != SISL_NULL)
 	freearray (*wcrv);
-        *wcrv = NULL;
+        *wcrv = SISL_NULL;
      }
   }
   if ((*jsurf) < jlist)
   {
      if ((*jsurf) > 0)
      {
-        if (((*wsurf) = increasearray (*wsurf, *jsurf, SISLIntsurf *)) == NULL)
+        if (((*wsurf) = increasearray (*wsurf, *jsurf, SISLIntsurf *)) == SISL_NULL)
            goto err101;
      }
      else
      {
-        if (*wsurf != NULL)
+        if (*wsurf != SISL_NULL)
 	freearray (*wsurf);
-        *wsurf = NULL;
+        *wsurf = SISL_NULL;
      }
   }
   if (kj * ipar1 > 0)
     {
-      if ((*gpar1 = increasearray (*gpar1, kj * ipar1, double)) == NULL)
+      if ((*gpar1 = increasearray (*gpar1, kj * ipar1, double)) == SISL_NULL)
 	goto err101;
     }
   else
     {
-      if (*gpar1 != NULL)
+      if (*gpar1 != SISL_NULL)
 	freearray (*gpar1);
-      *gpar1 = NULL;
+      *gpar1 = SISL_NULL;
     }
   if (kj * ipar2 > 0)
     {
-      if ((*gpar2 = increasearray (*gpar2, kj * ipar2, double)) == NULL)
+      if ((*gpar2 = increasearray (*gpar2, kj * ipar2, double)) == SISL_NULL)
 	goto err101;
     }
   else
     {
-      if (*gpar2 != NULL)
+      if (*gpar2 != SISL_NULL)
 	freearray (*gpar2);
-      *gpar2 = NULL;
+      *gpar2 = SISL_NULL;
     }
   if (kj  > 0)
     {
-      if ((*pretop= increasearray (*pretop, kj * 4, int)) == NULL)
+      if ((*pretop= increasearray (*pretop, kj * 4, int)) == SISL_NULL)
 	goto err101;
     }
   else
     {
-      if (*pretop != NULL)
+      if (*pretop != SISL_NULL)
 	freearray (*pretop);
-      *pretop = NULL;
+      *pretop = SISL_NULL;
     }
 
   /* Intersections copied to output format.  */

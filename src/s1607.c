@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1607.c,v 1.2 1994-09-05 15:12:34 pfu Exp $
+ * $Id: s1607.c,v 1.3 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -133,18 +133,18 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 			       * of the curve (routine s1611)		*/
   double cndpar;	      /* Parameter value used at the end of the curve
 			       * (Routine s1611)			*/
-  double *ipar = NULL;	      /* Array containing the parameter values of the
+  double *ipar = SISL_NULL;	      /* Array containing the parameter values of the
 			       * points in the curve. (not used)	*/
-  double *kpoint1 = NULL;     /* Contains position and tangen of curve1	*/
-  double *kpoint2 = NULL;     /* Contains position and tangen of curve2	*/
-  double *type = NULL;	      /* Array (length inbpnt)containing type indicator
+  double *kpoint1 = SISL_NULL;     /* Contains position and tangen of curve1	*/
+  double *kpoint2 = SISL_NULL;     /* Contains position and tangen of curve2	*/
+  double *type = SISL_NULL;	      /* Array (length inbpnt)containing type indicator
 			       * for points/tangents :
 			       *     1 - Ordinary point.
 			       *     2 - Knuckle point. (Is treated as an
 			       *	   ordinary point.)
 			       *     3 - Tangent to next point.
 			       *     4 - Tangent to prior point.	*/
-  double *sdum = NULL;	      /* Is used to store cross product of tangent
+  double *sdum = SISL_NULL;	      /* Is used to store cross product of tangent
 			       * vectors				*/
   double tresol;	      /* Relative resulution of double precision
 			       * numbers				*/
@@ -174,7 +174,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 
   /* Calculate position and tangent of fillet point on curve1. */
 
-  if((kpoint1 = newarray (2 * idim, DOUBLE)) == NULL) goto err101;
+  if((kpoint1 = newarray (2 * idim, DOUBLE)) == SISL_NULL) goto err101;
 
   left = 0;
   if (aend1 >= afil1)
@@ -199,7 +199,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 
   /* Calculate position and tangent of fillet point on curve2. */
 
-  if((kpoint2 = newarray (2 * idim, DOUBLE)) == NULL) goto err101;
+  if((kpoint2 = newarray (2 * idim, DOUBLE)) == SISL_NULL) goto err101;
 
   left = 0;
   if (aend2 >= afil2)
@@ -244,7 +244,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   /* Set type indicator. */
 
   type = newarray (4, DOUBLE);
-  if (type == NULL) goto err101;
+  if (type == SISL_NULL) goto err101;
 
   type[0] = 1;
   type[1] = 4;
@@ -257,7 +257,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   plane = 0;
   if (idim == 3)
     {
-      if((sdum = newarray (3, DOUBLE)) == NULL) goto err101;
+      if((sdum = newarray (3, DOUBLE)) == SISL_NULL) goto err101;
 
       /* Compute cross product between tangent vectors. */
 
@@ -315,7 +315,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
         sum2 = s6length(&kpoint2[idim], idim, &kstat2);
 
         if (!kstat1 || !kstat2)
-          sang = DNULL;
+          sang = DZERO;
         else
           {
             tcos = dum/(sum1*sum2);
@@ -377,7 +377,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   /* Copy kpoint1 and kpoint2 into one array only kpoint1 */
 
   kpoint1 = increasearray (kpoint1, idim * 4, DOUBLE);
-  if (kpoint1 == NULL)
+  if (kpoint1 == SISL_NULL)
     goto err101;
 
   memcopy (&kpoint1[2 * idim], kpoint2, 2 * idim, DOUBLE);
@@ -407,7 +407,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 	  tstpar = (double) 0.0;
 
 	  if (*rc)  freeCurve(*rc);  /* Re-use of 'rc' (PFU 05/09-94) */
-	  *rc = NULL;
+	  *rc = SISL_NULL;
 
 	  s1611 (kpoint1, knpoin, idim, type, iopen, ik, tstpar, aepsge,
 		 &cndpar, rc, &kstat);
@@ -430,12 +430,12 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   tstpar = (double) 0.0;
 
   if (*rc)  freeCurve(*rc);  /* Re-use of 'rc' (PFU 05/09-94) */
-  *rc = NULL;
+  *rc = SISL_NULL;
 
 
   s1334 (kpoint1, knpoin, idim, type, 0, 0, iopen, ik, tstpar, &cndpar,
 	 rc, &ipar, &knbpar, &kstat);
-  if (ipar != NULL) freearray (ipar);
+  if (ipar != SISL_NULL) freearray (ipar);
   if (kstat < 0) goto error;
 
   goto out;
@@ -462,9 +462,9 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
     goto out;
 
   out:
-    if (kpoint1 != NULL) freearray(kpoint1);
-    if (kpoint2 != NULL) freearray(kpoint2);
-    if (type != NULL) freearray(type);
-    if (sdum != NULL) freearray(sdum);
+    if (kpoint1 != SISL_NULL) freearray(kpoint1);
+    if (kpoint2 != SISL_NULL) freearray(kpoint2);
+    if (type != SISL_NULL) freearray(type);
+    if (sdum != SISL_NULL) freearray(sdum);
     return;
 }

@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.11 2000-09-25 07:28:16 vsk Exp $
+ * $Id: sh1762.c,v 1.12 2001-03-19 15:59:04 afr Exp $
  *
  */
 
@@ -207,7 +207,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	   int knum;
 	   int ipar = 2;
 	   int kj, ki;
-	   SISLIntpt **up = NULL;  /* Array of poiners to intersection point.*/
+	   SISLIntpt **up = SISL_NULL;  /* Array of poiners to intersection point.*/
 
 	   sh6edgpoint (vedge, &up, &knum, &kstat);
 	   if (kstat < 0)
@@ -275,7 +275,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
   for (ki = 0; ki < 4; ki++)
-    uob1[ki] = uob2[ki] = NULL;
+    uob1[ki] = uob2[ki] = SISL_NULL;
 
   /* Initiate to no intersection. */
 
@@ -459,12 +459,12 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 	        Check if there are intersection points on edges.
 
-	       if (vedge[0] == NULL)
+	       if (vedge[0] == SISL_NULL)
 		  knum = 0;
 	       else
 		  knum = vedge[0]->ipoint;
 
-	       if (vedge[1] != NULL)
+	       if (vedge[1] != SISL_NULL)
 		  knum += vedge[1]->ipoint;
 
 
@@ -509,7 +509,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		{
 		  for (ki = 0; ki < (kdiv1 < 3 ? 2 : 4); ki++)
 		    {
-		      if ((uob1[ki] = newObject (po1->iobj)) == NULL)
+		      if ((uob1[ki] = newObject (po1->iobj)) == SISL_NULL)
 			goto err101;
 
 		      /* Initiate o1 pointer to point to top level object. */
@@ -531,7 +531,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		{
 		  for (ki = 0; ki < (kdiv2 < 3 ? 2 : 4); ki++)
 		    {
-		      if ((uob2[ki] = newObject (po2->iobj)) == NULL)
+		      if ((uob2[ki] = newObject (po2->iobj)) == SISL_NULL)
 			goto err101;
 
 		      /* Initiate o1 pointer to point to top level object. */
@@ -559,10 +559,10 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		    /* Making new edge object to sub problems. */
 
 		    if (po1->iobj == SISLPOINT)
-		      uedge[0] = NULL;
-		    else if ((uedge[0] = newEdge (vedge[0]->iedge)) == NULL)
+		      uedge[0] = SISL_NULL;
+		    else if ((uedge[0] = newEdge (vedge[0]->iedge)) == SISL_NULL)
 		      goto err101;
-		    if ((uedge[1] = newEdge (vedge[1]->iedge)) == NULL)
+		    if ((uedge[1] = newEdge (vedge[1]->iedge)) == SISL_NULL)
 		      goto err101;
 
 		    /* Update edge intersection on sub problems. */
@@ -579,9 +579,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		    else
 		      *jstat = *jstat || kstat;
 
-		    if (uedge[0] != NULL)
+		    if (uedge[0] != SISL_NULL)
 		      freeEdge (uedge[0]);
-		    if (uedge[1] != NULL)
+		    if (uedge[1] != SISL_NULL)
 		      freeEdge (uedge[1]);
 		  }
 	      else if (kdiv2 == 0)	/* Only first object subdivided.   */
@@ -591,11 +591,11 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 		    /* Making new edge object to sub problems. */
 
-		    if ((uedge[0] = newEdge (vedge[0]->iedge)) == NULL)
+		    if ((uedge[0] = newEdge (vedge[0]->iedge)) == SISL_NULL)
 		      goto err101;
 		    if (po2->iobj == SISLPOINT)
-		      uedge[1] = NULL;
-		    else if ((uedge[1] = newEdge (vedge[1]->iedge)) == NULL)
+		      uedge[1] = SISL_NULL;
+		    else if ((uedge[1] = newEdge (vedge[1]->iedge)) == SISL_NULL)
 		      goto err101;
 
 		    /* Update edge intersection on sub problems. */
@@ -612,9 +612,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		    else
 		      *jstat = *jstat || kstat;
 
-		    if (uedge[0] != NULL)
+		    if (uedge[0] != SISL_NULL)
 		      freeEdge (uedge[0]);
-		    if (uedge[1] != NULL)
+		    if (uedge[1] != SISL_NULL)
 		      freeEdge (uedge[1]);
 		  }
 	      else		/* Both objects subdivided.        */
@@ -625,9 +625,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 		      /* Making new edge object to sub problems. */
 
-		      if ((uedge[0] = newEdge (vedge[0]->iedge)) == NULL)
+		      if ((uedge[0] = newEdge (vedge[0]->iedge)) == SISL_NULL)
 			goto err101;
-		      if ((uedge[1] = newEdge (vedge[1]->iedge)) == NULL)
+		      if ((uedge[1] = newEdge (vedge[1]->iedge)) == SISL_NULL)
 			goto err101;
 
 		      /* Update edge intersection on sub problems. */
@@ -645,9 +645,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		      else
 			*jstat = *jstat || kstat;
 
-		      if (uedge[0] != NULL)
+		      if (uedge[0] != SISL_NULL)
 			freeEdge (uedge[0]);
-		      if (uedge[1] != NULL)
+		      if (uedge[1] != SISL_NULL)
 			freeEdge (uedge[1]);
 		    }
 	    }
@@ -656,18 +656,18 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
   /* Must update vedge before going into reex */
-  /* if (vedge[0] != NULL)
+  /* if (vedge[0] != SISL_NULL)
   {
      knedge1 = vedge[0]->iedge;
      freeEdge (vedge[0]);
-     if ((vedge[0] = newEdge (knedge1)) == NULL)
+     if ((vedge[0] = newEdge (knedge1)) == SISL_NULL)
         goto err101;
   }
-  if (vedge[1] != NULL)
+  if (vedge[1] != SISL_NULL)
   {
      knedge2 = vedge[1]->iedge;
      freeEdge (vedge[1]);
-     if ((vedge[1] = newEdge (knedge2)) == NULL)
+     if ((vedge[1] = newEdge (knedge2)) == SISL_NULL)
 	goto err101;
   }*/
 
@@ -730,9 +730,9 @@ error:*jstat = kstat;
 out:
   for (ki = 0; ki < 4; ki++)
     {
-      if (uob1[ki] != NULL)
+      if (uob1[ki] != SISL_NULL)
 	freeObject (uob1[ki]);
-      if (uob2[ki] != NULL)
+      if (uob2[ki] != SISL_NULL)
 	freeObject (uob2[ki]);
     }
   xc--;
@@ -790,9 +790,9 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
   int knum = 0;			/* Number of intpt on edges.               */
   /*int klist1, klist2;	*/	/* List index in iintpt.                   */
   int ind1, ind2;		/* Help index in up array.                 */
-  double *spar = NULL;		/* Array to store parameter values.        */
-  SISLIntpt **up = NULL;	/* Array of poiners to intersection point. */
-  double *nullp = NULL;
+  double *spar = SISL_NULL;		/* Array to store parameter values.        */
+  SISLIntpt **up = SISL_NULL;	/* Array of poiners to intersection point. */
+  double *nullp = SISL_NULL;
   double tepsge = 0.0000001;    /* Tolerance used in merging of points.    */
 
   /* Initiate to no new intersection point. */
@@ -801,12 +801,12 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
 
   /* Compute number of intersection points on edges. */
 
-  if ((*vedge)[0] == NULL)
+  if ((*vedge)[0] == SISL_NULL)
     knum = 0;
   else
     knum = (*vedge)[0]->ipoint;
 
-  if ((*vedge)[1] != NULL)
+  if ((*vedge)[1] != SISL_NULL)
     knum += (*vedge)[1]->ipoint;
 
 
@@ -960,7 +960,7 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
 
 	   for (ki=1; ki<knum-1; ki++)
 	     {
-		sh6idnewunite(po1,po2,rintdat,&up[0],&up[ki],DNULL,
+		sh6idnewunite(po1,po2,rintdat,&up[0],&up[ki],DZERO,
 			      tepsge,&kstat);
 		if (kstat < 0) goto error;
              }
@@ -970,20 +970,20 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
 
 	   /* Update edge structure.  */
 
-      if ((*vedge)[0] != NULL)
+      if ((*vedge)[0] != SISL_NULL)
 	{
 	  ki = (*vedge)[0]->iedge;
 	  freeEdge ((*vedge)[0]);
-	  (*vedge)[0] = NULL;
-	  if (((*vedge)[0] = newEdge (ki)) == NULL)
+	  (*vedge)[0] = SISL_NULL;
+	  if (((*vedge)[0] = newEdge (ki)) == SISL_NULL)
 	    goto err101;
 	}
-      if ((*vedge)[1] != NULL)
+      if ((*vedge)[1] != SISL_NULL)
 	{
 	  ki = (*vedge)[1]->iedge;
 	  freeEdge ((*vedge)[1]);
-	  (*vedge)[1] = NULL;
-	  if (((*vedge)[1] = newEdge (ki)) == NULL)
+	  (*vedge)[1] = SISL_NULL;
+	  if (((*vedge)[1] = newEdge (ki)) == SISL_NULL)
 	    goto err101;
 	}
 
@@ -1010,18 +1010,18 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
 	    goto error;
 	}
 
-      if ((*vedge)[0] != NULL)
+      if ((*vedge)[0] != SISL_NULL)
 	{
 	  ki = (*vedge)[0]->iedge;
 	  freeEdge ((*vedge)[0]);
-	  if (((*vedge)[0] = newEdge (ki)) == NULL)
+	  if (((*vedge)[0] = newEdge (ki)) == SISL_NULL)
 	    goto err101;
 	}
-      if ((*vedge)[1] != NULL)
+      if ((*vedge)[1] != SISL_NULL)
 	{
 	  ki = (*vedge)[1]->iedge;
 	  freeEdge ((*vedge)[1]);
-	  if (((*vedge)[1] = newEdge (ki)) == NULL)
+	  if (((*vedge)[1] = newEdge (ki)) == SISL_NULL)
 	    goto err101;
 	}
       /* UJK newi, one point kept : */
@@ -1060,7 +1060,7 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
 
       /* Allocate array to store midpoint parameter values. */
 
-      if ((spar = newarray (kpar, double)) == NULL)
+      if ((spar = newarray (kpar, double)) == SISL_NULL)
 	goto err101;
 
 
@@ -1105,10 +1105,10 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
       /* UJK newi */
       /* UPDATE: ? Be aware of this situation, can it occur ? */
 
-      qt = hp_newIntpt (kpar, spar, DNULL, SI_ORD,
+      qt = hp_newIntpt (kpar, spar, DZERO, SI_ORD,
 			SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 			0, 0, nullp, nullp);
-      if (qt == NULL)
+      if (qt == SISL_NULL)
 	goto err101;
 
       /* Uppdating pintdat. */
@@ -1132,9 +1132,9 @@ error:*jstat = kstat;
   s6err ("sh1762_s9mic", *jstat, kpos);
   goto out;
 
-out:if (spar != NULL)
+out:if (spar != SISL_NULL)
     freearray (spar);
-  if (up != NULL)
+  if (up != SISL_NULL)
     freearray (up);
 }
 
@@ -1281,7 +1281,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
 {
   int kstat = 0;
   int kgtpi1=0, kgtpi2=0;
-  double tang1=DNULL, tang2=DNULL;
+  double tang1=DZERO, tang2=DZERO;
   int not_case_2d;
   int kbez1=1, kbez2=1;
 
@@ -1306,7 +1306,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   /* Get attributes from object to divide. */
   if (po->iobj == SISLCURVE)
     {
-      if (po->c1->pdir != NULL)
+      if (po->c1->pdir != SISL_NULL)
 	{
 	  kgtpi1 = po->c1->pdir->igtpi;
 	  tang1 = po->c1->pdir->aang;
@@ -1315,7 +1315,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
     }
   else
     {
-      if (po->s1->pdir != NULL)
+      if (po->s1->pdir != SISL_NULL)
 	{
 	  kgtpi1 = po->s1->pdir->igtpi;
 	  tang1 = po->s1->pdir->aang;
@@ -1326,7 +1326,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   /* Get attributes from referance object. */
   if (poref->iobj == SISLCURVE)
     {
-      if (poref->c1->pdir != NULL)
+      if (poref->c1->pdir != SISL_NULL)
 	{
 	  kgtpi2 = poref->c1->pdir->igtpi;
 	  tang2 = poref->c1->pdir->aang;
@@ -1335,7 +1335,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
     }
   else if (poref->iobj == SISLSURFACE)
     {
-      if (poref->s1->pdir != NULL)
+      if (poref->s1->pdir != SISL_NULL)
 	{
 	  kgtpi2 = poref->s1->pdir->igtpi;
 	  tang2 = poref->s1->pdir->aang;
@@ -1446,7 +1446,7 @@ sh1762_is_taboo(psurf1, psurf2 ,pintpt, idir, jstat)
 *
 *
 * INPUT      : psurf1   - 1. surface in intersection problem.
-*              psurf2   - 2. surface in intersection problem or NULL.
+*              psurf2   - 2. surface in intersection problem or SISL_NULL.
 *              pintpt   - Intersection point.
 *              idir     - Parameter direction in surface.
 *
@@ -1619,7 +1619,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 * OUTPUT     : fixflag  - Indicates if the subdivision point is fixed.
 *              rpt      - An existing internal intersection point used as
 *                         subdividing point. If no such point is found,
-*                         *rpt == NULL.
+*                         *rpt == SISL_NULL.
 *              epar     - Parameter values of subdivision point. The number of
 *                         elements used is equal to the number of parameter
 *                         directions of the object to be subdivide. The dimension
@@ -1664,7 +1664,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
    double sparsave[2];  /* Parameter value of subdivision point. */
    SISLObject *qo1;	/* Pointer to the object that is to be subdivided. */
    SISLObject *qo2;	/* Pointer to the other object.          */
-   SISLIntpt *qpt = NULL;  /* An internal intersection point.    */
+   SISLIntpt *qpt = SISL_NULL;  /* An internal intersection point.    */
 
    /* Set pointer to subdivision object. */
 
@@ -1690,9 +1690,9 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
      if (!(3*qo1->c1->ik > qo1->c1->in) &&
 	 /* if (qo1->c1->ik != qo1->c1->in && */
 	 (sh6ismain (qpt)) && sh6nmbhelp (qpt,&kstat) == 0)
-	qpt = NULL;
+	qpt = SISL_NULL;
 
-      if (qpt != NULL)
+      if (qpt != SISL_NULL)
 	{
 	  /* Internal intersection point found. */
 
@@ -1700,10 +1700,10 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
 	  if (tpar < (qo1->c1->et[qo1->c1->ik - 1] + tdel) ||
 	      tpar > (qo1->c1->et[qo1->c1->in] -tdel))
-	       qpt = NULL;  /* Do not use the point as a subdivision point. */
+	       qpt = SISL_NULL;  /* Do not use the point as a subdivision point. */
 	}
 
-      if (qpt == NULL &&
+      if (qpt == SISL_NULL &&
 	  vedge[iobj - 1]->ipoint == 0 && qo1->c1->ik == qo1->c1->in)
       {
 	 /* No internal intersection is found. The curve is of Bezier type,
@@ -1789,7 +1789,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
 	    tpar = s1792 (qo1->c1->et, qo1->c1->ik, qo1->c1->in);
       }
-      else if (qpt == NULL)
+      else if (qpt == SISL_NULL)
 	 /* Use the midpoint as a subdivision point. */
 
 	 tpar = s1792 (qo1->c1->et, qo1->c1->ik, qo1->c1->in);
@@ -1819,7 +1819,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
      if (qo1->s1->ik1 == qo1->s1->in1 && qo1->s1->ik2 == qo1->s1->in2)
 	s6idint (po1, po2, *pintdat, &qpt, iobj);
-     if (qpt != NULL)
+     if (qpt != SISL_NULL)
      {
 	/* Internal intersection point found. */
 	sparsave[0] = spar[0] = qpt->epar[kpar];
@@ -1831,12 +1831,12 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	if (spar[0] < sstart[0] + tdel1 || spar[0] > send[0] - tdel1)
 	{
 	   kf1--;
-	   qpt = NULL;
+	   qpt = SISL_NULL;
 	}
 	if (spar[1] < sstart[1] + tdel2 || spar[1] > send[1] - tdel2)
 	{
 	   kf2--;
-	   qpt = NULL;
+	   qpt = SISL_NULL;
 	}
      }
 
@@ -1912,10 +1912,10 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		     (qo2->p1->idim == 1 || qo2->p1->idim == 2))))
      {
 	SISLPtedge *qptedg;	/* Pointer used to traverse int. points on edges. */
-	SISLIntpt *pt1 = NULL;  /* Intersection point on edge. */
-	SISLIntpt *pt2 = NULL;  /* Intersection point on edge. */
-	SISLIntpt *ptsing1 = NULL; /* Singular intersection point on edge. */
-	SISLIntpt *ptsing2 = NULL; /* Singular intersection point on edge. */
+	SISLIntpt *pt1 = SISL_NULL;  /* Intersection point on edge. */
+	SISLIntpt *pt2 = SISL_NULL;  /* Intersection point on edge. */
+	SISLIntpt *ptsing1 = SISL_NULL; /* Singular intersection point on edge. */
+	SISLIntpt *ptsing2 = SISL_NULL; /* Singular intersection point on edge. */
 	SISLIntpt *pcurr;          /* Current intersection point.          */
 	int kj;                    /* Counter.                             */
 	double tmean[2];           /* Middle parameter of the surface.     */
@@ -1961,7 +1961,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	      /* Loop for edges no 1 and 3*/
 	      for (kj = 0; kj < 3; kj += 2)
 		 /* Loop for all points on edge*/
-		 for (qptedg = vedge[iobj - 1]->prpt[kj]; qptedg != NULL;
+		 for (qptedg = vedge[iobj - 1]->prpt[kj]; qptedg != SISL_NULL;
 	       qptedg = qptedg->pnext)
 		 {
 		    pcurr = qptedg->ppt;
@@ -1976,7 +1976,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		    
 		    if (sh1762_is_taboo(qo1->s1, 
 					(qo2->iobj == SISLSURFACE) ? 
-					qo2->s1 : NULL, 
+					qo2->s1 : SISL_NULL, 
 					pcurr, 1, &kstat))
 		      continue;
 
@@ -2015,7 +2015,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	      /* Loop for edges no 2 and 4*/
 	      for (kj = 1; kj < 4; kj += 2)
 		 /* Loop for all points on edge*/
-		 for (qptedg = vedge[iobj - 1]->prpt[kj]; qptedg != NULL;
+		 for (qptedg = vedge[iobj - 1]->prpt[kj]; qptedg != SISL_NULL;
 	       qptedg = qptedg->pnext)
 		 {
 		    pcurr = qptedg->ppt;
@@ -2030,7 +2030,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		    
 		    if (sh1762_is_taboo(qo1->s1,  
 					(qo2->iobj == SISLSURFACE) ? 
-					qo2->s1 : NULL, 
+					qo2->s1 : SISL_NULL, 
 					pcurr, 2, &kstat))
 		      continue;
 
@@ -2399,19 +2399,19 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 			           intersection point and the subdivision point.    */
   double spar[2];		/* Parameter values of subdividing point. If a curve is to
 			           be subdivided, only the first element is used.           */
-  SISLCurve *qcrv = NULL;       /* Mother curve of subdivision curve.               */
-  SISLObject *qso = NULL;	/* Subdivision object, it is a point if a curve is subdivided
+  SISLCurve *qcrv = SISL_NULL;       /* Mother curve of subdivision curve.               */
+  SISLObject *qso = SISL_NULL;	/* Subdivision object, it is a point if a curve is subdivided
 			           and a curve if a surface is subdivided.          */
-  SISLObject *qmotherobj = NULL; /* Mother object of subdivision object.            */
-  SISLObject *qo1 = NULL;	/* Pointer to the object that is to be subdivided.  */
-  SISLObject *qo2 = NULL;	/* Pointer to the other object.                     */
-  SISLObject *qs1 = NULL, *qs2 = NULL;	/* Subobjects to be used in the case where a surface
+  SISLObject *qmotherobj = SISL_NULL; /* Mother object of subdivision object.            */
+  SISLObject *qo1 = SISL_NULL;	/* Pointer to the object that is to be subdivided.  */
+  SISLObject *qo2 = SISL_NULL;	/* Pointer to the other object.                     */
+  SISLObject *qs1 = SISL_NULL, *qs2 = SISL_NULL;	/* Subobjects to be used in the case where a surface
 				       is to be subdivided in both parameter direction to
 				       store intermediate subsurfaces.               */
-  SISLIntpt *qpt = NULL;	/* An eventual found inner intersection used as subdivision
+  SISLIntpt *qpt = SISL_NULL;	/* An eventual found inner intersection used as subdivision
 			           point. If the subdivision point is found in another way,
-			           qpt = NULL.                                      */
-  SISLIntdat *qintdat = NULL;	/* Data structure of intersection problem with lower dim. */
+			           qpt = SISL_NULL.                                      */
+  SISLIntdat *qintdat = SISL_NULL;	/* Data structure of intersection problem with lower dim. */
   SISLIntpt *qp;		/* Closest intersection point to the subdiv point */
   SISLEdge *uedge[2];		/* Edge intersections of subproblem.                 */
   int fixflag = 0;		/* UJK 31.10.90 */
@@ -2441,9 +2441,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	goto error;
 
 
-      if (wob[0]->edg[1] == NULL)
+      if (wob[0]->edg[1] == SISL_NULL)
 	{
-	  if ((qso = wob[0]->edg[1] = newObject (SISLPOINT)) == NULL)
+	  if ((qso = wob[0]->edg[1] = newObject (SISLPOINT)) == SISL_NULL)
 	    goto err101;
 
 	  /* Pick out end point from a curve. */
@@ -2469,12 +2469,12 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	  /* Making new edge object to sub problems. */
 
 	  if ((iobj == 1 ? qso : po1)->iobj == SISLPOINT)
-	    uedge[0] = NULL;
-	  else if ((uedge[0] = newEdge (vedge[0]->iedge - (iobj == 1 ? 2 : 0))) == NULL)
+	    uedge[0] = SISL_NULL;
+	  else if ((uedge[0] = newEdge (vedge[0]->iedge - (iobj == 1 ? 2 : 0))) == SISL_NULL)
 	    goto err101;
 	  if ((iobj == 2 ? qso : po2)->iobj == SISLPOINT)
-	    uedge[1] = NULL;
-	  else if ((uedge[1] = newEdge (vedge[1]->iedge - (iobj == 2 ? 2 : 0))) == NULL)
+	    uedge[1] = SISL_NULL;
+	  else if ((uedge[1] = newEdge (vedge[1]->iedge - (iobj == 2 ? 2 : 0))) == SISL_NULL)
 	    goto err101;
 
 	  /* Update edge intersection on sub problems. */
@@ -2492,9 +2492,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	  if (kstat < 0)
 	    goto error;
 
-	  if (uedge[0] != NULL)
+	  if (uedge[0] != SISL_NULL)
 	    freeEdge (uedge[0]);
-	  if (uedge[1] != NULL)
+	  if (uedge[1] != SISL_NULL)
 	    freeEdge (uedge[1]);
 	}
       else
@@ -2509,7 +2509,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	{
 	  /* Total number of points. */
 
-	  knum = (*pintdat == NULL ? 0 : (*pintdat)->ipoint) + qintdat->ipoint;
+	  knum = (*pintdat == SISL_NULL ? 0 : (*pintdat)->ipoint) + qintdat->ipoint;
 
 	  *jstat = 1;		/* Mark intersection found. */
 
@@ -2523,7 +2523,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	  /* UJK newi divide curve */
 	  /* UPDATE: ? what about help points from s1782 knum?? */
-	  if (qpt != NULL && (*pintdat)->ipoint == knum)
+	  if (qpt != SISL_NULL && (*pintdat)->ipoint == knum)
 	    {
 	      /* Find the closest poin to qpt. */
 
@@ -2537,10 +2537,10 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	    }
 	}
 
-      if (qintdat != NULL)
+      if (qintdat != SISL_NULL)
 	{
 	  freeIntdat (qintdat);
-	  qintdat = NULL;
+	  qintdat = SISL_NULL;
 	}
     }
   else if (qo1->iobj == SISLSURFACE)
@@ -2558,9 +2558,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      if (kstat < 0)
 		goto error;
 
-	      if (wob[0]->edg[1] == NULL)
+	      if (wob[0]->edg[1] == SISL_NULL)
 		{
-		  if ((qso = wob[0]->edg[1] = newObject (SISLCURVE)) == NULL)
+		  if ((qso = wob[0]->edg[1] = newObject (SISLCURVE)) == SISL_NULL)
 		    goto err101;
 
 		  /* Pick out edge curve from a surface. */
@@ -2578,7 +2578,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      s1437(qo1->o1->s1,spar[0],&qcrv,&kstat);
 	      if (kstat < 0) goto error;
 
-	      if ((qmotherobj = newObject(SISLCURVE)) == NULL) goto err101;
+	      if ((qmotherobj = newObject(SISLCURVE)) == SISL_NULL) goto err101;
 	      qmotherobj->c1 = qcrv;
 	      qso->o1 = qmotherobj;
 	    }
@@ -2590,9 +2590,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      if (kstat < 0)
 		goto error;
 
-	      if (wob[0]->edg[2] == NULL)
+	      if (wob[0]->edg[2] == SISL_NULL)
 		{
-		  if ((qso = wob[0]->edg[2] = newObject (SISLCURVE)) == NULL)
+		  if ((qso = wob[0]->edg[2] = newObject (SISLCURVE)) == SISL_NULL)
 		    goto err101;
 
 		  /* Pick out edge curve from a surface. */
@@ -2610,15 +2610,15 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      s1436(qo1->o1->s1,spar[1],&qcrv,&kstat);
 	      if (kstat < 0) goto error;
 
-	      if ((qmotherobj = newObject(SISLCURVE)) == NULL) goto err101;
+	      if ((qmotherobj = newObject(SISLCURVE)) == SISL_NULL) goto err101;
 	      qmotherobj->c1 = qcrv;
 	      qso->o1 = qmotherobj;
 	    }
 	  else if (ki == 0)
 	    {
-	      if ((qs1 = newObject (SISLSURFACE)) == NULL)
+	      if ((qs1 = newObject (SISLSURFACE)) == SISL_NULL)
 		goto err101;
-	      if ((qs2 = newObject (SISLSURFACE)) == NULL)
+	      if ((qs2 = newObject (SISLSURFACE)) == SISL_NULL)
 		goto err101;
 
 	      /* printf("Subdivide surface. 1. par dir. par = %10.6f \n",spar[0]); */
@@ -2627,9 +2627,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      if (kstat < 0)
 		goto error;
 
-	      if (qs1->edg[1] == NULL)
+	      if (qs1->edg[1] == SISL_NULL)
 		{
-		  if ((qso = qs1->edg[1] = newObject (SISLCURVE)) == NULL)
+		  if ((qso = qs1->edg[1] = newObject (SISLCURVE)) == SISL_NULL)
 		    goto err101;
 
 		  /* Pick out edge curve from a surface. */
@@ -2647,7 +2647,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      s1437(qo1->o1->s1,spar[0],&qcrv,&kstat);
 	      if (kstat < 0) goto error;
 
-	      if ((qmotherobj = newObject(SISLCURVE)) == NULL) goto err101;
+	      if ((qmotherobj = newObject(SISLCURVE)) == SISL_NULL) goto err101;
 	      qmotherobj->c1 = qcrv;
 	      qso->o1 = qmotherobj;
 	    }
@@ -2659,9 +2659,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      if (kstat < 0)
 		goto error;
 
-	      if (wob[0]->edg[2] == NULL)
+	      if (wob[0]->edg[2] == SISL_NULL)
 		{
-		  if ((qso = wob[0]->edg[2] = newObject (SISLCURVE)) == NULL)
+		  if ((qso = wob[0]->edg[2] = newObject (SISLCURVE)) == SISL_NULL)
 		    goto err101;
 
 		  /* Pick out edge curve from a surface. */
@@ -2679,7 +2679,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      s1436(qo1->o1->s1,spar[1],&qcrv,&kstat);
 	      if (kstat < 0) goto error;
 
-	      if ((qmotherobj = newObject(SISLCURVE)) == NULL) goto err101;
+	      if ((qmotherobj = newObject(SISLCURVE)) == SISL_NULL) goto err101;
 	      qmotherobj->c1 = qcrv;
 	      qso->o1 = qmotherobj;
 	    }
@@ -2692,9 +2692,9 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      if (kstat < 0)
 		goto error;
 
-	      if (wob[2]->edg[2] == NULL)
+	      if (wob[2]->edg[2] == SISL_NULL)
 		{
-		  if ((qso = wob[2]->edg[2] = newObject (SISLCURVE)) == NULL)
+		  if ((qso = wob[2]->edg[2] = newObject (SISLCURVE)) == SISL_NULL)
 		    goto err101;
 
 		  /* Pick out edge curve from a surface. */
@@ -2712,7 +2712,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      s1436(qo1->o1->s1,spar[1],&qcrv,&kstat);
 	      if (kstat < 0) goto error;
 
-	      if ((qmotherobj = newObject(SISLCURVE)) == NULL) goto err101;
+	      if ((qmotherobj = newObject(SISLCURVE)) == SISL_NULL) goto err101;
 	      qmotherobj->c1 = qcrv;
 	      qso->o1 = qmotherobj;
 	    }
@@ -2732,12 +2732,12 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	  /* Making new edge object to sub problems. */
 
 	  if ((iobj == 1 ? qso : po1)->iobj == SISLPOINT)
-	    uedge[0] = NULL;
-	  else if ((uedge[0] = newEdge (vedge[0]->iedge - (iobj == 1 ? 2 : 0))) == NULL)
+	    uedge[0] = SISL_NULL;
+	  else if ((uedge[0] = newEdge (vedge[0]->iedge - (iobj == 1 ? 2 : 0))) == SISL_NULL)
 	    goto err101;
 	  if ((iobj == 2 ? qso : po2)->iobj == SISLPOINT)
-	    uedge[1] = NULL;
-	  else if ((uedge[1] = newEdge (vedge[1]->iedge - (iobj == 2 ? 2 : 0))) == NULL)
+	    uedge[1] = SISL_NULL;
+	  else if ((uedge[1] = newEdge (vedge[1]->iedge - (iobj == 2 ? 2 : 0))) == SISL_NULL)
 	    goto err101;
 
 	  /* Update edge intersection on sub problems. */
@@ -2756,14 +2756,14 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	     int loop;
 	     double endpar;
 	     double qt_par[2];
-	     SISLPoint  *end_point=NULL;
-	     SISLObject *pt_obj=NULL;
-	     SISLCurve  *pcrv=NULL;
+	     SISLPoint  *end_point=SISL_NULL;
+	     SISLObject *pt_obj=SISL_NULL;
+	     SISLCurve  *pcrv=SISL_NULL;
 	     int knum;
 	     int ind_missing, ind_kept;
-	     SISLIntpt *qt  = NULL;
-	     SISLIntpt *pcl = NULL;
-	     SISLIntpt **up = NULL;	 /* Array of poiners to intersection point. */
+	     SISLIntpt *qt  = SISL_NULL;
+	     SISLIntpt *pcl = SISL_NULL;
+	     SISLIntpt **up = SISL_NULL;	 /* Array of poiners to intersection point. */
 
 	     /* Get edge points to SUB-problem. */
 	     sh6edgpoint (uedge, &up, &knum, &kstat);
@@ -2788,16 +2788,16 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 		       (knum == 0 || DNEQUAL(up[0]->epar[0], endpar)))
 		   {
 		      /* Making intersection point. */
-		      double *nullp = NULL;
+		      double *nullp = SISL_NULL;
 
 		      changes = TRUE;
 		      qt_par[ind_kept]    = endpar;
 		      qt_par[ind_missing] = spar[ind_missing];
-		      qt = hp_newIntpt (2, qt_par, DNULL, SI_ORD,
+		      qt = hp_newIntpt (2, qt_par, DZERO, SI_ORD,
 					SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 					0, 0, nullp, nullp);
 
-		      if (qt == NULL)
+		      if (qt == SISL_NULL)
 			 goto err101;
 
 		      sh6tohelp (qt,&kstat);
@@ -2827,22 +2827,22 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 		   }
 		   if (end_point)
 		      freePoint(end_point);
-		   end_point = NULL;
+		   end_point = SISL_NULL;
 
 		}
 
 	     if (changes)
 	     {
 		/* Clean up and regenerate uedge and qintdat. */
-		if (uedge[0] != NULL)
+		if (uedge[0] != SISL_NULL)
 		   freeEdge (uedge[0]);
-		if (uedge[1] != NULL)
+		if (uedge[1] != SISL_NULL)
 		   freeEdge (uedge[1]);
 
-		if (qintdat != NULL)
+		if (qintdat != SISL_NULL)
 		{
 		   freeIntdat (qintdat);
-		   qintdat = NULL;
+		   qintdat = SISL_NULL;
 		}
 
 		sh6idget ((iobj == 1 ? (ki == 0 ? po1 : (ki == 1 ? qs1 : qs2)) : po1),
@@ -2854,12 +2854,12 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 		/* Making new edge object to sub problems. */
 
 		if ((iobj == 1 ? qso : po1)->iobj == SISLPOINT)
-		   uedge[0] = NULL;
-		else if ((uedge[0] = newEdge (vedge[0]->iedge - (iobj == 1 ? 2 : 0))) == NULL)
+		   uedge[0] = SISL_NULL;
+		else if ((uedge[0] = newEdge (vedge[0]->iedge - (iobj == 1 ? 2 : 0))) == SISL_NULL)
 		   goto err101;
 		if ((iobj == 2 ? qso : po2)->iobj == SISLPOINT)
-		   uedge[1] = NULL;
-		else if ((uedge[1] = newEdge (vedge[1]->iedge - (iobj == 2 ? 2 : 0))) == NULL)
+		   uedge[1] = SISL_NULL;
+		else if ((uedge[1] = newEdge (vedge[1]->iedge - (iobj == 2 ? 2 : 0))) == SISL_NULL)
 		   goto err101;
 
 		/* Update edge intersection on sub problems. */
@@ -2882,17 +2882,17 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	  if (kstat < 0)
 	    goto error;
 
-	  if (uedge[0] != NULL)
+	  if (uedge[0] != SISL_NULL)
 	    freeEdge (uedge[0]);
-	  if (uedge[1] != NULL)
+	  if (uedge[1] != SISL_NULL)
 	    freeEdge (uedge[1]);
 
 
 	  /* Free mother object of the subdividing curve.  */
 
-	  if (qmotherobj != NULL) freeObject(qmotherobj);
-	  qmotherobj = NULL;
-	  qcrv = NULL;
+	  if (qmotherobj != SISL_NULL) freeObject(qmotherobj);
+	  qmotherobj = SISL_NULL;
+	  qcrv = SISL_NULL;
 	  qso->o1 = qso;
 
 	  /* Examine if there is an intersection point close to the
@@ -2900,8 +2900,8 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	  /* ALA and UJK 31.10.90 don't change divide point
 	     when fixflag is set */
-	  if ((fixflag == 0) && idiv == 3 && ki == 0 && qintdat != NULL)
-	    /*  if (idiv == 3 && ki == 0 && qintdat != NULL) */
+	  if ((fixflag == 0) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
+	    /*  if (idiv == 3 && ki == 0 && qintdat != SISL_NULL) */
 	    {
 	      tdel = (qso->c1->et[qso->c1->in] -
 		      qso->c1->et[qso->c1->ik - 1]) * (double) 0.1;
@@ -2920,7 +2920,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	  /*ujk, ala 921218, dont't split very close to a
 	     new intersection point */
-	  else if ((fixflag) && idiv == 3 && ki == 0 && qintdat != NULL)
+	  else if ((fixflag) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
 	  {
 	     tdel = (qso->c1->et[qso->c1->in] -
 		     qso->c1->et[qso->c1->ik - 1]) * (double) 0.000001;
@@ -2944,7 +2944,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	     middle value of the first and last
 	     intersection on the subdividing curve.*/
 /*
-	  if (idiv == 3 && ki == 0 && qintdat != NULL)
+	  if (idiv == 3 && ki == 0 && qintdat != SISL_NULL)
 	    {
 	      int kn;
 	      double tdel,tdiv,tmin,tmax;
@@ -2979,7 +2979,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	    {
 	      /* Total number of points. */
 
-	      knum = (*pintdat == NULL ? 0 : (*pintdat)->ipoint) +
+	      knum = (*pintdat == SISL_NULL ? 0 : (*pintdat)->ipoint) +
 		qintdat->ipoint;
 
 	      *jstat = 1;	/* Mark intersection found. */
@@ -2997,7 +2997,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	      /* UJK newi divide surface */
 	      /* UPDATE: ? what about help points from s1782 knum?? */
-	      if (qpt != NULL && (*pintdat)->ipoint == knum)
+	      if (qpt != SISL_NULL && (*pintdat)->ipoint == knum)
 		{
 		  /* Find the closest poin to qpt. */
 
@@ -3012,15 +3012,15 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	    }
 
-	  if (qintdat != NULL)
+	  if (qintdat != SISL_NULL)
 	    {
 	      freeIntdat (qintdat);
-	      qintdat = NULL;
+	      qintdat = SISL_NULL;
 	    }
 	}
-      if (qs1 != NULL)
+      if (qs1 != SISL_NULL)
 	freeObject (qs1);
-      if (qs2 != NULL)
+      if (qs2 != SISL_NULL)
 	freeObject (qs2);
     }
   else
@@ -3106,13 +3106,13 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 {
   /* UJK newi */
   int ki, no_new;
-  SISLIntpt *qt = NULL;
+  SISLIntpt *qt = SISL_NULL;
 
   int kpos = 0;
   int kstat = 0;
   int kdim;
   SISLObject *qo;
-  SISLIntpt **up = NULL;
+  SISLIntpt **up = SISL_NULL;
 
   /* Test input.  */
 
@@ -3144,7 +3144,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
       /* UPDATE ALA 010993. Start */
-      if (knum == 0 && (*pintdat) != NULL)
+      if (knum == 0 && (*pintdat) != SISL_NULL)
       {
 	for (ki = 0; ki < (*pintdat)->ipoint; ki++)
 	  if (po2->iobj == SISLCURVE)
@@ -3225,7 +3225,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 
 	      ki = (*vedge)[1 - kturn]->iedge;
 	      freeEdge ((*vedge)[1 - kturn]);
-	      if (((*vedge)[1 - kturn] = newEdge (ki)) == NULL)
+	      if (((*vedge)[1 - kturn] = newEdge (ki)) == SISL_NULL)
 		goto err101;
 	      knum = 0;
 	    }
@@ -3317,12 +3317,12 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	      else
 		{
 		  /* Making intersection point. */
-		  double *nullp = NULL;
-		  qt = hp_newIntpt (po2->iobj, spar, DNULL, SI_ORD,
+		  double *nullp = SISL_NULL;
+		  qt = hp_newIntpt (po2->iobj, spar, DZERO, SI_ORD,
 				    SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 				    0, 0, nullp, nullp);
 
-		  if (qt == NULL)
+		  if (qt == SISL_NULL)
 		    goto err101;
 
 		  /* Uppdating pintdat. */
@@ -3415,11 +3415,11 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 
 		 ki = (*vedge)[0]->iedge;
 		 freeEdge ((*vedge)[0]);
-		 if (((*vedge)[0] = newEdge (ki)) == NULL)
+		 if (((*vedge)[0] = newEdge (ki)) == SISL_NULL)
 		 goto err101;
 		 ki = (*vedge)[1]->iedge;
 		 freeEdge ((*vedge)[1]);
-		 if (((*vedge)[1] = newEdge (ki)) == NULL)
+		 if (((*vedge)[1] = newEdge (ki)) == SISL_NULL)
 		 goto err101;
 		 knum = 0; */
 	    }
@@ -3430,7 +3430,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	  double spar[3];
 
           /* UPDATE ALA 010993. Start */
-          if ((*pintdat) != NULL)
+          if ((*pintdat) != SISL_NULL)
           {
 	  for (ki = 0; ki < (*pintdat)->ipoint; ki++)
 	     if (po2->iobj == SISLCURVE)
@@ -3553,12 +3553,12 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	      else
 		{
 		  /* Making intersection point. */
-		  double *nullp = NULL;
-		  qt = hp_newIntpt (po1->iobj + po2->iobj, spar, DNULL, SI_ORD,
+		  double *nullp = SISL_NULL;
+		  qt = hp_newIntpt (po1->iobj + po2->iobj, spar, DZERO, SI_ORD,
 				    SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 				    0, 0, nullp, nullp);
 
-		  if (qt == NULL)
+		  if (qt == SISL_NULL)
 		    goto err101;
 
 		  /* Uppdating pintdat. */
@@ -3647,7 +3647,7 @@ error:*jstat = kstat;
   s6err ("sh1762_s9update", *jstat, kpos);
   goto out;
 
-out:if (up != NULL)
+out:if (up != SISL_NULL)
     freearray (up);
 }
 
@@ -3721,7 +3721,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   int kstat = 0;		/* Status variable.                        */
   int ki,kj;			/* Counter.                                */
   int knum = 0;			/* Number of intersection points on edges. */
-  SISLIntpt **up = NULL;	/* Intersection points on edges.           */
+  SISLIntpt **up = SISL_NULL;	/* Intersection points on edges.           */
   SISLdir *qd1, *qd2;		/* Direction cones of objects.             */
   SISLIntpt *qpt;               /* Evt 3. intersection point.              */
   int knpar=po1->iobj+po2->iobj; /* Number of parameter directions.        */
@@ -3756,17 +3756,17 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   else
     {
 
-       if (po1->iobj == SISLPOINT) qd1 = NULL;
+       if (po1->iobj == SISLPOINT) qd1 = SISL_NULL;
        else
 	  qd1 = (po1->iobj == SISLCURVE ? po1->c1->pdir : po1->s1->pdir);
 
-       if (po2->iobj == SISLPOINT) qd2 = NULL;
+       if (po2->iobj == SISLPOINT) qd2 = SISL_NULL;
        else
 	  qd2 = (po2->iobj == SISLCURVE ? po2->c1->pdir : po2->s1->pdir);
 
        knum = 0;
-       if (vedge[0] != NULL) knum += vedge[0]->ipoint;
-       if (vedge[1] != NULL) knum += vedge[1]->ipoint;
+       if (vedge[0] != SISL_NULL) knum += vedge[0]->ipoint;
+       if (vedge[1] != SISL_NULL) knum += vedge[1]->ipoint;
 
       if (knum > 0)
 	{
@@ -3812,7 +3812,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 
       /* if (qd1->igtpi || qd2->igtpi || qd1->aang > ANGULAR_TOLERANCE ||
 	  qd2->aang > ANGULAR_TOLERANCE) */
-      if (qd1 == NULL || qd2 == NULL)
+      if (qd1 == SISL_NULL || qd2 == SISL_NULL)
 	 *jstat = 0;
       else if (qd1->igtpi || qd2->igtpi || qd1->aang > mintang1 ||
 	  qd2->aang > mintang2)
@@ -4072,43 +4072,43 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 
 	    if (po1->iobj == SISLCURVE)
 	    {
-	       for (qpt1=vedge[0]->prpt[0]; qpt1!=NULL; qpt1=qpt1->pnext)
+	       for (qpt1=vedge[0]->prpt[0]; qpt1!=SISL_NULL; qpt1=qpt1->pnext)
 	       {
-		  for (qpt2=vedge[0]->prpt[1]; qpt2!=NULL; qpt2=qpt2->pnext)
+		  for (qpt2=vedge[0]->prpt[1]; qpt2!=SISL_NULL; qpt2=qpt2->pnext)
 		  {
 		     /* UJK, aug 93, oo-loop in sh6isconn, BEOrd20786. */
 		     int is_conn,kcount;
-		     is_conn = sh6isconnect(NULL, qpt1->ppt, qpt2->ppt);
+		     is_conn = sh6isconnect(SISL_NULL, qpt1->ppt, qpt2->ppt);
 		     for (kcount = 0;kcount<(*pintdat)->ipoint;kcount++)
 			(*pintdat)->vpoint[kcount]->marker = 0;
 
 		     if (is_conn) break;
 		  }
-		  if (qpt2 != NULL) break;
+		  if (qpt2 != SISL_NULL) break;
 	       }
 
-	       if (qpt1 != NULL && qpt2 != NULL) *jstat = 1;
+	       if (qpt1 != SISL_NULL && qpt2 != SISL_NULL) *jstat = 1;
 	       else *jstat = 0;
 	    }
 	    if (*jstat != 1 && po2->iobj == SISLCURVE)
 	    {
-	       for (qpt1=vedge[1]->prpt[0]; qpt1!=NULL; qpt1=qpt1->pnext)
+	       for (qpt1=vedge[1]->prpt[0]; qpt1!=SISL_NULL; qpt1=qpt1->pnext)
 	       {
-		  for (qpt2=vedge[1]->prpt[1]; qpt2!=NULL; qpt2=qpt2->pnext)
+		  for (qpt2=vedge[1]->prpt[1]; qpt2!=SISL_NULL; qpt2=qpt2->pnext)
 		  {
 		     /* UJK, aug 93, oo-loop in sh6isconn, BEOrd20786. */
 		     int is_conn,kcount;
-		     is_conn = sh6isconnect(NULL, qpt1->ppt, qpt2->ppt);
+		     is_conn = sh6isconnect(SISL_NULL, qpt1->ppt, qpt2->ppt);
 		     for (kcount = 0;kcount<(*pintdat)->ipoint;kcount++)
 			(*pintdat)->vpoint[kcount]->marker = 0;
 
 		     if (is_conn) break;
 		  }
 
-		  if (qpt2 != NULL) break;
+		  if (qpt2 != SISL_NULL) break;
 	       }
 
-	       if (qpt1 != NULL && qpt2 != NULL) *jstat = 1;
+	       if (qpt1 != SISL_NULL && qpt2 != SISL_NULL) *jstat = 1;
 	       else *jstat = 0;
 	    }
 	 }
@@ -4124,7 +4124,7 @@ error:*jstat = kstat;
   goto out;
 
 out:
-  if (up != NULL)
+  if (up != SISL_NULL)
     freearray (up);
 
   return;
@@ -4209,15 +4209,15 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
   double snorm2[3];             /* Normal to second surface.      */
   double splitgeom[16];         /* Matrix description of a sphere
 				   or cylinder.                   */
-  SISLSurf *qs1=NULL;           /* B-spline surface put into sphere
+  SISLSurf *qs1=SISL_NULL;           /* B-spline surface put into sphere
 				   or cylinder equation.          */
-  SISLSurf *qs2=NULL;           /* B-spline surface put into sphere
+  SISLSurf *qs2=SISL_NULL;           /* B-spline surface put into sphere
 				   or cylinder equation.          */
-  SISLCurve *qc=NULL;           /* B-spline curve put into sphere
+  SISLCurve *qc=SISL_NULL;           /* B-spline curve put into sphere
 				   equation.                      */
-  SISLCurve *qc2=NULL;           /* B-spline curve put into sphere
+  SISLCurve *qc2=SISL_NULL;           /* B-spline curve put into sphere
 				   equation.                      */
-  SISLPoint *pp1=NULL;
+  SISLPoint *pp1=SISL_NULL;
   SISLObject *qobjs;		/* Pointer to surface object.     */
   SISLObject *qobjc;		/* Pointer to curve object.       */
 
@@ -4501,7 +4501,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	t1 = s6norm(sder1+kdim, kdim, sder1+kdim, &kstat);
 	t2 = s6norm(sder2+kdim, kdim, sder2+kdim, &kstat);
 	ksign = (s6scpr(sder1+kdim, sder2+kdim, kdim) >
-		 DNULL) ? 1 : -1;
+		 DZERO) ? 1 : -1;
 	for (ki=0; ki<kdim; ki++)
 	{
 	   /* sder1[kdim+ki] *= t2;
@@ -4529,7 +4529,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	      (double)10*ANGULAR_TOLERANCE)
      {
 	double tpar1, tpar2;
-	SISLPoint *pt = NULL;
+	SISLPoint *pt = SISL_NULL;
 	double *s1, *s2, *s3, *s4;
 
 	s1 = po1->c1->ecoef;
@@ -4552,7 +4552,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
 	/* Find closest point on the other curve. */
 
-	if ((pt = newPoint(sder1, kdim, 0)) == NULL) goto err101;
+	if ((pt = newPoint(sder1, kdim, 0)) == SISL_NULL) goto err101;
 
 	/* tpar2 = (double)0.5*(po2->c1->et[po2->c1->ik-1] +
 	   po2->c1->et[po2->c1->in]); */
@@ -4584,7 +4584,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	t1 = s6norm(sder1+kdim, kdim, sder1+kdim, &kstat);
 	t2 = s6norm(sder2+kdim, kdim, sder2+kdim, &kstat);
 	ksign = (s6scpr(sder1+kdim, sder2+kdim, kdim) >
-		 DNULL) ? 1 : -1;
+		 DZERO) ? 1 : -1;
 	for (ki=0; ki<kdim; ki++)
 	{
 	   /* sder1[kdim+ki] *= t2;
@@ -4740,7 +4740,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
      }
      else kstat = 1;
 
-     qs1 = NULL;     /* Make sure that the input surface is not freed. */
+     qs1 = SISL_NULL;     /* Make sure that the input surface is not freed. */
   }
   else if (((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT &&
 	   po2->p1->idim == 3) ||
@@ -4766,8 +4766,8 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	int ind1, ind2, ind3;
 	int kpt = 0;
 	int kcrv = 0;
-	double *spar = NULL;
-	SISLIntcurve **ucurve = NULL;
+	double *spar = SISL_NULL;
+	SISLIntcurve **ucurve = SISL_NULL;
 	double eps = 0.001*aepsge;
 
 	/* Find the closest points between the surface and the point */
@@ -4813,7 +4813,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	if (ucurve)
 	  freeIntcrvlist(ucurve, kcrv);
       }
-    qs1 = NULL;
+    qs1 = SISL_NULL;
   }  
   else kstat = 1;
 
@@ -4844,10 +4844,10 @@ error:*jstat = kstat;
 out:
    /* Free scratch used by 1D surfaces. */
 
-   if (qs1 != NULL) freeSurf(qs1);
-   if (qs2 != NULL) freeSurf(qs2);
-   if (qc != NULL) freeCurve(qc);
-   if (qc2 != NULL) freeCurve(qc2);
+   if (qs1 != SISL_NULL) freeSurf(qs1);
+   if (qs2 != SISL_NULL) freeSurf(qs2);
+   if (qc != SISL_NULL) freeCurve(qc);
+   if (qc2 != SISL_NULL) freeCurve(qc2);
 
   /*	rotate_box_time += time_used;	 */
   return;
@@ -4929,7 +4929,7 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
   int kind1,kind2;              /* Dummy parameters to sh6getlist.            */
   double tang;			/* Angle between vectors.                     */
   double *snorm;		/* Pointer to surface normal.                 */
-  double *sder1 = NULL;		/* Array containing position etc. of objects. */
+  double *sder1 = SISL_NULL;		/* Array containing position etc. of objects. */
   double *sder2;		/* Pointer to position of second object.      */
   SISLSurf *qs;			/* Pointer to surface.                        */
   SISLCurve *qc;		/* Pointer to curve.                          */
@@ -4971,7 +4971,7 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
       /* Allocate space for local arrays.  */
 
-      if ((sder1 = newarray (6 * qc->idim, double)) == NULL)
+      if ((sder1 = newarray (6 * qc->idim, double)) == SISL_NULL)
 	goto err101;
       sder2 = sder1 + 2 * qc->idim;
       snorm = sder2 + 3 * qc->idim;
@@ -5023,7 +5023,7 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
       /* Test coincidence between two curves. First allocate
 	 space for local arrays.  */
 
-      if ((sder1 = newarray (8 * kdim, double)) == NULL)
+      if ((sder1 = newarray (8 * kdim, double)) == SISL_NULL)
 	goto err101;
       sder2 = sder1 + 4 * kdim;
 
@@ -5088,7 +5088,7 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
      /* Allocate space for local arrays.  */
 
-     if ((sder1 = newarray (7 * qs->idim, double)) == NULL)
+     if ((sder1 = newarray (7 * qs->idim, double)) == SISL_NULL)
 	goto err101;
      sder2 = sder1 + 3 * qs->idim;
      snorm = sder2 + 3 * qs->idim;
@@ -5152,7 +5152,7 @@ out:
 
   /* Free scratch occupied by local array.  */
 
-  if (sder1 != NULL)
+  if (sder1 != SISL_NULL)
     freearray (sder1);
 
   return;
@@ -5250,7 +5250,7 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
    int kk22 = po2->s1->ik2;
    double *st21 = po2->s1->et1;
    double *st22 = po2->s1->et2;
-   SISLPoint *pt = NULL;       /* Point in point surface iteration.       */
+   SISLPoint *pt = SISL_NULL;       /* Point in point surface iteration.       */
    double sstart[2], send[2];  /* Parameter boundaries of second surface. */
    double spar2[2];            /* Parameter value of second surface.      */
 
@@ -5281,7 +5281,7 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
 	 /* Find closest point on the other surface. */
 
-	 if ((pt =  newPoint(sder1, kdim, 0)) == NULL) goto err101;
+	 if ((pt =  newPoint(sder1, kdim, 0)) == SISL_NULL) goto err101;
 
 	 s1773(pt, po2->s1, aepsge, sstart, send, spar2, spar2, &kstat);
 	 if (kstat < 0) goto error;
@@ -5291,8 +5291,8 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	 s1421(po2->s1, 0, spar2, &kleft21, &kleft22, sder2, snorm2, &kstat);
 	 if (kstat < 0) goto error;
 
-	 if (pt != NULL) freePoint(pt);
-	 pt = NULL;
+	 if (pt != SISL_NULL) freePoint(pt);
+	 pt = SISL_NULL;
 
 	 /* Check distance between the closest points. */
 
@@ -5311,7 +5311,7 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
    goto out;
 
    out:
-      if (pt != NULL) freePoint(pt);
+      if (pt != SISL_NULL) freePoint(pt);
 
       return;
 }
@@ -5370,7 +5370,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 {
   int kstat,kstat1,kstat2;
   int kmarch = 0;               /* Indicates if marching is to be done. */
-  int *ldir = NULL;		/* Local array containing one of the statusvalues for
+  int *ldir = SISL_NULL;		/* Local array containing one of the statusvalues for
 				 * each point:
 				 *  0 - The intersect.curve is parallel to one
 				 *      parameter direction.
@@ -5385,29 +5385,29 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 				 */
 
   int lant[2];
-  unsigned char *edg = NULL;
-  double *sval1 = NULL;
-  SISLIntpt **uipt = NULL;
-  SISLIntpt **uinewpt = NULL;
+  unsigned char *edg = SISL_NULL;
+  double *sval1 = SISL_NULL;
+  SISLIntpt **uipt = SISL_NULL;
+  SISLIntpt **uinewpt = SISL_NULL;
 
-  double *spar = NULL;		/* Local array with parameter values used as
+  double *spar = SISL_NULL;		/* Local array with parameter values used as
 				   input to s9surmarch. */
-  int *lperm = NULL;		/* Local permutation array after sorting
+  int *lperm = SISL_NULL;		/* Local permutation array after sorting
 				   input points to s9surmarch.*/
-  int *lpermdir = NULL;		/* Local array with status values used as
+  int *lpermdir = SISL_NULL;		/* Local array with status values used as
 				   input to s9surmarch. */
   int lstatus[4];		/* Local array containing the possible status
 				   constants -1,1,0,2. */
   int lnumb[4];			/* Local array containing the number of points
 				   with status lstatus. */
 
-  double *sparout = NULL;	/* Local array with parameter values used as
+  double *sparout = SISL_NULL;	/* Local array with parameter values used as
 				   output from s9surmarch.*/
-  int *lpar = NULL;		/* Local array containing the connection information
+  int *lpar = SISL_NULL;		/* Local array containing the connection information
 				   from s9surmarch.*/
   int kpoints;			/* Local integer containing number of points returned
 				   from s9surmarch.*/
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int klist1, klist2;		/* List index in iintpt.   */
 
   double tdist;                 /* Distance between surfaces in point.   */
@@ -5415,7 +5415,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
   double spos[4];               /* Parameter value of singular point.    */
   double start[4];              /* Start parameter to iteration.         */
   double slimit[8];             /* Limits to the parameter areas.        */
-  SISLIntpt *qsing=NULL;        /* Singular intersection point.          */
+  SISLIntpt *qsing=SISL_NULL;        /* Singular intersection point.          */
 
   /* Experiment UJK, sept 92 (BEOrd12754) */
     double tolpar = (double) 0.001;
@@ -5427,12 +5427,12 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 
   *jstat = 0;
 
-  if (vedge[0] == NULL)
+  if (vedge[0] == SISL_NULL)
     lant[0] = 0;
   else
     lant[0] = vedge[0]->ipoint;
 
-  if (vedge[1] == NULL)
+  if (vedge[1] == SISL_NULL)
     lant[1] = 0;
   else
     lant[1] = vedge[1]->ipoint;
@@ -5449,13 +5449,13 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 
       /* Allocate array of pointers to the points. */
 
-      if ((uipt = newarray (kant, SISLIntpt *)) == NULL)
+      if ((uipt = newarray (kant, SISLIntpt *)) == SISL_NULL)
 	goto err101;
-      if ((edg = new0array (kant, unsigned char)) == NULL)
+      if ((edg = new0array (kant, unsigned char)) == SISL_NULL)
 	goto err101;
-      if ((ldir = new0array (kant, int)) == NULL)
+      if ((ldir = new0array (kant, int)) == SISL_NULL)
 	goto err101;
-      if ((sval1 = newarray (33 * kant, double)) == NULL)
+      if ((sval1 = newarray (33 * kant, double)) == SISL_NULL)
 	goto err101;
       sval2 = sval1 + 9 * kant;
       snorm1 = sval2 + 9 * kant;
@@ -5471,7 +5471,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
       for (kn1 = 0, kn = 0; kn < 2; kn++)
 	if (lant[kn] > 0)
 	  for (kj = 0; kj < vedge[kn]->iedge; kj++)
-	    for (qpt = vedge[kn]->prpt[kj]; qpt != NULL; qpt = qpt->pnext)
+	    for (qpt = vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
 	      {
 		for (ki = 0; ki < kn1; ki++)
 		  {
@@ -5551,35 +5551,35 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 		    {
 		    case 0:
 		      tang = s6ang (stang + kv, sval1 + kn + 3, 3);
-		      kdir = (sdec1[kv + 1] > DNULL ? 1 : -1);
+		      kdir = (sdec1[kv + 1] > DZERO ? 1 : -1);
 		      break;
 		    case 4:
 		      tang = s6ang (stang + kv, sval2 + kn + 3, 3);
-		      kdir = (sdec2[kv + 1] > DNULL ? 1 : -1);
+		      kdir = (sdec2[kv + 1] > DZERO ? 1 : -1);
 		      break;
 		    case 1:
 		      tang = s6ang (stang + kv, sval1 + kn + 6, 3);
-		      kdir = (sdec1[kv] > DNULL ? -1 : 1);
+		      kdir = (sdec1[kv] > DZERO ? -1 : 1);
 		      break;
 		    case 5:
 		      tang = s6ang (stang + kv, sval2 + kn + 6, 3);
-		      kdir = (sdec2[kv] > DNULL ? -1 : 1);
+		      kdir = (sdec2[kv] > DZERO ? -1 : 1);
 		      break;
 		    case 2:
 		      tang = s6ang (stang + kv, sval1 + kn + 3, 3);
-		      kdir = (sdec1[kv + 1] > DNULL ? -1 : 1);
+		      kdir = (sdec1[kv + 1] > DZERO ? -1 : 1);
 		      break;
 		    case 6:
 		      tang = s6ang (stang + kv, sval2 + kn + 3, 3);
-		      kdir = (sdec2[kv + 1] > DNULL ? -1 : 1);
+		      kdir = (sdec2[kv + 1] > DZERO ? -1 : 1);
 		      break;
 		    case 3:
 		      tang = s6ang (stang + kv, sval1 + kn + 6, 3);
-		      kdir = (sdec1[kv] > DNULL ? 1 : -1);
+		      kdir = (sdec1[kv] > DZERO ? 1 : -1);
 		      break;
 		    case 7:
 		      tang = s6ang (stang + kv, sval2 + kn + 6, 3);
-		      kdir = (sdec2[kv] > DNULL ? 1 : -1);
+		      kdir = (sdec2[kv] > DZERO ? 1 : -1);
 		    }
 
 		  if (tang < tolpar)
@@ -5710,7 +5710,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	      tdir1 = s6scpr (stang + (ki1 * 3), stang + (ko1 * 3), 3);
 	      tdir2 = s6scpr (stang + (ki1 * 3), stang + (ko2 * 3), 3);
 
-	      if (tdir2 < DNULL || (tdir1 >= DNULL && tdist1 <= tdist2))
+	      if (tdir2 < DZERO || (tdir1 >= DZERO && tdist1 <= tdist2))
 		{
 		  /* We can connect the points. */
 		  /* UPDATE (ujk) : do we need to make conistency
@@ -5785,11 +5785,11 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	  lnumb[2] = 0;
 	  lnumb[3] = 0;
 
-	  if ((lperm = new0array (kv, int)) == NULL)
+	  if ((lperm = new0array (kv, int)) == SISL_NULL)
 	    goto err101;
-	  if ((lpermdir = new0array (kv, int)) == NULL)
+	  if ((lpermdir = new0array (kv, int)) == SISL_NULL)
 	    goto err101;
-	  if ((spar = newarray (4 * kv, double)) == NULL)
+	  if ((spar = newarray (4 * kv, double)) == SISL_NULL)
 	    goto err101;
 
 	  for (kn = 0, kj = 0; kn < 4 && kj < kv; kn++)
@@ -5996,7 +5996,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 
 		  for (kj=0; kj<4; kj++)
 		  {
-		     start[kj] = DNULL;
+		     start[kj] = DZERO;
 		     for (ki=1; ki<3; ki++) start[kj] += spar[ki*4+kj];
 		     start[kj] /= (double)2;
 		  }
@@ -6054,11 +6054,11 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 			   /* The singular intersection point do not exist already.
 			      Create intersection point.  */
 
-			   qsing = hp_newIntpt (4, spos, DNULL,
+			   qsing = hp_newIntpt (4, spos, DZERO,
 						SI_ORD, SI_UNDEF, SI_UNDEF,
 						SI_UNDEF, SI_UNDEF,
 						0, 0, nullp, nullp);
-			   if (qsing == NULL) goto err101;
+			   if (qsing == SISL_NULL) goto err101;
 
 			  /*  Check if it lies on an edge.       */
 
@@ -6206,7 +6206,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 
 	     for (kj=0; kj<4; kj++)
 	     {
-		start[kj] = DNULL;
+		start[kj] = DZERO;
 		for (ki=0; ki<3; ki++) start[kj] += spar[ki*4+kj];
 		start[kj] /= (double)3;
 	     }
@@ -6251,11 +6251,11 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 		      /* The singular intersection point do not exist already.
 			 Create intersection point.  */
 
-		      qsing = hp_newIntpt (4, spos, DNULL,
+		      qsing = hp_newIntpt (4, spos, DZERO,
 					   SI_ORD, SI_UNDEF, SI_UNDEF,
 					   SI_UNDEF, SI_UNDEF,
 					   0, 0, nullp, nullp);
-		      if (qsing == NULL) goto err101;
+		      if (qsing == SISL_NULL) goto err101;
 
 		      /* Connect to all edge points. First put into
 			 data structure. */
@@ -6317,7 +6317,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 		  if (kpoints > kv)
 		    {
 		      if ((uinewpt = newarray (kpoints - kv, SISLIntpt *))
-			  == NULL)
+			  == SISL_NULL)
 			goto err101;
 		      for (kj = kv, ki = 0; kj < kpoints; kj++, ki++)
 			{
@@ -6331,13 +6331,13 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 			  sintpar[2] = sparout[4 * kj + 2];
 			  sintpar[3] = sparout[4 * kj + 3];
 
-			  uinewpt[ki] = qt = hp_newIntpt (4, sintpar, DNULL,
+			  uinewpt[ki] = qt = hp_newIntpt (4, sintpar, DZERO,
 						 SI_ORD, SI_UNDEF, SI_UNDEF,
 							  SI_UNDEF, SI_UNDEF,
 							0, 0, nullp, nullp);
 
 
-			  if (qt == NULL)
+			  if (qt == SISL_NULL)
 			    goto err101;
 
 			  sh6idnpt (&rintdat, &qt, 1, &kstat);
@@ -6432,27 +6432,27 @@ err200:*jstat = -200;
   goto out;
 
 out:
-  if (uipt != NULL)
+  if (uipt != SISL_NULL)
     freearray (uipt);
-  if (edg != NULL)
+  if (edg != SISL_NULL)
     freearray (edg);
-  if (ldir != NULL)
+  if (ldir != SISL_NULL)
     freearray (ldir);
-  if (sval1 != NULL)
+  if (sval1 != SISL_NULL)
     freearray (sval1);
 
 
-  if (uinewpt != NULL)
+  if (uinewpt != SISL_NULL)
     freearray (uinewpt);
-  if (spar != NULL)
+  if (spar != SISL_NULL)
     freearray (spar);
-  if (sparout != NULL)
+  if (sparout != SISL_NULL)
     freearray (sparout);
-  if (lpar != NULL)
+  if (lpar != SISL_NULL)
     freearray (lpar);
-  if (lperm != NULL)
+  if (lperm != SISL_NULL)
     freearray (lperm);
-  if (lpermdir != NULL)
+  if (lpermdir != SISL_NULL)
     freearray (lpermdir);
 }
 
@@ -6507,7 +6507,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 */
 {
   int kstat,kstat1,kstat2;
-  int *ldir = NULL;		/* Local array containing one of the statusvalues for
+  int *ldir = SISL_NULL;		/* Local array containing one of the statusvalues for
 			         * each point:
 	                         *  0 - The intersect.curve is parallel to one
 			         *      parameter direction.
@@ -6521,26 +6521,26 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 			         * ---------------------------------------------------
 			         */
 
-  unsigned char *edg = NULL;
-  double *sval = NULL;
-  SISLPtedge *qpt = NULL;
-  SISLIntpt **uipt = NULL;
-  SISLIntpt **uinewpt = NULL;
+  unsigned char *edg = SISL_NULL;
+  double *sval = SISL_NULL;
+  SISLPtedge *qpt = SISL_NULL;
+  SISLIntpt **uipt = SISL_NULL;
+  SISLIntpt **uinewpt = SISL_NULL;
 
-  double *spar = NULL;		/* Local array with parameter values used as
+  double *spar = SISL_NULL;		/* Local array with parameter values used as
 				   input to s9conmarch. */
-  int *lperm = NULL;		/* Local permutation array after sorting
+  int *lperm = SISL_NULL;		/* Local permutation array after sorting
 				   input points to s9conmarch.*/
-  int *lpermdir = NULL;		/* Local array with status values used as
+  int *lpermdir = SISL_NULL;		/* Local array with status values used as
 				   input to s9conmarch. */
   int lstatus[4];		/* Local array containing the possible status
 				   constants -1,1,0,2. */
   int lnumb[4];			/* Local array containing the number of points
 				   with status lstatus. */
 
-  double *sparout = NULL;	/* Local array with parameter values used as
+  double *sparout = SISL_NULL;	/* Local array with parameter values used as
 				   output from s9conmarch.*/
-  int *lpar = NULL;		/* Local array containing the connection information
+  int *lpar = SISL_NULL;		/* Local array containing the connection information
 				   from s9conmarch.*/
   int kpoints;			/* Local integer containing number of points returned
 				   from s9conmarch.*/
@@ -6560,18 +6560,18 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 
       double *snorm;
       double tmax;
-      double *nullp = NULL;
+      double *nullp = SISL_NULL;
       kant = pedge->ipoint;
 
       /* Allocate array of pointers to the points. */
 
-      if ((uipt = newarray (kant, SISLIntpt *)) == NULL)
+      if ((uipt = newarray (kant, SISLIntpt *)) == SISL_NULL)
 	goto err101;
-      if ((edg = new0array (kant, unsigned char)) == NULL)
+      if ((edg = new0array (kant, unsigned char)) == SISL_NULL)
 	goto err101;
-      if ((ldir = new0array (kant, int)) == NULL)
+      if ((ldir = new0array (kant, int)) == SISL_NULL)
 	goto err101;
-      if ((sval = newarray (4 * kant, double)) == NULL)
+      if ((sval = newarray (4 * kant, double)) == SISL_NULL)
 	goto err101;
       snorm = sval + 3 * kant;
 
@@ -6579,7 +6579,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
       /* Update the arrays. */
 
       for (kn1 = kj = 0; kj < pedge->iedge; kj++)
-	for (qpt = pedge->prpt[kj]; qpt != NULL; qpt = qpt->pnext)
+	for (qpt = pedge->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
 	  {
 	    for (ki = 0; ki < kn1; ki++)
 	      {
@@ -6628,25 +6628,25 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		      if (fabs (sval[kn + 1] / tmax) < tolpar)
 			kdir = 0;
 		      else
-			kdir = (sval[kn + 1] > DNULL ? 1 : -1);
+			kdir = (sval[kn + 1] > DZERO ? 1 : -1);
 		      break;
 		    case 1:
 		      if (fabs (sval[kn + 2] / tmax) < tolpar)
 			kdir = 0;
 		      else
-			kdir = (sval[kn + 2] > DNULL ? 1 : -1);
+			kdir = (sval[kn + 2] > DZERO ? 1 : -1);
 		      break;
 		    case 2:
 		      if (fabs (sval[kn + 1] / tmax) < tolpar)
 			kdir = 0;
 		      else
-			kdir = (sval[kn + 1] > DNULL ? -1 : 1);
+			kdir = (sval[kn + 1] > DZERO ? -1 : 1);
 		      break;
 		    case 3:
 		      if (fabs (sval[kn + 2] / tmax) < tolpar)
 			kdir = 0;
 		      else
-			kdir = (sval[kn + 2] > DNULL ? -1 : 1);
+			kdir = (sval[kn + 2] > DZERO ? -1 : 1);
 		    }
 
 		  if (kdir == 0)
@@ -6753,11 +6753,11 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 	  lnumb[2] = 0;
 	  lnumb[3] = 0;
 
-	  if ((lperm = new0array (kv, int)) == NULL)
+	  if ((lperm = new0array (kv, int)) == SISL_NULL)
 	    goto err101;
-	  if ((lpermdir = new0array (kv, int)) == NULL)
+	  if ((lpermdir = new0array (kv, int)) == SISL_NULL)
 	    goto err101;
-	  if ((spar = newarray (2 * kv, double)) == NULL)
+	  if ((spar = newarray (2 * kv, double)) == SISL_NULL)
 	    goto err101;
 
 	  for (kn = 0, kj = 0; kn < 4 && kj < kv; kn++)
@@ -6896,12 +6896,12 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 	      if (DEQUAL(uipt[lperm[0]]->epar[0],uipt[lperm[1]]->epar[0]) ||
 		  DEQUAL(uipt[lperm[0]]->epar[1],uipt[lperm[1]]->epar[1]))
 	      {
-		 SISLObject *obj=NULL;
-		 SISLIntpt *pint=NULL;
+		 SISLObject *obj=SISL_NULL;
+		 SISLIntpt *pint=SISL_NULL;
 		 double start;
 		 double *result;
 		 double coor[2];
-		 if ((obj = newObject(SISLCURVE))== NULL) goto err101;
+		 if ((obj = newObject(SISLCURVE))== SISL_NULL) goto err101;
 		 if (fabs(uipt[lperm[0]]->epar[0]-uipt[lperm[1]]->epar[0]) >
 		     fabs(uipt[lperm[0]]->epar[1]-uipt[lperm[1]]->epar[1]))
 		 {
@@ -6923,13 +6923,13 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		 if (kstat < 0) goto error;
 		 if (kstat == 1)
 		 {
-		    pint = hp_newIntpt (2, coor, DNULL,
+		    pint = hp_newIntpt (2, coor, DZERO,
 					SI_ORD, SI_UNDEF, SI_UNDEF,
 					SI_UNDEF, SI_UNDEF,
-					0, 0, NULL, NULL);
+					0, 0, SISL_NULL, SISL_NULL);
 
 
-		    if (pint == NULL)
+		    if (pint == SISL_NULL)
 		       goto err101;
 
 		    sh6insert (&rintdat, uipt[lperm[0]], uipt[lperm[1]],
@@ -7057,7 +7057,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		  if (kpoints > kv)
 		    {
 		      if ((uinewpt = newarray (kpoints - kv, SISLIntpt *))
-			  == NULL)
+			  == SISL_NULL)
 			goto err101;
 		      for (kj = kv, ki = 0; kj < kpoints; kj++, ki++)
 			{
@@ -7069,13 +7069,13 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 			  sintpar[0] = sparout[2 * kj];
 			  sintpar[1] = sparout[2 * kj + 1];
 
-			  uinewpt[ki] = qt = hp_newIntpt (2, sintpar, DNULL,
+			  uinewpt[ki] = qt = hp_newIntpt (2, sintpar, DZERO,
 						 SI_ORD, SI_UNDEF, SI_UNDEF,
 							  SI_UNDEF, SI_UNDEF,
 							0, 0, nullp, nullp);
 
 
-			  if (qt == NULL)
+			  if (qt == SISL_NULL)
 			    goto err101;
 
 			  sh6idnpt (&rintdat, &qt, 1, &kstat);
@@ -7171,26 +7171,26 @@ err200:*jstat = -200;
   goto out;
 
 out:
-  if (uipt != NULL)
+  if (uipt != SISL_NULL)
     freearray (uipt);
-  if (edg != NULL)
+  if (edg != SISL_NULL)
     freearray (edg);
-  if (ldir != NULL)
+  if (ldir != SISL_NULL)
     freearray (ldir);
-  if (sval != NULL)
+  if (sval != SISL_NULL)
     freearray (sval);
 
-  if (uinewpt != NULL)
+  if (uinewpt != SISL_NULL)
     freearray (uinewpt);
-  if (spar != NULL)
+  if (spar != SISL_NULL)
     freearray (spar);
-  if (sparout != NULL)
+  if (sparout != SISL_NULL)
     freearray (sparout);
-  if (lpar != NULL)
+  if (lpar != SISL_NULL)
     freearray (lpar);
-  if (lperm != NULL)
+  if (lperm != SISL_NULL)
     freearray (lperm);
-  if (lpermdir != NULL)
+  if (lpermdir != SISL_NULL)
     freearray (lpermdir);
 }
 
@@ -7245,7 +7245,7 @@ sh1762_s9simple (po1, po2, vedge, jstat)
   double *et1, *et2;
   double tstart1, tstart2, tend1, tend2;
   double tvolorg, tvol, tvolfac;
-  SISLIntpt **up = NULL;
+  SISLIntpt **up = SISL_NULL;
 
   kdim = po1->s1->idim;
   if (kdim != po2->s1->idim)
@@ -7266,11 +7266,11 @@ sh1762_s9simple (po1, po2, vedge, jstat)
     goto out;
 
   /* We test if one of the two objects is liniar. */
-  if (po1->s1->pdir != NULL)
+  if (po1->s1->pdir != SISL_NULL)
     if (po1->s1->pdir->igtpi == 0 && po1->s1->pdir->aang <= ANGULAR_TOLERANCE)
       klin1 = 1;
 
-  if (po2->s1->pdir != NULL)
+  if (po2->s1->pdir != SISL_NULL)
     if (po2->s1->pdir->igtpi == 0 && po2->s1->pdir->aang <= ANGULAR_TOLERANCE)
       klin2 = 1;
   /* UJK, This is a coincidence or simple case test ? */
@@ -7336,7 +7336,7 @@ error:*jstat = kstat;
   s6err ("sh1762_s9simple", *jstat, 0);
   goto out;
 
-out:if (up != NULL)
+out:if (up != SISL_NULL)
     freearray (up);
 }
 
@@ -7393,7 +7393,7 @@ sh1762_s9reex (po1, po2, vedge, aepsge, pintdat, jstat)
 */
 {
   int kstat;
-  SISLIntpt **up = NULL;
+  SISLIntpt **up = SISL_NULL;
 
   *jstat = 0;
 
@@ -7413,11 +7413,11 @@ sh1762_s9reex (po1, po2, vedge, aepsge, pintdat, jstat)
 
 	  /* Loop for both objects*/
 	  for (kn = 0; kn < 2; kn++)
-	    if (vedge[kn] != NULL)
+	    if (vedge[kn] != SISL_NULL)
 	      /* Loop for objects edges*/
 	      for (kj = 0; kj < vedge[kn]->iedge; kj++)
 		/* Loop for all points on edge*/
-		for (qpt = vedge[kn]->prpt[kj]; qpt != NULL; qpt = qpt->pnext)
+		for (qpt = vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
 		  {
 		    /* Loop for all points in intersection data*/
 		    for (ki = 0; ki < kn1; ki++)
@@ -7492,9 +7492,9 @@ sh1762_s9reex (po1, po2, vedge, aepsge, pintdat, jstat)
     {
       int knum = 0;
 
-      if (vedge[0] != NULL)
+      if (vedge[0] != SISL_NULL)
 	knum = vedge[0]->ipoint;
-      if (vedge[1] != NULL)
+      if (vedge[1] != SISL_NULL)
 	knum += vedge[1]->ipoint;
 
       if (knum > 1)
@@ -7509,11 +7509,11 @@ sh1762_s9reex (po1, po2, vedge, aepsge, pintdat, jstat)
 
 	  /* Loop for both objects*/
 	  for (kn = 0; kn < 2; kn++)
-	    if (vedge[kn] != NULL)
+	    if (vedge[kn] != SISL_NULL)
 	      /* Loop for objects edges*/
 	      for (kj = 0; kj < vedge[kn]->iedge; kj++)
 		/* Loop for all points on edge*/
-		for (qpt = vedge[kn]->prpt[kj]; qpt != NULL; qpt = qpt->pnext)
+		for (qpt = vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
 		  {
 		    /* Loop for all points in intersection data*/
 		    for (ki = 0; ki < kn1; ki++)
@@ -7594,7 +7594,7 @@ error:*jstat = kstat;
   s6err ("sh1762_s9reex", *jstat, 0);
   goto out;
 
-out:if (up != NULL)
+out:if (up != SISL_NULL)
     freearray (up);
 }
 
@@ -7669,11 +7669,11 @@ sh1762_s9ptiter (po1, po2, aepsge, pintdat, vedge, jstat)
    double sdiff1[3]; /* Vector between point and endpoint of object.         */
    double sdiff2[3]; /* Vector between endpoint of object and closest inner
 			vertex.                                              */
-   double *nullp = NULL;
+   double *nullp = SISL_NULL;
    SISLPoint *qpt;   /* Pointer to the point in the intersection.            */
    SISLObject *qobj2; /* Pointer to the other object in the intersection.    */
    SISLCurve *qcrv;  /* Pointer to the curve in the intersection.            */
-   SISLIntpt *qt = NULL; /* Pointer to intersection point.                   */
+   SISLIntpt *qt = SISL_NULL; /* Pointer to intersection point.                   */
 
    /* Find the order of the objects. */
 
@@ -7745,7 +7745,7 @@ sh1762_s9ptiter (po1, po2, aepsge, pintdat, vedge, jstat)
       /* Check if the point lies on the same side of the closest endpoint
 	 of the curve as the curve itself.                                */
 
-      if (s6scpr(sdiff1,sdiff2,kdim) < DNULL)
+      if (s6scpr(sdiff1,sdiff2,kdim) < DZERO)
       {
 	 /* No intersection.  */
 
@@ -7766,7 +7766,7 @@ sh1762_s9ptiter (po1, po2, aepsge, pintdat, vedge, jstat)
 	 /* Check if there exists an intersection in the start of the
 	    curve.  */
 
-	 if (vedge[kcrv]->prpt[0] != NULL)
+	 if (vedge[kcrv]->prpt[0] != SISL_NULL)
 	 {
 	    /* No iteration is to be performed. */
 
@@ -7781,7 +7781,7 @@ sh1762_s9ptiter (po1, po2, aepsge, pintdat, vedge, jstat)
 	 /* Check if there exists an intersection in the end of the
 	    curve.  */
 
-	 if (vedge[kcrv]->prpt[1] != NULL)
+	 if (vedge[kcrv]->prpt[1] != SISL_NULL)
 	 {
 	    /* No iteration is to be performed. */
 
@@ -7805,11 +7805,11 @@ sh1762_s9ptiter (po1, po2, aepsge, pintdat, vedge, jstat)
 	 *jstat = 1;	/* Mark intersection found.  */
 
 	 /* Making intersection point. */
-	 qt = hp_newIntpt (SISLCURVE, &tres, DNULL, SI_ORD,
+	 qt = hp_newIntpt (SISLCURVE, &tres, DZERO, SI_ORD,
 			   SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 			   0, 0, nullp, nullp);
 
-	 if (qt == NULL)
+	 if (qt == SISL_NULL)
 	    goto err101;
 
 	 /* Uppdating pintdat. */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1421.c,v 1.4 1995-11-29 14:21:15 jka Exp $
+ * $Id: s1421.c,v 1.5 2001-03-19 15:58:49 afr Exp $
  *
  */
 #define S1421
@@ -170,7 +170,7 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
 *              Note that for NURBS we call s6strider, a triangular
 *              version of s6sratder.
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
-*              NULL tests included
+*              SISL_NULL tests included
 * Revised by : Johannes Kaasa, SINTEF Oslo, Nov. 1995,
 *              Made local copies of leftknot.
 *
@@ -199,7 +199,7 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
 			 This is an array of dimension [kn2*kn1*kdim].   */
   double tt;          /* Dummy variable used for holding an array element
 			 in a for loop.                                  */
-  double *ebder=NULL; /* Pointer to an array of dimension
+  double *ebder=SISL_NULL; /* Pointer to an array of dimension
 			 [max(kk1*(ider+1),kk2*(ider+1))] which will
 			 contain the values and ider first derivatives of
 			 the kk1 (kk2) nonzero B-splines at epar[0] (epar[1]).
@@ -208,11 +208,11 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
 			 first nonzero B-spline, then the same for the
 			 second nonzero B-spline and so on.              */
   
-  double *ew=NULL;    /* Pointer to an array of dimension [kk1*(ider+1)*kdim]
+  double *ew=SISL_NULL;    /* Pointer to an array of dimension [kk1*(ider+1)*kdim]
 			 which will be used to store the result of the first
 			 matrix multiplication in (2) above. This array is
 			 initialized to all zeros.                       */
-  double *sder=NULL;  /* Pointer to array used for storage of points, if
+  double *sder=SISL_NULL;  /* Pointer to array used for storage of points, if
 			 non rational sder points to eder, if rational sder
 			 has to be allocated to make room for the homogenous
 			 coordinate */
@@ -241,7 +241,7 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
     {
       scoef = ps1 -> rcoef;
       kdim +=1;
-      if((sder=newarray(kdim*(ider+1)*(ider+2)/2,DOUBLE)) == NULL)
+      if((sder=newarray(kdim*(ider+1)*(ider+2)/2,DOUBLE)) == SISL_NULL)
          goto err101;
     }
   else
@@ -267,36 +267,36 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
   
   if (knumb1>49)
     { 
-      if((ebder = newarray(knumb1,double)) == NULL) goto err101;
+      if((ebder = newarray(knumb1,double)) == SISL_NULL) goto err101;
     }
   else
     {
       ebder = &sdum1[0];
       for (ki=0;ki<knumb1;ki++)
-	ebder[ki] = DNULL;
+	ebder[ki] = DZERO;
     }
   
-  if (ebder == NULL) goto err101;
+  if (ebder == SISL_NULL) goto err101;
   
   /* Only allocate ew if sdum2 too small */
   
   knumb2 = (kk1*(ider+1)*kdim);
   if (knumb2>147)
     {
-      if((ew=new0array(knumb2,double)) == NULL) goto err101;
+      if((ew=new0array(knumb2,double)) == SISL_NULL) goto err101;
     }
   else
     { 
       ew = &sdum2[0];
       for (ki=0;ki<knumb2;ki++)
-	sdum2[ki] = DNULL;
+	sdum2[ki] = DZERO;
     }
   
-  if (ew == NULL) goto err101;
+  if (ew == SISL_NULL) goto err101;
   
   /* Set all the elements of sder to 0. */
   
-  for (ki=0; ki<kdim*(ider+1)*(ider+2)/2; ki++) sder[ki] = DNULL;
+  for (ki=0; ki<kdim*(ider+1)*(ider+2)/2; ki++) sder[ki] = DZERO;
   
   /* Compute the values and derivatives of the nonzero B-splines in the
      second parameter direction.                                        */
@@ -418,14 +418,14 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
     {
       s6strider(sder,ps1->idim,ider,eder,&kstat);
       if (kstat<0) goto error;
-      if(sder != NULL) freearray(sder);
+      if(sder != SISL_NULL) freearray(sder);
     }
   
   /* Only free ew and ebder if the were allocated by newarray */
   
-  if (knumb1 > 49 && ebder != NULL)
+  if (knumb1 > 49 && ebder != SISL_NULL)
      freearray(ebder);
-  if (knumb2 > 147 && ew != NULL)
+  if (knumb2 > 147 && ew != SISL_NULL)
      freearray(ew);
   
   /* Make cross products of tangents, if idim==3 and derivative >0 */
@@ -444,10 +444,10 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
       
       /*  Calculate angle between tangents */
       
-      if (tlen1 != DNULL && tlen2 != DNULL && tnorm != DNULL)
+      if (tlen1 != DZERO && tlen2 != DZERO && tnorm != DZERO)
         tang = tnorm/(tlen1*tlen2);
       
-      if (tang == DNULL) *jstat = 2;
+      if (tang == DZERO) *jstat = 2;
       else if (tang <= ANGULAR_TOLERANCE) *jstat = 1;   
       else *jstat = 0;
       goto out;

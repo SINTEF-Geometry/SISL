@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1239.c,v 1.2 1994-11-09 12:33:35 poeh Exp $
+ * $Id: s1239.c,v 1.3 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -106,7 +106,7 @@ void s1239(pcpar,ipar,apar,pcurve,aepsco,aepsge,vpartc,imax,jpartc,jstat)
   int kder = 1;       /* Number of derivatives of curve to evaluate.       */
   int kpar = 0;       /* Number of times the closed curve crosses the
 			 parameter interval of constant parameter curve.   */
-  int *linter = NULL; /* Indicates kind of intersection point.
+  int *linter = SISL_NULL; /* Indicates kind of intersection point.
 			 = 0 : The point does not belong to an interval.
 			 = 1 : Belongs to an interval that touches line.
 			 = 2 : Belongs to an interval that crosses line.   */
@@ -120,14 +120,14 @@ void s1239(pcpar,ipar,apar,pcurve,aepsco,aepsge,vpartc,imax,jpartc,jstat)
   double spoint[2];   /* SISLPoint on straight line describing the parameter
 			 interval of the constant parameter curve.         */
   double snorm[2];    /* Normal to straight line.                          */
-  double *spt = NULL; /* Intersection points between curve and line.       */
+  double *spt = SISL_NULL; /* Intersection points between curve and line.       */
   double sder1[4];    /* Position and derivative of curve.                 */
   double sder2[4];    /* Position and derivative of curve.                 */
-  double *spar = NULL;      /* Points where pcurve crosses the parameter
+  double *spar = SISL_NULL;      /* Points where pcurve crosses the parameter
 			       interval of pcpar.                          */
   SISLIntcurve **ucrv;   /* Intersection curves between pcurve and line.*/
-  SISLCurve *qc1 = NULL; /* First part of subdivided curve.             */
-  SISLCurve *qc2 = NULL; /* Second part of subdivided curve.            */
+  SISLCurve *qc1 = SISL_NULL; /* First part of subdivided curve.             */
+  SISLCurve *qc2 = SISL_NULL; /* Second part of subdivided curve.            */
 
   /* Test input.  */
 
@@ -180,8 +180,8 @@ void s1239(pcpar,ipar,apar,pcurve,aepsco,aepsge,vpartc,imax,jpartc,jstat)
 
   if (kpt+2*kcrv > 0)
     {
-      if ((spar = newarray(kpt+2*kcrv,double)) == NULL) goto err101;
-      if ((linter = new0array(kpt+2*kcrv,int)) == NULL) goto err101;
+      if ((spar = newarray(kpt+2*kcrv,double)) == SISL_NULL) goto err101;
+      if ((linter = new0array(kpt+2*kcrv,int)) == SISL_NULL) goto err101;
     }
 
   /* Discuss intersection intervals.  */
@@ -288,8 +288,8 @@ void s1239(pcpar,ipar,apar,pcurve,aepsco,aepsge,vpartc,imax,jpartc,jstat)
 
 	      /* Free curve-parts generated at subdivision.  */
 
-	      if (qc1 != NULL) freeCurve(qc1);  qc1 = NULL;
-	      if (qc2 != NULL) freeCurve(qc2);  qc2 = NULL;
+	      if (qc1 != SISL_NULL) freeCurve(qc1);  qc1 = SISL_NULL;
+	      if (qc2 != SISL_NULL) freeCurve(qc2);  qc2 = SISL_NULL;
 	    }
 
 	  if (DNEQUAL(sder1[2+ipar],(double)0.0) ||
@@ -399,9 +399,9 @@ void s1239(pcpar,ipar,apar,pcurve,aepsco,aepsge,vpartc,imax,jpartc,jstat)
 
   /* Free space occupied by local arrays.  */
 
-  if (spt != NULL) free(spt);
-  if (spar != NULL) freearray(spar);
-  if (linter != NULL) freearray(linter);
+  if (spt != SISL_NULL) free(spt);
+  if (spar != SISL_NULL) freearray(spar);
+  if (linter != SISL_NULL) freearray(linter);
 
   return;
 }

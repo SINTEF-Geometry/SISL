@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1992.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1992.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -85,9 +85,9 @@ void s1992(po,jstat)
 
   if (po -> iobj == SISLPOINT)
     {
-      if (po->p1->pbox == NULL)
+      if (po->p1->pbox == SISL_NULL)
 	{
-	  if ((po->p1->pbox = newbox(po->p1->idim))==NULL)
+	  if ((po->p1->pbox = newbox(po->p1->idim))==SISL_NULL)
 	    goto err101;
 	  
 	  if (po->p1->idim == 3) 
@@ -105,9 +105,9 @@ void s1992(po,jstat)
   else
     if (po -> iobj == SISLCURVE)
       {
-	if (po->c1->pbox == NULL)
+	if (po->c1->pbox == SISL_NULL)
 	  {
-	    if ((po->c1->pbox = newbox(po->c1->idim))==NULL)
+	    if ((po->c1->pbox = newbox(po->c1->idim))==SISL_NULL)
 	      goto err101;
 	    
 	    if (po->c1->idim == 3) 
@@ -125,9 +125,9 @@ void s1992(po,jstat)
     else
       if (po -> iobj == SISLSURFACE)
 	{
-	  if (po->s1->pbox == NULL)
+	  if (po->s1->pbox == SISL_NULL)
 	    {
-	      if ((po->s1->pbox = newbox(po->s1->idim))==NULL)
+	      if ((po->s1->pbox = newbox(po->s1->idim))==SISL_NULL)
 		goto err101;
 	      
 	      if (po->s1->idim == 3) 
@@ -201,9 +201,9 @@ void s1992cu(pc,jstat)
 {
   int kpos = 0;                        /* Position of error.   */
   
-  if (pc->pbox == NULL)
+  if (pc->pbox == SISL_NULL)
     {
-      if ((pc->pbox = newbox(pc->idim))==NULL)
+      if ((pc->pbox = newbox(pc->idim))==SISL_NULL)
 	goto err101;
       
       if (pc->idim == 3) 
@@ -273,9 +273,9 @@ void s1992su(ps,jstat)
 {
   int kpos = 0;                        /* Position of error.   */
   
-  if (ps->pbox == NULL)
+  if (ps->pbox == SISL_NULL)
     {
-      if ((ps->pbox = newbox(ps->idim))==NULL) goto err101;
+      if ((ps->pbox = newbox(ps->idim))==SISL_NULL) goto err101;
       
       if (ps->idim == 3) s1992_s9mbox3(ps->ecoef,ps->in1 * ps->in2,
 				 ps->pbox->emax,ps->pbox->emin);
@@ -584,8 +584,8 @@ static void s1992_s9mbox(ecoef,icoef,idim,gmax,gmin)
   /* ALA and UJK 30.10.90, remove noice near by zero */
   if (idim == 1)
     {
-      if (fabs(gmax[0]) < noice) gmax[0] = DNULL; 
-      if (fabs(gmin[0]) < noice) gmin[0] = DNULL; 
+      if (fabs(gmax[0]) < noice) gmax[0] = DZERO; 
+      if (fabs(gmin[0]) < noice) gmin[0] = DZERO; 
     }
   
 }

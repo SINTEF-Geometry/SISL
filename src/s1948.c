@@ -144,7 +144,7 @@ void s1948(ea,ew,in,ik,inlr,nstart,jstat)
 	   definite matrix.  */
 	
 	tsum = ea[ki*ik+kik1] - tsum;
-	if (tsum <= DNULL) goto err106;
+	if (tsum <= DZERO) goto err106;
         ea[ki*ik+kik1] = sqrt(tsum);
      }
    
@@ -194,7 +194,7 @@ void s1948(ea,ew,in,ik,inlr,nstart,jstat)
 	   definite matrix.  */
 	
 	tsum = ew[ki2*in+ki] - tsum;
-	if (tsum <= DNULL) goto err106;
+	if (tsum <= DZERO) goto err106;
         ew[ki2*in+ki] = sqrt(tsum);
      }
    

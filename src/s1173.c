@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1173.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1173.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -101,7 +101,7 @@ void s1173(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   double td[2],t1[2],tdn[2];/* Distances between old and new parameter
 			       value in the tree parameter directions.     */
   double tprev;             /* Previous difference between the curves.     */
-  double *sval =NULL;       /* Value ,first and second derivatiev of surf. */ 
+  double *sval =SISL_NULL;       /* Value ,first and second derivatiev of surf. */ 
   double *sdiff;            /* Difference between the point and the surf.  */
   double *snorm;            /* Normal vector of the surface, dummy.        */
   double snext[2];          /* Parameter values                            */
@@ -120,7 +120,7 @@ void s1173(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   /* Allocate local used memory */
   
   sval = newarray(8*kdim,double);
-  if (sval == NULL) goto err101;
+  if (sval == SISL_NULL) goto err101;
   
   sdiff = sval + 6*kdim;
   snorm = sdiff + kdim;
@@ -168,7 +168,7 @@ void s1173(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
       
       /* Check if the direction of the step have change. */
       
-      kdir = (s6scpr(td,tdn,2) >= DNULL);     /* 0 if changed. */
+      kdir = (s6scpr(td,tdn,2) >= DZERO);     /* 0 if changed. */
       
       
       /* Ordinary converging. */
@@ -248,7 +248,7 @@ void s1173(ppoint,psurf,aepsge,estart,eend,enext,gpos,jstat)
   s6err("s1173",*jstat,kpos);
   goto out;                  
   
- out:    if (sval != NULL) freearray(sval);
+ out:    if (sval != SISL_NULL) freearray(sval);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -407,10 +407,10 @@ static void s1173_s9dir(cdist,cdiff1,cdiff2,gdiff,evalp,evals,aepsge)
   tderxx = evals[3];
   tderxy = evals[4];
   tderyy = evals[5];
-  tdeltax = DNULL;
-  tdeltay = DNULL;
-  *cdiff1  = DNULL;
-  *cdiff2  = DNULL;
+  tdeltax = DZERO;
+  tdeltay = DZERO;
+  *cdiff1  = DZERO;
+  *cdiff2  = DZERO;
   
   
   /* Building the matrix. */
@@ -422,7 +422,7 @@ static void s1173_s9dir(cdist,cdiff1,cdiff2,gdiff,evalp,evals,aepsge)
   tb1  = -gdiff[0]*tderx;
   tb2  = -gdiff[0]*tdery;
   
-  if (DEQUAL(tb1,DNULL) && DEQUAL(tb2,DNULL))
+  if (DEQUAL(tb1,DZERO) && DEQUAL(tb2,DZERO))
     {
       /* Finished, we have found a max. */
     }
@@ -528,11 +528,11 @@ static double s1173_s9del(eco,eco1,eco2,idim)
   
   
   
-  if (DEQUAL(t4,DNULL))    /* The second degree part is degenerated. */
+  if (DEQUAL(t4,DZERO))    /* The second degree part is degenerated. */
     {
-      if (DEQUAL(t2,DNULL)) 
+      if (DEQUAL(t2,DZERO)) 
 	{
-          if (DEQUAL(t3,DNULL))            return DNULL;
+          if (DEQUAL(t3,DZERO))            return DZERO;
           else                             return (t1/t3);
 	}
       else                                  return (t1/t2);
@@ -540,7 +540,7 @@ static double s1173_s9del(eco,eco1,eco2,idim)
   else                /* An ordinary second degree equation.    */
     {
       t5 = t2*t2 - (double)2*t4*t1;
-      if (t5 < DNULL)                       return (t1/t3);
+      if (t5 < DZERO)                       return (t1/t3);
       else
 	{
           t6 = sqrt(t5);
@@ -554,26 +554,26 @@ static double s1173_s9del(eco,eco1,eco2,idim)
 	     metode t1/t3. If both solutions have the same
 	     sign we use the one with smallest value. */
 	  
-          if (t1 < DNULL)
+          if (t1 < DZERO)
 	    {
-	      if (t5 <= DNULL && t6 <= DNULL)
+	      if (t5 <= DZERO && t6 <= DZERO)
 		{
 		  if (t5 > t6)             return t5;
 	          else                     return t6;
 		}
-	      else if (t5 <= DNULL)        return t5;
-	      else if (t6 <= DNULL)        return t6;
+	      else if (t5 <= DZERO)        return t5;
+	      else if (t6 <= DZERO)        return t6;
               else                         return min(t5,t6);
 	    }
-	  else if (t1 > DNULL)
+	  else if (t1 > DZERO)
 	    {
-	      if (t5 >= DNULL && t6 >= DNULL)
+	      if (t5 >= DZERO && t6 >= DZERO)
 		{
 		  if (t5 < t6)             return t5;
 	          else                     return t6;
 		}
-	      else if (t5 >= DNULL)        return t5;
-	      else if (t6 >= DNULL)        return t6;
+	      else if (t5 >= DZERO)        return t5;
+	      else if (t6 >= DZERO)        return t6;
               else                         return max(t5,t6);
 	    }
 	  else                             return min(fabs(t5),fabs(t6));

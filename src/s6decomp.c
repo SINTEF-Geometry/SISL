@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6decomp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6decomp.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -86,7 +86,7 @@ void s6decomp(ea,gx,eb1,eb2,eb3,jstat)
   
   for (ki=0; ki<3; ki++)
     {                      
-      se[0] = se[1] = se[2] = DNULL;
+      se[0] = se[1] = se[2] = DZERO;
       se[ki] = (double)1;
       
       s6lusolp(sc,se,n1,3,&kstat);

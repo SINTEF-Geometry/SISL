@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1897.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1897.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -82,10 +82,10 @@ s1897 (et, ik, ax, left, deriv, ebiatx, jstat)
   double term;
   double saved;
   double stmp[2*MAX_IK + 1];             /* temporary storage              */
-  double *sltmp = NULL;                  /* temp storage allocated only 
+  double *sltmp = SISL_NULL;                  /* temp storage allocated only 
 					    if ik > MAX_IK                 */
-  double *edltr = NULL;                  /* pointer into temporary storage */
-  double *edltl = NULL;                  /* pointer into temporary storage */
+  double *edltr = SISL_NULL;                  /* pointer into temporary storage */
+  double *edltl = SISL_NULL;                  /* pointer into temporary storage */
   
   /*
    * Initialize.
@@ -101,7 +101,7 @@ s1897 (et, ik, ax, left, deriv, ebiatx, jstat)
 	* ----------------------------------------------------
 	*/
        
-       if ((sltmp = newarray(2 * ik + 1, DOUBLE)) == NULL)
+       if ((sltmp = newarray(2 * ik + 1, DOUBLE)) == SISL_NULL)
 	 goto err101;
        local_array_allocated = TRUE;
        

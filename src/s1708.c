@@ -53,7 +53,7 @@ void s1708(ps,jstat)
 			      * for error message.                */
   int step = 0;
   register double *s1,*s2;   /* Pointers used in loop.            */
-  SISLCurve *curve=NULL;     /* Local curve                       */
+  SISLCurve *curve=SISL_NULL;     /* Local curve                       */
 
   if(ps->ikind == 3) type = 3;
 
@@ -65,7 +65,7 @@ void s1708(ps,jstat)
 
   curve = newCurve(ps->in2, ps->ik2, ps->et2, ps->ecoef,
 		   type, ps->idim * ps->in1, 0);
-  if(curve == NULL) goto err101;
+  if(curve == SISL_NULL) goto err101;
 
   s1707( curve, &stat);
   if(stat<0) goto error;
@@ -73,7 +73,7 @@ void s1708(ps,jstat)
   /* Free curve element used in 2. par. direction */
 
   freeCurve(curve);
-  curve = NULL;
+  curve = SISL_NULL;
   
 
   /*
@@ -92,7 +92,7 @@ void s1708(ps,jstat)
 
   curve = newCurve(ps->in1, ps->ik1, ps->et1, ps->ecoef,
 		   type, ps->idim * ps->in2, 0);
-  if (curve == NULL) goto err101;
+  if (curve == SISL_NULL) goto err101;
 
   s1707( curve, &stat);
   if(stat<0) goto error;
@@ -165,6 +165,6 @@ void s1708(ps,jstat)
     goto out;
 
  out: 
-  if (curve != NULL) freeCurve( curve );
+  if (curve != SISL_NULL) freeCurve( curve );
   return;
 }

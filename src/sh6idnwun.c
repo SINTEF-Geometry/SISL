@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idnwun.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6idnwun.c,v 1.2 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -131,7 +131,7 @@ sh6idnewunite (po1, po2, intdat, pt1, pt2, weight, aepsge, jstat)
   /* for (ki=0;;ki++) */
   for (ki = 0;;)
     {
-      if ((lpt = sh6getnext (lpt2, ki)) == NULL)
+      if ((lpt = sh6getnext (lpt2, ki)) == SISL_NULL)
 	break;
 
       sh6disconnect (lpt2, lpt, &kstat);

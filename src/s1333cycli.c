@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1333cycli.c,v 1.2 1994-12-01 15:51:00 pfu Exp $
+ * $Id: s1333cycli.c,v 1.3 2001-03-19 15:58:45 afr Exp $
  *
  */
 
@@ -64,20 +64,20 @@ void s1333_cyclic(vsurf,icont,jstat)
 *********************************************************************
 */
 {
-  double *scycl=NULL;                    /* Cyclic version of knot vector */
-  double *smatrix=NULL;                   /* Matrix converting between baes */
-  double *smatr1=NULL;
-  double *smatr2=NULL;                    /* Pointers to two conversion matrices */
-  double *salloc=NULL;                    /* Matrix for memory allocation */
-  double *salfa=NULL;                     /* The values of a discrete B-spline
+  double *scycl=SISL_NULL;                    /* Cyclic version of knot vector */
+  double *smatrix=SISL_NULL;                   /* Matrix converting between baes */
+  double *smatr1=SISL_NULL;
+  double *smatr2=SISL_NULL;                    /* Pointers to two conversion matrices */
+  double *salloc=SISL_NULL;                    /* Matrix for memory allocation */
+  double *salfa=SISL_NULL;                     /* The values of a discrete B-spline
                                              calculation */
-  double *spek=NULL;                      /* Pointer used in traversing arrays */
-  double *scoef=NULL;                     /* Copy of the vertices of the surface */
-  double *sb=NULL;                        /* Right hand side of equation */
+  double *spek=SISL_NULL;                      /* Pointer used in traversing arrays */
+  double *scoef=SISL_NULL;                     /* Copy of the vertices of the surface */
+  double *sb=SISL_NULL;                        /* Right hand side of equation */
   double *sfrom,*sto;
   double *sp;                             /* Hlep array for s1701 */
-  double *st1=NULL;                       /* Internal version of et1 */
-  double *stx=NULL;                       /* Knot vector after insertion of knots
+  double *st1=SISL_NULL;                       /* Internal version of et1 */
+  double *stx=SISL_NULL;                       /* Knot vector after insertion of knots
                                              at start */
 
   int    kdim = vsurf->idim;
@@ -94,7 +94,7 @@ void s1333_cyclic(vsurf,icont,jstat)
   int    kleft=0;                         /* Pointer into knot vector */
   int    kpl,kfi,kla;                     /* Pointers into conversion matrix */
   int    kstat;
-  int    *mpiv=NULL;                      /* Pointer to pivotation array */
+  int    *mpiv=SISL_NULL;                      /* Pointer to pivotation array */
   int    kpos = 0;
   int    knst1;                           /* NUmber of basis functions in st1 */
   int    knstx;                           /* Number of basis functions in stx */
@@ -120,10 +120,10 @@ void s1333_cyclic(vsurf,icont,jstat)
   /* Alloocate array for pivotation vector */
 
   mpiv = new0array(2*kk1,INT);
-  if (mpiv == NULL) goto err101;
+  if (mpiv == SISL_NULL) goto err101;
 
   salloc = new0array(3*kn1+9*kk1+4*kk1*kk1+kdim*kn1*kn2,DOUBLE);
-  if (salloc == NULL) goto err101;
+  if (salloc == SISL_NULL) goto err101;
   scycl = salloc;                  /* Size kn1+kk1 */
   smatrix = scycl + kn1 + kk1;  /* Max size 4*kk1*kk1 */
   salfa = smatrix + 4*kk1*kk1;     /* Size kk1 */
@@ -250,7 +250,7 @@ void s1333_cyclic(vsurf,icont,jstat)
   /* Make matrix for the kk1 last vertices */
 
 
-  for (ki=0,spek=smatrix ; ki<kk1*kk1 ; ki++,spek++) *spek = DNULL;
+  for (ki=0,spek=smatrix ; ki<kk1*kk1 ; ki++,spek++) *spek = DZERO;
 
 
   for (ki=kn1-kk1 ,spek=smatrix ; ki <kn1 ; ki++, spek+=kk1)
@@ -336,8 +336,8 @@ void s1333_cyclic(vsurf,icont,jstat)
  out:
 
   /* Free allocated scratch  */
-  if (salloc != NULL) freearray(salloc);
-  if (mpiv != NULL) freearray(mpiv);
+  if (salloc != SISL_NULL) freearray(salloc);
+  if (mpiv != SISL_NULL) freearray(mpiv);
 
   return;
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1611.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1611.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -93,11 +93,11 @@ s1611 (epoint, inbpnt, idim, eptyp, iopen, ik, astpar, aepsge,
 *****************************************************************
 */
 {
-  double *spoint = NULL;
-  int    *sptyp = NULL;
+  double *spoint = SISL_NULL;
+  int    *sptyp = SISL_NULL;
   double smatrix[16];
   double sinv[16];
-  double *st = NULL;
+  double *st = SISL_NULL;
   double sbeg[3], slutt[3], svect1[3], svect2[3], snorm[3];
   int knbpnt = 0;
   int ktyp;
@@ -112,7 +112,7 @@ s1611 (epoint, inbpnt, idim, eptyp, iopen, ik, astpar, aepsge,
   int kpos = 0;
   int krem = 0;
   int kstat = 0;
-  int *ieptyp = NULL; /* The point type descriptions (eptyp) in integer form. */
+  int *ieptyp = SISL_NULL; /* The point type descriptions (eptyp) in integer form. */
   double centerpt[3], axis[3], sdir[3];
   double angle, sdot, tlength1, tlength2, tcos;
   int kstat1, kstat2;
@@ -123,7 +123,7 @@ s1611 (epoint, inbpnt, idim, eptyp, iopen, ik, astpar, aepsge,
   /* Copy eptyp to ieptyp. */
 
   ieptyp = newarray(inbpnt,INT);
-  if (ieptyp == NULL)
+  if (ieptyp == SISL_NULL)
      goto err101;
   
   for(ki=0; ki<inbpnt; ki++)
@@ -141,11 +141,11 @@ s1611 (epoint, inbpnt, idim, eptyp, iopen, ik, astpar, aepsge,
   /* Allocate new arrays. */
 
   spoint = newarray (inbpnt * idim, DOUBLE);
-  if (spoint == NULL)
+  if (spoint == SISL_NULL)
     goto err101;
 
   sptyp = newarray (inbpnt, INT);
-  if (sptyp == NULL)
+  if (sptyp == SISL_NULL)
     goto err101;
 
 
@@ -308,7 +308,7 @@ s1611 (epoint, inbpnt, idim, eptyp, iopen, ik, astpar, aepsge,
       tlength2 = s6length(svect2, idim, &kstat2);
   
       if (!kstat1 || !kstat2)
-        angle = DNULL;
+        angle = DZERO;
       else
       {
         tcos = sdot/(tlength1*tlength2);
@@ -352,6 +352,8 @@ s1611 (epoint, inbpnt, idim, eptyp, iopen, ik, astpar, aepsge,
 	     start, stang, stop, &tshape, &kstat);
       if (kstat < 0)
         goto error;
+      if (kstat == 1)
+	goto straight;
 
 
       /* If the dimension is 3, rotate the points
@@ -446,11 +448,11 @@ out:
 
   /* Free space occupied by local arrays. */
 
-  if (spoint != NULL)
+  if (spoint != SISL_NULL)
     freearray (spoint);
-  if (sptyp != NULL)
+  if (sptyp != SISL_NULL)
     freearray (sptyp);
-  if (ieptyp != NULL)
+  if (ieptyp != SISL_NULL)
      freearray (ieptyp);
 
   if (*jstat >= 0)

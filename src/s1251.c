@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1251.c,v 1.2 1997-04-17 09:20:06 vsk Exp $
+ * $Id: s1251.c,v 1.3 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -82,8 +82,8 @@ void s1251(pcurve,aepsco,clength,jstat)
   double tmid;              /* Midpoint of parameter interval of curve.    */
   double tlength1,tlength2; /* Length of sub-curves.                       */
   double *s1;               /* Pointer used to traverse coefficient array. */
-  SISLCurve *qc1 = NULL;        /* First sub-curve.                            */
-  SISLCurve *qc2 = NULL;        /* Second sub-curve.                           */
+  SISLCurve *qc1 = SISL_NULL;        /* First sub-curve.                            */
+  SISLCurve *qc2 = SISL_NULL;        /* Second sub-curve.                           */
 
   /* Copy properties of curve to local parameters. */
 
@@ -153,7 +153,7 @@ void s1251(pcurve,aepsco,clength,jstat)
 
      knbez = qc1->in/kk;
 
-     tlength1 = DNULL;
+     tlength1 = DZERO;
      for (ki=0; ki<knbez; ki++)
      {
 	/* Represent the current segment as a curve. */
@@ -165,7 +165,7 @@ void s1251(pcurve,aepsco,clength,jstat)
 	   qc2 = newCurve(kk, kk, qc1->et+ki*kk, qc1->rcoef+ki*kk*(kdim+1),
 			  qc1->ikind, kdim, 0);
 
-	if (qc2 == NULL) goto err101;
+	if (qc2 == SISL_NULL) goto err101;
 
       /* Compute length of the current sub-curve.  */
 
@@ -174,8 +174,8 @@ void s1251(pcurve,aepsco,clength,jstat)
 
       tlength1 += tlength2;
 
-      if (qc2 != NULL) freeCurve(qc2);
-      qc2 = NULL;
+      if (qc2 != SISL_NULL) freeCurve(qc2);
+      qc2 = SISL_NULL;
      }
 
      *clength = tlength1;
@@ -202,8 +202,8 @@ void s1251(pcurve,aepsco,clength,jstat)
 
   /* Free space occupied by sub-curves.  */
 
-  if (qc1 != NULL) freeCurve(qc1);
-  if (qc2 != NULL) freeCurve(qc2);
+  if (qc1 != SISL_NULL) freeCurve(qc1);
+  if (qc2 != SISL_NULL) freeCurve(qc2);
 
   return;
 }

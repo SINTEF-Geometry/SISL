@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1949.c,v 1.1 1995-02-08 10:19:05 vsk Exp $
+ * $Id: s1949.c,v 1.2 2001-03-19 15:58:57 afr Exp $
  *
  */
 
@@ -104,11 +104,11 @@ void s1949(ea,ew,eb,in,ik,inlr,idim,nstart,jstat)
    int kjs,kjh; /* Pointers into matrix.  */
    int kik1 = ik-1;      /* Order minus one.       */
    double thelp;         /* Help variable.         */
-   double *ssum=NULL;    /* Help array.            */
+   double *ssum=SISL_NULL;    /* Help array.            */
 
    /* Allocate scratch for help array.  */
    
-   if ((ssum = new0array(idim,DOUBLE)) == NULL) goto err101;
+   if ((ssum = new0array(idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Forward substitution excluding the lines representning
       the corner element.  */
@@ -132,7 +132,7 @@ void s1949(ea,ew,eb,in,ik,inlr,idim,nstart,jstat)
 	
 	/* Check if the linear system is singular.  */
 	
-	if (DEQUAL(ea[ki*ik+kik1],DNULL)) goto err106;
+	if (DEQUAL(ea[ki*ik+kik1],DZERO)) goto err106;
 	
 	thelp = (double)1.0/ea[ki*ik+kik1];
 	for (kr=0; kr<idim; kr++)
@@ -160,7 +160,7 @@ void s1949(ea,ew,eb,in,ik,inlr,idim,nstart,jstat)
 	
 	/* Check if the linear system is singular.  */
 	
-	if (DEQUAL(ew[ki2*in+ki],DNULL)) goto err106;
+	if (DEQUAL(ew[ki2*in+ki],DZERO)) goto err106;
 	
 	thelp = (double)1.0/ew[ki2*in+ki];
 	for (kr=0; kr<idim; kr++)
@@ -229,7 +229,7 @@ void s1949(ea,ew,eb,in,ik,inlr,idim,nstart,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (ssum != NULL) freearray(ssum);
+      if (ssum != SISL_NULL) freearray(ssum);
 	  
       return;
 }

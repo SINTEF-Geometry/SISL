@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1960.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1960.c,v 1.2 2001-03-19 15:58:58 afr Exp $
  *
  */
 #define S1960
@@ -84,15 +84,15 @@ void s1960(ppoint,psurf,gpos,jstat)
                             /* Vectors defining the quadrants surrounding 
                                a vertice                                   */
   double vecp[3];           /* Relative point vector                       */
-  double lqua1=DNULL;
-  double lqua2=DNULL;
-  double lqua3=DNULL;
-  double lqua4=DNULL;
+  double lqua1=DZERO;
+  double lqua2=DZERO;
+  double lqua3=DZERO;
+  double lqua4=DZERO;
                             /* Length of vec1,....,vec4                    */
-  double lprj1=DNULL;
-  double lprj2=DNULL;
-  double lprj3=DNULL;
-  double lprj4=DNULL;
+  double lprj1=DZERO;
+  double lprj2=DZERO;
+  double lprj3=DZERO;
+  double lprj4=DZERO;
                             /* Length of projection of vecp on 
                                vec1,....,vec4                              */
   double svals,svale,tvals,tvale;
@@ -188,9 +188,9 @@ vertice (iind,jind)  l    \ point
      tvale = s6schoen(et2,k2,jind+1);
      
      /* Calculate estimated parameter values of point */
-     if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+     if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
      else gpos[0] = svals;
-     if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+     if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
      else gpos[1] = tvals;
   }
   else if (iind == (n1-1) && jind == 0)
@@ -204,9 +204,9 @@ vertice (iind,jind)  l    \ point
      tvale = s6schoen(et2,k2,jind+1);
      
      /* Calculate estimated parameter values of point */
-     if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+     if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
      else gpos[0] = svals;
-     if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+     if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
      else gpos[1] = tvals;
   }
   else if (iind == (n1-1) && jind == (n2-1))
@@ -220,9 +220,9 @@ vertice (iind,jind)  l    \ point
      tvale = s6schoen(et2,k2,jind);
      
      /* Calculate estimated parameter values of point */
-     if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+     if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
      else gpos[0] = svals;
-     if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+     if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
      else gpos[1] = tvals;
   }
   else if (iind == 0 && jind == (n2-1))
@@ -236,9 +236,9 @@ vertice (iind,jind)  l    \ point
      tvale = s6schoen(et2,k2,jind);
      
      /* Calculate estimated parameter values of point */
-     if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+     if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
      else gpos[0] = svals;
-     if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+     if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
      else gpos[1] = tvals;
   }
   else if (iind > 0 && iind < (n1-1) && jind == 0)
@@ -256,9 +256,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind+1);
            
            /* Calculate estimated parameter values of point */
-           if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+           if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+           if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else if (lprj3 > lprj1)
@@ -272,9 +272,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind+1);
            
            /* Calculate estimated parameter values of point */
-           if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+           if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+           if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else
@@ -299,9 +299,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind+1);
            
            /* Calculate estimated parameter values of point */
-           if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+           if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+           if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else if (lprj4 > lprj2)
@@ -315,9 +315,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind);
            
            /* Calculate estimated parameter values of point */
-           if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+           if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+           if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else
@@ -342,9 +342,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind);
            
            /* Calculate estimated parameter values of point */
-           if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+           if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+           if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else if (lprj1 > lprj3)
@@ -358,9 +358,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind);
            
            /* Calculate estimated parameter values of point */
-           if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+           if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+           if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else
@@ -385,9 +385,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind+1);
            
            /* Calculate estimated parameter values of point */
-           if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+           if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+           if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else if (lprj4 > lprj2)
@@ -401,9 +401,9 @@ vertice (iind,jind)  l    \ point
            tvale = s6schoen(et2,k2,jind);
            
            /* Calculate estimated parameter values of point */
-           if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+           if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
            else gpos[0] = svals;
-           if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+           if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else
@@ -426,7 +426,7 @@ vertice (iind,jind)  l    \ point
            svale = s6schoen(et1,k1,iind+1);
            
            /* Calculate estimated parameter values of point */
-           if (lqua1 != DNULL) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
+           if (lqua1 != DZERO) gpos[0] = svals + (lprj1/lqua1)*(svale-svals);
            else gpos[0] = svals;
         }
         else if (lprj3 > lprj1)
@@ -438,7 +438,7 @@ vertice (iind,jind)  l    \ point
            svale = s6schoen(et1,k1,iind);
            
            /* Calculate estimated parameter values of point */
-           if (lqua3 != DNULL) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
+           if (lqua3 != DZERO) gpos[0] = svals + ((lqua3-lprj3)/lqua3)*(svale-svals);
            else gpos[0] = svals;
         }
         else
@@ -457,7 +457,7 @@ vertice (iind,jind)  l    \ point
            tvals = s6schoen(et2,k2,jind);
            tvale = s6schoen(et2,k2,jind+1);
            
-           if (lqua2 != DNULL) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
+           if (lqua2 != DZERO) gpos[1] = tvals + (lprj2/lqua2)*(tvale-tvals);
            else gpos[1] = tvals;
         }
 
@@ -470,7 +470,7 @@ vertice (iind,jind)  l    \ point
            tvals = s6schoen(et2,k2,jind-1);
            tvale = s6schoen(et2,k2,jind);
            
-           if (lqua4 != DNULL) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
+           if (lqua4 != DZERO) gpos[1] = tvals + ((lqua4-lprj4)/lqua4)*(tvale-tvals);
            else gpos[1] = tvals;
         }
         else

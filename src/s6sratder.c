@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6sratder.c,v 1.2 1994-07-06 09:21:13 mif Exp $
+ * $Id: s6sratder.c,v 1.3 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -131,11 +131,11 @@ void s6sratder(eder,idim,ider1,ider2,gder,jstat)
   int ki;              /* Count through dimensions.              */
   int idu;             /* Count through derivatives in u.        */
   int idv;             /* Count through derivatives in v.        */
-  int *binom=NULL;     /* Array for binomial coefficients.       */
-  int *binomu=NULL;    /* Pointer to binomial coefficients in u. */
-  int *binomv=NULL;    /* Pointer to binomial coefficients in v. */
-  double *sum1=NULL;   /* Leibnitz expansion in u                */
-  double *sum2=NULL;   /* Leibnitz expansion in u and v.         */
+  int *binom=SISL_NULL;     /* Array for binomial coefficients.       */
+  int *binomu=SISL_NULL;    /* Pointer to binomial coefficients in u. */
+  int *binomv=SISL_NULL;    /* Pointer to binomial coefficients in v. */
+  double *sum1=SISL_NULL;   /* Leibnitz expansion in u                */
+  double *sum2=SISL_NULL;   /* Leibnitz expansion in u and v.         */
   double sumdum1[4];   /* Fixed space for sum1.                  */
   double sumdum2[4];   /* Fixed space for sum2.                  */
   int idimp1;          /* idim + 1.                              */
@@ -161,7 +161,7 @@ void s6sratder(eder,idim,ider1,ider2,gder,jstat)
   /* Find denominator. */ 
   
   w0 = eder[idim];
-  if (DEQUAL(w0,DNULL)) w0 = (double)1.0;
+  if (DEQUAL(w0,DZERO)) w0 = (double)1.0;
 
   /* If we're only asked for position, we'll do it
      now and exit for the sake of speed. */
@@ -193,7 +193,7 @@ void s6sratder(eder,idim,ider1,ider2,gder,jstat)
   if (idermax > 3)
   { 
       binom = newarray(((idermax+1)*(idermax+2)) >> 1, INT);
-      if(binom == NULL) goto err179;
+      if(binom == SISL_NULL) goto err179;
   }
   else
   { 
@@ -221,9 +221,9 @@ void s6sratder(eder,idim,ider1,ider2,gder,jstat)
   if (idim > 4)
   { 
       sum1 = newarray(idim, DOUBLE);
-      if(sum1 == NULL) goto err179;
+      if(sum1 == SISL_NULL) goto err179;
       sum2 = newarray(idim, DOUBLE);
-      if(sum2 == NULL) goto err179;
+      if(sum2 == SISL_NULL) goto err179;
   }
   else
   { 

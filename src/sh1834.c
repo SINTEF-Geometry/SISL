@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1834.c,v 1.4 1994-11-07 08:56:25 vsk Exp $
+ * $Id: sh1834.c,v 1.5 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -108,18 +108,18 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   int kinnerexp = 12; /* Expand box in the inner. No rotation.   */
   int kn1=0,kn2=0;     /* Number of coefficients of objects.     */
   double *sc1,*sc2;/* Pointers to coefficients of objects.       */
-  double *scoef1=NULL;  /* Rotated coefficients of first object. */
-  double *scoef2=NULL;  /* Rotated coefficients of second object.*/
-  double *smat=NULL;    /* Rotation matrix.                      */
+  double *scoef1=SISL_NULL;  /* Rotated coefficients of first object. */
+  double *scoef2=SISL_NULL;  /* Rotated coefficients of second object.*/
+  double *smat=SISL_NULL;    /* Rotation matrix.                      */
   double *s1,*s2,*s3,*s4,*s5;  /* Pointers used to traverse arrays. */
-  SISLObject *qo1=NULL; /* First object after rotation.          */
-  SISLObject *qo2=NULL; /* Second object after rotation.         */
+  SISLObject *qo1=SISL_NULL; /* First object after rotation.          */
+  SISLObject *qo2=SISL_NULL; /* Second object after rotation.         */
   /*  long time_before;
   long time_used=0; */
 
   double *rc1,*rc2;     /* Pointers to homogeneous coefficients. */
-  double *rcoef1=NULL;  /* Possibly homogeneous coefficients.    */
-  double *rcoef2=NULL;  /* Possibly homogeneous coefficients.    */
+  double *rcoef1=SISL_NULL;  /* Possibly homogeneous coefficients.    */
+  double *rcoef2=SISL_NULL;  /* Possibly homogeneous coefficients.    */
   int ikind1=0, ikind2=0;   /* Kinds of objects 1 and 2.         */
   int i,i1,i2,j,k;      /* Loop variables.                       */
 
@@ -147,7 +147,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      kn1 = 1;
      sc1 = po1->p1->ecoef;
-     rc1 = NULL;
+     rc1 = SISL_NULL;
      ikind1 = 1;
   }
 
@@ -169,15 +169,15 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      kn2 = 1;
      sc2 = po2->p1->ecoef;
-     rc2 = NULL;
+     rc2 = SISL_NULL;
      ikind2 = 1;
   }
 
   /* Allocate space for local parameters.  */
 
-  if ((scoef1 = newarray(idim*kn1,DOUBLE)) == NULL) goto err101;
-  if ((scoef2 = newarray(idim*kn2,DOUBLE)) == NULL) goto err101;
-  if ((smat = new0array(idim*idim,DOUBLE)) == NULL) goto err101;
+  if ((scoef1 = newarray(idim*kn1,DOUBLE)) == SISL_NULL) goto err101;
+  if ((scoef2 = newarray(idim*kn2,DOUBLE)) == SISL_NULL) goto err101;
+  if ((smat = new0array(idim*idim,DOUBLE)) == SISL_NULL) goto err101;
 
   /* Find the rotation matrix.  */
 
@@ -212,12 +212,12 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 
   /* Make rotated objects.  */
 
-  if ((qo1 = newObject(po1->iobj)) == NULL) goto err101;
-  if ((qo2 = newObject(po2->iobj)) == NULL) goto err101;
+  if ((qo1 = newObject(po1->iobj)) == SISL_NULL) goto err101;
+  if ((qo2 = newObject(po2->iobj)) == SISL_NULL) goto err101;
 
   if(ikind1 == 2 || ikind1 == 4)
   {
-      if ((rcoef1 = newarray((idim+1)*kn1,DOUBLE)) == NULL) goto err101;
+      if ((rcoef1 = newarray((idim+1)*kn1,DOUBLE)) == SISL_NULL) goto err101;
       for(i=0,i1=0,i2=0; i<kn1; i++)
       {
 	  k = i1 + idim;
@@ -236,7 +236,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 
   if(ikind2 == 2 || ikind2 == 4)
   {
-      if ((rcoef2 = newarray((idim+1)*kn2,DOUBLE)) == NULL) goto err101;
+      if ((rcoef2 = newarray((idim+1)*kn2,DOUBLE)) == SISL_NULL) goto err101;
       for(i=0,i1=0,i2=0; i<kn2; i++)
       {
 	  k = i1 + idim;
@@ -257,7 +257,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   if (po1->iobj == SISLCURVE)
   {
      if ((qo1->c1 = newCurve(po1->c1->in,po1->c1->ik,po1->c1->et,
-			     rcoef1,po1->c1->ikind,idim,0)) == NULL)
+			     rcoef1,po1->c1->ikind,idim,0)) == SISL_NULL)
 	goto err101;
      /* printf("Rotated box test. Curve - "); */
   }
@@ -265,20 +265,20 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      if ((qo1->s1 = newSurf(po1->s1->in1,po1->s1->in2,po1->s1->ik1,
 			    po1->s1->ik2,po1->s1->et1,po1->s1->et2,
-			     rcoef1,po1->s1->ikind,idim,0)) == NULL)
+			     rcoef1,po1->s1->ikind,idim,0)) == SISL_NULL)
 	goto err101;
      /* printf("Rotated box test. Surface - "); */
 
   }
   else 
   {
-     if ((qo1->p1 = newPoint(rcoef1,idim,0)) == NULL) goto err101;
+     if ((qo1->p1 = newPoint(rcoef1,idim,0)) == SISL_NULL) goto err101;
   }
 
   if (po2->iobj == SISLCURVE)
   {
      if ((qo2->c1 = newCurve(po2->c1->in,po2->c1->ik,po2->c1->et,
-			     rcoef2,po2->c1->ikind,idim,0)) == NULL)
+			     rcoef2,po2->c1->ikind,idim,0)) == SISL_NULL)
 	goto err101;
      /* printf("curve. "); */
   }
@@ -286,13 +286,13 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   {
      if ((qo2->s1 = newSurf(po2->s1->in1,po2->s1->in2,po2->s1->ik1,
 			    po2->s1->ik2,po2->s1->et1,po2->s1->et2,
-			     rcoef2,po2->s1->ikind,idim,0)) == NULL)
+			     rcoef2,po2->s1->ikind,idim,0)) == SISL_NULL)
 	goto err101;
      /* printf("surface. "); */
   }
   else 
   {
-     if ((qo2->p1 = newPoint(rcoef2,idim,0)) == NULL) goto err101;
+     if ((qo2->p1 = newPoint(rcoef2,idim,0)) == SISL_NULL) goto err101;
   }
 
   /* Make box test.  */
@@ -331,13 +331,13 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 
   /* Free space occupied by local arrays and objects.  */
 
-  if (qo1 != NULL) freeObject(qo1);
-  if (qo2 != NULL) freeObject(qo2);
-  if (rcoef1 != NULL && rcoef1 != scoef1) freearray(rcoef1);
-  if (rcoef2 != NULL && rcoef2 != scoef2) freearray(rcoef2);
-  if (scoef1 != NULL) freearray(scoef1);
-  if (scoef2 != NULL) freearray(scoef2);
-  if (smat != NULL) free0array(smat);
+  if (qo1 != SISL_NULL) freeObject(qo1);
+  if (qo2 != SISL_NULL) freeObject(qo2);
+  if (rcoef1 != SISL_NULL && rcoef1 != scoef1) freearray(rcoef1);
+  if (rcoef2 != SISL_NULL && rcoef2 != scoef2) freearray(rcoef2);
+  if (scoef1 != SISL_NULL) freearray(scoef1);
+  if (scoef2 != SISL_NULL) freearray(scoef2);
+  if (smat != SISL_NULL) free0array(smat);
 
   return;
 }
@@ -440,12 +440,12 @@ static void sh1834_s9mat3d(emat,edir1,edir2)
 
   /* Set up rotation matrix.  */
 
-  if ((DEQUAL(tleng1,DNULL) || DEQUAL(tl1,DNULL)) && DEQUAL(tleng2,DNULL))
+  if ((DEQUAL(tleng1,DZERO) || DEQUAL(tl1,DZERO)) && DEQUAL(tleng2,DZERO))
 
     /* The rotation matrix is the identity matrix.  */
 
     emat[0] = emat[4] = emat[8] = (double)1.0;
-  else if (DEQUAL(tleng1,DNULL) || DEQUAL(tl1,DNULL))
+  else if (DEQUAL(tleng1,DZERO) || DEQUAL(tl1,DZERO))
     {
 
       /* The rotation matrix is supposed to rotate edir1 to be parallell
@@ -456,7 +456,7 @@ static void sh1834_s9mat3d(emat,edir1,edir2)
       tb3 = sdir[2];
       tl3 = sqrt(tb1*tb1+tb2*tb2);
 
-      if (DEQUAL(tl3,DNULL)) emat[0] = emat[4] = emat[8] = (double)1.0;
+      if (DEQUAL(tl3,DZERO)) emat[0] = emat[4] = emat[8] = (double)1.0;
       else
 	{
 	  s1      = emat;
@@ -465,7 +465,7 @@ static void sh1834_s9mat3d(emat,edir1,edir2)
 	  *(s1++) = tb3;
 	  *(s1++) = -tb2/tl3;
 	  *(s1++) = tb1/tl3;
-	  *(s1++) = DNULL;
+	  *(s1++) = DZERO;
 	  *(s1++) = -tb1*tb3/tl3;
 	  *(s1++) = -tb2*tb3/tl3;
 	  *(s1++) = tl3;
@@ -477,7 +477,7 @@ static void sh1834_s9mat3d(emat,edir1,edir2)
       td2 = (ta3*edir1[1] - ta2*edir1[2])/tl1;
       tl2 = sqrt(td1*td1+td2*td2);
 
-      if (DEQUAL(tl2,DNULL))
+      if (DEQUAL(tl2,DZERO))
 	{
 
 	  /* The normal snorm is rotated to be parallell to the z-axis. */
@@ -486,7 +486,7 @@ static void sh1834_s9mat3d(emat,edir1,edir2)
 	  *(s1++) = tl1;
 	  *(s1++) = -ta1*ta2/tl1;
 	  *(s1++) = -ta1*ta3/tl1;
-	  *(s1++) = DNULL;
+	  *(s1++) = DZERO;
 	  *(s1++) = ta3/tl1;
 	  *(s1++) = -ta2/tl1;
 	  *(s1++) = ta1;

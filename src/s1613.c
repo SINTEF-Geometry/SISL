@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1613.c,v 1.2 1995-12-01 13:51:29 jka Exp $
+ * $Id: s1613.c,v 1.3 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -114,7 +114,7 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
   int kpar = 0;            /* Number of parameter values computed.        */
   int kant;                /* Number of sampling points at a knot interval. */
   int left = 0;            /* Help index to evaluator.                    */
-  double *spar = NULL;        /* Parameter values corresponding to Bezier
+  double *spar = SISL_NULL;        /* Parameter values corresponding to Bezier
 			      segment.                                    */
   double tmaxint = (double)10; /* Try alternative method if the number of
 			      linear segments of a Bezier segment is
@@ -125,13 +125,13 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
   double tb;               /* End value of parameter interval.            */
   double th;               /* Distance between output parameter values.   */
   double *st;              /* Pointer to knot vector of curve.            */
-  double *par = NULL;      /* Array used to store parameter values.       */
-  double *sh  = NULL;      /* Work array.    */
-  double *sh1 = NULL;      /* Work array.    */
-  double *sdd = NULL;      /* Work array used to compute divided differences. */
-  double *sdd2 = NULL;     /* Array used to store final divided differences.  */
-  double *smaxd = NULL;    /* Array used to store maximum divided differences.*/
-  SISLCurve *qc = NULL;    /* Curve representing Bezier segment.              */
+  double *par = SISL_NULL;      /* Array used to store parameter values.       */
+  double *sh  = SISL_NULL;      /* Work array.    */
+  double *sh1 = SISL_NULL;      /* Work array.    */
+  double *sdd = SISL_NULL;      /* Work array used to compute divided differences. */
+  double *sdd2 = SISL_NULL;     /* Array used to store final divided differences.  */
+  double *smaxd = SISL_NULL;    /* Array used to store maximum divided differences.*/
+  SISLCurve *qc = SISL_NULL;    /* Curve representing Bezier segment.              */
   
   /* Test input.  */
   
@@ -142,7 +142,7 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
   if (korder == 1)
     {
       kpar = kncoef;
-      if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == NULL) goto err101;
+      if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == SISL_NULL) goto err101;
       memcopy(*gpoint,pc->ecoef,kpar*kdim,DOUBLE);
       *jnbpnt = kpar;
       *jstat = 0;
@@ -156,11 +156,11 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
   
   /* Allocate some scratch for output array.  */
   
-  if ((par = newarray(kmaxpar,DOUBLE)) == NULL) goto err101;
+  if ((par = newarray(kmaxpar,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Allocate scratch for internal arrays.  */
   
-  if ((sdd = new0array((kordnew+6)*kdim,DOUBLE)) == NULL) goto err101;
+  if ((sdd = new0array((kordnew+6)*kdim,DOUBLE)) == SISL_NULL) goto err101;
   sdd2 = sdd+3*kdim;
   smaxd = sdd2+kordnew*kdim;
   sh = smaxd+kdim;
@@ -268,8 +268,8 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
          s1613bez(qc,(int)tmaxint,aepsge,&spar,&kant,&kstat);
 	 if (kstat < 0) goto error;
 			
-         if (qc != NULL) freeCurve(qc);
-         qc = NULL;
+         if (qc != SISL_NULL) freeCurve(qc);
+         qc = SISL_NULL;
 	 
 	 if (kstat == 2)
 	 {
@@ -283,9 +283,9 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
       
       if (kpar+kant+1 >= kmaxpar)
 	if ((par = increasearray(par,(kmaxpar+=MAX(kant+1,knmbel)),DOUBLE)) 
-	    == NULL) goto err101;
+	    == SISL_NULL) goto err101;
       
-      if (spar == NULL)
+      if (spar == SISL_NULL)
       {
 	 /* Compute the parameter values of the interpolation points.  */
 	 
@@ -302,13 +302,13 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
 	 kpar++;
 	 
 	 freearray(spar);
-	 spar = NULL;
+	 spar = SISL_NULL;
       }
     }
   
   /* Make the points.  */
   
-  if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == NULL) goto err101;
+  if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == SISL_NULL) goto err101;
   
   for (kh=kk=0; kk<kpar; kk++,kh+=kdim)
     {
@@ -368,8 +368,8 @@ void s1613(pc,aepsge,gpoint,jnbpnt,jstat)
   out :
     /* Free scratch occupied by local arrays.  */
     
-    if (sdd != NULL) freearray(sdd);
-    if (par != NULL) freearray(par);
+    if (sdd != SISL_NULL) freearray(sdd);
+    if (par != SISL_NULL) freearray(par);
 }
 
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1162.c,v 1.2 1994-08-15 15:13:26 pfu Exp $
+ * $Id: s1162.c,v 1.3 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -75,7 +75,7 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
 * INPUT      : po1       - Pointer to  object
 *              aepsge    - Geometry resolution.
 *              vedge     - Pointers to structure of edge-maximums.
-*                          vedge[1] must be NULL
+*                          vedge[1] must be SISL_NULL
 *              ilevel    - Debt in recursion with inumb(>2) max. on the edges(if bezier case).
 *              inum      - Number of max. on the edges.
 *
@@ -142,7 +142,7 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
   int kind1,kind2;        /* Index two knots with multiplicity. */
   SISLObject *uob1[4];        /* Pointers to subdivided object.     */
   SISLObject *qdum;           /* Pointer to dummy object.           */
-  SISLEdge **uedge=NULL;      /* Pointer to array (to be allocated)
+  SISLEdge **uedge=SISL_NULL;      /* Pointer to array (to be allocated)
 				    of edges to use in subproblems.    */
   SISLIntpt *up[2];
   SISLPtedge *qpt0,*qpt1;
@@ -151,8 +151,8 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
   knumedge   = inum;
   klevel     = ilevel;
 
-  for (ki=0;ki<4;ki++)  uob1[ki] = NULL;
-  if ((qdum = newObject(SISLPOINT)) == NULL) goto err101;
+  for (ki=0;ki<4;ki++)  uob1[ki] = SISL_NULL;
+  if ((qdum = newObject(SISLPOINT)) == SISL_NULL) goto err101;
 
   /* Initiate no maximum.*/
   *jstat = 0;
@@ -178,13 +178,13 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
 	 we just connect the point on the edges. */
 
 
-      if (vedge[0] != NULL && vedge[0]->iedge == 2)
+      if (vedge[0] != SISL_NULL && vedge[0]->iedge == 2)
 	{
 	  /* Only curves has to do connect */
 
 	  qpt0=vedge[0]->prpt[0];
 	  qpt1=vedge[0]->prpt[1];
-	  if (qpt0 != NULL && qpt1 != NULL)
+	  if (qpt0 != SISL_NULL && qpt1 != SISL_NULL)
 	    {
 
 	      up[0] = qpt0->ppt;
@@ -300,7 +300,7 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
 		    {
 		      for (ki=0;ki<knum;ki++)
 			{
-			  if ((uob1[ki] = newObject(po1->iobj)) == NULL)
+			  if ((uob1[ki] = newObject(po1->iobj)) == SISL_NULL)
 			    goto err101;
 
 			  /*Initiate o1 pointer to point to top level object.*/
@@ -322,17 +322,17 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
 
 		  /* Making array of pointers to edge object
 		     to the sub problems. */
-		  if ((uedge = new0array(2*knum,SISLEdge *)) == NULL)
+		  if ((uedge = new0array(2*knum,SISLEdge *)) == SISL_NULL)
 		    goto err101;
 
 		  /* Making new edge object to sub problems. */
 		  for (ki=0; ki<2*knum; ki+=2)
 		    {
 
-		      if ((uedge[ki]   = newEdge(vedge[0]->iedge)) == NULL)
+		      if ((uedge[ki]   = newEdge(vedge[0]->iedge)) == SISL_NULL)
 			goto err101;
 		      /* No edge for the dummy point: */
-		      uedge[ki+1] = NULL;
+		      uedge[ki+1] = SISL_NULL;
 
 		    }
 
@@ -373,17 +373,17 @@ void s1162(po1,cmax,aepsge,pintdat,vedge,ilevel,inum,jstat)
   /* Free the space that is  allocated. */
 
  out:
-  if (qdum != NULL) freeObject(qdum);
+  if (qdum != SISL_NULL) freeObject(qdum);
 
   for (ki=0;ki<4;ki++)
-    if (uob1[ki] != NULL) freeObject(uob1[ki]);
+    if (uob1[ki] != SISL_NULL) freeObject(uob1[ki]);
 
-  if (uedge != NULL)
+  if (uedge != SISL_NULL)
     {
        /* 26.10.92 UJK/ BEOrd13969 */
        /* for (ki=0;ki<knum;ki++) */
        for (ki=0;ki<2*knum;ki++)
-	  if (uedge[ki] != NULL) freeEdge(uedge[ki]);
+	  if (uedge[ki] != SISL_NULL) freeEdge(uedge[ki]);
 
       freearray(uedge);
     }
@@ -436,8 +436,8 @@ static void s1162_s9mic(po1,po2,rintdat,vedge,jstat)
   int kpos = 0;                 /* Position of error.                      */
   int kstat=0;                  /* Local error status.                     */
   int kpoint;                   /* Number of intpt on edges.               */
-  double *spar = NULL;          /* Array to store parameter values.        */
-  SISLIntpt **up = NULL;     /* Array of poiners to intersection point. */
+  double *spar = SISL_NULL;          /* Array to store parameter values.        */
+  SISLIntpt **up = SISL_NULL;     /* Array of poiners to intersection point. */
 
 
   /* Initiate to now new intersection point. */
@@ -448,12 +448,12 @@ static void s1162_s9mic(po1,po2,rintdat,vedge,jstat)
 
   /* Compute number of intersection points on edges. */
 
-  if (vedge[0] == NULL )
+  if (vedge[0] == SISL_NULL )
     kpoint = 0;
   else
     kpoint = vedge[0]->ipoint;
 
-  if (vedge[1] != NULL )
+  if (vedge[1] != SISL_NULL )
     kpoint += vedge[1]->ipoint;
 
 
@@ -482,7 +482,7 @@ static void s1162_s9mic(po1,po2,rintdat,vedge,jstat)
 
       /* Allocate array to store midpoint parameter values. */
 
-      if ((spar = newarray(kpar,double)) == NULL)
+      if ((spar = newarray(kpar,double)) == SISL_NULL)
 	goto err101;
 
 
@@ -523,8 +523,8 @@ static void s1162_s9mic(po1,po2,rintdat,vedge,jstat)
 
       /* Makeing intersection point. */
 
-      qt = newIntpt(kpar,spar,DNULL);
-      if (qt == NULL) goto err101;
+      qt = newIntpt(kpar,spar,DZERO);
+      if (qt == SISL_NULL) goto err101;
 
       /* Uppdating pintdat. */
 
@@ -542,15 +542,15 @@ static void s1162_s9mic(po1,po2,rintdat,vedge,jstat)
 
       /* Allacate array of pointers to these points. */
 
-      if ((up = newarray(kpoint,SISLIntpt *)) == NULL) goto err101;
+      if ((up = newarray(kpoint,SISLIntpt *)) == SISL_NULL) goto err101;
 
 
       /* Uppdate the array. */
 
       for (kn=0,kn1=0; kn<2; kn++)
-	if (vedge[kn] != NULL && vedge[kn]->ipoint > 0)
+	if (vedge[kn] != SISL_NULL && vedge[kn]->ipoint > 0)
 	  for(kj=0; kj<vedge[kn]->iedge; kj++)
-	    for(qpt=vedge[kn]->prpt[kj]; qpt != NULL; qpt=qpt->pnext,kn1++)
+	    for(qpt=vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt=qpt->pnext,kn1++)
 	      up[kn1] = qpt->ppt;
 
 
@@ -577,8 +577,8 @@ static void s1162_s9mic(po1,po2,rintdat,vedge,jstat)
   s6err("s1162_s9mic",*jstat,kpos);
   goto out;
 
- out: if (spar != NULL) freearray(spar);
-  if (up != NULL)   freearray(up);
+ out: if (spar != SISL_NULL) freearray(spar);
+  if (up != SISL_NULL)   freearray(up);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -889,8 +889,8 @@ static void s1162_s9con(po1,cmax,aepsge,pintdat,vedge,jlevel,jnum,jstat)
   double spar[2];  /* Parameter value              */
   double spar1[2]; /* Parameter value              */
   double smidle[2];/* middle parameter value       */
-  double *sval=NULL;/*  Values from s1421.          */
-  double *snorm=NULL;/* Values from s1421.         */
+  double *sval=SISL_NULL;/*  Values from s1421.          */
+  double *snorm=SISL_NULL;/* Values from s1421.         */
 
 
   kstat = 0;
@@ -911,7 +911,7 @@ static void s1162_s9con(po1,cmax,aepsge,pintdat,vedge,jlevel,jnum,jstat)
 	  for (kj=0,knum=0;kj<vedge[0]->iedge;kj++)
 	    {
 	      qpt = vedge[0]->prpt[kj];
-	      while(qpt != NULL)
+	      while(qpt != SISL_NULL)
 		{
 		  qintpt = qpt->ppt;
 		  for (ki=0,kfound=0;ki<knum && kfound == 0;ki++)
@@ -964,7 +964,7 @@ static void s1162_s9con(po1,cmax,aepsge,pintdat,vedge,jlevel,jnum,jstat)
 		  /* Allocate local used memory */
 
 		  sval = newarray(4,double);
-		  if (sval == NULL) goto err101;
+		  if (sval == SISL_NULL) goto err101;
 		  snorm = sval + 3;
 
 		  for (kj=0;kj<knum-1;kj++)
@@ -1016,7 +1016,7 @@ static void s1162_s9con(po1,cmax,aepsge,pintdat,vedge,jlevel,jnum,jstat)
   error : s6err("s1162_s9con",kstat,kpos);
   goto out;
 
- out:    if (sval != NULL) freearray(sval);
+ out:    if (sval != SISL_NULL) freearray(sval);
   *jlevel = klevel;
   *jnum   = knum;
   *jstat  = kstat;
@@ -1092,16 +1092,16 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
   double tval;               /* The value of the geometry at the found point.*/
 
 
-  SISLObject *qop=NULL,*qcuo = NULL;/* Help pointers        */
-  SISLIntdat *qintdat=NULL;         /* Local max data.      */
-  SISLIntdat *qintdat1=NULL;        /* Local for double upgrading. */
+  SISLObject *qop=SISL_NULL,*qcuo = SISL_NULL;/* Help pointers        */
+  SISLIntdat *qintdat=SISL_NULL;         /* Local max data.      */
+  SISLIntdat *qintdat1=SISL_NULL;        /* Local for double upgrading. */
   SISLIntpt  *qintpt,*up[3];
   SISLPtedge *qpt;
 
   /* Init */
   *jstat = 0;
-  if (po1 == NULL || po1->iobj == SISLPOINT) goto out;
-  if ((qop = newObject(SISLPOINT)) == NULL) goto err101;
+  if (po1 == SISL_NULL || po1->iobj == SISLPOINT) goto out;
+  if ((qop = newObject(SISLPOINT)) == SISL_NULL) goto err101;
 
   if (po1->iobj == SISLCURVE)
     {
@@ -1137,17 +1137,17 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
       if (kstat < 0) goto error;
 
       /* Here we are ready to examine if we really found a new max point.*/
-      if ((qop->p1 = newPoint(&tval,1,1)) == NULL) goto err101;
+      if ((qop->p1 = newPoint(&tval,1,1)) == SISL_NULL) goto err101;
 
       s1161(qop,cmax,aepsge,&qintdat,&kstat);
       if (kstat < 0) goto error;
 
       if (kstat == 2)
 	/* New maximum found, delete old ones */
-	if (*pintdat != NULL)
+	if (*pintdat != SISL_NULL)
 	  {
 	    freeIntdat(*pintdat);
-	    *pintdat = NULL;
+	    *pintdat = SISL_NULL;
 	  }
 
       if ( kstat )
@@ -1191,7 +1191,7 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
       for (kj=0,knum=0;kj<vedge[0]->iedge&&knum<3;kj++)
 	{
 	  qpt = vedge[0]->prpt[kj];
-	  while(qpt != NULL && knum<3)
+	  while(qpt != SISL_NULL && knum<3)
 	    {
 	      qintpt = qpt->ppt;
 	      for (ki=0,kfound=0;ki<knum && kfound == 0;ki++)
@@ -1235,7 +1235,7 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
 
 	      tpar = (double)0.25*up[0]->epar[ki] +
 		     (double)0.75*up[1]->epar[ki];
-	      if ((qcuo = newObject(SISLCURVE)) == NULL) goto err101;
+	      if ((qcuo = newObject(SISLCURVE)) == SISL_NULL) goto err101;
 	      if (ki==0)
 		s1437(po1->s1,tpar,&(qcuo->c1),&kstat);
 	      else
@@ -1248,7 +1248,7 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
 	      if (kstat == 1)
 		{
 		  freeCurve(qcuo->c1);
-		  qcuo->c1 = NULL;
+		  qcuo->c1 = SISL_NULL;
 
 		  tpar = (double)0.75*up[0]->epar[ki] +
 		         (double)0.25*up[1]->epar[ki];
@@ -1294,7 +1294,7 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
 
 
 	  /* Create a point greater than the surface */
-	  if ((qop->p1 = newPoint(&tmax,1,1)) == NULL) goto err101;
+	  if ((qop->p1 = newPoint(&tmax,1,1)) == SISL_NULL) goto err101;
 
 	  /* Iterate using aepsge=tmax-tmin to ensure covergence. */
 	  s1173(qop->p1,po1->o1->s1,aepsge,sstart,send,spar,spar,&kstat);
@@ -1314,18 +1314,18 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
 
 	  /* Here we are ready to examine if we really found a max point.*/
 	  freePoint(qop->p1);
-	  qop->p1 = NULL;
-	  if ((qop->p1 = newPoint(&tval,1,1)) == NULL) goto err101;
+	  qop->p1 = SISL_NULL;
+	  if ((qop->p1 = newPoint(&tval,1,1)) == SISL_NULL) goto err101;
 
 	  s1161(qop,cmax,aepsge,&qintdat,&kstat);
 	  if (kstat < 0) goto error;
 
 	  if (kstat == 2)
 	    /* New maximum found, delete old ones */
-	    if (*pintdat != NULL)
+	    if (*pintdat != SISL_NULL)
 	      {
 		freeIntdat(*pintdat);
-		*pintdat = NULL;
+		*pintdat = SISL_NULL;
 	      }
 
 	  if ( kstat )
@@ -1359,36 +1359,36 @@ static void s1162_s9update(po1,cmax,aepsge,pintdat,vedge,jstat)
   error : *jstat = kstat;
 
  out:
-  if (qcuo != NULL)
+  if (qcuo != SISL_NULL)
     {
-      if (qcuo->c1 != NULL)
+      if (qcuo->c1 != SISL_NULL)
 	{
 	  freeCurve(qcuo->c1);
-	  qcuo->c1 = NULL;
+	  qcuo->c1 = SISL_NULL;
 	}
       freeObject(qcuo);
-      qcuo = NULL;
+      qcuo = SISL_NULL;
     }
 
-  if (qop != NULL)
+  if (qop != SISL_NULL)
     {
-      if (qop->p1 != NULL)
+      if (qop->p1 != SISL_NULL)
 	{
 	  freePoint(qop->p1);
-	  qop->p1 = NULL;
+	  qop->p1 = SISL_NULL;
 	}
       freeObject(qop);
-      qop = NULL;
+      qop = SISL_NULL;
     }
-  if (qintdat != NULL)
+  if (qintdat != SISL_NULL)
     {
       freeIntdat(qintdat);
-      qintdat = NULL;
+      qintdat = SISL_NULL;
     }
-  if (qintdat1 != NULL)
+  if (qintdat1 != SISL_NULL)
     {
       freeIntdat(qintdat1);
-      qintdat1 = NULL;
+      qintdat1 = SISL_NULL;
     }
 }
 
@@ -1481,19 +1481,19 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 			 for subdividing a surface.      */
   double smax[2];    /* The upper allowed limit in the prameter intervall
 			for subdividing a surface.      */
-  SISLSurf *qs1=NULL;  /* Help pointers while subdividing        */
-  SISLSurf *qs2=NULL;  /* Help pointers while subdividing        */
-  SISLObject *qop = NULL;/* Help pointers while subdividing      */
-  SISLObject *qoc = NULL;/* Help pointers while subdividing      */
-  SISLIntdat *qintdat=NULL;/* Local max data for the new edges.  */
+  SISLSurf *qs1=SISL_NULL;  /* Help pointers while subdividing        */
+  SISLSurf *qs2=SISL_NULL;  /* Help pointers while subdividing        */
+  SISLObject *qop = SISL_NULL;/* Help pointers while subdividing      */
+  SISLObject *qoc = SISL_NULL;/* Help pointers while subdividing      */
+  SISLIntdat *qintdat=SISL_NULL;/* Local max data for the new edges.  */
 
 
 
   /* Init */
   *jstat = 0;
-  if ((qop = newObject(SISLPOINT)) == NULL) goto err101;
+  if ((qop = newObject(SISLPOINT)) == SISL_NULL) goto err101;
 
-  if (po1 == NULL || po1->iobj == SISLPOINT)
+  if (po1 == SISL_NULL || po1->iobj == SISLPOINT)
     /* Nothing to do. */
     ;
   else if (po1->iobj == SISLCURVE)
@@ -1566,11 +1566,11 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 
       if (kstat == 2)
 	/* New maximum found, delete old ones */
-	if (*pintdat != NULL)
+	if (*pintdat != SISL_NULL)
 	  {
 
 	    freeIntdat(*pintdat);
-	    *pintdat = NULL;
+	    *pintdat = SISL_NULL;
 	  }
 
       if (kstat)
@@ -1585,10 +1585,10 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 	  s6idput(pintdat,qintdat,0,tpar,&kstat);
 	  if (kstat < 0) goto error;
 
-	  if (qintdat != NULL)
+	  if (qintdat != SISL_NULL)
 	    {
 	      freeIntdat(qintdat);
-	      qintdat = NULL;
+	      qintdat = SISL_NULL;
 	    }
 	}
     }
@@ -1664,7 +1664,7 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 	  for (kj=0;kj<3;kj+=2)
 	    {
 	      qpt = vedge[0]->prpt[kj];
-	      while (qpt != NULL)
+	      while (qpt != SISL_NULL)
 		{
 		  if (fabs(qpt->ppt->epar[0] - tmidle) <
 		      fabs(spar[0] - tmidle))
@@ -1681,7 +1681,7 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 	  for (kj=1;kj<4;kj+=2)
 	    {
 	      qpt = vedge[0]->prpt[kj];
-	      while (qpt != NULL)
+	      while (qpt != SISL_NULL)
 		{
 		  if (fabs(qpt->ppt->epar[0] - tmidle) <
 		      fabs(spar[1] - tmidle))
@@ -1715,12 +1715,12 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 
 
 	  /* Create a point greater than the surface */
-	  if ((qop->p1 = newPoint(tmax,1,1)) == NULL) goto err101;
+	  if ((qop->p1 = newPoint(tmax,1,1)) == SISL_NULL) goto err101;
 
 	  /* Iterate using Newton. */
 	  s1173(qop->p1,po1->o1->s1,aepsge,sstart,send,spar,spar,&kstat);
 	  freePoint(qop->p1);
-	  qop->p1 = NULL;
+	  qop->p1 = SISL_NULL;
 	  if (kstat < 0) goto error;
 
 	  /* Test if the found point is near one edge. */
@@ -1747,7 +1747,7 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
       /* ------------------Subdivision ------------------------------*/
       /* Now we have found the parameters for subdivision, divide! */
 
-      if ((qoc = newObject(SISLCURVE)) == NULL)
+      if ((qoc = newObject(SISLCURVE)) == SISL_NULL)
 	goto err101;
 
       for (ki=0; ki<(idiv<3 ? 1:3); ki++)
@@ -1811,15 +1811,15 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 	  if (kstat < 0) goto error;
 
 	  freeCurve(qoc->c1);
-	  qoc->c1 = NULL;
+	  qoc->c1 = SISL_NULL;
 
 
 	  if (kstat == 2)
 	    /* New maximum found, delete old ones */
-	    if (*pintdat != NULL)
+	    if (*pintdat != SISL_NULL)
 	      {
 		freeIntdat(*pintdat);
-		*pintdat = NULL;
+		*pintdat = SISL_NULL;
 	      }
 
 	  if (kstat)
@@ -1841,10 +1841,10 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
 	      s6idput(pintdat,qintdat,(ki==0 ? 0:1),spar[(ki==0 ? 0:1)],&kstat);
 	      if (kstat < 0) goto error;
 
-	      if (qintdat != NULL)
+	      if (qintdat != SISL_NULL)
 		{
 		  freeIntdat(qintdat);
-		  qintdat = NULL;
+		  qintdat = SISL_NULL;
 		}
 
 	    }
@@ -1869,8 +1869,8 @@ static void s1162_s9div(po1,cmax,aepsge,idiv,iind1,iind2,
   /* -------------------END OF ERROR SECTION----------------------------*/
 
  out:
-  if (qop != NULL) freeObject(qop);
-  if (qoc != NULL) freeObject(qoc);
-  if (qs1 != NULL) freeSurf(qs1);  /* PFU 15/07-94 */
-  if (qs2 != NULL) freeSurf(qs2);  /* PFU 15/07-94 */
+  if (qop != SISL_NULL) freeObject(qop);
+  if (qoc != SISL_NULL) freeObject(qoc);
+  if (qs1 != SISL_NULL) freeSurf(qs1);  /* PFU 15/07-94 */
+  if (qs2 != SISL_NULL) freeSurf(qs2);  /* PFU 15/07-94 */
 }

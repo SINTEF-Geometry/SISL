@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1775.c,v 1.1 1995-08-10 11:39:23 jka Exp $
+ * $Id: s1775.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 #define S1775
@@ -80,7 +80,7 @@ void s1775(surf, point, dim, epsge, start, end, guess, clpar, stat)
 */                       
 { 
    int kpos = 0;             /* Error indicator. */
-   SISLPoint* ppoint = NULL; /* SISL point.      */
+   SISLPoint* ppoint = SISL_NULL; /* SISL point.      */
 
    /* Generate a SISL point. */
    
@@ -100,6 +100,6 @@ void s1775(surf, point, dim, epsge, start, end, guess, clpar, stat)
    goto out;
 
  out:    
-    if (ppoint != NULL) freePoint(ppoint);
+    if (ppoint != SISL_NULL) freePoint(ppoint);
 }
 

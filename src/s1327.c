@@ -80,10 +80,10 @@ void s1327(pcold,epoint,enorm1,enorm2,idim,rcnew,jstat)
   int kn;          /* Number of coefficients of curve.              */
   int kk;          /* Order of curve.                               */
   int ikind;       /* kind of surface psold is.                     */
-  double *scoef = NULL; /* Coeffecient array of new curve.          */
+  double *scoef = SISL_NULL; /* Coeffecient array of new curve.          */
   double *s1,*s2;  /* Pointers used to traverse scoef.              */
-  double *sc=NULL; /* Pointer used to traverse pcold->ecoef.        */
-  double *scSave=NULL; /* Pointer to new vertices in rational case. */
+  double *sc=SISL_NULL; /* Pointer used to traverse pcold->ecoef.        */
+  double *scSave=SISL_NULL; /* Pointer to new vertices in rational case. */
   double *s3;      /* Stop pointer of vertex in psold->ecoef.       */
   double *spoint;  /* Pointer used to traverse the point epoint.    */
   double *snorm1;  /* Pointer used to traverse the normal enorm1.   */
@@ -119,7 +119,7 @@ void s1327(pcold,epoint,enorm1,enorm2,idim,rcnew,jstat)
           if(rscoef[i] > wmax) wmax=rscoef[i];
       }
       scale=1.0/sqrt(wmin*wmax);
-      if ((sc=newarray(kn*idimp1,DOUBLE)) == NULL) goto err101;
+      if ((sc=newarray(kn*idimp1,DOUBLE)) == SISL_NULL) goto err101;
 
       for(i=0; i< kn*idimp1; i++)
       {
@@ -135,7 +135,7 @@ void s1327(pcold,epoint,enorm1,enorm2,idim,rcnew,jstat)
 
   /* Allocate space for coeffecient of the new surface.  */
 
-  if ((scoef = newarray(kdim*kn,double)) == NULL) goto err101;
+  if ((scoef = newarray(kdim*kn,double)) == SISL_NULL) goto err101;
 
   /* Compute coefficients of new surface.  */
 
@@ -172,7 +172,7 @@ void s1327(pcold,epoint,enorm1,enorm2,idim,rcnew,jstat)
   /* Create output curve.  */
 
   *rcnew = newCurve(kn,kk,pcold->et,scoef,1,kdim,1);
-  if (*rcnew == NULL) goto err101;
+  if (*rcnew == SISL_NULL) goto err101;
 
   /* Task done.  */
 
@@ -195,6 +195,6 @@ void s1327(pcold,epoint,enorm1,enorm2,idim,rcnew,jstat)
 
   /* Free space allocated for local array.  */
 
-    if (scoef != NULL) freearray(scoef);
+    if (scoef != SISL_NULL) freearray(scoef);
     return;
 }

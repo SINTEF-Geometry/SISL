@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1307.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1307.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 #define S1307
@@ -121,7 +121,7 @@ void s1307(ep,idim,egeo,jstat)
   
   tdum = s6length(egeo+k2dim,idim,&kstat);
   
-  if (tdum!=DNULL && ((double)1.0/tdum) > MAXIMAL_RADIUS_OF_CURVATURE) 
+  if (tdum!=DZERO && ((double)1.0/tdum) > MAXIMAL_RADIUS_OF_CURVATURE) 
     goto war101;
   
   if (DNEQUAL(tdum,(double)0.0))

@@ -161,21 +161,21 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
   int numpt;              /* Needed in call to s1357                 */
   double start=0.;        /* Needed in call to s1357                 */
   double end;
-  int *typept=NULL;       /* Array needed for call to s1357          */
-  double *pointpar=NULL;  /* Array needed for call to s1357          */
-  double *coeffpos=NULL;  /* Array needed for call to s1357          */
-  double *coeffder=NULL;  /* Array needed for call to s1357          */
-  double *coeffposder=NULL; /* Array needed for call to s1357          */
-  double *newcoeff=NULL;  /* Array needed for call to s1357          */
-  double *newpoint=NULL;
-  double *newder=NULL;
-  SISLCurve *curve1a=NULL, *curve1b=NULL;
-  SISLCurve *curve2=NULL;
+  int *typept=SISL_NULL;       /* Array needed for call to s1357          */
+  double *pointpar=SISL_NULL;  /* Array needed for call to s1357          */
+  double *coeffpos=SISL_NULL;  /* Array needed for call to s1357          */
+  double *coeffder=SISL_NULL;  /* Array needed for call to s1357          */
+  double *coeffposder=SISL_NULL; /* Array needed for call to s1357          */
+  double *newcoeff=SISL_NULL;  /* Array needed for call to s1357          */
+  double *newpoint=SISL_NULL;
+  double *newder=SISL_NULL;
+  SISLCurve *curve1a=SISL_NULL, *curve1b=SISL_NULL;
+  SISLCurve *curve2=SISL_NULL;
 
   /* Allocate and initialize necessary arrays for call to s1357 */
 
   maxim = 2 * MAX(im1, im2);
-  if((typept = newarray(maxim, INT))==NULL) goto err101;
+  if((typept = newarray(maxim, INT))==SISL_NULL) goto err101;
   for(i=0; i<maxim; i+=2)
     {
       typept[i] = 1;
@@ -184,8 +184,8 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
     
   idimm1 = idim*im1;
   len = 2*im2*idimm1;
-  if((newpoint = newarray(len, DOUBLE))==NULL) goto err101;
-  if((newder = newarray(len, DOUBLE))==NULL) goto err101;
+  if((newpoint = newarray(len, DOUBLE))==SISL_NULL) goto err101;
+  if((newder = newarray(len, DOUBLE))==SISL_NULL) goto err101;
   for(i=0, kpek1=0, kpek2=0, kpek3 = idimm1; 
       i<im2; 
       i++, kpek1+=(2*idimm1), kpek3+=(2*idimm1), kpek2+=idimm1)
@@ -204,10 +204,10 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
   s1357(newpoint, im2*2, idimm1, typept, par2, con1, con2, iopen2, order2, 
 	start, &end, &curve1a, &pointpar, &numpt, &kstat);
   if(kstat < 0) goto error;
-  if(pointpar != NULL) 
+  if(pointpar != SISL_NULL) 
     {
       freearray(pointpar);
-      pointpar = NULL;
+      pointpar = SISL_NULL;
     }
   newin2 = curve1a->in;
 
@@ -216,10 +216,10 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
   s1357(newder, im2*2, idimm1, typept, par2, con1, con2, iopen2, order2, 
 	start, &end, &curve1b, &pointpar, &numpt, &kstat);
   if(kstat < 0) goto error;
-  if(pointpar != NULL) 
+  if(pointpar != SISL_NULL) 
     {
       freearray(pointpar);
-      pointpar = NULL;
+      pointpar = SISL_NULL;
     }
   if(curve1b->in != newin2) goto err116;
 
@@ -227,14 +227,14 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
    * arrays coeffpos and coeffder */
 
   newindim = newin2 * idim;
-  if((coeffpos = newarray(im1*newindim, DOUBLE)) == NULL)
+  if((coeffpos = newarray(im1*newindim, DOUBLE)) == SISL_NULL)
     goto err101;
-  if((coeffder = newarray(im1*newindim, DOUBLE)) == NULL)
+  if((coeffder = newarray(im1*newindim, DOUBLE)) == SISL_NULL)
     goto err101;
   s6chpar(curve1a->ecoef, im1, newin2, idim, coeffpos);
   s6chpar(curve1b->ecoef, im1, newin2, idim, coeffder);
 
-  if((coeffposder = newarray(2*im1*newindim, DOUBLE)) == NULL)
+  if((coeffposder = newarray(2*im1*newindim, DOUBLE)) == SISL_NULL)
     goto err101;
   for(j=0, kpek1=0, kpek2=newindim, kpek3=0; 
       j<im1; 
@@ -252,23 +252,23 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
   s1357(coeffposder, 2*im1, idim*newin2, typept, par1, con3, con4, iopen1, 
 	order1, start, &end, &curve2, &pointpar, &numpt, &kstat);
   if(kstat < 0) goto error;
-  if(pointpar != NULL) 
+  if(pointpar != SISL_NULL) 
     {
       freearray(pointpar);
-      pointpar = NULL;
+      pointpar = SISL_NULL;
     }
   newin1 = curve2->in;
 
   /* Transpose back coefficients */
 
   if((coeffposder=increasearray(coeffposder, idim*newin1*newin2, DOUBLE)) 
-     == NULL)  goto err101;
+     == SISL_NULL)  goto err101;
   s6chpar(curve2->ecoef, newin2, newin1, idim, coeffposder);
 
   /* Create instance of surface */
 
   if (((*rsurf) = newSurf(newin1, newin2, order1, order2, curve2->et,
-		     curve1a->et, coeffposder, 1, idim, 1)) == NULL) 
+		     curve1a->et, coeffposder, 1, idim, 1)) == SISL_NULL) 
      goto err101;
   
   /* Set periodicity flag. */
@@ -304,18 +304,18 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
   out:
     /* Free arrays */
   
-     if (typept != NULL) freearray(typept);
-    if(newpoint != NULL) freearray(newpoint);
-    if(newder != NULL) freearray(newder);
-    if(coeffpos != NULL) freearray(coeffpos);
-    if(coeffder != NULL) freearray(coeffder);
-    if(coeffposder != NULL) freearray(coeffposder);
+     if (typept != SISL_NULL) freearray(typept);
+    if(newpoint != SISL_NULL) freearray(newpoint);
+    if(newder != SISL_NULL) freearray(newder);
+    if(coeffpos != SISL_NULL) freearray(coeffpos);
+    if(coeffder != SISL_NULL) freearray(coeffder);
+    if(coeffposder != SISL_NULL) freearray(coeffposder);
 
     /* Free local SISL-curve objects */
    
-    if(curve1a != NULL) freeCurve(curve1a);
-    if(curve1b != NULL) freeCurve(curve1b);
-    if(curve2 != NULL) freeCurve(curve2);
+    if(curve1a != SISL_NULL) freeCurve(curve1a);
+    if(curve1b != SISL_NULL) freeCurve(curve1b);
+    if(curve2 != SISL_NULL) freeCurve(curve2);
   
     return;
 }

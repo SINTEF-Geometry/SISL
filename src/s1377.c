@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1377.c,v 1.2 1998-05-12 08:35:26 jnygaard Exp $
+ * $Id: s1377.c,v 1.3 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -82,17 +82,17 @@ s1377 (pcurv, econic, ideg, idim, rcurv, jstat)
   int cuopen;			/* Open/Closed flag                                 */
   int ki, kj;			/* Loop control variable                            */
   int kleft = 0;		/* Pointer into knot vector                         */
-  int *der = NULL;		/* Derivate indicators. */
-  double *st = NULL;		/* First knot vector is pcurv                       */
+  int *der = SISL_NULL;		/* Derivate indicators. */
+  double *st = SISL_NULL;		/* First knot vector is pcurv                       */
   double *scentr = econic;	/* Center of torus             */
   double *saxis = econic + 3;	/* Axis of torus               */
   double tbigr = *(econic + 6);	/* Big radius of torus         */
   double tsmalr = *(econic + 7);/* Small radius of torus       */
   double tbigr2 = tbigr * tbigr;/* Square of big radius        */
   double tdiffr2 = tbigr2 - tsmalr * tsmalr;	/* Difference of square of radii*/
-  double *sval1 = NULL;		/* Array of values of curve put into torus eq.      */
-  double *sval2 = NULL;
-  double *sgt = NULL;		/* Knot vector of curve put into torus surface      */
+  double *sval1 = SISL_NULL;		/* Array of values of curve put into torus eq.      */
+  double *sval2 = SISL_NULL;
+  double *sgt = SISL_NULL;		/* Knot vector of curve put into torus surface      */
   double sy[3];			/* Difference between point and torus center        */
   double tzn;			/* Projection of sy onto torus axis                 */
   double tyy;			/* Square of length of sy                           */
@@ -101,8 +101,8 @@ s1377 (pcurv, econic, ideg, idim, rcurv, jstat)
   double tz;			/* Component of sz                                  */
   double sder[4];		/* Point on the curve                           */
   double ww;			/* the weight of sder squared if pcurv is rational  */
-  double *par = NULL;
-  SISLCurve *tempcurv = NULL;	/* only used for rational curves              */
+  double *par = SISL_NULL;
+  SISLCurve *tempcurv = SISL_NULL;	/* only used for rational curves              */
 
   *jstat = 0;
   if (idim != pcurv->idim) goto err104;
@@ -119,7 +119,7 @@ s1377 (pcurv, econic, ideg, idim, rcurv, jstat)
   if (ikind == 2 || ikind == 4)
     {
       tempcurv = newCurve (kn, kk, st, pcurv->rcoef, ikind - 1, kdim + 1, 0);
-      if (tempcurv == NULL)
+      if (tempcurv == SISL_NULL)
 	goto err171;
       tempcurv->cuopen = pcurv->cuopen;
     }
@@ -152,7 +152,7 @@ s1377 (pcurv, econic, ideg, idim, rcurv, jstat)
   /* Allocate array for values of curve put into torus equation. */
 
   sval1 = newarray (kjkn, DOUBLE);
-  if (sval1 == NULL)
+  if (sval1 == SISL_NULL)
     goto err101;
 
 
@@ -248,9 +248,9 @@ s1377 (pcurv, econic, ideg, idim, rcurv, jstat)
   if (kstat < 0)
     goto error;
 
-  *rcurv = NULL;
+  *rcurv = SISL_NULL;
   *rcurv = newCurve (kjkn, kjkk, sgt, sval2, 1, 1, 1);
-  if (*rcurv == NULL)
+  if (*rcurv == SISL_NULL)
     goto err171;
   (*rcurv)->cuopen = pcurv->cuopen;
 
@@ -299,17 +299,17 @@ out:
 
   /* Release allocated arrays */
 
-  if (sgt != NULL)
+  if (sgt != SISL_NULL)
     freearray (sgt);
-  if (par != NULL)
+  if (par != SISL_NULL)
     freearray(par);
-  if (der != NULL)
+  if (der != SISL_NULL)
     freearray(der);
-  if (sval1 != NULL)
+  if (sval1 != SISL_NULL)
     freearray (sval1);
-  if (sval2 != NULL)
+  if (sval2 != SISL_NULL)
     freearray (sval2);
-  if ((ikind == 2 || ikind == 4) && (tempcurv != NULL))
+  if ((ikind == 2 || ikind == 4) && (tempcurv != SISL_NULL))
     freeCurve (tempcurv);
 
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6identify.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6identify.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -92,7 +92,7 @@ void s6identify(s,a,b,level_val,eps1,eps2,jstat)
   double c[4],cref[8];
   int i,kstat;
 
-  if ( s == NULL ||
+  if ( s == SISL_NULL ||
       (a[0] < s->et1[0] || a[0] > s->et1[s->in1]) ||
       (a[1] < s->et2[0] || a[1] > s->et2[s->in2]) ||
       (b[0] < s->et1[0] || b[0] > s->et1[s->in1]) ||

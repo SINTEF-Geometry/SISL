@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6dist.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6dist.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -63,7 +63,7 @@ double s6dist(epoint1,epoint2,idim)
 {
   register double *s1,*s2,*s3; /* Pointers used to travers epoint1 and epoint2
 				  arrays.                                      */
-  register double tdist=DNULL; /* Distance between the points.                 */
+  register double tdist=DZERO; /* Distance between the points.                 */
   
   for (s1=epoint1,s2=epoint2,s3=epoint1+idim; s1<s3; s1++,s2++)
     tdist += (*s1 - *s2)*(*s1 - *s2);

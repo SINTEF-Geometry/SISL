@@ -81,13 +81,13 @@ void s1963(pc,eeps,ilend,irend,iopen,itmax,rc,jstat)
   int kpos = 0;
   int km;
   int leftknot = 0;
-  double *error1 = NULL;
-  double *error2 = NULL;
-  double *epar = NULL;
-  double *derive = NULL;
-  double *kp = NULL;
-  double *kder = NULL;
-  SISLCurve *ocurve = NULL;
+  double *error1 = SISL_NULL;
+  double *error2 = SISL_NULL;
+  double *epar = SISL_NULL;
+  double *derive = SISL_NULL;
+  double *kp = SISL_NULL;
+  double *kder = SISL_NULL;
+  SISLCurve *ocurve = SISL_NULL;
   
   
   /* Check input-curve. */
@@ -109,7 +109,7 @@ void s1963(pc,eeps,ilend,irend,iopen,itmax,rc,jstat)
       /* Curve is now a cubic spline 
        * Call reduction routine      */
 
-      if( (error2 = newarray( idim, DOUBLE )) == NULL) goto err101;
+      if( (error2 = newarray( idim, DOUBLE )) == SISL_NULL) goto err101;
       s1940( ocurve, eeps, ilend, irend, iopen, itmax, rc, 
 	    error2, &stat);
       if (stat < 0) goto error;
@@ -121,7 +121,7 @@ void s1963(pc,eeps,ilend,irend,iopen,itmax,rc,jstat)
 
   /* Set local tolerance */
 
-  if( (error1 = newarray(idim, DOUBLE)) == NULL) goto err101;
+  if( (error1 = newarray(idim, DOUBLE)) == SISL_NULL) goto err101;
 
   for (i=0; i<idim; i++)
     error1[i] = 0.5*eeps[i];
@@ -137,7 +137,7 @@ void s1963(pc,eeps,ilend,irend,iopen,itmax,rc,jstat)
   derive = newarray( idim * 2, DOUBLE );
   kp     = newarray( idim * km, DOUBLE );
   kder   = newarray( idim * km, DOUBLE );
-  if (derive == NULL || kp == NULL || kder == NULL) goto err101;
+  if (derive == SISL_NULL || kp == SISL_NULL || kder == SISL_NULL) goto err101;
 
   for(i=0; i<km; i++)
     {
@@ -161,7 +161,7 @@ void s1963(pc,eeps,ilend,irend,iopen,itmax,rc,jstat)
 
   /* Compute datareduction on the cubic hermite interpolant */
 
-  if( (error2 = newarray( idim, DOUBLE )) == NULL) goto err101;
+  if( (error2 = newarray( idim, DOUBLE )) == SISL_NULL) goto err101;
   s1940( ocurve, error1, ilend, irend, iopen, itmax, rc, 
 	error2, &stat);
   if (stat < 0) goto error;
@@ -204,16 +204,16 @@ void s1963(pc,eeps,ilend,irend,iopen,itmax,rc,jstat)
   out:
     /* Free allocated arrays */
 
-    if( error1 != NULL) freearray(error1);
-    if( error2 != NULL) freearray(error2);
-    if( epar   != NULL) freearray(epar);
-    if( derive != NULL) freearray(derive);
-    if( kp     != NULL) freearray(kp);
-    if( kder   != NULL) freearray(kder);
+    if( error1 != SISL_NULL) freearray(error1);
+    if( error2 != SISL_NULL) freearray(error2);
+    if( epar   != SISL_NULL) freearray(epar);
+    if( derive != SISL_NULL) freearray(derive);
+    if( kp     != SISL_NULL) freearray(kp);
+    if( kder   != SISL_NULL) freearray(kder);
 
     /* Free local SISL-curves */
 
-    if( ocurve != NULL) freeCurve(ocurve);
+    if( ocurve != SISL_NULL) freeCurve(ocurve);
 
     return;
 }

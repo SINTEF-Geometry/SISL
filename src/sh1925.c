@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1925.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1925.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -130,11 +130,11 @@ void sh1925(pc1,pc2,idim,ea,nstart,nstop,emxerr,el2err,
    double *sd = pc1->ecoef;
    double *stau = pc2->et;
    double *sc = pc2->ecoef;
-   double *stemp = NULL;
+   double *stemp = SISL_NULL;
    
    /* Allocate scratch for local array.  */
    
-   if ((stemp = newarray(idim,DOUBLE)) == NULL) goto err101;
+   if ((stemp = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
   
    /* Multiply the part of ec pointed to by kstart and kstop by the
       corresponding parts of the square matrix dtau(-1/2).   */
@@ -196,7 +196,7 @@ void sh1925(pc1,pc2,idim,ea,nstart,nstop,emxerr,el2err,
    out:
       /* Free scratch used for local array.  */
       
-      if (stemp != NULL) freearray(stemp);
+      if (stemp != SISL_NULL) freearray(stemp);
 	  
       return;
 }

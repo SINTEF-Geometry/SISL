@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: make3D.c,v 1.1 2001-03-19 15:13:48 afr Exp $
+ * $Id: make3D.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -68,7 +68,7 @@ void
   
   int kk1,kk2,kn1,kn2;  /* Orders and numbers of vertices              */
   double *st1,*st2,*scoef; /* Knots and vertices of input surface      */
-  double *s3coef=NULL;  /* 3-D coeff                                   */
+  double *s3coef=SISL_NULL;  /* 3-D coeff                                   */
   int kkm1,kkm2;        /* Orders minus 1                              */
   int kincre;           /* Number of doubles in first vertex direction */
   int ki,kj,kl,kstop;
@@ -89,7 +89,7 @@ void
 
   /* Allocate array for 3-D representation of surface */
   
-  if((s3coef = newarray(kn1*kn2*3,DOUBLE)) == NULL) goto err101;
+  if((s3coef = newarray(kn1*kn2*3,DOUBLE)) == SISL_NULL) goto err101;
   
   
   
@@ -147,7 +147,7 @@ void
   
   /* Make 3-D surface */
   
-  if(((*rsnew) = newSurf(kn1,kn2,kk1,kk2,st1,st2,s3coef,1,3,1)) == NULL) goto err101;
+  if(((*rsnew) = newSurf(kn1,kn2,kk1,kk2,st1,st2,s3coef,1,3,1)) == SISL_NULL) goto err101;
    
   goto out;
 

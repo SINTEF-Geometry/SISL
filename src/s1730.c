@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1730.c,v 1.2 1994-09-06 11:50:02 pfu Exp $
+ * $Id: s1730.c,v 1.3 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -82,12 +82,12 @@ void s1730(pc,rcnew,jstat)
   int kn=pc->in;         /* Number of the vertices in input curves.    */
   int kdim=pc->idim;     /* Dimensjon of the space in whice curve lies.*/
   int kn1;               /* Number of vertices in the new curve .      */
-  double *st=NULL;       /* The new knot-vector.                       */
-  double *sp=NULL;       /* To use in s1701.c                          */
-  double *salfa=NULL;    /* A line of the trans.-matrix.               */
-  double *scoef=NULL;    /* The new vertice.                           */
-  SISLCurve *qkreg = NULL;   /* Input curve made k-regular.            */
-  SISLCurve *q1=NULL;    /* Pointer to new curve-object.               */
+  double *st=SISL_NULL;       /* The new knot-vector.                       */
+  double *sp=SISL_NULL;       /* To use in s1701.c                          */
+  double *salfa=SISL_NULL;    /* A line of the trans.-matrix.               */
+  double *scoef=SISL_NULL;    /* The new vertice.                           */
+  SISLCurve *qkreg = SISL_NULL;   /* Input curve made k-regular.            */
+  SISLCurve *q1=SISL_NULL;    /* Pointer to new curve-object.               */
 
   double *rcoef;         /* Potential rational coefficients.           */
 
@@ -116,8 +116,8 @@ void s1730(pc,rcnew,jstat)
      line of the basic transformation matrix, and space for new knots
      to use in s1701.c */
 
-  if ((salfa=newarray(kk,double))==NULL) goto err101;
-  if ((sp=newarray(kk,double))==NULL) goto err101;
+  if ((salfa=newarray(kk,double))==SISL_NULL) goto err101;
+  if ((sp=newarray(kk,double))==SISL_NULL) goto err101;
 
   /* Find the number of vertices in the new curve. */
 
@@ -127,8 +127,8 @@ void s1730(pc,rcnew,jstat)
 
   /* Allocating the new arrays to the new curve. */
 
-  if ((st=newarray(kn1+kk,double))==NULL) goto err101;
-  if ((scoef=new0array(kn1*kdim,double))==NULL) goto err101;
+  if ((st=newarray(kn1+kk,double))==SISL_NULL) goto err101;
+  if ((scoef=new0array(kn1*kdim,double))==SISL_NULL) goto err101;
 
   /* Making the new knotvectors. */
 
@@ -161,7 +161,7 @@ void s1730(pc,rcnew,jstat)
 
   /* Allocating new curve-objects.*/
 
-  if ((q1=newCurve(kn1,kk,st,scoef,qkreg->ikind,qkreg->idim,2)) == NULL) goto err101;
+  if ((q1=newCurve(kn1,kk,st,scoef,qkreg->ikind,qkreg->idim,2)) == SISL_NULL) goto err101;
 
   /* Updating output. */
 
@@ -203,7 +203,7 @@ void s1730(pc,rcnew,jstat)
   /* Free local used memory. */
 
  out:
-  if (qkreg != NULL && qkreg != pc) freeCurve(qkreg);
+  if (qkreg != SISL_NULL && qkreg != pc) freeCurve(qkreg);
   if (salfa) freearray(salfa);
   if (sp) freearray(sp);
 }

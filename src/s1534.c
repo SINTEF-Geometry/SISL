@@ -140,8 +140,8 @@ void s1534(points,der10,der01,der11,im1,im2,idim,ipar,con1,con2,con3,
 {
   int kstat=0;        /* Status variable                             */
   int kpos=0;         /* Position of error                           */
-  double *par1=NULL;    /* Transposed positions (in rpos)              */
-  double *par2=NULL;    /* Transposed derivatives (in rder)            */
+  double *par1=SISL_NULL;    /* Transposed positions (in rpos)              */
+  double *par2=SISL_NULL;    /* Transposed derivatives (in rder)            */
   
   
   /* Check input */        
@@ -177,7 +177,7 @@ void s1534(points,der10,der01,der11,im1,im2,idim,ipar,con1,con2,con3,
     goto out;
   
   out:
-    if(par1 != NULL) freearray(par1);
-    if(par2 != NULL) freearray(par2);
+    if(par1 != SISL_NULL) freearray(par1);
+    if(par2 != SISL_NULL) freearray(par2);
     return;
 }

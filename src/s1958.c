@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1958.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1958.c,v 1.2 2001-03-19 15:58:58 afr Exp $
  *
  */
 
@@ -94,8 +94,8 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   double newdist,cldist;    /* Distances of edges from epoint.           */
   double enext[2];          /* Initial guess for iteration               */
   double estart[2],eend[2]; /* Parameter area for Newton iteration.      */
-  double *et1=NULL;         /* Knot vector in u direc.                   */
-  double *et2=NULL;         /* Knot vector in v direc.                   */
+  double *et1=SISL_NULL;         /* Knot vector in u direc.                   */
+  double *et2=SISL_NULL;         /* Knot vector in v direc.                   */
   int ik1;                  /* Order of curve in u direction.            */
   int ik2;                  /* Order of curve in v direction.            */
   int in1;                  /* No. control points of curve in u direec.  */
@@ -107,8 +107,8 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   double gpos[2];           /* Parameters of closest point on surface.   */
   double clgpos[2];         /* Current parameters of cl. pt. on surface. */
   double crvpar;            /* Parameter of closest point on an edge.    */
-  SISLPoint *ppoint=NULL;   /* epoint in SISLPoint form.                 */
-  SISLCurve *pcurve=NULL;   /* An edge of the surface.                   */
+  SISLPoint *ppoint=SISL_NULL;   /* epoint in SISLPoint form.                 */
+  SISLCurve *pcurve=SISL_NULL;   /* An edge of the surface.                   */
   
   /* Test input.  */
   
@@ -135,10 +135,10 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
 
   s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&cldist,&clkstat);
   if (kstat < 0) goto error;
-  if(pcurve != NULL)
+  if(pcurve != SISL_NULL)
   {
     freeCurve(pcurve);
-    pcurve = NULL;  
+    pcurve = SISL_NULL;  
   }
   clgpos[0] = et1[ik1-1];
   clgpos[1] = crvpar;
@@ -151,10 +151,10 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
 
   s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&newdist,&kstat);
   if (kstat < 0) goto error;
-  if(pcurve != NULL)
+  if(pcurve != SISL_NULL)
   {
     freeCurve(pcurve);
-    pcurve = NULL;
+    pcurve = SISL_NULL;
   }
   if(newdist < cldist)
   {
@@ -171,10 +171,10 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
 
   s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&newdist,&kstat);
   if (kstat < 0) goto error;
-  if(pcurve != NULL)
+  if(pcurve != SISL_NULL)
   {
     freeCurve(pcurve);
-    pcurve = NULL;
+    pcurve = SISL_NULL;
   }
 
   if(newdist < cldist)
@@ -192,7 +192,7 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
 
   s1957(pcurve,epoint,idim,aepsco,aepsge,&crvpar,&newdist,&kstat);
   if (kstat < 0) goto error;
-  if(pcurve != NULL) freeCurve(pcurve);
+  if(pcurve != SISL_NULL) freeCurve(pcurve);
 
   if(newdist < cldist)
   {
@@ -207,7 +207,7 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   /* Next, try the interior of the surface by Newton iteration. */
 
   ppoint = newPoint(epoint,idim,1);
-  if(ppoint == NULL) goto err101;
+  if(ppoint == SISL_NULL) goto err101;
 
   /* Find a good guess point based on finding the closest control
      point and its corresponding parameter values. */
@@ -287,7 +287,7 @@ void s1958(psurf,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   
   /* Free allocated space.  */
   
-  if (ppoint != NULL) freePoint(ppoint);
+  if (ppoint != SISL_NULL) freePoint(ppoint);
   
   return;
 }                                               

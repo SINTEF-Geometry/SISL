@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1359.c,v 1.2 1994-07-05 11:06:13 vsk Exp $
+ * $Id: s1359.c,v 1.3 2001-03-19 15:58:47 afr Exp $
  *
  */
 #define S1359
@@ -110,8 +110,8 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
   double tangle;      /* Arcus cosinus if tcos                               */
   double tdist;       /* Distance between start and end of current segment   */
   double tpar;        /* Parameter value at end of segment                   */
-  double *st = NULL;  /* Pointer to knot vector                              */
-  double *scoef=NULL; /* Pointer to vertices                                 */
+  double *st = SISL_NULL;  /* Pointer to knot vector                              */
+  double *scoef=SISL_NULL; /* Pointer to vertices                                 */
   double tmpval=aepsge;/* Maximal difference in x, y and z coordinate        */
   double max_dist;
   /* Allocate space for knots and vertices */
@@ -152,15 +152,15 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
   
   kn = 3*(inbinf-1) + 1;
   scoef = newarray(idim*kn,DOUBLE);
-  if (scoef == NULL) goto err101;
+  if (scoef == SISL_NULL) goto err101;
   
   st = newarray(kk+kn,DOUBLE);                                                  
-  if (st == NULL) goto err101;
+  if (st == SISL_NULL) goto err101;
   
   /* Make four first knots */
   if (ipar==0)
     {
-      epar[0] = DNULL;
+      epar[0] = DZERO;
     }
   
   st[0] = epar[0];
@@ -208,14 +208,14 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
       
       /* Find the actual angle by making the arcus tangens of this value */
       
-      if (tcos >= DNULL)             
+      if (tcos >= DZERO)             
 	tcos = MIN((double)1.0,tcos);
       else
 	tcos = MAX((double)-1.0,tcos);
       
       tangle = fabs(acos(tcos));
       
-      if (tangle < ANGULAR_TOLERANCE) tangle = DNULL;
+      if (tangle < ANGULAR_TOLERANCE) tangle = DZERO;
       
       tdist = s6dist(sprevp,scurp,idim);
       
@@ -223,8 +223,8 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
       
       
 /* UJK and VSK 24.10.90 */
-/*      if (DEQUAL(tangle,DNULL) || *sprevr < (double)-1.0) */
-      if (DEQUAL(tangle,DNULL) || *sprevr < DNULL)
+/*      if (DEQUAL(tangle,DZERO) || *sprevr < (double)-1.0) */
+      if (DEQUAL(tangle,DZERO) || *sprevr < DZERO)
         {
 	  /* Parallel tangents or infinit radius of curvature use 1/3 of
 	     the distance between the points as tangent length    */
@@ -238,7 +238,7 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
       
       /*  Make tangent length of end of segment */
       
-      if (DEQUAL(tangle,DNULL) || *scurr < DNULL)
+      if (DEQUAL(tangle,DZERO) || *scurr < DZERO)
         {
 	  /* Parallel tangents or infinit radius of curvature use 1/3 of
 	     the distance between the points as tangent length         */
@@ -315,7 +315,7 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
 	      tpar = fabs(epar[ki-1])*(double)0.1;
             }
 	  
-	  if (DEQUAL(tpar,DNULL))
+	  if (DEQUAL(tpar,DZERO))
             {
 	      tpar = (double)1.0;
             }
@@ -379,9 +379,9 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
   /* Make the curve */
   
   kpos = 1;
-  *rcurve = NULL;
+  *rcurve = SISL_NULL;
   *rcurve = newCurve(kn,kk,st,scoef,1,idim,1);
-  if (*rcurve == NULL) goto err101;
+  if (*rcurve == SISL_NULL) goto err101;
   
   /* Periodicity flag */
   if (kcycpos)
@@ -421,8 +421,8 @@ void s1359(egeo,aepsge,idim,inbinf,ipar,epar,rcurve,jstat)
  out:
   
   
-  if (st != NULL)    freearray(st);
-  if (scoef != NULL) freearray(scoef);
+  if (st != SISL_NULL)    freearray(st);
+  if (scoef != SISL_NULL) freearray(scoef);
   
   
   return;

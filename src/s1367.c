@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1367.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1367.c,v 1.2 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -135,7 +135,7 @@ void s1367(ps,aoffset,aepsge,idim,epar,ider,ilfs,ilft,eder,jstat)
   double utang[3];   /* Pointer to array containing the u tangent. */
   double vtang[3];   /* Pointer to array containing the v tangent. */
   double sdum[27];   /* Array used instead of allocation.                */
-  double *sder=NULL; /* Pointer to array containing the derivatives.     */
+  double *sder=SISL_NULL; /* Pointer to array containing the derivatives.     */
   
   if (idim !=3) goto err105;
   
@@ -152,10 +152,10 @@ void s1367(ps,aoffset,aepsge,idim,epar,ider,ilfs,ilft,eder,jstat)
   /* Set the answer to zero in case nothing is found,
      e.g. if ps is degenerate at the given point. */
 
-  for (ki=0;ki<knmb;ki++) eder[ki] = DNULL;
+  for (ki=0;ki<knmb;ki++) eder[ki] = DZERO;
 
 
-  if (DEQUAL(aoffset,DNULL))
+  if (DEQUAL(aoffset,DZERO))
     {
       /* Evaluate the surface (ps) at the parameter value spar.  */
       
@@ -207,7 +207,7 @@ void s1367(ps,aoffset,aepsge,idim,epar,ider,ilfs,ilft,eder,jstat)
       
       /*  Calculate angle between tangents */
       
-      if (tlen1 != DNULL && tlen2 != DNULL && tnorm != DNULL)
+      if (tlen1 != DZERO && tlen2 != DZERO && tnorm != DZERO)
         tang = tnorm/(tlen1*tlen2);
 
       

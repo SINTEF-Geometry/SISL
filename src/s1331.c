@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1331.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1331.c,v 1.2 2001-03-19 15:58:45 afr Exp $
  *
  */
 
@@ -247,8 +247,8 @@ void s1331(ep,eimpli,ideg,ider,gder,gnorm,jstat)
       for (ki=0;ki<4;ki++)
         {
 	  tsum1 = eimpli[ki+12];
-	  tsum2 = DNULL;
-	  tsum3 = DNULL;
+	  tsum2 = DZERO;
+	  tsum3 = DZERO;
 	  for (kj=0,kl=ki;kj<3;kj++,kl+=4)
             {
 	      tsum1 += eimpli[kl]*ep[kj];
@@ -491,7 +491,7 @@ void s1331(ep,eimpli,ideg,ider,gder,gnorm,jstat)
       tlenz = s6length(sz,3,&kstat);
       
       if (kstat<0) goto error;
-      if (DEQUAL(tlenz,DNULL)) tlenz =(double)1.0;
+      if (DEQUAL(tlenz,DZERO)) tlenz =(double)1.0;
       tlenz3 = tlenz*tlenz*tlenz;
       tlenz5 = tlenz3*tlenz*tlenz;
       

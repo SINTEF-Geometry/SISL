@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1024.c,v 1.2 1994-11-28 11:47:10 pfu Exp $
+ * $Id: s1024.c,v 1.3 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -78,7 +78,7 @@ void s1024(center, axis, equator, minor_radius, start_minor, end_minor,
 *
 * WRITTEN BY : Johannes Kaasa, SI, Oslo, Norway, Jan. 93
 * REVISED BY : Christophe Rene Birkeland, SINTEF, Oslo, May 1993
-*              (Testing on NULL-pointers atfer allocations)
+*              (Testing on SISL_NULL-pointers atfer allocations)
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov, 1994. Added check on
 *              input parameters to avoid NaN results.
 *
@@ -92,9 +92,9 @@ void s1024(center, axis, equator, minor_radius, start_minor, end_minor,
   int in2;              /* Number of vertices around the major circle.    */
   int ik1 = 3;          /* Order around the minor circle.                 */
   int ik2 = 3;          /* Order around the major circle.                 */
-  double *et1 = NULL;   /* Knot vector around the minor circle.           */
-  double *et2 = NULL;   /* Knot vector around the major circle.           */
-  double *rcoef = NULL; /* Coefficients of the torus.                     */
+  double *et1 = SISL_NULL;   /* Knot vector around the minor circle.           */
+  double *et2 = SISL_NULL;   /* Knot vector around the major circle.           */
+  double *rcoef = SISL_NULL; /* Coefficients of the torus.                     */
   int kind = 2;         /* Rational Bspline surface.                      */
   double weight;        /* Rational weight.                               */
   double major_radius;  /* Radius of the major circle.                    */
@@ -112,7 +112,7 @@ void s1024(center, axis, equator, minor_radius, start_minor, end_minor,
 
   /* Do necessary initiation and allocation. */
 
-  *torus = NULL;
+  *torus = SISL_NULL;
 
   if ( start_minor < 1  ||  start_minor > 4  ||
        end_minor < 1  ||  end_minor > 4  ||
@@ -138,9 +138,9 @@ void s1024(center, axis, equator, minor_radius, start_minor, end_minor,
     z_axis[ki] = axis[ki]/norm;
   s6crss(z_axis, x_axis, y_axis);
 
-  if ( (et1 = newarray(in1 + ik1, DOUBLE)) == NULL ) goto err101;
-  if ( (et2 = newarray(in2 + ik2, DOUBLE)) == NULL ) goto err101;
-  if ( (rcoef = newarray(4*in1*in2, DOUBLE)) == NULL ) goto err101;
+  if ( (et1 = newarray(in1 + ik1, DOUBLE)) == SISL_NULL ) goto err101;
+  if ( (et2 = newarray(in2 + ik2, DOUBLE)) == SISL_NULL ) goto err101;
+  if ( (rcoef = newarray(4*in1*in2, DOUBLE)) == SISL_NULL ) goto err101;
 
   /* Initiate the knot vectors. */
 
@@ -237,7 +237,7 @@ void s1024(center, axis, equator, minor_radius, start_minor, end_minor,
   }
 
   (*torus) = newSurf(in1, in2, ik1, ik2, et1, et2, rcoef, kind, 3, 1);
-  if ( (*torus) == NULL ) goto err101;
+  if ( (*torus) == SISL_NULL ) goto err101;
 
   *stat = 0;
   goto out;
@@ -269,9 +269,9 @@ error:
 
 out:
 
-  if ( et1 != NULL ) freearray(et1);
-  if ( et2 != NULL ) freearray(et2);
-  if ( rcoef != NULL ) freearray(rcoef);
+  if ( et1 != SISL_NULL ) freearray(et1);
+  if ( et2 != SISL_NULL ) freearray(et2);
+  if ( rcoef != SISL_NULL ) freearray(rcoef);
 
   return;
 }

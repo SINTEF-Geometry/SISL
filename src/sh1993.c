@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1993.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1993.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -71,7 +71,7 @@ void sh1993(c1,aepsge,jstat)
   double tmax;
   double tmin;
   double tdiff;
-  double *scoef=NULL;
+  double *scoef=SISL_NULL;
   /* ----------------------------------------------------------- */
   
   /* Init to  simple case. */
@@ -88,11 +88,11 @@ void sh1993(c1,aepsge,jstat)
   /* Run through vertices to find
      intervall of first derivative. */
   
-  for (tdiff=DNULL, ki=1, scoef=c1->ecoef; ki<kn; ki+=kj, scoef+=kj)
+  for (tdiff=DZERO, ki=1, scoef=c1->ecoef; ki<kn; ki+=kj, scoef+=kj)
   {
      for (kj=1; ki+kj<=kn; kj++)
      {
-	if (tdiff*(*(scoef+kj) - *(scoef+kj-1)) < DNULL)
+	if (tdiff*(*(scoef+kj) - *(scoef+kj-1)) < DZERO)
 	   {
 	      scoef += (kj-1);
 	      ki += (kj-1);
@@ -109,9 +109,9 @@ void sh1993(c1,aepsge,jstat)
   
   
   /* Simple case when no genuin zero's of first derivative. */
-  if (kbez && (tmin*tmax >=DNULL)) 
+  if (kbez && (tmin*tmax >=DZERO)) 
     *jstat = 1;
-  else if (tmin*tmax > DNULL) 
+  else if (tmin*tmax > DZERO) 
     *jstat = 1;
   else if (tmin == tmax)
     *jstat = 1;

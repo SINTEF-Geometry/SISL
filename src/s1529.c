@@ -111,8 +111,8 @@ void s1529(ep,eder10,eder01,eder11,
 {
   int kstat=0;        /* Status variable                             */
   int kpos=0;         /* Position of error                           */
-  double *par1=NULL;    /* Transposed positions (in rpos)              */
-  double *par2=NULL;    /* Transposed derivatives (in rder)            */
+  double *par1=SISL_NULL;    /* Transposed positions (in rpos)              */
+  double *par2=SISL_NULL;    /* Transposed derivatives (in rder)            */
   
   
   /* Check input */        
@@ -149,7 +149,7 @@ void s1529(ep,eder10,eder01,eder11,
     goto out;
   
   out:
-    if(par1 != NULL) freearray(par1);
-    if(par2 != NULL) freearray(par2);
+    if(par1 != SISL_NULL) freearray(par1);
+    if(par2 != SISL_NULL) freearray(par2);
     return;
 }

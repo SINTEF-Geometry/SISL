@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6existbox.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6existbox.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -67,7 +67,7 @@ int s6existbox(pbox,itype,aepsge)
 *********************************************************************
 */                                     
 {
-   if (pbox->e2min[itype] == NULL) return(0);  /* No box is made. */
+   if (pbox->e2min[itype] == SISL_NULL) return(0);  /* No box is made. */
    
    if (itype != 0 && DNEQUAL(pbox->etol[itype],aepsge))
       return(-1);  /* Box exist, but with another size of the expansion. */

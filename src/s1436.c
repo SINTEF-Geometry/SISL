@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1436.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1436.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -87,8 +87,8 @@ void s1436(ps1,apar,rcurve,jstat)
                          = 4 : Rational Bezier curve.                 */
   int kdim;
   double *scoef;     /* Pointer to vertices.                          */
-  double *scurve = NULL; /* Vertices of constant parameter curve.     */
-  SISLCurve *qc = NULL;  /* Pointer to intermediate curve.         */
+  double *scurve = SISL_NULL; /* Vertices of constant parameter curve.     */
+  SISLCurve *qc = SISL_NULL;  /* Pointer to intermediate curve.         */
 
   /* Prepare for rational description. */
 
@@ -107,11 +107,11 @@ void s1436(ps1,apar,rcurve,jstat)
   /* Create the curve describing the surface as a curve.  */
   
   if ((qc = newCurve(ps1->in2,ps1->ik2,ps1->et2,scoef,1,
-		     ps1->in1*kdim,0)) == NULL) goto err101;
+		     ps1->in1*kdim,0)) == SISL_NULL) goto err101;
   
   /* Allocate space for value of curve.  */
   
-  if ((scurve = newarray(ps1->in1*kdim,double)) == NULL) goto err101;
+  if ((scurve = newarray(ps1->in1*kdim,double)) == SISL_NULL) goto err101;
   
   /* Evaluate this curve at given parameter value.  */
   
@@ -121,7 +121,7 @@ void s1436(ps1,apar,rcurve,jstat)
   /* Create constant parameter curve.  */
   
   *rcurve = newCurve(ps1->in1,ps1->ik1,ps1->et1,scurve,kind,ps1->idim,1);
-  if (*rcurve == NULL) goto err101;
+  if (*rcurve == SISL_NULL) goto err101;
   
   /* Set periodicity flag.      */
 	
@@ -148,8 +148,8 @@ void s1436(ps1,apar,rcurve,jstat)
   
   /* Free space occupied by local arrays.  */
   
-  if (scurve != NULL) freearray(scurve);
-  if (qc != NULL) freeCurve(qc);
+  if (scurve != SISL_NULL) freearray(scurve);
+  if (qc != SISL_NULL) freeCurve(qc);
   
   return;
 }

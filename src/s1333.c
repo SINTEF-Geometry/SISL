@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1333.c,v 1.4 1994-08-02 11:21:08 pfu Exp $
+ * $Id: s1333.c,v 1.5 2001-03-19 15:58:45 afr Exp $
  *
  */
 
@@ -107,18 +107,18 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
   int ktype;                 /* Kind of interpolation condition.      */
   int kopen;                 /* Open/closed parameter in curve direction. */
   SISLCurve *qc;             /* Pointer to curve representing surface */
-  int *lder = NULL;	     /* Derivative indicators from s1915. */
-  double *spar=NULL; 	     /* Param. values of point conditions. */
-  double *spar2=NULL; 	     /* Parameter values from s1915. */
-  double *sknot1=NULL;       /* Knot vector.                 */
-  double *scoef2=NULL;       /* Pointer to vertices expressed in same basis  */
+  int *lder = SISL_NULL;	     /* Derivative indicators from s1915. */
+  double *spar=SISL_NULL; 	     /* Param. values of point conditions. */
+  double *spar2=SISL_NULL; 	     /* Parameter values from s1915. */
+  double *sknot1=SISL_NULL;       /* Knot vector.                 */
+  double *scoef2=SISL_NULL;       /* Pointer to vertices expressed in same basis  */
   double tstpar;             /* Parameter value of last curve                */
   int kstat = 0;             /* Status variable. */
   int kpos = 0;              /* Position of error. */
   int knbpar;                /* Number of parameter values produced          */
   int kdimcrv;               /* kdim multiplied with number of vertices kn1  */
   int kcont;                 /* Continuity at end of curves */
-  double *etyp = NULL;
+  double *etyp = SISL_NULL;
 
 /* -> new statement guen & ujk Thu Jul  2 14:59:05 MESZ 1992 */
 
@@ -136,7 +136,7 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
 /* -> guen & ujk Wed Jul  1 17:06:46 MESZ 1992 */
 
   etyp = newarray (inbcrv, DOUBLE);
-  if (etyp == NULL)
+  if (etyp == SISL_NULL)
     goto err101;
 /* <- guen & ujk Wed Jul  1 17:06:46 MESZ 1992 */
 
@@ -194,7 +194,7 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
     }
 
   spar = newarray(knbcrv+1,DOUBLE);
-  if (spar==NULL) goto err101;
+  if (spar==SISL_NULL) goto err101;
 
   /*  Only copy parameter values of point conditions */
 
@@ -231,7 +231,7 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
 
   for (ki=0; ki < inbcrv; ki++) etyp[ki] = (double)nctyp[ki];
 
-  *gpar = NULL;  /* PFU 02/08-1994 */
+  *gpar = SISL_NULL;  /* PFU 02/08-1994 */
   s1358(scoef2,knbcrv,kdimcrv,etyp,spar,kcnsta,kcnend,iopen,iord2,astpar,
 	&tstpar,&qc,gpar,&knbpar,&kstat);
   if (kstat<0) goto error;
@@ -249,7 +249,7 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
   kcopy = 1;
   *rsurf = newSurf(kn1,qc->in,kord1,qc->ik,sknot1,qc->et,qc->ecoef,
 		   kind,kdim,kcopy);
-  if (*rsurf == NULL) goto err101;
+  if (*rsurf == SISL_NULL) goto err101;
 
   /* Copy cuopen flag from curve */
   (*rsurf)->cuopen_2 = qc->cuopen;
@@ -316,13 +316,13 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
 
   /* Free allocated scratch  */
 
-  if (sknot1 != NULL) freearray(sknot1);
-  if (scoef2 != NULL) freearray(scoef2);
-  if (spar2 != NULL) freearray(spar2);
-  if (lder != NULL) freearray(lder);
+  if (sknot1 != SISL_NULL) freearray(sknot1);
+  if (scoef2 != SISL_NULL) freearray(scoef2);
+  if (spar2 != SISL_NULL) freearray(spar2);
+  if (lder != SISL_NULL) freearray(lder);
 
 /* -> added, guen & ujk Wed Jul  1 18:48:27 MESZ 1992 */
-  if (etyp != NULL)
+  if (etyp != SISL_NULL)
     freearray (etyp);
 /* <- added, guen & ujk Wed Jul  1 18:48:27 MESZ 1992 */
 

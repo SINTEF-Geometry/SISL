@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1858.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1858.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -103,16 +103,16 @@ void sh1858(ps1,pc1,aepsco,aepsge,trackflag,jtrack,wtrack,jpt,
 *********************************************************************
 */
 {            
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int kstat = 0;                 /* Local status variable.                   */
   int kpos = 0;                  /* Position of error.                       */
-  SISLObject *qo1 = NULL;            /* Object containing first curve in 
+  SISLObject *qo1 = SISL_NULL;            /* Object containing first curve in 
 				    the intersection.                        */
-  SISLObject *qo2 = NULL;            /* Object containing second curve in 
+  SISLObject *qo2 = SISL_NULL;            /* Object containing second curve in 
 				    the intersection.                        */
-  SISLIntdat *qintdat = NULL;        /* Structure holding the intersection data. */
+  SISLIntdat *qintdat = SISL_NULL;        /* Structure holding the intersection data. */
   int      ksurf=0;         /* Dummy number of Intsurfs. */
-  SISLIntsurf **wsurf=NULL;    /* Dummy array of Intsurfs. */
+  SISLIntsurf **wsurf=SISL_NULL;    /* Dummy array of Intsurfs. */
   int kdeg=0;
   
   /* 
@@ -131,11 +131,11 @@ void sh1858(ps1,pc1,aepsco,aepsge,trackflag,jtrack,wtrack,jpt,
    * --------------------------------------------------------
    */
 
-  if ((qo1 = newObject(SISLSURFACE)) == NULL) goto err101;
+  if ((qo1 = newObject(SISLSURFACE)) == SISL_NULL) goto err101;
   qo1 -> s1 = ps1;
   qo1 -> o1 = qo1;
   
-  if ((qo2 = newObject(SISLCURVE)) == NULL) goto err101;
+  if ((qo2 = newObject(SISLCURVE)) == SISL_NULL) goto err101;
   qo2 -> c1 = pc1;
   qo2 -> o1 = qo2;
   
@@ -218,11 +218,11 @@ void sh1858(ps1,pc1,aepsco,aepsge,trackflag,jtrack,wtrack,jpt,
 
   if (qo1) 
     {
-      qo1 -> s1 = NULL;  freeObject(qo1);
+      qo1 -> s1 = SISL_NULL;  freeObject(qo1);
     }
   if (qo2) 
     {
-      qo2 -> c1 = NULL;  freeObject(qo2);
+      qo2 -> c1 = SISL_NULL;  freeObject(qo2);
     }
   if (qintdat) freeIntdat(qintdat);
 

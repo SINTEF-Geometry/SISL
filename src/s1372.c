@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1372.c,v 1.3 1994-11-14 14:28:50 pfu Exp $
+ * $Id: s1372.c,v 1.4 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -99,8 +99,8 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
   int kpos = 0;            /* Position of error.                           */
   int trackflag = 0;
   int jtrack;
-  int *pretop=NULL;
-  SISLTrack **wtrack=NULL;
+  int *pretop=SISL_NULL;
+  SISLTrack **wtrack=SISL_NULL;
 
 
   if ( idim == 2 )
@@ -111,7 +111,7 @@ void s1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
 	   trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
   /*
    * Intersections found.

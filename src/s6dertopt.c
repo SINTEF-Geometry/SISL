@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6dertopt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6dertopt.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -80,13 +80,13 @@ void s6dertopt(eder,ntype,inpt,idim,epoint,jstat)
    int kord;             /* Order of Bezier segment.                */
    int kder;             /* Order of derivative condition.          */
    int ksgn;             /* Indicates endpoint of Bezier segment.   */
-   int *lpiv = NULL;     /* Pivot array.                            */
-   double *sc = NULL;    /* Matrix of equation system.              */
-   double *sd = NULL;    /* Right side of equation system.          */
+   int *lpiv = SISL_NULL;     /* Pivot array.                            */
+   double *sc = SISL_NULL;    /* Matrix of equation system.              */
+   double *sd = SISL_NULL;    /* Right side of equation system.          */
    double *s1;           /* Pointer into matrix of equation system. */
    double *spt;          /* Pointer to interpolation condition.     */
-   double *sdum1 = NULL; /* Help array.                             */
-   double *sdum2 = NULL; /* Help array.                             */
+   double *sdum1 = SISL_NULL; /* Help array.                             */
+   double *sdum2 = SISL_NULL; /* Help array.                             */
    
    /* Test if the last condition is a point. */
    
@@ -99,14 +99,14 @@ void s6dertopt(eder,ntype,inpt,idim,epoint,jstat)
    /* Allocate scratch for equation system. Make sure that the arrays
       are large enough.  */
    
-   if ((sc = newarray(inpt*inpt,DOUBLE)) == NULL) goto err101;
-   if ((sd = newarray(inpt,DOUBLE)) == NULL) goto err101;
-   if ((lpiv = newarray(inpt,INT)) == NULL) goto err101;
+   if ((sc = newarray(inpt*inpt,DOUBLE)) == SISL_NULL) goto err101;
+   if ((sd = newarray(inpt,DOUBLE)) == SISL_NULL) goto err101;
+   if ((lpiv = newarray(inpt,INT)) == SISL_NULL) goto err101;
    
    /* Allocate scratch for local help arrays. */
    
-   if ((sdum1 = newarray(idim,DOUBLE)) == NULL) goto err101;
-   if ((sdum2 = newarray(idim,DOUBLE)) == NULL) goto err101;
+   if ((sdum1 = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
+   if ((sdum2 = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Traverse interpolation conditions. */
    
@@ -129,7 +129,7 @@ void s6dertopt(eder,ntype,inpt,idim,epoint,jstat)
 	{
 	   /* Set line of matrix to zero.  */
 	   
-	   for (kh=0; kh<kord; kh++) s1[kh] = DNULL;
+	   for (kh=0; kh<kord; kh++) s1[kh] = DZERO;
 	   
 	   /* Fetch order of differentiation and endpoint of Bezier
 	      segment.  */
@@ -230,11 +230,11 @@ void s6dertopt(eder,ntype,inpt,idim,epoint,jstat)
    out :
       /* Free scratch occupied by local arrays. */
       
-      if (sc != NULL) freearray(sc);
-      if (sd != NULL) freearray(sd);
-      if (lpiv != NULL) freearray(lpiv);
-      if (sdum1 != NULL) freearray(sdum1);			
-      if (sdum2 != NULL) freearray(sdum2);
+      if (sc != SISL_NULL) freearray(sc);
+      if (sd != SISL_NULL) freearray(sd);
+      if (lpiv != SISL_NULL) freearray(lpiv);
+      if (sdum1 != SISL_NULL) freearray(sdum1);			
+      if (sdum2 != SISL_NULL) freearray(sdum2);
 			 
       return;
 }

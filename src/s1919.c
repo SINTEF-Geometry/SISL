@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1919.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1919.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -69,7 +69,7 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
 *********************************************************************
 */
 {
-  SISLCurve *tcurve = NULL;	/* Temporary curve. */
+  SISLCurve *tcurve = SISL_NULL;	/* Temporary curve. */
   int knh;			/* Local number of verticews. */
   int left;			/* Used when calling s1221 */
   int pos, pos2;		/* Used for efficent adressing of arrays. */
@@ -81,13 +81,13 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
   double tfak;
   double tval1;			/* Adjusted parameter values. */
   double tval2;
-  double *kpar = NULL;		/* Used when calculating parametrization. */
-  int *kder = NULL;
-  double *kpc = NULL;		/* Points on previous curve. */
-  double *kdc = NULL;		/* Points on derivative curve. */
-  double *kcc = NULL;		/* Points on current curve. */
-  double *kfc = NULL;		/* Points on following curve. */
-  double *epd = NULL;		/* Vertices of the derivative curve. */
+  double *kpar = SISL_NULL;		/* Used when calculating parametrization. */
+  int *kder = SISL_NULL;
+  double *kpc = SISL_NULL;		/* Points on previous curve. */
+  double *kdc = SISL_NULL;		/* Points on derivative curve. */
+  double *kcc = SISL_NULL;		/* Points on current curve. */
+  double *kfc = SISL_NULL;		/* Points on following curve. */
+  double *epd = SISL_NULL;		/* Vertices of the derivative curve. */
   int kstat = 0;
   int kpos = 0;
 
@@ -110,16 +110,16 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
   /* Allocate temporary arrays. */
 
   kpc = newarray (idim * in, DOUBLE);
-  if (kpc == NULL)
+  if (kpc == SISL_NULL)
     goto err101;
   kcc = newarray (idim * in, DOUBLE);
-  if (kcc == NULL)
+  if (kcc == SISL_NULL)
     goto err101;
   kdc = newarray (idim * in, DOUBLE);
-  if (kdc == NULL)
+  if (kdc == SISL_NULL)
     goto err101;
   kfc = newarray (idim * in, DOUBLE);
-  if (kfc == NULL)
+  if (kfc == SISL_NULL)
     goto err101;
 
 
@@ -128,7 +128,7 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
       /* Caculate interpolation points on previous curve. */
 
       tcurve = newCurve (in, ik, et, prev, 1, idim, 1);
-      if (tcurve == NULL)
+      if (tcurve == SISL_NULL)
 	goto err101;
 
       left = 0;
@@ -138,14 +138,14 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
 	  if (kstat < 0)
 	    goto error;
 	}
-      if (tcurve != NULL)
+      if (tcurve != SISL_NULL)
 	freeCurve (tcurve);
     }
 
   /* Caculate interpolation points on current curve. */
 
   tcurve = newCurve (in, ik, et, curr, 1, idim, 1);
-  if (tcurve == NULL)
+  if (tcurve == SISL_NULL)
     goto err101;
 
   left = 0;
@@ -155,14 +155,14 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
       if (kstat < 0)
 	goto error;
     }
-  if (tcurve != NULL)
+  if (tcurve != SISL_NULL)
     freeCurve (tcurve);
 
 
   /* Caculate interpolation points on derivative curve. */
 
   tcurve = newCurve (in, ik, et, deriv, 1, idim, 1);
-  if (tcurve == NULL)
+  if (tcurve == SISL_NULL)
     goto err101;
 
   left = 0;
@@ -172,7 +172,7 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
       if (kstat < 0)
 	goto error;
     }
-  if (tcurve != NULL)
+  if (tcurve != SISL_NULL)
     freeCurve (tcurve);
 
 
@@ -181,7 +181,7 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
       /* Caculate interpolation points on following curve. */
 
       tcurve = newCurve (in, ik, et, follow, 1, idim, 1);
-      if (tcurve == NULL)
+      if (tcurve == SISL_NULL)
 	goto err101;
 
       left = 0;
@@ -191,7 +191,7 @@ s1919 (et, prev, curr, deriv, follow, in, ik, idim, iip, iif, ap, ac, af, jstat)
 	  if (kstat < 0)
 	    goto error;
 	}
-      if (tcurve != NULL)
+      if (tcurve != SISL_NULL)
 	freeCurve (tcurve);
     }
 
@@ -291,19 +291,19 @@ error:
   goto out;
 
 out:
-  if (epd != NULL)
+  if (epd != SISL_NULL)
     freearray (epd);
-  if (kpc != NULL)
+  if (kpc != SISL_NULL)
     freearray (kpc);
-  if (kcc != NULL)
+  if (kcc != SISL_NULL)
     freearray (kcc);
-  if (kdc != NULL)
+  if (kdc != SISL_NULL)
     freearray (kdc);
-  if (kfc != NULL)
+  if (kfc != SISL_NULL)
     freearray (kfc);
-  if (kpar != NULL)
+  if (kpar != SISL_NULL)
     freearray (kpar);
-  if (kder != NULL)
+  if (kder != SISL_NULL)
     freearray (kder);
 
   return;

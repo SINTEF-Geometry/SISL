@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1022.c,v 1.2 1994-11-17 14:05:38 pfu Exp $
+ * $Id: s1022.c,v 1.3 2001-03-19 15:58:41 afr Exp $
  *
  */
 
@@ -187,7 +187,7 @@ void s1022(bottom_pos, bottom_axis, ellipse_ratio, axis_dir,
   }
 
   (*cone) = newSurf(in1, in2, ik1, ik2, et1, et2, rcoef, kind, 3, 1);
-  if ((*cone) == NULL) goto err101;
+  if ((*cone) == SISL_NULL) goto err101;
 
   *stat = 0;
   goto out;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1905.c,v 1.2 1997-01-07 14:16:47 jka Exp $
+ * $Id: s1905.c,v 1.3 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -89,8 +89,8 @@ s1905 (econd1, ntype1, inpt1, ik, idim, iopen, gcond2, mtype2, jnpt2, jstat)
   int ktype;			/* Kind of interpolation condition.       */
   int kneg;			/* Indicates negative type indicator.     */
   int kder;			/* Order of differentiation.              */
-  int *lder = NULL;		/* Kind of derivative.                    */
-  double *sdum = NULL;		/* Help array.                            */
+  int *lder = SISL_NULL;		/* Kind of derivative.                    */
+  double *sdum = SISL_NULL;		/* Help array.                            */
   double tdist;                 /* Distance between first and last point. */
   double tref;                  /* Referance value.                       */
 
@@ -100,16 +100,16 @@ s1905 (econd1, ntype1, inpt1, ik, idim, iopen, gcond2, mtype2, jnpt2, jstat)
   /* Allocate scratch for output arrays. Make sure that the arrays
      are large enough.  */
 
-  if ((*gcond2 = newarray (kmaxpt * idim, DOUBLE)) == NULL)
+  if ((*gcond2 = newarray (kmaxpt * idim, DOUBLE)) == SISL_NULL)
     goto err101;
-  if ((*mtype2 = newarray (kmaxpt, INT)) == NULL)
+  if ((*mtype2 = newarray (kmaxpt, INT)) == SISL_NULL)
     goto err101;
 
   /* Allocate scratch for local arrays.  */
 
-  if ((lder = new0array (ik, INT)) == NULL)
+  if ((lder = new0array (ik, INT)) == SISL_NULL)
     goto err101;
-  if ((sdum = newarray (idim, DOUBLE)) == NULL)
+  if ((sdum = newarray (idim, DOUBLE)) == SISL_NULL)
     goto err101;
 
 
@@ -280,10 +280,10 @@ s1905 (econd1, ntype1, inpt1, ik, idim, iopen, gcond2, mtype2, jnpt2, jstat)
   /* Adjust size of output arrays.  */
 
   *gcond2 = increasearray (*gcond2, knpt * idim, DOUBLE);
-  if (*gcond2 == NULL)
+  if (*gcond2 == SISL_NULL)
     goto err101;
   *mtype2 = increasearray (*mtype2, knpt, INT);
-  if (*mtype2 == NULL)
+  if (*mtype2 == SISL_NULL)
     goto err101;
 
   /* Conditions adjusted.  */
@@ -302,9 +302,9 @@ err101:
 out:
   /* Free scratch occupied by local array. */
 
-  if (lder != NULL)
+  if (lder != SISL_NULL)
     freearray (lder);
-  if (sdum != NULL)
+  if (sdum != SISL_NULL)
     freearray (sdum);
 
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6addcurve.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6addcurve.c,v 1.2 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -100,13 +100,13 @@ void s6addcurve(pc1,pc2,isign,rcurve,jstat)
   int kcopy = 1;         /* Copy arrays when creating new curve.      */
   double tmin1,tmax1;    /* Parameter interval of first input curve.  */
   double tmin2,tmax2;    /* Parameter interval of second input curve. */
-  double *st = NULL;     /* Knot vector of second curve.              */
-  double *stau = NULL;   /* Knot vector of output curve.              */
-  double *scoef = NULL;  /* Vertices of input curves represented in 
+  double *st = SISL_NULL;     /* Knot vector of second curve.              */
+  double *stau = SISL_NULL;   /* Knot vector of output curve.              */
+  double *scoef = SISL_NULL;  /* Vertices of input curves represented in 
 			    the same knot vector, then of output curve. */
   SISLCurve *ucurves[2];     /* Local pointer array to input curves.      */
   
-  ucurves[0] = ucurves[1] = NULL;
+  ucurves[0] = ucurves[1] = SISL_NULL;
   
   /* Test input.  */
 
@@ -122,7 +122,7 @@ void s6addcurve(pc1,pc2,isign,rcurve,jstat)
   
   /* Allocate scratch for local knot vector.  */
 
-  if ((st = newarray(kknot2,DOUBLE)) == NULL) goto err101;
+  if ((st = newarray(kknot2,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Fetch endparameter values of the input curves.  */
    
@@ -162,7 +162,7 @@ void s6addcurve(pc1,pc2,isign,rcurve,jstat)
   
   /* Present the sum/difference as a curve.  */
 
-  if ((*rcurve = newCurve(ktau,korder,stau,scoef,kkind,kdim,kcopy)) == NULL)
+  if ((*rcurve = newCurve(ktau,korder,stau,scoef,kkind,kdim,kcopy)) == SISL_NULL)
     goto err101;
   
   (*rcurve)->cuopen = kopen = MAX(pc1->cuopen,pc2->cuopen);
@@ -204,11 +204,11 @@ void s6addcurve(pc1,pc2,isign,rcurve,jstat)
 
     /* Free scratch occupied by local arrays.  */
 
-    if (st != NULL) freearray(st);
-  if (stau != NULL) freearray(stau);
-  if (scoef != NULL) freearray(scoef);
-  if (ucurves[0] != NULL) freeCurve(ucurves[0]);		     
-  if (ucurves[1] != NULL) freeCurve(ucurves[1]);		     
+    if (st != SISL_NULL) freearray(st);
+  if (stau != SISL_NULL) freearray(stau);
+  if (scoef != SISL_NULL) freearray(scoef);
+  if (ucurves[0] != SISL_NULL) freeCurve(ucurves[0]);		     
+  if (ucurves[1] != SISL_NULL) freeCurve(ucurves[1]);		     
   
   return;
 }

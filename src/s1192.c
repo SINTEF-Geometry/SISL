@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1192.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1192.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -83,9 +83,9 @@ void s1192(po,aepsge,jstat)
     {
       if (po->p1->idim != 1) goto err105;
       
-      if (po->p1->pbox == NULL)
+      if (po->p1->pbox == SISL_NULL)
 	{
-	  if ((po->p1->pbox = newbox(po->p1->idim))==NULL)
+	  if ((po->p1->pbox = newbox(po->p1->idim))==SISL_NULL)
 	    goto err101;
 	  
 	  s1192_s9mbox(po->p1->ecoef,1,1,aepsge,
@@ -99,9 +99,9 @@ void s1192(po,aepsge,jstat)
     if (po -> iobj == SISLCURVE)
       {
 	if (po->c1->idim != 1) goto err105;
-	if (po->c1->pbox == NULL)
+	if (po->c1->pbox == SISL_NULL)
 	  {
-	    if ((po->c1->pbox = newbox(po->c1->idim))==NULL)
+	    if ((po->c1->pbox = newbox(po->c1->idim))==SISL_NULL)
 	      goto err101;
 	    
 	    s1192_s9mbox(po->c1->ecoef,po->c1->in,1,aepsge,
@@ -114,9 +114,9 @@ void s1192(po,aepsge,jstat)
       if (po -> iobj == SISLSURFACE)
 	{
 	  if (po->s1->idim != 1) goto err105;
-	  if (po->s1->pbox == NULL)
+	  if (po->s1->pbox == SISL_NULL)
 	    {
-	      if ((po->s1->pbox = newbox(po->s1->idim))==NULL)
+	      if ((po->s1->pbox = newbox(po->s1->idim))==SISL_NULL)
 		goto err101;
 	      
 	      s1192_s9mbox(po->s1->ecoef,po->s1->in1,po->s1->in2,aepsge,

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1236.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1236.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -81,7 +81,7 @@ void s1236(et,in,ik,inpar,epar,jstat)
   double tval;     /* Value of current break point.                      */
   double tdist;    /* Distance between two parameter values.             */
   double *spar;    /* Pointer used to traverse epar.                     */
-  double *sbreak = NULL;  /* Array containing break points.              */
+  double *sbreak = SISL_NULL;  /* Array containing break points.              */
   
   /* Test input.  */
   
@@ -167,7 +167,7 @@ void s1236(et,in,ik,inpar,epar,jstat)
   
   /* Free space occupied by local array.  */
   
-  if (sbreak != NULL) freearray(sbreak);
+  if (sbreak != SISL_NULL) freearray(sbreak);
   
   return;
 }

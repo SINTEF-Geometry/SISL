@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1786.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1786.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -99,7 +99,7 @@ sh1786 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
   SISLIntpt *uintpt[2];		/* Array storing new intersection points.  */
   double *ret_val;		/* Pointer to geo data from sh6getgeom     */
   double *ret_norm;		/* Pointer to geo data from sh6getgeom     */
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   double dist;                  /* Distance from curve to point.           */
   double tot_ang;               /* Sum of angles between curve deriv. and 1*/
   int i;                        /* Loop variable.                          */
@@ -161,7 +161,7 @@ sh1786 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 
   stang1[0] = (double)1.0;
   stang2[0] = (double)1.0;
-  stang2[1] = DNULL;
+  stang2[1] = DZERO;
   tot_ang = (double)0.0;
 
   for(i=0; i<kdim; i++)
@@ -195,7 +195,7 @@ sh1786 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	       make_hp = TRUE;
 	      for (ki = kleft - kk + 1; ki < kn; ki++)
 		{
-		  for (tpar = DNULL, kj = ki + 1; kj < ki + kk; kj++)
+		  for (tpar = DZERO, kj = ki + 1; kj < ki + kk; kj++)
 		    tpar += st[kj];
 		  tpar /= (double) (kk - 1);
 
@@ -219,10 +219,10 @@ sh1786 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	      /* Create help point.  */
 	       
 	      spar[0] = tpar0;
-	      uintpt[kpos] = NULL;
-	      if ((uintpt[kpos] = hp_newIntpt (1, spar, DNULL, -SI_ORD,
+	      uintpt[kpos] = SISL_NULL;
+	      if ((uintpt[kpos] = hp_newIntpt (1, spar, DZERO, -SI_ORD,
 					       SI_UNDEF, SI_UNDEF, SI_UNDEF,
-				    SI_UNDEF, 0, 0, nullp, nullp)) == NULL)
+				    SI_UNDEF, 0, 0, nullp, nullp)) == SISL_NULL)
 		goto err101;
 
 	      /* Insert the point into the data structure.  */
@@ -259,7 +259,7 @@ sh1786 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	       
 	      for (ki = kleft; ki >= 0; ki--)
 		{
-		  for (tpar = DNULL, kj = ki + 1; kj < ki + kk; kj++)
+		  for (tpar = DZERO, kj = ki + 1; kj < ki + kk; kj++)
 		    tpar += st[kj];
 		  tpar /= (double) (kk - 1);
 
@@ -282,10 +282,10 @@ sh1786 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 
 	      /* Create intersection point.  */
 	      spar[0] = tpar0;
-	      uintpt[kpos] = NULL;
-	      if ((uintpt[kpos] = hp_newIntpt (1, spar, DNULL, -SI_ORD,
+	      uintpt[kpos] = SISL_NULL;
+	      if ((uintpt[kpos] = hp_newIntpt (1, spar, DZERO, -SI_ORD,
 					       SI_UNDEF,SI_UNDEF,SI_UNDEF,
-					SI_UNDEF, 0, 0, nullp, nullp)) == NULL)
+					SI_UNDEF, 0, 0, nullp, nullp)) == SISL_NULL)
 		goto err101;
 
 	      /* Insert the point into the data structure.  */

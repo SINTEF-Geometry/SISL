@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1929.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1929.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -106,12 +106,12 @@ void sh1929(etau,in,ik,imu,et,im,ij,eah,jmuprm,jnu,jstat)
    double tbeta,tbeta1;
    double tj;
    double td1,td2;
-   double *ssi = NULL;
+   double *ssi = SISL_NULL;
    
    /* Allocate scratch for a local array of length (ik-1) to hold the
       new knots among et[ij+1],...,et[ij+ik-1].  */
    
-   if ((ssi = newarray(ik-1,DOUBLE)) == NULL) goto err101;
+   if ((ssi = newarray(ik-1,DOUBLE)) == SISL_NULL) goto err101;
 
    /* Determine jmuprm.  */
    
@@ -177,7 +177,7 @@ void sh1929(etau,in,ik,imu,et,im,ij,eah,jmuprm,jnu,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (ssi != NULL) freearray(ssi);
+      if (ssi != SISL_NULL) freearray(ssi);
 	  
       return;
 }

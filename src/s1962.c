@@ -109,10 +109,10 @@ void s1962(ep,ev,im,idim,ipar,epar,eeps,ilend,irend,iopen,itmax,
 {
   int stat = 0;                /* Error control parameters         */
   int kpos = 0;
-  SISLCurve *ocurve = NULL;    /* Local spline curve               */
-  double *sp = NULL;        /* Extended data points in closed/periodic case. */
-  double *sv = NULL;        /* Extended tangents in closed/periodic case. */
-  double *spar = NULL;      /* Extended par. values.                */
+  SISLCurve *ocurve = SISL_NULL;    /* Local spline curve               */
+  double *sp = SISL_NULL;        /* Extended data points in closed/periodic case. */
+  double *sv = SISL_NULL;        /* Extended tangents in closed/periodic case. */
+  double *spar = SISL_NULL;      /* Extended par. values.                */
 
   /* Check Input */
 
@@ -125,17 +125,17 @@ void s1962(ep,ev,im,idim,ipar,epar,eeps,ilend,irend,iopen,itmax,
      /* Add an extra point to the input points. First allocated scratch
 	for extended arrays. */
      
-     if ((sp = newarray((im+1)*idim, DOUBLE)) == NULL) goto err101;
+     if ((sp = newarray((im+1)*idim, DOUBLE)) == SISL_NULL) goto err101;
      memcopy(sp, ep, im*idim, DOUBLE);
      memcopy(sp+im*idim, ep, idim, DOUBLE);
      
-     if ((sv = newarray((im+1)*idim, DOUBLE)) == NULL) goto err101;
+     if ((sv = newarray((im+1)*idim, DOUBLE)) == SISL_NULL) goto err101;
      memcopy(sv, ev, im*idim, DOUBLE);
      memcopy( sv+im*idim, ev, idim, DOUBLE);
      
      if (ipar == 3)
      {
-	if ((spar = newarray(im+1, DOUBLE)) == NULL) goto err101;
+	if ((spar = newarray(im+1, DOUBLE)) == SISL_NULL) goto err101;
 	memcopy(spar, epar, im, DOUBLE);
 	spar[im] = spar[im-1] + s6dist(sp+(im-1)*idim, sp+im*idim, idim);
      }
@@ -190,9 +190,9 @@ void s1962(ep,ev,im,idim,ipar,epar,eeps,ilend,irend,iopen,itmax,
   /* Exit */
 
  out:
-  if (ocurve != NULL) freeCurve(ocurve);
-  if (spar != NULL && spar != epar) freearray(spar);
-  if (sp != NULL && sp != ep) freearray(sp);
-  if (sv != NULL && sv != ev) freearray(sv);
+  if (ocurve != SISL_NULL) freeCurve(ocurve);
+  if (spar != SISL_NULL && spar != epar) freearray(spar);
+  if (sp != SISL_NULL && sp != ep) freearray(sp);
+  if (sv != SISL_NULL && sv != ev) freearray(sv);
   return;
 }

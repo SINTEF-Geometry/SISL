@@ -144,7 +144,7 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
 *
 * Written by: Knut Moerken, University of Oslo, November 1992, based
 *             on an earlier Fortran version by the same author.
-* CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to NULL)
+* CHANGED BY: Paal Fugelli, SINTEF, 1994-07.  Initialized pointers (to SISL_NULL)
 *      in 'ranking' to avoid potential memory leak when exiting through 'out'.
 *      Removed several other memory leaks.
 * CHANGED BY: Per OEyvind Hvidsten, SINTEF, 1994-11. Added a freeCurve
@@ -170,29 +170,29 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
   int i, mini, maxi, indx;      /* Various auxiliary integer variables.  */
   int kncont = 0;               /* Number of continuity requirements over
 				   the seem of a closed curve.           */
-  double *local_err = NULL;     /* Variables used for storing local error
+  double *local_err = SISL_NULL;     /* Variables used for storing local error
                                    estimates.                            */
-  double *l2err = NULL;
-  double *lepsco = NULL;
-  double *temp_err = NULL;
-  SISLCurve *tempcurve = NULL;  /* Variables that are used for storing
+  double *l2err = SISL_NULL;
+  double *lepsco = SISL_NULL;
+  double *temp_err = SISL_NULL;
+  SISLCurve *tempcurve = SISL_NULL;  /* Variables that are used for storing
                                    temporary curves.                     */
-  SISLCurve  *helpcurve = NULL;
+  SISLCurve  *helpcurve = SISL_NULL;
   rank_info ranking;            /* Variable used for holding ranking
                                    information (from s1353).             */
   int lstat=0;                  /* Local status variable.                */
   int pos=0;			/* Parameter to s6err.                  */
-  SISLCurve *qc_kreg = NULL;    /* Non-periodic version of the input curve. */
-  SISLCurve *qcpart = NULL;     /* Curve representing a Bezier segment. */
+  SISLCurve *qc_kreg = SISL_NULL;    /* Non-periodic version of the input curve. */
+  SISLCurve *qcpart = SISL_NULL;     /* Curve representing a Bezier segment. */
 
 
   /* Initialize ranking ptrs in case of early exit through 'out' (PFU 05/07-94) */
-  ranking.prio = NULL;
-  ranking.groups = NULL;
+  ranking.prio = SISL_NULL;
+  ranking.groups = SISL_NULL;
 
   /* Initialize maxerr to zero. */
 
-  for (i=0; i<dim; i++) maxerr[i] = DNULL;
+  for (i=0; i<dim; i++) maxerr[i] = DZERO;
 
   /* Only interior knots may be removed so if n1==k we can stop
      straight away.                                             */
@@ -201,7 +201,7 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
   {
     *newcurve = newCurve(n1, k, oldcurve->et, oldcurve->ecoef,
 			 oldcurve->ikind, oldcurve->idim, 1);
-    if (*newcurve == NULL)  goto err101;
+    if (*newcurve == SISL_NULL)  goto err101;
 
     *stat = 0;
     goto out;
@@ -224,7 +224,7 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
   {
     qc_kreg = newCurve(oldcurve->in, oldcurve->ik, oldcurve->et, 
 		       oldcurve->ecoef, oldcurve->ikind, oldcurve->idim, 1);
-    if (qc_kreg == NULL) goto err101;
+    if (qc_kreg == SISL_NULL) goto err101;
   }
   
   /* Ensure closed output curve if the input curve is closed. */
@@ -235,24 +235,24 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
   /* Allocate space for some local arrays. */
 
   temp_err = newarray(dim, double);
-  if (temp_err == NULL) goto err101;
+  if (temp_err == SISL_NULL) goto err101;
 
   lepsco = newarray(dim, double);
-  if (lepsco == NULL) goto err101;
+  if (lepsco == SISL_NULL) goto err101;
   
   local_err = newarray(dim, double);
-  if (local_err == NULL) goto err101;
+  if (local_err == SISL_NULL) goto err101;
 
   l2err = newarray(dim, double);
-  if (l2err == NULL) goto err101;
+  if (l2err == SISL_NULL) goto err101;
   
   /* ranking is of type rank_info which is a struct described in s1353. */
 
   ranking.prio = newarray(n1, int);
-  if (ranking.prio == NULL) goto err101;
+  if (ranking.prio == SISL_NULL) goto err101;
 
   ranking.groups = newarray(n1, int);
-  if (ranking.groups == NULL) goto err101;
+  if (ranking.groups == SISL_NULL) goto err101;
 
   /* lespco is needed in s1950. In component i we first store the l1-norm
      of the component i of the B-spline coefficients of oldcurve. */
@@ -292,8 +292,8 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
   /* Adjust qc_kreg in order to store the extra Bezier segment. */
   
   if ((qc_kreg->ecoef = increasearray(qc_kreg->ecoef, (n1+k)*dim, DOUBLE))
-      == NULL) goto err101;
-  if ((qc_kreg->et = increasearray(qc_kreg->et, n1+k+k, DOUBLE)) == NULL)
+      == SISL_NULL) goto err101;
+  if ((qc_kreg->et = increasearray(qc_kreg->et, n1+k+k, DOUBLE)) == SISL_NULL)
      goto err101;
   memcopy(qc_kreg->ecoef+n1*dim, qcpart->ecoef, k*dim, DOUBLE);
   for (i=0; i<k; i++) 
@@ -302,8 +302,8 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
 
   /* Remove memory occupied by the curve describing the Bezier segment. */
   
-  if (qcpart != NULL) freeCurve(qcpart);
-  qcpart = NULL;
+  if (qcpart != SISL_NULL) freeCurve(qcpart);
+  qcpart = SISL_NULL;
   
   /* Perform ranking. */
   
@@ -356,8 +356,8 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
      /* Adjust *newcurve in order to store the extra Bezier segment. */
      
      if (((*newcurve)->ecoef = increasearray((*newcurve)->ecoef, (n2+k)*dim, DOUBLE))
-	 == NULL) goto err101;
-     if (((*newcurve)->et = increasearray((*newcurve)->et, n2+k+k, DOUBLE)) == NULL)
+	 == SISL_NULL) goto err101;
+     if (((*newcurve)->et = increasearray((*newcurve)->et, n2+k+k, DOUBLE)) == SISL_NULL)
 	goto err101;
      memcopy((*newcurve)->ecoef+n2*dim, qcpart->ecoef, k*dim, DOUBLE);
      for (i=0; i<k; i++) 
@@ -366,8 +366,8 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
      
      /* Remove memory occupied by the curve describing the Bezier segment. */
      
-     if (qcpart != NULL) freeCurve(qcpart);
-     qcpart = NULL;
+     if (qcpart != SISL_NULL) freeCurve(qcpart);
+     qcpart = SISL_NULL;
   
      /* Ranking. */
      
@@ -409,7 +409,7 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
       /* Don't need  helpcurve anymore. */
 
       freeCurve(helpcurve);
-      helpcurve = NULL;
+      helpcurve = SISL_NULL;
 
       /* We must now check if the new tempcurve is within the tolerance. */
       i = 0;
@@ -442,19 +442,19 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
 	    endfix, &kncont, mini, maxi, &helpcurve, maxerr, &lstat);
       if (lstat < 0) goto error;
 
-      if (*newcurve != NULL && *newcurve != tempcurve)
+      if (*newcurve != SISL_NULL && *newcurve != tempcurve)
       {
 	freeCurve(*newcurve);
-	*newcurve = NULL;
+	*newcurve = SISL_NULL;
       }
 
-      if (tempcurve != NULL)
+      if (tempcurve != SISL_NULL)
       {
 	freeCurve(tempcurve);
-	tempcurve = NULL;
+	tempcurve = SISL_NULL;
       }
       *newcurve = helpcurve;
-      helpcurve = NULL;
+      helpcurve = SISL_NULL;
     }
     else
     {
@@ -465,9 +465,9 @@ s1940(oldcurve, eps, startfix, endfix, iopen, itmax, newcurve,
 
       for (i=0; i<dim; i++) maxerr[i] = local_err[i];
 
-      if (*newcurve != NULL) freeCurve(*newcurve);
+      if (*newcurve != SISL_NULL) freeCurve(*newcurve);
       *newcurve = tempcurve;
-      tempcurve = NULL;
+      tempcurve = SISL_NULL;
     }
 
     /* Now we must check if it is time to stop. */
@@ -512,16 +512,16 @@ error:
   /* Clear up and free memory before exit. */
 
 out:
-  if (temp_err != NULL) freearray(temp_err);
-  if (local_err != NULL) freearray(local_err);
-  if (l2err != NULL) freearray(l2err);
-  if (lepsco != NULL) freearray(lepsco);
-  if (ranking.prio != NULL) freearray(ranking.prio);
-  if (ranking.groups != NULL) freearray(ranking.groups);
-  if (qc_kreg != NULL) freeCurve(qc_kreg);
-  if (qcpart != NULL) freeCurve(qcpart);
-  if (helpcurve != NULL && helpcurve != (*newcurve)) freeCurve(helpcurve);
-  if (tempcurve != NULL && tempcurve != (*newcurve)) freeCurve(tempcurve);
+  if (temp_err != SISL_NULL) freearray(temp_err);
+  if (local_err != SISL_NULL) freearray(local_err);
+  if (l2err != SISL_NULL) freearray(l2err);
+  if (lepsco != SISL_NULL) freearray(lepsco);
+  if (ranking.prio != SISL_NULL) freearray(ranking.prio);
+  if (ranking.groups != SISL_NULL) freearray(ranking.groups);
+  if (qc_kreg != SISL_NULL) freeCurve(qc_kreg);
+  if (qcpart != SISL_NULL) freeCurve(qcpart);
+  if (helpcurve != SISL_NULL && helpcurve != (*newcurve)) freeCurve(helpcurve);
+  if (tempcurve != SISL_NULL && tempcurve != (*newcurve)) freeCurve(tempcurve);
 
   return;
 }

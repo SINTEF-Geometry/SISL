@@ -215,23 +215,23 @@ void s1950(oldcurve, rankcurve, ranking, eps, epsco,
 				   see the code below.              */
   int i, start, stop, indx, count, r, p, hn;
   int kncont = 0;
-  SISLCurve *hcurve = NULL;
+  SISLCurve *hcurve = SISL_NULL;
   double h;
-  double *local_err = NULL, *l2_err = NULL, *ltau = NULL;
+  double *local_err = SISL_NULL, *l2_err = SISL_NULL, *ltau = SISL_NULL;
   double tend_domain = oldcurve->et[oldcurve->in];
 
   /* Allocate memory for the local arrays. */
 
   del_array = newarray(mprio, char);
-  if (del_array == NULL) goto err101;
-  if ((local_err = newarray(dim, DOUBLE)) == NULL) goto err101;
-  if ((l2_err = newarray(dim, DOUBLE)) == NULL) goto err101;
+  if (del_array == SISL_NULL) goto err101;
+  if ((local_err = newarray(dim, DOUBLE)) == SISL_NULL) goto err101;
+  if ((l2_err = newarray(dim, DOUBLE)) == SISL_NULL) goto err101;
 
   /* In case we do not enter the while loop at all we must give newcurve
      a value. */
 
   *newcurve = newCurve(mprio, k, rankcurve->et, rankcurve->ecoef, 1, dim, 1);
-  if (newcurve == NULL) goto err101;
+  if (newcurve == SISL_NULL) goto err101;
 
   /* Iterate by binary search until the lower and upper bound on how many
      knots to include are essentially equal. */
@@ -304,9 +304,9 @@ void s1950(oldcurve, rankcurve, ranking, eps, epsco,
     /* The new knot vector is stored in ltau.  It might already be allocated
        from the last iteration, so free it first if required. */
 
-    if (ltau != NULL) freearray(ltau);
+    if (ltau != SISL_NULL) freearray(ltau);
     ltau = newarray(hn+2*k, double);
-    if (ltau == NULL) goto err101;
+    if (ltau == SISL_NULL) goto err101;
 
     /* Set the first and last k knots. */
 
@@ -371,8 +371,8 @@ void s1950(oldcurve, rankcurve, ranking, eps, epsco,
 	 indicate that an upper bound for the number of knots to
 	 remove is antrem. */
 
-      if (hcurve != NULL) freeCurve(hcurve);
-      hcurve = NULL;
+      if (hcurve != SISL_NULL) freeCurve(hcurve);
+      hcurve = SISL_NULL;
       maxi = antrem;
     }
     else
@@ -383,9 +383,9 @@ void s1950(oldcurve, rankcurve, ranking, eps, epsco,
 	 error in maxerr. */
 
       mini = antrem;
-      if (*newcurve != NULL) freeCurve(*newcurve);
+      if (*newcurve != SISL_NULL) freeCurve(*newcurve);
       *newcurve = hcurve;
-      hcurve = NULL;
+      hcurve = SISL_NULL;
       memcopy(maxerr, local_err, dim, DOUBLE);
     }
 
@@ -416,11 +416,11 @@ err:
   /* Clean up before exit. */
 
 out:
-  if (hcurve != NULL) freeCurve(hcurve);
-  if (del_array != NULL) freearray(del_array);
-  if (local_err != NULL) freearray(local_err);
-  if (l2_err != NULL) freearray(l2_err);
-  if (ltau != NULL) freearray(ltau);
+  if (hcurve != SISL_NULL) freeCurve(hcurve);
+  if (del_array != SISL_NULL) freearray(del_array);
+  if (local_err != SISL_NULL) freearray(local_err);
+  if (l2_err != SISL_NULL) freearray(l2_err);
+  if (ltau != SISL_NULL) freearray(ltau);
 
   return;
 }

@@ -93,7 +93,7 @@ void s1517(ep,ev,epar,im,mu,evnew,jstat)
   /* Allocate array for derivatives */
 
   evtemp    = newarray(im,DOUBLE);
-  if (evtemp == NULL) goto err101;
+  if (evtemp == SISL_NULL) goto err101;
 
   /* Adjust the derivatives. */
 
@@ -105,7 +105,7 @@ void s1517(ep,ev,epar,im,mu,evnew,jstat)
       evtemp[0] = - mu3 * ep[0] / knotint2;
   }
   /* @JKA: This is copied from the uncommented version. */
-  else if (mu == DNULL)
+  else if (mu == DZERO)
   {
      evtemp[0] = mu;
   }
@@ -142,7 +142,7 @@ void s1517(ep,ev,epar,im,mu,evnew,jstat)
       evtemp[im-1] = mu3 * ep[im-1] / knotint1;
   }
   /* @JKA: This is copied from the uncommented version. */
-  else if (mu == DNULL)
+  else if (mu == DZERO)
   {
      evtemp[im-1] = mu;
   }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1364.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1364.c,v 1.2 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -72,8 +72,8 @@ void s1364(pc,aepsge,jstat)
 			 elements.                                       */
   double sdum1[3];    /* Arrays for calculation of points                */ 
   double sdum2[3];    /* Arrays for calculation of points                */
-  double *sder1 = NULL; /* Pointers to points                            */
-  double *sder2 = NULL; /* Pointers to points                            */
+  double *sder1 = SISL_NULL; /* Pointers to points                            */
+  double *sder2 = SISL_NULL; /* Pointers to points                            */
   double tdist;       /* Distance between points                         */
   
   /* Check if curve is correct */
@@ -127,8 +127,8 @@ void s1364(pc,aepsge,jstat)
   
   if (kdim>3)
     {
-      if (sder1 != NULL) freearray(sder1);
-      if (sder2 != NULL) freearray(sder2);
+      if (sder1 != SISL_NULL) freearray(sder1);
+      if (sder2 != SISL_NULL) freearray(sder2);
     }
   
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1013.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1013.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -81,7 +81,7 @@ void
   double iter_ang;             /* The error angle                              */
   double sder[4];              /* Result from s1221.                           */
   double help_arr[2];          /* Help array containing angle as direction     */
-  SISLCurve *testcurve = NULL; /* The curve to iterate on.                     */
+  SISLCurve *testcurve = SISL_NULL; /* The curve to iterate on.                     */
   SISLPoint *p1 = newPoint (&zero, 1, 0);
   /* ------------------------------------------------------------------------- */
   

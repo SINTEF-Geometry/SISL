@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1839.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1839.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -83,7 +83,7 @@ void s1839(ps1,epol,in,idim,jstat)
   double *scoef;           /* Vertices of surface.                          */
   register double *s1,*s2,
   *s3,*s4;                 /* Pointers used to traverse arrays.             */
-  double *sdir = NULL;     /* Array containing direction vectors.           */
+  double *sdir = SISL_NULL;     /* Array containing direction vectors.           */
   
   /* Check input.  */
   
@@ -105,7 +105,7 @@ void s1839(ps1,epol,in,idim,jstat)
   /* Allocate space for vectors with which the x-axis is to be parallell. */
   
   sdir = newarray(kvec*idim,double);
-  if (sdir == NULL) goto err101;
+  if (sdir == SISL_NULL) goto err101;
   
   /* Make diagonal from lower left to upper right corner of patch.  
      s1 points to the array which contains the results, s3 points to the
@@ -225,7 +225,7 @@ void s1839(ps1,epol,in,idim,jstat)
   
   /* Free allocated space.  */
   
-  if (sdir != NULL) freearray(sdir);
+  if (sdir != SISL_NULL) freearray(sdir);
   
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idlis.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idlis.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 #define S6IDLIS
@@ -82,7 +82,7 @@ void s6idlis(po1,po2,pintdat,jstat)
   
   /* If we do not have any intersection data we just return. */
   
-  if ((*pintdat) == NULL) goto out;
+  if ((*pintdat) == SISL_NULL) goto out;
   
   /* We first destroy existing intersection lists. */
   
@@ -95,7 +95,7 @@ void s6idlis(po1,po2,pintdat,jstat)
   for (kj=0; kj<(*pintdat)->ipoint; kj++)
     if ((*pintdat)->vpoint[kj]->iinter == 2)
       {
-	if ((*pintdat)->vpoint[kj]->pcurve != NULL)
+	if ((*pintdat)->vpoint[kj]->pcurve != SISL_NULL)
 	  {
 	    for (ki1=0; ki1<(*pintdat)->ipoint; ki1++)
 	      if ((*pintdat)->vpoint[ki1]->pcurve == (*pintdat)->vpoint[kj])
@@ -110,7 +110,7 @@ void s6idlis(po1,po2,pintdat,jstat)
 		
 		pt->pcurve = (*pintdat)->vpoint[kj]->pcurve;
 		
-		(*pintdat)->vpoint[kj]->pcurve = NULL;
+		(*pintdat)->vpoint[kj]->pcurve = SISL_NULL;
 	      }
 	  }
       }
@@ -121,7 +121,7 @@ void s6idlis(po1,po2,pintdat,jstat)
      and no other point pointing on itself. It is a start point. */
   
   for (ki1=0,ki2=0; ki1 < (*pintdat)->ipoint; ki1++)
-    if ((*pintdat)->vpoint[ki1]->pcurve != NULL)
+    if ((*pintdat)->vpoint[ki1]->pcurve != SISL_NULL)
       {
 	for (kj=0; kj<(*pintdat)->ipoint; kj++)
 	  if ((*pintdat)->vpoint[kj]->pcurve == (*pintdat)->vpoint[ki1])
@@ -136,7 +136,7 @@ void s6idlis(po1,po2,pintdat,jstat)
 		(*pintdat)->ilmax += 20;
 		
 		if (((*pintdat)->vlist = increasearray((*pintdat)->vlist,
-						       (*pintdat)->ilmax,SISLIntlist *)) == NULL)
+						       (*pintdat)->ilmax,SISLIntlist *)) == SISL_NULL)
 		  
 		  goto err101;
 	      }
@@ -145,7 +145,7 @@ void s6idlis(po1,po2,pintdat,jstat)
 	    /* Finding the last point in the list, and number of points. */
 	    
 	    kj = 0;
-	    for (pt=(*pintdat)->vpoint[ki1];pt->pcurve!=NULL;
+	    for (pt=(*pintdat)->vpoint[ki1];pt->pcurve!=SISL_NULL;
 		 pt=pt->pcurve,kj++);
 	    
 	    
@@ -163,7 +163,7 @@ void s6idlis(po1,po2,pintdat,jstat)
 	    /* Making a new list structure. */
 	    
 	    if (((*pintdat)->vlist[ki2] = newIntlist((*pintdat)->vpoint[ki1],
-						     pt,ktype)) == NULL) goto err101;
+						     pt,ktype)) == SISL_NULL) goto err101;
 	    
 	    (*pintdat)->vlist[ki2]->inumb = kj + 1;
 	    ki2++;
@@ -177,7 +177,7 @@ void s6idlis(po1,po2,pintdat,jstat)
   
   /* Mark found list elements: */
   for (ki1=0; ki1 < ki2; ki1++)
-    for (pt=(*pintdat)->vlist[ki1]->pfirst;pt!=NULL;pt=pt->pcurve)
+    for (pt=(*pintdat)->vlist[ki1]->pfirst;pt!=SISL_NULL;pt=pt->pcurve)
       pt->iinter += 10;
   
   /* Now travers the point array untill we find an unmarked point.
@@ -191,14 +191,14 @@ void s6idlis(po1,po2,pintdat,jstat)
 	/* Unmark point. */
 	(*pintdat)->vpoint[ki1]->iinter -= 10;
       
-      else  if ((*pintdat)->vpoint[ki1]->pcurve != NULL)
+      else  if ((*pintdat)->vpoint[ki1]->pcurve != SISL_NULL)
 	{
 	  /* It has to be a closed connection, travers all elements. */
 	  kj = 1;
 	  for (pt=(*pintdat)->vpoint[ki1]->pcurve;pt!=(*pintdat)->vpoint[ki1];
 	       pt=pt->pcurve)
 	    {	
-	      if (pt == NULL) goto err105;
+	      if (pt == SISL_NULL) goto err105;
 	      /* Mark found list elements: */
 	      pt->iinter += 10;
 	      kj++;
@@ -212,7 +212,7 @@ void s6idlis(po1,po2,pintdat,jstat)
 	      (*pintdat)->ilmax += 20;
 	      
 	      if (((*pintdat)->vlist = increasearray((*pintdat)->vlist,
-						     (*pintdat)->ilmax,SISLIntlist *)) == NULL) 
+						     (*pintdat)->ilmax,SISLIntlist *)) == SISL_NULL) 
 		goto err101;
 	    }
 	  
@@ -222,7 +222,7 @@ void s6idlis(po1,po2,pintdat,jstat)
 	  /* Making a new list structure. */
 	  if (((*pintdat)->vlist[ki2] = 
 	       newIntlist((*pintdat)->vpoint[ki1]->pcurve,
-			  (*pintdat)->vpoint[ki1],ktype)) == NULL) 
+			  (*pintdat)->vpoint[ki1],ktype)) == SISL_NULL) 
 	    goto err101;
 	  (*pintdat)->vlist[ki2]->inumb = kj;
 	  ki2++;
@@ -323,8 +323,8 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
   int kdirstat;
   
   unsigned char edg=0;
-  SISLIntpt **uipt=NULL;
-  SISLIntlist **uilst=NULL;
+  SISLIntpt **uipt=SISL_NULL;
+  SISLIntlist **uilst=SISL_NULL;
   
   int ki,kj,kv,klnr,kpnr,klfs,klft,kdir,kpar;
   SISLIntpt  *qpt1,*qpt2;
@@ -357,7 +357,7 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
     {
       /* Allocate array of pointers to the lists. */
       klnr = (*rintdat)->ilist;
-      if ((uilst = newarray(klnr,SISLIntlist *)) == NULL) goto err101;
+      if ((uilst = newarray(klnr,SISLIntlist *)) == SISL_NULL) goto err101;
       
       /* Update the list array. */
       
@@ -473,7 +473,7 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
 	    {
 	      /* The first point is not on the edge, keep it. */
 	      
-	      for (qipt = uilst[ki]->pfirst->pcurve; qipt != NULL;qipt=qp)	      
+	      for (qipt = uilst[ki]->pfirst->pcurve; qipt != SISL_NULL;qipt=qp)	      
 		{
 		  s6idkpt(rintdat,&qipt,&qpt1,&qp,&kstat);
 		  if (kstat < 0) goto error;
@@ -508,14 +508,14 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
 	    {
 	      /* Making a new open curve with endpoint in epar1 and epar2.*/
 	      
-	      uilst[ki]->pfirst = newIntpt(4,epar1,DNULL);
-	      if (uilst[ki]->pfirst == NULL) goto err101;
+	      uilst[ki]->pfirst = newIntpt(4,epar1,DZERO);
+	      if (uilst[ki]->pfirst == SISL_NULL) goto err101;
 	      
 	      s6idnpt(rintdat,&uilst[ki]->pfirst,0,&kstat);
 	      if (kstat < 0)goto error;
 	      
-	      uilst[ki]->plast = newIntpt(4,epar2,DNULL);
-	      if (uilst[ki]->plast == NULL) goto err101;
+	      uilst[ki]->plast = newIntpt(4,epar2,DZERO);
+	      if (uilst[ki]->plast == SISL_NULL) goto err101;
 	      
 	      s6idnpt(rintdat,&uilst[ki]->plast,0,&kstat);
 	      if (kstat < 0)goto error;
@@ -577,11 +577,11 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
     /* Update the point array. */
     {     
       kpnr = (*rintdat)->ipoint;
-      if ((uipt = newarray(kpnr,SISLIntpt *)) == NULL) goto err101;
+      if ((uipt = newarray(kpnr,SISLIntpt *)) == SISL_NULL) goto err101;
       
       
       for (kv=ki=0; ki<kpnr; ki++)
-        if ((*rintdat)->vpoint[ki]->pcurve == NULL)
+        if ((*rintdat)->vpoint[ki]->pcurve == SISL_NULL)
 	  uipt[kv++] = (*rintdat)->vpoint[ki];
       
       for (ki=0; ki<kpnr; ki++)
@@ -661,28 +661,28 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
 		switch (kj) 
 		  {
 		  case 0: tang = s6ang(stang,sval1+3,3);
-		    kdir = (sdec1[1] > DNULL ?  1 : -1);
+		    kdir = (sdec1[1] > DZERO ?  1 : -1);
 		    break;
 		  case 4: tang = s6ang(stang,sval2+3,3);
-		    kdir = (sdec2[1] > DNULL ?  1 : -1);
+		    kdir = (sdec2[1] > DZERO ?  1 : -1);
 		    break;
 		  case 1: tang = s6ang(stang,sval1+6,3);
-		    kdir = (sdec1[0] > DNULL ?  -1 : 1);
+		    kdir = (sdec1[0] > DZERO ?  -1 : 1);
 		    break;
 		  case 5: tang = s6ang(stang,sval2+6,3);
-		    kdir = (sdec2[0] > DNULL ?  -1 : 1);
+		    kdir = (sdec2[0] > DZERO ?  -1 : 1);
 		    break;
 		  case 2: tang = s6ang(stang,sval1+3,3);
-		    kdir = (sdec1[1] > DNULL ?  -1 : 1);
+		    kdir = (sdec1[1] > DZERO ?  -1 : 1);
 		    break;
 		  case 6: tang = s6ang(stang,sval2+3,3);
-		    kdir = (sdec2[1] > DNULL ?  -1 : 1);
+		    kdir = (sdec2[1] > DZERO ?  -1 : 1);
 		    break;
 		  case 3: tang = s6ang(stang,sval1+6,3);
-		    kdir = (sdec1[0] > DNULL ?  1 : -1);
+		    kdir = (sdec1[0] > DZERO ?  1 : -1);
 		    break;
 		  case 7: tang = s6ang(stang,sval2+6,3);
-		    kdir = (sdec2[0] > DNULL ?  1 : -1);
+		    kdir = (sdec2[0] > DZERO ?  1 : -1);
 		  }
 		
 		if (tang < ANGULAR_TOLERANCE) kdir = 0;
@@ -749,8 +749,8 @@ static void s6idlis_s9ssexamin(ps1,ps2,rintdat,jstat)
   goto out;                       
   
   out:
-  if (uipt != NULL)  freearray(uipt);
-  if (uilst != NULL)   freearray(uilst);
+  if (uipt != SISL_NULL)  freearray(uipt);
+  if (uilst != SISL_NULL)   freearray(uilst);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -804,8 +804,8 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
   int kdirstat;
   
   unsigned char edg=0;
-  SISLIntpt **uipt=NULL;
-  SISLIntlist **uilst=NULL;
+  SISLIntpt **uipt=SISL_NULL;
+  SISLIntlist **uilst=SISL_NULL;
   
   int ki,kj,kv,klnr,kpnr,klfs,klft,kdir,kpar;
   SISLIntpt *qpt1,*qpt2;
@@ -837,7 +837,7 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
     {
       /* Allocate array of pointers to the lists. */
       klnr = (*rintdat)->ilist;
-      if ((uilst = newarray(klnr,SISLIntlist *)) == NULL) goto err101;
+      if ((uilst = newarray(klnr,SISLIntlist *)) == SISL_NULL) goto err101;
       
       /* Update the list array. */
       
@@ -943,7 +943,7 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
 	    {
 	      /* The first point is not on the edge, keep it. */
 	      
-	      for (qipt = uilst[ki]->pfirst->pcurve; qipt != NULL;qipt=qp)	      
+	      for (qipt = uilst[ki]->pfirst->pcurve; qipt != SISL_NULL;qipt=qp)	      
 		{
 		  s6idkpt(rintdat,&qipt,&qpt1,&qp,&kstat);
 		  if (kstat < 0) goto error;
@@ -977,14 +977,14 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
 	    {
 	      /* Making a new open curve with endpoint in epar1 and epar2.*/
 	      
-	      uilst[ki]->pfirst = newIntpt(2,epar1,DNULL);
-	      if (uilst[ki]->pfirst == NULL) goto err101;
+	      uilst[ki]->pfirst = newIntpt(2,epar1,DZERO);
+	      if (uilst[ki]->pfirst == SISL_NULL) goto err101;
 	      
 	      s6idnpt(rintdat,&uilst[ki]->pfirst,0,&kstat);
 	      if (kstat < 0)goto error;
 	      
-	      uilst[ki]->plast = newIntpt(2,epar2,DNULL);
-	      if (uilst[ki]->plast == NULL) goto err101;
+	      uilst[ki]->plast = newIntpt(2,epar2,DZERO);
+	      if (uilst[ki]->plast == SISL_NULL) goto err101;
 	      
 	      s6idnpt(rintdat,&uilst[ki]->plast,0,&kstat);
 	      if (kstat < 0)goto error;
@@ -1046,11 +1046,11 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
     /* Update the point array. */
     {     
       kpnr = (*rintdat)->ipoint;
-      if ((uipt = newarray(kpnr,SISLIntpt *)) == NULL) goto err101;
+      if ((uipt = newarray(kpnr,SISLIntpt *)) == SISL_NULL) goto err101;
       
       
       for (kv=ki=0; ki<kpnr; ki++)
-        if ((*rintdat)->vpoint[ki]->pcurve == NULL)
+        if ((*rintdat)->vpoint[ki]->pcurve == SISL_NULL)
 	  uipt[kv++] = (*rintdat)->vpoint[ki];
       
       for (ki=0; ki<kpnr; ki++)
@@ -1114,25 +1114,25 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
 		    if (fabs(sval1[1]/tmax) < ttol)
 		      kdir = 0;
 		    else
-		      kdir = (sval1[1] > DNULL ?  1 : -1);
+		      kdir = (sval1[1] > DZERO ?  1 : -1);
 		    break;
 		  case 1:
 		    if (fabs(sval1[2]/tmax) < ttol)
 		      kdir = 0;
 		    else
-		      kdir = (sval1[2] > DNULL ?  1 : -1);
+		      kdir = (sval1[2] > DZERO ?  1 : -1);
 		    break;
 		  case 2:
 		    if (fabs(sval1[1]/tmax) < ttol)
 		      kdir = 0;
 		    else
-		      kdir = (sval1[1] > DNULL ?  -1 : 1);
+		      kdir = (sval1[1] > DZERO ?  -1 : 1);
 		    break;
 		  case 3:
 		    if (fabs(sval1[2]/tmax) < ttol)
 		      kdir = 0;
 		    else
-		      kdir = (sval1[2] > DNULL ?  -1 : 1);
+		      kdir = (sval1[2] > DZERO ?  -1 : 1);
 		  }
 		
 		if (kdir == 0)
@@ -1199,6 +1199,6 @@ static void s6idlis_s9psexamin(ps1,alevel,rintdat,jstat)
     goto out;                       
   
   out:
-    if (uipt != NULL)  freearray(uipt);
-    if (uilst != NULL) freearray(uilst);
+    if (uipt != SISL_NULL)  freearray(uipt);
+    if (uilst != SISL_NULL) freearray(uilst);
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6curvrad.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6curvrad.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -94,7 +94,7 @@ void s6curvrad(epnt1,epnt2,etang,idim,crad,jstat)
   tdot = s6scpr(etang,sdiff,idim);
   tlmid = s6length(etang,idim,&kstat);
   
-  tcos = (tlmid*tdist != DNULL) ? fabs(tdot/(tlmid*tdist)) : fabs(tdot);
+  tcos = (tlmid*tdist != DZERO) ? fabs(tdot/(tlmid*tdist)) : fabs(tdot);
   tcos = MIN((double)1.0,tcos);
   
   tang = 2*acos(tcos);

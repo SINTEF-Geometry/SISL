@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1330.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1330.c,v 1.2 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -172,7 +172,7 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
       tfak1 = fabs(spar11[0]-epar11[0]) + fabs(spar11[1]-epar11[1]);
       tfak2 = fabs(epar21[0]-spar11[0]) + fabs(epar21[1]-spar11[1]);
       tdom = tfak1 + tfak2;
-      if (DNEQUAL(tdom,DNULL))
+      if (DNEQUAL(tdom,DZERO))
         {
 	  spar12[0] = (tfak2*epar12[0] + tfak1*epar22[0])/tdom;
 	  spar12[1] = (tfak2*epar12[1] + tfak1*epar22[1])/tdom;
@@ -221,7 +221,7 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
       tfak1 = fabs(spar22[0]-epar12[0]) + fabs(spar22[1]-epar12[1]);
       tfak2 = fabs(epar22[0]-spar22[0]) + fabs(epar22[1]-spar22[1]);
       tdom = tfak1 + tfak2;
-      if (DNEQUAL(tdom,DNULL))
+      if (DNEQUAL(tdom,DZERO))
         {
 	  spar21[0] = (tfak2*epar11[0] + tfak1*epar21[0])/tdom;
 	  spar21[1] = (tfak2*epar11[1] + tfak1*epar21[1])/tdom;

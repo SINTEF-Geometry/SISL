@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1520.c,v 1.2 1994-12-01 17:16:39 pfu Exp $
+ * $Id: s1520.c,v 1.3 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -70,7 +70,7 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
 * WRITTEN BY : Johannes Kaasa, SI, Oslo, Norway. 09. Aug. 1991
 *              Based on s1302 with use of NURBS instead of B-splines.
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
-*              NULL tests included
+*              SISL_NULL tests included
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Dec. 1994.  Added
 *              initialization and check for allocation error of 'rs'.
 *              The 'cuopen_1' flag is now set to CLOSED if angle >= 2PI, it
@@ -106,11 +106,11 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
   double resang;		/* Residue angle in the actual quadrant       */
   double spar;			/* Start parameter of circle segment          */
   double epar;			/* End parameter of circle segment            */
-  SISLCurve *totcurve=NULL;	/* Pointer to total normalized circle         */
+  SISLCurve *totcurve=SISL_NULL;	/* Pointer to total normalized circle         */
   SISLCurve *pnorm;		/* Pointer to normalized circle segment       */
   double weight = (double) 1. / sqrt ((double) 2.);	/* Rational weight                         */
   double tfac;			/* Weights along the profile curve.           */
-  double *sucof = NULL;		/* Pointer to vertex array for surface        */
+  double *sucof = SISL_NULL;		/* Pointer to vertex array for surface        */
   double smat[16];		/* Transformation matrix                      */
   int kstat;			/* Status variable                            */
   double *srow;			/* Pointer to row of vertices in surface      */
@@ -123,7 +123,7 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
 
   /* Ensure a valid output surface. */
 
-  *rs = NULL;
+  *rs = SISL_NULL;
 
 
   /* Make local pointers to description of curve */
@@ -213,7 +213,7 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
     }
 
   totcurve = newCurve (kn, kk, st, scoef, kind, kdim, kcopy);
-  if(totcurve == NULL) goto err101;
+  if(totcurve == SISL_NULL) goto err101;
 
   /* Pick out a part of the total curve */
 
@@ -236,14 +236,14 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
   kn1    = pnorm->in;
   kk1    = pnorm->ik;
 
-  if (angle < DNULL)
+  if (angle < DZERO)
     for (ki = 0; ki < kn1; ki++)
       scoef1[kdim * ki + 1] = -scoef1[kdim * ki + 1];
 
   /* Allocate vertex array for surface */
 
   sucof = newarray (kn1 * kn2 * ksurfdim, DOUBLE);
-  if (sucof == NULL)
+  if (sucof == SISL_NULL)
     goto err101;
 
   /* Make the surface vertices circle segment by circle segment */
@@ -281,7 +281,7 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
   /* Create the surface */
 
   *rs = newSurf (kn1, kn2, kk1, kk2, st1, st2, sucof, 2, kdim, 1);
-  if ( *rs == NULL )  goto err101;
+  if ( *rs == SISL_NULL )  goto err101;
 
   if ( tangle >= TWOPI )
   {
@@ -315,8 +315,8 @@ s1520 (pc, angle, ep, eaxis, rs, jstat)
   out:
     /* Free allocated arrays */
 
-    if (sucof != NULL) freearray (sucof);
-    if (totcurve != NULL) freeCurve (totcurve);
-    if (pnorm != NULL) freeCurve (pnorm);
+    if (sucof != SISL_NULL) freearray (sucof);
+    if (totcurve != SISL_NULL) freeCurve (totcurve);
+    if (pnorm != SISL_NULL) freeCurve (pnorm);
     return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6comedg.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6comedg.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -81,7 +81,7 @@ sh6comedg (po1, po2, pt1, pt2, jstat)
  
  *jstat = 0;
    
- if (pt1 != NULL && pt2 != NULL)
+ if (pt1 != SISL_NULL && pt2 != SISL_NULL)
  {
     /* Making the parametric boarders */
  

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1924.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1924.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -83,7 +83,7 @@ s1924 (id1, id2, id3, id4, in1, in2, ew, jstat)
   /* Initialization */
 
   *ew = new0array (in1 * in2, double);
-  if (*ew == NULL)
+  if (*ew == SISL_NULL)
     goto err101;
 
   in1m1 = in1 - 1;

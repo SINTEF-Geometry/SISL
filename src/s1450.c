@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1450.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1450.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -113,10 +113,10 @@ void s1450(ps1,aepsge,jclos1,jclos2,jdgen1,jdgen2,jdgen3,jdgen4,jstat)
   double *scoef;      /* B-spline vertices of surface                    */
   double *st1,*st2;   /* Pointers to knot vectors                        */
   double *sv1,*sv2,*sv3,*sv4;      /* Pointers to vertices               */
-  SISLCurve *q1=NULL;    /* Pointer to boundary curve        */
-  SISLCurve *q2=NULL;    /* Pointer to boundary curve        */
-  SISLCurve *q3=NULL;    /* Pointer to boundary curve        */
-  SISLCurve *q4=NULL;    /* Pointer to boundary curve        */
+  SISLCurve *q1=SISL_NULL;    /* Pointer to boundary curve        */
+  SISLCurve *q2=SISL_NULL;    /* Pointer to boundary curve        */
+  SISLCurve *q3=SISL_NULL;    /* Pointer to boundary curve        */
+  SISLCurve *q4=SISL_NULL;    /* Pointer to boundary curve        */
   
   
   if (aepsge < (double)0.0) goto err184;
@@ -243,10 +243,10 @@ void s1450(ps1,aepsge,jclos1,jclos2,jdgen1,jdgen2,jdgen3,jdgen4,jstat)
   goto out;
   
  out:
-    if (q1 != NULL) freeCurve(q1);
-    if (q2 != NULL) freeCurve(q2);
-    if (q3 != NULL) freeCurve(q3);
-    if (q4 != NULL) freeCurve(q4);
+    if (q1 != SISL_NULL) freeCurve(q1);
+    if (q2 != SISL_NULL) freeCurve(q2);
+    if (q3 != SISL_NULL) freeCurve(q3);
+    if (q4 != SISL_NULL) freeCurve(q4);
   return;
 }
 

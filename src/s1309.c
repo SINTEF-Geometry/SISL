@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1309.c,v 1.2 1994-11-22 10:18:25 poeh Exp $
+ * $Id: s1309.c,v 1.3 2001-03-19 15:58:43 afr Exp $
  *
  */
 #define S1309
@@ -186,7 +186,7 @@ double s1309(epnt,edir,eimpli,ideg,jstat)
       if (DNEQUAL(ta12,(double)0.0))
         {
 	  tdum1 = ta11*ta11 - (double)4.0*ta12*tb1;
-	  if (tdum1 < DNULL) goto war02;
+	  if (tdum1 < DZERO) goto war02;
 	  tdum1 = sqrt(tdum1);
 	  t1 = (-ta11 + tdum1)/((double)2.0*ta12);
 	  t2 = (-ta11 - tdum1)/((double)2.0*ta12);

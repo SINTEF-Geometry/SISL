@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6lufacp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6lufacp.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -77,11 +77,11 @@ void s6lufacp(ea,nl,im,jstat)
   double t1;      /* Help variabel to find maximum of a number of elements.*/
   double tmax;    /* Maximum of a number of elements.                 */
   double tdiv;    /* Dividend in expression.                          */
-  double *smax = NULL; /* Maximum elements in the rows of ea.         */
+  double *smax = SISL_NULL; /* Maximum elements in the rows of ea.         */
   
   /* Allocate space for local array.  */
   
-  if ((smax = new0array(im,double)) == NULL) goto err101;
+  if ((smax = new0array(im,double)) == SISL_NULL) goto err101;
   
   /* Find largest element in each row.  */
   
@@ -97,11 +97,11 @@ void s6lufacp(ea,nl,im,jstat)
       
       /* Find row with maximum greates element to treat now.  */
       
-      tmax = DNULL;  
+      tmax = DZERO;  
       for (kj=ki; kj<im; kj++)
 	{
 	  tdiv = smax[nl[kj]];
-	  if (DEQUAL(tdiv,DNULL)) goto warn1;
+	  if (DEQUAL(tdiv,DZERO)) goto warn1;
 	  t1 = fabs(ea[nl[kj]*im+ki]/tdiv);
 	  if (t1 > tmax)
 	    {
@@ -119,7 +119,7 @@ void s6lufacp(ea,nl,im,jstat)
       for (kj=ki+1; kj<im; kj++)
 	{
 	  tdiv = ea[ki+kchange*im];
-	  if (DEQUAL(tdiv,DNULL)) goto warn1;
+	  if (DEQUAL(tdiv,DZERO)) goto warn1;
 	  tmult = ea[ki+nl[kj]*im]/tdiv;
 	  ea[ki+nl[kj]*im] = tmult;
 	  
@@ -148,7 +148,7 @@ out:
 
 /* Free space occupied by local array.  */
 
-if (smax != NULL) freearray(smax);
+if (smax != SISL_NULL) freearray(smax);
 
 return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1341.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1341.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -113,12 +113,12 @@ void s1341(ep,im,idim,ipar,epar,eeps,ilend,irend,afctol,aepsco,
 ********************************************************************
 */
 {
-  double *maxerr = NULL;    /* Arrays used to store error estimates */
-  double *error1 = NULL;
+  double *maxerr = SISL_NULL;    /* Arrays used to store error estimates */
+  double *error1 = SISL_NULL;
   int i;
   int stat = 0;             /* Loop control variables               */
   int kpos = 0;
-  SISLCurve *ocurve = NULL; /* Local spline curve                   */
+  SISLCurve *ocurve = SISL_NULL; /* Local spline curve                   */
   
   /* Check Input */
   
@@ -141,7 +141,7 @@ void s1341(ep,im,idim,ipar,epar,eeps,ilend,irend,afctol,aepsco,
 
   error1 = newarray(idim, DOUBLE);
   maxerr = newarray(idim, DOUBLE);
-  if (error1 == NULL || maxerr == NULL) goto err101;
+  if (error1 == SISL_NULL || maxerr == SISL_NULL) goto err101;
   for (i=0; i<idim; i++)
     maxerr[i] = eeps[i]*afctol;
 
@@ -207,8 +207,8 @@ void s1341(ep,im,idim,ipar,epar,eeps,ilend,irend,afctol,aepsco,
   /* Exit */
 
  out:
-  if (maxerr != NULL) freearray(maxerr);
-  if (error1 != NULL) freearray(error1);
-  if (ocurve != NULL) freeCurve(ocurve);
+  if (maxerr != SISL_NULL) freearray(maxerr);
+  if (error1 != SISL_NULL) freearray(error1);
+  if (ocurve != SISL_NULL) freeCurve(ocurve);
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1320.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1320.c,v 1.2 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -42,7 +42,7 @@ s1320 (psurf, earray, inarr, ratflag, rsurf, jstat)
 *
 * INPUT      : psurf  - Pointer to input surface.
 *              earray - The description of the input array
-*                       dimension 4*4*inarr
+*                       dimension (psurf->idim+1)^2*inarr
 *              inarr  - Number of parallel matrices in earray.
 *                       inarr should be less or equal to 3.
 *              ratflag - If psurf is nonrational it is ignored.
@@ -72,26 +72,28 @@ s1320 (psurf, earray, inarr, ratflag, rsurf, jstat)
 * REVISED BY : Michael Floater, SI, June 92. The rational stuff
 *              was messed up after translation of
 *              the fortran part to c. But it works now.
+* REVISED BY : Atgeirr F Rasmussen, Sintef, October 2000. Fixed the
+*              rational stuff, which assumed dimension was 3.
 *
 *********************************************************************
 */
 {
   int kpos = 0;
   int kstat = 0;
-  SISLSurf *ssurf = NULL;	/* Temperary SISL-surface. */
+  SISLSurf *ssurf = SISL_NULL;	/* Temperary SISL-surface. */
   int kdim;			/* Number of dimesions in psurf                     */
   int kdimp1;			/* Dimension of  earray should be kdim+1            */
   int lder[3];			/* Derivative indicator array                       */
-  double *scoef = NULL;		/* Vertices of psurf (scaled in the rational case)  */
-  double *rscoef = NULL;	/* pointer to vertices in the rational case         */
+  double *scoef = SISL_NULL;		/* Vertices of psurf (scaled in the rational case)  */
+  double *rscoef = SISL_NULL;	/* pointer to vertices in the rational case         */
   int ikind;			/* kind of surface                                  */
   double wmin, wmax;		/* min. and max. weight values for rational surface */
   double scale;			/* factor used for scaling rational weights         */
   int i;			/* loop variable                                    */
-  double *sarray = NULL;	/* Array for calculating denominator if used      */
+  double *sarray = SISL_NULL;	/* Array for calculating denominator if used      */
   int knarr;			/* Number of parallel arrays to use.   */
   int nkind;			/* Kind of output surface (rsurf).    */
-  SISLSurf *jsurf = NULL;       /* Temporary SISLSurf. */
+  SISLSurf *jsurf = SISL_NULL;       /* Temporary SISLSurf. */
 
   *jstat = 0;
 
@@ -119,14 +121,13 @@ s1320 (psurf, earray, inarr, ratflag, rsurf, jstat)
   if (ikind == 2 || ikind == 4)
     {
       kdim++;
-
       /* scale the coeffs so that min. weight * max. weight = 1. */
 
       rscoef = psurf->rcoef;
-      wmin = rscoef[3];
-      wmax = rscoef[3];
+      wmin = rscoef[kdim-1];
+      wmax = rscoef[kdim-1];
 
-      for (i = 3; i < psurf->in1 * psurf->in2 * kdim; i += kdim)
+      for (i = kdim-1; i < psurf->in1 * psurf->in2 * kdim; i += kdim)
 	{
 	  if (rscoef[i] < wmin)
 	    wmin = rscoef[i];
@@ -136,7 +137,7 @@ s1320 (psurf, earray, inarr, ratflag, rsurf, jstat)
 
       scale = (double) 1.0 / sqrt (wmin * wmax);
       scoef = newarray (psurf->in1 * psurf->in2 * kdim, DOUBLE);
-      if (scoef == NULL)
+      if (scoef == SISL_NULL)
 	goto err101;
 
       for (i = 0; i < psurf->in1 * psurf->in2 * kdim; i++)
@@ -151,7 +152,7 @@ s1320 (psurf, earray, inarr, ratflag, rsurf, jstat)
 
   ssurf = newSurf (psurf->in1, psurf->in2, psurf->ik1, psurf->ik2,
 		   psurf->et1, psurf->et2, scoef, 1, kdim, 1);
-  if (ssurf == NULL)
+  if (ssurf == SISL_NULL)
     goto err171;
 
   if ((ikind == 2 || ikind == 4) && ratflag == 1)
@@ -166,7 +167,7 @@ s1320 (psurf, earray, inarr, ratflag, rsurf, jstat)
       knarr = inarr + 1;
 
       sarray = new0array (kdimp1 * kdimp1 * knarr, DOUBLE);
-      if (sarray == NULL)
+      if (sarray == SISL_NULL)
 	goto err101;
 
       memcopy (sarray, earray, kdimp1 * kdimp1 * inarr, double);

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1342.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1342.c,v 1.2 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -110,7 +110,7 @@ void s1342(ep,ev,im,idim,ipar,epar,eeps,ilend,irend,aepsco,itmax,
 {
   int stat = 0;                /* Error control parameters         */
   int kpos = 0;
-  SISLCurve *ocurve = NULL;    /* Local spline curve               */
+  SISLCurve *ocurve = SISL_NULL;    /* Local spline curve               */
 
   /* Check Input */
 
@@ -153,6 +153,6 @@ void s1342(ep,ev,im,idim,ipar,epar,eeps,ilend,irend,aepsco,itmax,
   /* Exit */
 
  out:
-  if (ocurve != NULL) freeCurve(ocurve);
+  if (ocurve != SISL_NULL) freeCurve(ocurve);
   return;
 }

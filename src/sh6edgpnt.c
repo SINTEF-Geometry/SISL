@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6edgpnt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6edgpnt.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -66,12 +66,12 @@ sh6edgpoint (vedge, wintpt, jnum, jstat)
 {
   int lant[2];
 
-  if (vedge[0] == NULL)
+  if (vedge[0] == SISL_NULL)
     lant[0] = 0;
   else
     lant[0] = vedge[0]->ipoint;
 
-  if (vedge[1] == NULL)
+  if (vedge[1] == SISL_NULL)
     lant[1] = 0;
   else
     lant[1] = vedge[1]->ipoint;
@@ -87,7 +87,7 @@ sh6edgpoint (vedge, wintpt, jnum, jstat)
       /* Allocate array of pointers to the points. */
 
       if (((*wintpt) = newarray (lant[0] + lant[1],
-				 SISLIntpt *)) == NULL)
+				 SISLIntpt *)) == SISL_NULL)
 	goto err101;
 
 
@@ -96,7 +96,7 @@ sh6edgpoint (vedge, wintpt, jnum, jstat)
       for (kn1 = 0, kn = 0; kn < 2; kn++)
 	if (lant[kn] > 0)
 	  for (kj = 0; kj < vedge[kn]->iedge; kj++)
-	    for (qpt = vedge[kn]->prpt[kj]; qpt != NULL; qpt = qpt->pnext)
+	    for (qpt = vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
 	      {
 		for (ki = 0; ki < kn1; ki++)
 		  {
@@ -127,7 +127,7 @@ sh6edgpoint (vedge, wintpt, jnum, jstat)
 		    if (qmain == (*wintpt)[kj])
 		      break;
 		  if (kj < kn1)
-		    (*wintpt)[ki] = NULL;
+		    (*wintpt)[ki] = SISL_NULL;
 		}
 	    }
 	}
@@ -135,7 +135,7 @@ sh6edgpoint (vedge, wintpt, jnum, jstat)
       /* Make sure that the array of int.pt. is dense.  */
 
       for (ki = 0, kj = kn1; ki < kj; ki++)
-	if ((*wintpt)[ki] == NULL)
+	if ((*wintpt)[ki] == SISL_NULL)
 	  (*wintpt)[ki] = (*wintpt)[--kj];
 
       *jnum = kn1 = kj;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6length.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6length.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 #define S6LENGTH
@@ -50,7 +50,7 @@ double s6length(e1,idim,jstat)
 */
 {
   register int ki;            /* Running variable in loop */
-  register double tsum=DNULL; /* Dummy variables in summing loop */
+  register double tsum=DZERO; /* Dummy variables in summing loop */
   
   /* If the dimension is 1 the length of the vector is the same as the
    *  absolute value of the number */
@@ -65,7 +65,7 @@ double s6length(e1,idim,jstat)
       tsum = sqrt(tsum);
     }
   
-  if (DNEQUAL(tsum,DNULL))
+  if (DNEQUAL(tsum,DZERO))
     goto mes01;
 
   /* Length of vector is zero    */

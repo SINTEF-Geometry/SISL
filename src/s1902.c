@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1902.c,v 1.6 1997-01-07 14:16:35 jka Exp $
+ * $Id: s1902.c,v 1.7 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -101,7 +101,7 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       /* O P E N   C U R V E */
 
       *eknots = newarray (in +ik, DOUBLE);
-      if (*eknots == NULL)
+      if (*eknots == SISL_NULL)
 	goto err101;
 
       kk2 = ik / 2;
@@ -190,7 +190,7 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       /* C L O S E D   C U R V E */
 
       *eknots = newarray (in +2 * ik, DOUBLE);
-      if (*eknots == NULL)
+      if (*eknots == SISL_NULL)
 	goto err101;
 
       kn = in +1;

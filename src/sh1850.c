@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1850.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1850.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -113,7 +113,7 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
 *********************************************************************
 */                                                               
 {                                                                     
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int ikind;               /* kind of curve pc1 is                     */
   int kstat = 0;           /* Local status variable.                     */
   int kpos = 0;            /* Position of error.                         */
@@ -123,22 +123,22 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
   int kdim = 1;            /* Dimension of curve in curve/point intersection.*/
   double *st;              /* Pointer to knotvector of curve.              */
   double *scoef;           /* Pointer to vertices of curve.                */
-  double *sc = NULL;       /* Pointer to vertices of curve in curve/point
+  double *sc = SISL_NULL;       /* Pointer to vertices of curve in curve/point
 			      intersection.                                */
   double spoint[1];        /* SISLPoint in curve/point intersection.           */
-  double *spar = NULL;     /* Values of intersections in the parameter 
+  double *spar = SISL_NULL;     /* Values of intersections in the parameter 
 			      area of the second object. Empty in this case. */
-  double *sdiff = NULL;    /* Difference between point and coefficient.    */
+  double *sdiff = SISL_NULL;    /* Difference between point and coefficient.    */
   double *s1,*s2;          /* Pointers used to traverse coefficient arrays.*/
-  SISLCurve *qc = NULL;        /* Pointer to curve in 
+  SISLCurve *qc = SISL_NULL;        /* Pointer to curve in 
 			      curve/point intersection.  */
-  SISLPoint *qp = NULL;        /* Pointer to point in 
+  SISLPoint *qp = SISL_NULL;        /* Pointer to point in 
 			      curve/point intersection.  */
-  SISLObject *qo1 = NULL;      /* Pointer to curve in 
+  SISLObject *qo1 = SISL_NULL;      /* Pointer to curve in 
 			      object/point intersection. */
-  SISLObject *qo2 = NULL;      /* Pointer to point in 
+  SISLObject *qo2 = SISL_NULL;      /* Pointer to point in 
 			      object/point intersection    */
-  SISLIntdat *qintdat = NULL;  /* Intersection result */
+  SISLIntdat *qintdat = SISL_NULL;  /* Intersection result */
   double *rscoef;          /* Scaled coefficients if pc1 is rational        */
   double *s3;              /* pointer to weight if curve rational           */
   double wmin,wmax;        /* min and max values of the weights if rational */
@@ -146,9 +146,9 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
   int i;                   /* loop variable                                 */
   int idimp1;              /* idim+1                                        */
   int      ksurf=0;         /* Dummy number of Intsurfs. */
-  SISLIntsurf **wsurf=NULL;    /* Dummy array of Intsurfs. */
+  SISLIntsurf **wsurf=SISL_NULL;    /* Dummy array of Intsurfs. */
   int      kdeg=2000;       /* input to int_join_per. */
-  SISLObject *track_obj=NULL;
+  SISLObject *track_obj=SISL_NULL;
   
   /*
   * Create new object and connect curve to object.
@@ -213,8 +213,8 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
    * ------------------------------------------------------------
    */
                          
-  if ((sdiff = newarray(idim,double)) == NULL) goto err101;
-  if ((sc = newarray(kn,double)) == NULL) goto err101;
+  if ((sdiff = newarray(idim,double)) == SISL_NULL) goto err101;
+  if ((sc = newarray(kn,double)) == SISL_NULL) goto err101;
 
   /* 
    * Put vertices into the equation of the plane/line. 
@@ -252,7 +252,7 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
 
   if(ikind == 2 || ikind == 4) ikind--;
   qc = newCurve(kn,kk,st,sc,ikind,kdim,0);
-  if (qc == NULL) goto err101;
+  if (qc == SISL_NULL) goto err101;
   qc->cuopen = pc1->cuopen;		  
       
   /* 
@@ -270,7 +270,7 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
    */
 
   if(!(qo2 = newObject(SISLPOINT))) goto err101;
-  spoint[0] = DNULL;
+  spoint[0] = DZERO;
   if(!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
@@ -353,7 +353,7 @@ void sh1850(pc1,epoint,enorm,idim,aepsco,aepsge,
   if (qintdat) freeIntdat(qintdat);
   if (track_obj)
     {
-       track_obj->c1 = NULL;
+       track_obj->c1 = SISL_NULL;
        freeObject(track_obj);
     }
 

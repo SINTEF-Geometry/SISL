@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2533.c,v 1.1 1995-08-21 13:23:14 jka Exp $
+ * $Id: s2533.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -80,13 +80,13 @@ void s2533(et, ik, in, multinc, newik, newin, newet, stat)
    int ki, kj, kl;          /* Indices.                         */
    int add_knot;            /* Number of interior knots to add. */
    int knot_pos;            /* Number of knot positions.        */
-   int *new_mult = NULL;    /* Array of new multiplicities.     */
-   double *knot_par = NULL; /* Array of knot parameters.        */
+   int *new_mult = SISL_NULL;    /* Array of new multiplicities.     */
+   double *knot_par = SISL_NULL; /* Array of knot parameters.        */
 
 
    /* Check input. */
 
-   if (et == NULL || multinc < 0 || newik < (multinc + 2)) 
+   if (et == SISL_NULL || multinc < 0 || newik < (multinc + 2)) 
       goto err150;
 
    /* Initiation and allocation of utility arrays. */
@@ -97,8 +97,8 @@ void s2533(et, ik, in, multinc, newik, newin, newet, stat)
       
       add_knot = (newik - ik) + multinc;
       
-      if ((new_mult = newarray(in - ik, INT)) == NULL) goto err101;
-      if ((knot_par = newarray(in - ik, DOUBLE)) == NULL) goto err101;
+      if ((new_mult = newarray(in - ik, INT)) == SISL_NULL) goto err101;
+      if ((knot_par = newarray(in - ik, DOUBLE)) == SISL_NULL) goto err101;
    }
    
    /* Examine the original knot multiplicity. */
@@ -127,7 +127,7 @@ void s2533(et, ik, in, multinc, newik, newin, newet, stat)
    
    /* Allocate the output array. */
    
-   if ((*newet = newarray((*newin + newik), DOUBLE)) == NULL) goto err101;
+   if ((*newet = newarray((*newin + newik), DOUBLE)) == SISL_NULL) goto err101;
    
    /* Fill in the new values. */
    
@@ -166,8 +166,8 @@ void s2533(et, ik, in, multinc, newik, newin, newet, stat)
    /* ---------------------- NORMAL EXIT ------------------------------- */
 
  out:
-   if (new_mult != NULL) freearray(new_mult); 
-   if (knot_par != NULL) freearray(knot_par); 
+   if (new_mult != SISL_NULL) freearray(new_mult); 
+   if (knot_par != SISL_NULL) freearray(knot_par); 
    
    return;
 }

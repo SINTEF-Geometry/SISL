@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1907.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1907.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -122,17 +122,17 @@ void s1907(epoint, ntype, epar, iopen, icnsta, icnend, inbpnt, idim,
     *knbpnt = inbpnt;
 
   *opoint = newarray ((*knbpnt) * idim, DOUBLE);
-  if (*opoint == NULL)
+  if (*opoint == SISL_NULL)
     goto err101;
   *otype = newarray (*knbpnt, INT);
-  if (*otype == NULL)
+  if (*otype == SISL_NULL)
     goto err101;
 
   if (iopen == SISL_CRV_OPEN)
     *opar = newarray (*knbpnt, DOUBLE);
   else
     *opar = newarray (*knbpnt + 1, DOUBLE);
-  if (*opar == NULL)
+  if (*opar == SISL_NULL)
     goto err101;
 
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1761.c,v 1.6 1999-01-15 10:15:17 jka Exp $
+ * $Id: sh1761.c,v 1.7 2001-03-19 15:59:04 afr Exp $
  *
  */
 
@@ -109,18 +109,18 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
   int kxintercept = (*jstat == 202);  /* Extra interception               */
   double tpar;			/* Help variable used for parameter value
 				   and geometric distance.                */
-  SISLObject *po1_kreg=NULL;    /* Pointer to first object converted to
+  SISLObject *po1_kreg=SISL_NULL;    /* Pointer to first object converted to
 				   k-regular basis.                       */
-  SISLObject *po2_kreg=NULL;    /* Pointer to second object converted to
+  SISLObject *po2_kreg=SISL_NULL;    /* Pointer to second object converted to
 				   k-regular basis.                       */
-  SISLIntpt *qt = NULL;         /* Temporary intersection point. */
+  SISLIntpt *qt = SISL_NULL;         /* Temporary intersection point. */
   SISLEdge *qedge[2];	        /* Edges for use in s1862().      */
-  SISLIntdat *qintdat = NULL;	/* Intdat for use in recurson.    */
+  SISLIntdat *qintdat = SISL_NULL;	/* Intdat for use in recurson.    */
 
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int idummy;
 
-  qedge[0] = qedge[1] = NULL;  /* PFU - to fix memory leak */
+  qedge[0] = qedge[1] = SISL_NULL;  /* PFU - to fix memory leak */
 
 
   /* Ensure K-regularity on B-spline basis ________________*/
@@ -128,7 +128,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
     {
        if (po1->c1->cuopen == SISL_CRV_PERIODIC)
 	 {
-	    if ((po1_kreg = newObject (SISLCURVE)) == NULL)
+	    if ((po1_kreg = newObject (SISLCURVE)) == SISL_NULL)
 	      goto err101;
 	    make_cv_kreg(po1->c1, &po1_kreg->c1, &kstat);
 	    if (kstat < 0) goto error;
@@ -141,7 +141,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
        if (po1->s1->cuopen_1 == SISL_CRV_PERIODIC ||
 	   po1->s1->cuopen_2 == SISL_CRV_PERIODIC)
 	 {
-	    if ((po1_kreg = newObject (SISLSURFACE)) == NULL)
+	    if ((po1_kreg = newObject (SISLSURFACE)) == SISL_NULL)
 	      goto err101;
 	    make_sf_kreg(po1->s1, &po1_kreg->s1, &kstat);
 	    if (kstat < 0) goto error;
@@ -156,7 +156,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
     {
        if (po2->c1->cuopen == SISL_CRV_PERIODIC)
 	 {
-	    if ((po2_kreg = newObject (SISLCURVE)) == NULL)
+	    if ((po2_kreg = newObject (SISLCURVE)) == SISL_NULL)
 	      goto err101;
 	    make_cv_kreg(po2->c1, &po2_kreg->c1, &kstat);
 	    if (kstat < 0) goto error;
@@ -168,7 +168,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
        if (po2->s1->cuopen_1 == SISL_CRV_PERIODIC ||
 	   po2->s1->cuopen_2 == SISL_CRV_PERIODIC)
 	 {
-	    if ((po2_kreg = newObject (SISLSURFACE)) == NULL)
+	    if ((po2_kreg = newObject (SISLSURFACE)) == SISL_NULL)
 	      goto err101;
 	    make_sf_kreg(po2->s1, &po2_kreg->s1, &kstat);
 	    if (kstat < 0) goto error;
@@ -194,16 +194,16 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 
       if (tpar <= aepsge)
 	{
-	  /* PFU, moved to top to fix memory leak: SISLIntpt *qt = NULL; */
+	  /* PFU, moved to top to fix memory leak: SISLIntpt *qt = SISL_NULL; */
 
 	  *jstat = 1;		/* Mark intersection found. */
 	  /* UJK , newi */
 	  /* Making intersection point. */
 
-	  qt = hp_newIntpt (0, &tpar, DNULL, SI_ORD,
+	  qt = hp_newIntpt (0, &tpar, DZERO, SI_ORD,
 			    SI_UNDEF, SI_UNDEF, SI_UNDEF, SI_UNDEF,
 			    0, 0, nullp, nullp);
-	  if (qt == NULL)
+	  if (qt == SISL_NULL)
 	    goto err101;
 
 	  /* Uppdating pintdat. */
@@ -212,7 +212,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  if (kstat < 0)
 	    goto error;
 
-	  qt = NULL;      /* PFU - to fix memory leak */
+	  qt = SISL_NULL;      /* PFU - to fix memory leak */
 	}
       else
 	*jstat = 0;
@@ -236,31 +236,31 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	{
 	  int ki, kj;		/* Counters.                      */
 	  int kedg = 0;		/* Number of parameter direction. */
-	  SISLObject *qo1 = NULL;  /* Help pointer.                  */
-	  SISLObject *qo2 = NULL;  /* Help pointer.                  */
+	  SISLObject *qo1 = SISL_NULL;  /* Help pointer.                  */
+	  SISLObject *qo2 = SISL_NULL;  /* Help pointer.                  */
 
 	  /* PFU, moved to top to fix memory leak:
 	   *  SISLEdge *qedge[2];
-	   *  SISLIntdat *qintdat = NULL;
+	   *  SISLIntdat *qintdat = SISL_NULL;
 	   */
 
-	  qintdat = NULL; /* PFU to fix memory leak. */
-	  qedge[0] = qedge[1] = NULL;
+	  qintdat = SISL_NULL; /* PFU to fix memory leak. */
+	  qedge[0] = qedge[1] = SISL_NULL;
 	  *jstat = 0;
 
 	  for (kj = 0, qo1 = po1_kreg, qo2 = po2_kreg; kj < 2; kj++, qo1 = po2_kreg, qo2 = po1_kreg)
 	    if (qo1->iobj == SISLPOINT)
-	      qedge[kj] = NULL;	/* Not necessary to compute edge intersection.*/
+	      qedge[kj] = SISL_NULL;	/* Not necessary to compute edge intersection.*/
 	    else if (qo1->iobj == SISLCURVE)
 	      {
-		if ((qedge[kj] = newEdge (2)) == NULL)
+		if ((qedge[kj] = newEdge (2)) == SISL_NULL)
 		  goto err101;
 
 		for (ki = 0; ki < 2; ki++)
 		  {
-		    if (qo1->edg[ki] == NULL)
+		    if (qo1->edg[ki] == SISL_NULL)
 		      {
-			if ((qo1->edg[ki] = newObject (SISLPOINT)) == NULL)
+			if ((qo1->edg[ki] = newObject (SISLPOINT)) == SISL_NULL)
 			  goto err101;
 
 			/* Pick out end point from a curve. */
@@ -304,9 +304,9 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 			  goto error;
 		      }
 
-		    if (qintdat != NULL)
+		    if (qintdat != SISL_NULL)
 		      freeIntdat (qintdat);
-		    qintdat = NULL;
+		    qintdat = SISL_NULL;
 		  }
 		kedg++;
 	      }
@@ -315,14 +315,14 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	      {
 		int kpar;	/* Parameter direction.            */
 
-		if ((qedge[kj] = newEdge (4)) == NULL)
+		if ((qedge[kj] = newEdge (4)) == SISL_NULL)
 		  goto err101;
 
 		for (ki = 0; ki < 4; ki++)
 		  {
-		    if (qo1->edg[ki] == NULL)
+		    if (qo1->edg[ki] == SISL_NULL)
 		      {
-			if ((qo1->edg[ki] = newObject (SISLCURVE)) == NULL)
+			if ((qo1->edg[ki] = newObject (SISLCURVE)) == SISL_NULL)
 			  goto err101;
 
 			/* Pick out edge curve from a surface. */
@@ -372,9 +372,9 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 			  goto error;
 		      }
 
-		    if (qintdat != NULL)
+		    if (qintdat != SISL_NULL)
 		      freeIntdat (qintdat);
-		    qintdat = NULL;
+		    qintdat = SISL_NULL;
 		  }
 		kedg += 2;
 	      }
@@ -385,29 +385,29 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  /* Before we enter internal intersection and subdivision we
 	     initiate pointers to top level objects. */
 
-	  if (po1_kreg->o1 == NULL)
+	  if (po1_kreg->o1 == SISL_NULL)
 	    po1_kreg->o1 = po1_kreg;
-	  if (po2_kreg->o1 == NULL)
+	  if (po2_kreg->o1 == SISL_NULL)
 	    po2_kreg->o1 = po2_kreg;
 
 	  /* Find the intersections in the inner of the object.  */
 
 	  /* NEWI (ujk) Must treat helppoint on edges */
-	  if (qedge[0] != NULL)
+	  if (qedge[0] != SISL_NULL)
 	    freeEdge (qedge[0]);
-	  qedge[0] = NULL;
-	  if (qedge[1] != NULL)
+	  qedge[0] = SISL_NULL;
+	  if (qedge[1] != SISL_NULL)
 	    freeEdge (qedge[1]);
-	  qedge[1] = NULL;
+	  qedge[1] = SISL_NULL;
 
 	  if (po1_kreg->iobj == SISLPOINT)
-	    qedge[0] = NULL;
-	  else if ((qedge[0] = newEdge (2 * po1_kreg->iobj)) == NULL)
+	    qedge[0] = SISL_NULL;
+	  else if ((qedge[0] = newEdge (2 * po1_kreg->iobj)) == SISL_NULL)
 	    goto err101;
 
 	  if (po2_kreg->iobj == SISLPOINT)
-	    qedge[1] = NULL;
-	  else if ((qedge[1] = newEdge (2 * po2_kreg->iobj)) == NULL)
+	    qedge[1] = SISL_NULL;
+	  else if ((qedge[1] = newEdge (2 * po2_kreg->iobj)) == SISL_NULL)
 	    goto err101;
 
 	  sh6idalledg (po1_kreg, po2_kreg, *pintdat, qedge, &kstat);
@@ -424,12 +424,12 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 
 	  /* Free the edges used in s1762. */
 
-	  if (qedge[0] != NULL)
+	  if (qedge[0] != SISL_NULL)
 	    freeEdge (qedge[0]);
-	  qedge[0] = NULL;
-	  if (qedge[1] != NULL)
+	  qedge[0] = SISL_NULL;
+	  if (qedge[1] != SISL_NULL)
 	    freeEdge (qedge[1]);
-	  qedge[1] = NULL;
+	  qedge[1] = SISL_NULL;
 
 
 	  /* UJK, edge reduction rules */
@@ -450,7 +450,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  if (kstat < 0) goto error;
 */
 	  if (qintdat)  freeIntdat(qintdat);  /* PFU                  */
-	  qintdat = NULL;                     /* - to fix memory leak */
+	  qintdat = SISL_NULL;                     /* - to fix memory leak */
 	}
       else
 	*jstat = 0;
@@ -487,13 +487,13 @@ error:*jstat = kstat;
      if (po1_kreg && po1_kreg != po1)
        {
 	  freeObject(po1_kreg);
-	  po1_kreg = NULL;
+	  po1_kreg = SISL_NULL;
        }
 
      if (po2_kreg && po2_kreg != po2)
        {
 	  freeObject(po2_kreg);
-	  po2_kreg = NULL;
+	  po2_kreg = SISL_NULL;
 
        }
 

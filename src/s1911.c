@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1911.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1911.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -101,11 +101,11 @@ s1911 (econd, ntype, inpt, idim, iopen, astpar, cendpar, epar1, epar2, jstat)
   /* Allocate arrays. */
 
   *epar1 = newarray (knpt, DOUBLE);
-  if (*epar1 == NULL)
+  if (*epar1 == SISL_NULL)
     goto err101;
 
   *epar2 = newarray (knpt, DOUBLE);
-  if (*epar2 == NULL)
+  if (*epar2 == SISL_NULL)
     goto err101;
 
   (*epar1)[0] = astpar;
@@ -174,7 +174,7 @@ s1911 (econd, ntype, inpt, idim, iopen, astpar, cendpar, epar1, epar2, jstat)
     }
 
   *epar2 = increasearray (*epar2, count2, DOUBLE);
-  if (*epar2 == NULL)
+  if (*epar2 == SISL_NULL)
     goto err101;
 
 

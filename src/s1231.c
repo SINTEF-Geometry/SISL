@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1231.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1231.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -56,9 +56,9 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
 * OUTPUT     : rcnew1    - First part of the subdivided curve.
 *              rcnew2    - Second part of the subdivided curve.
 *                          If the parameter value is at the end of a
-*                          curve NULL pointers might be returned
+*                          curve SISL_NULL pointers might be returned
 *              jstat     - status messages
-*                                         = 2      : pc1 periodic, rcnew2=NULL
+*                                         = 2      : pc1 periodic, rcnew2=SISL_NULL
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -101,22 +101,22 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
   int kj,kj1,kj2;         /* Control variable in loop.                  */
   int newkind=1;          /* Type of curve the subcurves are            */
   double *s1,*s2,*s3,*s4; /* Pointers used in loop.                     */
-  double *st1=NULL;       /* The first new knot-vector.                 */
-  double *st2=NULL;       /* The second new knot-vector.                */
-  double *salfa=NULL;     /* A line of the trans.-matrix.               */
+  double *st1=SISL_NULL;       /* The first new knot-vector.                 */
+  double *st2=SISL_NULL;       /* The second new knot-vector.                */
+  double *salfa=SISL_NULL;     /* A line of the trans.-matrix.               */
   double *scoef;          /* Pointer to vertices.                       */
-  double *scoef1=NULL;    /* The first new vertice.                     */
-  double *scoef2=NULL;    /* The second new vertice.                    */
-  SISLCurve *q1=NULL;     /* Pointer to new curve-object.               */
-  SISLCurve *q2=NULL;     /* Pointer to new curve-object.               */
+  double *scoef1=SISL_NULL;    /* The first new vertice.                     */
+  double *scoef2=SISL_NULL;    /* The second new vertice.                    */
+  SISLCurve *q1=SISL_NULL;     /* Pointer to new curve-object.               */
+  SISLCurve *q2=SISL_NULL;     /* Pointer to new curve-object.               */
   int incr;		  /* No of extra knots copied during periodicity*/
   int mu;		  /* Multiplisity at the k'th knot              */
   int kleft = kk-1;	  /* Knot navigator                             */
   double delta;           /* Period size in knot array.                 */
   double salfa_local[5];  /* Local help array.			        */
   
-  *rcnew1 = NULL;
-  *rcnew2 = NULL;
+  *rcnew1 = SISL_NULL;
+  *rcnew2 = SISL_NULL;
   
   
  /* if pc1 is rational, do subdivision in homogeneous coordinates */
@@ -163,9 +163,9 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
      
      /* Copy ----------------------------------- */
      incr = kn - kk + mu;
-     if ((scoef1 = newarray ((kn + incr) * kdim, double)) == NULL)
+     if ((scoef1 = newarray ((kn + incr) * kdim, double)) == SISL_NULL)
 	goto err101;
-     if ((st1 = newarray (kn + kk + incr, double)) == NULL)
+     if ((st1 = newarray (kn + kk + incr, double)) == SISL_NULL)
 	goto err101;
      
      memcopy (scoef1, pc1->ecoef, kn * kdim, double);
@@ -178,7 +178,7 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
 	st1[kn + kk + ki] = st1[kn + kk + ki - 1] +
 	   (st1[2*kk - mu + ki] - st1[2*kk - mu + ki - 1]);
      if ((q1 = newCurve (kn + incr, kk, st1, scoef1,
-			 newkind, pc1->idim, 2)) == NULL)
+			 newkind, pc1->idim, 2)) == SISL_NULL)
 	goto err101;
      q1->cuopen = SISL_CRV_OPEN;
      
@@ -213,7 +213,7 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
   
   if (kk > 5)
   {
-     if ((salfa = newarray (kk, double)) == NULL)	goto err101;
+     if ((salfa = newarray (kk, double)) == SISL_NULL)	goto err101;
   }
   else salfa = salfa_local;
   
@@ -256,13 +256,13 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
   
   if (kn1>0)
   {
-     if ((scoef1=newarray(kn1*kdim,double))==NULL) goto err101;
-     if ((st1=newarray(kn1+kk,double))==NULL) goto err101;
+     if ((scoef1=newarray(kn1*kdim,double))==SISL_NULL) goto err101;
+     if ((st1=newarray(kn1+kk,double))==SISL_NULL) goto err101;
   }
   if (kn2>0)
   {
-     if ((scoef2=newarray(kn2*kdim,double))==NULL) goto err101;
-     if ((st2=newarray(kn2+kk,double))==NULL) goto err101;
+     if ((scoef2=newarray(kn2*kdim,double))==SISL_NULL) goto err101;
+     if ((st2=newarray(kn2+kk,double))==SISL_NULL) goto err101;
   }
   
   
@@ -353,10 +353,10 @@ void s1231(pc1,apar,rcnew1,rcnew2,jstat)
   /* use pc1->idim rather than kdim in case pc1 is rational  */
   
   if (kn1>0)
-     if ((q1=newCurve(kn1,kk,st1,scoef1,newkind,pc1->idim,2)) == NULL)
+     if ((q1=newCurve(kn1,kk,st1,scoef1,newkind,pc1->idim,2)) == SISL_NULL)
 								goto err101;
   if (kn2>0)
-     if ((q2=newCurve(kn2,kk,st2,scoef2,newkind,pc1->idim,2)) == NULL)
+     if ((q2=newCurve(kn2,kk,st2,scoef2,newkind,pc1->idim,2)) == SISL_NULL)
 								goto err101;
   
   

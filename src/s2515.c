@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2515.c,v 1.1 1995-08-21 13:21:42 jka Exp $
+ * $Id: s2515.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -144,7 +144,7 @@ void
       
    if (ider != 0) goto err178;
       
-   if (surf == NULL)  goto err150;
+   if (surf == SISL_NULL)  goto err150;
    else
    {
 	 
@@ -168,7 +168,7 @@ void
       
    goto out;
 
-   /* Error. Input (surface) pointer is NULL. */
+   /* Error. Input (surface) pointer is SISL_NULL. */
  err150:
    *stat = -150;
    s6err("s2515", *stat, 0);

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1609.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1609.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -110,11 +110,11 @@ void s1609(pc1,pc2,aepsge,eps1,epf,eps2,aradius,enorm,itype,idim,ik,rc,
 *********************************************************************
 */
 {
-  SISLIntcurve **qic1=NULL;  /* SISLObject containing intervals if any     */
-  SISLIntcurve **qic2=NULL;  /* SISLObject containing intervals if any     */
-  SISLIntcurve **qic3=NULL;  /* SISLObject containing intervals if any     */
-  SISLCurve    *qc1=NULL;    /* Offset of first curve                  */
-  SISLCurve    *qc2=NULL;    /* Offset of second curve                 */
+  SISLIntcurve **qic1=SISL_NULL;  /* SISLObject containing intervals if any     */
+  SISLIntcurve **qic2=SISL_NULL;  /* SISLObject containing intervals if any     */
+  SISLIntcurve **qic3=SISL_NULL;  /* SISLObject containing intervals if any     */
+  SISLCurve    *qc1=SISL_NULL;    /* Offset of first curve                  */
+  SISLCurve    *qc2=SISL_NULL;    /* Offset of second curve                 */
   
   int kstat;          /* Status variable                                  */
   int kpos=0;         /* Position of error                                */
@@ -132,10 +132,10 @@ void s1609(pc1,pc2,aepsge,eps1,epf,eps2,aradius,enorm,itype,idim,ik,rc,
   double tpar1,tpar2; /* Parameter values                                 */
   double spnt1[6];    /* SISLPoint and derivate                               */
   double spnt2[6];    /* SISLPoint and derivate                               */
-  double *spar1=NULL; /* Pointer to parameter values                      */
-  double *spar2=NULL; /* Pointer to parameter values                      */
-  double *spar3=NULL; /* Pointer to parameter values                      */
-  double *spar4=NULL; /* Pointer to parameter values                      */
+  double *spar1=SISL_NULL; /* Pointer to parameter values                      */
+  double *spar2=SISL_NULL; /* Pointer to parameter values                      */
+  double *spar3=SISL_NULL; /* Pointer to parameter values                      */
+  double *spar4=SISL_NULL; /* Pointer to parameter values                      */
   double snorm[3];    /* Normal vector                                    */
   double sdiff[3];    /* Difference vector                                */
   double tprod;       /* Scalar product                                   */
@@ -231,7 +231,7 @@ void s1609(pc1,pc2,aepsge,eps1,epf,eps2,aradius,enorm,itype,idim,ik,rc,
   
   /* Set direction of offset of curve 1 */
   
-  if (tprod >= DNULL)
+  if (tprod >= DZERO)
     trad1 = aradius;
   else
     trad1 = -aradius;
@@ -258,7 +258,7 @@ void s1609(pc1,pc2,aepsge,eps1,epf,eps2,aradius,enorm,itype,idim,ik,rc,
   
   /* Determine if offset to be used on curve 1 is positive or negative */
   
-  if (tprod >= DNULL)
+  if (tprod >= DZERO)
     trad2 = aradius;
   else
     trad2 = -aradius;
@@ -390,15 +390,15 @@ void s1609(pc1,pc2,aepsge,eps1,epf,eps2,aradius,enorm,itype,idim,ik,rc,
   goto out;
   
  out:
-  if (qc1   != NULL) freeCurve(qc1);
-  if (qc2   != NULL) freeCurve(qc2);
-  if (qic1  != NULL) freeIntcrvlist(qic1,kcrv1);
-  if (qic2  != NULL) freeIntcrvlist(qic2,kcrv2);
-  if (qic3  != NULL) freeIntcrvlist(qic3,kcrv3);
-  if (spar1 != NULL) freearray(spar1);
-  if (spar2 != NULL) freearray(spar2);
-  if (spar3 != NULL) freearray(spar3);
-  if (spar4 != NULL) freearray(spar4);
+  if (qc1   != SISL_NULL) freeCurve(qc1);
+  if (qc2   != SISL_NULL) freeCurve(qc2);
+  if (qic1  != SISL_NULL) freeIntcrvlist(qic1,kcrv1);
+  if (qic2  != SISL_NULL) freeIntcrvlist(qic2,kcrv2);
+  if (qic3  != SISL_NULL) freeIntcrvlist(qic3,kcrv3);
+  if (spar1 != SISL_NULL) freearray(spar1);
+  if (spar2 != SISL_NULL) freearray(spar2);
+  if (spar3 != SISL_NULL) freearray(spar3);
+  if (spar4 != SISL_NULL) freearray(spar4);
   
   return;
 }       

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2542.c,v 1.2 1995-09-19 13:40:06 jka Exp $
+ * $Id: s2542.c,v 1.3 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -149,7 +149,7 @@ void
   if (ider != 0) goto err178;
 
 
-  if (surf == NULL)  goto err150;
+  if (surf == SISL_NULL)  goto err150;
   else
   {
     /* Compute derivates and normal. */
@@ -193,7 +193,7 @@ void
      *jstat = 2;
   goto out;
   
-  /* Error. Input (surface) pointer is NULL. */
+  /* Error. Input (surface) pointer is SISL_NULL. */
   err150:
      *jstat = -150;
   s6err("s2542", *jstat, 0);

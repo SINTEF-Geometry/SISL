@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1329.c,v 1.2 1994-06-28 07:37:33 mif Exp $
+ * $Id: s1329.c,v 1.3 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -82,10 +82,10 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
   int kn1,kn2;     /* Number of coefficients of surface.            */
   int kk1,kk2;     /* Order of surface.                             */
   int ikind;       /* kind of surface psold is                      */
-  double *scoef = NULL; /* Coeffecient array of new surface.        */
+  double *scoef = SISL_NULL; /* Coeffecient array of new surface.        */
   double *s1,*s2;  /* Pointers used to traverse scoef.              */
-  double *sc=NULL; /* Pointer used to traverse psold->ecoef.        */
-  double *scSave=NULL; /* Pointer to vertices in rational case.     */
+  double *sc=SISL_NULL; /* Pointer used to traverse psold->ecoef.        */
+  double *scSave=SISL_NULL; /* Pointer to vertices in rational case.     */
   double *rscoef;  /* Scaled coefficients if psold is rational      */
   double *s3;      /* Stop pointer for each vertex in psold->ecoef. */
   double *spoint;  /* Pointer used to traverse the point epoint.    */
@@ -122,7 +122,7 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
           if(rscoef[i] > wmax) wmax=rscoef[i];
       } 
       scale=1.0/sqrt(wmin*wmax);
-      if ((sc = newarray(idimp1*kn1*kn2,DOUBLE)) == NULL) goto err101;
+      if ((sc = newarray(idimp1*kn1*kn2,DOUBLE)) == SISL_NULL) goto err101;
       for(i=0; i< kn1*kn2*idimp1; i++)
       {
           sc[i]=rscoef[i]*scale;
@@ -137,7 +137,7 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
 
   /* Allocate space for coeffecient of the new surface.  */
   
-  if ((scoef = newarray(kdim*kn1*kn2,DOUBLE)) == NULL) goto err101;
+  if ((scoef = newarray(kdim*kn1*kn2,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Compute coefficients of new surface.  */
   
@@ -170,7 +170,7 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
   /* Create output surface.  */
   
   *rsnew = newSurf(kn1,kn2,kk1,kk2,psold->et1,psold->et2,scoef,1,kdim,1);
-  if (*rsnew == NULL) goto err101;
+  if (*rsnew == SISL_NULL) goto err101;
   
   /* Task done.  */
   
@@ -194,6 +194,6 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
   out:
     /* Free space allocated for local array.  */
   
-    if (scoef != NULL) freearray(scoef);
+    if (scoef != SISL_NULL) freearray(scoef);
     return;    
 }

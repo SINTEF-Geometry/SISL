@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1322.c,v 1.2 1994-11-14 13:04:06 pfu Exp $
+ * $Id: s1322.c,v 1.3 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -118,12 +118,12 @@ void s1322(epoint,edirec,aradiu,idim,inumb,carray,jstat)
 
   for (ki=0;ki<kstop;ki++)
     {
-      carray[ki] = DNULL;
+      carray[ki] = DZERO;
     }
 
   /* Normalize direction vector */
 
-  tsum = DNULL;
+  tsum = DZERO;
 
   for (ki=0;ki<idim;ki++)
     {
@@ -132,7 +132,7 @@ void s1322(epoint,edirec,aradiu,idim,inumb,carray,jstat)
     }
 
   tsum = sqrt(tsum);
-  if (DEQUAL(tsum,DNULL)) goto err173;
+  if (DEQUAL(tsum,DZERO)) goto err173;
 
   for (ki=0;ki<idim;ki++)
     {
@@ -150,7 +150,7 @@ void s1322(epoint,edirec,aradiu,idim,inumb,carray,jstat)
 
   /* Make element 1,...,idim of last row and 1,...,idim of last column */
 
-  tsum = DNULL;
+  tsum = DZERO;
   twx = sdirec[0];
   twy = sdirec[1];
   twz = sdirec[2];

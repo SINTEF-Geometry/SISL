@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1859.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1859.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -110,14 +110,14 @@ sh1859 (ps1, ps2, aepsco, aepsge,
 *********************************************************************
 */
 {
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int kstat = 0;		/* Local status variable.                   */
   int kpos = 0;			/* Position of error.                       */
-  SISLObject *qo1 = NULL;	/* Object containing first curve in
+  SISLObject *qo1 = SISL_NULL;	/* Object containing first curve in
 			       the intersection.                        */
-  SISLObject *qo2 = NULL;	/* Object containing second curve in
+  SISLObject *qo2 = SISL_NULL;	/* Object containing second curve in
 			       the intersection.                        */
-  SISLIntdat *qintdat = NULL;	/* Structure holding the intersection data. */
+  SISLIntdat *qintdat = SISL_NULL;	/* Structure holding the intersection data. */
   int      kdeg=0;              /* input to int_join_per. */
 
   /*
@@ -138,12 +138,12 @@ sh1859 (ps1, ps2, aepsco, aepsge,
    * ---------------------------------------------------
    */
 
-  if ((qo1 = newObject (SISLSURFACE)) == NULL)
+  if ((qo1 = newObject (SISLSURFACE)) == SISL_NULL)
     goto err101;
   qo1->s1 = ps1;
   qo1->o1 = qo1;
 
-  if ((qo2 = newObject (SISLSURFACE)) == NULL)
+  if ((qo2 = newObject (SISLSURFACE)) == SISL_NULL)
     goto err101;
   qo2->s1 = ps2;
   qo2->o1 = qo2;
@@ -238,12 +238,12 @@ out:
 
   if (qo1)
     {
-      qo1->s1 = NULL;
+      qo1->s1 = SISL_NULL;
       freeObject (qo1);
     }
   if (qo2)
     {
-      qo2->s1 = NULL;
+      qo2->s1 = SISL_NULL;
       freeObject (qo2);
     }
   if (qintdat)

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1956.c,v 1.2 1994-09-22 08:46:07 pfu Exp $
+ * $Id: s1956.c,v 1.3 2001-03-19 15:58:57 afr Exp $
  *
  */
 
@@ -85,12 +85,12 @@ void s1956(pc1,pc2,rsurf,jstat)
   double tdist;         /* Distance between vertices.                    */
   double *scoef1;       /* Pointer to vertices of first curve.           */
   double *scoef2;       /* Pointer to vertices of second curve.          */
-  double *ssurf = NULL; /* Pointer to the vertices of the difference
+  double *ssurf = SISL_NULL; /* Pointer to the vertices of the difference
 			   surface.                                      */
   double *s0;           /* Pointer used to traverse ssurf.               */
   double *s1;           /* Pointer used to traverse scoef1.              */
   double *s2;           /* Pointer used to traverse scoef2.              */
-  SISLCurve *ratpc=NULL; /* Temporary SISLCurve for rational cases.      */
+  SISLCurve *ratpc=SISL_NULL; /* Temporary SISLCurve for rational cases.      */
   int newdim;          /* = kdim+1 if pc1 or pc2 rational, else = kdim.  */
   double *s1weight;    /* Pointer to weights in pc1 if rational.         */
   double *s2weight;    /* Pointer to weights in pc2 if rational.         */
@@ -144,7 +144,7 @@ void s1956(pc1,pc2,rsurf,jstat)
     /* Allocate space for homogeneous coefficients of rational
        difference surface.  */
 
-    if ((ssurf = newarray(kn1*kn2*newdim,double)) == NULL) goto err101;
+    if ((ssurf = newarray(kn1*kn2*newdim,double)) == SISL_NULL) goto err101;
 
     /* Make coefficients of difference function.  */
 
@@ -166,9 +166,9 @@ void s1956(pc1,pc2,rsurf,jstat)
 
     /* Create difference function.  */
 
-    *rsurf = NULL;
+    *rsurf = SISL_NULL;
     if ((*rsurf = newSurf(kn1,kn2,kk1,kk2,pc1->et,pc2->et,
-			  ssurf,2,kdim,1)) == NULL) goto err101;
+			  ssurf,2,kdim,1)) == SISL_NULL) goto err101;
   }
   else
   {
@@ -181,7 +181,7 @@ void s1956(pc1,pc2,rsurf,jstat)
 
     /* Allocate space for coefficients of difference surface.  */
 
-    if ((ssurf = newarray(kn1*kn2*kdim,double)) == NULL) goto err101;
+    if ((ssurf = newarray(kn1*kn2*kdim,double)) == SISL_NULL) goto err101;
 
     /* Make coefficients of difference function.  */
 
@@ -191,9 +191,9 @@ void s1956(pc1,pc2,rsurf,jstat)
 
     /* Create difference function.  */
 
-    *rsurf = NULL;
+    *rsurf = SISL_NULL;
     if ((*rsurf = newSurf(kn1,kn2,kk1,kk2,pc1->et,pc2->et,
-			  ssurf,1,kdim,1)) == NULL) goto err101;
+			  ssurf,1,kdim,1)) == SISL_NULL) goto err101;
   }
 
 
@@ -274,7 +274,7 @@ void s1956(pc1,pc2,rsurf,jstat)
 
   /* Free space occupied by local array.  */
 
-  if (ssurf != NULL) freearray(ssurf);
+  if (ssurf != SISL_NULL) freearray(ssurf);
   if (ratpc) freeCurve(ratpc);
 
   return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1920.c,v 1.2 1994-08-30 11:38:16 pfu Exp $
+ * $Id: s1920.c,v 1.3 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -113,15 +113,15 @@ void s1920(pc1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   double tmax;             /* Estimate of maximal value of 1-dim. curve. */
   double *st;              /* Pointer to knotvector of curve.            */
   double *scoef;           /* Pointer to vertices of curve.              */
-  double *sc = NULL;       /* Pointer to vertices of curve in maxima
+  double *sc = SISL_NULL;       /* Pointer to vertices of curve in maxima
 			      calculation.                               */
-  double *spar = NULL;     /* Values of extremal points in the parameter
+  double *spar = SISL_NULL;     /* Values of extremal points in the parameter
 			      area of the second object. Empty in this case.*/
   double *s1,*s2,*sstop;   /* Pointers used to traverse double-arrays.   */
-  SISLIntdat *qintdat = NULL;  /* Maximum results.                     */
-  SISLCurve *qc = NULL;        /* Pointer to curve in maxima calculation.    */
-  SISLObject *qo1 = NULL;      /* Pointer to object in maxima calculation. */
-  SISLCurve *qkreg = NULL;     /* Input curve with k-regularity ensured. */
+  SISLIntdat *qintdat = SISL_NULL;  /* Maximum results.                     */
+  SISLCurve *qc = SISL_NULL;        /* Pointer to curve in maxima calculation.    */
+  SISLObject *qo1 = SISL_NULL;      /* Pointer to object in maxima calculation. */
+  SISLCurve *qkreg = SISL_NULL;     /* Input curve with k-regularity ensured. */
 
 
   *jpt = 0;
@@ -157,7 +157,7 @@ void s1920(pc1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
       scoef = qkreg -> rcoef;
       /* Allocate space for coeffecients of new curve.  */
 
-      if ( (sc = newarray(2*kn, DOUBLE)) == NULL )  goto err101;
+      if ( (sc = newarray(2*kn, DOUBLE)) == SISL_NULL )  goto err101;
 
       /* Compute scalar-product of curve-vertices and direction vector. */
       /* Copy over weights. */
@@ -173,7 +173,7 @@ void s1920(pc1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
       scoef = qkreg -> ecoef;
       /* Allocate space for coeffecients of new curve.  */
 
-      if ( (sc = newarray(kn, DOUBLE)) == NULL )  goto err101;
+      if ( (sc = newarray(kn, DOUBLE)) == SISL_NULL )  goto err101;
 
       /* Compute scalar-product of curve-vertices and direction vector. */
 
@@ -187,12 +187,12 @@ void s1920(pc1,edir,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   /* Create new curve.  */
 
   qc = newCurve(kn, kk, st, sc, qkreg->ikind, 1, 1);
-  if ( qc == NULL )  goto err101;
+  if ( qc == SISL_NULL )  goto err101;
 
   /* Create new object and connect curve to object.  */
 
   qo1 = newObject(SISLCURVE);
-  if ( qo1 == NULL )  goto err101;
+  if ( qo1 == SISL_NULL )  goto err101;
   qo1 -> c1 = qc;
 
   tmax = -(double)HUGE;

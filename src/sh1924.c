@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1924.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1924.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -94,11 +94,11 @@ void sh1924(ea,eb,in,ik,idim,nstart,jstat)
    int kjs,kjh; /* Pointers into matrix.  */
    int kik1 = ik-1;      /* Order minus one.       */
    double thelp;         /* Help variable.         */
-   double *ssum=NULL;    /* Help array.            */
+   double *ssum=SISL_NULL;    /* Help array.            */
 
    /* Allocate scratch for help array.  */
    
-   if ((ssum = new0array(idim,DOUBLE)) == NULL) goto err101;
+   if ((ssum = new0array(idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Forward substitution.  */
    
@@ -121,7 +121,7 @@ void sh1924(ea,eb,in,ik,idim,nstart,jstat)
 	
 	/* Check if the linear system is singular.  */
 	
-	if (DEQUAL(ea[ki*ik+kik1],DNULL)) goto err106;
+	if (DEQUAL(ea[ki*ik+kik1],DZERO)) goto err106;
 	
 	thelp = (double)1.0/ea[ki*ik+kik1];
 	for (kr=0; kr<idim; kr++)
@@ -178,7 +178,7 @@ void sh1924(ea,eb,in,ik,idim,nstart,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (ssum != NULL) freearray(ssum);
+      if (ssum != SISL_NULL) freearray(ssum);
 	  
       return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idcon.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idcon.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -51,7 +51,7 @@ void s6idcon(pintdat,pintpt1,pintpt2,jstat)
 *********************************************************************
 *                                                                   
 * PURPOSE    : To connect two intersection points in pintdat into a list.
-*              If pintdat is NULL a new pintdat is also made.
+*              If pintdat is SISL_NULL a new pintdat is also made.
 *              If  one of pintpt is close to an other intersection point
 *              the object pintpt is pointing to is freed, and
 *              pintpt is set to point to the already inserted point.
@@ -186,7 +186,7 @@ void s6idcon(pintdat,pintpt1,pintpt2,jstat)
       /* We have to be sure that if one of the points is in the end of 
 	 a list than this point is the first point. */
       
-      if (qpt1->pcurve != NULL && qpt2->pcurve == NULL)
+      if (qpt1->pcurve != SISL_NULL && qpt2->pcurve == SISL_NULL)
         {
 	  SISLIntpt *pt;
 	  
@@ -220,7 +220,7 @@ void s6idcon(pintdat,pintpt1,pintpt2,jstat)
       /* If the first point is not at end, than we have to
 	 reorganize the first list.  */
       
-      if (qpt1->pcurve != NULL)
+      if (qpt1->pcurve != SISL_NULL)
         {
 	  if (kfirst1)
 	    s6idcon_s9turn(qpt1);                  /* First point is at start. */
@@ -231,7 +231,7 @@ void s6idcon(pintdat,pintpt1,pintpt2,jstat)
 	      
 	      qpt1->iinter = 2;
 	      
-	      if((qpt1 = copyIntpt(qpt1)) == NULL) goto err101;
+	      if((qpt1 = copyIntpt(qpt1)) == SISL_NULL) goto err101;
 	      
 	      s6idnpt(pintdat,&qpt1,0,&kstat);
 	      if (kstat < 0) goto error;
@@ -241,7 +241,7 @@ void s6idcon(pintdat,pintpt1,pintpt2,jstat)
       
       if (kfirst2)                             /*Second point is at start.*/
         qpt1->pcurve = qpt2;
-      else if (qpt2->pcurve == NULL)     /* Second point is at end. */
+      else if (qpt2->pcurve == SISL_NULL)     /* Second point is at end. */
         {
 	  s6idcon_s9endturn(*pintdat,qpt2);
 	  qpt1->pcurve = qpt2;
@@ -253,7 +253,7 @@ void s6idcon(pintdat,pintpt1,pintpt2,jstat)
 	  
 	  qpt2->iinter = 2;
 	  
-	  if((qpt2 = copyIntpt(qpt2)) == NULL) goto err101;
+	  if((qpt2 = copyIntpt(qpt2)) == SISL_NULL) goto err101;
 	  
 	  s6idnpt(pintdat,&qpt2,0,&kstat);
 	  if (kstat < 0) goto error;
@@ -318,10 +318,10 @@ static void s6idcon_s9turn(pt)
   
   pt1 = pt->pcurve;
   pt2 = pt1->pcurve;
-  pt->pcurve = NULL;  
+  pt->pcurve = SISL_NULL;  
   pt1->pcurve = pt;
   
-  while (pt2 != NULL)
+  while (pt2 != SISL_NULL)
     {
       pt  = pt1;
       pt1 = pt2;

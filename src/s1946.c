@@ -120,7 +120,7 @@ void s1946(ea,ew1,nfirst,nlast,ed,ec,ik,in,im,idim,ilend,irend,inlr,inlc,jstat)
    int kjst;
    int knk1;
    double th;
-   double *shelp = NULL;
+   double *shelp = SISL_NULL;
 
    /* Check input.  */
    
@@ -128,7 +128,7 @@ void s1946(ea,ew1,nfirst,nlast,ed,ec,ik,in,im,idim,ilend,irend,inlr,inlc,jstat)
 
    /* Allocate scratch for help array and set to zero. */
 			    
-   if ((shelp = new0array(idim,DOUBLE)) == NULL) goto err101;
+   if ((shelp = new0array(idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Make adjustments for the fact that ec[0],...,ec[ilend-1] are known
       This is done by going through the rows of the coefficient matrix until
@@ -241,7 +241,7 @@ void s1946(ea,ew1,nfirst,nlast,ed,ec,ik,in,im,idim,ilend,irend,inlr,inlc,jstat)
    out:
       /* Free scratch used for local array.  */
       
-      if (shelp != NULL) freearray(shelp);
+      if (shelp != SISL_NULL) freearray(shelp);
 	  
       return;
 }

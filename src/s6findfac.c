@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6findfac.c,v 1.2 1994-11-07 08:47:24 vsk Exp $
+ * $Id: s6findfac.c,v 1.3 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -107,10 +107,10 @@ void s6findfac(evecu,evecv,evecw,etang,idim,isign,coef1,coef2,coef3,jstat)
   tdotvtang = (double)isign*s6scpr(evecv,etang,idim);
 
   tdiv = tdotuv*tdotuv - tdotuu*tdotvv;
-  if (DEQUAL(tdiv,DNULL))
+  if (DEQUAL(tdiv,DZERO))
     {
-      if (DEQUAL(tdotuu,DNULL) && DEQUAL(tdotvv,DNULL));
-      else if (DEQUAL(tdotuu,DNULL))
+      if (DEQUAL(tdotuu,DZERO) && DEQUAL(tdotvv,DZERO));
+      else if (DEQUAL(tdotuu,DZERO))
 	  *coef2 = s6length(etang,idim,&kstat)/sqrt(tdotvv);
       else
 	*coef1 = s6length(etang,idim,&kstat)/sqrt(tdotuu);
@@ -128,7 +128,7 @@ void s6findfac(evecu,evecv,evecw,etang,idim,isign,coef1,coef2,coef3,jstat)
     sdum[ki] = (double)isign*etang[ki] - *coef1*evecu[ki] - *coef2*evecv[ki];
   *coef3 = s6length(sdum,idim,&kstat)/s6length(evecw,idim,&kstat);
   
-  if (s6scpr(sdum,evecw,idim) < DNULL) (*coef3) *= -(double)1.0;
+  if (s6scpr(sdum,evecw,idim) < DZERO) (*coef3) *= -(double)1.0;
 
   goto out;
   

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2541.c,v 1.2 1997-10-31 09:03:35 jka Exp $
+ * $Id: s2541.c,v 1.3 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -121,15 +121,15 @@ void
   int incr;    			/* Increment, space for par values.    	*/
   double duv[2];		/* Increment in 1.+2. par dir.  	*/
   double UV[2];			/* Current grid value in par space.	*/
-  double *sarr = NULL;    	/* Local pointer eq (*garr)		*/
-  double *sp = NULL;      	/* Local pointer into (*garr)		*/
-  SISLSurf *temp = NULL;  	/* Temp surface. 			*/
+  double *sarr = SISL_NULL;    	/* Local pointer eq (*garr)		*/
+  double *sp = SISL_NULL;      	/* Local pointer into (*garr)		*/
+  SISLSurf *temp = SISL_NULL;  	/* Temp surface. 			*/
   /* __________________________________________________________________ */
 
 
   /* Initiate output variables . */
 
-  *garr  = NULL;
+  *garr  = SISL_NULL;
   *stat = 0;
 
 
@@ -159,7 +159,7 @@ void
   /* Allocate space needed */
   incr = (export_par_val? 2 : 0);
   dimpnt = incr+dim;
-  if ((sarr = newarray(dimpnt*(n_u+1)*(n_v+1), double)) == NULL) goto err101;
+  if ((sarr = newarray(dimpnt*(n_u+1)*(n_v+1), double)) == SISL_NULL) goto err101;
 
   /* The evaluation loop, note that to ensure that we get boundary values
      correct, we stop the main loops one step too early and then jump
@@ -227,7 +227,7 @@ void
 
   /* OK, we are thru, hand over the array: */
   *garr  = sarr;
-  sarr   = NULL;
+  sarr   = SISL_NULL;
   *stat = 0;
 
   goto out;
@@ -251,7 +251,7 @@ err102:
    s6err("s2541", *stat, 0);
    goto out;
 
-   /* Error. Input (surface) pointer is NULL. */
+   /* Error. Input (surface) pointer is SISL_NULL. */
 err150:
   *stat = -150;
   s6err("s2541", *stat, 0);

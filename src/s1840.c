@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1840.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1840.c,v 1.2 2001-03-19 15:58:54 afr Exp $
  *
  */
 
@@ -72,7 +72,7 @@ void s1840(pcurve,cdist,jstat)
   double *st,*scoef;         /* Pointers to arrays describing surface     */
   double tstart,tlength;     /* Temproary variables                       */
   double tdiff;              /* Temproary variables                       */
-  double *sm1=NULL;          /* Arrays for coefficients from Marsdens idnt*/
+  double *sm1=SISL_NULL;          /* Arrays for coefficients from Marsdens idnt*/
   double *start,*send;       /* Pointers to first and last vertex         */
   double tval0,tval1;        /* s and 1-s used in Marsdens identity       */
   double tsum;               /* Dummy variables                           */
@@ -95,7 +95,7 @@ void s1840(pcurve,cdist,jstat)
    * and normalvector */
   
   sm1 = newarray(kn,double);
-  if (sm1 == NULL) goto err101;
+  if (sm1 == SISL_NULL) goto err101;
   
   /* Make representation of coefficients from Marsdens identity for the
      function f(t) = t, with the knot vector scaled to [0,1]. */
@@ -154,6 +154,6 @@ void s1840(pcurve,cdist,jstat)
   /* Free allocated space */
   
   out:
-    if (sm1 != NULL) freearray(sm1);
+    if (sm1 != SISL_NULL) freearray(sm1);
     return;
 }

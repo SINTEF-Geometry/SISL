@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1235.c,v 1.2 1998-01-14 09:00:39 vsk Exp $
+ * $Id: s1235.c,v 1.3 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -84,8 +84,8 @@ void s1235(et,in,ik,jnbreak,gbreak,jstat)
   /* Allocate space for an array that is at least as great as the
      number of break points.                                       */
   
-  *gbreak = NULL;
-  if ((*gbreak = newarray(in+2,double)) == NULL) goto err101;
+  *gbreak = SISL_NULL;
+  if ((*gbreak = newarray(in+2,double)) == SISL_NULL) goto err101;
   
   /* Set local pointer to and counter of break points.  */
   
@@ -131,7 +131,7 @@ void s1235(et,in,ik,jnbreak,gbreak,jstat)
   /* Reduce break point array to correct size.  */
   
   if (kbreak < in+2)
-    if ((*gbreak = increasearray(*gbreak,kbreak,double)) == NULL) goto err101;
+    if ((*gbreak = increasearray(*gbreak,kbreak,double)) == SISL_NULL) goto err101;
   
   /* Break points found.  */
   

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1358.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1358.c,v 1.2 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -115,12 +115,12 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
 */
 {
   int kpos = 0;
-  SISLCurve *qc = NULL;		/* Temporary SISLCurves.                    */
-  SISLCurve *qc2 = NULL;
-  int *ltype = NULL;		/* Type of interpolation condition 
+  SISLCurve *qc = SISL_NULL;		/* Temporary SISLCurves.                    */
+  SISLCurve *qc2 = SISL_NULL;
+  int *ltype = SISL_NULL;		/* Type of interpolation condition 
 				   (temporary)                              */
-  int *ltype2 = NULL;		/* Type of interpolation condition (finial) */
-  int *sder = NULL;		/* Vector of derivative indicators.         */
+  int *ltype2 = SISL_NULL;		/* Type of interpolation condition (finial) */
+  int *sder = SISL_NULL;		/* Vector of derivative indicators.         */
   int knpt;			/* Number of interpolation conditions.      */
   int kordr;			/* Local order.                             */
   int kstat;			/* Status variable.                         */
@@ -130,13 +130,13 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
 				   interpolation.                           */
   int knlr = 0;			/* Indicates shape of interpolation matrix. */
   int knrc = 0;			/* Indicates shape of interpolation matrix. */
-  double *lpar = NULL;		/* Parameter values. (temporary)            */
-  double *lcond = NULL;		/* Interpolation conditions. (temporary)    */
-  double *sknot = NULL;		/* Knot vector.                             */
-  double *spar = NULL;		/* Parameter valued. (finial)               */
-  double *scond = NULL;		/* Interpolation conditions. (finial)       */
-  double *scoef = NULL;		/* Coefficients of curve.                   */
-  int *ityp = NULL;
+  double *lpar = SISL_NULL;		/* Parameter values. (temporary)            */
+  double *lcond = SISL_NULL;		/* Interpolation conditions. (temporary)    */
+  double *sknot = SISL_NULL;		/* Knot vector.                             */
+  double *spar = SISL_NULL;		/* Parameter valued. (finial)               */
+  double *scond = SISL_NULL;		/* Interpolation conditions. (finial)       */
+  double *scoef = SISL_NULL;		/* Coefficients of curve.                   */
+  int *ityp = SISL_NULL;
 
 /* -> new statement guen & ujk Thu Jul  2 14:59:05 MESZ 1992 */
 
@@ -153,7 +153,7 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
 /* <- new statement guen & ujk Thu Jul  2 14:59:05 MESZ 1992 */
 
   ityp = newarray (inbpnt, INT);
-  if (ityp == NULL) goto err101;
+  if (ityp == SISL_NULL) goto err101;
 
   for (ki=0; ki < inbpnt; ki++) ityp[ki] = (int)ntype[ki];
   *jstat = 0;
@@ -174,7 +174,7 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   /* Allocate scratch for derivative indicator. */
 
   sder = newarray (knpt, INT);
-  if (sder == NULL) goto err101;
+  if (sder == SISL_NULL) goto err101;
 
   for (ki = 0; ki < knpt; ki++)
     sder[ki] = abs (ltype2[ki]);
@@ -202,7 +202,7 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   /* Express the curve as a curve object.  */
 
   qc = newCurve (kn, kordr, sknot, scoef, 1, idim, 1);
-  if (qc == NULL) goto err101;
+  if (qc == SISL_NULL) goto err101;
   qc->cuopen = (iopen == SISL_CRV_OPEN) ? iopen : SISL_CRV_PERIODIC;
   
   if (iopen == SISL_CRV_CLOSED)
@@ -213,7 +213,7 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
       s1713 (qc, sknot[kordr - 1], sknot[kn], &qc2, &kstat);
       if (kstat < 0) goto error;
 
-      if (qc != NULL) freeCurve (qc);
+      if (qc != SISL_NULL) freeCurve (qc);
       qc = qc2;
     }
 
@@ -221,11 +221,11 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
     {
       /* The order of the curve is less than expected. Increase the order. */
 
-      qc2 = NULL;
+      qc2 = SISL_NULL;
       s1750 (qc, ik, &qc2, &kstat);
       if (kstat < 0) goto error;
 	
-      if (qc != NULL) freeCurve (qc);
+      if (qc != SISL_NULL) freeCurve (qc);
       qc = qc2;
     }
 
@@ -293,19 +293,19 @@ void s1358(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   out:
   /* Free scratch occupied by local arrays. */
 
-    if (scond != NULL)    freearray (scond);
-    if (scoef != NULL)    freearray (scoef);
-    if (sder != NULL)     freearray (sder);
-    if (ltype != NULL)    freearray (ltype);
+    if (scond != SISL_NULL)    freearray (scond);
+    if (scoef != SISL_NULL)    freearray (scoef);
+    if (sder != SISL_NULL)     freearray (sder);
+    if (ltype != SISL_NULL)    freearray (ltype);
 
 /* -> added, guen & ujk Wed Jul  1 18:48:27 MESZ 1992 */
-    if (ityp != NULL)     freearray (ityp);
+    if (ityp != SISL_NULL)     freearray (ityp);
 /* <- added, guen & ujk Wed Jul  1 18:48:27 MESZ 1992 */
 
-    if (ltype2 != NULL)   freearray (ltype2);
-    if (lcond != NULL)    freearray (lcond);
-    if (sknot != NULL)    freearray (sknot);
-    if (spar != NULL)     freearray (spar);
+    if (ltype2 != SISL_NULL)   freearray (ltype2);
+    if (lcond != SISL_NULL)    freearray (lcond);
+    if (sknot != SISL_NULL)    freearray (sknot);
+    if (spar != SISL_NULL)     freearray (spar);
 
     return;
 }

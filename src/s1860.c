@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1860.c,v 1.3 1995-01-26 10:41:13 pfu Exp $
+ * $Id: s1860.c,v 1.4 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -92,21 +92,21 @@ void s1860(ps,eview,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   int i;
   int trackflag = 0;
   int jtrack;
-  SISLTrack **wtrack=NULL;
+  SISLTrack **wtrack=SISL_NULL;
   int jsurf;
-  SISLIntsurf **wsurf=NULL;
-  int *pretop=NULL;
+  SISLIntsurf **wsurf=SISL_NULL;
+  int *pretop=SISL_NULL;
 
   sh1860(ps,eview,idim,aepsco,aepsge,trackflag,&jtrack,&wtrack,
 	 jpt,gpar,&pretop,jcrv,wcurve,&jsurf,&wsurf,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
-  if ( wsurf != NULL )
+  if ( wsurf != SISL_NULL )
   {
     for( i=0;  i < jsurf;  i++ )
-      if ( wsurf[i] != NULL )  freeIntsurf(wsurf[i]);
+      if ( wsurf[i] != SISL_NULL )  freeIntsurf(wsurf[i]);
     freearray(wsurf);
   }
 

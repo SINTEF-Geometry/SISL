@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6metric.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6metric.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -71,14 +71,14 @@ void s6metric(epoint,in,idim,emat,jstat)
    int ki,kk;            /* Counter.          */
    double tmedium;       /* Medium of a number of coordinates. */
    double tdot;          /* Scalar product.                    */
-   double *smat1 = NULL; /* Input points minus weight points.  */
-   double *smat2 = NULL; /* Inverse matrix to output matrix.   */
+   double *smat1 = SISL_NULL; /* Input points minus weight points.  */
+   double *smat2 = SISL_NULL; /* Inverse matrix to output matrix.   */
    double *s1,*s2,*s3;   /* Pointers into arrays.              */
    
    /* Allocate scratch for internal matrices.  */
    
-   if ((smat1 = newarray(in*idim,DOUBLE)) == NULL) goto err101;
-   if ((smat2 = newarray(idim*idim,DOUBLE)) == NULL) goto err101;
+   if ((smat1 = newarray(in*idim,DOUBLE)) == SISL_NULL) goto err101;
+   if ((smat2 = newarray(idim*idim,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Set up a matrix consisting of the input points minus
       the weight point of the pointset. First copy the array of points
@@ -90,7 +90,7 @@ void s6metric(epoint,in,idim,emat,jstat)
    {
       /* Compute weight point of coordinate.  */
       
-      for (tmedium=DNULL, s1=smat1+kk, s2=s1+in*idim; s1<s2; s1+=idim)
+      for (tmedium=DZERO, s1=smat1+kk, s2=s1+in*idim; s1<s2; s1+=idim)
 	 tmedium += (*s1);
       tmedium /= in;
       
@@ -105,7 +105,7 @@ void s6metric(epoint,in,idim,emat,jstat)
    for (ki=0; ki<idim; ki++)
       for (kk=0; kk<idim; kk++)
       {
-	 for (tdot=DNULL, s1=smat1+ki, s2=smat1+kk, s3=s1+in*idim;
+	 for (tdot=DZERO, s1=smat1+ki, s2=smat1+kk, s3=s1+in*idim;
 	      s1<s3; s1+=idim, s2+=idim)
 	    tdot += (*s1)*(*s2);
 	 smat2[ki*idim+kk] = tdot;
@@ -134,8 +134,8 @@ void s6metric(epoint,in,idim,emat,jstat)
    out :
       /* Free scratch occupied by local arrays.  */
       
-      if (smat1 != NULL) freearray(smat1);
-      if (smat2 != NULL) freearray(smat2);
+      if (smat1 != SISL_NULL) freearray(smat1);
+      if (smat2 != SISL_NULL) freearray(smat2);
 			 
       return;
 }

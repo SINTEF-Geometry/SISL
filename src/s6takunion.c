@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6takunion.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6takunion.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -67,14 +67,14 @@ void s6takeunion(evec1,ielem1,evec2,ielem2,gunion,jnmbelem,jstat)
 {
   int knelem;
   int knunion;
-  double *sunion = NULL;
+  double *sunion = SISL_NULL;
   double *s1,*s1stop;
   double *s2,*s2stop;
   
   /* Make local array to store the union of the vectors.  */
 
   knelem = ielem1 + ielem2;
-  if ((sunion = newarray(knelem,DOUBLE)) == NULL) goto err101;
+  if ((sunion = newarray(knelem,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Produce union vector. */
 
@@ -100,8 +100,8 @@ void s6takeunion(evec1,ielem1,evec2,ielem2,gunion,jnmbelem,jstat)
   
   /* Allocate scratch for output union vector.  */
 
-  *gunion = NULL;
-  if ((*gunion = newarray(knunion,DOUBLE)) == NULL) goto err101;
+  *gunion = SISL_NULL;
+  if ((*gunion = newarray(knunion,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Copy union vector to output vector.  */
 
@@ -122,7 +122,7 @@ void s6takeunion(evec1,ielem1,evec2,ielem2,gunion,jnmbelem,jstat)
   out :
     /* Free scratch occupied by local array.  */
 
-    if (sunion != NULL) freearray(sunion);
+    if (sunion != SISL_NULL) freearray(sunion);
   
   return;
 }

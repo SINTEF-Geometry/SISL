@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1238.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1238.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -95,16 +95,16 @@ void s1238(psurf,pcurve,inmb1,inmb2,aepsco,aepscu,jstat)
 			      along one parameter line.            */
   int kcurve = 0;          /* Number of curves along one parameter
 			      line.                                */
-  double *spar1 = NULL;    /* Values of constant parameter curves
+  double *spar1 = SISL_NULL;    /* Values of constant parameter curves
 			      in first parameter direction.        */
-  double *spar2 = NULL;    /* Values of constant parameter curves
+  double *spar2 = SISL_NULL;    /* Values of constant parameter curves
 			      in second parameter direction.       */
-  double *spoint = NULL;   /* Sequence of straight lines 
+  double *spoint = SISL_NULL;   /* Sequence of straight lines 
 			      approximating a curve.               */
-  SISLCurve *qc = NULL; /* Constant parameter curve.            */
+  SISLCurve *qc = SISL_NULL; /* Constant parameter curve.            */
   SISLCurve *uc[20];    /* Constant parameter curves.           */
   
-  for (ki=0; ki<20; ki++) uc[ki] = NULL;
+  for (ki=0; ki<20; ki++) uc[ki] = SISL_NULL;
   
   /* Test dimension of curve and surface.  */
   
@@ -119,8 +119,8 @@ void s1238(psurf,pcurve,inmb1,inmb2,aepsco,aepscu,jstat)
   
   /* Allocate space for arrays containing constant parameter values. */
   
-  if ((spar1 = newarray(inmb1,double)) == NULL) goto err101;
-  if ((spar2 = newarray(inmb2,double)) == NULL) goto err101;
+  if ((spar1 = newarray(inmb1,double)) == SISL_NULL) goto err101;
+  if ((spar2 = newarray(inmb2,double)) == SISL_NULL) goto err101;
   
   /* Find parameter values to be used to make curves with constant
      parameter values in second direction.                         */
@@ -155,11 +155,11 @@ void s1238(psurf,pcurve,inmb1,inmb2,aepsco,aepscu,jstat)
 	  
 	  /* Prepare for next curve to draw.  */
 	  
-	  if (uc[kj] != NULL) freeCurve(uc[kj]);   uc[kj] = NULL;
-	  if (spoint != NULL) freearray(spoint);  spoint = NULL;
+	  if (uc[kj] != SISL_NULL) freeCurve(uc[kj]);   uc[kj] = SISL_NULL;
+	  if (spoint != SISL_NULL) freearray(spoint);  spoint = SISL_NULL;
 	}
       kcurve = 0;
-      if (qc != NULL) freeCurve(qc);   qc = NULL;
+      if (qc != SISL_NULL) freeCurve(qc);   qc = SISL_NULL;
     }
   
   /* Find parameter values to be used to make curves with constant 
@@ -195,11 +195,11 @@ void s1238(psurf,pcurve,inmb1,inmb2,aepsco,aepscu,jstat)
 	  
 	  /* Prepare for next curve to draw.  */
 	  
-	  if (uc[kj] != NULL) freeCurve(uc[kj]);   uc[kj] = NULL;
-	  if (spoint != NULL) freearray(spoint);  spoint = NULL;
+	  if (uc[kj] != SISL_NULL) freeCurve(uc[kj]);   uc[kj] = SISL_NULL;
+	  if (spoint != SISL_NULL) freearray(spoint);  spoint = SISL_NULL;
 	}
       kcurve = 0;
-      if (qc != NULL) freeCurve(qc);  qc = NULL;
+      if (qc != SISL_NULL) freeCurve(qc);  qc = SISL_NULL;
     }
   
   /* The surface is drawn.  */
@@ -241,10 +241,10 @@ void s1238(psurf,pcurve,inmb1,inmb2,aepsco,aepscu,jstat)
   
   /* Free space occupied by local arrays etc.  */
   
-  if (spar1 != NULL) freearray(spar1);
-  if (spar2 != NULL) freearray(spar2);
-  if (spoint != NULL) freearray(spoint);
-  if (qc != NULL) freeCurve(qc);
+  if (spar1 != SISL_NULL) freearray(spar1);
+  if (spar2 != SISL_NULL) freearray(spar2);
+  if (spoint != SISL_NULL) freearray(spoint);
+  if (qc != SISL_NULL) freeCurve(qc);
   
   return;
 }

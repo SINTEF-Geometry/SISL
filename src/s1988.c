@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1988.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1988.c,v 1.2 2001-03-19 15:58:58 afr Exp $
  *
  */
 
@@ -73,8 +73,8 @@ void s1988(pc,emax,emin,jstat)
   int len;
   int in = pc->in;
   double *coeff;
-  double *minim=NULL;
-  double *maxim=NULL;
+  double *minim=SISL_NULL;
+  double *maxim=SISL_NULL;
 
   /* initialize variables */
 
@@ -84,7 +84,7 @@ void s1988(pc,emax,emin,jstat)
 
   minim = newarray(bsdim, DOUBLE);
   maxim = newarray(bsdim, DOUBLE);
-  if(minim == NULL || maxim == NULL) goto err101;
+  if(minim == SISL_NULL || maxim == SISL_NULL) goto err101;
 
   for(j=0; j<bsdim; j++)
     {

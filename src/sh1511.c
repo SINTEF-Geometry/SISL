@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1511.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1511.c,v 1.2 2001-03-19 15:59:04 afr Exp $
  *
  */
 
@@ -113,23 +113,23 @@ void sh1511(ps, qpoint, bvec, idim, aepsco, aepsge,trackflag,jtrack,
   int kpos = 0;			/* Position of error.                           */
   int kdim = 1;			/* Dimension of space in which the point in the
 				   intersect point and surface problem lies.    */
-  double *spar = NULL;		/* Dummy array containing parameter values of
+  double *spar = SISL_NULL;		/* Dummy array containing parameter values of
 				   second object of single intersection points. */
   double spoint[1];		/* SISLPoint to intersect with object.              */
-  SISLSurf *qs = NULL;		/* Surface whose zeroes are the silhouette
+  SISLSurf *qs = SISL_NULL;		/* Surface whose zeroes are the silhouette
 			       curves/points of the original surface.     */
-  SISLPoint *qp = NULL;		/* Pointer to point in
+  SISLPoint *qp = SISL_NULL;		/* Pointer to point in
 			       surface/point intersection.  */
-  SISLObject *qo1 = NULL;	/* Pointer to surface in
+  SISLObject *qo1 = SISL_NULL;	/* Pointer to surface in
 			       object/point intersection. */
-  SISLObject *qo2 = NULL;	/* Pointer to point in
+  SISLObject *qo2 = SISL_NULL;	/* Pointer to point in
 			       object/point intersection    */
-  SISLIntdat *qintdat = NULL;	/* Intersection result */
+  SISLIntdat *qintdat = SISL_NULL;	/* Intersection result */
   int kdeg = 1005;
   double simpli[16];
   double snorm[3];
-  SISLObject *track_obj=NULL;
-  SISLSurf *qkreg=NULL; /* Input surface ensured k-regularity. */
+  SISLObject *track_obj=SISL_NULL;
+  SISLSurf *qkreg=SISL_NULL; /* Input surface ensured k-regularity. */
 
   /* -------------------------------------------------------- */  
 
@@ -204,7 +204,7 @@ void sh1511(ps, qpoint, bvec, idim, aepsco, aepsge,trackflag,jtrack,
 
   if (!(qo2 = newObject (SISLPOINT)))
     goto err101;
-  spoint[0] = DNULL;
+  spoint[0] = DZERO;
   if (!(qp = newPoint (spoint, kdim, 1)))
     goto err101;
   qo2->p1 = qp;
@@ -308,12 +308,12 @@ out:
     freeIntdat (qintdat);
   if (track_obj)
     {
-       track_obj->s1 = NULL;
+       track_obj->s1 = SISL_NULL;
        freeObject(track_obj);
     }
 
   /* Free local surface.  */
-    if (qkreg != NULL && qkreg != ps) freeSurf(qkreg);
+    if (qkreg != SISL_NULL && qkreg != ps) freeSurf(qkreg);
 
   return;
 }

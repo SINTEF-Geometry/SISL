@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6invert.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6invert.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -70,15 +70,15 @@ void s6invert(emat,im,einvertmat,jstat)
 {
    int kstat = 0;     /* Status variable.  */
    int ki;            /* Counter.          */
-   int *lpiv = NULL;  /* Array indicating order of rows in the matrix
+   int *lpiv = SISL_NULL;  /* Array indicating order of rows in the matrix
 			 after pivoting.                               */
-   double *scol = NULL;  /* Column of identity matrix.                 */
+   double *scol = SISL_NULL;  /* Column of identity matrix.                 */
    double *s1,*s2,*s3;   /* Pointers into double array.                */
    
    /* Allocate scratch for local arrays.  */
    
-   if ((lpiv = newarray(im,INT)) == NULL) goto err101;
-   if ((scol = newarray(im,DOUBLE)) == NULL) goto err101;
+   if ((lpiv = newarray(im,INT)) == SISL_NULL) goto err101;
+   if ((scol = newarray(im,DOUBLE)) == SISL_NULL) goto err101;
 
    /* Perform LU-factorization of input matrix.  */
    
@@ -94,7 +94,7 @@ void s6invert(emat,im,einvertmat,jstat)
    {
       /* Set up column of identity matrix.  */
       
-      for (s1=scol, s2=s1+im; s1<s2; s1++) *s1 = DNULL;
+      for (s1=scol, s2=s1+im; s1<s2; s1++) *s1 = DZERO;
       scol[ki] = (double)1.0;
       
       /* Solve equation system.  */
@@ -133,8 +133,8 @@ void s6invert(emat,im,einvertmat,jstat)
    out :
       /* Free space occupied by local arrays.  */
       
-      if (lpiv != NULL) freearray(lpiv);
-      if (scol != NULL) freearray(scol);
+      if (lpiv != SISL_NULL) freearray(lpiv);
+      if (scol != SISL_NULL) freearray(scol);
 			
       return;
 }

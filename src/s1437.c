@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1437.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1437.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -88,11 +88,11 @@ void s1437(ps1,apar,rcurve,jstat)
   int kdim;          /* Dimension of the space in which the surface lies.*/
   int kder = 0;      /* Number of derivatives of curve to evaluate.      */
   int kleft = 0;     /* Parameter used in evalutation of curve.          */
-  double *ecoef = NULL;  /* Pointer to vertices                          */
-  double *scoef = NULL;  /* Vertices of surface with changed parameter
+  double *ecoef = SISL_NULL;  /* Pointer to vertices                          */
+  double *scoef = SISL_NULL;  /* Vertices of surface with changed parameter
 			    directions.                                  */
-  double *scurve = NULL; /* Vertices of constant parameter curve.        */
-  SISLCurve *qc = NULL;  /* Intermediate curve.                       */
+  double *scurve = SISL_NULL; /* Vertices of constant parameter curve.        */
+  SISLCurve *qc = SISL_NULL;  /* Intermediate curve.                       */
   
   /* Get dimension of space.  */
   
@@ -115,8 +115,8 @@ void s1437(ps1,apar,rcurve,jstat)
   /* Allocate space for coefficients of constant parameter curve
      and of surface with changed parameter direction.                */
   
-  if ((scurve = newarray(kdim*ps1->in2,double)) == NULL) goto err101;
-  if ((scoef = newarray(kdim*ps1->in1*ps1->in2,double)) == NULL) goto err101;
+  if ((scurve = newarray(kdim*ps1->in2,double)) == SISL_NULL) goto err101;
+  if ((scoef = newarray(kdim*ps1->in1*ps1->in2,double)) == SISL_NULL) goto err101;
   
   /* Change parameter directions of surface.  */
   
@@ -125,7 +125,7 @@ void s1437(ps1,apar,rcurve,jstat)
   /* Create curve to evaluate.  */
   
   qc = newCurve(ps1->in1,ps1->ik1,ps1->et1,scoef,1,kdim*ps1->in2,0);
-  if (qc == NULL) goto err101;
+  if (qc == SISL_NULL) goto err101;
   
   /* Evaluate this curve in given parameter value.  */
   
@@ -135,7 +135,7 @@ void s1437(ps1,apar,rcurve,jstat)
   /* Create constant parameter curve.  */
   
   *rcurve = newCurve(ps1->in2,ps1->ik2,ps1->et2,scurve,kind,ps1->idim,1);
-  if (*rcurve == NULL) goto err101;
+  if (*rcurve == SISL_NULL) goto err101;
   
   /* Set periodicity flag.      */
 		       
@@ -162,9 +162,9 @@ void s1437(ps1,apar,rcurve,jstat)
   
   /* Free space occupied by local arrays.  */
   
-  if (scoef != NULL) freearray(scoef);
-  if (scurve != NULL) freearray(scurve);
-  if (qc != NULL) freeCurve(qc);
+  if (scoef != SISL_NULL) freearray(scoef);
+  if (scurve != SISL_NULL) freearray(scurve);
+  if (qc != SISL_NULL) freeCurve(qc);
   
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6crvcheck.c,v 1.2 1998-07-29 06:23:58 vsk Exp $
+ * $Id: s6crvcheck.c,v 1.3 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -72,16 +72,16 @@ void s6crvcheck(pc,jstat)
   int kmark;                  /* Indicates if k-tupple knots      */
   int knnew;                  /* New number of vertices           */
   int kind;                   /* Type of curve, 2 and 4 rational. */
-  double *snt=NULL;           /* Compressed knot vector           */
-  double *sncoef=NULL;        /* Compressed vertex vector         */
-  double *srcoef=NULL;        /* Compressed vertex vector         */
+  double *snt=SISL_NULL;           /* Compressed knot vector           */
+  double *sncoef=SISL_NULL;        /* Compressed vertex vector         */
+  double *srcoef=SISL_NULL;        /* Compressed vertex vector         */
   double *st;                 /* Knots                            */
   double *scoef;              /* Vertices                         */
   double *rcoef;              /* Rational vertices.               */
   
   *jstat = 0;
 
-  if (pc == NULL) goto out;
+  if (pc == SISL_NULL) goto out;
   
   kk    = pc -> ik;
   kn    = pc -> in;
@@ -98,7 +98,7 @@ void s6crvcheck(pc,jstat)
   kmark = 0;
   for (ki=1 ; ki < kn-1 ; ki++)
     if (st[ki] == st[ki+kk-1] && 
-	DEQUAL(s6dist(scoef+(ki-1)*kdim,scoef+ki*kdim,kdim),DNULL))
+	DEQUAL(s6dist(scoef+(ki-1)*kdim,scoef+ki*kdim,kdim),DZERO))
       {
         kmark = 1;
         break;
@@ -108,16 +108,16 @@ void s6crvcheck(pc,jstat)
   
   /* We have at least kk-tupple knots, remove not necessary knots and vertices */
   
-  if((snt = newarray(kn+kk,DOUBLE)) == NULL) goto err101;  
-  if((sncoef = newarray(kn*kdim,DOUBLE)) == NULL) goto err101;
+  if((snt = newarray(kn+kk,DOUBLE)) == SISL_NULL) goto err101;  
+  if((sncoef = newarray(kn*kdim,DOUBLE)) == SISL_NULL) goto err101;
 
   if (kind == 2 || kind == 4)
     {
       srcoef = newarray(kn*rdim,DOUBLE);
-      if (srcoef == NULL) goto err101;
+      if (srcoef == SISL_NULL) goto err101;
       for (ki=0,kj=0 ; ki < kn ; ki ++)
         if (ki == 0 || ki == kn-1 || st[ki] < st[ki+kk-1] || 
-	  DNEQUAL(s6dist(rcoef+(ki-1)*rdim,rcoef+ki*rdim,rdim),DNULL))
+	  DNEQUAL(s6dist(rcoef+(ki-1)*rdim,rcoef+ki*rdim,rdim),DZERO))
           {
             snt[kj] = st[ki];
             memcopy(sncoef+kdim*kj,scoef+kdim*ki,kdim,DOUBLE);
@@ -129,7 +129,7 @@ void s6crvcheck(pc,jstat)
     {
       for (ki=0,kj=0 ; ki < kn ; ki ++)
         if (ki == 0 || ki == kn-1 || st[ki] < st[ki+kk-1] || 
-	  DNEQUAL(s6dist(scoef+(ki-1)*kdim,scoef+ki*kdim,kdim),DNULL))
+	  DNEQUAL(s6dist(scoef+(ki-1)*kdim,scoef+ki*kdim,kdim),DZERO))
           {
             snt[kj] = st[ki];
             memcopy(sncoef+kdim*kj,scoef+kdim*ki,kdim,DOUBLE);
@@ -170,6 +170,6 @@ void s6crvcheck(pc,jstat)
     goto out;
   
   out:
-    if (snt != NULL) freearray(snt);
-    if (sncoef != NULL) freearray(sncoef);
+    if (snt != SISL_NULL) freearray(snt);
+    if (sncoef != SISL_NULL) freearray(sncoef);
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1306.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1306.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -213,8 +213,8 @@ void s1306(ep,eparp,eimpli,ideg,egeo3d,egeop,jstat)
       tdum2 = MAX(tafss,taftt);
       tdum2 = MAX(tafst,tdum2);
       
-      for (ki=3 ; ki<10 ; ki++) egeo3d[ki] = DNULL;
-      for (ki=2 ; ki<7  ; ki++) egeop[ki]  = DNULL;
+      for (ki=3 ; ki<10 ; ki++) egeo3d[ki] = DZERO;
+      for (ki=2 ; ki<7  ; ki++) egeop[ki]  = DZERO;
       
       if (DEQUAL(tdum2+tdum1,tdum2) &&
 	  (DNEQUAL(tafss+tafst,tafst) || DNEQUAL(taftt+tafst,tafst)) )

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1440.c,v 1.2 1994-11-29 10:06:50 pfu Exp $
+ * $Id: s1440.c,v 1.3 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -71,7 +71,7 @@ void s1440(ps1,rs2,jstat)
 */
 {
   int kpos = 0;          /* Position of error.                  */
-  double *ssurf = NULL;  /* Pointer to vertices of new surface. */
+  double *ssurf = SISL_NULL;  /* Pointer to vertices of new surface. */
   int kdim;              /* Local (rational) dimension.         */
   double *vert;          /* Pointer to vertices.                */
 
@@ -91,7 +91,7 @@ void s1440(ps1,rs2,jstat)
   /* Allocate scratch for vertices of new surface.  */
 
   ssurf = newarray(ps1->in1*ps1->in2*kdim,double);
-  if (ssurf == NULL) goto err101;
+  if (ssurf == SISL_NULL) goto err101;
 
   /* Change parameter directions of vertices.  */
 
@@ -99,9 +99,9 @@ void s1440(ps1,rs2,jstat)
 
   /* Create output surface.  */
 
-  *rs2 = NULL;
+  *rs2 = SISL_NULL;
   if ((*rs2 = newSurf(ps1->in2,ps1->in1,ps1->ik2,ps1->ik1,ps1->et2,
-		      ps1->et1,ssurf,ps1->ikind,ps1->idim,1)) == NULL) goto err101;
+		      ps1->et1,ssurf,ps1->ikind,ps1->idim,1)) == SISL_NULL) goto err101;
 
   /* Set periodicity flag */
 
@@ -123,7 +123,7 @@ void s1440(ps1,rs2,jstat)
 
   /* Free space occupied by local array.  */
 
-  if (ssurf != NULL) freearray(ssurf);
+  if (ssurf != SISL_NULL) freearray(ssurf);
 
   return;
 }

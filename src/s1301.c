@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1301.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1301.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -90,8 +90,8 @@ void s1301(areler,angle,idim,pc,jstat)
   double tangle;         /* Absolute value of angle                */
   double talfa;          /* Variable used for different angles     */
   double tcos,tsin;      /*Varable used for cos and sin of talfa   */
-  double *st = NULL;     /* Pointer to knot vecttor                */
-  double *scoef = NULL;  /* Pointer to vertex array                */
+  double *st = SISL_NULL;     /* Pointer to knot vecttor                */
+  double *scoef = SISL_NULL;  /* Pointer to vertex array                */
   double ta,tb,tc;       /* Temporary variables                    */
   double tl;             /* Length of tangents                     */
   double tconst;         /* Internal constant                      */
@@ -150,7 +150,7 @@ void s1301(areler,angle,idim,pc,jstat)
   kn = 2*kant + 2;
   scoef = newarray(kn*idim,DOUBLE);
   st    = newarray(kn+kk,DOUBLE);                       
-  if (scoef == NULL || st == NULL) goto err101;
+  if (scoef == SISL_NULL || st == SISL_NULL) goto err101;
   
   
   /*   Calculate vertices and make knots. */
@@ -305,7 +305,7 @@ void s1301(areler,angle,idim,pc,jstat)
   /* Make curve, copy input arrays */
   
   *pc = newCurve(kn,kk,st,scoef,1,idim,1);
-  if (*pc == NULL) goto err101;
+  if (*pc == SISL_NULL) goto err101;
 
   if (tangle >= TWOPI)
     (*pc)->cuopen = SISL_CRV_PERIODIC;
@@ -336,8 +336,8 @@ void s1301(areler,angle,idim,pc,jstat)
   /* Free allocated arrays */
  out:
   
-  if (st != NULL)    freearray(st);
-  if (scoef != NULL) freearray(scoef);
+  if (st != SISL_NULL)    freearray(st);
+  if (scoef != SISL_NULL) freearray(scoef);
   
   return;
   

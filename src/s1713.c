@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1713.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1713.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -76,10 +76,10 @@ void s1713(pc,abeg,aend,rcnew,jstat)
   int kstat;          /* Local status variable.          */
   int kpos=0;         /* Position of error.              */
   double tbeg,tend;   /* The smaller and greater point.  */
-  SISLCurve *q1=NULL; /* Pointer to new curve-object.    */
-  SISLCurve *q2=NULL; /* Pointer to new curve-object.    */
-  SISLCurve *q3=NULL; /* Pointer to new curve-object.    */
-  SISLCurve *q4=NULL; /* Pointer to new curve-object.    */
+  SISLCurve *q1=SISL_NULL; /* Pointer to new curve-object.    */
+  SISLCurve *q2=SISL_NULL; /* Pointer to new curve-object.    */
+  SISLCurve *q3=SISL_NULL; /* Pointer to new curve-object.    */
+  SISLCurve *q4=SISL_NULL; /* Pointer to new curve-object.    */
   
   /* Check that we have a curve to pick a part of. */
   
@@ -89,7 +89,7 @@ void s1713(pc,abeg,aend,rcnew,jstat)
   if (pc->cuopen == SISL_CRV_PERIODIC)
   {
      s1714 (pc, abeg, aend, rcnew, &q1, jstat);
-     if (q1) freeCurve(q1);q1=NULL;
+     if (q1) freeCurve(q1);q1=SISL_NULL;
      goto out;
   }
 
@@ -135,7 +135,7 @@ void s1713(pc,abeg,aend,rcnew,jstat)
      s1710(q4,tend,&q2,&q3,&kstat);
      if (kstat<0 || kstat==2) goto err153;
      
-     freeCurve(q4);  q4 = NULL;
+     freeCurve(q4);  q4 = SISL_NULL;
   }
   
   /* If nessesary we have to join curve q3 and q1 to get the new curve.*/
@@ -145,17 +145,17 @@ void s1713(pc,abeg,aend,rcnew,jstat)
      if (q2) 
      {
 	freeCurve(q2);
-	q2 = NULL;
+	q2 = SISL_NULL;
      }
      if (!q1)
      {
 	q2 = q3;
-	q3 = NULL;
+	q3 = SISL_NULL;
      }
      else if (!q3)
      {
 	q2 = q1;
-	q1 = NULL;
+	q1 = SISL_NULL;
      }
      else
      {

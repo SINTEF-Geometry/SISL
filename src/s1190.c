@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1190.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1190.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -95,7 +95,7 @@ void s1190(po1,cmax,aepsge,jstat)
       
       /* Check if the SISLbox have been computed. */
       
-      if (po1->p1->pbox == NULL)
+      if (po1->p1->pbox == SISL_NULL)
 	{
 	  /* If not compute a box. */
 	  
@@ -130,7 +130,7 @@ void s1190(po1,cmax,aepsge,jstat)
 	
 	/* Check if the SISLbox have been computed. */
 	
-	if (po1->c1->pbox == NULL)
+	if (po1->c1->pbox == SISL_NULL)
 	  {
 	    /* If not compute a box. */
 	    
@@ -170,7 +170,7 @@ void s1190(po1,cmax,aepsge,jstat)
 	  
 	  /* Check if the SISLbox have been computed. */
 	  
-	  if (po1->s1->pbox == NULL)
+	  if (po1->s1->pbox == SISL_NULL)
 	    {
 	      /* If not compute a box. */
 	      

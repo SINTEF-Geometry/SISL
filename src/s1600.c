@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1600.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1600.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -81,9 +81,9 @@ void s1600(pc,epoint,enorm,idim,rc,jstat)
   int kvert;          /* Counter for position in mirrored vertex array   */
   int kpos=0;         /* Position of error                               */
   
-  double *snorm=NULL; /* Pointer to normalized normal                    */
-  double *svecpv=NULL;/* Pointer to vector from pointin plane to vertex  */
-  double *smirr=NULL; /* Pointer to mirrored vertex array                */
+  double *snorm=SISL_NULL; /* Pointer to normalized normal                    */
+  double *svecpv=SISL_NULL;/* Pointer to vector from pointin plane to vertex  */
+  double *smirr=SISL_NULL; /* Pointer to mirrored vertex array                */
   double *st;         /* Pointer to the first element of the knot vector
 			 of the curve. The knot vector has [kn+kk]
 			 elements.                                       */
@@ -125,13 +125,13 @@ void s1600(pc,epoint,enorm,idim,rc,jstat)
      plane to vertex and new vertex array */
   
   snorm = newarray(idim,DOUBLE);
-  if (snorm == NULL) goto err101;
+  if (snorm == SISL_NULL) goto err101;
   
   svecpv = newarray(idim,DOUBLE);
-  if (svecpv == NULL) goto err101;
+  if (svecpv == SISL_NULL) goto err101;
   
   smirr = newarray(kdim*kn,DOUBLE);
-  if (svecpv == NULL) goto err101;
+  if (svecpv == SISL_NULL) goto err101;
   
   /* Normalize normal vector */
   
@@ -168,9 +168,9 @@ void s1600(pc,epoint,enorm,idim,rc,jstat)
   
   /* Make the mirrored curve */
   
-  *rc = NULL;              
+  *rc = SISL_NULL;              
   *rc = newCurve(kn,kk,st,smirr,kind,idim,1);
-  if (*rc == NULL) goto err101;                
+  if (*rc == SISL_NULL) goto err101;                
   
   /* Copy cuopen flag.  */
   
@@ -199,9 +199,9 @@ void s1600(pc,epoint,enorm,idim,rc,jstat)
   goto out;
   
  out:
-  if (snorm  != NULL) freearray(snorm);
-  if (svecpv != NULL) freearray(svecpv);
-  if (smirr  != NULL) freearray(smirr);
+  if (snorm  != SISL_NULL) freearray(snorm);
+  if (svecpv != SISL_NULL) freearray(svecpv);
+  if (smirr  != SISL_NULL) freearray(smirr);
   return;
 }
                     

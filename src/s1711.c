@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1711.c,v 1.3 1994-08-15 14:27:28 pfu Exp $
+ * $Id: s1711.c,v 1.4 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -100,16 +100,16 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
   int newkind=1;	/* Type of surface subsurfaces are.     */
   double *s1,*s2,*s3,*s4;/* Pointers used in loop.		*/
   double *st,*stsec;	/* The old knot-vectors.		*/
-  double *st1=NULL;	/* The first first new knot-vector.	*/
-  double *st1sec=NULL;	/* The first second new knot-vector.	*/
-  double *st2=NULL;	/* The second first new knot-vector.	*/
-  double *st2sec=NULL;	/* The second second new knot-vector.	*/
-  double *salfa=NULL;	/* A line of the trans.-matrix.		*/
+  double *st1=SISL_NULL;	/* The first first new knot-vector.	*/
+  double *st1sec=SISL_NULL;	/* The first second new knot-vector.	*/
+  double *st2=SISL_NULL;	/* The second first new knot-vector.	*/
+  double *st2sec=SISL_NULL;	/* The second second new knot-vector.	*/
+  double *salfa=SISL_NULL;	/* A line of the trans.-matrix.		*/
   double *scoef;	/* Pointer to vertices.   		*/
-  double *scoef1=NULL;	/* The first new vertice.		*/
-  double *scoef2=NULL;	/* The second new vertice.		*/
-  SISLSurf *q1=NULL;	/* Pointer to new surface-object.	*/
-  SISLSurf *q2=NULL;	/* Pointer to new surface-object.	*/
+  double *scoef1=SISL_NULL;	/* The first new vertice.		*/
+  double *scoef2=SISL_NULL;	/* The second new vertice.		*/
+  SISLSurf *q1=SISL_NULL;	/* Pointer to new surface-object.	*/
+  SISLSurf *q2=SISL_NULL;	/* Pointer to new surface-object.	*/
   double salfa_local[5];/* Local help array.			*/
 
  /* if ps is rational, do subdivision in homogeneous coordinates */
@@ -177,7 +177,7 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 
   if (kk > 5)
   {
-     if ((salfa = newarray (kk, double)) == NULL)	goto err101;
+     if ((salfa = newarray (kk, double)) == SISL_NULL)	goto err101;
   }
   else salfa = salfa_local;
 
@@ -234,12 +234,12 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 
   /* Allocating the new arrays to the two new curves. */
 
-  if ((st1=newarray(kn1+kk,double))==NULL) goto err101;
-  if ((st1sec=newarray(knsec+kksec,double))==NULL) goto err101;
-  if ((st2=newarray(kn2+kk,double))==NULL) goto err101;
-  if ((st2sec=newarray(knsec+kksec,double))==NULL) goto err101;
-  if ((scoef1=newarray(kn1*kdim*knsec,double))==NULL) goto err101;
-  if ((scoef2=newarray(kn2*kdim*knsec,double))==NULL) goto err101;
+  if ((st1=newarray(kn1+kk,double))==SISL_NULL) goto err101;
+  if ((st1sec=newarray(knsec+kksec,double))==SISL_NULL) goto err101;
+  if ((st2=newarray(kn2+kk,double))==SISL_NULL) goto err101;
+  if ((st2sec=newarray(knsec+kksec,double))==SISL_NULL) goto err101;
+  if ((scoef1=newarray(kn1*kdim*knsec,double))==SISL_NULL) goto err101;
+  if ((scoef2=newarray(kn2*kdim*knsec,double))==SISL_NULL) goto err101;
 
   /* Copying the knotvectors from the old curve to the new curves */
 
@@ -374,16 +374,16 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
   if (ipar==1)
   {
     if ((q1=newSurf(kn1,knsec,kk,kksec,st1,st1sec,     /* PFU 15/07-94 */
-                    scoef1,newkind,ps->idim,2)) == NULL) goto err101;
+                    scoef1,newkind,ps->idim,2)) == SISL_NULL) goto err101;
     if ((q2=newSurf(kn2,knsec,kk,kksec,st2,st2sec,     /* PFU 15/07-94 */
-                    scoef2,newkind,ps->idim,2)) == NULL) goto err101;
+                    scoef2,newkind,ps->idim,2)) == SISL_NULL) goto err101;
   }
   else
   {
     if ((q1=newSurf(knsec,kn1,kksec,kk,st1sec,st1,     /* PFU 15/07-94 */
-                    scoef1,newkind,ps->idim,2)) == NULL) goto err101;
+                    scoef1,newkind,ps->idim,2)) == SISL_NULL) goto err101;
     if ((q2=newSurf(knsec,kn2,kksec,kk,st2sec,st2,     /* PFU 15/07-94 */
-                    scoef2,newkind,ps->idim,2)) == NULL) goto err101;
+                    scoef2,newkind,ps->idim,2)) == SISL_NULL) goto err101;
   }
 
 

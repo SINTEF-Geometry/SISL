@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1856.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1856.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -112,30 +112,30 @@ void sh1856(ps1,epoint,edir,idim,aepsco,aepsge,
 *********************************************************************
 */
 {            
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int kstat = 0;           /* Local status varible.                        */
   int kpos = 0;            /* Position of error.                           */
   int kdim;                /* Dimension of space in which the point in the
 			      intersect point and surface problem lies.    */
-  double *spar = NULL;     /* Dummy array containing parameter values of
+  double *spar = SISL_NULL;     /* Dummy array containing parameter values of
 			      second object of single intersection points. */
   double spoint[2];        /* SISLPoint to intersect with object.              */
-  double *snorm1 = NULL;   /* Normal to direction vector of line.          */
-  double *snorm2 = NULL;   /* Normal to direction vector of line and snorm1.*/
-  SISLSurf *qs = NULL;         /* Pointer to surface in 
+  double *snorm1 = SISL_NULL;   /* Normal to direction vector of line.          */
+  double *snorm2 = SISL_NULL;   /* Normal to direction vector of line and snorm1.*/
+  SISLSurf *qs = SISL_NULL;         /* Pointer to surface in 
 			      surface/point intersection.*/
-  SISLPoint *qp = NULL;        /* Pointer to point in 
+  SISLPoint *qp = SISL_NULL;        /* Pointer to point in 
 			      surface/point intersection.  */
-  SISLObject *qo1 = NULL;      /* Pointer to surface in 
+  SISLObject *qo1 = SISL_NULL;      /* Pointer to surface in 
 			      object/point intersection. */
-  SISLObject *qo2 = NULL;      /* Pointer to point in 
+  SISLObject *qo2 = SISL_NULL;      /* Pointer to point in 
 			      object/point intersection    */
-  SISLIntdat *qintdat = NULL;  /* Intersection result */
+  SISLIntdat *qintdat = SISL_NULL;  /* Intersection result */
   int      ksurf=0;         /* Dummy number of Intsurfs. */
-  SISLIntsurf **wsurf=NULL;    /* Dummy array of Intsurfs. */
+  SISLIntsurf **wsurf=SISL_NULL;    /* Dummy array of Intsurfs. */
   int      kdeg=2000;       /* input to int_join_per. */
-  SISLObject *track_obj=NULL;
-  SISLSurf *qkreg=NULL; /* Input surface ensured k-regularity. */
+  SISLObject *track_obj=SISL_NULL;
+  SISLSurf *qkreg=SISL_NULL; /* Input surface ensured k-regularity. */
 
   /* -------------------------------------------------------- */  
 
@@ -178,7 +178,7 @@ void sh1856(ps1,epoint,edir,idim,aepsco,aepsge,
 
   snorm1 = newarray(idim,double);
   snorm2 = newarray(idim,double);
-  if (snorm1 == NULL || snorm2 == NULL) goto err101;
+  if (snorm1 == SISL_NULL || snorm2 == SISL_NULL) goto err101;
 
   if (idim == 3)
     {
@@ -205,7 +205,7 @@ void sh1856(ps1,epoint,edir,idim,aepsco,aepsge,
        */
 
       kdim      = 2;
-      spoint[0] = spoint[1] = DNULL;
+      spoint[0] = spoint[1] = DZERO;
       if (!(qo2  = newObject(SISLPOINT))) goto err101;
       if (!(qp   = newPoint(spoint,kdim,1))) goto err101;
       qo2 -> p1 = qp;
@@ -235,7 +235,7 @@ void sh1856(ps1,epoint,edir,idim,aepsco,aepsge,
        */
 
       kdim      = 1;
-      spoint[0] = DNULL;
+      spoint[0] = DZERO;
       if (!(qo2  = newObject(SISLPOINT))) goto err101;
       if (!(qp   = newPoint(spoint,kdim,1))) goto err101;
       qo2 -> p1 = qp;
@@ -334,12 +334,12 @@ void sh1856(ps1,epoint,edir,idim,aepsco,aepsge,
   if (qintdat) freeIntdat(qintdat);
   if (track_obj)
     {
-       track_obj->s1 = NULL;
+       track_obj->s1 = SISL_NULL;
        freeObject(track_obj);
     }
 
   /* Free local surface.  */
-    if (qkreg != NULL && qkreg != ps1) freeSurf(qkreg);
+    if (qkreg != SISL_NULL && qkreg != ps1) freeSurf(qkreg);
 
 return;
 }                                               

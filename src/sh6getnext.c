@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6getnext.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6getnext.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -35,7 +35,7 @@ SISLIntpt* sh6getnext(pt,index)
 *
 * PURPOSE    : Given an Intpt and an index, fetch the next point
 *              given by index.
-*              If error, return NULL.
+*              If error, return SISL_NULL.
 *
 *
 * INPUT      : pt       - Pointer to the Intpt.
@@ -56,11 +56,11 @@ SISLIntpt* sh6getnext(pt,index)
 */
 {
 
-   SISLIntpt *nextpt = NULL;
+   SISLIntpt *nextpt = SISL_NULL;
 
    /* check if index is within range */
 
-   if(pt != NULL &&
+   if(pt != SISL_NULL &&
       index >= 0 &&
       index < pt->no_of_curves) nextpt = pt->pnext[index];
 

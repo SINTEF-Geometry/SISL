@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1932.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1932.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -95,8 +95,8 @@ s1932 (inbcrv, crvarr, start, stop, et, in, iordr, iright, jstat)
 				 * curves lie				*/
   int kstat;			/* Status variable from lower level
 				 * routines				*/
-  SISLCurve *crv = NULL;	/* SISLCurve, sent to s1936		*/
-  double *kdumcf = NULL;	/* Contains curve-coefficients sent over
+  SISLCurve *crv = SISL_NULL;	/* SISLCurve, sent to s1936		*/
+  double *kdumcf = SISL_NULL;	/* Contains curve-coefficients sent over
 				 * from s1936				*/
 
 
@@ -128,10 +128,10 @@ s1932 (inbcrv, crvarr, start, stop, et, in, iordr, iright, jstat)
   /* Allocate array kdumcf and output array iright */
 
   kdumcf = newarray (idim * in, DOUBLE);
-  if (kdumcf == NULL)
+  if (kdumcf == SISL_NULL)
     goto err101;
   *iright = newarray (in *idim * inbcrv, DOUBLE);
-  if (*iright == NULL)
+  if (*iright == SISL_NULL)
     goto err101;
 
   kp = 0;
@@ -158,9 +158,9 @@ s1932 (inbcrv, crvarr, start, stop, et, in, iordr, iright, jstat)
       if (kstat < 0)
 	goto error;
 
-      if (crv != NULL)
+      if (crv != SISL_NULL)
 	freeCurve (crv);
-      crv = NULL;	
+      crv = SISL_NULL;	
 
 
       /* Copy coefficients into right hand side of equation system */
@@ -202,7 +202,7 @@ s1932 (inbcrv, crvarr, start, stop, et, in, iordr, iright, jstat)
   out:
    /* Free scratch occupied by local array.  */
    
-   if (kdumcf != NULL) freearray(kdumcf);
+   if (kdumcf != SISL_NULL) freearray(kdumcf);
 
    return;
 }

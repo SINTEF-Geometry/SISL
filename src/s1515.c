@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1515.c,v 1.5 1994-12-19 16:50:56 pfu Exp $
+ * $Id: s1515.c,v 1.6 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -81,7 +81,7 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 *                                    of intersection curve may have been
 *                                    traced out. If no curve is traced out
 *                                    the curve pointers in the Intcurve
-*                                    object point to NULL.
+*                                    object point to SISL_NULL.
 *                         = 0      : ok
 *                         < 0      : error
 *                         = -185   : No points produced on intersection curve.

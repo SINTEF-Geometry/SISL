@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1393.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1393.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -67,7 +67,7 @@ void s1393(n1,pc1,sc1,ec1,jstat)
   double ax,astart,astop;
   SISLCurve *h1,*h2;
   
-  astart = DNULL;
+  astart = DZERO;
   astop  = (double)1.0;
   
   /* For each curve in pc1 split/turn and normalize. */

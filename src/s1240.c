@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1240.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1240.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -76,7 +76,7 @@ void s1240(pcurve,aepsge,clength,jstat)
   double tprev;   /* Previous length of curve calculated.            */
   double teps;    /* Local tolerance.                                */
   double *s1;     /* Pointer used to traverse real array.            */
-  SISLCurve *qc=NULL;  /* k-regular local curve.                     */
+  SISLCurve *qc=SISL_NULL;  /* k-regular local curve.                     */
   
   if (pcurve->cuopen == SISL_CRV_PERIODIC)
     {
@@ -135,7 +135,7 @@ void s1240(pcurve,aepsge,clength,jstat)
     
     /* Free local curve.  */
     
-    if (qc != NULL && qc != pcurve) freeCurve(qc);
+    if (qc != SISL_NULL && qc != pcurve) freeCurve(qc);
     
     return;
 }

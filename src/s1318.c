@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1318.c,v 1.2 1994-12-01 14:06:45 pfu Exp $
+ * $Id: s1318.c,v 1.3 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -86,7 +86,7 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
 *                                    of intersection curve may have been
 *                                    traced out. If no curve is traced out
 *                                    the curve pointers in the Intcurve
-*                                    object point to NULL.
+*                                    object point to SISL_NULL.
 *                         = 0      : ok
 *                         < 0      : error
 *                         = -185   : No points produced on intersection curve.
@@ -119,8 +119,8 @@ void s1318(ps1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,amax,pintcr,
   if (kstat<0) goto error;
 
   if (kstat == 0          ||
-      DEQUAL(abigr,DNULL) ||
-      DEQUAL(asmalr,DNULL)) goto err177;
+      DEQUAL(abigr,DZERO) ||
+      DEQUAL(asmalr,DZERO)) goto err177;
 
   /* Put the information concerning the torus in the following sequence
      into simpli: Center, normal, big radius, small radius */

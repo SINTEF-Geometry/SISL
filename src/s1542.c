@@ -69,11 +69,11 @@ void s1542(pc1,m,x,eder,jstat)
 		 	 vector.                                          */
   int ik;              /* The polynomial order of the curve.              */
   int kdim;            /* The space dimension of the surface. */
-  double *ebder=NULL;  /* Triple array of dimension (ider+1)*ik*m
+  double *ebder=SISL_NULL;  /* Triple array of dimension (ider+1)*ik*m
                          containing dericatives of B-splines. */
-  int *ileft=NULL;     /* Array of dimension m containing the left knots
+  int *ileft=SISL_NULL;     /* Array of dimension m containing the left knots
                          of the B-splines. */
-  double *et = NULL;   /* The knot vector. */
+  double *et = SISL_NULL;   /* The knot vector. */
 
   in = pc1 -> in;
   ik = pc1 -> ik;
@@ -88,10 +88,10 @@ void s1542(pc1,m,x,eder,jstat)
 
   /* Pre-evaluate B-splines. */
   ebder = newarray((ider+1)*ik*m, DOUBLE);
-  if(ebder == NULL) goto err101;
+  if(ebder == SISL_NULL) goto err101;
 
   ileft = newarray(m,INT);
-  if(ileft == NULL) goto err101;
+  if(ileft == SISL_NULL) goto err101;
 
   s1540(et,ik,in,x,m,ider,ebder,ileft,&kstat);
   if(kstat < 0) goto error;
@@ -102,8 +102,8 @@ void s1542(pc1,m,x,eder,jstat)
   if(kstat < 0) goto error;
 
   /* Free memory. */
-  if(ebder != NULL) freearray(ebder);
-  if(ileft != NULL) freearray(ileft);
+  if(ebder != SISL_NULL) freearray(ebder);
+  if(ileft != SISL_NULL) freearray(ileft);
 
   *jstat = 0;
   goto out;

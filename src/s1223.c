@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1223.c,v 1.3 1995-11-02 13:08:02 jka Exp $
+ * $Id: s1223.c,v 1.4 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -124,8 +124,8 @@ void s1223(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider1, ider2,
    int klimit;           /* Limit in for loop.                            */
    double sdum1[100];    /* Fixed utility array.                          */
    double sdum2[100];    /* Fixed utility array.                          */
-   double *sder1 = NULL; /* Evaluation in the first parameter direction.  */
-   double *sder2 = NULL; /* Evaluation in the second parameter direction. */
+   double *sder1 = SISL_NULL; /* Evaluation in the first parameter direction.  */
+   double *sder2 = SISL_NULL; /* Evaluation in the second parameter direction. */
    
 
    /* Establish the number of derivatives. */
@@ -141,7 +141,7 @@ void s1223(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider1, ider2,
    
    if (knumb1 > 100)
    {
-      if ((sder1 = newarray(knumb1, double)) == NULL)
+      if ((sder1 = newarray(knumb1, double)) == SISL_NULL)
 	 goto err101;
    }
    else
@@ -149,7 +149,7 @@ void s1223(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider1, ider2,
    
    if (knumb2 > 100)
    {
-      if ((sder2 = newarray(knumb2, double)) == NULL)
+      if ((sder2 = newarray(knumb2, double)) == SISL_NULL)
 	 goto err101;
    }
    else
@@ -206,8 +206,8 @@ void s1223(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider1, ider2,
    goto out;
    
    out: 
-      if (knumb1 > 100 && sder1 != NULL) freearray(sder1);
-      if (knumb2 > 100 && sder2 != NULL) freearray(sder2);
+      if (knumb1 > 100 && sder1 != SISL_NULL) freearray(sder1);
+      if (knumb2 > 100 && sder2 != SISL_NULL) freearray(sder2);
       
       return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1383.c,v 1.3 1997-12-11 10:25:11 vsk Exp $
+ * $Id: s1383.c,v 1.4 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -110,13 +110,13 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
   double tproj2;      /* Projection of vector                            */
   double tlast;       /* Value in last itertion                          */
   double tfak;        /* Necessary reduction of interval length          */
-  double *s3dinf=NULL;/* Pointer to storage for point info (10 dobules pr
+  double *s3dinf=SISL_NULL;/* Pointer to storage for point info (10 dobules pr
 			 point when idim=3, 7 when idim=3)              */
-  double *sudpos=NULL;/* Pointer to storage of u-derivatives             */
-  double *sudder=NULL;/* Pointer to storage of ut-derivatives            */
-  double *svdpos=NULL;/* Pointer to storage of u-derivatives             */
-  double *svdder=NULL;/* Pointer to storage of vt-derivatives            */
-  double *spar=NULL;  /* Pointer to array for storage of knots           */
+  double *sudpos=SISL_NULL;/* Pointer to storage of u-derivatives             */
+  double *sudder=SISL_NULL;/* Pointer to storage of ut-derivatives            */
+  double *svdpos=SISL_NULL;/* Pointer to storage of u-derivatives             */
+  double *svdder=SISL_NULL;/* Pointer to storage of vt-derivatives            */
+  double *spar=SISL_NULL;  /* Pointer to array for storage of knots           */
   double *st;         /* Pointer to the first element of the knot vector
 			 of the curve. The knot vector has [kn+kk]
 			 elements.                                       */
@@ -145,7 +145,7 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	     psurf->pbox->e2max[0][1] - psurf->pbox->e2min[0][1]);
   tmax = MAX(tmax,psurf->pbox->e2max[0][2] - psurf->pbox->e2min[0][2]);
   
-  if (amax>DNULL) tmax = MIN(tmax,amax);
+  if (amax>DZERO) tmax = MIN(tmax,amax);
   
   /* Copy curve attributes to local parameters.  */
   
@@ -163,24 +163,24 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
      curvature */
   
   s3dinf = newarray((3*kdims+1)*kmaxinf,DOUBLE);                               
-  if (s3dinf == NULL) goto err101;
+  if (s3dinf == SISL_NULL) goto err101;
 
   if (ider >= 1)
     {
       sudpos = newarray(kdims*kmaxinf,DOUBLE);                               
-      if (sudpos == NULL) goto err101;
+      if (sudpos == SISL_NULL) goto err101;
       sudder = newarray(kdims*kmaxinf,DOUBLE);                               
-      if (sudder == NULL) goto err101;
+      if (sudder == SISL_NULL) goto err101;
       svdpos = newarray(kdims*kmaxinf,DOUBLE);                               
-      if (svdpos == NULL) goto err101;
+      if (svdpos == SISL_NULL) goto err101;
       svdder = newarray(kdims*kmaxinf,DOUBLE);                               
-      if (svdder == NULL) goto err101;
+      if (svdder == SISL_NULL) goto err101;
     }
   
   /* Allocate space for parametrization array */
   
   spar = newarray(kmaxinf,DOUBLE);
-  if (spar == NULL) goto err101;
+  if (spar == SISL_NULL) goto err101;
   
   /* Store knot values at start of curve */
   
@@ -233,7 +233,7 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
       
       /* Find parameter value of candidate end point of segment */
       
-      if (DEQUAL(tlengthend,DNULL))
+      if (DEQUAL(tlengthend,DZERO))
         { 
 	  /* Step equal to computer resolution */
 	  tincre = tx1*((double)1.0+REL_COMP_RES);
@@ -258,20 +258,20 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
             {
 	      kmaxinf = kmaxinf + 100;
 	      s3dinf = increasearray(s3dinf,(3*kdims+1)*kmaxinf,DOUBLE);
-	      if (s3dinf == NULL) goto err101;
+	      if (s3dinf == SISL_NULL) goto err101;
 	      spar   = increasearray(spar,kmaxinf,DOUBLE);
-	      if (spar == NULL) goto err101;
+	      if (spar == SISL_NULL) goto err101;
 
 	      if (ider >= 1)
 		{
 		  sudpos = increasearray(sudpos,kdims*kmaxinf,DOUBLE);
-		  if (sudpos == NULL) goto err101;
+		  if (sudpos == SISL_NULL) goto err101;
 		  sudder = increasearray(sudder,kdims*kmaxinf,DOUBLE);
-		  if (sudder == NULL) goto err101;
+		  if (sudder == SISL_NULL) goto err101;
 		  svdpos = increasearray(svdpos,kdims*kmaxinf,DOUBLE);
-		  if (svdpos == NULL) goto err101;
+		  if (svdpos == SISL_NULL) goto err101;
 		  svdder = increasearray(svdder,kdims*kmaxinf,DOUBLE);
-		  if (svdder == NULL) goto err101;
+		  if (svdder == SISL_NULL) goto err101;
 		}
             }
 	  
@@ -343,7 +343,7 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
 	      /* If tproj2==0 then curve tangent normal to plane, half step
 		 length */
 	      
-	      if (DEQUAL(tproj2,DNULL))
+	      if (DEQUAL(tproj2,DZERO))
                 {
 		  kdiv = 1;
 		  kcont = 0;
@@ -448,20 +448,20 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
             {
 	      kmaxinf = kmaxinf + 100;
 	      s3dinf = increasearray(s3dinf,(3*kdims+1)*kmaxinf,DOUBLE);
-	      if (s3dinf == NULL) goto err101;
+	      if (s3dinf == SISL_NULL) goto err101;
 	      spar   = increasearray(spar,kmaxinf,DOUBLE);
-	      if (spar == NULL) goto err101;
+	      if (spar == SISL_NULL) goto err101;
 
 	      if (ider >= 1)
 		{
 		  sudpos = increasearray(sudpos,kdims*kmaxinf,DOUBLE);
-		  if (sudpos == NULL) goto err101;
+		  if (sudpos == SISL_NULL) goto err101;
 		  sudder = increasearray(sudder,kdims*kmaxinf,DOUBLE);
-		  if (sudder == NULL) goto err101;
+		  if (sudder == SISL_NULL) goto err101;
 		  svdpos = increasearray(svdpos,kdims*kmaxinf,DOUBLE);
-		  if (svdpos == NULL) goto err101;
+		  if (svdpos == SISL_NULL) goto err101;
 		  svdder = increasearray(svdder,kdims*kmaxinf,DOUBLE);
-		  if (svdder == NULL) goto err101;
+		  if (svdder == SISL_NULL) goto err101;
 		}
             }
 	  
@@ -541,12 +541,12 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
   
  out:
   
-  if (s3dinf != NULL) freearray(s3dinf);
-  if (sudpos != NULL) freearray(sudpos);
-  if (sudder != NULL) freearray(sudder);
-  if (svdpos != NULL) freearray(svdpos);
-  if (svdder != NULL) freearray(svdder);
-  if (spar   != NULL) freearray(spar);
+  if (s3dinf != SISL_NULL) freearray(s3dinf);
+  if (sudpos != SISL_NULL) freearray(sudpos);
+  if (sudder != SISL_NULL) freearray(sudder);
+  if (svdpos != SISL_NULL) freearray(svdpos);
+  if (svdder != SISL_NULL) freearray(svdder);
+  if (spar   != SISL_NULL) freearray(spar);
   
   return;
 }          

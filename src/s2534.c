@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2534.c,v 1.1 1995-08-21 13:24:05 jka Exp $
+ * $Id: s2534.c,v 1.2 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -109,21 +109,21 @@ void
    int local_in;          /* Local number of coefficients.              */
    int nlr = 0;           /* Parameter to s1891.                        */
    int nrc = 0;           /* Parameter to s1891.                        */
-   int *u_eder = NULL;    /* Parametrization of derivatives.            */
-   int *v_eder = NULL;    /* Parametrization of derivatives.            */
+   int *u_eder = SISL_NULL;    /* Parametrization of derivatives.            */
+   int *v_eder = SISL_NULL;    /* Parametrization of derivatives.            */
    double par[2];         /* Surface parameters.                        */
-   double *newet1 = NULL; /* Knot vector in first direction.            */
-   double *newet2 = NULL; /* Knot vector in second direction.           */
-   double *coef1 = NULL;  /* Surface coefficients.                      */
-   double *coef2 = NULL;  /* Surface coefficients.                      */
-   double *coef3 = NULL;  /* Surface coefficients.                      */
-   double *u_par = NULL;  /* Schoenberg parameters in first direction.  */
-   double *v_par = NULL;  /* Schoenberg parameters in second direction. */
+   double *newet1 = SISL_NULL; /* Knot vector in first direction.            */
+   double *newet2 = SISL_NULL; /* Knot vector in second direction.           */
+   double *coef1 = SISL_NULL;  /* Surface coefficients.                      */
+   double *coef2 = SISL_NULL;  /* Surface coefficients.                      */
+   double *coef3 = SISL_NULL;  /* Surface coefficients.                      */
+   double *u_par = SISL_NULL;  /* Schoenberg parameters in first direction.  */
+   double *v_par = SISL_NULL;  /* Schoenberg parameters in second direction. */
 
 
    /* Check input */
    
-   if (surf == NULL || u_multinc < 0 || v_multinc < 0 ||
+   if (surf == SISL_NULL || u_multinc < 0 || v_multinc < 0 ||
        newik1 < (u_multinc + 2) || newik2 < (v_multinc + 2)) goto err150;
 
    /* Generate the knot array (spline space) in first direction. */
@@ -140,12 +140,12 @@ void
    
    /* Allocate utility arrays. */
    
-   if ((coef1 = newarray(newin1*newin2*eval_dim, DOUBLE)) == NULL) 
+   if ((coef1 = newarray(newin1*newin2*eval_dim, DOUBLE)) == SISL_NULL) 
       goto err101;
-   if ((u_par = newarray(newin1, DOUBLE)) == NULL) goto err101;
-   if ((v_par = newarray(newin2, DOUBLE)) == NULL) goto err101;
-   if ((u_eder = newarray(newin1, INT)) == NULL) goto err101;
-   if ((v_eder = newarray(newin2, INT)) == NULL) goto err101;
+   if ((u_par = newarray(newin1, DOUBLE)) == SISL_NULL) goto err101;
+   if ((v_par = newarray(newin2, DOUBLE)) == SISL_NULL) goto err101;
+   if ((u_eder = newarray(newin1, INT)) == SISL_NULL) goto err101;
+   if ((v_eder = newarray(newin2, INT)) == SISL_NULL) goto err101;
    
    /* Evaluate the property in the Schoenberg points. */
    
@@ -194,7 +194,7 @@ void
    /* Create surface.  */
 		 
    if ((*rsurf = newSurf(newin1, newin2, newik1, newik2, newet1, newet2,
-			 coef3, 1, eval_dim, 2)) == NULL) goto err101;
+			 coef3, 1, eval_dim, 2)) == SISL_NULL) goto err101;
 
   
    goto out;
@@ -226,12 +226,12 @@ void
    /* ---------------------- NORMAL EXIT ------------------------------- */
 
  out:
-   if (coef1 != NULL)  freearray(coef1);
-   if (coef2 != NULL)  freearray(coef2);
-   if (u_par != NULL)  freearray(u_par);
-   if (v_par != NULL)  freearray(v_par);
-   if (u_eder != NULL) freearray(u_eder);
-   if (v_eder != NULL) freearray(v_eder);
+   if (coef1 != SISL_NULL)  freearray(coef1);
+   if (coef2 != SISL_NULL)  freearray(coef2);
+   if (u_par != SISL_NULL)  freearray(u_par);
+   if (v_par != SISL_NULL)  freearray(v_par);
+   if (u_eder != SISL_NULL) freearray(u_eder);
+   if (v_eder != SISL_NULL) freearray(v_eder);
    
    return;
 }

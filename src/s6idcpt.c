@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idcpt.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idcpt.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -36,7 +36,7 @@ void s6idcpt(pintdat,pintpt,rintpt)
 *                                                                   
 * PURPOSE    : To find the point which is closest to pintpt
 *              in the parametric space. If pintpt is the only
-*              point in pintdat *rintpt is NULL.
+*              point in pintdat *rintpt is SISL_NULL.
 *
 *
 *
@@ -61,8 +61,8 @@ void s6idcpt(pintdat,pintpt,rintpt)
 *********************************************************************
 */                                     
 {
-  if (pintdat == NULL)
-    *rintpt = NULL;
+  if (pintdat == SISL_NULL)
+    *rintpt = SISL_NULL;
   else
     {
       int ki,knr;                /* Counters.          */
@@ -88,7 +88,7 @@ void s6idcpt(pintdat,pintpt,rintpt)
         }
       
       if (tdist == HUGE)
-        *rintpt = NULL;
+        *rintpt = SISL_NULL;
       else
         *rintpt = pintdat->vpoint[knr];
     }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idget.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idget.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -86,7 +86,7 @@ void s6idget(po1,po2,ipar,apar,pintdat,rintdat,jstat)
   SISLIntpt *qpt;
   
   
-  if (pintdat == NULL)
+  if (pintdat == SISL_NULL)
     goto out;
   
   if (po1->iobj == SISLCURVE)
@@ -137,8 +137,8 @@ void s6idget(po1,po2,ipar,apar,pintdat,rintdat,jstat)
 	  
 	  /* Than we can insert all new intersection points in rintdat. */
 	  
-	  qpt = newIntpt(pintdat->vpoint[ki]->ipar-1,spar,DNULL);
-	  if (qpt == NULL) goto err101;
+	  qpt = newIntpt(pintdat->vpoint[ki]->ipar-1,spar,DZERO);
+	  if (qpt == SISL_NULL) goto err101;
 	  
 	  s6idnpt(rintdat,&qpt,1,&kstat);
 	  if (kstat < 0) goto error;

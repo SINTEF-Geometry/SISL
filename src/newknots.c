@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: newknots.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: newknots.c,v 1.2 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -91,7 +91,7 @@ void newknots(et,in,ik,epar,inpar,aeps,ginsert,jinsert,jstat)
    /* Allocate maximum needed scratch for output array.  */
    
    *jinsert = 0;
-   if ((*ginsert = newarray(ik*inpar,DOUBLE)) == NULL) goto err101;
+   if ((*ginsert = newarray(ik*inpar,DOUBLE)) == SISL_NULL) goto err101;
    
    /* Traverse the array of parameter values and compute how
       may knots is to be inserted at each value.  */
@@ -134,7 +134,7 @@ void newknots(et,in,ik,epar,inpar,aeps,ginsert,jinsert,jstat)
    
    if (*jinsert != ik*inpar)
    {
-      if ((*ginsert = increasearray(*ginsert,MAX(1,*jinsert),DOUBLE)) == NULL)
+      if ((*ginsert = increasearray(*ginsert,MAX(1,*jinsert),DOUBLE)) == SISL_NULL)
 	 goto err101;
    }
    

@@ -77,7 +77,7 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
    int ik;
    double bas;
    double cx, cy, cz;
-   double* ecoef = NULL;
+   double* ecoef = SISL_NULL;
 
 
    /* Check the input. */

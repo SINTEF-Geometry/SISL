@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1375.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1375.c,v 1.2 2001-03-19 15:59:03 afr Exp $
  *
  */
 
@@ -112,7 +112,7 @@ void sh1375(pc1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 *********************************************************************
 */                                                               
 {                                                                     
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int kstat = 0;           /* Local status variable.                       */
   int kpos = 0;            /* Position of error.                           */
   int kdim=1;              /* Dimension of curve in curve/point intersection.*/
@@ -120,22 +120,22 @@ void sh1375(pc1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   double simpli[8];        /* Array for represetnation of torus    surface */
   double snorm[3];         /* Normalized normal vector                     */
   double spoint[1];        /* SISLPoint in curve/point intersection.           */
-  double *spar = NULL;     /* Values of intersections in the parameter 
+  double *spar = SISL_NULL;     /* Values of intersections in the parameter 
 			      area of the second object. 
 			      Empty in this case. */
-  SISLCurve *qc = NULL;        /* Pointer to curve in 
+  SISLCurve *qc = SISL_NULL;        /* Pointer to curve in 
 			      curve/point intersection.  */
-  SISLPoint *qp = NULL;        /* Pointer to point in 
+  SISLPoint *qp = SISL_NULL;        /* Pointer to point in 
 			      curve/point intersection.  */
-  SISLObject *qo1 = NULL;      /* Pointer to object in 
+  SISLObject *qo1 = SISL_NULL;      /* Pointer to object in 
 			      object/point intersection.*/
-  SISLObject *qo2 = NULL;      /* Pointer to object in 
+  SISLObject *qo2 = SISL_NULL;      /* Pointer to object in 
 			      object/point intersection.*/
-  SISLIntdat *qintdat = NULL;  /* Pointer to intersection data */
+  SISLIntdat *qintdat = SISL_NULL;  /* Pointer to intersection data */
   int      ksurf=0;         /* Dummy number of Intsurfs. */
   SISLIntsurf **wsurf=0;    /* Dummy array of Intsurfs. */
-  SISLObject *track_obj=NULL;
-  SISLCurve *qkreg=NULL; /* Input surface ensured k-regularity. */
+  SISLObject *track_obj=SISL_NULL;
+  SISLCurve *qkreg=SISL_NULL; /* Input surface ensured k-regularity. */
 
   /* -------------------------------------------------------- */  
 
@@ -213,7 +213,7 @@ void sh1375(pc1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
    */
 
   if (!(qo2 = newObject(SISLPOINT))) goto err101;
-  spoint[0] = DNULL;
+  spoint[0] = DZERO;
   if (!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
@@ -294,13 +294,13 @@ void sh1375(pc1,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   if (qintdat) freeIntdat(qintdat);
   if (track_obj)
     {
-       track_obj->c1 = NULL;
+       track_obj->c1 = SISL_NULL;
        freeObject(track_obj);
     }
 
   /* Free local curve.  */
 
-  if (qkreg != NULL && qkreg != pc1) freeCurve(qkreg);
+  if (qkreg != SISL_NULL && qkreg != pc1) freeCurve(qkreg);
 return;
 }                                               
                                            

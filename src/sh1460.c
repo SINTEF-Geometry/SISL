@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1460.c,v 1.2 1999-01-15 10:11:31 jka Exp $
+ * $Id: sh1460.c,v 1.3 2001-03-19 15:59:03 afr Exp $
  *
  */
 
@@ -143,8 +143,8 @@ void sh1460(fshape,vboundc,icurv,wsurf,jstat)
  */
   /* Allocate scratch for output surfaces.  */
 
-  *wsurf = NULL;
-  if ((*wsurf = newarray(icurv,SISLSurf*)) == NULL) goto err101;
+  *wsurf = SISL_NULL;
+  if ((*wsurf = newarray(icurv,SISLSurf*)) == SISL_NULL) goto err101;
 
   /* Perform Hahn's method. Pass the routine evaluating the midpoint of the
      region as a parameter to the routine performing Hahn's method.         */

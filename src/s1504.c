@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1504.c,v 1.1 1999-01-14 11:54:52 jka Exp $
+ * $Id: s1504.c,v 1.2 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -99,7 +99,7 @@ void s1504(et,ik,in,ax,im,ider,ebder,ileft,jstat)
 
   size = (ider + 1) * ik;
   eder = newarray(size,double);
-  if (eder == NULL) goto err101;
+  if (eder == SISL_NULL) goto err101;
 
   kk = 0;
   for(k=0; k<im; k++)

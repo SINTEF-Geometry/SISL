@@ -105,7 +105,7 @@ void s2551( curve, parvalue, leftknot, derive, curvature, jstat )
   int kdim = curve -> idim;   /* copy curve attribute to local parameter  */
   int kstat = 0;              /* local status variable                    */
   int kpos = 0;               /* local error position                     */
-  double *egeo = NULL;        /* pointer to store pos, tangent vector,
+  double *egeo = SISL_NULL;        /* pointer to store pos, tangent vector,
 				 curvature vector and radius of curvature */
 
 
@@ -114,7 +114,7 @@ void s2551( curve, parvalue, leftknot, derive, curvature, jstat )
 
   egeo = newarray( 3*kdim+1, DOUBLE );
 
-  if ( egeo == NULL )      goto err101;
+  if ( egeo == SISL_NULL )      goto err101;
 
 
   /* Evaluate the derivatives */
@@ -158,7 +158,7 @@ void s2551( curve, parvalue, leftknot, derive, curvature, jstat )
  out:
   /* Free local arrays */
 
- if ( egeo != NULL ) freearray( egeo );
+ if ( egeo != SISL_NULL ) freearray( egeo );
 
  return;
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1389.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1389.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -117,7 +117,7 @@ void s1389(pc1,gcubic,jnumb,jdim,jstat)
   /* Allocate array for storage of the coefficients */
   
   *gcubic = newarray((kn*4*kdim),DOUBLE);
-  if (*gcubic == NULL) goto err101;
+  if (*gcubic == SISL_NULL) goto err101;
   
   kleft = kk - 1;
   
@@ -176,7 +176,7 @@ void s1389(pc1,gcubic,jnumb,jdim,jstat)
   /* Allocate array for storage of the coefficients */
   
   *gcubic = increasearray(*gcubic,((*jnumb)*4*kdim),DOUBLE);
-  if (*gcubic == NULL) goto err101;
+  if (*gcubic == SISL_NULL) goto err101;
   
   
   /* Test if order to high */
@@ -210,7 +210,7 @@ void s1389(pc1,gcubic,jnumb,jdim,jstat)
   /* Some error has occured free allocated space */
   
   freeout:
-    if (*gcubic != NULL) freearray(*gcubic);
+    if (*gcubic != SISL_NULL) freearray(*gcubic);
     goto out;
   
   out:

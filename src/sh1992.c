@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1992.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1992.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -105,13 +105,13 @@ void sh1992(po,itype,aepsge,jstat)
 
    /* Set correct tolerances.  */
    
-   teps_inner = (ktype == 0) ? DNULL : (double)0.5*aepsge;
+   teps_inner = (ktype == 0) ? DZERO : (double)0.5*aepsge;
    teps_edge = (ktype == 2) ? -teps_inner : teps_inner;
    
    if (po -> iobj == SISLPOINT)
    {
-      if (po->p1->pbox == NULL)
-	 if ((po->p1->pbox = newbox(po->p1->idim)) == NULL) goto err101;
+      if (po->p1->pbox == SISL_NULL)
+	 if ((po->p1->pbox = newbox(po->p1->idim)) == SISL_NULL) goto err101;
       
       if (s6existbox(po->p1->pbox,ktype,aepsge) < 1)
       {
@@ -128,7 +128,7 @@ void sh1992(po,itype,aepsge,jstat)
 	 s6newbox(po->p1->pbox,knum,ktype,aepsge,&kstat);
 	 if (kstat < 0) goto error;
 	 
-	 teps_inner = teps_edge = DNULL;
+	 teps_inner = teps_edge = DZERO;
 	 
 	 k2 = (ktype == 0) ? 0 : ((ktype == 1) ? 2 : 1);
 	 if (ktype > 0 && s6existbox(po->p1->pbox,k2,aepsge))
@@ -160,8 +160,8 @@ void sh1992(po,itype,aepsge,jstat)
    }
    else if (po -> iobj == SISLCURVE)
    {
-      if (po->c1->pbox == NULL)
-	 if ((po->c1->pbox = newbox(po->c1->idim)) == NULL) goto err101;
+      if (po->c1->pbox == SISL_NULL)
+	 if ((po->c1->pbox = newbox(po->c1->idim)) == SISL_NULL) goto err101;
       
       if (s6existbox(po->c1->pbox,ktype,aepsge) < 1)
       {
@@ -180,7 +180,7 @@ void sh1992(po,itype,aepsge,jstat)
 	 
 	 if (po->c1->ik == po->c1->in) 
          {
-            teps_inner = DNULL;
+            teps_inner = DZERO;
             kbez = 1;
          }
 	 
@@ -204,8 +204,8 @@ void sh1992(po,itype,aepsge,jstat)
    } 
    else if (po -> iobj == SISLSURFACE)
    {
-      if (po->s1->pbox == NULL)
-	 if ((po->s1->pbox = newbox(po->s1->idim)) == NULL) goto err101;
+      if (po->s1->pbox == SISL_NULL)
+	 if ((po->s1->pbox = newbox(po->s1->idim)) == SISL_NULL) goto err101;
       
       if (s6existbox(po->s1->pbox,ktype,aepsge) < 1)
       {
@@ -224,7 +224,7 @@ void sh1992(po,itype,aepsge,jstat)
 	 
 	 if (po->s1->ik1 == po->s1->in1 && po->s1->ik2 == po->s1->in2) 
          {
-	    teps_inner = DNULL;
+	    teps_inner = DZERO;
             kbez = 1;
          }
 	 
@@ -328,8 +328,8 @@ void sh1992cu(pc,itype,aepsge,jstat)
    int ktype = itype % 10;              /* Kind of box.            */
    int knum;                            /* Number of sides of box. */
    int kbez = 0;                        /* Indicates if Bezier case. */
-   double *smin = NULL;                 /* Minimum values of box.  */
-   double *smax = NULL;                 /* Maximum values of box.  */
+   double *smin = SISL_NULL;                 /* Minimum values of box.  */
+   double *smax = SISL_NULL;                 /* Maximum values of box.  */
    double teps_inner;     /* Tolerance with which to expand in the inner. */
    double teps_edge;      /* Tolerance with which to expand at the edge.  */
 
@@ -341,11 +341,11 @@ void sh1992cu(pc,itype,aepsge,jstat)
    
    /* Set correct tolerances.  */
    
-   teps_inner = (ktype == 0) ? DNULL : (double)0.5*aepsge;
+   teps_inner = (ktype == 0) ? DZERO : (double)0.5*aepsge;
    teps_edge = (ktype == 2) ? -teps_inner : teps_inner;
    
-   if (pc->pbox == NULL)
-      if ((pc->pbox = newbox(pc->idim)) == NULL) goto err101;
+   if (pc->pbox == SISL_NULL)
+      if ((pc->pbox = newbox(pc->idim)) == SISL_NULL) goto err101;
    
    if (s6existbox(pc->pbox,ktype,aepsge) < 1)
    {
@@ -359,7 +359,7 @@ void sh1992cu(pc,itype,aepsge,jstat)
 		     
       if (pc->ik == pc->in) 
       {
-          teps_inner = DNULL;
+          teps_inner = DZERO;
           kbez = 1;
       }
       
@@ -459,14 +459,14 @@ void sh1992su(ps,itype,aepsge,jstat)
    int ktype = itype % 10;              /* Kind of box.            */
    int knum;                            /* Number of sides of box. */
    int kbez = 0;                        /* Indicates if Bezier.    */
-   double *smin = NULL;                 /* Minimum values of box.  */
-   double *smax = NULL;                 /* Maximum values of box.  */
+   double *smin = SISL_NULL;                 /* Minimum values of box.  */
+   double *smax = SISL_NULL;                 /* Maximum values of box.  */
    double teps_inner;     /* Tolerance with which to expand in the inner. */
    double teps_edge;      /* Tolerance with which to expand at the edge.  */
 
    /* Set correct tolerances.  */
    
-   teps_inner = (ktype == 0) ? DNULL : (double)0.5*aepsge;
+   teps_inner = (ktype == 0) ? DZERO : (double)0.5*aepsge;
    teps_edge = (ktype == 2) ? -teps_inner : teps_inner;
    
    /* Set number of box sides.  */
@@ -475,8 +475,8 @@ void sh1992su(ps,itype,aepsge,jstat)
    else if (itype < 10 && kdim == 2) knum = 4;
    else knum = kdim;
    
-   if (ps->pbox == NULL)
-      if ((ps->pbox = newbox(ps->idim)) == NULL) goto err101;
+   if (ps->pbox == SISL_NULL)
+      if ((ps->pbox = newbox(ps->idim)) == SISL_NULL) goto err101;
    
    if (s6existbox(ps->pbox,ktype,aepsge) < 1)
    {
@@ -490,7 +490,7 @@ void sh1992su(ps,itype,aepsge,jstat)
       
       if (ps->ik1 == ps->in1 && ps->ik2 == ps->in2) 
       {
-	 teps_inner = DNULL;
+	 teps_inner = DZERO;
          kbez = 1;
       }
       
@@ -599,7 +599,7 @@ static void sh1992_s9mbox3(ecoef,icoef1,icoef2,aeps1,aeps2,e2max,e2min)
      that the maximum distance from the total box at the edges to the
      reduced box is aeps2.                                             */
   
-  if (aeps2 >= DNULL)
+  if (aeps2 >= DZERO)
      teps2 = aeps2;
   else
      teps2 = (double)0.2767326953*aeps2; 
@@ -778,7 +778,7 @@ static void sh1992_s9mbox2(ecoef,icoef1,icoef2,aeps1,aeps2,e2max,e2min)
      that the maximum distance from the total box at the edges to the
      reduced box is aeps2.                                             */
   
-  if (aeps2 >= DNULL)
+  if (aeps2 >= DZERO)
      teps2 = aeps2;
   else
      teps2 = (double)0.38268343*aeps2;   /* aeps2 * sin(PI/8).   */
@@ -928,15 +928,15 @@ static void sh1992_s9mbox(ecoef,icoef1,icoef2,idim,aeps1,aeps2,
   double teps3;               /* Double tolerance at edge.            */
   double *tmin,*tmax;  /* Pointers into box boundary arrays.          */
   double *sc;          /* Pointer into coefficient array.             */
-  double *sminin=NULL,*smaxin=NULL;  /* Box boundaries of the inner.  */
-  double *sminedg=NULL,*smaxedg=NULL; /* Box boundaries of the edge.  */
+  double *sminin=SISL_NULL,*smaxin=SISL_NULL;  /* Box boundaries of the inner.  */
+  double *sminedg=SISL_NULL,*smaxedg=SISL_NULL; /* Box boundaries of the edge.  */
   
   /* Set tolerances at edge. If the tolerance is positive or dimension
      is 1D, the input tolerance is used, otherwise we must make sure 
      that the maximum distance from the total box at the edges to the
      reduced box is aeps2.                                             */
   
-  if (idim == 1 || aeps2 >= DNULL)
+  if (idim == 1 || aeps2 >= DZERO)
      teps2 = aeps2;
   else
      teps2 = aeps2/sqrt((double)idim);
@@ -944,10 +944,10 @@ static void sh1992_s9mbox(ecoef,icoef1,icoef2,idim,aeps1,aeps2,
   
   /* Allocate scratch for intermediate box arrays.  */
   
-  if ((sminin = newarray(kant,double)) == NULL) goto err101;
-  if ((smaxin = newarray(kant,double)) == NULL) goto err101;
-  if ((sminedg = newarray(kant,double)) == NULL) goto err101;
-  if ((smaxedg = newarray(kant,double)) == NULL) goto err101;
+  if ((sminin = newarray(kant,double)) == SISL_NULL) goto err101;
+  if ((smaxin = newarray(kant,double)) == SISL_NULL) goto err101;
+  if ((sminedg = newarray(kant,double)) == SISL_NULL) goto err101;
+  if ((smaxedg = newarray(kant,double)) == SISL_NULL) goto err101;
   
   /* Initiate box boundaries of inner box.  */
   
@@ -1005,8 +1005,8 @@ static void sh1992_s9mbox(ecoef,icoef1,icoef2,idim,aeps1,aeps2,
   
   if (idim == 1)
   {
-     if (fabs(e2max[0]) < noice) e2max[0] = DNULL;
-     if (fabs(e2min[0]) < noice) e2min[0] = DNULL;
+     if (fabs(e2max[0]) < noice) e2max[0] = DZERO;
+     if (fabs(e2min[0]) < noice) e2min[0] = DZERO;
   }
   
   *jstat = 0;
@@ -1018,10 +1018,10 @@ static void sh1992_s9mbox(ecoef,icoef1,icoef2,idim,aeps1,aeps2,
   goto out;
   
   out :
-  if (sminin != NULL) freearray(sminin);
-  if (smaxin != NULL) freearray(smaxin);
-  if (sminedg != NULL) freearray(sminedg);
-  if (smaxedg != NULL) freearray(smaxedg);		       
+  if (sminin != SISL_NULL) freearray(sminin);
+  if (smaxin != SISL_NULL) freearray(smaxin);
+  if (sminedg != SISL_NULL) freearray(sminedg);
+  if (smaxedg != SISL_NULL) freearray(smaxedg);		       
 }
  
 

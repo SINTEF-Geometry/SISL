@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1315.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1315.c,v 1.2 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -81,7 +81,7 @@ void s1315(ps1,ecentr,aradiu,idim,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                                    of intersection curve may have been
 *                                    traced out. If no curve is traced out
 *                                    the curve pointers in the Intcurve
-*                                    object point to NULL.*                                         = 3      : Marching not succeded
+*                                    object point to SISL_NULL.*                                         = 3      : Marching not succeded
 *                         = 0      : ok
 *                         < 0      : error
 *

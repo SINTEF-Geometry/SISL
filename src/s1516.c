@@ -90,10 +90,10 @@ void s1516(ep,epar,im,idim,ev,jstat)
   /* Allocate array for derivatives */
 
   evtemp    = newarray(idim*im,DOUBLE);
-  if (evtemp == NULL) goto err101;
+  if (evtemp == SISL_NULL) goto err101;
 
   ntype    = newarray(im,DOUBLE);
-  if (ntype == NULL) goto err101;
+  if (ntype == SISL_NULL) goto err101;
 
   for(ki=0; ki<im; ki++)
   {
@@ -101,7 +101,7 @@ void s1516(ep,epar,im,idim,ev,jstat)
   }
 
   eder    = newarray(2 * idim,DOUBLE);
-  if (eder == NULL) goto err101;
+  if (eder == SISL_NULL) goto err101;
 
 
 
@@ -157,9 +157,9 @@ void s1516(ep,epar,im,idim,ev,jstat)
   goto out;
 
  out:
-  if (ntype != NULL) freearray(ntype);
-  if (gpar != NULL) freearray(gpar);
-  if (eder != NULL) freearray(eder);
+  if (ntype != SISL_NULL) freearray(ntype);
+  if (gpar != SISL_NULL) freearray(gpar);
+  if (eder != SISL_NULL) freearray(eder);
 
   return;
 }

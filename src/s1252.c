@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1252.c,v 1.2 1994-07-04 15:02:43 boh Exp $
+ * $Id: s1252.c,v 1.3 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -91,7 +91,7 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
   int kdir=1;           /* Direction of derivative to be calculated        */
   double tstart,tend;   /* Ends of parameter interval of first curve.      */
   double tdelta;        /* Parameter interval of the curves.               */
-  double tdist=DNULL;   /* Distance between position and origo.            */
+  double tdist=DZERO;   /* Distance between position and origo.            */
   double td;        	/* Distances between old and new parameter value   */
   double tnext;         /* Parameter-value of expression in first curve.   */
   double tprev;         /* Previous difference between the curves.         */
@@ -114,8 +114,8 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
   tstart = *(pcurve->et + pcurve->ik - 1);
   tend   = *(pcurve->et + pcurve->in);
   tdelta = tend - tstart;
-  if (tdelta == DNULL) tdelta = fabs(tend);
-  if (tdelta == DNULL) tdelta = (double)1.0;
+  if (tdelta == DZERO) tdelta = fabs(tend);
+  if (tdelta == DZERO) tdelta = (double)1.0;
 
   /* Initiate variables.  */
 
@@ -158,7 +158,7 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
 
 	  /*    Test if top point */
 
-	  if (tder1>=DNULL && tder2<=DNULL) break;
+	  if (tder1>=DZERO && tder2<=DZERO) break;
 
 	  /*    Not a top point */
 	}
@@ -180,7 +180,7 @@ void s1252(pcurve,aepsge,astart,cpos,jstat)
 
         tdist = sval[0];
         if (fabs(tdist) < (double)1.0) ref = (double)2.0;
-	else                           ref = DNULL;
+	else                           ref = DZERO;
 
         if (tdist >= tprev || DEQUAL(ref+tdist,ref+tprev))
 	{
@@ -396,20 +396,20 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
   tmax  = max(fabs(t1),fabs(t2));
   tmax  = max(fabs(t3),tmax);
 
-  if (DEQUAL(tmax,DNULL))                    *cdiff = DNULL;
+  if (DEQUAL(tmax,DZERO))                    *cdiff = DZERO;
   else if (fabs(t3)/tmax < ttol) /* The second degree part is degenerated. */
 	{
-          if (fabs(t2) == DNULL )      *cdiff = DNULL;
+          if (fabs(t2) == DZERO )      *cdiff = DZERO;
 	  else                        *cdiff = (-t1/t2);
 	}
   else
 	{
           /* An ordinary second degree equation.    */
 	   t4 = t2*t2 - (double)4*t3*t1;
-	   if (t4 < DNULL)
+	   if (t4 < DZERO)
 	    {
 	      /* Use linear equation. */
-	      if (fabs(t2) == DNULL )      *cdiff = DNULL;
+	      if (fabs(t2) == DZERO )      *cdiff = DZERO;
               else                        *cdiff = (-t1/t2);
       	    }
 
@@ -423,10 +423,10 @@ static void s1252_s6dir(cdiff,acoef,eval,astart,aend)
                /* We have two solutions and we want to use the one
 	          with the one with smallest value. */
 
-               if (t4 == DNULL)
+               if (t4 == DZERO)
                 {
 	          /* Use linear equation. */
-	          if (fabs(t2) == DNULL )      *cdiff = DNULL;
+	          if (fabs(t2) == DZERO )      *cdiff = DZERO;
                   else                        *cdiff = (-t1/t2);
 	        }
                else if (fabs(t5) <= fabs(t6))  *cdiff = t5;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1900.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1900.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -99,13 +99,13 @@ s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
   int kright = 1;		/* One equation system to solve in interpolation. */
   int knlr = 0;			/* Indicates shape of interpolation matrix.     */
   int knrc = 0;			/* Indicates shape of interpolation matrix.     */
-  double *scoef = NULL;		/* Coefficients of curve.                          */
-  int *ltype = NULL;		/* Type of accepted interpolation conditions.   */
-  double *scond = NULL;		/* Array containing interpolation conditions.   */
-  double *lpar = NULL;		/* Array containing new parameter valued. */
-  int *sder = NULL;		/* Vector of derivative indicators.                */
-  SISLCurve *qc = NULL;		/* Interpolation curve.                */
-  SISLCurve *qc2 = NULL;	/* Interpolation curve. */
+  double *scoef = SISL_NULL;		/* Coefficients of curve.                          */
+  int *ltype = SISL_NULL;		/* Type of accepted interpolation conditions.   */
+  double *scond = SISL_NULL;		/* Array containing interpolation conditions.   */
+  double *lpar = SISL_NULL;		/* Array containing new parameter valued. */
+  int *sder = SISL_NULL;		/* Vector of derivative indicators.                */
+  SISLCurve *qc = SISL_NULL;		/* Interpolation curve.                */
+  SISLCurve *qc2 = SISL_NULL;	/* Interpolation curve. */
 
   *jstat = 0;
 
@@ -117,7 +117,7 @@ s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
 
   /* Allocate scratch for derivative indicator. */
 
-  if ((sder = newarray (knpt, INT)) == NULL)
+  if ((sder = newarray (knpt, INT)) == SISL_NULL)
     goto err101;
 
   for (ki = 0; ki < knpt; ki++)
@@ -142,7 +142,7 @@ s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
   /* Express the curve as a curve object.  */
 
   qc = newCurve (kn, kordr, knots, scoef, 1, idim, 1);
-  if (qc == NULL) goto err101;
+  if (qc == SISL_NULL) goto err101;
 
   if (!(iopen == SISL_CRV_OPEN))
     {
@@ -152,7 +152,7 @@ s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
       s1713 (qc, knots[kordr - 1], knots[kn], &qc2, &kstat);
       if (kstat < 0) goto error;
 
-      if (qc != NULL) freeCurve (qc);
+      if (qc != SISL_NULL) freeCurve (qc);
       qc = qc2;
     }
 
@@ -160,10 +160,10 @@ s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
     {
       /* The order of the curve is less than expected. Increase the order. */
 
-      qc2 = NULL;
+      qc2 = SISL_NULL;
       s1750 (qc, ik, &qc2, &kstat);
       if (kstat < 0) goto error;
-      if (qc != NULL) freeCurve (qc);
+      if (qc != SISL_NULL) freeCurve (qc);
       qc = qc2;
     }
 
@@ -207,10 +207,10 @@ s1900 (param, knots, econd, ntype, inpt, ik, idim, iopen,
 out:
   /* Free scratch occupied by local arrays. */
 
-  if (scond != NULL)    freearray (scond);
-  if (scoef != NULL)    freearray (scoef);
-  if (sder != NULL)     freearray (sder);
-  if (ltype != NULL)    freearray (ltype);
+  if (scond != SISL_NULL)    freearray (scond);
+  if (scoef != SISL_NULL)    freearray (scoef);
+  if (sder != SISL_NULL)     freearray (sder);
+  if (ltype != SISL_NULL)    freearray (ltype);
 
   return;
 }

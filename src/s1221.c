@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1221.c,v 1.2 1994-12-02 13:11:50 pfu Exp $
+ * $Id: s1221.c,v 1.3 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -155,14 +155,14 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
 			 second B-spline coefficient and so on.          */
   double tt;          /* Dummy variable used for holding an array element
 			 in a for loop.                                  */
-  double *ebder=NULL; /* Pointer to an array of dimension [kk*(ider+1)]
+  double *ebder=SISL_NULL; /* Pointer to an array of dimension [kk*(ider+1)]
 		       which will contain the values and ider first derivatives
 			 of the kk nonzero B-splines at ax.
 			 These are stored in the following order:
 			 First the value, 1. derivative etc. of the
 			 first nonzero B-spline, then the same for the
 			 second nonzero B-spline and so on.              */
-  double *sder=NULL;  /* Pointer to array used for storage of points, if
+  double *sder=SISL_NULL;  /* Pointer to array used for storage of points, if
 			 non rational sder points to eder, if rational sder
 			 has to be allocated to make room for the homogenous
 			 coordinate */
@@ -180,7 +180,7 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
       scoef = pc1 -> rcoef;
       kdim +=1;
       sder = newarray(kdim*(ider+1),DOUBLE);
-      if (sder==NULL) goto err101;
+      if (sder==SISL_NULL) goto err101;
     }
   else
     {
@@ -208,11 +208,11 @@ void s1221(pc1,ider,ax,ileft,eder,jstat)
   /* Allocate space for B-spline values and derivatives. */
 
   ebder = newarray(kk*(kder+1),double);
-  if (ebder == NULL) goto err101;
+  if (ebder == SISL_NULL) goto err101;
 
   /* Set all the elements of sder to 0. */
 
-  for (ki=0; ki<(ider+1)*kdim; ki++) sder[ki] = DNULL;
+  for (ki=0; ki<(ider+1)*kdim; ki++) sder[ki] = DZERO;
 
   /* Compute the values and derivatives of the nonzero B-splines and
      update ileft if necessary.                                      */

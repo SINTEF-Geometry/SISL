@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1953.c,v 1.2 1994-08-31 10:36:35 pfu Exp $
+ * $Id: s1953.c,v 1.3 2001-03-19 15:58:57 afr Exp $
  *
  */
 
@@ -97,8 +97,8 @@ void s1953(pcurve,epoint,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   double tradius = 0;       /* Radius of circel/sphere describing point. */
   double tdir = -1;         /* Direction of extremal value.              */
   double sarray[16];        /* Matrix describing circel/sphere.          */
-  SISLCurve *qc = NULL;     /* Curve of which to find extremal points.   */
-  SISLCurve *qkreg = NULL;  /* Input curve with ensured k-regular basis. */
+  SISLCurve *qc = SISL_NULL;     /* Curve of which to find extremal points.   */
+  SISLCurve *qkreg = SISL_NULL;  /* Input curve with ensured k-regular basis. */
   int ratflag = 0;          /* Flag to indicate if curve is rational.    */
   int ki;                   /* Counter.                                  */
 

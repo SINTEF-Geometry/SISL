@@ -147,7 +147,7 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
   double det;
   double c_d[2];	    /* Computed distances ....			   */
   double nc_d[2];	    /* New computed distances ....		   */
-  double *c1=NULL;          /* Value  of first curve.			   */
+  double *c1=SISL_NULL;          /* Value  of first curve.			   */
   double *c1_t;		    /* First derivatiev of curve.		   */
   double *c1_tt;	    /* Second derivatiev of curve.		   */
   double *c2;               /* Value of second curve.   		   */
@@ -179,7 +179,7 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
     if (dim > 3)
   {
      c1 = newarray(10*dim,double);
-     if (c1 == NULL) goto err101;
+     if (c1 == SISL_NULL) goto err101;
   }
   else
      c1 = local;
@@ -243,8 +243,8 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
   d[1] = c_d[1];
   norm_1[0] = -c1_t[1]; norm_1[1] = c1_t[0];
   norm[0]   = -c2_t[1]; norm[1]   = c2_t[0];
-  g_up = (s6scpr(diff,norm,dim) >= DNULL) ? 1 : -1;
-  g_up += ((s6scpr(diff,norm_1,dim) >= DNULL) ? 10 : -10);
+  g_up = (s6scpr(diff,norm,dim) >= DZERO) ? 1 : -1;
+  g_up += ((s6scpr(diff,norm_1,dim) >= DZERO) ? 10 : -10);
   s1770_2D_s9corr(d,par_val,astart1,aend1,astart2,aend2,&corr);
 
   prev_dist = dist;
@@ -290,11 +290,11 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	   norm_1[0] = -c1_t[1]; norm_1[1] = c1_t[0];
 	   norm[0]   = -c2_t[1]; norm[1]   = c2_t[0];
 
-	   ng_up = (s6scpr(diff,norm,dim) >= DNULL) ? 1 : -1;
-	   ng_up += ((s6scpr(diff,norm_1,dim) >= DNULL) ? 10 : -10);
+	   ng_up = (s6scpr(diff,norm,dim) >= DZERO) ? 1 : -1;
+	   ng_up += ((s6scpr(diff,norm_1,dim) >= DZERO) ? 10 : -10);
 	   g_dir = (ng_up+g_up != 0);			/* 0 if changed. */
-	   p_dir = (c_d[0]*nc_d[0] >= DNULL &&
-		    c_d[1]*nc_d[1] >= DNULL);		/* 0 if changed. */
+	   p_dir = (c_d[0]*nc_d[0] >= DZERO &&
+		    c_d[1]*nc_d[1] >= DZERO);		/* 0 if changed. */
 
 	   if (!order && g_dir && (!p_dir || dist > 0.4*prev_dist)
 							&& !keep_order)
@@ -451,7 +451,7 @@ not_singular:
   goto out;
 
  out:
-    if (c1 != local && c1 != NULL) freearray(c1);
+    if (c1 != local && c1 != SISL_NULL) freearray(c1);
 
     return;
 }
@@ -806,7 +806,7 @@ static void s1770_2D_s6sekant1(pcurve1,pcurve2,par_val,delta,dist,aepsge,
   double new_cu_val;	    /* New parameter value on curve.		   */
   double *diff;		    /* Difference vector between curve surface.    */
   double y[2],new_y,delta_y;/* Signed distance.				   */
-  SISLPoint *pt=NULL;	    /* Point for use in closest point point/surface*/
+  SISLPoint *pt=SISL_NULL;	    /* Point for use in closest point point/surface*/
   int cu1_left = 0;	    /* Keep left knot information for evaluator.   */
   int cu2_left = 0;	    /* Keep left knot information for evaluator.   */
   int shift = 0;	    /* Mark that the diriction have been changed.  */
@@ -819,7 +819,7 @@ static void s1770_2D_s6sekant1(pcurve1,pcurve2,par_val,delta,dist,aepsge,
   dim = pcurve1->idim;
   diff = c1 + dim;
 
-  if ((pt = newPoint(c1,dim,0)) == NULL) goto err101;
+  if ((pt = newPoint(c1,dim,0)) == SISL_NULL) goto err101;
 
   if (delta == 0.0) delta =1e-15;
 

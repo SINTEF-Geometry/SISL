@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1385.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1385.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -93,19 +93,19 @@ void s1385(ep0,ept,ep1,as,idim,aepsge,rc,jstat)
   int kstat;             /* Local status variable                  */
   int ki;                /* Lopp variable                          */
   double tdum;           /* Homogenous coordinate                  */
-  double toffset=DNULL;  /* Approximation is with zero offset      */
+  double toffset=DZERO;  /* Approximation is with zero offset      */
   double tmax;           /* Maximal step length                    */
   double st[6];          /* Knots                                  */
-  double *scoef=NULL;    /* Vertices                               */
-  double *sdum=NULL;     /* Dummy normal vector                    */
-  SISLCurve *qc=NULL;        /* Pointer to rational description of conic */
+  double *scoef=SISL_NULL;    /* Vertices                               */
+  double *sdum=SISL_NULL;     /* Dummy normal vector                    */
+  SISLCurve *qc=SISL_NULL;        /* Pointer to rational description of conic */
   
   /* Allocate scrath for vertex vector */
   
   scoef = newarray((idim+1)*3,DOUBLE);
-  if (scoef==NULL) goto err101;
+  if (scoef==SISL_NULL) goto err101;
   sdum  = new0array(idim,DOUBLE);
-  if (sdum == NULL) goto err101;
+  if (sdum == SISL_NULL) goto err101;
   
   if (as>=(double)1.0) as = (double)0.9999999;
   memcopy(scoef,ep0,idim,DOUBLE);
@@ -114,7 +114,7 @@ void s1385(ep0,ept,ep1,as,idim,aepsge,rc,jstat)
   scoef[2*idim+1] = tdum;
   for (ki=0;ki<idim;ki++)
     {
-      if (DEQUAL(tdum,DNULL))
+      if (DEQUAL(tdum,DZERO))
         {
 	  scoef[idim+1+ki] = ept[ki];
         }
@@ -127,7 +127,7 @@ void s1385(ep0,ept,ep1,as,idim,aepsge,rc,jstat)
   memcopy(scoef+2*idim+2,ep1,idim,DOUBLE);
   scoef[3*idim+2] = (double)1.0;
   
-  st[0] = DNULL;
+  st[0] = DZERO;
   st[1] = st[0];                                                     
   st[2] = st[0];
   st[3] = (double)1.0;
@@ -135,7 +135,7 @@ void s1385(ep0,ept,ep1,as,idim,aepsge,rc,jstat)
   st[5] = st[4];
   
   qc = newCurve(kn,kk,st,scoef,kind,idim,1);
-  if (qc == NULL) goto err101;
+  if (qc == SISL_NULL) goto err101;
   
   /* Convert to spline representation */
   
@@ -164,9 +164,9 @@ void s1385(ep0,ept,ep1,as,idim,aepsge,rc,jstat)
   /* Free allocated arrays */
  out:
   
-  if (scoef != NULL) freearray(scoef);
-  if (sdum  != NULL) freearray(sdum);
-  if (qc    != NULL) freeCurve(qc);
+  if (scoef != SISL_NULL) freearray(scoef);
+  if (sdum  != SISL_NULL) freearray(sdum);
+  if (qc    != SISL_NULL) freeCurve(qc);
   
   return;
 }

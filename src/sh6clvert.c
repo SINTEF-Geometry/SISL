@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6clvert.c,v 1.1 1998-01-23 15:00:26 jka Exp $
+ * $Id: sh6clvert.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 #define SH6CLOSEVERT
@@ -98,15 +98,15 @@ void sh6closevert(pcurve,psurf,cpar1,epar2)
 
   /* Estimate parameter values of vertices.  */
 
-  for (ki=kminc+1, s1=pcurve->et+ki, tpar=DNULL;
+  for (ki=kminc+1, s1=pcurve->et+ki, tpar=DZERO;
    ki<kminc+kk; tpar+=(*s1), s1++, ki++);
   *cpar1 = tpar/(double)(kk-1);
 
-  for (ki=kmins1+1, s1=psurf->et1+ki, tpar=DNULL;
+  for (ki=kmins1+1, s1=psurf->et1+ki, tpar=DZERO;
    ki<kmins1+kk1; tpar+=(*s1), s1++, ki++);
   epar2[0] = tpar/(double)(kk1-1);
 
-  for (ki=kmins2+1, s1=psurf->et2+ki, tpar=DNULL;
+  for (ki=kmins2+1, s1=psurf->et2+ki, tpar=DZERO;
    ki<kmins2+kk2; tpar+=(*s1), s1++, ki++);
   epar2[1] = tpar/(double)(kk2-1);
 

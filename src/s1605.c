@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1605.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1605.c,v 1.2 2001-03-19 15:58:51 afr Exp $
  *
  */
 
@@ -117,12 +117,12 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
   double tb;               /* End value of parameter interval.            */
   double th;               /* Distance between output parameter values.   */
   double *st;              /* Pointer to knot vector of curve.            */
-  double *par = NULL;      /* Array used to store parameter values.       */
-  double *sh  = NULL;      /* Work array.    */
-  double *sh1 = NULL;      /* Work array.    */
-  double *sdd = NULL;      /* Work array used to compute divided differences. */
-  double *sdd2 = NULL;     /* Array used to store final divided differences.  */
-  double *smaxd = NULL;    /* Array used to store maximum divided differences.*/
+  double *par = SISL_NULL;      /* Array used to store parameter values.       */
+  double *sh  = SISL_NULL;      /* Work array.    */
+  double *sh1 = SISL_NULL;      /* Work array.    */
+  double *sdd = SISL_NULL;      /* Work array used to compute divided differences. */
+  double *sdd2 = SISL_NULL;     /* Array used to store final divided differences.  */
+  double *smaxd = SISL_NULL;    /* Array used to store maximum divided differences.*/
   
   /* Test input.  */
   
@@ -133,7 +133,7 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
   if (korder == 1)
     {
       kpar = kncoef;
-      if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == NULL) goto err101;
+      if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == SISL_NULL) goto err101;
       memcopy(gpoint,pc->ecoef,kpar*kdim,DOUBLE);
       *jnbpnt = kpar;
       *jstat = 0;
@@ -147,11 +147,11 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
   
   /* Allocate some scratch for output array.  */
   
-  if ((par = newarray(knmbel,DOUBLE)) == NULL) goto err101;
+  if ((par = newarray(knmbel,DOUBLE)) == SISL_NULL) goto err101;
   
   /* Allocate scratch for internal arrays.  */
   
-  if ((sdd = new0array((kordnew+6)*kdim,DOUBLE)) == NULL) goto err101;
+  if ((sdd = new0array((kordnew+6)*kdim,DOUBLE)) == SISL_NULL) goto err101;
   sdd2 = sdd+3*kdim;
   smaxd = sdd2+kordnew*kdim;
   sh = smaxd+kdim;
@@ -187,7 +187,7 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
 	{
 	  if (kpar+1 > kmaxpar)
 	    if ((par = increasearray(par,(kmaxpar+=knmbel),DOUBLE)) 
-		== NULL) goto err101;
+		== SISL_NULL) goto err101;
 	  par[kpar] = ta;
 	  kpar++;
 	}
@@ -256,7 +256,7 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
       
       if (kpar+kant >= kmaxpar)
 	if ((par = increasearray(par,(kmaxpar+=MAX(kant,knmbel)),DOUBLE)) 
-	    == NULL) goto err101;
+	    == SISL_NULL) goto err101;
       
       /* Compute the parameter values of the interpolation points.  */
       
@@ -268,7 +268,7 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
   
   /* Make the points.  */
   
-  if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == NULL) goto err101;
+  if ((*gpoint = newarray(kpar*kdim,DOUBLE)) == SISL_NULL) goto err101;
   
   for (kh=kk=0; kk<kpar; kk++,kh+=kdim)
     {
@@ -314,8 +314,8 @@ void s1605(pc,aepsge,gpoint,jnbpnt,jstat)
   out :
     /* Free scratch occupied by local arrays.  */
     
-    if (sdd != NULL) freearray(sdd);
-    if (par != NULL) freearray(par);
+    if (sdd != SISL_NULL) freearray(sdd);
+    if (par != SISL_NULL) freearray(par);
 }
 
 

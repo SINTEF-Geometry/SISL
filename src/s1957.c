@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1957.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1957.c,v 1.2 2001-03-19 15:58:57 afr Exp $
  *
  */
 
@@ -94,7 +94,7 @@ void s1957(pcurve,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   double clspt[3];          /* Coeffs of closest point of the curve.     */
   double enext;             /* Initial guess for iteration               */
   double estart,eend;       /* Parameter area for Newton iteration.      */
-  double *et=NULL;          /* Knot vector.                              */
+  double *et=SISL_NULL;          /* Knot vector.                              */
   int ik;                   /* Order of curve.                           */
   int in;                   /* Number of control points of curve.        */
   int kleft=0;              /* Dummy used in evualation.                 */
@@ -102,7 +102,7 @@ void s1957(pcurve,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   int kpos = 0;             /* Error position.                           */
   double gpos;              /* Parameter of closest point on curve.      */
   double clgpar;            /* Parameter of current closest point.       */
-  SISLPoint *ppoint = NULL; /* epoint in SISLPoint form.                 */
+  SISLPoint *ppoint = SISL_NULL; /* epoint in SISLPoint form.                 */
   
   /* Test input.  */
   
@@ -147,7 +147,7 @@ void s1957(pcurve,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   /* Now try the interior of the curve. */
 
   ppoint = newPoint(epoint,idim,1);
-  if(ppoint == NULL) goto err101;
+  if(ppoint == SISL_NULL) goto err101;
 
   /* Find a good guess point based on finding the closest control
      point and its corresponding parameter values. */
@@ -216,7 +216,7 @@ void s1957(pcurve,epoint,idim,aepsco,aepsge,gpar,dist,jstat)
   
   /* Free allocated space.  */
   
-  if (ppoint != NULL) freePoint(ppoint);
+  if (ppoint != SISL_NULL) freePoint(ppoint);
   
   return;
 }                                               

@@ -105,9 +105,9 @@ void s1356(epoint,inbpnt,idim,nptyp,icnsta,icnend,iopen,ik,astpar,
 {
   int kpos = 0;
   int kstat = 0;
-  int *ltype = NULL;		/* The kind of interpolation conditions. */
+  int *ltype = SISL_NULL;		/* The kind of interpolation conditions. */
   int knpt;			/* Number of acepted interpolation conditions. */
-  double *lcond = NULL;		/* The number of acepted interpolation conditions. */
+  double *lcond = SISL_NULL;		/* The number of acepted interpolation conditions. */
 
   *jstat = 0;
 
@@ -138,9 +138,9 @@ void s1356(epoint,inbpnt,idim,nptyp,icnsta,icnend,iopen,ik,astpar,
   goto out;
   
  out:
-  if (ltype != NULL)
+  if (ltype != SISL_NULL)
     freearray (ltype);
-  if (lcond != NULL)
+  if (lcond != SISL_NULL)
     freearray (lcond);
     
   return;

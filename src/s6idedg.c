@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6idedg.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6idedg.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -86,16 +86,16 @@ void s6idedg(po1,po2,iobj,ipar,apar,pintdat,rptedge,jnum,jstat)
   int kpar=0;                /* Numper of parameter direction second obj.*/
   int ki,kj;                 /* Counters                                 */
   double sstart[4],send[4];  /* Parameter boarders on the other obj.     */
-  SISLPtedge *pte = NULL;    /* Pointers to new ptedge.                  */
+  SISLPtedge *pte = SISL_NULL;    /* Pointers to new ptedge.                  */
   
   /* Initiate to emty list. */
   
-  *rptedge = NULL;  
+  *rptedge = SISL_NULL;  
   *jstat = 0;
   
   /* We have to be sure that we have an intdat structure. */
   
-  if (pintdat == NULL) goto out;
+  if (pintdat == SISL_NULL) goto out;
   
   /* Uppdate parameter boarder. */
   
@@ -188,10 +188,10 @@ void s6idedg(po1,po2,iobj,ipar,apar,pintdat,rptedge,jnum,jstat)
 	else
 	  goto end;
       
-      if (pte == NULL)
+      if (pte == SISL_NULL)
         {
 	  pte = newPtedge(pintdat->vpoint[ki]);
-	  if (pte == NULL) goto err101;
+	  if (pte == SISL_NULL) goto err101;
 	  
 	  (*rptedge) = pte;
 	  
@@ -200,7 +200,7 @@ void s6idedg(po1,po2,iobj,ipar,apar,pintdat,rptedge,jnum,jstat)
       else
         {
 	  pte->pnext = newPtedge(pintdat->vpoint[ki]);
-	  if (pte->pnext == NULL) goto err101;
+	  if (pte->pnext == SISL_NULL) goto err101;
 	  
 	  pte = pte->pnext;
 	  

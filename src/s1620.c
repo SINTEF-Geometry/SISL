@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1620.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1620.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -92,14 +92,14 @@ void s1620(epoint,inbpnt1,inbpnt2,ipar,
   int idimm1, idimm2, kpek;
   int kopen1, kopen2; /* Local open/closed parameter. Closed,
 			 non-periodic is treated as an open curve.       */
-  double *par1=NULL;  /* Pointer to parameterization array in first
+  double *par1=SISL_NULL;  /* Pointer to parameterization array in first
 		       * direction. */
-  double *par2=NULL;  /* Pointer to parameterization array in second
+  double *par2=SISL_NULL;  /* Pointer to parameterization array in second
 		       * direction. */
-  double *scoef=NULL; /* Pointer to vertex array                         */
-  double *knot1=NULL; /* Pointer to knot vector in first par. direction  */
-  double *knot2=NULL; /* Pointer to knot vector in second par. direction */
-  SISLSurf *qs=NULL;
+  double *scoef=SISL_NULL; /* Pointer to vertex array                         */
+  double *knot1=SISL_NULL; /* Pointer to knot vector in first par. direction  */
+  double *knot2=SISL_NULL; /* Pointer to knot vector in second par. direction */
+  SISLSurf *qs=SISL_NULL;
   
   /* Set local open/closed parameter. */
   
@@ -125,17 +125,17 @@ void s1620(epoint,inbpnt1,inbpnt2,ipar,
   /* Find knot vector in first parameter direction */
 
   s1902(par1,inbpnt1+(iopen1==SISL_CRV_CLOSED),kk1,kopen1,&knot1,&kstat);
-  if (kstat < 0 || knot1 == NULL) goto error;
+  if (kstat < 0 || knot1 == SISL_NULL) goto error;
 
   /* Find knot vector in second parameter direction */
 
   s1902(par2,inbpnt2+(iopen2==SISL_CRV_CLOSED),kk2,kopen2,&knot2,&kstat);
-  if (kstat < 0 || knot2 == NULL) goto error;
+  if (kstat < 0 || knot2 == SISL_NULL) goto error;
   
   /* Allocate space for vertice array   */
   
   scoef = newarray((inbpnt1+kk1-1)*(inbpnt2+kk2-1)*idim,DOUBLE);
-  if (scoef == NULL) goto err101;
+  if (scoef == SISL_NULL) goto err101;
   
   /* Check if closed surface in first direction. If closed, add the 
      (ik-1) first points to the vertice array for each j=1..inbpnt2. */
@@ -210,7 +210,7 @@ void s1620(epoint,inbpnt1,inbpnt2,ipar,
       if (kstat< 0) goto error;
     }
   
-  if (qs != NULL) *rs = qs;
+  if (qs != SISL_NULL) *rs = qs;
   *jstat = 0;
   goto out;
   
@@ -236,11 +236,11 @@ void s1620(epoint,inbpnt1,inbpnt2,ipar,
     goto out;
   
   out:
-    if (knot1 != NULL) freearray(knot1);
-    if (knot2 != NULL) freearray(knot2);
-    if (par1  != NULL) freearray(par1);
-    if (par2  != NULL) freearray(par2);
-    if (scoef != NULL) freearray(scoef);
+    if (knot1 != SISL_NULL) freearray(knot1);
+    if (knot2 != SISL_NULL) freearray(knot2);
+    if (par1  != SISL_NULL) freearray(par1);
+    if (par2  != SISL_NULL) freearray(par2);
+    if (scoef != SISL_NULL) freearray(scoef);
     return;
 }    
 

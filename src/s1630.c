@@ -84,13 +84,13 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   int kopen;          /* Local open/closed parameter. Closed,
 			 non-periodic is treated as an open curve.       */
 
-  double *spara=NULL; /* Pointer to parameterization array               */
-  double *scoef=NULL; /* Pointer to vertex array                         */
-  double *sknot=NULL; /* Pointer to knot vector                          */
+  double *spara=SISL_NULL; /* Pointer to parameterization array               */
+  double *scoef=SISL_NULL; /* Pointer to vertex array                         */
+  double *sknot=SISL_NULL; /* Pointer to knot vector                          */
   double tdist;       /* Distance */
   double tlastpar;    /* Last value in the parameterization array        */
-  SISLCurve *qc=NULL;
-  SISLCurve *qc2 = NULL;
+  SISLCurve *qc=SISL_NULL;
+  SISLCurve *qc2 = SISL_NULL;
 
   /* Set local open/closed parameter. */
 
@@ -111,7 +111,7 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   /* Allocate space for parameterization    */
 
   spara = newarray(inbpnt+1,DOUBLE);
-  if (spara == NULL) goto err101;
+  if (spara == SISL_NULL) goto err101;
 
   /* Calculate parameterization  */
 
@@ -137,12 +137,12 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   /* Find the knot vector     */
 
   s1902(spara,inbpnt+(iopen==SISL_CRV_CLOSED),kk,kopen,&sknot,&kstat);
-  if (kstat < 0 || sknot == NULL) goto error;
+  if (kstat < 0 || sknot == SISL_NULL) goto error;
 
   /* Allocate space for verice array   */
 
   scoef = newarray((inbpnt+kk-1)*idim,DOUBLE);
-  if (scoef == NULL) goto err101;
+  if (scoef == SISL_NULL) goto err101;
 
   /* Copy vertices */
 
@@ -188,7 +188,7 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   else
     {
       *rc = qc;
-      qc = NULL;
+      qc = SISL_NULL;
     }
 				/* <- guen: inserted acc. to SCCS */
 				/* -> guen: removed acc. to SCCS  */
@@ -228,8 +228,8 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   goto out;
 
  out:
-  if (spara  != NULL) freearray(spara);
-  /* if (scoef  != NULL) freearray(scoef); (Freed by freeCurve(qc). */
-  if (qc != NULL) freeCurve(qc);
+  if (spara  != SISL_NULL) freearray(spara);
+  /* if (scoef  != SISL_NULL) freearray(scoef); (Freed by freeCurve(qc). */
+  if (qc != SISL_NULL) freeCurve(qc);
   return;
 }

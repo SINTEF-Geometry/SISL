@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1422.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1422.c,v 1.2 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -131,7 +131,7 @@ void s1422(ps1,ider,iside1,iside2,epar,ilfs,ilft,eder,enorm,jstat)
   
   /* Allocate array for storage of ider*ider derivatives */
   
-  sp = NULL;
+  sp = SISL_NULL;
   kdim = ps1 -> idim;
   knumb = kdim*(ider+1)*(ider+1);
   
@@ -142,7 +142,7 @@ void s1422(ps1,ider,iside1,iside2,epar,ilfs,ilft,eder,enorm,jstat)
   else
     sp = &sdum[0];
   
-  if (sp == NULL) goto err101;
+  if (sp == SISL_NULL) goto err101;
   
   
   /* Evaluate s1422surface.  */
@@ -181,10 +181,10 @@ void s1422(ps1,ider,iside1,iside2,epar,ilfs,ilft,eder,enorm,jstat)
       
       /*  Calculate angle between tangents */
       
-      if (tlen1 != DNULL && tlen2 != DNULL && tnorm != DNULL)
+      if (tlen1 != DZERO && tlen2 != DZERO && tnorm != DZERO)
         tang = tnorm/(tlen1*tlen2);
       
-      if (tang == DNULL) *jstat = 2;
+      if (tang == DZERO) *jstat = 2;
       else if (tang <= ANGULAR_TOLERANCE) *jstat = 1;   
       else *jstat = 0;
       goto out;
@@ -209,7 +209,7 @@ void s1422(ps1,ider,iside1,iside2,epar,ilfs,ilft,eder,enorm,jstat)
   /* Free allocated space (Space only allocated if sdum is too small) */
   
   if (knumb>48)
-    if (sp != NULL) freearray(sp);
+    if (sp != SISL_NULL) freearray(sp);
   
   return;
 }

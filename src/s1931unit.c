@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1931unit.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1931unit.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -78,23 +78,23 @@ void
   int kstat = 0;		/* Status variable.                         */
   int kpos = 0;			/* Position of error.                       */
   
-  SISLCurve **tmp_vpcrv = NULL;  /* Temporary array for curve pointers   */
-  SISLCurve *pcrv=NULL;
+  SISLCurve **tmp_vpcrv = SISL_NULL;  /* Temporary array for curve pointers   */
+  SISLCurve *pcrv=SISL_NULL;
 
   *jstat = 0;
 
   /* s1349 make all the curves k-regular, copy curves not to destroy cyclic bases */
   
   tmp_vpcrv = new0array(inbcrv, SISLCurve*);
-  if (tmp_vpcrv == NULL) goto err101;
+  if (tmp_vpcrv == SISL_NULL) goto err101;
     
   /* Copy all curves */
   for (ki=0 ; ki<inbcrv ; ki++)
     { 
-       pcrv = NULL;
+       pcrv = SISL_NULL;
        pcrv = newCurve(vpcrv[ki]->in,vpcrv[ki]->ik,vpcrv[ki]->et,vpcrv[ki]->ecoef,
 		       vpcrv[ki]->ikind,vpcrv[ki]->idim,1);
-       if (pcrv==NULL) goto err101;
+       if (pcrv==SISL_NULL) goto err101;
        tmp_vpcrv[ki] = pcrv;	       
     }  
 
@@ -130,14 +130,14 @@ void
   out:
     /* Release allocated curve pointer array and curves */
 
-    if (tmp_vpcrv != NULL)
+    if (tmp_vpcrv != SISL_NULL)
     {
       
       for (ki=0 ; ki<inbcrv ; ki++)
 	{
-	  if (tmp_vpcrv[ki] != NULL) freeCurve(tmp_vpcrv[ki]); 
+	  if (tmp_vpcrv[ki] != SISL_NULL) freeCurve(tmp_vpcrv[ki]); 
 	}
-      if (tmp_vpcrv != NULL) freearray(tmp_vpcrv);      
+      if (tmp_vpcrv != SISL_NULL) freearray(tmp_vpcrv);      
     }
  
     return;

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1787.c,v 1.2 1994-12-22 11:57:30 pfu Exp $
+ * $Id: sh1787.c,v 1.3 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -96,7 +96,7 @@ void
   SISLSurf *qs;		        /* Pointer to current surface.               */
   double *ret_val;		/* Pointer to geo data from sh6getgeom       */
   double *ret_norm;		/* Pointer to geo data from sh6getgeom       */
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int i;                        /* Loop variable.                            */
   double cross;                 /* utang x vtang.                            */
   double in_out[2];             /* To be used in touchy situations           */
@@ -200,8 +200,8 @@ void
 
     }
   else if (qs->pdir && qs->pdir->ecoef &&
-	   (DNEQUAL(qs->pdir->ecoef[0],DNULL) ||
-	    DNEQUAL(qs->pdir->ecoef[1],DNULL)))
+	   (DNEQUAL(qs->pdir->ecoef[0],DZERO) ||
+	    DNEQUAL(qs->pdir->ecoef[1],DZERO)))
     {
        /* March to find help points.
 	   Not implemented yet. */

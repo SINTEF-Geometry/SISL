@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1011.c,v 1.2 1994-11-16 10:23:57 pfu Exp $
+ * $Id: s1011.c,v 1.3 2001-03-19 15:58:40 afr Exp $
  *
  */
 
@@ -109,7 +109,7 @@ void s1011(start_pos, top_pos, end_pos, shape, dim, arc_seg, stat)
 
   for ( ki=0;  ki < ik;  ki++ )
   {
-    et[ki]      = DNULL;
+    et[ki]      = DZERO;
     et[ik + ki] = (DOUBLE)1.0;
   }
 
@@ -126,7 +126,7 @@ void s1011(start_pos, top_pos, end_pos, shape, dim, arc_seg, stat)
   rcoef[dim + 2*rdim] = (DOUBLE)1.0;
 
   (*arc_seg) = newCurve(in, ik, et, rcoef, kind, dim, 1);
-  if ((*arc_seg) == NULL) goto err101;
+  if ((*arc_seg) == SISL_NULL) goto err101;
 
   *stat = 0;
   goto out;

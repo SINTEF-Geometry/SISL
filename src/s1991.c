@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1991.c,v 1.2 1994-09-09 09:41:05 pfu Exp $
+ * $Id: s1991.c,v 1.3 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -85,7 +85,7 @@ void s1991(pc,aepsge,jstat)
   int kdim;	    /* Dimension of the space in which the objects lie.*/
   int kin;          /* The index to the vertice to treat.              */
   int k1,k2;        /* Control variables in loop.                      */
-  double *t=NULL;   /* Tangent at each coeficient.                     */
+  double *t=SISL_NULL;   /* Tangent at each coeficient.                     */
   double tlen;      /* The length of a vector.                         */
   double tang;	    /* An angle between two vectors.		       */
   double t1,t2;     /* Help variables.				       */
@@ -95,7 +95,7 @@ void s1991(pc,aepsge,jstat)
 
   /* Test if the surfaces already have been treated.  */
 
-  if (pc->pdir != NULL) goto out;
+  if (pc->pdir != SISL_NULL) goto out;
 
 
   /* Initialate dimentions. */
@@ -106,24 +106,24 @@ void s1991(pc,aepsge,jstat)
 
   /* Make a new direction cone. */
 
-  if ((pc->pdir = newdir(kdim))==NULL) goto err101;
+  if ((pc->pdir = newdir(kdim))==SISL_NULL) goto err101;
 
   /* UJK, Set default values in pdir. */
-  pc->pdir->aang = DNULL;
+  pc->pdir->aang = DZERO;
   pc->pdir->igtpi = 0;
   pc->pdir->ecoef[0] = (double) 1.0;
 
   for (k2 = 1;k2<kdim;k2++)
-    pc->pdir->ecoef[k2] = DNULL;
+    pc->pdir->ecoef[k2] = DZERO;
 
 
   /* Allocate local used array. */
 
-  if ((t = newarray(kdim,double)) == NULL) goto err101;
+  if ((t = newarray(kdim,double)) == SISL_NULL) goto err101;
 
   /* Allocate scratch for smoothed coefficients.  */
 
-  if ((pc->pdir->esmooth = newarray(kn*kdim,DOUBLE)) == NULL) goto err101;
+  if ((pc->pdir->esmooth = newarray(kn*kdim,DOUBLE)) == SISL_NULL) goto err101;
   scoef = pc->pdir->esmooth;
 
   /* Compute coefficients of smoothed curve.  */
@@ -142,7 +142,7 @@ void s1991(pc,aepsge,jstat)
 	 using the control polygon. The tangents is also normalized
 	 by deviding with its own length. */
 
-      for (tlen=DNULL,k1=0; k1 < kdim; k1++,k2++)
+      for (tlen=DZERO,k1=0; k1 < kdim; k1++,k2++)
 	{
 	  t[k1] = scoef[k2+kdim] - scoef[k2];
 	  tlen += t[k1]*t[k1];
@@ -176,7 +176,7 @@ void s1991(pc,aepsge,jstat)
 
 	  /* Computing the angle of the cone. */
 
-	  pc->pdir->aang = DNULL;
+	  pc->pdir->aang = DZERO;
 
 	  kfirst = 0;   /* The first tangent have been treated.*/
 	}
@@ -186,10 +186,10 @@ void s1991(pc,aepsge,jstat)
 	  /* Computing the angle beetween the senter of the cone
 	     and the tangent. */
 
-	  for (tang=DNULL,k1=0;k1<kdim;k1++)
+	  for (tang=DZERO,k1=0;k1<kdim;k1++)
 	    tang += pc->pdir->ecoef[k1]*t[k1];
 
-	  if (tang >= DNULL) tang = min((double)1.0,tang);
+	  if (tang >= DZERO) tang = min((double)1.0,tang);
 	  else               tang = max((double)-1.0,tang);
 
 	  tang = acos(tang);
@@ -212,7 +212,7 @@ void s1991(pc,aepsge,jstat)
 	      t1 = (tang - pc->pdir->aang)/((double)2*tang);
 	      t2 = (double)1 - t1;
 
-	      for (tlen=DNULL,k1=0; k1<kdim; k1++)
+	      for (tlen=DZERO,k1=0; k1<kdim; k1++)
 		{
 		  pc->pdir->ecoef[k1] =
 		    pc->pdir->ecoef[k1]*t2 + t[k1]*t1;
@@ -221,7 +221,7 @@ void s1991(pc,aepsge,jstat)
 		}
 	      tlen = sqrt(tlen);
 
-	      if (tlen > DNULL)
+	      if (tlen > DZERO)
 		for (k1=0; k1 < kdim; k1++)
 		  pc->pdir->ecoef[k1] /= tlen;
 	      else
@@ -268,7 +268,7 @@ void s1991(pc,aepsge,jstat)
   error : *jstat = kstat;
   goto out;
 
- out:    if (t != NULL) freearray(t);
+ out:    if (t != SISL_NULL) freearray(t);
 
 }
 
@@ -333,16 +333,16 @@ static void s1991_s9smooth(ecoef1,in,idim,aepsge,ecoef2,jstat)
    int kstat = 0;      /* Local status variable.            */
    int kn2 = in/2;     /* Half the number of coefficients.  */
    int ki;             /* Loop control.                     */
-   double *sdiff1=NULL;/* Diff vector                       */
-   double *sdiff2=NULL;/* Diff vector                       */
+   double *sdiff1=SISL_NULL;/* Diff vector                       */
+   double *sdiff2=SISL_NULL;/* Diff vector                       */
    double alfa,dnum;   /* Factor and denominator in expr.   */
    double tdist;       /* Distance between point and line.  */
    double *s1,*s2,*s3; /* Pointers into coefficient array.  */
    double *st1,*st2;   /* Stop pointers in loop.            */
 
    /* Alloc scratch for locals */
-   if ((sdiff1 = newarray(idim,DOUBLE)) == NULL) goto err101;
-   if ((sdiff2 = newarray(idim,DOUBLE)) == NULL) goto err101;
+   if ((sdiff1 = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
+   if ((sdiff2 = newarray(idim,DOUBLE)) == SISL_NULL) goto err101;
 
 
    /* Copy coefficient array to output array.  */
@@ -389,7 +389,7 @@ static void s1991_s9smooth(ecoef1,in,idim,aepsge,ecoef2,jstat)
 
       for (s3=s1+idim; s3<s2; s3+=idim)
       {
-	  if (dnum > DNULL)
+	  if (dnum > DZERO)
 	     {
 		s6diff(s2,s3,idim,sdiff2);
 		alfa = s6scpr(sdiff2,sdiff1,idim)/dnum;
@@ -440,7 +440,7 @@ static void s1991_s9smooth(ecoef1,in,idim,aepsge,ecoef2,jstat)
 
       for (s3=s1-idim; s3>s2; s3-=idim)
       {
-	  if (dnum > DNULL)
+	  if (dnum > DZERO)
 	     {
 		s6diff(s2,s3,idim,sdiff2);
 		alfa = s6scpr(sdiff2,sdiff1,idim)/dnum;

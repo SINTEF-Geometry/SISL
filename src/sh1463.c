@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1463.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1463.c,v 1.2 2001-03-19 15:59:04 afr Exp $
  *
  */
 
@@ -107,7 +107,7 @@ void sh1463(fshape,vboundc,icurv,etwist,etang,eder,jstat)
   double spar[2];    /* Parameter value of midpoint of rectanular patch. */
   double sder[18];   /* Value and derivatives of patch in the midpoint.  */
   double snorm[3];   /* Normal of patch in the midpoint.      */
-  SISLSurf *qsurf = NULL;  /* Rectangular blending patch.  */
+  SISLSurf *qsurf = SISL_NULL;  /* Rectangular blending patch.  */
   SISLCurve *qc[8];        /* Copy of edge curves.         */
   SISLCurve *qpt;          /* Pointer to curve.            */
 
@@ -122,7 +122,7 @@ void sh1463(fshape,vboundc,icurv,etwist,etang,eder,jstat)
       if (qpt->idim != kdim) goto err104;
       
       qc[ki] = newCurve(qpt->in,qpt->ik,qpt->et,qpt->ecoef,qpt->ikind,kdim,1);
-      if (qc[ki] == NULL) goto err101;
+      if (qc[ki] == SISL_NULL) goto err101;
     }
     
   /* Turn the orientation of the curves at the 3. and 4. edge. */
@@ -203,8 +203,8 @@ void sh1463(fshape,vboundc,icurv,etwist,etang,eder,jstat)
     /* Free space occupied by local curves and surface. */
 
     for (ki=0; ki<8; ki++)
-      if (qc[ki] != NULL) freeCurve(qc[ki]);
-  if (qsurf != NULL) freeSurf(qsurf);
+      if (qc[ki] != SISL_NULL) freeCurve(qc[ki]);
+  if (qsurf != SISL_NULL) freeSurf(qsurf);
   
     return;
 }

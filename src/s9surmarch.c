@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9surmarch.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s9surmarch.c,v 1.2 2001-03-19 15:59:03 afr Exp $
  *
  */
 
@@ -97,13 +97,13 @@ void s9surmarch(ps1,ps2,epar,ndir,ipoint,gpar,mpar,jpoint,jstat)
 {
   int kstat;            /* Status variable                             */
   int kpos=0;           /* Position of error                           */
-  int *lpar = NULL;     /* Pointer to output integer array             */
+  int *lpar = SISL_NULL;     /* Pointer to output integer array             */
   int ki,kj;
   int kn1,kn2,kk1,kk2;  /* Surface attributes.           */
   double tstart1,tstart2,tend1,tend2; /* Surface attributes.           */
   int ksucc;            /* Success indicator                           */
   double tepsge=1.0;    /* Not used                                    */
-  double *spar=NULL;    /* Pointer to output real array                */
+  double *spar=SISL_NULL;    /* Pointer to output real array                */
   double scand1[4];     /* Result of iteration process                 */
   double scand2[4];     /* Result of iteration process                 */
   double *sp,*sq;       /* Pointer used in loop                        */
@@ -143,8 +143,8 @@ void s9surmarch(ps1,ps2,epar,ndir,ipoint,gpar,mpar,jpoint,jstat)
 
   /* Allocate output arrays */
   
-  if ((*mpar=newarray(2*ipoint,INT     )) == NULL) goto err101;
-  if ((*gpar=newarray(8*ipoint,DOUBLE)) == NULL) goto err101;
+  if ((*mpar=newarray(2*ipoint,INT     )) == SISL_NULL) goto err101;
+  if ((*gpar=newarray(8*ipoint,DOUBLE)) == SISL_NULL) goto err101;
   
   lpar = *mpar;
   spar = *gpar;

@@ -89,7 +89,7 @@ void s2559( curve, ax, num_ax, p, t, n, b, jstat )
   int kstat = 0;              /* local status variable               */
   int kpos = 0;               /* local error position                */
   int leftknot = 0;           /* Knot index                          */
-  double *derive = NULL;      /* Derivatives                         */
+  double *derive = SISL_NULL;      /* Derivatives                         */
 
 
 
@@ -97,7 +97,7 @@ void s2559( curve, ax, num_ax, p, t, n, b, jstat )
 
   derive = newarray( 3*curve->idim, DOUBLE );
 
-  if ( derive == NULL )      goto err101;
+  if ( derive == SISL_NULL )      goto err101;
 
 
   /* Evaluate the Frenet Frame in all ax[i] positions. */
@@ -136,7 +136,7 @@ void s2559( curve, ax, num_ax, p, t, n, b, jstat )
  out:
   /* Free local arrays */
 
- if ( derive != NULL ) freearray( derive );
+ if ( derive != SISL_NULL ) freearray( derive );
 
  return;
 

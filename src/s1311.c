@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1311.c,v 1.2 1994-12-07 11:44:57 pfu Exp $
+ * $Id: s1311.c,v 1.3 2001-03-19 15:58:44 afr Exp $
  *
  */
 
@@ -76,11 +76,11 @@ double s1311(arad,aepsge,amax,jstat)
   double t1sixth;           /* The value of 1/6                  */
   double talfa;             /* Angle                             */
 
-  if (amax < DNULL) goto err177;
+  if (amax < DZERO) goto err177;
 
-  if (aepsge < DNULL) goto err120;
+  if (aepsge < DZERO) goto err120;
 
-  if (arad > DNULL)
+  if (arad > DZERO)
     {
       t1sixth = (double)1.0/(double)6.0;
       /*  Estimat the opening angle of the segments based on the error
@@ -92,7 +92,7 @@ double s1311(arad,aepsge,amax,jstat)
 
       tstep = MIN(fabs(talfa*arad),fabs(arad/(double)2.0));
     }
-  else if (DEQUAL(arad,DNULL))
+  else if (DEQUAL(arad,DZERO))
     {
       /*  Radius of curvature is zero */
       tstep = (double)100.0*aepsge;
@@ -104,7 +104,7 @@ double s1311(arad,aepsge,amax,jstat)
       tstep = amax;
     }
 
-  if ( amax > DNULL && amax < tstep )
+  if ( amax > DZERO && amax < tstep )
     tstep = MAX(amax,aepsge);
 
   tstep = MAX(tstep,aepsge);

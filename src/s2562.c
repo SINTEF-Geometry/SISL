@@ -111,8 +111,8 @@ void s2562( curve, ax, num_ax, val_flag, p, t, n, b, val, jstat )
   int leftknot = 0;         /* Knot index                          */
   int kdim = curve -> idim; /* Dim. of the space in which the
 			       curve lies                          */
-  double *derive = NULL;    /* Derivatives                         */
-  double *egeo = NULL;      /* Array to store pos, tangent vector,
+  double *derive = SISL_NULL;    /* Derivatives                         */
+  double *egeo = SISL_NULL;      /* Array to store pos, tangent vector,
                                curvature vector and radius of
 			       curvature, used by s1307()          */
 
@@ -123,11 +123,11 @@ void s2562( curve, ax, num_ax, val_flag, p, t, n, b, val, jstat )
 
   derive = newarray( 4*kdim, DOUBLE );
 
-  if ( derive == NULL )      goto err101;
+  if ( derive == SISL_NULL )      goto err101;
 
   egeo = newarray( 3*kdim+1, DOUBLE );
 
-  if ( egeo == NULL )        goto err101;
+  if ( egeo == SISL_NULL )        goto err101;
 
 
   /* Evaluate in all ax[i] positions. */
@@ -197,8 +197,8 @@ void s2562( curve, ax, num_ax, val_flag, p, t, n, b, val, jstat )
 
  out:
   /* Free local arrays */
- if ( derive != NULL ) freearray( derive );
- if ( egeo   != NULL ) freearray( egeo   );
+ if ( derive != SISL_NULL ) freearray( derive );
+ if ( egeo   != SISL_NULL ) freearray( egeo   );
 
  return;
 

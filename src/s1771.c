@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1771.c,v 1.3 1995-08-10 08:57:00 jka Exp $
+ * $Id: s1771.c,v 1.4 2001-03-19 15:58:53 afr Exp $
  *
  */
 #define S1771
@@ -108,7 +108,7 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
   double td;             /* Distances between old and new parameter value in
 			    the two parameter directions.                    */
   double tprev;          /* Previous difference between the curves.          */
-  double *sval=NULL;     /* Value ,first and second derivatie on curve 1    */
+  double *sval=SISL_NULL;     /* Value ,first and second derivatie on curve 1    */
   double *sdiff;         /* Difference between the curves                    */
   int quick = (*jstat);  /* Indicates if the exactness requirement is
                             relaxed.                                         */
@@ -129,7 +129,7 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
   /* Allocate local used memory */
 
   sval = newarray(4*kdim,double);
-  if (sval == NULL) goto err101;
+  if (sval == SISL_NULL) goto err101;
 
   sdiff = sval + 3*kdim;
 
@@ -188,7 +188,7 @@ void s1771(ppoint,pcurve,aepsge,astart,aend,anext,cpos,jstat)
   s6err("s1771",*jstat,kpos);
   goto out;
 
- out:    if (sval != NULL) freearray(sval);
+ out:    if (sval != SISL_NULL) freearray(sval);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -288,7 +288,7 @@ static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,max_it,cnext,ad,a
       if (*cdist -aprev  <= REL_COMP_RES)
 	{
 	   if (kdiv2 > 4) break;
-	   if (*cdist -aprev >= DNULL) kdiv2++;
+	   if (*cdist -aprev >= DZERO) kdiv2++;
 
 	   kdiv = 0;
 	  aprev = *cdist;
@@ -435,13 +435,13 @@ static double s1771_s9del(eco,eco1,eco2,idim)
   tmax1 = max(fabs(t3),fabs(t4));
   tmax  = max(tmax1,tmax);
 
-  if (DEQUAL(tmax,DNULL))                    return DNULL;
+  if (DEQUAL(tmax,DZERO))                    return DZERO;
 
   else if (fabs(t4)/tmax < ttol) /* The second degree part is degenerated. */
     {
       if (fabs(t2)/tmax < ttol)
 	{
-          if (fabs(t3)/tmax < ttol)        return DNULL;
+          if (fabs(t3)/tmax < ttol)        return DZERO;
           else                             return (t1/t3);
 	}
       else                                  return (t1/t2);
@@ -449,7 +449,7 @@ static double s1771_s9del(eco,eco1,eco2,idim)
   else  /* An ordinary second degree equation.    */
     {
       t5 = t2*t2 - (double)2*t4*t1;
-      if (t5 < DNULL)                       return (t1/t3);
+      if (t5 < DZERO)                       return (t1/t3);
       else
 	{
           t6 = sqrt(t5);
@@ -463,26 +463,26 @@ static double s1771_s9del(eco,eco1,eco2,idim)
 	     metode t1/t3. If both solutions have the same
 	     sign we use the one with smallest value. */
 
-          if (t1 < DNULL)
+          if (t1 < DZERO)
 	    {
-	      if (t5 <= DNULL && t6 <= DNULL)
+	      if (t5 <= DZERO && t6 <= DZERO)
 		{
 		  if (t5 > t6)             return t5;
 	          else                     return t6;
 		}
-	      else if (t5 <= DNULL)        return t5;
-	      else if (t6 <= DNULL)        return t6;
+	      else if (t5 <= DZERO)        return t5;
+	      else if (t6 <= DZERO)        return t6;
               else                         return min(t5,t6);
 	    }
-	  else if (t1 > DNULL)
+	  else if (t1 > DZERO)
 	    {
-	      if (t5 >= DNULL && t6 >= DNULL)
+	      if (t5 >= DZERO && t6 >= DZERO)
 		{
 		  if (t5 < t6)             return t5;
 	          else                     return t6;
 		}
-	      else if (t5 >= DNULL)        return t5;
-	      else if (t6 >= DNULL)        return t6;
+	      else if (t5 >= DZERO)        return t5;
+	      else if (t6 >= DZERO)        return t6;
               else                         return max(t5,t6);
 	    }
 	  else                             return min(fabs(t5),fabs(t6));

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1345.c,v 1.2 1994-08-15 12:03:33 pfu Exp $
+ * $Id: s1345.c,v 1.3 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -197,21 +197,21 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
   int m2 = oldsurf->in2;
   int dim = oldsurf->idim;
   int ledgefix[4];                /* Local parameter for fixing the edge. */
-  double *et1 = NULL;
-  double *et2 = NULL;
+  double *et1 = SISL_NULL;
+  double *et2 = SISL_NULL;
 
-  double *local_eps = NULL;       /* Declaration of local variables, */
-  double *local_edge_eps = NULL;  /* for usage, see the code.        */
-  double *clocal_eps = NULL;
-  double *clocal_err = NULL;
-  double *harray = NULL;
-  double *tempcoef = NULL;
-  SISLSurf *qs_kreg = NULL;
+  double *local_eps = SISL_NULL;       /* Declaration of local variables, */
+  double *local_edge_eps = SISL_NULL;  /* for usage, see the code.        */
+  double *clocal_eps = SISL_NULL;
+  double *clocal_err = SISL_NULL;
+  double *harray = SISL_NULL;
+  double *tempcoef = SISL_NULL;
+  SISLSurf *qs_kreg = SISL_NULL;
 
-  double *loct1 = NULL;
-  double *loct2 = NULL;
-  SISLCurve *local_curve = NULL;
-  SISLCurve *newlcurve = NULL;
+  double *loct1 = SISL_NULL;
+  double *loct2 = SISL_NULL;
+  SISLCurve *local_curve = SISL_NULL;
+  SISLCurve *newlcurve = SISL_NULL;
 
   int lopt, i, it, n1, n2, antit, j, jh, lstat;
   double factor;
@@ -219,7 +219,7 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 
 
   /* Make sure the returned surface has a valid value. */
-  *newsurf = NULL;
+  *newsurf = SISL_NULL;
 
   /* Make sure that the input surface is non-periodic.  */
 
@@ -253,10 +253,10 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
      now handle free'ing of allocated space). */
 
   local_eps = newarray(dim, DOUBLE);
-  if (local_eps == NULL) goto err101;
+  if (local_eps == SISL_NULL) goto err101;
 
   local_edge_eps = newarray(4*dim, DOUBLE);
-  if (local_edge_eps == NULL) goto err101;
+  if (local_edge_eps == SISL_NULL) goto err101;
 
   /* If we are going to remove knots in both directions, we use half the
      tolerance each time, otherwise the whole tolerance once. This is
@@ -303,10 +303,10 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 	 array for storing the error. */
 
       clocal_eps = newarray(dim*n2, DOUBLE);
-      if (clocal_eps == NULL) goto err101;
+      if (clocal_eps == SISL_NULL) goto err101;
 
       clocal_err = newarray(dim*n2, DOUBLE);
-      if (clocal_err == NULL) goto err101;
+      if (clocal_err == SISL_NULL) goto err101;
 
       /* The tolerance will in general not be the same for all the
 	 n2*dim curves. If edges 1 and/or 3 are to be kept fixed then
@@ -324,7 +324,7 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 	 surfaces. */
 
       harray = newarray(n1*n2*dim, DOUBLE);
-      if (harray == NULL) goto err101;
+      if (harray == SISL_NULL) goto err101;
 
       if (opt == 4)
       {
@@ -339,14 +339,14 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 	s6chpar(qs_kreg->ecoef, n1, n2, dim, harray);
 	tempcoef = harray;
       }
-      harray = NULL;
+      harray = SISL_NULL;
 
       /* We then create a curve in which to store the high dimensional
 	 curve. */
 
       local_curve = newCurve(n1, k1, qs_kreg->et1, tempcoef,
 			     1, dim*n2, 0);
-      if (local_curve == NULL) goto err101;
+      if (local_curve == SISL_NULL) goto err101;
 
       /* We can now perform knot removal on this curve. The result
 	 is stored in newlcurve (will always have icopy==1, i.e. a
@@ -360,16 +360,16 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 
       n1 = newlcurve->in;
       freeCurve(local_curve);
-      local_curve = NULL;
+      local_curve = SISL_NULL;
 
       /* Now we must transpose back to return to surface coeffiecients. */
 
       tempcoef = increasearray(tempcoef,n1*n2*dim, DOUBLE);
-      if (tempcoef == NULL) goto err101;
+      if (tempcoef == SISL_NULL) goto err101;
 
       harray = newlcurve->ecoef;
       s6chpar(harray, n2, n1, dim, tempcoef);
-      harray = NULL;
+      harray = SISL_NULL;
 
       /* We save the surface as a curve and create the final surface
 	 later. */
@@ -377,7 +377,7 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
       local_curve = newlcurve;
       freearray(newlcurve->ecoef);
       local_curve->ecoef = tempcoef;
-      newlcurve = NULL;
+      newlcurve = SISL_NULL;
 
       /* Now local_curve has icopy==1, so the knots and coefs are proper
 	 copies.  Must make it safe to free local_curve. */
@@ -394,7 +394,7 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 	 throw it away. */
 
       freeCurve(local_curve);
-      local_curve = NULL;
+      local_curve = SISL_NULL;
 
       /* Calculate the error in the approximation. */
 
@@ -428,10 +428,10 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
       /* First some local arrays. */
 
       clocal_eps = newarray(dim*n1, DOUBLE);
-      if (clocal_eps == NULL) goto err101;
+      if (clocal_eps == SISL_NULL) goto err101;
 
       clocal_err = newarray(dim*n1, DOUBLE);
-      if (clocal_err == NULL) goto err101;
+      if (clocal_err == SISL_NULL) goto err101;
 
       /* Compute a tolerance along the second direction. */
 
@@ -452,7 +452,7 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
       else
 	local_curve = newCurve(n2, k2, qs_kreg->et2, qs_kreg->ecoef, 1,
 			       dim*n1, 0);
-      if (local_curve == NULL) goto err101;
+      if (local_curve == SISL_NULL) goto err101;
 
       /* Remove knots and store in newlcurve (will always get icopy==1, i.e.
 	 proper copy. */
@@ -469,9 +469,9 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 	 tempcoef too -- non-null if opt==3), but keep newlcurve. */
 
       freeCurve(local_curve);
-      if (tempcoef != NULL) freearray(tempcoef);
+      if (tempcoef != SISL_NULL) freearray(tempcoef);
       local_curve = newlcurve;
-      newlcurve = NULL;
+      newlcurve = SISL_NULL;
 
       /* Now local_curve has icopy==1, so the knots and coefs are proper
 	 copies.  Must make it safe to free local_curve. */
@@ -489,7 +489,7 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 	 throw it away. */
 
       freeCurve(local_curve);
-      local_curve = NULL;
+      local_curve = SISL_NULL;
 
       /* Calculate the error in the approximation as above. */
 
@@ -515,21 +515,21 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
   }
 
   /* It remains to create a new surface object. If we only removed knots
-     in one direction, one of loct1 and loct2 will be NULL. */
+     in one direction, one of loct1 and loct2 will be SISL_NULL. */
 
-  if (loct1 == NULL)
+  if (loct1 == SISL_NULL)
   {
     loct1 = newarray(n1+k1, DOUBLE);
-    if (loct1 == NULL)  goto err101;
+    if (loct1 == SISL_NULL)  goto err101;
 
     harray = et1;
     for (i=0; i<n1+k1; i++) loct1[i] = harray[i];
   }
 
-  if (loct2 ==NULL)
+  if (loct2 ==SISL_NULL)
   {
     loct2 = newarray(n2+k2, DOUBLE);
-    if (loct2 == NULL)  goto err101;
+    if (loct2 == SISL_NULL)  goto err101;
 
     harray = et2;
     for (i=0; i<n2+k2; i++) loct2[i] = harray[i];
@@ -542,9 +542,9 @@ void s1345(oldsurf, eps, edgefix, edgeps, epsco, opt, itmax, newsurf,
 
   /* Avoid free'ing the referenced knots and coefs on exit. */
 
-  loct1 = NULL;
-  loct2 = NULL;
-  tempcoef = NULL;
+  loct1 = SISL_NULL;
+  loct2 = SISL_NULL;
+  tempcoef = SISL_NULL;
 
   /* Set periodicity flag. */
 
@@ -574,20 +574,20 @@ error:
   /* Clean up. */
 
 out:
-  if (local_eps != NULL) freearray(local_eps);
-  if (local_edge_eps != NULL) freearray(local_edge_eps);
-  if (clocal_eps != NULL) freearray(clocal_eps);
-  if (qs_kreg != NULL && qs_kreg != oldsurf) freeSurf(qs_kreg);
+  if (local_eps != SISL_NULL) freearray(local_eps);
+  if (local_edge_eps != SISL_NULL) freearray(local_edge_eps);
+  if (clocal_eps != SISL_NULL) freearray(clocal_eps);
+  if (qs_kreg != SISL_NULL && qs_kreg != oldsurf) freeSurf(qs_kreg);
 
   /* Must remember to free everything to avoid memory leak. */
 
-  if (clocal_eps != NULL) freearray(clocal_eps);
-  if (clocal_err != NULL) freearray(clocal_err);
-  if (tempcoef != NULL) freearray(tempcoef);
-  if (loct1 != NULL) freearray(loct1);
-  if (loct2 != NULL) freearray(loct2);
-  if (local_curve != NULL) freeCurve(local_curve);  /* icopy==0 */
-  if (newlcurve != NULL) freeCurve(newlcurve);  /* icopy ==1 */
+  if (clocal_eps != SISL_NULL) freearray(clocal_eps);
+  if (clocal_err != SISL_NULL) freearray(clocal_err);
+  if (tempcoef != SISL_NULL) freearray(tempcoef);
+  if (loct1 != SISL_NULL) freearray(loct1);
+  if (loct2 != SISL_NULL) freearray(loct2);
+  if (local_curve != SISL_NULL) freeCurve(local_curve);  /* icopy==0 */
+  if (newlcurve != SISL_NULL) freeCurve(newlcurve);  /* icopy ==1 */
 
 
   return;

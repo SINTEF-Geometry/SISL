@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6herm_bez.c,v 1.2 1994-11-30 16:43:04 pfu Exp $
+ * $Id: s6herm_bez.c,v 1.3 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -73,7 +73,7 @@ void s6hermite_bezier(s,a,b,idim,c,jstat)
 {
   int i,kstat,left1=0,left2=0;
   double dblocal[9];
-  double *derive=NULL;
+  double *derive=SISL_NULL;
 
 
   if (DEQUAL(a[0],b[0]) && DEQUAL(a[1],b[1])) goto error;
@@ -82,7 +82,7 @@ void s6hermite_bezier(s,a,b,idim,c,jstat)
   if ( idim > 3)
   {
     derive = newarray(3*idim,double);
-    if (derive == NULL) goto err101;
+    if (derive == SISL_NULL) goto err101;
   }
   else
     derive = dblocal;
@@ -128,7 +128,7 @@ void s6hermite_bezier(s,a,b,idim,c,jstat)
 
   out :
 
-    if (derive != NULL && derive != dblocal)
+    if (derive != SISL_NULL && derive != dblocal)
       freearray(derive);
 
   return;

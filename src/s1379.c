@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1379.c,v 1.2 1994-08-18 13:30:26 pfu Exp $
+ * $Id: s1379.c,v 1.3 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -118,8 +118,8 @@ void s1379(ep,ev,epar,im,idim,rcurve,jstat)
   int kstat=0;        /* Status variable                             */
   int kcycpos = 1;    /* Flag telling if first and last points are equal */
   int kcycder = 1;    /* Flag telling if first and last derviatives are equal */
-  double *st=NULL;    /* Knot vector                                 */
-  double *scoef=NULL; /* B-spline vertices                           */
+  double *st=SISL_NULL;    /* Knot vector                                 */
+  double *scoef=SISL_NULL; /* B-spline vertices                           */
   double th1,th2;     /* Parameter intervals                         */
 
 
@@ -137,9 +137,9 @@ void s1379(ep,ev,epar,im,idim,rcurve,jstat)
   /* Allocate arrays for temporary storage of knots and vertices */
 
   st    = newarray(kn+kk,DOUBLE);
-  if (st == NULL) goto err101;
+  if (st == SISL_NULL) goto err101;
   scoef = newarray(idim*kn,DOUBLE);
-  if (scoef == NULL) goto err101;
+  if (scoef == SISL_NULL) goto err101;
 
   /* Check if the curve is periodic, e.g. if first and last points are
      equal and/or that first and last derivates are equal */
@@ -214,7 +214,7 @@ void s1379(ep,ev,epar,im,idim,rcurve,jstat)
   /* Make new curve object */
 
   *rcurve = newCurve(kn,kk,st,scoef,1,idim,1);
-  if (*rcurve == NULL) goto err101;
+  if (*rcurve == SISL_NULL) goto err101;
 
   /* Remove unneccesarry knots */
 
@@ -260,8 +260,8 @@ void s1379(ep,ev,epar,im,idim,rcurve,jstat)
   goto out;
 
  out:
-  if (st != NULL) freearray(st);
-  if (scoef != NULL) freearray(scoef);
+  if (st != SISL_NULL) freearray(st);
+  if (scoef != SISL_NULL) freearray(scoef);
 
   return;
 }

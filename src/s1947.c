@@ -106,12 +106,12 @@ void
    int ki, kj, kr, kh, kih;   /* Counters.       */
    int khindx;                /* Help in index computing. */
    double tdiv, th;  /* Help variables. */
-   double *sr1 = NULL;  /* Help array used to store factors in equality
+   double *sr1 = SISL_NULL;  /* Help array used to store factors in equality
 			   constraints at the start of the spline curve. */
-   double *sr2 = NULL;  /* To store factors at the end of the curve.     */
-   double *stw1 = NULL; /* Knot intervals at the start of the curve.     */
-   double *stw2 = NULL; /* Knot intervals at the end of the curve.       */
-   double *shelp = NULL; /* Help array to avoid overwriting.             */
+   double *sr2 = SISL_NULL;  /* To store factors at the end of the curve.     */
+   double *stw1 = SISL_NULL; /* Knot intervals at the start of the curve.     */
+   double *stw2 = SISL_NULL; /* Knot intervals at the end of the curve.       */
+   double *shelp = SISL_NULL; /* Help array to avoid overwriting.             */
       
    /* Test input. */
    
@@ -120,7 +120,7 @@ void
    
    /* Allocate scratch for local arrays. */
    
-   if ((sr1 = new0array(2*incont*incont+3*incont, DOUBLE)) == NULL) 
+   if ((sr1 = new0array(2*incont*incont+3*incont, DOUBLE)) == SISL_NULL) 
       goto err101;
    sr2 = sr1 + incont*incont;
    stw1 = sr2 + incont*incont;
@@ -202,7 +202,7 @@ void
 	 for (ki=ik-1; ki>=ik-in+incont+nfirst[kj]; ki--)
 	    ea[kj*ik+ki] = ea[kj*ik+ki-khindx];
 	 for (; ki>=0; ki--)
-	    ea[kj*ik+ki] = DNULL;
+	    ea[kj*ik+ki] = DZERO;
       }
       nlast[kj] = in-incont-1;
       if (nlast[kj] < nfirst[kj]) (*jnred)++;
@@ -240,7 +240,7 @@ void
    out:
       /* Free scratch occupied by local arrays. */
       
-      if (sr1 != NULL) freearray(sr1);
+      if (sr1 != SISL_NULL) freearray(sr1);
       
       return;
 }

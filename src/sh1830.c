@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1830.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1830.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -79,10 +79,10 @@ void sh1830(po1,po2,aepsge,jstat)
   int kn1,kn2;           /* Number of vertices of surface.   */
   double *scurve;        /* Vertices of curve.               */
   double *ssurf;         /* Vertices of surface.             */
-  double *stan = NULL;   /* Main tangent of curve.           */
-  double *sdiag1 = NULL; /* First main diagonal of surface.  */
-  double *sdiag2 = NULL; /* Second main diagonal of surface. */
-  double *snorm = NULL;  /* Main normal of surface.          */
+  double *stan = SISL_NULL;   /* Main tangent of curve.           */
+  double *sdiag1 = SISL_NULL; /* First main diagonal of surface.  */
+  double *sdiag2 = SISL_NULL; /* Second main diagonal of surface. */
+  double *snorm = SISL_NULL;  /* Main normal of surface.          */
   SISLCurve *qcurve;     /* Pointer to curve.                */
   SISLSurf *qsurf;       /* Pointer to surface.              */
   
@@ -111,10 +111,10 @@ void sh1830(po1,po2,aepsge,jstat)
   
   /* Allocate space for local arrays.  */
   
-  if ((stan = newarray(kdim,double)) == NULL) goto err101;
-  if ((sdiag1 = newarray(kdim,double)) == NULL) goto err101;
-  if ((sdiag2 = newarray(kdim,double)) == NULL) goto err101;
-  if ((snorm = newarray(kdim,double)) == NULL) goto err101;
+  if ((stan = newarray(kdim,double)) == SISL_NULL) goto err101;
+  if ((sdiag1 = newarray(kdim,double)) == SISL_NULL) goto err101;
+  if ((sdiag2 = newarray(kdim,double)) == SISL_NULL) goto err101;
+  if ((snorm = newarray(kdim,double)) == SISL_NULL) goto err101;
   
   /* Describe curve with local parameters.  */
   
@@ -193,10 +193,10 @@ void sh1830(po1,po2,aepsge,jstat)
   
   /* Free space occupied by local arrays.  */
   
-  if (stan != NULL) freearray(stan);
-  if (sdiag1 != NULL) freearray(sdiag1);
-  if (sdiag2 != NULL) freearray(sdiag2);
-  if (snorm != NULL) freearray(snorm);
+  if (stan != SISL_NULL) freearray(stan);
+  if (sdiag1 != SISL_NULL) freearray(sdiag1);
+  if (sdiag2 != SISL_NULL) freearray(sdiag2);
+  if (snorm != SISL_NULL) freearray(snorm);
   
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6ang.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6ang.c,v 1.2 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -70,7 +70,7 @@ double s6ang(evec1,evec2,idim)
   tlength2 = s6length(evec2,idim,&kstat2);
   
   if (!kstat1 || !kstat2)
-    tang = DNULL;
+    tang = DZERO;
   else
     {
       tcos = fabs(tscpr/(tlength1*tlength2));

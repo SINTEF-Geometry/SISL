@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1388.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1388.c,v 1.2 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -133,7 +133,7 @@ void s1388(ps1,gcoons,jnumb1,jnumb2,jdim,jstat)
   /* Allocate array for storage of the coefficients */
   
   *gcoons = newarray((kn1*kn2*16*kdim),DOUBLE);
-  if (*gcoons == NULL) goto err101;
+  if (*gcoons == SISL_NULL) goto err101;
   
   klft = kk2 - 1;
   
@@ -259,7 +259,7 @@ void s1388(ps1,gcoons,jnumb1,jnumb2,jdim,jstat)
   /* Allocate array for storage of the coefficients */
   
   *gcoons = increasearray(*gcoons,((*jnumb1)*(*jnumb2)*16*kdim),DOUBLE);
-  if (*gcoons == NULL) goto err101;
+  if (*gcoons == SISL_NULL) goto err101;
   
   
   /* Test if order to high */
@@ -295,7 +295,7 @@ void s1388(ps1,gcoons,jnumb1,jnumb2,jdim,jstat)
   /* Some error has occured free allocated space */
   
  freeout:
-  if (*gcoons != NULL) freearray(*gcoons);
+  if (*gcoons != SISL_NULL) freearray(*gcoons);
   goto out;
   
  out:

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1370.c,v 1.2 1994-09-21 16:49:09 pfu Exp $
+ * $Id: s1370.c,v 1.3 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -79,26 +79,26 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
 *              jcurve removed, other minor changes
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, September 1994.
 *              Didn't work for rationals - '(*rcurve)->rcoef' returned from
-*              s1893() was NULL (must copy from ecoef).
+*              s1893() was SISL_NULL (must copy from ecoef).
 *
 *********************************************************************
 */
 {
   int kpos = 0;
   int kstat = 0;
-  SISLCurve *icurve = NULL;	/* Temporary SISLCurve. */
+  SISLCurve *icurve = SISL_NULL;	/* Temporary SISLCurve. */
   int kn;			/* Number of vertices of pcurv            */
   int kk;			/* Order in  pcurv                        */
   int kdim;			/* Number of dimesions in pcurv           */
   int kdimp1;			/* Dimension of  earray should be kdim+1  */
-  double *st = NULL;		/* First knot vector is pcurv             */
-  double *scoef = NULL;		/* Vertices of pcurv                      */
+  double *st = SISL_NULL;		/* First knot vector is pcurv             */
+  double *scoef = SISL_NULL;		/* Vertices of pcurv                      */
   int ikind;			/* kind of surface pcurv is               */
-  double *rscoef = NULL;	/* Scaled coefficients if pcurv is rational       */
+  double *rscoef = SISL_NULL;	/* Scaled coefficients if pcurv is rational       */
   double wmin, wmax;		/* min and max values of the weights if rational  */
   double scale;			/* factor for scaling weights if rational         */
   int i;			/* loop variable                          */
-  double *sarray = NULL;	/* Array for calculating denominator if used      */
+  double *sarray = SISL_NULL;	/* Array for calculating denominator if used      */
   int knarr;			/* Number of parallel arrays to use.              */
   int nkind;			/* Kind of output curve (rcurf).                  */
 
@@ -140,7 +140,7 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
 	}
       scale = (double) 1.0 / sqrt (wmin * wmax);
       scoef = newarray (kn * kdim, DOUBLE);
-      if (scoef == NULL)
+      if (scoef == SISL_NULL)
 	goto err101;
 
       for (i = 0; i < kn * kdim; i++)
@@ -150,7 +150,7 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
     scoef = pcurv->ecoef;
 
   icurve = newCurve (kn, kk, st, scoef, 1, kdim, 1);
-  if (icurve == NULL)
+  if (icurve == SISL_NULL)
     goto err171;
 
   icurve->cuopen = pcurv->cuopen;
@@ -166,7 +166,7 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
 
       knarr = inarr + 1;
       sarray = new0array (kdimp1 * kdimp1 * knarr, DOUBLE);
-      if (sarray == NULL) goto err101;
+      if (sarray == SISL_NULL) goto err101;
 
       memcopy (sarray, earray, kdimp1 * kdimp1 * inarr, DOUBLE);
       sarray[kdimp1 * kdimp1 * knarr - 1] = (DOUBLE) 1.0;
@@ -183,7 +183,7 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
   s1893 (icurve, sarray, kdimp1, knarr, 0, 0, rcurv, &kstat);
   if (kstat < 0) goto error;
 
-  if (*rcurv == NULL) goto err171;
+  if (*rcurv == SISL_NULL) goto err171;
 
   if ( ikind == 2 || ikind == 4 )
   {
@@ -195,7 +195,7 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
     if ( ratflag == 1 )
     {
       /* Output from s1893 is a dim+1 non-rational curve. */
-      /* Convert homogeneous curve to rational form (rcoef is NULL here). */
+      /* Convert homogeneous curve to rational form (rcoef is SISL_NULL here). */
 
       (*rcurv)->rcoef = newarray((*rcurv)->in * (*rcurv)->idim, DOUBLE);
       memcopy((*rcurv)->rcoef, (*rcurv)->ecoef,
@@ -248,6 +248,6 @@ s1370 (pcurv, earray, idim, inarr, ratflag, rcurv, jstat)
     goto out;
 
   out:
-  if (icurve != NULL) freeCurve (icurve);
+  if (icurve != SISL_NULL) freeCurve (icurve);
   return;
 }

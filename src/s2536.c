@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2536.c,v 1.2 1995-08-21 13:35:30 jka Exp $
+ * $Id: s2536.c,v 1.3 2001-03-19 15:58:59 afr Exp $
  *
  */
 
@@ -106,14 +106,14 @@ void s2536(surf, u_continuity, v_continuity, u_surfnumb,
    int newik2;                 /* New order in v direction.              */
    int eval_dim;               /* Evaluation dimention.                  */
    int max_order = 20;         /* Max. order of the curvature surface.   */
-   SISLSurf *temp = NULL;      /* Temporary surface.                     */
-   SISLSurf *regular = NULL;   /* k-regular surface.                     */
-   SISLSurf **org_surf = NULL; /* Array of pointers to original patches. */
+   SISLSurf *temp = SISL_NULL;      /* Temporary surface.                     */
+   SISLSurf *regular = SISL_NULL;   /* k-regular surface.                     */
+   SISLSurf **org_surf = SISL_NULL; /* Array of pointers to original patches. */
    
    
    /* Check input. */
    
-   if (surf == NULL || u_continuity < 0 || v_continuity < 0)
+   if (surf == SISL_NULL || u_continuity < 0 || v_continuity < 0)
       goto err150;
    
    /* Curvature continuity decrease. */
@@ -141,9 +141,9 @@ void s2536(surf, u_continuity, v_continuity, u_surfnumb,
    /* Allocate output array. */
    
    if ((*mehlum_surf = newarray((*u_surfnumb)*(*v_surfnumb), SISLSurf*)) 
-       == NULL) goto err101;
+       == SISL_NULL) goto err101;
    for (ki = 0; ki < (*u_surfnumb)*(*v_surfnumb); ki++)
-      (*mehlum_surf)[ki] = NULL;
+      (*mehlum_surf)[ki] = SISL_NULL;
    
    /* Calculate curvature order. */
    
@@ -174,10 +174,10 @@ void s2536(surf, u_continuity, v_continuity, u_surfnumb,
       (*mehlum_surf)[0] = newSurf(temp->in1, temp->in2, temp->ik1, temp->ik2,
 				 temp->et1, temp->et2, temp->ecoef, 2, 1, 1);
       
-      if (temp != NULL)
+      if (temp != SISL_NULL)
       {
 	 freeSurf(temp);
-	 temp = NULL;
+	 temp = SISL_NULL;
       }
    }
    else
@@ -193,10 +193,10 @@ void s2536(surf, u_continuity, v_continuity, u_surfnumb,
 				     temp->ik2, temp->et1, temp->et2, 
 				     temp->ecoef, 2, 1, 1);
 	 
-	 if (temp != NULL)
+	 if (temp != SISL_NULL)
          {
 	    freeSurf(temp);
-	    temp = NULL;
+	    temp = SISL_NULL;
          }
       }
    }
@@ -211,10 +211,10 @@ void s2536(surf, u_continuity, v_continuity, u_surfnumb,
    /* The surface is degenerated at (u,v) */
    
  war002:
-   if (*mehlum_surf != NULL)
+   if (*mehlum_surf != SISL_NULL)
    {
       for (ki = 0; ki < ((*u_surfnumb)*(*v_surfnumb)); ki++)
-	 if ((*mehlum_surf)[ki] != NULL) freeSurf((*mehlum_surf)[ki]);
+	 if ((*mehlum_surf)[ki] != SISL_NULL) freeSurf((*mehlum_surf)[ki]);
       freearray(*mehlum_surf);
    }
    *u_surfnumb = 0;
@@ -245,10 +245,10 @@ void s2536(surf, u_continuity, v_continuity, u_surfnumb,
 
  out:
    if (regular != surf ) freeSurf(regular);
-   if (org_surf != NULL)
+   if (org_surf != SISL_NULL)
    {
       for (ki = 0; ki < ((*u_surfnumb)*(*v_surfnumb)); ki++)
-	 if (org_surf[ki] != NULL) freeSurf(org_surf[ki]);
+	 if (org_surf[ki] != SISL_NULL) freeSurf(org_surf[ki]);
       freearray(org_surf);
    }
    

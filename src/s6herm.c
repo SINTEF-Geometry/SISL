@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6herm.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6herm.c,v 1.2 2001-03-19 15:59:01 afr Exp $
  *
  */
 
@@ -189,11 +189,11 @@ s6herm(pt,uknots,vknots,unum,vnum,dim,uindex,vindex,herminfo,jstat)
 
       Lu[0] =   diff[2]  / kdiff[2];
       Lu[1] = - diff[1]  / kdiff[2];
-      Lu[2] =   DNULL;
+      Lu[2] =   DZERO;
 
       Ldu[0] =   (double)1.0  / kdiff[2];
       Ldu[1] = - (double)1.0  / kdiff[2];
-      Ldu[2] = DNULL;
+      Ldu[2] = DZERO;
   }
 
 
@@ -227,11 +227,11 @@ s6herm(pt,uknots,vknots,unum,vnum,dim,uindex,vindex,herminfo,jstat)
 
       Lv[0] =   diff[2]  / kdiff[2];
       Lv[1] = - diff[1]  / kdiff[2];
-      Lv[2] =   DNULL;
+      Lv[2] =   DZERO;
 
       Ldv[0] =   (double)1.0  / kdiff[2];
       Ldv[1] = - (double)1.0  / kdiff[2];
-      Ldv[2] = DNULL;
+      Ldv[2] = DZERO;
   }
 
   /* Calculate derivative of biquadratic in u. */

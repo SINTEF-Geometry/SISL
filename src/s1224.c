@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1224.c,v 1.1 1995-11-02 14:43:01 jka Exp $
+ * $Id: s1224.c,v 1.2 2001-03-19 15:58:42 afr Exp $
  *
  */
 
@@ -110,8 +110,8 @@ void s1224(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider,
    int klimit;           /* Limit in for loop.                            */
    double sdum1[100];    /* Fixed utility array.                          */
    double sdum2[100];    /* Fixed utility array.                          */
-   double *sder1 = NULL; /* Evaluation in the first parameter direction.  */
-   double *sder2 = NULL; /* Evaluation in the second parameter direction. */
+   double *sder1 = SISL_NULL; /* Evaluation in the first parameter direction.  */
+   double *sder2 = SISL_NULL; /* Evaluation in the second parameter direction. */
    
 
    /* If necessary allocate space for the evaluation in each 
@@ -122,7 +122,7 @@ void s1224(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider,
    
    if (knumb1 > 100)
    {
-      if ((sder1 = newarray(knumb1, double)) == NULL)
+      if ((sder1 = newarray(knumb1, double)) == SISL_NULL)
 	 goto err101;
    }
    else
@@ -130,7 +130,7 @@ void s1224(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider,
    
    if (knumb2 > 100)
    {
-      if ((sder2 = newarray(knumb2, double)) == NULL)
+      if ((sder2 = newarray(knumb2, double)) == SISL_NULL)
 	 goto err101;
    }
    else
@@ -173,8 +173,8 @@ void s1224(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider,
    goto out;
    
    out: 
-      if (knumb1 > 100 && sder1 != NULL) freearray(sder1);
-      if (knumb2 > 100 && sder2 != NULL) freearray(sder2);
+      if (knumb1 > 100 && sder1 != SISL_NULL) freearray(sder1);
+      if (knumb2 > 100 && sder2 != SISL_NULL) freearray(sder2);
       
       return;
 }

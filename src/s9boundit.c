@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9boundit.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s9boundit.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -181,7 +181,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
 	      /* First parameter is constant  */
 	      
 	      tdu = apar - gpar1[0];
-	      if (DNEQUAL(ta12,DNULL))
+	      if (DNEQUAL(ta12,DZERO))
 		{
 		  tdv = (tb1-tdu*ta11)/ta12;
 		}
@@ -198,7 +198,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
             {
 	      /* Second parameter direction constant */
 	      tdv = apar - gpar1[1];
-	      if (DNEQUAL(ta11,DNULL))
+	      if (DNEQUAL(ta11,DZERO))
 		{
 		  tdu = (tb1-tdv*ta12)/ta11;
 		}
@@ -247,7 +247,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
 	  
 	  /* If tdum2 = 0.0, then the equation system is singular, iteration not
 	     possible. */
-	  if (DNEQUAL(tdum2,DNULL))
+	  if (DNEQUAL(tdum2,DZERO))
             {
 	      gpar2[0] += (tb1*ta22-tb2*ta12)/tdum2;
 	      gpar2[1] += (ta11*tb2-ta21*tb1)/tdum2;
@@ -292,7 +292,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
 	      /* First parameter is constant  */
 	      
 	      tds = apar - gpar2[0];
-	      if (DNEQUAL(ta12,DNULL))
+	      if (DNEQUAL(ta12,DZERO))
 		{
 		  tdt = (tb1-tds*ta11)/ta12;
 		}
@@ -309,7 +309,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
             {
 	      /* Second parameter direction constant */
 	      tdt = apar - gpar2[1];
-	      if (DNEQUAL(ta11,DNULL))
+	      if (DNEQUAL(ta11,DZERO))
 		{
 		  tds = (tb1-tdt*ta12)/ta11;
 		}
@@ -366,7 +366,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
 	  /* If tdum2 = 0.0, then the equation system is singular, iteration not
 	     possible. */
 
-	  if (DNEQUAL(tdum2,DNULL))
+	  if (DNEQUAL(tdum2,DZERO))
             {
 	      gpar1[0] += (tb1*ta22-tb2*ta12)/tdum2;
 	      gpar1[1] += (ta11*tb2-ta21*tb1)/tdum2;
@@ -402,7 +402,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
 	  /* First iteration intitate distance variable, if the equation
 	     systems were not singular */
 
-	  if (DEQUAL(tdum2,DNULL)) goto war02;
+	  if (DEQUAL(tdum2,DZERO)) goto war02;
 	  tdist = tdum3;
         }
       else
@@ -418,7 +418,7 @@ void s9boundit(epnt1,epnt2,epar1,epar2,psurf1,psurf2,apar,idir,aepsge,
 	      if (tdist <= aepsge)
                 {
 		  /* Distance within tolerance */
-		  if (DEQUAL(tdum2,DNULL))
+		  if (DEQUAL(tdum2,DZERO))
                     {
 		      /* Singular equation system */
 		      goto war01;

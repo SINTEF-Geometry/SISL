@@ -76,15 +76,15 @@ void s1528(idim,m1,m2,points,ipar,iopen1,iopen2,par1,par2,jstat)
   int kpos=0;          /* Position of error                           */
   int idimm1;          /*  =  idim * m1                               */
   double tdist;        /* Help parameter.                             */
-  double *local_par1=NULL; /* Parametrization arrays used in routine  */
-  double *local_par2=NULL;
+  double *local_par1=SISL_NULL; /* Parametrization arrays used in routine  */
+  double *local_par2=SISL_NULL;
 
 
   /* Allocate arrays for parametrizations */
 
   local_par1 = newarray(m1+(iopen1 != SISL_CRV_OPEN), DOUBLE); 
   local_par2 = newarray(m2+(iopen2 != SISL_CRV_OPEN), DOUBLE); 
-  if(local_par1 == NULL || local_par2 == NULL) goto err101; 
+  if(local_par1 == SISL_NULL || local_par2 == SISL_NULL) goto err101; 
   local_par1[0] = (double) 0.0;
   local_par2[0] = (double) 0.0;
 

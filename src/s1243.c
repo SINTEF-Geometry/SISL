@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1243.c,v 1.2 1995-01-03 11:11:59 pfu Exp $
+ * $Id: s1243.c,v 1.3 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -87,10 +87,10 @@ void s1243(pcurve, point, dim, epsge, weight, area, moment, stat)
    double bez_moment;             /* Bezier moment.                   */
    double dummy[3];               /* Dummy array.                     */
    double bez_weight[2];          /* Bezier weight point.             */
-   SISLCurve* non_rat_crv = NULL; /* Local non-rational curve.        */
-   SISLCurve* local_crv = NULL;   /* Local curve (do not deallocate). */
-   SISLCurve* non_per_crv = NULL; /* Local non-periodic curve.        */
-   SISLCurve* bez_crv = NULL;     /* Bezier convertion of curve.      */
+   SISLCurve* non_rat_crv = SISL_NULL; /* Local non-rational curve.        */
+   SISLCurve* local_crv = SISL_NULL;   /* Local curve (do not deallocate). */
+   SISLCurve* non_per_crv = SISL_NULL; /* Local non-periodic curve.        */
+   SISLCurve* bez_crv = SISL_NULL;     /* Bezier convertion of curve.      */
 
 
    /* Check input. */
@@ -200,9 +200,9 @@ void s1243(pcurve, point, dim, epsge, weight, area, moment, stat)
    goto out;
 
   out:
-   if (non_rat_crv != NULL) freeCurve(non_rat_crv);
-   if (non_per_crv != NULL) freeCurve(non_per_crv);
-   if (bez_crv != NULL) freeCurve(bez_crv);
+   if (non_rat_crv != SISL_NULL) freeCurve(non_rat_crv);
+   if (non_per_crv != SISL_NULL) freeCurve(non_per_crv);
+   if (bez_crv != SISL_NULL) freeCurve(bez_crv);
 
    return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6lusolp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6lusolp.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -70,13 +70,13 @@ void s6lusolp(ea,eb,nl,im,jstat)
 {
   int kpos = 0;      /* Position of error.                             */
   int ki,kj;         /* Counters.                                      */
-  double *sx = NULL; /* Array used to keep solution of equation system
+  double *sx = SISL_NULL; /* Array used to keep solution of equation system
 			internally.                                    */
   double tdiv;       /* Dividend in expression.                        */
   
   /* Allocate space for local array.  */
   
-  if ((sx = newarray(im,double)) == NULL) goto err101;
+  if ((sx = newarray(im,double)) == SISL_NULL) goto err101;
   
   for (ki=0; ki<im-1; ki++)
     {
@@ -87,7 +87,7 @@ void s6lusolp(ea,eb,nl,im,jstat)
     }
   
   tdiv = ea[im-1+nl[im-1]*im];
-  if (DEQUAL(tdiv,DNULL)) goto warn1;
+  if (DEQUAL(tdiv,DZERO)) goto warn1;
   sx[im-1] = eb[nl[im-1]]/tdiv;
   
   for (ki=im-2; ki>=0; ki--)
@@ -98,7 +98,7 @@ void s6lusolp(ea,eb,nl,im,jstat)
 	eb[nl[ki]] -= sx[kj]*ea[kj+nl[ki]*im];
       
       tdiv = ea[ki+nl[ki]*im];
-      if (DEQUAL(tdiv,DNULL)) goto warn1;
+      if (DEQUAL(tdiv,DZERO)) goto warn1;
       sx[ki] = eb[nl[ki]]/tdiv;
     }   
   for (ki=0; ki<im; ki++) eb[ki] = sx[ki];
@@ -123,7 +123,7 @@ out:
 
 /* Free space occupied by local array.  */
 
-if (sx != NULL) freearray(sx);
+if (sx != SISL_NULL) freearray(sx);
 
 return;
 }

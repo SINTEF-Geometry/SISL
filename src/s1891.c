@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1891.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1891.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -108,11 +108,11 @@ s1891 (etau, epoint, idim, inbpnt, iright, eder, iopen, et, ebcoef,
   int inrx;			/* Equal to inrc if inrc>0, else=1	*/
   int edarray[MAX_SIZE];        /* Array for ed below                   */
   int alloc_needed=FALSE;
-  int *ed = NULL;		/* Arrays defining elements of W	*/
-  double *ewarray=NULL;         /* Array for ew1, ew2 and ew3           */
-  double *ew1 = NULL;		/* See subroutine s1926			*/
-  double *ew2 = NULL;
-  double *ew3 = NULL;
+  int *ed = SISL_NULL;		/* Arrays defining elements of W	*/
+  double *ewarray=SISL_NULL;         /* Array for ew1, ew2 and ew3           */
+  double *ew1 = SISL_NULL;		/* See subroutine s1926			*/
+  double *ew2 = SISL_NULL;
+  double *ew3 = SISL_NULL;
 
   *jstat = 0;
 
@@ -127,7 +127,7 @@ s1891 (etau, epoint, idim, inbpnt, iright, eder, iopen, et, ebcoef,
   if (iopen != SISL_CRV_OPEN)    *in +=ik - 1;
 
   *ebcoef = new0array (*in *idim * iright, DOUBLE);
-  if (*ebcoef == NULL) goto err101;
+  if (*ebcoef == SISL_NULL) goto err101;
 
   if ((nur = inbpnt - inlr) > MAX_SIZE)
     alloc_needed = TRUE;
@@ -138,7 +138,7 @@ s1891 (etau, epoint, idim, inbpnt, iright, eder, iopen, et, ebcoef,
   inrx = MAX (1, inrc);
   limit1 = (ik * nur) + (inrx * nur) + (inlx * inbpnt);
   
-  if ((ewarray = new0array(limit1 + 1,DOUBLE)) == NULL) goto err101;
+  if ((ewarray = new0array(limit1 + 1,DOUBLE)) == SISL_NULL) goto err101;
   
   ew1 = ewarray;
   ew2 = ew1 + (ik * nur);
@@ -146,7 +146,7 @@ s1891 (etau, epoint, idim, inbpnt, iright, eder, iopen, et, ebcoef,
 
   if (alloc_needed)
     {
-       if ((ed = new0array(nur,INT)) == NULL)
+       if ((ed = new0array(nur,INT)) == SISL_NULL)
 	 goto err101;
     }
   else

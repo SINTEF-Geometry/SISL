@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1890.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1890.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -102,10 +102,10 @@ s1890 (oknots, oik, oin, par, der, jstat)
   /* Allocate arrays par and der. */
 
   *par = newarray (oin, DOUBLE);
-  if (*par == NULL)
+  if (*par == SISL_NULL)
     goto err101;
   *der = new0array (oin, INT);
-  if (*der == NULL)
+  if (*der == SISL_NULL)
     goto err101;
 
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1938.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1938.c,v 1.2 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -94,9 +94,9 @@ s1938 (srf, etr1, inr1, etr2, inr2, surfr, jstat)
 				   parameter direction			*/
   int iordr2;			/* Order of curve in second
 				   parameter direction			*/
-  double *knt1 = NULL;		/* Original knot-vector of surface.     */
-  double *knt2 = NULL;		/* Original knot vector of surface.	*/
-  double *coef = NULL;		/* Pointer to array of coefficients of
+  double *knt1 = SISL_NULL;		/* Original knot-vector of surface.     */
+  double *knt2 = SISL_NULL;		/* Original knot vector of surface.	*/
+  double *coef = SISL_NULL;		/* Pointer to array of coefficients of
 				   the surface				*/
   int idim;			/* Dimension of space where the
 				   curve lies				*/
@@ -104,9 +104,9 @@ s1938 (srf, etr1, inr1, etr2, inr2, surfr, jstat)
 				   new curve				*/
   double sarray[MAX_SIZE];
   int alloc_needed=FALSE;
-  double *alfa = NULL;		/* Array needed in subroutine
+  double *alfa = SISL_NULL;		/* Array needed in subroutine
 				   s1937 (Oslo-algorithm)		*/
-  double *ktsurf = NULL;	/* Array for internal use only		*/
+  double *ktsurf = SISL_NULL;	/* Array for internal use only		*/
 
   *jstat = 0;
 
@@ -144,7 +144,7 @@ s1938 (srf, etr1, inr1, etr2, inr2, surfr, jstat)
 
   if (MAX(iordr1,iordr2) > MAX_SIZE)
     {
-      if ((alfa = newarray(MAX(iordr1,iordr2),DOUBLE)) == NULL)
+      if ((alfa = newarray(MAX(iordr1,iordr2),DOUBLE)) == SISL_NULL)
 	goto err101;
       alloc_needed = TRUE;
     }
@@ -152,14 +152,14 @@ s1938 (srf, etr1, inr1, etr2, inr2, surfr, jstat)
     alfa = sarray;
   
   ktsurf = newarray (inr1 * inr2 * idim, DOUBLE);
-  if (ktsurf == NULL)
+  if (ktsurf == SISL_NULL)
     goto err101;
 
 
   /* Allocate array surfr for output. */
 
   *surfr = newarray (inr1 * inr2 * idim, DOUBLE);
-  if (*surfr == NULL)
+  if (*surfr == SISL_NULL)
     goto err101;
 
 
@@ -321,7 +321,7 @@ err117:
 out:
   if (alloc_needed)
     freearray (alfa);
-  if (ktsurf != NULL)
+  if (ktsurf != SISL_NULL)
     freearray (ktsurf);
 
   return;

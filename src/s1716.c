@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1716.c,v 1.2 1994-09-23 10:32:25 pfu Exp $
+ * $Id: s1716.c,v 1.3 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -43,7 +43,7 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
 *              curve is turned, and if pc2 is to be joined at the end
 *              the direction of this curve is turned. This means that
 *              pc1 always is at the beginning at the new curve.
-*              If aeps is to small to any joining a NULL pointer is returned.
+*              If aeps is to small to any joining a SISL_NULL pointer is returned.
 *
 *
 * INPUT      : pc1     - First curve to join.
@@ -96,7 +96,7 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
   int ki,kj1,kj2;      /* Control variable in loop, and others.   */
   double t1,tdel,tdelmin; /* The translation of the knots to the
 			     second curve.                           */
-  SISLCurve *qc=NULL;         /* Pointer to the new curve-object.        */
+  SISLCurve *qc=SISL_NULL;         /* Pointer to the new curve-object.        */
 
   /* Check that we have curves to join. */
 
@@ -119,9 +119,9 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
   /* First we compute the square distance between the start of both
      curves, Then we mark this to be the shortest. */
 
-  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+  for (tdel=DZERO,ki=0; ki<kdim; ki++)
     {
-      if (km11<kk1)  t1 = DNULL;
+      if (km11<kk1)  t1 = DZERO;
       else           t1 = pc1->ecoef[kdim*(km11-kk1)+ki];
       if (km21>=kk2) t1 -= pc2->ecoef[kdim*(km21-kk2)+ki];
       tdel += t1*t1;
@@ -131,9 +131,9 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
 
   /* The start of the first curve and the end of the second curve. */
 
-  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+  for (tdel=DZERO,ki=0; ki<kdim; ki++)
     {
-      if (km11<kk1)  t1 = DNULL;
+      if (km11<kk1)  t1 = DZERO;
       else           t1 = pc1->ecoef[kdim*(km11-kk1)+ki];
       if (km22>=kk2) t1 -= pc2->ecoef[kdim*(kn2-1-km22+kk2)+ki];
       tdel += t1*t1;
@@ -146,9 +146,9 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
 
   /* The end of the first curve and the start of the second curve. */
 
-  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+  for (tdel=DZERO,ki=0; ki<kdim; ki++)
     {
-      if (km12<kk1)  t1 = DNULL;
+      if (km12<kk1)  t1 = DZERO;
       else           t1 = pc1->ecoef[kdim*(kn1-1-km12+kk1)+ki];
       if (km21>=kk2) t1 -= pc2->ecoef[kdim*(km21-kk2)+ki];
       tdel += t1*t1;
@@ -161,9 +161,9 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
 
   /* The end of the first curve and the end of the second curve. */
 
-  for (tdel=DNULL,ki=0; ki<kdim; ki++)
+  for (tdel=DZERO,ki=0; ki<kdim; ki++)
     {
-      if (km12<kk1)  t1 = DNULL;
+      if (km12<kk1)  t1 = DZERO;
       else           t1 = pc1->ecoef[kdim*(kn1-1-km12+kk1)+ki];
       if (km22>=kk2) t1 -= pc2->ecoef[kdim*(kn2-1-km22+kk2)+ki];
       tdel += t1*t1;
@@ -175,7 +175,7 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
     }
 
 
-  if (aeps < DNULL || aeps >= sqrt(tdelmin))
+  if (aeps < DZERO || aeps >= sqrt(tdelmin))
     {
       /* We mark what ends we are going to use in the junction.
 	 and then call a function to join the curves. */
@@ -191,9 +191,9 @@ void s1716(pc1,pc2,aeps,rcnew,jstat)
       if (kstat) goto err153;
     } else
       {
-	/* Aeps was to small We just have to return NULL. */
+	/* Aeps was to small We just have to return SISL_NULL. */
 
-	qc = NULL;
+	qc = SISL_NULL;
       }
 
 

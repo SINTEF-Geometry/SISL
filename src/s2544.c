@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2544.c,v 1.4 1995-11-22 14:10:12 jka Exp $
+ * $Id: s2544.c,v 1.5 2001-03-19 15:59:00 afr Exp $
  *
  */
 
@@ -187,7 +187,7 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
   d2 = parvalue[3]/length;
 
 
-  if (surf == NULL)  goto err150;
+  if (surf == SISL_NULL)  goto err150;
   else
   {
     /* Compute derivates and normal. */
@@ -374,7 +374,7 @@ war002:
   *jstat = 2;
   goto out;
 
-  /* Error. Input (surface) pointer is NULL. */
+  /* Error. Input (surface) pointer is SISL_NULL. */
 err150:
   *jstat = -150;
   s6err("s2544", *jstat, 0);

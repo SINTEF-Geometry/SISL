@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1465.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1465.c,v 1.2 2001-03-19 15:59:04 afr Exp $
  *
  */
 
@@ -130,17 +130,17 @@ void sh1465(fshape,vboundc,icurv,etwist,etang,eder,jstat)
   double snorm[3];    /* Normal of vertex region in the midpoint.      */
   double svec[6];     /* Tangent along curve in the midpoint of the two
 			 first position curves.           */
-  double *sder = NULL;   /* Value of boundary curves at the midpoints of
+  double *sder = SISL_NULL;   /* Value of boundary curves at the midpoints of
 			    the curves.                   */
-  double *stang = NULL;  /* Tangent vectors in the midpoint of the region. */
+  double *stang = SISL_NULL;  /* Tangent vectors in the midpoint of the region. */
   SISLCurve *qc;      /* Local pointer to edge curve.  */
   
   kcurv2 = icurv/2;
 
   /* Allocate scratch for values on edge curves. */
 
-  if ((sder = newarray(2*icurv*kdim,DOUBLE)) == NULL) goto err101;
-  if ((stang = newarray(icurv*kdim,DOUBLE)) == NULL) goto err101;
+  if ((sder = newarray(2*icurv*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((stang = newarray(icurv*kdim,DOUBLE)) == SISL_NULL) goto err101;
 
   for (ki=0; ki<icurv; ki++)
     {  
@@ -192,16 +192,16 @@ void sh1465(fshape,vboundc,icurv,etwist,etang,eder,jstat)
 
       tscal1  = s6scpr(sder+(2*ki+1)*kdim,sder+(2*(ki+kcurv2)+1)*kdim,kdim);
 
-      if (tscal1 >= DNULL)
+      if (tscal1 >= DZERO)
 	tscal1  = MIN((double)1.0,tscal1);
       else
 	tscal1  = MAX((double)-1.0,tscal1);
 
       ta1 = acos(tscal1);
 
-      if (fabs(ta1) < ANGULAR_TOLERANCE) ta1 = DNULL;
+      if (fabs(ta1) < ANGULAR_TOLERANCE) ta1 = DZERO;
 
-      if (DNEQUAL(ta1,DNULL))
+      if (DNEQUAL(ta1,DZERO))
 	{
 	  /*  Make tangents based on radius of curvature */
 
@@ -212,8 +212,8 @@ void sh1465(fshape,vboundc,icurv,etwist,etang,eder,jstat)
       /* Test if the found tangent length can be used. Otherwise
 	 adjust the length.   */
 
-      if (DEQUAL(ta1,DNULL) || trad1 < 0) tang1 = tdist/(double)3.0;
-      if (DEQUAL(ta1,DNULL) || trad2 < 0) tang2 = tdist/(double)3.0;
+      if (DEQUAL(ta1,DZERO) || trad1 < 0) tang1 = tdist/(double)3.0;
+      if (DEQUAL(ta1,DZERO) || trad2 < 0) tang2 = tdist/(double)3.0;
       if (tang1 > (double)0.5*tdist || tang2 > (double)0.5*tdist) 
 	{
 	  tang1 = tb1;
@@ -429,11 +429,11 @@ static void sh1465_s9der2(ebound,epoint,etang,enorm,evec,icurv,
   double tform1;     /* First fundamental form.      */
   double spoint[18]; /* Interpolation conditions.    */
   double stype[6];   /* Type of interpolation conditions. */
-  double *spar = NULL;  /* Parameter value of interpolation conditions. */
+  double *spar = SISL_NULL;  /* Parameter value of interpolation conditions. */
   double sder[18];   /* Value and derivatives of curve in the midpoint. */
   double scurv[3];   /* Curvature vector in midpoint of curve. */
   double smat[9];    /* Matrix in equation system to compute mixed derivative. */
-  SISLCurve *qc = NULL;  /* Curve across the vertex region between midpoint
+  SISLCurve *qc = SISL_NULL;  /* Curve across the vertex region between midpoint
 			       of edge position curves through the midpoint
 			       of the region.      */
   

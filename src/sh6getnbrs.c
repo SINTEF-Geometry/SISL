@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6getnbrs.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6getnbrs.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -46,9 +46,9 @@ void sh6getnhbrs(pt,pt1,pt2,jstat)
                pt2      - Second neighbour.
 *              jstat    - Error flag.
 *                         jstat =  0  => successful, 2 unique neighbours
-*                         jstat =  1  => pt is end point, pt2 NULL
-*                         jstat =  2  => pt is junction point, both NULL
-*                         jstat =  3  => pt is isolated, both NULL
+*                         jstat =  1  => pt is end point, pt2 SISL_NULL
+*                         jstat =  2  => pt is junction point, both SISL_NULL
+*                         jstat =  3  => pt is isolated, both SISL_NULL
 *                         jstat = -1  => error in data structure.
 *                         jstat <  0  => error in lower level routine
 *
@@ -66,8 +66,8 @@ void sh6getnhbrs(pt,pt1,pt2,jstat)
   int num;              /* count number of pointers    */
   int i;                /* Loop variable. */
   
-   *pt1 = NULL;
-   *pt2 = NULL;
+   *pt1 = SISL_NULL;
+   *pt2 = SISL_NULL;
    *jstat = 0;
   
   if(sh6ismain(pt))  /* pt is main point. */
@@ -88,8 +88,8 @@ void sh6getnhbrs(pt,pt1,pt2,jstat)
       else if(num == 1) *jstat = 1; /* pt is an end point. */
       else if(num > 2) /* pt is a junction point. */
       {
-	  *pt1 = NULL;
-	  *pt2 = NULL;
+	  *pt1 = SISL_NULL;
+	  *pt2 = SISL_NULL;
           *jstat = 2;
       }
   }
@@ -109,8 +109,8 @@ void sh6getnhbrs(pt,pt1,pt2,jstat)
 	      /* if(num > 2) goto err1; Error in data structure. */
 	      if (num > 2)
 	      {
-		 *pt1 = NULL;
-		 *pt2 = NULL;
+		 *pt1 = SISL_NULL;
+		 *pt2 = SISL_NULL;
 		 *jstat = 2;
 	      }
           }

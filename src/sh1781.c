@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1781.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1781.c,v 1.2 2001-03-19 15:59:05 afr Exp $
  *
  */
 
@@ -103,7 +103,7 @@ sh1781 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
   SISLIntpt *uintpt[2];		/* Array storing new intersection points.  */
   double *ret_val;		/* Pointer to geo data from sh6getgeom     */
   double *ret_norm;		/* Pointer to geo data from sh6getgeom     */
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int make_hp;                  /* Flag, make/not make help pt.            */
 
   /* Don't make pretop for help points ! */
@@ -183,7 +183,7 @@ sh1781 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
   stang1[0] = (double) 1.0;
   stang1[1] = ret_val[1];
   stang2[0] = (double) 1.0;
-  stang2[1] = DNULL;
+  stang2[1] = DZERO;
 
   /* UPDATE (ujk) : tune */
   if (s6ang (stang1, stang2, 2) > 0.001*ANGULAR_TOLERANCE)
@@ -230,7 +230,7 @@ sh1781 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	      make_hp = TRUE;
 	      for (ki = kleft - kk + 1; ki < kn; ki++)
 		{
-		  for (tpar = DNULL, kj = ki + 1; kj < ki + kk; kj++)
+		  for (tpar = DZERO, kj = ki + 1; kj < ki + kk; kj++)
 		    tpar += st[kj];
 		  tpar /= (double) (kk - 1);
 
@@ -269,10 +269,10 @@ sh1781 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		 else
 		    spar[0] = tpar0;
 		 
-		 uintpt[kpos] = NULL;
-		 if ((uintpt[kpos] = hp_newIntpt (1, spar, DNULL, -SI_ORD,
+		 uintpt[kpos] = SISL_NULL;
+		 if ((uintpt[kpos] = hp_newIntpt (1, spar, DZERO, -SI_ORD,
 						  SI_ON, lright[0], SI_ON,
-						  lright[1], 0, 0, nullp, nullp)) == NULL)
+						  lright[1], 0, 0, nullp, nullp)) == SISL_NULL)
 		    goto err101;
 		 
 		 /* Insert the point into the data structure.  */
@@ -308,7 +308,7 @@ sh1781 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	      make_hp = TRUE;
 	      for (ki = kleft; ki >= 0; ki--)
 		{
-		  for (tpar = DNULL, kj = ki + 1; kj < ki + kk; kj++)
+		  for (tpar = DZERO, kj = ki + 1; kj < ki + kk; kj++)
 		    tpar += st[kj];
 		  tpar /= (double) (kk - 1);
 
@@ -347,10 +347,10 @@ sh1781 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 		 else
 		    spar[0] = tpar0;
 		 
-		 uintpt[kpos] = NULL;
-		 if ((uintpt[kpos] = hp_newIntpt (1, spar, DNULL, -SI_ORD,
+		 uintpt[kpos] = SISL_NULL;
+		 if ((uintpt[kpos] = hp_newIntpt (1, spar, DZERO, -SI_ORD,
 						  lleft[0], SI_ON, lleft[1],
-						  SI_ON, 0, 0, nullp, nullp)) == NULL)
+						  SI_ON, 0, 0, nullp, nullp)) == SISL_NULL)
 		    goto err101;
 		 
 		 /* Insert the point into the data structure.  */

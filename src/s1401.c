@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1401.c,v 1.4 1997-01-15 11:22:35 jka Exp $
+ * $Id: s1401.c,v 1.5 2001-03-19 15:58:49 afr Exp $
  *
  */
 
@@ -118,27 +118,27 @@ void s1401(vcurve,etwist,rsurf,jstat)
   double tpar;
   double salpha[16];
   double sknot0[8];
-  double *sder = NULL;
-  double *sknot1 = NULL;
-  double *scoef1 = NULL;
-  double *sknot2 = NULL;
-  double *scoef2 = NULL;
-  double *ssurf1 = NULL;
-  double *ssurf2 = NULL;
-  double *ssurf3 = NULL;
-  double *ssurf4 = NULL;
-  double *smat = NULL;
-  double *ssurf1new = NULL;
-  double *ssurf2new = NULL;
-  double *ssurf3new = NULL;
+  double *sder = SISL_NULL;
+  double *sknot1 = SISL_NULL;
+  double *scoef1 = SISL_NULL;
+  double *sknot2 = SISL_NULL;
+  double *scoef2 = SISL_NULL;
+  double *ssurf1 = SISL_NULL;
+  double *ssurf2 = SISL_NULL;
+  double *ssurf3 = SISL_NULL;
+  double *ssurf4 = SISL_NULL;
+  double *smat = SISL_NULL;
+  double *ssurf1new = SISL_NULL;
+  double *ssurf2new = SISL_NULL;
+  double *ssurf3new = SISL_NULL;
 
   SISLCurve *qc1[4];
   SISLCurve *qc2[4];
 
   for (ki=0; ki<4; ki++)
   {
-     qc1[ki] = NULL;
-     qc2[ki] = NULL;
+     qc1[ki] = SISL_NULL;
+     qc2[ki] = SISL_NULL;
   }
 
   /* Test dimension.  */
@@ -149,8 +149,8 @@ void s1401(vcurve,etwist,rsurf,jstat)
 
   /* Allocate scratch for local array.  */
 
-  if ((sder = newarray(3*kdim,DOUBLE)) == NULL) goto err101;
-  if ((smat = newarray(16*kdim,DOUBLE)) == NULL) goto err101;
+  if ((sder = newarray(3*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((smat = newarray(16*kdim,DOUBLE)) == SISL_NULL) goto err101;
 
   /* TEST !!! */
 
@@ -294,9 +294,9 @@ void s1401(vcurve,etwist,rsurf,jstat)
 
   /* Allocate scratch for coefficients of blending surfaces.  */
 
-  if ((ssurf1 = new0array(4*kn1*kdim,DOUBLE)) == NULL) goto err101;
-  if ((ssurf2 = new0array(kn2*4*kdim,DOUBLE)) == NULL) goto err101;
-  if ((ssurf3 = new0array(16*kdim,DOUBLE)) == NULL) goto err101;
+  if ((ssurf1 = new0array(4*kn1*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((ssurf2 = new0array(kn2*4*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((ssurf3 = new0array(16*kdim,DOUBLE)) == SISL_NULL) goto err101;
 
   /* Compute coefficients of 1. blending surface.  */
 
@@ -351,7 +351,7 @@ void s1401(vcurve,etwist,rsurf,jstat)
 
   /* Store Gordons patch.  */
 
-  if ((*rsurf = newSurf(kn2,kn1,kk2,kk1,sknot2,sknot1,ssurf1new,1,kdim,1)) == NULL)
+  if ((*rsurf = newSurf(kn2,kn1,kk2,kk1,sknot2,sknot1,ssurf1new,1,kdim,1)) == SISL_NULL)
     goto err101;
 
   /* Gordons patch defined.  */
@@ -381,8 +381,8 @@ void s1401(vcurve,etwist,rsurf,jstat)
 
     /* Free space occupied by local arrays.  */
 
-    if (sder != NULL) freearray(sder);
-  if (smat != NULL) freearray(smat);
+    if (sder != SISL_NULL) freearray(sder);
+  if (smat != SISL_NULL) freearray(smat);
   if (qc1[0] && qc1[0] != vcurve[0]) freeCurve(qc1[0]);
   if (qc1[1] && qc1[1] != vcurve[4]) freeCurve(qc1[1]);
   if (qc1[2] && qc1[2] != vcurve[1]) freeCurve(qc1[2]);
@@ -391,17 +391,17 @@ void s1401(vcurve,etwist,rsurf,jstat)
   if (qc2[1] && qc2[1] != vcurve[2]) freeCurve(qc2[1]);
   if (qc2[2] && qc2[2] != vcurve[7]) freeCurve(qc2[2]);
   if (qc2[3] && qc2[3] != vcurve[3]) freeCurve(qc2[3]);
-  if (sknot1 != NULL) freearray(sknot1);
-  if (sknot2 != NULL) freearray(sknot2);
-  if (scoef1 != NULL) freearray(scoef1);
-  if (scoef2 != NULL) freearray(scoef2);
-  if (ssurf1 != NULL) freearray(ssurf1);
-  if (ssurf2 != NULL) freearray(ssurf2);
-  if (ssurf3 != NULL) freearray(ssurf3);
-  if (ssurf4 != NULL) freearray(ssurf4);
-  if (ssurf1new != NULL) freearray(ssurf1new);
-  if (ssurf2new != NULL) freearray(ssurf2new);
-  if (ssurf3new != NULL) freearray(ssurf3new);
+  if (sknot1 != SISL_NULL) freearray(sknot1);
+  if (sknot2 != SISL_NULL) freearray(sknot2);
+  if (scoef1 != SISL_NULL) freearray(scoef1);
+  if (scoef2 != SISL_NULL) freearray(scoef2);
+  if (ssurf1 != SISL_NULL) freearray(ssurf1);
+  if (ssurf2 != SISL_NULL) freearray(ssurf2);
+  if (ssurf3 != SISL_NULL) freearray(ssurf3);
+  if (ssurf4 != SISL_NULL) freearray(ssurf4);
+  if (ssurf1new != SISL_NULL) freearray(ssurf1new);
+  if (ssurf2new != SISL_NULL) freearray(ssurf2new);
+  if (ssurf3new != SISL_NULL) freearray(ssurf3new);
 
     return;
 }
@@ -513,17 +513,17 @@ static void s1401_s9basis1(ik1new,in1new,et1new,idim,ik1,in1,et1,
   int kkind = 1;
   int kcopy = 1;
   double tstart,tstop;
-  double *scoef = NULL;
-  double *scoef2 = NULL;
-  SISLCurve *qc = NULL;
+  double *scoef = SISL_NULL;
+  double *scoef2 = SISL_NULL;
+  SISLCurve *qc = SISL_NULL;
 
   tstart = et1new[ik1new-1];
   tstop = et1new[in1new];
 
   /* Allocate scratch for coefficient arrays.  */
 
-  if ((scoef = newarray(in1*in2*idim,DOUBLE)) == NULL) goto err101;
-  if ((*gcoefnew = newarray(in1new*in2*idim,DOUBLE)) == NULL)
+  if ((scoef = newarray(in1*in2*idim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((*gcoefnew = newarray(in1new*in2*idim,DOUBLE)) == SISL_NULL)
      goto err101;
 
   /* Change parameter directions of surface.  */
@@ -533,7 +533,7 @@ static void s1401_s9basis1(ik1new,in1new,et1new,idim,ik1,in1,et1,
   /* Express the surface with interchanged parameter directions
      as a curve.  */
 
-  if ((qc = newCurve(in1,ik1,et1,scoef,kkind,kdim,kcopy)) == NULL) goto err101;
+  if ((qc = newCurve(in1,ik1,et1,scoef,kkind,kdim,kcopy)) == SISL_NULL) goto err101;
 
   /* Express the surface interpreted as a curve on the extended
      knot vector.  */
@@ -563,9 +563,9 @@ static void s1401_s9basis1(ik1new,in1new,et1new,idim,ik1,in1,et1,
   out :
      /* Free scratch.  */
 
-    if (scoef != NULL) freearray(scoef);
-    if (scoef2 != NULL) freearray(scoef2);
-    if (qc != NULL) freeCurve(qc);
+    if (scoef != SISL_NULL) freearray(scoef);
+    if (scoef2 != SISL_NULL) freearray(scoef2);
+    if (qc != SISL_NULL) freeCurve(qc);
 
     return;
 }
@@ -621,14 +621,14 @@ static void s1401_s9basis2(ik2new,in2new,et2new,idim,ik1,in1,et1,
   int kkind = 1;
   int kcopy = 1;
   double tstart,tstop;
-  SISLCurve *qc = NULL;
+  SISLCurve *qc = SISL_NULL;
 
   tstart = et2new[ik2new-1];
   tstop = et2new[in2new];
 
   /* Express the surface as a curve.  */
 
-  if ((qc = newCurve(in2,ik2,et2,ecoef,kkind,kdim,kcopy)) == NULL) goto err101;
+  if ((qc = newCurve(in2,ik2,et2,ecoef,kkind,kdim,kcopy)) == SISL_NULL) goto err101;
 
   /* Express the surface interpreted as a curve on the extended
      knot vector.  */
@@ -655,7 +655,7 @@ static void s1401_s9basis2(ik2new,in2new,et2new,idim,ik1,in1,et1,
 
      /* Free scratch.  */
 
-     if (qc != NULL) freeCurve(qc);
+     if (qc != SISL_NULL) freeCurve(qc);
 
     return;
 }

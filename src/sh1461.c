@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1461.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1461.c,v 1.2 2001-03-19 15:59:03 afr Exp $
  *
  */
 
@@ -145,9 +145,9 @@ void sh1461(fshape,f_initmid,vboundc,icurv,vsurf,jstat)
                                    evaluate curve.                 */
   double tro00,tro01,tro10,tro11;  /* Coefficients used to compute
                                       derivatives at midpoint of region. */
-  double *sder = NULL;          /* Array of derivatives at midpoint    */
-  double *stwist = NULL;        /* Twist vectors of corners of region. */
-  double *stang = NULL;         /* Tangent vectors at midpoint.        */
+  double *sder = SISL_NULL;          /* Array of derivatives at midpoint    */
+  double *stwist = SISL_NULL;        /* Twist vectors of corners of region. */
+  double *stang = SISL_NULL;         /* Tangent vectors at midpoint.        */
   double spos[15];              /* Conditions and vertices of position
                                    curve along inner edge of region.   */
   double scrt1[21];             /* Conditions and vertices of cross tangent
@@ -162,12 +162,12 @@ void sh1461(fshape,f_initmid,vboundc,icurv,vsurf,jstat)
                                    boundary curve.                     */
   double sdum2[6];              /* Value and 1. derivative of cross
                                    tangent boundary curve.             */
-  double *stwist2 = NULL;       /* Twist vectors of 4-sided region.    */
+  double *stwist2 = SISL_NULL;       /* Twist vectors of 4-sided region.    */
   double *st,*st2;              /* Pointers into knot vectors. Used to
                                    change parametrization of curve.    */
   double tstart;                /* Start parameter of knot vector.     */
   SISLCurve *qc;                /* Pointer to curve.                   */
-  SISLCurve **qbound = NULL;    /* Boundary conditions of 4-sided regions. */
+  SISLCurve **qbound = SISL_NULL;    /* Boundary conditions of 4-sided regions. */
   
   for (ki=0; ki<4; ki++) lder[ki] = 2;
   
@@ -195,11 +195,11 @@ void sh1461(fshape,f_initmid,vboundc,icurv,vsurf,jstat)
       
   /* Allocate scratch for local arrays.  */
 
-  if ((sder = new0array(icurv*kdim*knmb,DOUBLE)) == NULL) goto err101;
-  if ((stwist = newarray(icurv*kdim,DOUBLE)) == NULL) goto err101;
-  if ((stwist2 = newarray(4*icurv*kdim,DOUBLE)) == NULL) goto err101;
-  if ((stang = newarray(icurv*kdim,DOUBLE)) == NULL) goto err101;
-  if ((qbound = newarray(8*icurv,SISLCurve*)) == NULL) goto err101;
+  if ((sder = new0array(icurv*kdim*knmb,DOUBLE)) == SISL_NULL) goto err101;
+  if ((stwist = newarray(icurv*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((stwist2 = newarray(4*icurv*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((stang = newarray(icurv*kdim,DOUBLE)) == SISL_NULL) goto err101;
+  if ((qbound = newarray(8*icurv,SISLCurve*)) == SISL_NULL) goto err101;
   
   for (ki=0; ki<icurv; ki++)
     {
@@ -333,13 +333,13 @@ void sh1461(fshape,f_initmid,vboundc,icurv,vsurf,jstat)
       
       /* Represent inner boundary conditions as curves. */
 
-      if ((qbound[8*kj] = newCurve(5,5,stpos,spos,1,kdim,1)) == NULL) 
+      if ((qbound[8*kj] = newCurve(5,5,stpos,spos,1,kdim,1)) == SISL_NULL) 
 	goto err101;
-      if ((qbound[8*kj+1] = newCurve(kkcrt2,kkcrt2,stcrt1,scrt1,1,kdim,1)) == NULL)
+      if ((qbound[8*kj+1] = newCurve(kkcrt2,kkcrt2,stcrt1,scrt1,1,kdim,1)) == SISL_NULL)
 	goto err101;
-      if ((qbound[8*ki+6] = newCurve(5,5,stpos,spos,1,kdim,1)) == NULL) 
+      if ((qbound[8*ki+6] = newCurve(5,5,stpos,spos,1,kdim,1)) == SISL_NULL) 
 	goto err101;
-      if ((qbound[8*ki+7] = newCurve(4,4,stcrt2,scrt2,1,kdim,1)) == NULL)
+      if ((qbound[8*ki+7] = newCurve(4,4,stcrt2,scrt2,1,kdim,1)) == SISL_NULL)
 	goto err101;
       
       /* Split current boundary of the vertex region.  */
@@ -597,11 +597,11 @@ static void sh1461_s9coef(evec1,evec2,evec3,evec4,idim,cro00,cro01,
   
   /* Fetch the sign of the sinuses of the angles.  */
 
-  ksin = (tsin < DNULL) ? -1 : 1;
-  ksin1 = (tsin1 < DNULL) ? -1 : 1;
-  ksin2 = (tsin2 < DNULL) ? -1 : 1;
-  ksin3 = (tsin3 < DNULL) ? -1 : 1;
-  ksin4 = (tsin4 < DNULL) ? -1 : 1;
+  ksin = (tsin < DZERO) ? -1 : 1;
+  ksin1 = (tsin1 < DZERO) ? -1 : 1;
+  ksin2 = (tsin2 < DZERO) ? -1 : 1;
+  ksin3 = (tsin3 < DZERO) ? -1 : 1;
+  ksin4 = (tsin4 < DZERO) ? -1 : 1;
   
   /* Compute the angles in a more stable way. */
 
@@ -908,7 +908,7 @@ static double sh1461_s9ang(evec1,evec2,idim)
   tlength2 = s6length(evec2,idim,&kstat2);
   
   if (!kstat1 || !kstat2)
-    tang = DNULL;
+    tang = DZERO;
   else
     {
       tcos = tscpr/(tlength1*tlength2);
@@ -990,11 +990,11 @@ static void sh1461_s9comder(ider1,ider2,ederprev,idim,aro00,aro01,aro10,
 	  for (kh=0; kh<idim; kh++)
 	    eder[kh] += tfac1*tfac2*t00*t01*t10*t11*ederprev[(2-kj-kk)*idim+kh];
 	      
-	  if (aro01 != DNULL) t01 /= aro01;
+	  if (aro01 != DZERO) t01 /= aro01;
 	  else if (kk == ider2-1) t01 = (double)1.0;
 	  t11 *= aro11;
 	}
-      if (aro00 != DNULL) t00 /= aro00;
+      if (aro00 != DZERO) t00 /= aro00;
       else if (kj == ider1-1) t00 = (double)1.0;
       t10 *= aro10;	  
     }

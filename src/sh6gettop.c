@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6gettop.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6gettop.c,v 1.2 2001-03-19 15:59:08 afr Exp $
  *
  */
 
@@ -72,7 +72,7 @@ void sh6gettop(pt,ilist,left1,right1,left2,right2,jstat)
 
    /* Check pt. */
 
-   if(pt == NULL) goto err2;
+   if(pt == SISL_NULL) goto err2;
 
    if(ilist >= 0 && ilist < pt->no_of_curves)
    {
@@ -112,7 +112,7 @@ err1:
    goto out;
 
 err2:
-   /* Error in input. pt is NULL. */
+   /* Error in input. pt is SISL_NULL. */
    
    *jstat = -2;
    s6err("sh6gettop",*jstat,0);

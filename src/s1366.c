@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1366.c,v 1.6 1994-09-20 10:30:35 pfu Exp $
+ * $Id: s1366.c,v 1.7 2001-03-19 15:58:47 afr Exp $
  *
  */
 
@@ -148,10 +148,10 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   double tepsco;     /* Computer resolution. */
   double smxerr[3];  /* Array containing an upper bound for the error comitted
 			in each component during the data reduction. */
-  double *spnt=NULL; /* Pointer to storage of point info. */
-  double *stng1=NULL;/* Pointer to derivatives in 1. parameter direction. */
-  double *stng2=NULL;/* Pointer to derivatives in 2. parameter direction. */
-  double *scrss=NULL; /* Pointer to cross derivatives. */
+  double *spnt=SISL_NULL; /* Pointer to storage of point info. */
+  double *stng1=SISL_NULL;/* Pointer to derivatives in 1. parameter direction. */
+  double *stng2=SISL_NULL;/* Pointer to derivatives in 2. parameter direction. */
+  double *scrss=SISL_NULL; /* Pointer to cross derivatives. */
   double spar[2];    /* Parameter value at where to evaluate surface.    */
   double sder[27];   /* Pointer to array containing the derivatives.     */
 
@@ -167,26 +167,26 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   /* Allocate space for storage of points, derivatives and cross-derivatives. */
 
   spnt = newarray(idim*kmaxis,DOUBLE);
-  if (spnt == NULL) goto err101;
+  if (spnt == SISL_NULL) goto err101;
 
   stng1 = newarray(idim*kmaxis,DOUBLE);
-  if (stng1 == NULL) goto err101;
+  if (stng1 == SISL_NULL) goto err101;
 
   stng2 = newarray(idim*kmaxis,DOUBLE);
-  if (stng2 == NULL) goto err101;
+  if (stng2 == SISL_NULL) goto err101;
 
   scrss = newarray(idim*kmaxis,DOUBLE);
-  if (scrss == NULL) goto err101;
+  if (scrss == SISL_NULL) goto err101;
 
   /* Allocate space for storage of parametrization in 1. direction. */
 
   spar1 = newarray(kmaxik1,DOUBLE);
-  if (spar1 == NULL) goto err101;
+  if (spar1 == SISL_NULL) goto err101;
 
   /* Allocate space for storage of parametrization in 2. direction. */
 
   spar2 = newarray(kmaxik2,DOUBLE);
-  if (spar2 == NULL) goto err101;
+  if (spar2 == SISL_NULL) goto err101;
 
   /* Initiate parameter value in first and second parameter direction. */
   spar[0] = eknot13[ik13-1];
@@ -234,13 +234,13 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       {
 	kmaxis += 512;
 	spnt  = increasearray(spnt,idim*kmaxis,DOUBLE);
-	if ( spnt == NULL )  goto err101;
+	if ( spnt == SISL_NULL )  goto err101;
 	stng1 = increasearray(stng1,idim*kmaxis,DOUBLE);
-	if ( stng1 == NULL )  goto err101;
+	if ( stng1 == SISL_NULL )  goto err101;
 	stng2 = increasearray(stng2,idim*kmaxis,DOUBLE);
-	if ( stng2 == NULL )  goto err101;
+	if ( stng2 == SISL_NULL )  goto err101;
 	scrss = increasearray(scrss,idim*kmaxis,DOUBLE);
-	if ( scrss == NULL )  goto err101;
+	if ( scrss == SISL_NULL )  goto err101;
       }
 
       /* Possibly increase size of arrays. */
@@ -248,7 +248,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       {
 	kmaxik1 = km1 + 512;	/* kmaxik += 10; (PFU 19/09-94) */
 	spar1 = increasearray(spar1,kmaxik1,DOUBLE);
-	if ( spar1 == NULL )  goto err101;
+	if ( spar1 == SISL_NULL )  goto err101;
       }
 
       for (ki=0; ki<idim; ki++)
@@ -292,13 +292,13 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       {
 	kmaxis += 512;
 	spnt  = increasearray(spnt,idim*kmaxis,DOUBLE);
-	if ( spnt == NULL )  goto err101;
+	if ( spnt == SISL_NULL )  goto err101;
 	stng1 = increasearray(stng1,idim*kmaxis,DOUBLE);
-	if ( stng1 == NULL )  goto err101;
+	if ( stng1 == SISL_NULL )  goto err101;
 	stng2 = increasearray(stng2,idim*kmaxis,DOUBLE);
-	if ( stng2 == NULL )  goto err101;
+	if ( stng2 == SISL_NULL )  goto err101;
 	scrss = increasearray(scrss,idim*kmaxis,DOUBLE);
-	if ( scrss == NULL )  goto err101;
+	if ( scrss == SISL_NULL )  goto err101;
       }
 
       /* Possibly increase size of arrays. */
@@ -306,7 +306,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       {
 	kmaxik2 = km2 + 512;  /* kmaxik += 10; (PFU 19/09-94) */
 	spar2 = increasearray(spar2,kmaxik2,DOUBLE);
-	if ( spar1 == NULL )  goto err101;
+	if ( spar1 == SISL_NULL )  goto err101;
       }
 
       for (ki=0; ki<idim; ki++)
@@ -344,13 +344,13 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 	  {
 	    kmaxis += 512;
 	    spnt  = increasearray(spnt,idim*kmaxis,DOUBLE);
-	    if ( spnt == NULL )  goto err101;
+	    if ( spnt == SISL_NULL )  goto err101;
 	    stng1 = increasearray(stng1,idim*kmaxis,DOUBLE);
-	    if ( stng1 == NULL )  goto err101;
+	    if ( stng1 == SISL_NULL )  goto err101;
 	    stng2 = increasearray(stng2,idim*kmaxis,DOUBLE);
-	    if ( stng2 == NULL )  goto err101;
+	    if ( stng2 == SISL_NULL )  goto err101;
 	    scrss = increasearray(scrss,idim*kmaxis,DOUBLE);
-	    if ( scrss == NULL )  goto err101;
+	    if ( scrss == SISL_NULL )  goto err101;
 	  }
 
 	  for (ki=0; ki<idim; ki++)
@@ -393,12 +393,12 @@ error:
   goto out;
 
 out:
-  if (spnt != NULL) freearray(spnt);
-  if (stng1 != NULL) freearray(stng1);
-  if (stng2 != NULL) freearray(stng2);
-  if (scrss != NULL) freearray(scrss);
-  if (spar1 != NULL) freearray(spar1);
-  if (spar2 != NULL) freearray(spar2);
+  if (spnt != SISL_NULL) freearray(spnt);
+  if (stng1 != SISL_NULL) freearray(stng1);
+  if (stng2 != SISL_NULL) freearray(stng2);
+  if (scrss != SISL_NULL) freearray(scrss);
+  if (spar1 != SISL_NULL) freearray(spar1);
+  if (spar2 != SISL_NULL) freearray(spar2);
 
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1015.c,v 1.3 1994-12-19 15:06:11 pfu Exp $
+ * $Id: s1015.c,v 1.4 2001-03-19 15:58:40 afr Exp $
  *
  */
 #define S1015
@@ -107,8 +107,8 @@ void s1015(pc1,pc2,aepsge,eps1,eps2,aradius,parpt1,parpt2,
   int kstat=0;        /* Status variable                                  */
   int kpos=0;         /* Position of error                                */
 
-  SISLPoint *p1=NULL; /* SISLPoint form of eps1.                          */
-  SISLPoint *p2=NULL; /* SISLPoint form of eps2.                          */
+  SISLPoint *p1=SISL_NULL; /* SISLPoint form of eps1.                          */
+  SISLPoint *p2=SISL_NULL; /* SISLPoint form of eps2.                          */
   double tpar1;       /* Test parameter on curve 1.                       */
   double tpar2;       /* Test parameter on curve 2.                       */
   int kder = 1;       /* Number of derivatives.                           */
@@ -132,7 +132,7 @@ void s1015(pc1,pc2,aepsge,eps1,eps2,aradius,parpt1,parpt2,
   double tdn[2];      /* Distances between old and new parameter
 			 value in the two parameter directions.           */
   double tprev;       /* Previous difference between the curves.          */
-  double *sval1=NULL; /* Value ,first and second derivatie on curve 1     */
+  double *sval1=SISL_NULL; /* Value ,first and second derivatie on curve 1     */
   double *sval2;      /* Value ,first and second derivatie on curve 2     */
   double *sdiff;      /* Difference between the curves                    */
   double start1;      /* Start parameter of curve 1.                      */
@@ -191,7 +191,7 @@ void s1015(pc1,pc2,aepsge,eps1,eps2,aradius,parpt1,parpt2,
   /* Allocate local used memory */
 
   sval1 = newarray((2*kder+5)*kdim,double);
-  if (sval1 == NULL) goto err101;
+  if (sval1 == SISL_NULL) goto err101;
 
   sval2 = sval1 + (kder+2)*kdim;
   sdiff = sval2 + (kder+2)*kdim;
@@ -236,7 +236,7 @@ void s1015(pc1,pc2,aepsge,eps1,eps2,aradius,parpt1,parpt2,
 
       /* Check if the direction of the step have change. */
 
-      kdir = (s6scpr(td,tdn,2) >= DNULL);     /* 0 if changed. */
+      kdir = (s6scpr(td,tdn,2) >= DZERO);     /* 0 if changed. */
 
       /* Ordinary converging. */
 
@@ -307,9 +307,9 @@ void s1015(pc1,pc2,aepsge,eps1,eps2,aradius,parpt1,parpt2,
   goto out;
 
  out:
-  if (sval1 != NULL) freearray(sval1);
-  if ( p1 != NULL )  freePoint(p1);
-  if ( p2 != NULL )  freePoint(p2);
+  if (sval1 != SISL_NULL) freearray(sval1);
+  if ( p1 != SISL_NULL )  freePoint(p1);
+  if ( p2 != SISL_NULL )  freePoint(p2);
 }
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -462,10 +462,10 @@ static void c_c_f_s9dir(cdist,cdiff1,cdiff2,gdiff,eval1,eval2,idim)
 
   tdet = t2*t2 - t1*t3;
 
-  if (DEQUAL(tdet,DNULL))
+  if (DEQUAL(tdet,DZERO))
     {
-      *cdiff1 = DNULL;
-      *cdiff2 = DNULL;
+      *cdiff1 = DZERO;
+      *cdiff2 = DZERO;
     }
   else
     {

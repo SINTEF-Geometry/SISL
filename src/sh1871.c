@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1871.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1871.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -101,17 +101,17 @@ void sh1871(pc1,pt1,idim,aepsco,aepsge,
 *********************************************************************
 */
 {            
-  double *nullp = NULL;
+  double *nullp = SISL_NULL;
   int kstat = 0;                 /* Local status variable.                   */
   int kpos = 0;                  /* Position of error.                       */
-  SISLObject *qo1 = NULL;            /* Object containing the curve in 
+  SISLObject *qo1 = SISL_NULL;            /* Object containing the curve in 
 				    the intersection.                        */
-  SISLObject *qo2 = NULL;            /* Object containing the point in 
+  SISLObject *qo2 = SISL_NULL;            /* Object containing the point in 
 				    the intersection.*/
-  SISLPoint  *pp1 = NULL;	   /* Point object containing the point */
-  SISLIntdat *qintdat = NULL;        /* Structure holding the intersection data. */
+  SISLPoint  *pp1 = SISL_NULL;	   /* Point object containing the point */
+  SISLIntdat *qintdat = SISL_NULL;        /* Structure holding the intersection data. */
   int      ksurf=0;         /* Dummy number of Intsurfs. */
-  SISLIntsurf **wsurf=NULL;    /* Dummy array of Intsurfs. */
+  SISLIntsurf **wsurf=SISL_NULL;    /* Dummy array of Intsurfs. */
   int kdeg=0;
   
   /* 
@@ -130,13 +130,13 @@ void sh1871(pc1,pt1,idim,aepsco,aepsge,
    * --------------------------------------------------------
    */
 
-  if ((qo1 = newObject(SISLCURVE)) == NULL) goto err101;
+  if ((qo1 = newObject(SISLCURVE)) == SISL_NULL) goto err101;
   qo1 -> c1 = pc1;
   qo1 -> o1 = qo1;
 
-  if ((pp1 = newPoint(pt1,idim, 0)) == NULL) goto err101;
+  if ((pp1 = newPoint(pt1,idim, 0)) == SISL_NULL) goto err101;
   
-  if ((qo2 = newObject(SISLPOINT)) == NULL) goto err101;
+  if ((qo2 = newObject(SISLPOINT)) == SISL_NULL) goto err101;
   qo2 -> p1 = pp1;
   qo2 -> o1 = qo2;
   
@@ -219,7 +219,7 @@ void sh1871(pc1,pt1,idim,aepsco,aepsge,
 
   if (qo1) 
     {
-      qo1 -> c1 = NULL;  freeObject(qo1);
+      qo1 -> c1 = SISL_NULL;  freeObject(qo1);
     }
   if (qo2)  freeObject(qo2);
 

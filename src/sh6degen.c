@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6degen.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6degen.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -104,7 +104,7 @@ void sh6degen(po1, po2, pintdat, aepsge, jstat)
   SISLIntpt *pprev, *pcurr, *pnext;    /*    Pointers to Intpts. */    
   SISLIntpt *pfirst, *plast;           /*    Pointers to Intpts. */    
   SISLIntpt *qpt;  
-  SISLObject *qo2=NULL; /* Either po2 or dummy point. */
+  SISLObject *qo2=SISL_NULL; /* Either po2 or dummy point. */
   int newilist;         /* New number of Intlists. */
   int idim;              /* Dimension of space. */
   double geomfirst[3]; /* geometric info --- position etc. */
@@ -115,7 +115,7 @@ void sh6degen(po1, po2, pintdat, aepsge, jstat)
   knpar = po1->iobj + po2->iobj;
   *jstat = 0;
 
-  if(*pintdat == NULL) goto out;
+  if(*pintdat == SISL_NULL) goto out;
 
   /* Set up local variables. */
 
@@ -138,7 +138,7 @@ void sh6degen(po1, po2, pintdat, aepsge, jstat)
      is a dummy, so let create a dummy point in those cases. */
   if ((*pintdat) -> vpoint[0]->ipar == po1->iobj)
   {
-     if ((qo2 = newObject(SISLPOINT)) == NULL) goto err101;
+     if ((qo2 = newObject(SISLPOINT)) == SISL_NULL) goto err101;
      knpar = po1->iobj;
   }
   else qo2 = po2;
@@ -280,7 +280,7 @@ void sh6degen(po1, po2, pintdat, aepsge, jstat)
 	 /* Free the list.  */
 	 
 	 freeIntlist(vlist[ki]);
-	 vlist[ki] = NULL;
+	 vlist[ki] = SISL_NULL;
 	 
 	  /* Check the intersection points. If no point represent the
 	     degenerated curve,restore the first point of the curve. */
@@ -308,13 +308,13 @@ void sh6degen(po1, po2, pintdat, aepsge, jstat)
 
   for(ki=0; ki<ilist; ki++)
   {
-      if(vlist[ki] != NULL)
+      if(vlist[ki] != SISL_NULL)
       {
 	  newilist++;
 	  if(newilist < ki+1)
 	  {
 	      vlist[newilist-1] = vlist[ki];
-	      vlist[ki] = NULL;
+	      vlist[ki] = SISL_NULL;
 	  }
       }
   }

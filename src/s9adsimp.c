@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9adsimp.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s9adsimp.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -129,7 +129,7 @@ double s9adsimp(epnt1,epar1,eimpli,ideg,egd1,epgd1,etang,eptan,astep,jstat)
   /* First see that we are not turning direction in the parameter plane */
   
   s6diff(epgd1,epar1,k2dim,sdiff);
-  if (s6scpr(sdiff,eptan,k2dim) < DNULL) goto dontstepthrough;
+  if (s6scpr(sdiff,eptan,k2dim) < DZERO) goto dontstepthrough;
   
   s6diff(egd1,epnt1,kdim,sdiff);
   tdum  = s6scpr(sdiff,etang,kdim);
@@ -137,9 +137,9 @@ double s9adsimp(epnt1,epar1,eimpli,ideg,egd1,epgd1,etang,eptan,astep,jstat)
   
   /* Step onto point if it is within 2.0*aepsge */
   
-  if (tdum > DNULL)
+  if (tdum > DZERO)
     {
-      if (DNULL < tdist && tdist <= (double)2.0*astep)
+      if (DZERO < tdist && tdist <= (double)2.0*astep)
         {
 	  /* Guide point lies within step length and in step direction, test
 	     if cross products of normal vectors at current point and guide point
@@ -171,8 +171,8 @@ double s9adsimp(epnt1,epar1,eimpli,ideg,egd1,epgd1,etang,eptan,astep,jstat)
 	      
 	      /* If positive scalar product the curve at the two points point in
 		 the same direction, step through point */
-	      if (tdum > DNULL) goto stepthrough;
-	      else if (tdum == DNULL)
+	      if (tdum > DZERO) goto stepthrough;
+	      else if (tdum == DZERO)
                 {
 		  
 		  double tl1,tl2;
@@ -182,19 +182,19 @@ double s9adsimp(epnt1,epar1,eimpli,ideg,egd1,epgd1,etang,eptan,astep,jstat)
 		  tl1 = s6length(scr1,kdim,&kstat);
 		  tl2 = s6length(scr2,kdim,&kstat);
 		  
-		  if (tl1 != DNULL && tl2 != DNULL)
+		  if (tl1 != DZERO && tl2 != DZERO)
 		    goto dontstepthrough;
-		  else if (tl1 == DNULL && tl2 == DNULL)
+		  else if (tl1 == DZERO && tl2 == DZERO)
 		    goto stepthrough;
-		  else if (tl2 == DNULL)
+		  else if (tl2 == DZERO)
 		    goto stepthrough;
-		  else if (tl2 != DNULL)
+		  else if (tl2 != DZERO)
 		    {
 		      /* Test if scr2 points in the direction from start */
 		      
 		      tl1 = s6scpr(sdiff,scr2,kdim);
 		      
-		      if (tl1 < DNULL)
+		      if (tl1 < DZERO)
 			goto dontstepthrough;
 		      else 
 			goto stepthrough;

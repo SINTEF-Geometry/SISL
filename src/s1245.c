@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1245.c,v 1.1 1995-01-03 09:49:21 pfu Exp $
+ * $Id: s1245.c,v 1.2 2001-03-19 15:58:43 afr Exp $
  *
  */
 
@@ -93,8 +93,8 @@ void s1245(coef, ik, dim, point, local_tol, depth, weight, area, moment, stat)
    double vec4[2];            /* Utility vector.            */
    double left_weight[2];     /* Left weight in recursion.  */
    double right_weight[2];    /* right weight in recursion. */
-   double* left_coef = NULL;  /* Left coefficients.         */
-   double* right_coef = NULL; /* Left coefficients.         */
+   double* left_coef = SISL_NULL;  /* Left coefficients.         */
+   double* right_coef = SISL_NULL; /* Left coefficients.         */
 
 
    /* Check input. */
@@ -266,8 +266,8 @@ void s1245(coef, ik, dim, point, local_tol, depth, weight, area, moment, stat)
 	 *area = left_area + right_area;
 	 *moment = (left_moment + right_moment)/4.;
 	 
-	 if (left_coef != NULL) freearray(left_coef);
-	 if (right_coef != NULL) freearray(right_coef);
+	 if (left_coef != SISL_NULL) freearray(left_coef);
+	 if (right_coef != SISL_NULL) freearray(right_coef);
       }
       
    }

@@ -89,7 +89,7 @@ void s1951(etau, ecoef, in, ik, idim, ilend, irend, incont, efac)
    {
       for (kr=0; kr<idim; kr++)
       {
-	 ecoef[(in-ki-1)*idim+kr] = DNULL;
+	 ecoef[(in-ki-1)*idim+kr] = DZERO;
 	 for (kj=0; kj<=ki; kj++)
 	    ecoef[(in-ki-1)*idim+kr] += ecoef[kj*idim+kr]*efac[ki*incont+kj];
       }

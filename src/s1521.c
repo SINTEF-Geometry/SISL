@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1521.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1521.c,v 1.2 2001-03-19 15:58:50 afr Exp $
  *
  */
 
@@ -68,8 +68,8 @@ SISLCurve* s1521(pc,jstat)
   int idim;              /* Dimension of the curve's space.         */
   double *et;            /* Pointer to knot vector.                 */
   double *ecoef;         /* Pointer to vertices.                    */
-  double *rcoef=NULL;    /* Pointer to homogeneous vertices.        */
-  SISLCurve *ratpc=NULL; /* Output SISLCurve.                       */
+  double *rcoef=SISL_NULL;    /* Pointer to homogeneous vertices.        */
+  SISLCurve *ratpc=SISL_NULL; /* Output SISLCurve.                       */
   int i,j,J,jj;          /* loop variables                          */
  
   *jstat=0;
@@ -93,7 +93,7 @@ SISLCurve* s1521(pc,jstat)
       /* Calculate the homogeneous vertices. */
     
       rcoef = newarray(in*(idim+1),DOUBLE);
-      if(rcoef == NULL) goto err101;
+      if(rcoef == SISL_NULL) goto err101;
     
       for(i=0, j=0, J=0; i<in; i++, j++)
       {
@@ -110,7 +110,7 @@ SISLCurve* s1521(pc,jstat)
   /* Make new rational curve. */
 
   ratpc=newCurve(in,ik,et,rcoef,ikind,idim,1);
-  if(ratpc == NULL) goto err101;
+  if(ratpc == SISL_NULL) goto err101;
 
 
   /* New curve made. */
@@ -127,7 +127,7 @@ SISLCurve* s1521(pc,jstat)
   /* Free space occupied by local array.  */
   
   if(pc->ikind == 1 || pc->ikind == 3)
-    if (rcoef != NULL) freearray(rcoef);
+    if (rcoef != SISL_NULL) freearray(rcoef);
   
   return ratpc;
 }

@@ -83,7 +83,7 @@ void s1987(ps,aepsge,jgtpi,gaxis,cang,jstat)
    
    /* Allocate scratch for the output array. */
    
-   if ((*gaxis = newarray(kdim, DOUBLE)) == NULL) goto err101;
+   if ((*gaxis = newarray(kdim, DOUBLE)) == SISL_NULL) goto err101;
    
    /* Let s1990 compute the cone. */
    

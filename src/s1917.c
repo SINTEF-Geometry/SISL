@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1917.c,v 1.2 1994-08-02 13:25:03 pfu Exp $
+ * $Id: s1917.c,v 1.3 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -132,11 +132,11 @@ s1917 (inbcrv, ecoef, in2, idim, eptyp, astpar, iopen,
   /* Allocate space for output parameters. */
 
   *par = newarray (inbcrv + 1, DOUBLE);
-  if (*par == NULL)
+  if (*par == SISL_NULL)
     goto err101;
 
   *der = newarray (inbcrv, INT);
-  if (*der == NULL)
+  if (*der == SISL_NULL)
     goto err101;
 
 

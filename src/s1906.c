@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1906.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1906.c,v 1.2 2001-03-19 15:58:55 afr Exp $
  *
  */
 
@@ -111,10 +111,10 @@ s1906 (epoint, etype, icnsta, icnend, inbpnt, idim, opoint,
     *knbpnt = inbpnt;
 
   *opoint = newarray ((*knbpnt) * idim, DOUBLE);
-  if (*opoint == NULL)
+  if (*opoint == SISL_NULL)
     goto err101;
   *otype = newarray (*knbpnt, INT);
-  if (*otype == NULL)
+  if (*otype == SISL_NULL)
     goto err101;
 
 

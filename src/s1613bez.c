@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1613bez.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1613bez.c,v 1.2 2001-03-19 15:58:52 afr Exp $
  *
  */
 
@@ -87,13 +87,13 @@ void s1613bez(pc,idiv,aepsge,gpar,jnpar,jstat)
    double tint = (tend - tstart)/(double)(idiv+1);  /* Parameter interval
 						       between div. points. */
    double tpar;             /* Current parameter values.                */
-   double *sparout = NULL;  /* Array of parameter values from subcurve. */
-   double *spar = NULL;     /* Array of parameter values.        */
-   double *sparunion = NULL;  /* Union of parameter arrays.      */
-   double *spar2 = NULL;    /* Array of parameter values.        */
+   double *sparout = SISL_NULL;  /* Array of parameter values from subcurve. */
+   double *spar = SISL_NULL;     /* Array of parameter values.        */
+   double *sparunion = SISL_NULL;  /* Union of parameter arrays.      */
+   double *spar2 = SISL_NULL;    /* Array of parameter values.        */
    double *sta,*stb,*s1;    /* Pointers into coefficient arrays. */
-   SISLCurve *qc = NULL;    /* Refined curve.                    */
-   SISLCurve *qbez = NULL;  /* Bezier segment of refined curve.  */
+   SISLCurve *qc = SISL_NULL;    /* Refined curve.                    */
+   SISLCurve *qbez = SISL_NULL;  /* Bezier segment of refined curve.  */
 
    /* Check level of recursion.  */
    
@@ -110,7 +110,7 @@ void s1613bez(pc,idiv,aepsge,gpar,jnpar,jstat)
 
    /* Set up array of division parameter values. First allocate scratch.  */
       
-   if ((spar = newarray(idiv,DOUBLE)) == NULL) goto err101;
+   if ((spar = newarray(idiv,DOUBLE)) == SISL_NULL) goto err101;
      
    for (ki=0, tpar=tstart+tint; ki<idiv; ki++, tpar+=tint)
       spar[ki] = tpar;
@@ -145,7 +145,7 @@ void s1613bez(pc,idiv,aepsge,gpar,jnpar,jstat)
 	    segment as a curve.   */
 	 
 	 if ((qbez = newCurve(kord,kord,qc->et+ki*kord,sta,kbez,kdim,0))
-	     == NULL) goto err101;
+	     == SISL_NULL) goto err101;
 	 
 	 /* Linearize.  */
 	 
@@ -156,8 +156,8 @@ void s1613bez(pc,idiv,aepsge,gpar,jnpar,jstat)
 	 {
 	    /* Return to top level.  */
 	    
-	    if (spar != NULL) freearray(spar);
-	    if (qbez != NULL) freeCurve(qbez);
+	    if (spar != SISL_NULL) freearray(spar);
+	    if (qbez != SISL_NULL) freeCurve(qbez);
 	    
 	    *jstat = kstat;
 	    goto out;
@@ -170,14 +170,14 @@ void s1613bez(pc,idiv,aepsge,gpar,jnpar,jstat)
 	 
 	 freearray(spar);
 	 spar = sparunion;
-	 sparunion = NULL;
+	 sparunion = SISL_NULL;
 	 knparts = knunion;
 	 
-	 if (sparout != NULL) freearray(sparout);
-	 sparout = NULL;
+	 if (sparout != SISL_NULL) freearray(sparout);
+	 sparout = SISL_NULL;
 	 
 	 freeCurve(qbez);
-	 qbez = NULL;
+	 qbez = SISL_NULL;
       }
    }
    
@@ -214,8 +214,8 @@ void s1613bez(pc,idiv,aepsge,gpar,jnpar,jstat)
    
       /* Free scratch used for local arrays.  */
       
-      if (spar2 != NULL) freearray(spar2);
-      if (qc != NULL) freeCurve(qc);
+      if (spar2 != SISL_NULL) freearray(spar2);
+      if (qc != SISL_NULL) freeCurve(qc);
 		      
       return;
 }

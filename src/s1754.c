@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1754.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1754.c,v 1.2 2001-03-19 15:58:53 afr Exp $
  *
  */
 
@@ -107,7 +107,7 @@ s1754 (et, in, ik, ikh, iknt, inh, jstat)
   /* Allocate internal array arr. */
 
   *iknt = newarray ((in +ik) *(ikh - ik + 1), DOUBLE);
-  if (*iknt == NULL)
+  if (*iknt == SISL_NULL)
     goto err101;
 
 
@@ -192,10 +192,10 @@ err112:
   goto out;
 
 out:
-  if (*iknt != NULL)
+  if (*iknt != SISL_NULL)
     {
       *iknt = increasearray (*iknt, *inh + ikh, DOUBLE);
-      if (*iknt == NULL)
+      if (*iknt == SISL_NULL)
 	goto err101;
     }
   return;

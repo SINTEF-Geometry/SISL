@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1933.c,v 1.3 2000-09-25 07:38:05 vsk Exp $
+ * $Id: s1933.c,v 1.4 2001-03-19 15:58:56 afr Exp $
  *
  */
 
@@ -130,11 +130,11 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
   double tinmin, tinmax;
   double tbgn, tend;		/* tbgn=kt[*iordr-1] & tend = kt[kn]
 				 * Used to find kbgn and kend		*/
-  double *kt = NULL;		/* New knot vector			*/
-  double *knot = NULL;		/* Knot vector				*/
-  double *incknt = NULL;	/* Used to store the union of two
+  double *kt = SISL_NULL;		/* New knot vector			*/
+  double *knot = SISL_NULL;		/* Knot vector				*/
+  double *incknt = SISL_NULL;	/* Used to store the union of two
 				 * knot vectors				*/
-  SISLCurve *curve = NULL;
+  SISLCurve *curve = SISL_NULL;
 
   *jstat = 0;
 
@@ -175,7 +175,7 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
   /* Make start knot vector */
 
   kt = newarray (*iordr * 2, double);
-  if (kt == NULL)
+  if (kt == SISL_NULL)
     goto err101;
   for (ki = 0; ki < *iordr; ki++)
     {
@@ -203,12 +203,12 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
       if (kstat < 0)
 	goto error;
 
-      if (incknt != NULL)  freearray(incknt);  /* PFU 18/07-94. */
+      if (incknt != SISL_NULL)  freearray(incknt);  /* PFU 18/07-94. */
 
-      if (kt != NULL)
+      if (kt != SISL_NULL)
 	freearray (kt);
       kt = knot;
-      knot = NULL;  /* PFU 18/07-94 */
+      knot = SISL_NULL;  /* PFU 18/07-94 */
     }
 
   /* The knot vector produced might contain knots originating
@@ -423,10 +423,10 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
 
   /* Make start knot vector					*/
 
-  if (kt != NULL)  freearray(kt);  /* PFU 18/07-94 */
+  if (kt != SISL_NULL)  freearray(kt);  /* PFU 18/07-94 */
 
   kt = newarray (*iordr * 2, double);
-  if (kt == NULL)
+  if (kt == SISL_NULL)
     goto err101;
 
   for (ki = 0; ki < *iordr; ki++)
@@ -456,19 +456,19 @@ s1933 (inbcrv, crvarr, start, stop, it, in, iordr, jstat)
       if (kstat < 0)
 	goto error;
 
-      if (incknt != NULL)  freearray(incknt);  /* PFU 18/07-94 */
+      if (incknt != SISL_NULL)  freearray(incknt);  /* PFU 18/07-94 */
 
-      if (kt != NULL)
+      if (kt != SISL_NULL)
 	freearray (kt);
       kt = knot;
-      knot = NULL;  /* PFU 18/07-94 */
+      knot = SISL_NULL;  /* PFU 18/07-94 */
     }
 
   /* No errors */
 
   *in = kn;
   *it = kt;
-  kt = NULL;  /* PFU 18/07-94 */
+  kt = SISL_NULL;  /* PFU 18/07-94 */
   goto out;
 
 
@@ -508,8 +508,8 @@ err170:
   goto out;
 
 out:
-  if (kt != NULL)  freearray(kt);  /* PFU 18/07-94 */
-  if (knot != NULL)  freearray(knot);  /* PFU 18/07-94 */
-  if (incknt != NULL)  freearray(incknt);  /* PFU 18/07-94 */
+  if (kt != SISL_NULL)  freearray(kt);  /* PFU 18/07-94 */
+  if (knot != SISL_NULL)  freearray(knot);  /* PFU 18/07-94 */
+  if (incknt != SISL_NULL)  freearray(incknt);  /* PFU 18/07-94 */
   return;
 }

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1352.c,v 1.4 1994-08-11 11:50:55 pfu Exp $
+ * $Id: s1352.c,v 1.5 2001-03-19 15:58:46 afr Exp $
  *
  */
 
@@ -124,11 +124,11 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 */
 {
   int ih = 3*MAX(leftfix, rightfix) + 2; /* Size of knot vector.       */
-  double *th = NULL;			 /* Knot vector.               */
-  double *hcoef = NULL;			 /* B-spline coefficients.     */
-  double *w = NULL;			 /* Work array for s1221.      */
+  double *th = SISL_NULL;			 /* Knot vector.               */
+  double *hcoef = SISL_NULL;			 /* B-spline coefficients.     */
+  double *w = SISL_NULL;			 /* Work array for s1221.      */
 
-  SISLCurve *hspline = NULL;             /* Object that will be used
+  SISLCurve *hspline = SISL_NULL;             /* Object that will be used
 					    for storing the perfect
 					    B-spline.		       */
 
@@ -162,14 +162,14 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
      for largest of these knot vectors. */
 
   th = newarray(ih, double);
-  if (th == NULL) goto err101;
+  if (th == SISL_NULL) goto err101;
 
   /* The length of the coefficient vector should be clear from
      the argument above. We set all coefficients to zero except the one
      that multiplies the perfect B-spline which of course must be one. */
 
   hcoef = new0array(2*MAX(leftfix, rightfix)+1, double);
-  if (hcoef == NULL) goto err101;
+  if (hcoef == SISL_NULL) goto err101;
 
   hcoef[leftfix] = 1.0;
 
@@ -210,12 +210,12 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
      be used for returning results. */
 
   w = newarray(MAX((leftfix+1),(rightfix+1)), double);
-  if (w == NULL) goto err101;
+  if (w == SISL_NULL) goto err101;
 
   /* Create the spline object that represents the perfect B-spline. */
 
   hspline = newCurve(2*leftfix+1, leftfix+1, th, hcoef, 1, 1, 0);
-  if (hspline == NULL) goto err101;
+  if (hspline == SISL_NULL) goto err101;
 
   /* Evaluate the perfect B-spline at its maximum, the midpoint 0,
      and save it in maxval. */
@@ -331,7 +331,7 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
 
       freeCurve(hspline);
       hspline = newCurve(2*rightfix+1, rightfix+1, th, hcoef, 1, 1, 0);
-      if (hspline == NULL) goto err101;
+      if (hspline == SISL_NULL) goto err101;
 
       /* Find the maximum of the perfect B-spline. */
 
@@ -403,13 +403,13 @@ void s1352(t, n, k, inteps, lefteps, righteps, dim, leftfix, rightfix,
   /* Free memory. */
 
  out:
-  if (w != NULL) freearray(w);
-  if (hspline != NULL) freeCurve(hspline);
+  if (w != SISL_NULL) freearray(w);
+  if (hspline != SISL_NULL) freeCurve(hspline);
 
   /* Must also remove knots and coefs because hspline had icopy==0. */
 
-  if (th != NULL) freearray(th);
-  if (hcoef != NULL) freearray(hcoef);
+  if (th != SISL_NULL) freearray(th);
+  if (hcoef != SISL_NULL) freearray(hcoef);
 
   return;
 

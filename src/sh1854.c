@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1854.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1854.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -121,22 +121,22 @@ void sh1854(ps1,etop,eaxis,econe,idim,aepsco,aepsge,trackflag,jtrack,
   int kpos = 0;            /* Position of error.                           */
   int kdim = 1;            /* Dimension of space in which the point in the
 			      intersect point/surface problem lies.        */
-  double *spar = NULL;     /* Dummy array containing parameter values of
+  double *spar = SISL_NULL;     /* Dummy array containing parameter values of
 			      second object of single intersection points. */
   double spoint[1];        /* SISLPoint to intersect with object.              */
   int kdeg=2;              /* The degree of the implicit equation of the cone*/
-  double *scone = NULL;    /* Description of a cone as implicit surface. */
-  SISLSurf *qs = NULL;         /* Pointer to surface in 
+  double *scone = SISL_NULL;    /* Description of a cone as implicit surface. */
+  SISLSurf *qs = SISL_NULL;         /* Pointer to surface in 
 			      surface/point intersection.*/
-  SISLPoint *qp = NULL;        /* Pointer to point in 
+  SISLPoint *qp = SISL_NULL;        /* Pointer to point in 
 			      surface/point intersection.  */
-  SISLObject *qo1 = NULL;      /* Pointer to surface in 
+  SISLObject *qo1 = SISL_NULL;      /* Pointer to surface in 
 			      object/point intersection. */
-  SISLObject *qo2 = NULL;      /* Pointer to point in 
+  SISLObject *qo2 = SISL_NULL;      /* Pointer to point in 
 			      object/point intersection    */
-  SISLIntdat *qintdat = NULL;  /* Intersection result */
-  SISLObject *track_obj=NULL;
-  SISLSurf *qkreg=NULL; /* Input surface ensured k-regularity. */
+  SISLIntdat *qintdat = SISL_NULL;  /* Intersection result */
+  SISLObject *track_obj=SISL_NULL;
+  SISLSurf *qkreg=SISL_NULL; /* Input surface ensured k-regularity. */
 
   /* -------------------------------------------------------- */  
 
@@ -176,7 +176,7 @@ void sh1854(ps1,etop,eaxis,econe,idim,aepsco,aepsge,trackflag,jtrack,
    * --------------------------------------------
    */
 
-  if ((scone = newarray((idim+1)*(idim+1),double)) == NULL) goto err101;
+  if ((scone = newarray((idim+1)*(idim+1),double)) == SISL_NULL) goto err101;
 
   /* 
    * Make a matrix of dimension (idim+1)x(idim+1) describing a 
@@ -211,7 +211,7 @@ void sh1854(ps1,etop,eaxis,econe,idim,aepsco,aepsge,trackflag,jtrack,
    */
 
   if (!(qo2 = newObject(SISLPOINT))) goto err101;
-  spoint[0] = DNULL;
+  spoint[0] = DZERO;
   if (!(qp = newPoint(spoint,kdim,1))) goto err101;
   qo2 -> p1 = qp;
 
@@ -303,12 +303,12 @@ void sh1854(ps1,etop,eaxis,econe,idim,aepsco,aepsge,trackflag,jtrack,
   if (qintdat) freeIntdat(qintdat);
   if (track_obj)
     {
-       track_obj->s1 = NULL;
+       track_obj->s1 = SISL_NULL;
        freeObject(track_obj);
     }
 
   /* Free local surface.  */
-    if (qkreg != NULL && qkreg != ps1) freeSurf(qkreg);
+    if (qkreg != SISL_NULL && qkreg != ps1) freeSurf(qkreg);
 
 return;
 }                                               

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1373.c,v 1.2 1994-11-14 15:07:15 pfu Exp $
+ * $Id: s1373.c,v 1.3 2001-03-19 15:58:48 afr Exp $
  *
  */
 
@@ -96,14 +96,14 @@ void s1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,jpt,gpar,jcrv,wcurve,jstat)
   int kpos = 0;               /* Position of error.                          */
   int trackflag = 0;
   int jtrack;
-  SISLTrack **wtrack=NULL;
-  int *pretop=NULL;
+  SISLTrack **wtrack=SISL_NULL;
+  int *pretop=SISL_NULL;
 
   sh1373(pc1,etop,eaxis,econe,idim,aepsco,aepsge,
 	 trackflag,&jtrack,&wtrack,jpt,gpar,&pretop,jcrv,wcurve,&kstat);
   if(kstat < 0) goto error;
 
-  if(pretop != NULL) freearray(pretop);
+  if(pretop != SISL_NULL) freearray(pretop);
 
   /*
    * Intersections found.

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1839.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1839.c,v 1.2 2001-03-19 15:59:06 afr Exp $
  *
  */
 
@@ -83,7 +83,7 @@ void sh1839(po1,po2,aepsge,jstat)
   double *scoef;           /* Vertices of surface.                          */
   register double *s1,*s2,
   *s3,*s4;                 /* Pointers used to traverse arrays.             */
-  double *sdir = NULL;     /* Array containing direction vectors.           */
+  double *sdir = SISL_NULL;     /* Array containing direction vectors.           */
   
   /* Test kind of first object.  */
   
@@ -105,7 +105,7 @@ void sh1839(po1,po2,aepsge,jstat)
   /* Allocate space for vectors with which the x-axis is to be parallell. */
   
   sdir = newarray(kvec*kdim,double);
-  if (sdir == NULL) goto err101;
+  if (sdir == SISL_NULL) goto err101;
   
    if (kvec == 2)
    {
@@ -261,7 +261,7 @@ void sh1839(po1,po2,aepsge,jstat)
   
   /* Free allocated space.  */
   
-  if (sdir != NULL) freearray(sdir);
+  if (sdir != SISL_NULL) freearray(sdir);
   
   return;
 }

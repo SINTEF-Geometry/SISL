@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6count.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6count.c,v 1.2 2001-03-19 15:59:07 afr Exp $
  *
  */
 
@@ -76,7 +76,7 @@ int sh6count(pt,jstat)
    *jstat = 0;
    ki=1;
 
-   if(pt == NULL) goto err1;
+   if(pt == SISL_NULL) goto err1;
    if(!sh6ismain(pt)) goto err1;
 
    sh6getnhbrs(pt,&pt1,&pt2,&kstat);
@@ -97,7 +97,7 @@ int sh6count(pt,jstat)
 
    nextpt=pt1;
    nowpt=pt;
-   while(nextpt != NULL && nextpt != pt)
+   while(nextpt != SISL_NULL && nextpt != pt)
    {
        ki++;
        lastpt=nowpt;
@@ -118,7 +118,7 @@ int sh6count(pt,jstat)
 
    nextpt=pt2;
    nowpt=pt;
-   while(nextpt != NULL)
+   while(nextpt != SISL_NULL)
    {
        ki++;
        lastpt=nowpt;

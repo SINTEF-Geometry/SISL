@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6schoen.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6schoen.c,v 1.2 2001-03-19 15:59:02 afr Exp $
  *
  */
 
@@ -69,7 +69,7 @@ double s6schoen(et,ik,index)
 */                                     
 {
   int i;             /* Loop variable                                   */
-  double kval=DNULL; /* knot value variable                             */
+  double kval=DZERO; /* knot value variable                             */
   
   for (i=index+1;i<index+ik;i++) kval+=et[i];
   kval = kval/(ik-1);

@@ -137,9 +137,9 @@ void s1967(ep,etang1,etang2,eder11,im1,im2,idim,ipar,epar1,epar2,
 */
 {
   int stat=0, kpos=0;         /* Error message parameters        */
-  double *par1 = NULL;        /* Used to store parametrizations  */
-  double *par2 = NULL;
-  SISLSurf *osurf = NULL;     /* Hermite interp. surface         */ 
+  double *par1 = SISL_NULL;        /* Used to store parametrizations  */
+  double *par2 = SISL_NULL;
+  SISLSurf *osurf = SISL_NULL;     /* Hermite interp. surface         */ 
 
   /* Check Input */
 
@@ -202,12 +202,12 @@ void s1967(ep,etang1,etang2,eder11,im1,im2,idim,ipar,epar1,epar2,
   out:
     /* Free SISL-surface allocated in this routine */
 
-    if(osurf != NULL) freeSurf(osurf);
+    if(osurf != SISL_NULL) freeSurf(osurf);
 
     if (ipar != 3)
       {
-	if(par1 != NULL) freearray(par1);
-	if(par2 != NULL) freearray(par2);
+	if(par1 != SISL_NULL) freearray(par1);
+	if(par2 != SISL_NULL) freearray(par2);
       }
     return;
 }
