@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1902.c,v 1.2 1995-12-01 14:09:05 jka Exp $
+ * $Id: s1902.c,v 1.3 1995-12-01 15:10:04 jka Exp $
  *
  */
 
@@ -247,7 +247,7 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
 
 	  (*eknots)[ki] = epar[in];
 	  ki++;
-	  for (kpar = 0; ki < kstop; ki++, kpar++)
+	  for (kpar = 1; ki < kstop; ki++, kpar++)
 	    {
 
 	      /* We may risk that a double cyclic use of the parameter
