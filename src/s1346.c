@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1346.c,v 1.2 1994-11-09 08:49:36 poeh Exp $
+ * $Id: s1346.c,v 1.3 1995-02-07 10:25:34 pfu Exp $
  *
  */
 
@@ -214,8 +214,8 @@ void s1346(ep,im1,im2,idim,ipar,epar1,epar2,eeps,nend,
   osurf1 = newSurf(im1, im2, 2, 2, knot1, knot2, ep,
 		   1,idim, 1);
   if (osurf1 == NULL) goto err101;
-  free(knot1); knot1 = NULL;
-  free(knot2); knot2 = NULL;
+  if (knot1) freearray(knot1);
+  if (knot2) freearray(knot2);
 
   /* Compute tolerance vectors for linear reduction
    * Both max deviation of surface and max dev. of edges */
