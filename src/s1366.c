@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1366.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1366.c,v 1.2 1994-04-22 07:21:02 vsk Exp $
  *
  */
 
@@ -202,7 +202,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       spnt[kain] = sder[ki];
       stng1[kain] = sder[ki+idim];
       stng2[kain] = sder[ki+2*idim];
-      scrss[kain] = sder[ki+4*idim];
+      scrss[kain] = sder[ki+3*idim];
       kain += 1;
     }
   
@@ -251,7 +251,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
               spnt[kain] = sder[ki];
               stng1[kain] = sder[ki+idim];
               stng2[kain] = sder[ki+2*idim];
-              scrss[kain] = sder[ki+4*idim];
+              scrss[kain] = sder[ki+3*idim];
               kain += 1;
 	    }
 	  
@@ -303,7 +303,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
               spnt[kain] = sder[ki];
               stng1[kain] = sder[ki+idim];
               stng2[kain] = sder[ki+2*idim];
-              scrss[kain] = sder[ki+4*idim];
+              scrss[kain] = sder[ki+3*idim];
               kain += 1;
 	    }
 	  
@@ -343,7 +343,7 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 		      spnt[kain] = sder[ki];
 		      stng1[kain] = sder[ki+idim];
 		      stng2[kain] = sder[ki+2*idim];
-		      scrss[kain] = sder[ki+4*idim];
+		      scrss[kain] = sder[ki+3*idim];
 		      kain += 1;
 		    }
 		}
