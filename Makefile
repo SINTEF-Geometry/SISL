@@ -157,6 +157,7 @@ ifeq "$(PLATFORM)" "hp-pa"
 
   CC			=/usr/bin/cc
   LD			=$(CC)
+#	LD           = /SI/Programs/purify/purify-5.1-hpux/purify CC
 
   ifeq "$(MODE)" "opt"
     CFLAGS		=+DAportable +Oall
@@ -242,6 +243,7 @@ ifeq "$(PLATFORM)" "hp-pa"
 
   CXX			=/opt/aCC/bin/aCC
   LDXX		=$(CXX)
+#  LDXX		=/SI/Programs/purify/purify-5.1-hpux64/purify $(CXX)
 
   ifeq "$(MODE)" "opt"
     CXXFLAGS		=-O -AA
@@ -731,8 +733,7 @@ ifeq "$(LIBMODE)" "true"
 					$(DEPLIBS)
 	$(LDXX) $(LDXXOPTS) -out:$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	        lib/$(HOSTMODELIB).lib \
-		$(addsuffix .lib, $(addprefix lib, $(DEPLIBSLOCAL))) \
-		gdi32.lib user32.lib glut32.lib glu32.lib opengl32.lib
+		$(addsuffix .lib, $(addprefix lib, $(DEPLIBSLOCAL)))
 	@cp -p $@ $@.exe
 
 #gdi32.lib user32.lib glut32.lib Glu32.lib opengl32.lib
