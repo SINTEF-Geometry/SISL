@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1329.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1329.c,v 1.2 1994-06-28 07:37:33 mif Exp $
  *
  */
 
@@ -72,6 +72,7 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
 * WRITTEN BY : Vibeke Skytt, SI, 88-06.
 * REVISED BY : Mike Floater, SI, 91-04.
 * CORRECTED BY: Ulf J. Krystad,  SI, 91-07.
+* DEBUGGED BY : Mike Floater, SI, 94-06. Use scSave.
 *********************************************************************
 */
 {
@@ -84,6 +85,7 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
   double *scoef = NULL; /* Coeffecient array of new surface.        */
   double *s1,*s2;  /* Pointers used to traverse scoef.              */
   double *sc=NULL; /* Pointer used to traverse psold->ecoef.        */
+  double *scSave=NULL; /* Pointer to vertices in rational case.     */
   double *rscoef;  /* Scaled coefficients if psold is rational      */
   double *s3;      /* Stop pointer for each vertex in psold->ecoef. */
   double *spoint;  /* Pointer used to traverse the point epoint.    */
@@ -125,6 +127,8 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
       {
           sc[i]=rscoef[i]*scale;
       } 
+
+      scSave = sc;
   }
   else
   {
@@ -161,7 +165,7 @@ void s1329(psold,epoint,enorm,idim,rsnew,jstat)
       }
     }
   
-  if(ikind == 2 || ikind == 4) freearray(sc);
+  if(ikind == 2 || ikind == 4) freearray(scSave);
 
   /* Create output surface.  */
   
