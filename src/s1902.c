@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1902.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1902.c,v 1.2 1995-12-01 14:09:05 jka Exp $
  *
  */
 
@@ -71,6 +71,8 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
 *
 * WRITTEN BY :	Vibeke Skytt, SI, 91-03
 * REVISED BY :	Trond Vidar Stensby, SI, 91-06
+* REVISED BY :  Johannes Kaasa, SINTEF, 95-11 (Problems with the knot vector
+*               in case of periodicity).
 *
 *********************************************************************
 */
@@ -196,9 +198,9 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       if (ik % 2 == 0)
 	{
 	  /* The order of the B-spline curve is even.
-	     Make the ik/2 first knots as a shift of the last knots.  */
-
-	  for (ki = 0, kpar = in -ik + ik / 2; ki < ik / 2; ki++, kpar++)
+	     Make the ik - 1 first knots as a shift of the last knots.  */
+	   
+	  for (ki = 0, kpar = (in - ik + 1); ki < (ik - 1); ki++, kpar++)
 	    (*eknots)[ki] = epar[kpar] - tparint;
 
 	  /* Make the knots corresponding to the data points. */
@@ -226,22 +228,27 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       else
 	{
 	  /* The order of the B-spline curve is odd.
-	     Make the ik/2+1 first knots.             */
-
-	  for (ki = 0, kpar = in -ik + ik / 2; ki < ik / 2 + 1; ki++, kpar++)
+	     /* Make the ik - 1 first knots.            */
+	   
+	  for (ki = 0, kpar = (in - ik + 1); ki < (ik - 1); ki++, kpar++)
 	    (*eknots)[ki] = (double) 0.5 *(epar[kpar] + epar[kpar + 1]) -
 	     tparint;
 
 	  /* Make the in next knots.  */
 
-	  for (kpar = 0; kpar < in; ki++, kpar++)
+	  (*eknots)[ki] = epar[0];
+	  ki++;
+	  for (kpar = 1; kpar < in; ki++, kpar++)
 	    (*eknots)[ki] = (double) 0.5 *(epar[kpar] + epar[kpar + 1]);
 
 	  /* Make the ik remaining knots.  */
 
+	  tdum = tparint;
+
+	  (*eknots)[ki] = epar[in];
+	  ki++;
 	  for (kpar = 0; ki < kstop; ki++, kpar++)
 	    {
-	      tdum = tparint;
 
 	      /* We may risk that a double cyclic use of the parameter
 	         values may result.        */
