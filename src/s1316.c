@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1316.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1316.c,v 1.2 1994-12-01 13:35:25 pfu Exp $
  *
  */
 
@@ -45,7 +45,7 @@ void s1316(ps1,epoint,edirec,aradiu,idim,aepsco,aepsge,amax,pintcr,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To march an intersection curve desribed by parameter pairs
 *              in an intersection curve object, a B-spline surface and
 *              a cylinder.
@@ -60,12 +60,12 @@ void s1316(ps1,epoint,edirec,aradiu,idim,aepsco,aepsge,amax,pintcr,
 *              aepsge - Geometry resolution.
 *              amax   - Maximal allowed step length. If amax <=aepsge
 *                       amax is neglected.
-*              icur   - Indicator telling if a 3-D curve is to be made 
+*              icur   - Indicator telling if a 3-D curve is to be made
 *                        0 - Don't make 3-D curve
 *                        1 - Make 3-D curve
 *                        2 - Make 3-D curve and curves in parameter plane
 *              igraph - Indicator telling if the curve is to be outputted
-*                       through function calls:   
+*                       through function calls:
 *                        0 - don't output curve through function call
 *                        1 - output as straight line segments through
 *                            s6move and s6line.
@@ -78,7 +78,7 @@ void s1316(ps1,epoint,edirec,aradiu,idim,aepsco,aepsge,amax,pintcr,
 *                       and possibly the curve in the parameter plane
 *                       of the surface is added.
 *
-* OUTPUT:      jstat  - status messages  
+* OUTPUT:      jstat  - status messages
 *                         = 3      : Iteration stopped due to singular
 *                                    point or degenerate surface. A part
 *                                    of intersection curve may have been
@@ -87,6 +87,7 @@ void s1316(ps1,epoint,edirec,aradiu,idim,aepsco,aepsge,amax,pintcr,
 *                                    object point to NULL.
 *                         = 0      : ok
 *                         < 0      : error
+*                         = -185   : No points produced on intersection curve.
 *
 *
 * METHOD     : An implicit description of the cylinder is made and then
@@ -101,48 +102,48 @@ void s1316(ps1,epoint,edirec,aradiu,idim,aepsco,aepsge,amax,pintcr,
 *
 *********************************************************************
 */
-{            
+{
   int kpos=0;         /* Position of error                                  */
   int kdeg=2;         /* The degree of the implicit equation of the plane   */
   int knumb=1;        /* Number of implicit representations to be made      */
   int kstat;          /* Local status variable                              */
   double simpli[16];  /* Array containing the implicit description of sphere*/
-  
+
   if (idim != 3) goto err104;
-  
+
   /* Make description of cylinder */
-  
+
   s1322(epoint,edirec,aradiu,idim,knumb,simpli,&kstat);
-  if (kstat < 0) goto error;                              
-  
+  if (kstat < 0) goto error;
+
   /* Make intersection of implicit surface and B-spline surface */
-  
+
   s1313(ps1,simpli,kdeg,aepsco,aepsge,amax,pintcr,icur,igraph,&kstat);
   if (kstat == -185) goto err185;
   if (kstat < 0) goto error;
-  
+
   *jstat = kstat;
   goto out;
-  
+
   /* Dimension not 3 */
-  
- err104: *jstat = -104;                
+
+ err104: *jstat = -104;
   s6err("s1316",*jstat,kpos);
   goto out;
-  
+
   /* Couldn't march */
-  
+
  err185:
   *jstat = -185;
   goto out;
-  
+
   /* Error in lower level routine.  */
-  
- error: 
-  *jstat = kstat;     
+
+ error:
+  *jstat = kstat;
   s6err("s1316",*jstat,kpos);
   goto out;
-  
+
  out:
   return;
-}                                               
+}
