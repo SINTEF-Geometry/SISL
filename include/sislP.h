@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.43 1999-01-18 13:23:59 jka Exp $
+ * $Id: sislP.h,v 1.44 1999-11-10 13:21:03 jka Exp $
  *
  */
 
@@ -730,10 +730,6 @@ void s1324(double [],double,double [],int,double [],int *);
 extern
 #endif
 double s1325(double,double);
-#ifndef  S1328
-extern
-#endif
-void s1328(SISLSurf *,double [],double [],double [],int,SISLSurf **,int *);
 #ifndef  S1329
 extern
 #endif
@@ -2757,10 +2753,6 @@ void s1324();
 extern
 #endif
 double s1325();
-#ifndef  S1328
-extern
-#endif
-void s1328();
 #ifndef  S1329
 extern
 #endif
