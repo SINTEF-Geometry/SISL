@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1710.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1710.c,v 1.2 1994-08-31 09:27:54 pfu Exp $
  *
  */
 
@@ -88,6 +88,7 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
 * MODIFIED BY : Ulf J. Krystad, SI, 92-01. Subdivide periodic crvs.
 * MODIFIED BY : Arne Laksaa, SI, 92-09. Move apar to closest knot
 *		if it is close to a knot. Using D(N)EQUAL().
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-08. Added error propagation.
 *
 *
 **********************************************************************/
@@ -100,7 +101,7 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
   int kpl, kfi, kla;		/* To posisjon elements in trans.-matrix.  */
   int kk = pc1->ik;		/* Order of the input curve.               */
   int kn = pc1->in;		/* Number of the vertices in input curves. */
-  int kdim = pc1->idim;		/* Dimensjon of the space in whice 
+  int kdim = pc1->idim;		/* Dimensjon of the space in whice
 				 * the curve lies.                         */
   int kn1, kn2;			/* Number of vertices in the new curves.   */
   int knum;			/* Number of knots less and equal than
@@ -117,13 +118,13 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
   double *scoef2 = NULL;	/* The second new vertice.                 */
   SISLCurve *q1 = NULL;		/* Pointer to new curve-object.            */
   SISLCurve *q2 = NULL;		/* Pointer to new curve-object.            */
-  int incr;			/* Number of extra knots copied 
+  int incr;			/* Number of extra knots copied
 				 * during periodicity                      */
   int mu;			/* Multiplisity at the k'th knot           */
   int kleft = kk-1;		/* Knot navigator                          */
   double delta;                 /* Period size in knot array.              */
   double salfa_local[5];	/* Local help array.			   */
-  
+
   *rcnew1 = NULL;
   *rcnew2 = NULL;
 
@@ -156,14 +157,14 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
       if ((apar < pc1->et[0] && DNEQUAL(apar, pc1->et[0])) ||
 	  (apar > pc1->et[kn+kk-1] && DNEQUAL(apar, pc1->et[kn+kk-1])))
 	 goto err158;
-      
+
       /* If inside the knot vector, but outside well define
 	 intervall, we shift the parameter value one period. */
       if (apar < pc1->et[kk - 1] && DNEQUAL(apar, pc1->et[kk - 1]))
 	apar += delta;
       if (apar > pc1->et[kn] || DEQUAL(apar, pc1->et[kn]))
 	apar -= delta;
-      
+
       /* Now we create a new curve that is a copy of pc1,
 	 but with the period repeated once,
 	 this allows us to pick a whole period. */
@@ -172,7 +173,7 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
       mu = s6knotmult(pc1->et, kk, kn, &kleft, pc1->et[kk-1], &kstat);
       if (kstat < 0) goto err153;
       if (mu >= kk) goto errinp;
-      
+
       /* Copy ----------------------------------- */
       incr = kn - kk + mu;
       if ((scoef1 = newarray ((kn + incr) * kdim, double)) == NULL)
@@ -182,7 +183,7 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
 
       memcopy (scoef1, scoef, kn * kdim, double);
       memcopy (st1, pc1->et, kn + kk, double);
-      memcopy (scoef1 + kn * kdim, scoef + (kk - mu) * kdim, 
+      memcopy (scoef1 + kn * kdim, scoef + (kk - mu) * kdim,
 	       incr * kdim, double);
 
 
@@ -236,23 +237,23 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
   s1 = pc1->et;
   kv = kk;	/* The maximum number of knots we may have to insert. */
 
-  if ((apar > s1[0] && DNEQUAL(apar, s1[0])) && 
+  if ((apar > s1[0] && DNEQUAL(apar, s1[0])) &&
       (apar < s1[kn+kk-1] && DNEQUAL(apar, s1[kn+kk-1])))
   {
      /* Using binear search*/
-     kj1=0;							
-     kj2=kk+kn-1;						
-     knum = (kj1+kj2)/2;					
-     while (knum != kj1)					
-     {							
-	if ((s1[knum] < apar) && DNEQUAL (s1[knum], apar)) 
-	   kj1=knum; 
-	else 
-	   kj2=knum;		
-	knum = (kj1+kj2)/2;					
-     }							
+     kj1=0;
+     kj2=kk+kn-1;
+     knum = (kj1+kj2)/2;
+     while (knum != kj1)
+     {
+	if ((s1[knum] < apar) && DNEQUAL (s1[knum], apar))
+	   kj1=knum;
+	else
+	   kj2=knum;
+	knum = (kj1+kj2)/2;
+     }
      knum++;    /* The smaller knots. */
-     
+
      while (DEQUAL (s1[knum], apar))
       	/* The knots thats like the intersection point. */
      {
@@ -301,7 +302,7 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
      if ((st2 = newarray (kn2 + kk, double)) == NULL)
 	goto err101;
   }
-  
+
 
   /* Copying the knotvectors, all but the intersection point from
      the old curve to the new curves */
@@ -341,19 +342,19 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
 	starting at zero but at -knum.
 	s1=scoef1+ki*kdim,SISLPointer at the first vertice to
 	change. */
-     
-     
+
+
      /* Using the Oslo-algorithm to make a transformation-vector
 	from the old vertices to one new vertice. */
-     
+
      kmy = ki;
      s1700 (kmy, kk, kn, ++kv1, &kpl, &kfi, &kla, pc1->et, apar, salfa, &kstat);
      if (kstat)
 	goto err153;
-     
-     
+
+
      /* Compute the kdim vertices with the same "index". */
-     
+
      for (kj = 0; kj < kdim; kj++, s1++)
 	for (*s1 = 0, kj1 = kfi, kj2 = kfi + kpl; kj1 <= kla; kj1++, kj2++)
 	   *s1 += salfa[kj2] * scoef[kj1 * kdim + kj];
@@ -393,17 +394,17 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
 
   if (kn1 > 0)
     q1 = newCurve (kn1, kk, st1, scoef1, newkind, pc1->idim, 2);
-  
+
   if (kn2 > 0)
     q2 = newCurve (kn2, kk, st2, scoef2, newkind, pc1->idim, 2);
-  
+
   if (q1 == NULL && q2 == NULL)       goto err101;
 
   /* Updating output. */
 
   *rcnew1 = q1;
   *rcnew2 = q2;
-  if (q1 == NULL || q2 == NULL) 
+  if (q1 == NULL || q2 == NULL)
      *jstat = 5;  /* The curve is subdivided in an endpoint. */
   else
      *jstat = 0;
@@ -414,11 +415,13 @@ s1710 (pc1, apar, rcnew1, rcnew2, jstat)
 
 err153:
   *jstat = kstat;
+  s6err ("s1710", *jstat, kpos);
   goto outfree;
 
   /* Error. Error in input */
 errinp:
   *jstat = -154;
+  s6err ("s1710", *jstat, kpos);
   goto outfree;
 
 
@@ -449,11 +452,11 @@ err101:
 outfree:
    if (q1)
       freeCurve (q1);
-   
+
    if (q2)
       freeCurve (q2);
-   
-   
+
+
    /* Free local used memory. */
 
 out:
@@ -464,7 +467,7 @@ out:
       if (scoef1)
 	 freearray (scoef1);
    }
-   
+
    if (!q2)
    {
       if (st2)
@@ -472,7 +475,7 @@ out:
       if (scoef2)
 	 freearray (scoef2);
    }
-   
+
    if (kk > 5 && salfa)
       freearray (salfa);
    return;

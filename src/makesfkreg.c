@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: makesfkreg.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: makesfkreg.c,v 1.2 1994-08-31 09:32:30 pfu Exp $
  *
  */
 
@@ -24,7 +24,7 @@
 #if defined(SISLNEEDPROTOTYPES)
 void make_sf_kreg (SISLSurf * ps, SISLSurf ** rsnew, int *jstat)
 #else
-void 
+void
    make_sf_kreg (ps, rsnew, jstat)
      SISLSurf *ps;
      SISLSurf **rsnew;
@@ -58,6 +58,7 @@ void
 *-
 *
 * WRITTEN BY : Ulf J. Krystad, SI, 04.92.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-08. Added error propagation.
 *
 **********************************************************************/
 {
@@ -69,5 +70,14 @@ void
 
   s1001 (ps, ps->et1[kk1-1], ps->et2[kk2-1],
 		ps->et1[kn1], ps->et2[kn2], rsnew, jstat);
-     
+  if (*jstat < 0)  goto error;
+
+  goto out;
+
+  /* Error in lower level routine */
+error:
+  s6err ("make_sf_kreg", *jstat, 1);
+
+out:
+
 }

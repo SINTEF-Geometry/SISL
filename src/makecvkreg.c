@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: makecvkreg.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: makecvkreg.c,v 1.2 1994-08-31 09:33:29 pfu Exp $
  *
  */
 
@@ -25,7 +25,7 @@
 void
     make_cv_kreg (SISLCurve * pc, SISLCurve ** rcnew, int *jstat)
 #else
-void 
+void
    make_cv_kreg (pc, rcnew, jstat)
      SISLCurve *pc;
      SISLCurve **rcnew;
@@ -59,7 +59,7 @@ void
 *-
 *
 * WRITTEN BY : Ulf J. Krystad, SI, 04.92.
-*
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-08. Added error propagation.
 **********************************************************************/
 {
    int kn=pc->in;	/* Number of vertices in 1. par. dir.  */
@@ -67,5 +67,14 @@ void
    /* --------------------------------------------------------- */
    /* Pick part of curve */
    s1712 (pc, pc->et[kk-1], pc->et[kn], rcnew, jstat);
-   
+  if (*jstat < 0)  goto error;
+
+  goto out;
+
+  /* Error in lower level routine */
+error:
+  s6err ("make_cv_kreg", *jstat, 1);
+
+out:
+
 }
