@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1761.c,v 1.2 1994-11-30 10:17:44 pfu Exp $
+ * $Id: sh1761.c,v 1.3 1994-11-30 16:11:05 pfu Exp $
  *
  */
 
@@ -208,8 +208,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  if (kstat < 0)
 	    goto error;
 
-	  freeIntpt(qt);  /* PFU                  */
-	  qt = NULL;      /* - to fix memory leak */
+	  qt = NULL;      /* PFU - to fix memory leak */
 	}
       else
 	*jstat = 0;
@@ -241,6 +240,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	   *  SISLIntdat *qintdat = NULL;
 	   */
 
+	  qintdat = NULL; /* PFU to fix memory leak. */
 	  qedge[0] = qedge[1] = NULL;
 	  *jstat = 0;
 
