@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2504.c,v 1.1 1995-01-19 15:25:02 pfu Exp $
+ * $Id: s2504.c,v 1.2 1995-01-23 09:24:55 pfu Exp $
  *
  */
 
@@ -159,7 +159,7 @@ void
     }
     else if (kistat != 2) /* The surface is not degenerate */
     {
-      s2505(surf, ider, parvalue, derive, normal, absCurvature, &kistat);
+      s2505(surf, ider, derive, normal, absCurvature, &kistat);
 
       if (kistat < 0)
 	goto error;
@@ -188,19 +188,19 @@ war002:
   /* Error. Input (surface) pointer is NULL. */
 err150:
   *jstat = -150;
-  s6err("s2505", *jstat, 0);
+  s6err("s2504", *jstat, 0);
   goto out;
 
   /* Illegal derivative requested. */
 err178:
   *jstat = -178;
-  s6err("s2505",*jstat,0);
+  s6err("s2504",*jstat,0);
   goto out;
 
   /* Error in lower level routine.  */
 error:
   *jstat = kistat;
-  s6err("s2505",*jstat,0);
+  s6err("s2504",*jstat,0);
   goto out;
 
 
