@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1935.c,v 1.2 1994-07-05 09:02:46 pfu Exp $
+ * $Id: s1935.c,v 1.3 1994-07-25 10:47:18 pfu Exp $
  *
  */
 
@@ -75,7 +75,8 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
 *         for correct working of routine s1931-s1937.
 * CORRECTED BY: Paal Fugelli, SINTEF, 1994-07.
 *         Changed the setting of 'curr', for the while loop, to avoid
-*         over running array bounds (address error).
+*         over running array bounds (address error) and added DEQUAL in
+*         tests for knot equality.
 *
 *********************************************************************
 */
@@ -122,8 +123,8 @@ s1935 (et1, in1, et2, in2, knt, in, ik, jstat)
 
       if ((et1[pek1] < curr) || (et2[pek2] < curr)) goto err112;
 
-      if (et1[pek1]==curr) pek1++;
-      if (et2[pek2]==curr) pek2++;
+      if ( DEQUAL(et1[pek1],curr) ) pek1++;
+      if ( DEQUAL(et2[pek2],curr) ) pek2++;
       (*knt)[*in] = curr;
       (*in) ++;
     }
