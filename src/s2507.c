@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2507.c,v 1.1 1995-01-23 09:48:13 pfu Exp $
+ * $Id: s2507.c,v 1.2 1995-01-23 12:36:42 pfu Exp $
  *
  */
 
@@ -166,7 +166,7 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
     gc = (e*g-f*f)/(b*b);
 
     a = 0.5*(e*G - 2.0*f*F + g*E);
-    b = sqrt(b*b*b);
+    b = b*sqrt(b);
 
     mc = a/b;
 

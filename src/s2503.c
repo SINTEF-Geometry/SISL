@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2503.c,v 1.5 1995-01-23 09:19:05 pfu Exp $
+ * $Id: s2503.c,v 1.6 1995-01-23 12:35:42 pfu Exp $
  *
  */
 
@@ -155,7 +155,7 @@ void s2503(SISLSurf *surf, int ider, double derive[], double normal[],
 
     /* Compute mean curvature = 0.5(eG-2fF+gE)/(E*G-F*F). */
     a = 0.5*(e*G - 2.0*f*F + g*E);
-    b = sqrt(b*b*b);
+    b = b*sqrt(b);
     *meancurvature = a/b;
   }
   else /* When surf->idim != 1,2 or 3 */
