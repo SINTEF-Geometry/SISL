@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2540.c,v 1.3 1997-10-31 09:02:01 jka Exp $
+ * $Id: s2540.c,v 1.4 1999-01-06 12:23:42 jka Exp $
  *
  */
 
@@ -28,7 +28,7 @@ s2540(SISLSurf *surf, int curvature_type, int export_par_val, int pick_subpart,
       double **garr, int *stat)
 #else
 void
-s2540(surf, curvature_type, export_par_val, pick_subpart, boundary[], n_u, n_v,
+s2540(surf, curvature_type, export_par_val, pick_subpart, boundary, n_u, n_v,
       garr, stat)
      SISLSurf *surf;
      int curvature_type;
