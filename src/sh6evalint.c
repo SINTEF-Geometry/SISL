@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6evalint.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6evalint.c,v 1.2 1994-09-05 14:33:08 pfu Exp $
  *
  */
 
@@ -71,7 +71,8 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 *
 * WRITTEN BY : Ulf J. Krystad, SI, Oslo, Norway. July 91.
 * REVICED BY : UJK, Changed to deal with SISL_Curves also.
-* CORRECTED BY:
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994. Avoid array bound
+*              over-run in memcopy.
 *********************************************************************
 */
 {
@@ -98,8 +99,8 @@ sh6evalint (ob1, ob2, eimpli, ideg,
   con_tang[0] = (double) 1.0;
   con_tang[1] = DNULL;
   con_tang[2] = DNULL;
-  
-  
+
+
   if (ob1->iobj != SISLSURFACE && ob1->iobj != SISLCURVE)
     goto errinp;
   if (!pt)
@@ -111,70 +112,72 @@ sh6evalint (ob1, ob2, eimpli, ideg,
     dim = ob1->s1->idim;
   else
     dim = ob1->c1->idim;
-  
+
   if (dim > 3 || dim < 1)
     goto errinp;
-  
+
   *curve_3d = pt->geo_track_3d;
   *curve_2d_1 = pt->geo_track_2d_1;
   *curve_2d_2 = pt->geo_track_2d_2;
-  
+
   if (pt->evaluated)
     goto out;
-  
+
   if (ideg == 0)
     {
        /* No implicit geometry involved */
        kpos = 1;
        if (ob2->iobj != SISLSURFACE && ob2->iobj != SISLCURVE)
 	 goto errinp;
-       
+
        if (ob2->iobj == SISLCURVE)
 	 {
 	    /* At least the second object is a spline curve,
 	       use this one */
 	    kpos = 2;
 	    if (ob2->c1->idim > 3) goto errinp;
-	    
+
 	    /* Get geometry of first surface */
 	    sh6getgeom (ob1, 1, pt, &geom1, &norm1, aepsge, &kstat);
 	    if (kstat < 0)
 	      goto error;
-	    
+
 	    /* Get geometry of objects */
 	    sh6getgeom (ob2, 2, pt, &geom2, &norm2, aepsge, &kstat);
 	    if (kstat < 0)
 	      goto error;
-	    
-	    memcopy(*curve_3d,geom2,10,double);
-	    
+
+	    /* The number of elements to copy is given by pt->size_<obnr>
+	       and we have obnr=2  (PFU 05/09-94) */
+	    memcopy(*curve_3d,geom2,pt->size_2,double);
+
 	 }
        else
 	 {
-	    
-	    
+
+
 	    /* Two 3d surfaces */
 	    kpos = 3;
 	    if (ob2->iobj != SISLSURFACE)
 	      goto errinp;
 	    if ((dim = ob2->s1->idim) != 3)
 	      goto errinp;
-	    
+
 	    /* Get geometry of first surface */
 	    sh6getgeom (ob1, 1, pt, &geom1, &norm1, aepsge, &kstat);
 	    if (kstat < 0)
 	      goto error;
-	    
+
 	    /* Get geometry of second surface */
 	    sh6getgeom (ob2, 2, pt, &geom2, &norm2, aepsge, &kstat);
 	    if (kstat < 0)
 	      goto error;
-	    
+
 	    /* Get normal direction */
 	    s6crss (norm1, norm2, right_dir);
 	    if (kstat < 0)
 	      goto error;
-	    
+
 	    /* Compute angle. */
 	    ang = s6ang(norm1, norm2,3);
 	    if (ang < min_hp_ang)
@@ -182,13 +185,13 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 	       /* The point is a singular meeting point.*/
 	       if (pt->iinter == SI_ORD) pt->iinter = SI_SING;
 	    }
-	    
+
 	    /* Get tangent and curvature */
 	    s1304 (geom1, geom2, pt->epar, pt->epar + 2,
 		   *curve_3d, *curve_2d_1, *curve_2d_2, &kstat);
 	    if (kstat < 0)
 	      goto error;
-	    
+
 	    if ((dot = s6scpr (right_dir, *curve_3d + 3, 3)) < DNULL)
 	      {
 		 /* Change direction for tangent */
@@ -201,7 +204,7 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 		   }
 	      }
 	 }
-       
+
        pt->evaluated = TRUE;
     }
   else
@@ -209,12 +212,12 @@ sh6evalint (ob1, ob2, eimpli, ideg,
        /* Implicit cases */
        if (ideg == 2000)
 	 {
-	    /* Here we treat the cases 
-	       spline surf vs implicit analytic curve 
-	       spline curve vs implicit analytic curve 
+	    /* Here we treat the cases
+	       spline surf vs implicit analytic curve
+	       spline curve vs implicit analytic curve
 	       spline curve vs implicit analytic surf
 	       in all these cases only 3D posisition is necessary */
-	    
+
 	    /* Clean up from 1D or 2D result */
 	    if (pt->geo_data_1)
 	      freearray (pt->geo_data_1);
@@ -224,7 +227,7 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 	    pt->size_1 = 0;
 	    pt->geo_data_2 = NULL;
 	    pt->size_2 = 0;
-	    
+
 	    /* Get the right values are computed */
 	    sh6getgeom (ob1, 1, pt, &geom1, &norm1, aepsge, &kstat);
 	    if (kstat < 0)
@@ -232,9 +235,9 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 
      	    memcopy(*curve_3d,geom1,dim,double);
      	    memcopy((*curve_3d)+dim,con_tang,dim,double);
-	    
+
 	 }
-       else 
+       else
 	 {
 	    if (ideg == 1003 || ideg == 1004 || ideg == 1005)
 	      {
@@ -243,18 +246,18 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 		 ksize = 33;
 		 silhouett = TRUE;
 		 kder = 3;
-		 
+
 	      }
 	    else
 	      {
 		 /* Analytic surf vs B-spline surface */
-		 
+
 		 kpos = 4;
 		 ksize = 21;
 		 silhouett = FALSE;
 		 kder = 2;
 	      }
-	    
+
 	    if (pt->size_1 != ksize)
 	      {
 		 /* Clean up from 1D result */
@@ -266,15 +269,15 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 		 pt->size_1 = 0;
 		 pt->geo_data_2 = NULL;
 		 pt->size_2 = 0;
-		 
-		 
+
+
 		 if ((pt->geo_data_1 = newarray (ksize, DOUBLE))
 		     == NULL)
 		   goto err101;
 		 pt->size_1 = ksize;
 		 geom1 = pt->geo_data_1;
 		 norm1 = pt->geo_data_1 + ksize - 3;
-		 
+
 		 s1422 (ob1->s1, kder, pt->iside_1, pt->iside_2,
 			pt->epar, &left1, &left2, geom1,
 			norm1, &kstat);
@@ -287,15 +290,15 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 		 sh6getgeom (ob1, 1, pt, &geom1, &norm1, aepsge, &kstat);
 		 if (kstat < 0)
 		   goto error;
-		 
+
 	      }
-	    
-	    
+
+
 	    /* Get normal of implicit surface */
 	    s1331 (geom1, eimpli, ideg, kder = -1, dummy, normimpl, &kstat);
 	    if (kstat < 0)
 	      goto error;
-	    
+
 	    /* Get the right direction of the intersection curve */
 	    if (silhouett)
 	      {
@@ -309,7 +312,7 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 	       ang = s6ang(norm1, normimpl,3);
 	       s6crss (norm1, normimpl, right_dir);
 	    }
-	    
+
 	    /* Get tangent and curvature to the real intersection. */
 	    s1306 (geom1, pt->epar,
 		   eimpli, ideg, *curve_3d, *curve_2d_1, &kstat);
@@ -340,37 +343,37 @@ sh6evalint (ob1, ob2, eimpli, ideg,
 		   (*curve_3d)[ki + 3] *= -(double) 1;
 		 for (ki = 0; ki < 2; ki++)
 		   (*curve_2d_1)[ki + 2] *= -(double) 1;
-		 
+
 	      }
 	 }
-       
-       
+
+
        pt->evaluated = TRUE;
-       
+
     }
-  
+
   *jstat = 0;
   goto out;
-  
+
   /* ---------- ERROR EXITS --------------------------- */
   /* Error in alloc  */
   err101:
      *jstat = -101;
   s6err ("shevalint", *jstat, kpos);
   goto out;
-  
+
   /* Error in lower level */
   error:
      *jstat = kstat;
   s6err ("shevalint", *jstat, kpos);
   goto out;
-  
+
   /* Error in input */
   errinp:
      *jstat = -200;
   s6err ("shevalint", *jstat, kpos);
   goto out;
-  
-  
+
+
   out:;
 }
