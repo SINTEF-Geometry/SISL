@@ -81,6 +81,7 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
 * METHOD     : We call s1504 to pre-evaluate the B-splines then call
 *              s1505 to multiply them with the coefficients.
 *
+*-
 * CALLS      : s1504, s1505.
 *
 * WRITTEN BY : Michael Floater, SINTEF, May 1998.
