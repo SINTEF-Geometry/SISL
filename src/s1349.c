@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1349.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1349.c,v 1.2 1994-08-02 12:45:49 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1349(int inbcrv,SISLCurve *vpcrv[],int *jstat)
 #else
 void s1349(inbcrv,vpcrv,jstat)
@@ -31,7 +31,7 @@ void s1349(inbcrv,vpcrv,jstat)
 #endif
 /*
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To convert a B-spline curve with the first ik knots not
 *              equal to et(ik) and the last ik knots not equal to
 *              et(in+1) to a representation with the first ik knots
@@ -56,6 +56,7 @@ void s1349(inbcrv,vpcrv,jstat)
 *
 * WRITTEN BY : A. M. Ytrehus SI, Oslo, Norway.  Sep.  1988
 * Revised by : Tor Dokken, SI, Oslo, Norway. 26. Feb. 1989
+* Revised by : Paal Fugelli, SINTEF, Oslo 02/08-1994. Fixed memory leak.
 *
 *********************************************************************
 */
@@ -71,7 +72,7 @@ void s1349(inbcrv,vpcrv,jstat)
   double tval1,tval2;     /*                                             */
   int kstat = 0;          /* Status variable.                            */
   int kpos = 0;           /* Position of error.                          */
-  
+
   wp = vpcrv;
   for (kk=0; kk<inbcrv; kk++)
     {
@@ -79,7 +80,7 @@ void s1349(inbcrv,vpcrv,jstat)
       sknot = (*wp) -> et;
       kvert = (*wp) -> in;
       kord = (*wp) -> ik;
-      
+
       /* Count multiplicity of start-knot. */
       kmul1 = 0;
       sp1 = sknot + kord - 1;
@@ -89,7 +90,7 @@ void s1349(inbcrv,vpcrv,jstat)
           if (*sp1 == tval1) kmul1++;
           sp1--;
 	}
-      
+
       /* Count multiplicity of end-knot. */
       kmul2 = 0;
       sp2 = sknot + kvert;
@@ -99,7 +100,7 @@ void s1349(inbcrv,vpcrv,jstat)
           if (*sp2 == tval2) kmul2++;
           sp2++;
 	}
-      
+
       /* If the multiplicity of both end-knots equals kord, the curve is ok. */
       if (kmul1 != kord || kmul2 != kord)
 	{
@@ -107,12 +108,13 @@ void s1349(inbcrv,vpcrv,jstat)
              Create a new curve-object.                        */
           s1712((*wp),tval1,tval2,&qc2,&kstat);
           if (kstat<0) goto error;
+	  if ((*wp)) freeCurve(*wp);  /* PFU 02/08-1994 */
           *wp = qc2;
           qc2 = NULL;
 	}
       wp++;
     }
-  
+
   *jstat = 0;
   goto out;
 
