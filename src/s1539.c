@@ -1,0 +1,326 @@
+/*****************************************************************************/
+/*                                                                           */
+/*                                                                           */
+/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/*     Senter for Industriforskning, Oslo, Norway                            */
+/*     All rights reserved. See the copyright.h for more details.            */
+/*                                                                           */
+/*****************************************************************************/
+/*$Id: s1539.c,v 1.1 1995-03-21 08:06:09 pfu Exp $*/
+#include "copyright.h"
+
+#define S1539
+
+#include "sislP.h"
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+   s1539(int inbcrv,SISLCurve *vpcurv[],int nctyp[],double epar[],
+	   double astpar,int iopen,int iord2,int iflag,
+	   SISLSurf **rsurf,double **gpar,int *jstat)
+#else
+void s1539(inbcrv,vpcurv,nctyp,epar,astpar,iopen,iord2,
+           iflag,rsurf,gpar,jstat)
+     int    	inbcrv;
+     SISLCurve  *vpcurv[];
+     int   	nctyp[];
+     double     epar[];
+     double	astpar;
+     int    	iopen;
+     int    	iord2;
+     int    	iflag;
+     SISLSurf   **rsurf;
+     double 	**gpar;
+     int    	*jstat;
+#endif
+/*
+*********************************************************************
+*
+* PURPOSE    : To create a spline lofted surface
+*              from a set of input-curves. The parametrization
+*              of the psosition curves are given in epar.
+*
+* INPUT      : inbcrv - Number of curves in the curve-set.
+*              vpcurv  - Array (length inbcrv) of pointers to the
+*                       curves in the curve-set.
+*              nctyp  - Array (length inbcrv) containing the types
+*                       of curves in the curve-set.
+*                        1 - Ordinary curve.
+*                        2 - Knuckle curve. Treated as ordinary curve.
+*                        3 - Tangent to next curve.
+*                        4 - Tangent to prior curve.
+*                       (5 - Double derivative to prior curve.)
+*                       (6 - Double derivative to next curve.)
+*                       13 - SISLCurve giving start of tangent to next curve.
+*                       14 - SISLCurve giving end of tengent to prior curve.
+*              epar   - Array containing the wanted parametrization. Only
+*                       parametervalues corresponding to position
+*                       curves are given. For closed curves, one additional
+*                       parameter value must be spesified. The last entry
+*                       contains the parametrization of the repeted start
+*                       curve. (if the endpoint is equal to the startpoint
+*                       of the interpolation the lenght of the array should
+*                       be equal to inpt1 also in the closed case). The
+*                       number of entries in the array is thus equal to
+*                       the number of position curves (number plus one
+*                       if the curve is closed).
+*              astpar - Start-parameter for spline lofting direction.
+*              iopen  - Flag telling if the resulting surface should
+*                       be closed or open.
+*                       -1 - The surface should be closed and periodic.
+*                        0 - The surface should be closed.
+*                        1 - The surface should be open.
+*              iord2  - Maximal order of the B-spline basis in the
+*                       lofting direction.
+*              iflag  - Flag telling if the size of the tangents in the
+*                       derivative curves should be adjusted or not.
+*                        0 - Do not adjust tangent-sizes.
+*                        1 - Adjust tangent-sizes.
+*
+* OUTPUT     : rsurf  - Pointer to the surface produced.
+*              gpar   - The input-curves are constant parameter-lines
+*                       in the parameter-plane of the produced surface.
+*                       (i) - contains the (constant) value of this
+*                             parameter of input-curve no. i.
+*              jstat  - status messages
+*                                         > 0      : warning
+*                                         = 0      : ok
+*                                         < 0      : error
+*
+* METHOD     : A common basis for all the B-spline curves are found.
+*              The curves are represented using this basis.
+*              The resulting curves are given to an interpolation
+*              routine that calculates the B-spline vertices of the
+*              resulting spline lofted surface.
+*              Throughout these routines, first parameterdirection
+*              will be the interpolating direction, second parameter-
+*              direction will be along the input curves.
+*-
+* CALLS      : s1931,s1917,s1918,s1358,s6err.
+*
+* WRITTEN BY : A. M. Ytrehus   SI  Oslo,Norway. Sep. 1988
+* Revised by : Tor Dokken, SI, Oslo, Norway, 26-feb-1989
+* Revised by : Trond Vidar Stensby, SI, 91-08
+* REVISED BY: Vibeke Skytt, 03.94. This routine corresponds to s1333,
+*                                  but differ in the use of the parameter
+*                                  iopen.
+* Revised by : Paal Fugelli, 17/08-1994.  Fixed memory leak from 'gpar'
+*              allocated in s1357().
+* Revised by : Tor Dokken, SINTEF, 03.95. Renamed s1538 to s1539 and
+*                                         introdused the epar array.
+*
+*********************************************************************
+*/
+{
+  int kind,kcopy,kdim;
+  int kn1,kord1,knbcrv;
+  int kcnsta,kcnend;         /* Interpolation condition at start or end */
+  int ki,kj,kl,km;
+  int kdum;                  /* Used to indicate if curve is open/closed*/
+  int kleng;                 /* Number of doubles describing a curve  */
+  int ktype;                 /* Kind of interpolation condition.      */
+  int kopen;                 /* Open/closed parameter in curve direction. */
+  SISLCurve *qc;             /* Pointer to curve representing surface */
+  int *lder = NULL;	     /* Derivative indicators from s1915. */
+  double *spar=NULL; 	     /* Param. values of point conditions. */
+  double *spar2=NULL; 	     /* Parameter values from s1915. */
+  double *sknot1=NULL;       /* Knot vector.                 */
+  double *scoef2=NULL;       /* Pointer to vertices expressed in same basis  */
+  double tstpar;             /* Parameter value of last curve */
+  double tprevs;             /* Previous value in spar */
+  int kstat = 0;             /* Status variable. */
+  int kpos = 0;              /* Position of error. */
+  int knbpar;                /* Number of parameter values produced          */
+  int kdimcrv;               /* kdim multiplied with number of vertices kn1  */
+  int kcont;                 /* Continuity at end of curves */
+
+
+  /* Initiate variables. */
+
+  kdim = vpcurv[0]->idim;
+
+  if (inbcrv < 2) goto err179;
+
+  /* Put the curves into common basis. */
+
+  s1931 (inbcrv, vpcurv, &sknot1, &scoef2, &kn1, &kord1, &kstat);
+  if (kstat < 0)
+    goto error;
+
+  /* Create the parameter-values for the knot-vector
+     (in lofting direction) for a lofted surface, allocate array for
+     parameter values.    */
+
+  s1917 (inbcrv, scoef2, kn1, kdim, nctyp, astpar, iopen,
+	 &spar2, &lder, &knbcrv, &kstat);
+
+  if (kstat < 0)
+    goto error;
+
+  /* Replace the values in spar with the input values given by
+     epar */
+
+  tprevs = spar2[0];
+  kdum =0;
+  if (iopen != SISL_CRV_OPEN) kdum=1;
+
+  for (ki=0,kj=0 ; ki<knbcrv+kdum; ki++)
+    {
+      if(tprevs<spar2[ki]) kj++;
+      tprevs=spar2[ki];
+      spar2[ki]=epar[kj];
+    }
+
+
+/* Convert condition 13 and 14 to 3 and 4 */
+
+  kleng = kn1*kdim;
+  for (ki=0 ; ki<knbcrv ; ki++)
+    {
+       ktype = nctyp[ki];
+
+      if (ktype == 13 && ki+1<knbcrv)
+        {
+	  /*
+	   * Start of tangent to next curve,
+	   * make difference of next curve and this curve
+	   */
+
+	  for (kj=ki*kleng,kl=kj+kleng,km=0; km <kleng ; kj++,kl++,km++)
+	      scoef2[kj] = scoef2[kl] - scoef2[kj];
+	  nctyp[ki] = 3;
+        }
+      else if (ktype == 14 && ki>0)
+        {
+	  /* End of tangent to prior curve,
+	   * make difference of this curve
+	   * and prior curve
+	   */
+
+	  for (kj=ki*kleng,kl=kj-kleng,km=0; km <kleng ; kj++,kl++,km++)
+	      scoef2[kj] = scoef2[kj] - scoef2[kl];
+	  nctyp[ki] = 4;
+        }
+    }
+
+  spar = newarray(knbcrv+1,DOUBLE);
+  if (spar==NULL) goto err101;
+
+  /*  Only copy parameter values of point conditions */
+
+  for (ki=0,kl=0; ki<knbcrv ; ki++)
+    {
+      if (nctyp[ki] == 1 || nctyp[ki] == 2)
+        {
+	  spar[kl] = spar2[ki];
+	  kl++;
+        }
+    }
+
+  /* Add one extra parameter value if closed curve */
+
+  if (iopen != SISL_CRV_OPEN) spar[kl] = spar2[knbcrv];
+
+  /* Adjust tangent-lengths if wanted. */
+
+  if (iflag)
+    {
+      s1918 (knbcrv, sknot1, scoef2, kn1, kord1, kdim, spar2, lder, &kstat);
+      if (kstat < 0) goto error;
+    }
+
+  /* Interpolate with point interpolation method */
+
+  kcnsta = 0;
+  kcnend = 0;
+  kdimcrv = kdim*kn1;
+
+  s1357(scoef2,knbcrv,kdimcrv,nctyp,spar,kcnsta,kcnend,iopen,iord2,astpar,
+	&tstpar,&qc,gpar,&knbpar,&kstat);
+  if (kstat<0) goto error;
+
+  /* The knot vector in the lofting direction and the coefficients are
+     now contained in the curve object pointed to by qc */
+
+  /* Create the surface */
+
+  kind = 1;
+  kcopy = 1;
+  *rsurf = newSurf(kn1,qc->in,kord1,qc->ik,sknot1,qc->et,qc->ecoef,
+		   kind,kdim,kcopy);
+  if (*rsurf == NULL) goto err101;
+
+  /* Copy cuopen flag from curve */
+  (*rsurf)->cuopen_2 = qc->cuopen;
+
+  /* Release the curve object */
+
+  freeCurve(qc);
+
+  /* Output parametervalues according to the input curves, but must
+     remember to free the space allocated in call to s1357() first.  */
+
+  if ( (*gpar) != NULL ) freearray(*gpar);  /* PFU 17/08-94. */
+  *gpar = spar;
+
+  /* Decide if the surface should have a cyclic behaviour in first
+     parameter direction i.e. the direction of the curves */
+
+  s1333_count(inbcrv,vpcurv,&kcont,&kstat);
+  if (kstat<0) goto error;
+
+  if (kcont>=0)
+      {
+        s1333_cyclic(*rsurf,kcont,&kstat);
+	if (kstat<0) goto error;
+
+	/* Set periodic flag */
+	(*rsurf)->cuopen_1 = SISL_SURF_PERIODIC;
+      }
+      else
+      {
+         /* Test if the surface should be closed and non-periodic.  */
+
+         for (kopen=-2, ki=0; ki<inbcrv; ki++)
+           kopen = MAX(kopen,vpcurv[ki]->cuopen);
+         if (kopen == SISL_CRV_CLOSED) (*rsurf)->cuopen_1 = SISL_SURF_CLOSED;
+      }
+
+  /* Task done */
+
+  *jstat = 0;
+  goto out;
+
+  /* Error in allocation. */
+
+ err101:
+  *jstat = -101;
+  s6err("s1539",*jstat,kpos);
+  goto out;
+
+
+  /* Error in interpolation conditions. No. of curves < 2. */
+
+ err179:
+  *jstat = -179;
+  s6err("s1539",*jstat,kpos);
+  goto out;
+
+
+  /* Error in lower level routine.  */
+
+  error :
+    *jstat = kstat;
+  s6err("s1539",*jstat,kpos);
+  goto out;
+ out:
+
+  /* Free allocated scratch  */
+
+  if (sknot1 != NULL) freearray(sknot1);
+  if (scoef2 != NULL) freearray(scoef2);
+  if (spar2 != NULL) freearray(spar2);
+  if (lder != NULL) freearray(lder);
+
+  return;
+}
