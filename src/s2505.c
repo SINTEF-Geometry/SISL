@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2505.c,v 1.3 1995-01-23 12:36:14 pfu Exp $
+ * $Id: s2505.c,v 1.4 1995-06-28 11:17:48 jka Exp $
  *
  */
 
@@ -132,7 +132,7 @@ s2505(SISLSurf *surf, int der, double derive[], double normal[],
 
     a = (1.0 + hx*hx)*hyy - 2.0*hx*hy*hxy + (1.0 + hy*hy)*hxx;
 
-    mc = a/b;
+    mc = 0.5*a/b;
 
     *absCurvature = fabs(mc + sqrt(mc*mc - gc)) +
        fabs(mc - sqrt(mc*mc - gc));

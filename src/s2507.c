@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2507.c,v 1.3 1995-01-23 12:51:14 pfu Exp $
+ * $Id: s2507.c,v 1.4 1995-06-28 11:20:33 jka Exp $
  *
  */
 
@@ -122,7 +122,7 @@ s2507(SISLSurf *surf, int ider, double derive[], double normal[],
 
     a = (1.0 + hx*hx)*hyy - 2.0*hx*hy*hxy + (1.0 + hy*hy)*hxx;
 
-    mc = a/b;
+    mc = 0.5*a/b;
 
     a = sqrt(mc*mc - gc);
     k1 = mc + a;
