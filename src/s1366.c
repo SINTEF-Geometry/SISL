@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1366.c,v 1.5 1994-09-20 06:51:46 pfu Exp $
+ * $Id: s1366.c,v 1.6 1994-09-20 10:30:35 pfu Exp $
  *
  */
 
@@ -111,7 +111,6 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 {
   int kstat = 0;     /* Local status variable.                           */
   int kpos = 0;      /* Position of error.                               */
-  int kdim;          /* Dimension of the space in which the surface lies.*/
   int ki;            /* Loop controller. */
   int kk1;           /* Loop controller. */
   int kk2;           /* Loop controller. */
@@ -123,10 +122,10 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   int km1=1;         /* Counter of points in 1. parameter direction. */
   int km2=1;         /* Counter of points in 2. parameter direction. */
   int kain=0;        /* Array index. */
-  int kmaxis=128;    /* Number of vertices space is allocated for       */
-  int kmaxik1=16;    /* Number of vertices along first parameter direction which
+  int kmaxis=512;    /* Number of vertices space is allocated for       */
+  int kmaxik1=512;   /* Number of vertices along first parameter direction which
 			space is allocated for. */
-  int kmaxik2=16;    /* Number of vertices along second parameter direction which
+  int kmaxik2=512;   /* Number of vertices along second parameter direction which
 			space is allocated for. */
   int kpar=3;        /* Flag determining the parametrization of the data-points.
 			= 1: Mean accumulated cord length parametrization.
@@ -157,7 +156,6 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
   double sder[27];   /* Pointer to array containing the derivatives.     */
 
   /* Initialization of variables */
-  kdim = ps -> idim;
   tepsco = (double)0.000001;
 
   for (ki=0; ki<3; ki++) seps[ki] = aepsge;
@@ -168,16 +166,16 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 
   /* Allocate space for storage of points, derivatives and cross-derivatives. */
 
-  spnt = newarray(kdim*kmaxis,DOUBLE);
+  spnt = newarray(idim*kmaxis,DOUBLE);
   if (spnt == NULL) goto err101;
 
-  stng1 = newarray(kdim*kmaxis,DOUBLE);
+  stng1 = newarray(idim*kmaxis,DOUBLE);
   if (stng1 == NULL) goto err101;
 
-  stng2 = newarray(kdim*kmaxis,DOUBLE);
+  stng2 = newarray(idim*kmaxis,DOUBLE);
   if (stng2 == NULL) goto err101;
 
-  scrss = newarray(kdim*kmaxis,DOUBLE);
+  scrss = newarray(idim*kmaxis,DOUBLE);
   if (scrss == NULL) goto err101;
 
   /* Allocate space for storage of parametrization in 1. direction. */
@@ -234,21 +232,21 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       /* Possibly increase size of arrays. */
       if (knbpnt>=kmaxis)
       {
-	kmaxis += 128;
-	spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
+	kmaxis += 512;
+	spnt  = increasearray(spnt,idim*kmaxis,DOUBLE);
 	if ( spnt == NULL )  goto err101;
-	stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
+	stng1 = increasearray(stng1,idim*kmaxis,DOUBLE);
 	if ( stng1 == NULL )  goto err101;
-	stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
+	stng2 = increasearray(stng2,idim*kmaxis,DOUBLE);
 	if ( stng2 == NULL )  goto err101;
-	scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
+	scrss = increasearray(scrss,idim*kmaxis,DOUBLE);
 	if ( scrss == NULL )  goto err101;
       }
 
       /* Possibly increase size of arrays. */
       if (km1>=kmaxik1)
       {
-	kmaxik1 = km1 + 16;	/* kmaxik += 10; (PFU 19/09-94) */
+	kmaxik1 = km1 + 512;	/* kmaxik += 10; (PFU 19/09-94) */
 	spar1 = increasearray(spar1,kmaxik1,DOUBLE);
 	if ( spar1 == NULL )  goto err101;
       }
@@ -292,21 +290,21 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
       /* Possibly increase size of arrays. */
       if (knbpnt>=kmaxis)
       {
-	kmaxis += 128;
-	spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
+	kmaxis += 512;
+	spnt  = increasearray(spnt,idim*kmaxis,DOUBLE);
 	if ( spnt == NULL )  goto err101;
-	stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
+	stng1 = increasearray(stng1,idim*kmaxis,DOUBLE);
 	if ( stng1 == NULL )  goto err101;
-	stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
+	stng2 = increasearray(stng2,idim*kmaxis,DOUBLE);
 	if ( stng2 == NULL )  goto err101;
-	scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
+	scrss = increasearray(scrss,idim*kmaxis,DOUBLE);
 	if ( scrss == NULL )  goto err101;
       }
 
       /* Possibly increase size of arrays. */
       if (km2>=kmaxik2)
       {
-	kmaxik2 = km2 + 16;  /* kmaxik += 10; (PFU 19/09-94) */
+	kmaxik2 = km2 + 512;  /* kmaxik += 10; (PFU 19/09-94) */
 	spar2 = increasearray(spar2,kmaxik2,DOUBLE);
 	if ( spar1 == NULL )  goto err101;
       }
@@ -344,14 +342,14 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 	  /* Possibly increase size of arrays. */
 	  if (knbpnt>=kmaxis)
 	  {
-	    kmaxis += 128;
-	    spnt  = increasearray(spnt,kdim*kmaxis,DOUBLE);
+	    kmaxis += 512;
+	    spnt  = increasearray(spnt,idim*kmaxis,DOUBLE);
 	    if ( spnt == NULL )  goto err101;
-	    stng1 = increasearray(stng1,kdim*kmaxis,DOUBLE);
+	    stng1 = increasearray(stng1,idim*kmaxis,DOUBLE);
 	    if ( stng1 == NULL )  goto err101;
-	    stng2 = increasearray(stng2,kdim*kmaxis,DOUBLE);
+	    stng2 = increasearray(stng2,idim*kmaxis,DOUBLE);
 	    if ( stng2 == NULL )  goto err101;
-	    scrss = increasearray(scrss,kdim*kmaxis,DOUBLE);
+	    scrss = increasearray(scrss,idim*kmaxis,DOUBLE);
 	    if ( scrss == NULL )  goto err101;
 	  }
 
