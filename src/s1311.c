@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1311.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1311.c,v 1.2 1994-12-07 11:44:57 pfu Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-double 
+double
 s1311(double arad,double aepsge,double amax,int *jstat)
 #else
 double s1311(arad,aepsge,amax,jstat)
@@ -32,7 +32,7 @@ double s1311(arad,aepsge,amax,jstat)
 #endif
 /*
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : To make the step lenth in the iteration procedure based
 *              on radius of curvature and an absolute tolerance
 *
@@ -43,10 +43,10 @@ double s1311(arad,aepsge,amax,jstat)
 *                       the circle of curvature and an Hermite approximation
 *                       to the circle
 *              amax   - Upper bound of absolute value of coordinates.
-*                       If amax<= 0.0, amax is ignored.
+*                       If amax = 0.0 is ignored and amax < 0.0 causes error.
 *
 * OUTPUT     : s1311  - Actual step length to be employed
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -75,21 +75,21 @@ double s1311(arad,aepsge,amax,jstat)
   double tstep;             /* Preliminary value for step length */
   double t1sixth;           /* The value of 1/6                  */
   double talfa;             /* Angle                             */
-  
-  if (amax < DNULL) goto err177;    
-  
+
+  if (amax < DNULL) goto err177;
+
   if (aepsge < DNULL) goto err120;
-  
+
   if (arad > DNULL)
     {
-      t1sixth = (double)1.0/(double)6.0; 
-      /*  Estimat the opening angle of the segments based on the error 
-       *   formula. */                                                  
+      t1sixth = (double)1.0/(double)6.0;
+      /*  Estimat the opening angle of the segments based on the error
+       *   formula. */
       talfa = PI*pow(aepsge/arad,t1sixth)/((double)0.4879);
-      
+
       /*  Estimate step length equal to curve length of this circular arc,
        *   We limit the step length to half the radius of curvature  */
-      
+
       tstep = MIN(fabs(talfa*arad),fabs(arad/(double)2.0));
     }
   else if (DEQUAL(arad,DNULL))
@@ -97,32 +97,32 @@ double s1311(arad,aepsge,amax,jstat)
       /*  Radius of curvature is zero */
       tstep = (double)100.0*aepsge;
     }
-  
+
   else
     {
       /*  Infinit radius of curvatur  */
       tstep = amax;
     }
-  
+
   if ( amax > DNULL && amax < tstep )
     tstep = MAX(amax,aepsge);
-  
+
   tstep = MAX(tstep,aepsge);
 
   *jstat = 0;
   goto out;
-  
+
 /* Negative tolerance */
 
 err120: *jstat = -120;
         s6err("s1311",*jstat,kpos);
-goto out;       
+goto out;
 
 /* Maximal step length zero are less than geometry tolerance */
 
 err177: *jstat = -177;
         s6err("s1311",*jstat,kpos);
-goto out;       
+goto out;
 
 out:
 return(tstep);
