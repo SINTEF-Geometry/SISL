@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1333.c,v 1.2 1994-08-02 11:18:22 pfu Exp $
+ * $Id: s1333.c,v 1.3 1994-08-02 11:20:42 pfu Exp $
  *
  */
 
@@ -236,7 +236,7 @@ void s1333(inbcrv,vpcurv,nctyp,astpar,iopen,iord2,
 	&tstpar,&qc,gpar,&knbpar,&kstat);
   if (kstat<0) goto error;
 
-  if (*gpar) freearray(*gpar);  /* 'gpar' not used.  PFU 25/07-1994. */
+  if (*gpar) freearray(*gpar);  /* 'gpar' not used.  PFU 02/08-1994. */
 
 /* -> changed guen & ujk Wed Jul  1 19:45:25 MESZ 1992 */
 
