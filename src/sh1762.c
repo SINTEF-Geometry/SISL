@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.12 2001-03-19 15:59:04 afr Exp $
+ * $Id: sh1762.c,v 1.13 2001-10-26 01:59:37 vsk Exp $
  *
  */
 
@@ -3934,9 +3934,9 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 	      if (kstat < 0)
 		goto error;
 	      /* Newi (ujk) */
-	      for (ind1 = 0; ind1 < 2; ind1++)
+	      /*	      for (ind1 = 0; ind1 < 2; ind1++)
 		for (ind2 = 0; ind2 < 4; ind2++)
-		  pretop[ind1][ind2] = SI_UNDEF;
+		pretop[ind1][ind2] = SI_UNDEF; */
 
 	      for (qobj = po1, obj = 0, ipar = 0; obj < 2;
 	       qobj = po2, obj++, ipar = ((po1->iobj == SISLCURVE) ? 1 : 2))
@@ -3959,10 +3959,33 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 		      }
 
 		    /* Left point on curve */
-		    if (DEQUAL (up[perm[0]]->epar[ipar],
+		    pretop[ind1][1 + 2 * obj] = SI_ON;
+		    /* Point at edge */
+		    if (pretop[ind1][2 * obj] != SI_IN &&
+			pretop[ind1][2 * obj] != SI_OUT &&
+			DEQUAL (up[perm[0]]->epar[ipar],
 				qobj->c1->et[qobj->c1->ik - 1]))
 		      {
 			/* Point at edge */
+			pretop[ind1][2 * obj] = SI_AT;
+		      }
+
+		    /* Right point of curve */
+		    pretop[ind2][2 * obj] = SI_ON;
+		    if (pretop[ind2][1 + 2 * obj] != SI_IN &&
+			pretop[ind2][1 + 2 * obj] != SI_OUT &&
+			DEQUAL (up[perm[1]]->epar[ipar],
+				qobj->c1->et[qobj->c1->in]))
+		      {
+			/* Point at edge */
+			pretop[ind2][1 + 2 * obj] = SI_AT;
+		      }
+
+		    /*    / Left point on curve /
+		    if (DEQUAL (up[perm[0]]->epar[ipar],
+				qobj->c1->et[qobj->c1->ik - 1]))
+		      {
+			* Point at edge *
 			pretop[ind1][2 * obj] = SI_AT;
 			pretop[ind1][1 + 2 * obj] = SI_ON;
 		      }
@@ -3971,18 +3994,18 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 			pretop[ind1][1 + 2 * obj] = SI_ON;
 		      }
 
-		    /* Right point of curve */
+		    * Right point of curve *
 		    if (DEQUAL (up[perm[1]]->epar[ipar],
 				qobj->c1->et[qobj->c1->in]))
 		      {
-			/* Point at edge */
+			* Point at edge *
 			pretop[ind2][2 * obj] = SI_ON;
 			pretop[ind2][1 + 2 * obj] = SI_AT;
 		      }
 		    else
 		      {
 			pretop[ind2][2 * obj] = SI_ON;
-		      }
+			} */
 
 		  }
 	      sh6getlist (up[0], up[1], &klist1, &klist2, &kstat);
