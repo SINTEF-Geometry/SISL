@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1348.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1348.c,v 1.2 1994-11-08 12:47:57 poeh Exp $
  *
  */
 
@@ -48,7 +48,7 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
 *         Eeps   - Array (length kdim) containing the maximum deviation
 *                  which is acceptable in each of the kdim components of
 *                  of the surface (except possibly along the edges).
-*         Nend   - Array (length 4) containing the no. of derivatives 
+*         Nend   - Array (length 4) containing the no. of derivatives
 *                  to be kept fixed along each edge of the surface.
 *                  The numbering of the edges is the same as for edeps below.
 *                  All the derivatives of order < nend(i)-1 will be kept fixed
@@ -105,6 +105,9 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
 *
 * Written by: C.R.Birkeland, Si, Oslo, Norway, April 1993.
 * The datareduction routine, s1345, is written by: Knut M|rken,  SI.
+* Changed by: Per OEyvind, SINTEF, 1994-11.
+*             Added input check for invalid Eeps values.
+*             Removed 2 array "overlooks", when setting side1 and side2.
 **********************************************************************
 */
 {
@@ -137,12 +140,25 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
   SISLSurf *qs_kreg = NULL;
 
 
-  /* Check input and description of surface. 
+  /* Check input and description of surface.
    * ---------------------------------------
    */
-  
+
   if (!ps) goto err150;
   if (ps->ik1 < 1 || ps->ik2 < 1 || idim < 1) goto err103;
+
+  /* Get the eeps value with largest absolute value */
+  parvalue[0] = fabs(eeps[0]);
+  for (i = 1; i < 4; i++)
+  {
+    parvalue[1] = fabs(eeps[i]);
+    if (parvalue[1] > parvalue[0])
+      parvalue[0] = parvalue[1];
+  }
+
+  /* If no max deviation are large than zero ... */
+  if (DEQUAL(parvalue[0], 0.0))
+    goto err103;
 
   /* Allocate error matrices */
 
@@ -153,34 +169,34 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
     goto err101;
 
   /* Make sure that the input surface is non-periodic.  */
- 
+
   memcopy(ledgefix, nend, 4, INT);
   if (ps->cuopen_1 == SISL_CRV_PERIODIC ||
       ps->cuopen_2 == SISL_CRV_PERIODIC)
   {
      make_sf_kreg(ps, &qs_kreg, &stat);
      if (stat < 0) goto error;
-     
+
      /* The input surface is closed and periodic. Make sure that the
 	endcurves of the surface is matching as good as possible
 	by fixing the position and the derivative in the edges of the surface.
 	The change made to startfix and endfix is only locallly. */
-     
+
      if (ps->cuopen_1 == SISL_CRV_PERIODIC)
 	ledgefix[0] = ledgefix[1] = MAX(MAX(nend[0],nend[1]), 2);
      if (ps->cuopen_2 == SISL_CRV_PERIODIC)
 	ledgefix[2] = ledgefix[3] = MAX(MAX(nend[2],nend[3]), 2);
   }
-  else 
+  else
      qs_kreg = ps;
-  
+
   /* First,  make sure both orders are higher or equal to 4 */
 
   if (qs_kreg->ik1 < 4 || qs_kreg->ik2 < 4)
     {
       /* Increase order in at least one direction */
-    
-      s1387(qs_kreg, MAX( 4, qs_kreg->ik1), MAX( 4, qs_kreg->ik2), 
+
+      s1387(qs_kreg, MAX( 4, qs_kreg->ik1), MAX( 4, qs_kreg->ik2),
 	    &osurf1, &stat);
       if (stat<0) goto error;
     }
@@ -193,7 +209,7 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
   if (osurf1->ik1 == 4 && osurf1->ik2 == 4)
     {
       /* Orders in both parameterdirections are now 4.
-       * No degree reduction necessary.           
+       * No degree reduction necessary.
        * Specify directly error bounds for use
        * in the datareduction routine. */
 
@@ -211,13 +227,13 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
 	{
 	  error1[i] = 0.25 * eeps[i];
 	  error2[i] = eeps[i]-error1[i];
-	}	
+	}
 
       /* Check second direction */
-      
+
       /* Create curve equivalent and determine sampling points
        * for 2. direction */
-	  
+
       ocurve = newCurve(osurf1->in2, osurf1->ik2, osurf1->et2,
 			osurf1->ecoef, 1, idim*osurf1->in1, 1);
       if(ocurve == NULL) goto err101;
@@ -230,11 +246,11 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
       if (stat<0) goto error;
       freeCurve(ocurve);
       ocurve = NULL;
-      
+
       /* Create curve equivalent and determine sample points
        * for 1. direction after transposing surface coefficients */
-      
-      newcoeff = newarray(idim * osurf1->in1 * osurf1->in2, DOUBLE); 
+
+      newcoeff = newarray(idim * osurf1->in1 * osurf1->in2, DOUBLE);
       if (newcoeff == NULL) goto err101;
       s6chpar(osurf1->ecoef, osurf1->in1, osurf1->in2, idim, newcoeff);
 
@@ -250,10 +266,10 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
       if (stat<0) goto error;
       freeCurve(ocurve);
       ocurve = NULL;
-      
+
       /* Compute points and derivatives on the surface
        * at the points given by calculated par.values */
-      
+
       derive = newarray( idim * 4, DOUBLE );
       ep     = newarray( idim * im1 * im2, DOUBLE );
       eder10 = newarray( idim * im1 * im2, DOUBLE );
@@ -265,7 +281,7 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
       for(j=0; j<im2; j++)
 	{
 	  parvalue[1] = par2[j];
-	  if(par2[j] != par2[j+1])
+	  if(j+1 < im2 && par2[j] != par2[j+1])
 	    side2 = 1;
 	  else
 	    side2 = -1;
@@ -273,12 +289,12 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
 	  for(i=0; i<im1; i++)
 	    {
 	      parvalue[0] = par1[i];
-	      if(par1[i] != par1[i+1])
+	      if(i+1 < im1 && par1[i] != par1[i+1])
 		side1 = 1;
 	      else
 		side1 = -1;
 
-	      s1425( qs_kreg, 1, 1, side1, side2, parvalue, &leftknot1, 
+	      s1425( qs_kreg, 1, 1, side1, side2, parvalue, &leftknot1,
 			  &leftknot2, derive, &stat );
 	      if(stat < 0) goto error;
 	      for(k=0; k<idim; k++, index++)
@@ -294,7 +310,7 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
 
       /* Compute Hermite interpolant */
 
-      s1530(ep, eder10, eder01, eder11, par1, par2, im1, im2, 
+      s1530(ep, eder10, eder01, eder11, par1, par2, im1, im2,
 	    idim, &osurf2, &stat);
       if(stat < 0) goto error;
     }
@@ -302,12 +318,12 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
   /* Perform datareduction on the bicubic surface.
    * Use tolerance error2                         */
 
-  s1345(osurf2, error2, ledgefix, edgeps, aepsco, iopt, itmax, 
+  s1345(osurf2, error2, ledgefix, edgeps, aepsco, iopt, itmax,
 	rs, error1, &stat);
   if(stat < 0) goto error;
 
   /* Set periodicity flag. */
-  
+
   if (ps->cuopen_1 == SISL_CRV_CLOSED || ps->cuopen_1 == SISL_CRV_PERIODIC)
      (*rs)->cuopen_1 = SISL_CRV_CLOSED;
   if (ps->cuopen_2 == SISL_CRV_CLOSED || ps->cuopen_2 == SISL_CRV_PERIODIC)
@@ -316,53 +332,53 @@ void s1348(ps,eeps,nend,edgeps,aepsco,iopt,itmax,rs,jstat)
    * Success.
    * --------
    */
-  
+
   *jstat = 0;
   goto out;
-  
 
-  /* 
-   * Error in allocation. 
+
+  /*
+   * Error in allocation.
    * --------------------
    */
-  
-  err101: 
+
+  err101:
     *jstat = -101;
     s6err("s1348",*jstat,kpos);
     goto out;
-  
+
   /* Error in input */
 
-  err103: 
+  err103:
     *jstat = -103;
     s6err("s1348",*jstat,kpos);
     goto out;
-  
-  /* 
+
+  /*
    * Error in input, pointer to SISLSurf was NULL pointer.
    * -----------------------------------------------------
    */
-  
-  err150: 
+
+  err150:
     *jstat = -150;
     s6err("s1348",*jstat,kpos);
     goto out;
-  
-  /* 
+
+  /*
    * Error in lower level routine.
    * -----------------------------
    */
-  
-   error: 
+
+   error:
     *jstat = stat;
     s6err("s1348",*jstat,kpos);
     goto out;
-  
+
   /*
    * Exit s1348.
    * -----------
    */
-  
+
   out:
     if(error1 != NULL)    freearray(error1);
     if(error2 != NULL)    freearray(error2);
