@@ -24,3 +24,17 @@
 # character to interpose another module into the current module.  This
 # can be useful for creating a module that consists of many directories
 # spread out over the entire source repository.
+
+
+# Convenient aliases
+world           -a .
+
+# CVSROOT support; run mkmodules whenever anything changes.
+CVSROOT         -i mkmodules CVSROOT
+modules         -i mkmodules CVSROOT modules
+loginfo         -i mkmodules CVSROOT loginfo
+commitinfo      -i mkmodules CVSROOT commitinfo
+rcsinfo         -i mkmodules CVSROOT rcsinfo
+editinfo        -i mkmodules CVSROOT editinfo
+
+# Add other modules here...
