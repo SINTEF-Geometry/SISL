@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1328.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1328.c,v 1.2 1994-06-28 07:36:15 mif Exp $
  *
  */
 
@@ -71,6 +71,7 @@ void s1328(psold,epoint,enorm1,enorm2,idim,rsnew,jstat)
 *
 * WRITTEN BY : Vibeke Skytt, SI, 88-06.
 * REVISED BY : Mike Floater, SI, 91-04.
+* DEBUGGED BY : Mike Floater, SI, 94-06. Use scSave.
 *
 *********************************************************************
 */
@@ -84,6 +85,7 @@ void s1328(psold,epoint,enorm1,enorm2,idim,rsnew,jstat)
   double *scoef = NULL; /* Coeffecient array of new surface.        */
   double *s1,*s2;  /* Pointers used to traverse scoef.              */
   double *sc=NULL; /* Pointer used to traverse psold->ecoef.        */
+  double *scSave=NULL; /* Pointer to new vertices in rational case. */
   double *s3;      /* Stop pointer of vertex in psold->ecoef.       */
   double *spoint;  /* Pointer used to traverse the point epoint.    */
   double *snorm1;  /* Pointer used to traverse the normal enorm1.   */
@@ -127,6 +129,8 @@ void s1328(psold,epoint,enorm1,enorm2,idim,rsnew,jstat)
       {
           sc[i]=rscoef[i]*scale;
       } 
+
+      scSave = sc;
   }
   else
   {
@@ -167,7 +171,7 @@ void s1328(psold,epoint,enorm1,enorm2,idim,rsnew,jstat)
     }
   
   
-  if(ikind == 2 || ikind == 4) freearray(sc);
+  if(ikind == 2 || ikind == 4) freearray(scSave);
 
   /* Create output surface.  */
   
