@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1241.c,v 1.2 1995-01-03 11:11:11 pfu Exp $
+ * $Id: s1241.c,v 1.3 1995-01-03 13:08:35 pfu Exp $
  *
  */
 
@@ -41,8 +41,8 @@ void s1241(pcurve, point, dim, epsge, area, stat)
 *              point, the area contribution is positive.
 *              When the curve is rotating clockwise around the point,
 *              the area contribution is negative.
-*              If the curve is closed, the area calculated is independent
-*              of where the point is situated.
+*              If the curve is closed or periodic, the area calculated
+*              is independent of where the point is situated.
 *              The area is calculated exactly for B-spline curves, for
 *              NURBS the result is an approximation.
 *              This routine will only perform if the order of the curve is
