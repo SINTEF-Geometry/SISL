@@ -34,7 +34,7 @@ void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
 *
 *********************************************************************
 *
-* PURPOSE    : Find all intersections between a B-spline surface
+* PURPOSE    : Find all intersections between a NURBS surface
 *              and a point.
 *
 *
