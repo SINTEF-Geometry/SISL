@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1761.c,v 1.5 1998-05-12 08:29:27 vsk Exp $
+ * $Id: sh1761.c,v 1.6 1999-01-15 10:15:17 jka Exp $
  *
  */
 
@@ -38,7 +38,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 *
 *********************************************************************
 *          NOTE : Comments for further developments/tasks starts
-*                 with /* UPDATE :
+*                 with <comment-sign> UPDATE :
 *
 *
 * PURPOSE    : Find all intersections between two objects (of type

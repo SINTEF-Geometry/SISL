@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1460.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1460.c,v 1.2 1999-01-15 10:11:31 jka Exp $
  *
  */
 
@@ -134,12 +134,12 @@ void sh1460(fshape,vboundc,icurv,wsurf,jstat)
 
   fevalmidProc fevalmid;
 /*
-/* #if defined(SISLNEEDPROTOTYPES)
-/*   void (*fevalmid)(fshapeProc,SISLCurve *[],int,double [],double [],
-/* 		   double [],int *);
-/* #else
-/*   void (*fevalmid)();
-/* #endif
+ #if defined(SISLNEEDPROTOTYPES)
+   void (*fevalmid)(fshapeProc,SISLCurve *[],int,double [],double [],
+ 		   double [],int *);
+ #else
+   void (*fevalmid)();
+ #endif
  */
   /* Allocate scratch for output surfaces.  */
 

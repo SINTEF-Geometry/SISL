@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1786.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1786.c,v 1.2 1999-01-15 10:09:34 jka Exp $
  *
  */
 #define S1786
@@ -137,11 +137,11 @@ void s1786(pc1,pc2,aepsge,epar1,epar2,jstat)
 
   fevalcProc fevalc;
 /*
-/* #if defined(SISLNEEDPROTOTYPES)
-/*   void (*fevalc)(SISLCurve *, int, double , int *, double [], int *);
-/* #else
-/*      void (*fevalc)();   /* Pointer to curve evaluator routine of 2. curve.  */
-/* #endif
+ #if defined(SISLNEEDPROTOTYPES)
+   void (*fevalc)(SISLCurve *, int, double , int *, double [], int *);
+ #else
+      void (*fevalc)();   /* Pointer to curve evaluator routine of 2. curve.
+ #endif
  */
      /* UJK, aug 93, make min step in parameter domain based on the
 	max parameter values */
@@ -398,7 +398,7 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
 
   /*  Curves within tolerance. Test if the start- and endpoint of any
      of the curves are equal.   */
-  
+
   *jstat = (DEQUAL(tfirst1,tend1) || DEQUAL(tfirst2,tend2)) ? 0 : 1;
   goto out;
 

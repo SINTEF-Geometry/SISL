@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1784.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1784.c,v 1.2 1999-01-15 10:13:19 jka Exp $
  *
  */
 
@@ -171,11 +171,11 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
 
   fevalcProc fevalc;
 /*
-/* #if defined(SISLNEEDPROTOTYPES)
-/*   void (*fevalc) (SISLCurve *, int, double, int *, double[], int *);
-/* #else
-/*   void (*fevalc) ();
-/* #endif
+ #if defined(SISLNEEDPROTOTYPES)
+   void (*fevalc) (SISLCurve *, int, double, int *, double[], int *);
+ #else
+   void (*fevalc) ();
+ #endif
  */
   /* Make maximal step length based on box-size of surface */
 

@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.8 1998-05-12 08:31:09 vsk Exp $
+ * $Id: sh1762.c,v 1.9 1999-01-15 10:17:25 jka Exp $
  *
  */
 
@@ -95,7 +95,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 *
 *********************************************************************
 *          NOTE : Comments for further developments/tasks starts
-*                 with /* UPDATE :
+*                 with <comment-sign> UPDATE :
 *
 *
 * PURPOSE    : SISLObject - object intersection. Treat the inner of the
@@ -2992,7 +2992,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
 	    /* TESTING UJK !!!!!!!!!!!!!!!!!!!!!
-	    /* UJK, August 92, 1D crvs may be "degenerate",
+	       UJK, August 92, 1D crvs may be "degenerate",
 	       continue when iteration fails */
 	    if (kstat != 1 && po1->p1->idim == 1)
 	    {
@@ -4445,12 +4445,12 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT &&
 	   po1->p1->idim == 3)) && kxintercept && xc > 7 && xc % 2 == 0)
   {
-    if (po1->iobj == SISLSURFACE) 
+    if (po1->iobj == SISLSURFACE)
       {
 	qs1 = po1->s1;
 	pp1 = po2->p1;
       }
-    else 
+    else
       {
 	qs1 = po2->s1;
 	pp1 = po1->p1;
@@ -4479,7 +4479,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	   the point  */
 	for (ind1=0; ind1<kpt; ind1++)
 	  {
-	    s1421(qs1, 0, spar+2*ind1, &kleft, &kleft2, sder1, 
+	    s1421(qs1, 0, spar+2*ind1, &kleft, &kleft2, sder1,
 		  snorm1, &kstat);
 	    if (s6dist(pp1->ecoef, sder1, kdim) <= aepsge)
 	      break;
@@ -4489,7 +4489,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	  {
 	    for (ind3=0; ind3<ucurve[ind2]->ipoint; ind3++)
 	      {
-		s1421(qs1, 0, ucurve[ind2]->epar1+2*ind3, &kleft, &kleft2, 
+		s1421(qs1, 0, ucurve[ind2]->epar1+2*ind3, &kleft, &kleft2,
 		      sder1, snorm1, &kstat);
 		if (s6dist(pp1->ecoef, sder1, kdim) <= aepsge)
 		  break;
@@ -4512,7 +4512,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	  freeIntcrvlist(ucurve, kcrv);
       }
     qs1 = NULL;
-  }  
+  }
   else kstat = 1;
 
 
@@ -4803,15 +4803,15 @@ sh1762_s9coincide (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
      /* Test if this is a singular situation. */
 
-     if (s6ang(sder1+qs->idim, sder1+2*qs->idim, qs->idim) <= 
+     if (s6ang(sder1+qs->idim, sder1+2*qs->idim, qs->idim) <=
 	 ANGULAR_TOLERANCE &&
-	 s6ang(sder2+qs->idim, sder2+2*qs->idim, qs->idim) <= 
+	 s6ang(sder2+qs->idim, sder2+2*qs->idim, qs->idim) <=
 	 ANGULAR_TOLERANCE)
      {
 	/* Perform marching to check if there is coincidence between
 	   the intersection points. */
 
-	 /* fprintf(stdout,"Try coincidence marching \n"); 
+	 /* fprintf(stdout,"Try coincidence marching \n");
 	 fprintf(stdout,"%7.13f %7.13f %7.13f %7.13f \n",qs->et1[0],
 		 qs->et1[qs->in1],qs->et2[0],qs->et2[qs->in2]); */
 
