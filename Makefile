@@ -155,7 +155,7 @@ ifeq "$(PLATFORM)" "winnt"
 
   ifeq "$(MODE)" "opt"
     CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
-    CDEFS		=-DWIN32 -DMICROSOFT
+    CDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
     LDFLAGS		=-nologo -opt:ref
 
   else
@@ -173,7 +173,7 @@ ifeq "$(PLATFORM)" "borland"
 
   ifeq "$(MODE)" "opt"
     CFLAGS		=-6 -O2
-    CDEFS		=-DWIN32
+    CDEFS		=-DWIN32 -DNDEBUG
     LDFLAGS		=
 
   else
@@ -193,7 +193,7 @@ ifeq "$(PLATFORM)" "hp-pa"
 
   ifeq "$(MODE)" "opt"
     CFLAGS		=+DAportable +Oall
-    CDEFS		=-DHPUX
+    CDEFS		=-DHPUX -DNDEBUG
   else
     CFLAGS		=+DAportable -g
     CDEFS		=-DHPUX
@@ -211,7 +211,7 @@ ifeq "$(PLATFORM)" "sgi"
 
   ifeq "$(MODE)" "opt"
     CFLAGS		=-O3 -n32
-    CDEFS		=-DSGI
+    CDEFS		=-DSGI -DNDEBUG
   else
     CFLAGS		=-g -n32
     CDEFS		=-DSGI
@@ -226,10 +226,10 @@ ifeq "$(PLATFORM)" "linux"
 
   ifeq "$(MODE)" "opt"
     CFLAGS	=-O2 -Wall -W
-    CDEFS	=-DLINUX -DCHECKLEVEL0
+    CDEFS	=-DLINUX -DNDEBUG
   else
     CFLAGS	=-g -Wall -W
-    CDEFS	=-DLINUX -DCHECKLEVEL4
+    CDEFS	=-DLINUX
   endif
 
 endif
@@ -259,7 +259,7 @@ ifeq "$(PLATFORM)" "winnt"
 
   ifeq "$(MODE)" "opt"
     CXXFLAGS		=-TP -GX -GR -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
-    CXXDEFS		=-DWIN32 -DMICROSOFT
+    CXXDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
     LDXXFLAGS		=-nologo -opt:ref
 
   else
@@ -278,7 +278,7 @@ ifeq "$(PLATFORM)" "borland"
 
   ifeq "$(MODE)" "opt"
     CXXFLAGS		=-6 -P -O2
-    CXXDEFS		=-DWIN32
+    CXXDEFS		=-DWIN32 -DNDEBUG
     LDXXFLAGS		=
 
   else
@@ -298,10 +298,10 @@ ifeq "$(PLATFORM)" "hp-pa"
 
   ifeq "$(MODE)" "opt"
     CXXFLAGS		=-O -AA
-    CXXDEFS		=-DHPUX -D$(EX)
+    CXXDEFS		=-DHPUX -DHP_ACC_Cplusplus -DHP_Cplusplus -DNDEBUG
   else
     CXXFLAGS		=-g -AA
-    CXXDEFS		=-DHPUX -DCHECKLEVEL4 -DHP_ACC_Cplusplus -DHP_Cplusplus
+    CXXDEFS		=-DHPUX -DHP_ACC_Cplusplus -DHP_Cplusplus
   endif
 
   LDXXFLAGS		=-g -z -G +DAportable -AA
@@ -315,10 +315,10 @@ ifeq "$(PLATFORM)" "sgi"
 
   ifeq "$(MODE)" "opt"
     CXXFLAGS	=-O3 -n32 -LANG:std -ptused
-    CXXDEFS	=-DSGI -DCHECKLEVEL0
+    CXXDEFS	=-DSGI -DNDEBUG
   else
     CXXFLAGS	=-g -n32 -LANG:std -ptused
-    CXXDEFS	=-DSGI -DCHECKLEVEL4
+    CXXDEFS	=-DSGI
   endif
 
   LDXXFLAGS		=-LANG:std -ptused
@@ -335,10 +335,10 @@ ifeq "$(PLATFORM)" "linux"
 # be measured!
 
     CXXFLAGS	=-O2 -Wimplicit -Wcomment -Wmain -Wuninitialized -Woverloaded-virtual -Wreturn-type
-    CXXDEFS	=-DLINUX -DCHECKLEVEL0
+    CXXDEFS	=-DLINUX -DNDEBUG
   else
     CXXFLAGS	=-g -Wimplicit -Wcomment -Wmain -Woverloaded-virtual -Wreturn-type
-    CXXDEFS	=-DLINUX -DCHECKLEVEL4
+    CXXDEFS	=-DLINUX
   endif
 endif
 
@@ -486,21 +486,30 @@ CXXOPTS		=$(CXXFLAGS) $(CXXINCLUDES) $(CXXDEFS)
 LDOPTS		=$(LDFLAGS) $(CLIBPATH)
 LDXXOPTS	=$(LDXXFLAGS) $(CXXLIBPATH)
 
+
+
 CPROGS		=$(basename $(notdir $(wildcard app/*.c)))
-CXXPROGS	=$(basename $(notdir $(wildcard app/*.C)))
+#CXXPROGS	=$(basename $(notdir $(wildcard app/*.C)))
+CXXPROGS	=$(basename $(notdir $(wildcard app/*.C) $(wildcard app/*.cpp)))
+CXXPROGSRCS	=$(notdir $(wildcard app/*.C) $(wildcard app/*.cpp))
 
 LIBNAME		=$(notdir $(shell pwd))
 
 CSRCS		:=$(wildcard src/*.c) $(addsuffix .c, $(CPROGS))
-CXXSRCS		:=$(wildcard src/*.C) $(addsuffix .C, $(CXXPROGS))
+#CXXSRCS		:=$(wildcard src/*.C) $(addsuffix .C, $(CXXPROGS))
+CXXSRCS		:=$(wildcard src/*.C) $(wildcard src/*.cpp) $(CXXPROGSRCS)
+CXXSRCSBASE	:=$(notdir $(basename $(CXXSRCS)))
 
 COBJS		=$(addprefix lib/$(PLATFORM)/$(MODE)/, \
 			     $(notdir $(CSRCS:.c=.o)))
+#CXXOBJS		=$(addprefix lib/$(PLATFORM)/$(MODE)/, \
+#			     $(notdir $(CXXSRCS:.C=.o)))
 CXXOBJS		=$(addprefix lib/$(PLATFORM)/$(MODE)/, \
-			     $(notdir $(CXXSRCS:.C=.o)))
+			     $(addsuffix .o, $(CXXSRCSBASE)))
 
 CDEPFILES	= $(addprefix dep/, $(addsuffix .d, $(notdir $(CSRCS:.c=))))
-CXXDEPFILES	= $(addprefix dep/, $(addsuffix .d, $(notdir $(CXXSRCS:.C=))))
+#CXXDEPFILES	= $(addprefix dep/, $(addsuffix .d, $(notdir $(CXXSRCS:.C=))))
+CXXDEPFILES	= $(addprefix dep/, $(addsuffix .d, $(CXXSRCSBASE)))
 
 CPROGOBJS	=$(addprefix lib/$(PLATFORM)/$(MODE)/, \
 			     $(addsuffix .o, $(CPROGS)))
@@ -554,6 +563,7 @@ varcheck:
 		@echo "PWD=" $(PWD)
 		@echo "(notdir (PWD))=" $(notdir $(PWD))
 		@echo ""
+		@echo "CXXDEPFILES="$(CXXDEPFILES)
 		@echo "DEPLIBS0="$(DEPLIBS0)
 		@echo "DEPLIBS="$(DEPLIBS)
 		@echo "DEPLIBOBJS="$(DEPLIBOBJS)
@@ -607,6 +617,11 @@ endif
 		@echo "PLATFORM="$(PLATFORM)
 		@echo "HOSTTYPE="$(HOSTTYPE)
 		@echo ""
+		@echo "NOAPPCXXOBJS="$(NOAPPCXXOBJS)
+		@echo "CXXOBJS="$(CXXOBJS)
+		@echo "CXXPROGOBJS="$(CXXPROGOBJS)
+		@echo "CXXSRCSBASE="$(CXXSRCSBASE)
+
 
 
 clean:
@@ -632,7 +647,8 @@ realclean:
 		@echo ""
 		rm -rf $(addprefix app/, $(CXXPROGS) \
 					 $(CPROGS) core)
-		rm -rf dep lib core
+		rm -f dep/*.d
+		rm -rf lib core
 		find . -name '*~' -exec rm -f {} \;
 		mkdir -p dep
 		mkdir -p lib
@@ -731,7 +747,19 @@ dep/%.d:	src/%.C
 		sed 's/$*\.o/lib\/$(PLATFORM)\/opt\/& \
 			     lib\/$(PLATFORM)\/nopt\/& dep\/$(@F)/' > $@
 
+dep/%.d:	src/%.cpp
+		@if [ ! -d dep ]; then mkdir -p dep; fi
+		g++ -MM $(CXXINCLUDES) $(CXXDEFS) -USGI -UMICROSOFT $< | \
+		sed 's/$*\.o/lib\/$(PLATFORM)\/opt\/& \
+			     lib\/$(PLATFORM)\/nopt\/& dep\/$(@F)/' > $@
+
 dep/%.d:	app/%.C
+		@if [ ! -d dep ]; then mkdir -p dep; fi
+		g++ -MM $(CXXINCLUDES) $(CXXDEFS) -USGI -UMICROSOFT $< | \
+		sed 's/$*\.o/lib\/$(PLATFORM)\/opt\/& \
+			     lib\/$(PLATFORM)\/nopt\/& dep\/$(@F)/' > $@
+
+dep/%.d:	app/%.cpp
 		@if [ ! -d dep ]; then mkdir -p dep; fi
 		g++ -MM $(CXXINCLUDES) $(CXXDEFS) -USGI -UMICROSOFT $< | \
 		sed 's/$*\.o/lib\/$(PLATFORM)\/opt\/& \
@@ -825,11 +853,8 @@ else
       $(addprefix app/, $(CPROGS)):;		@echo Not implemented.
 
     else
-      
       $(addprefix app/, $(CXXPROGS)):;		@echo Not implemented.
-
       $(addprefix app/, $(CPROGS)):;		@echo Not implemented.
-      
     endif
 
   else
@@ -872,12 +897,32 @@ ifeq "$(PLATFORM)" "winnt"
 		@mv $*.obj $@
 endif
 
+lib/$(PLATFORM)/$(MODE)/%.o:	src/%.cpp
+		@if [ ! -d lib ]; then mkdir -p lib; fi
+		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
+		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
+		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
+		$(CXX) $(CXXOPTS) -o$(SPACEIFNOBORLAND)$@ -c src/$*.cpp
+ifeq "$(PLATFORM)" "winnt"
+		@mv $*.obj $@
+endif
+
 lib/$(PLATFORM)/$(MODE)/%.o:	app/%.C
 		@if [ ! -d lib ]; then mkdir -p lib; fi
 		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
 		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
 		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
 		$(CXX) $(CXXOPTS) -o$(SPACEIFNOBORLAND)$@ -c app/$*.C
+ifeq "$(PLATFORM)" "winnt"
+		@mv $*.obj $@
+endif
+
+lib/$(PLATFORM)/$(MODE)/%.o:	app/%.cpp
+		@if [ ! -d lib ]; then mkdir -p lib; fi
+		@if [ ! -d lib/$(PLATFORM) ]; then mkdir -p lib/$(PLATFORM); fi
+		@if [ ! -d lib/$(PLATFORM)/$(MODE) ]; then \
+		  mkdir -p lib/$(PLATFORM)/$(MODE); fi
+		$(CXX) $(CXXOPTS) -o$(SPACEIFNOBORLAND)$@ -c app/$*.cpp
 ifeq "$(PLATFORM)" "winnt"
 		@mv $*.obj $@
 endif
