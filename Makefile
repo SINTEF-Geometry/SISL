@@ -784,7 +784,9 @@ ifeq "$(LIBMODE)" "true"
 					$(DEPLIBS)
 	$(LDXX) $(LDXXOPTS) -out:$@ lib/$(PLATFORM)/$(MODE)/$(@F).o \
 	        lib/$(HOSTMODELIB).lib \
-		$(addsuffix .lib, $(addprefix lib, $(DEPLIBSLOCAL)))
+		$(addsuffix .lib, $(addprefix lib, $(DEPLIBSLOCAL))) \
+		$(addsuffix .lib, $(DEPLIBSGLOBAL)) \
+		$(DEPLIBSSYSTEM)
 	@cp -p $@ $@.exe
 
 #gdi32.lib user32.lib glut32.lib Glu32.lib opengl32.lib
