@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2509.c,v 1.2 1995-09-22 12:25:47 jka Exp $
+ * $Id: s2509.c,v 1.3 1995-09-22 12:31:19 jka Exp $
  *
  */
 
@@ -49,13 +49,13 @@ s2509(SISLSurf *surf, int ider, double derive[], double normal[],
 *                     Size = 3.
 *
 *  OUTPUT       :
-*       mehlum      - Mehlum curvature of the surface in (u,v) =
+*       mehlum      - The second order Mehlum curvature of the surface.
 *        jstat      - Status messages
 *
 *                         = 0 : Ok.
 *                         < 0 : Error.
 *
-*  METHOD       :  The Mehlum curvature is given by
+*  METHOD       :  The second order Mehlum curvature is given by
 *
 *                      M(u,v) = 3(eG-2fF+gE)^2/8(EG-F*F)^3 - 
 *                               (eg-f*f)/2(EG-F*F)^2.

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2508.c,v 1.3 1995-09-22 12:24:31 jka Exp $
+ * $Id: s2508.c,v 1.4 1995-09-22 12:30:02 jka Exp $
  *
  */
 
@@ -85,7 +85,7 @@ s2508(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 *                     to the routine.
 *
 *  OUTPUT       :
-*     mehlum        - Mehlum curvature of the surface in (u,v) =
+*     mehlum        - The second order Mehlum curvature of the surface in (u,v) =
 *                     (parvalue[0],parvalue[1]).
 *        jstat      - Status messages
 *                         = 2 : Surface is degenerate at the point, that is,
@@ -96,7 +96,7 @@ s2508(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 *                         = 0 : Ok.
 *                         < 0 : Error.
 *
-*  METHOD       :  The Mehlum curvature is given by
+*  METHOD       :  The second order Mehlum curvature is given by
 *
 *                      M(u,v) = 3(eG-2fF+gE)^2/8(EG-F*F)^3 - 
 *                               (eg-f*f)/2(EG-F*F)^2.
@@ -112,7 +112,7 @@ s2508(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
 *                    (Manfredo P. Do Carmo, Prentice Hall,
 *                      ISBN: 0-13-212589-7).
 *-
-*  CALLS        :  s1422() and s2501().
+*  CALLS        :  s1422() and s2509().
 *
 *  LIMITATIONS  :
 *                (i) If the surface is degenerated (not regular) at the point
