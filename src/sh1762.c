@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.16 2004-01-21 13:49:30 vsk Exp $
+ * $Id: sh1762.c,v 1.17 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -56,7 +56,7 @@ static void sh1762_s9toucharea (SISLObject *, SISLObject *, double, int, SISLInt
 static void sh1762_s9edgsscon (SISLEdge *[], SISLSurf *, SISLSurf *, SISLIntdat *, int, double, int *);
 static void sh1762_s9edgpscon (SISLEdge *, double, SISLSurf *, int, SISLIntdat *, double, int *);
 static void sh1762_s9simple (SISLObject *, SISLObject *, SISLEdge *[], int *);
-static void sh1762_s9reex (SISLObject *, SISLObject *, SISLEdge *[], double, SISLIntdat *, int *);
+/* static void sh1762_s9reex (SISLObject *, SISLObject *, SISLEdge *[], double, SISLIntdat *, int *); */
 static void sh1762_s9ptiter (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge *[], int *);
 static int sh1762_is_taboo(SISLSurf *, SISLSurf *, SISLIntpt *, int, int *);
 static double sh1762_sflength(SISLSurf *, int, int *);
@@ -74,7 +74,7 @@ static void sh1762_s9toucharea ();
 static void sh1762_s9edgsscon ();
 static void sh1762_s9edgpscon ();
 static void sh1762_s9simple ();
-static void sh1762_s9reex ();
+/* static void sh1762_s9reex (); */
 static void sh1762_s9ptiter ();
 static int sh1762_is_taboo();
 static double sh1762_sflength();
@@ -99,7 +99,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 *
 *********************************************************************
 *          NOTE : Comments for further developments/tasks starts
-*                 with /* UPDATE :
+*                 with UPDATE :
 *
 *
 * PURPOSE    : SISLObject - object intersection. Treat the inner of the
@@ -179,8 +179,6 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   int at_bottom=TRUE;           /* Flag, true on bottom level of recur*/
   int knewpt=0;                 /* No of points made in prtop part    */
   int kexpand = 2;		/* Expand box in the inner of object. */
-  int knedge1;                  /* Number of edges of object.         */
-  int knedge2;                  /* Number of edges of object.         */
   int kxintercept = (*jstat == 202);  /* Extra interception           */
   /* int knum;  */                   /* Number of intersection points at edges. */
   SISLObject *uob1[4];		/* Pointers to subdivided object.     */
@@ -1645,7 +1643,6 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 {
    int kstat = 0;
    int kpos = 0;
-   int keq;             /* Number of equation in 2D intersection.           */
    int kpar;            /* First index of subdivision point in the
 			   parameter value of in intersection point.        */
    int kfound;          /* Indicates if in intersection point / extremal
@@ -2306,12 +2303,6 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 /* Error. Unexpected kind of object.  */
 
 err122:*jstat = -122;
-  s6err ("sh1762_s9subdivpt", *jstat, kpos);
-  goto out;
-
-/* Error in space allocation.  */
-
-err101:*jstat = -101;
   s6err ("sh1762_s9subdivpt", *jstat, kpos);
   goto out;
 
@@ -3293,7 +3284,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	  }
 
 
-	    /* TESTING UJK !!!!!!!!!!!!!!!!!!!!!
+	  /* TESTING UJK !!!!!!!!!!!!!!!!!!!!! */
 	    /* UJK, August 92, 1D crvs may be "degenerate",
 	       continue when iteration fails */
 	    if (kstat != 1 && po1->p1->idim == 1)
@@ -4072,17 +4063,17 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 		    {
 		       /* Check parameter value of evt curves. */
 
-		       if (kcrv1 &&
-			   ((up[0]->epar[0] < qpt->epar[0] &&
-			     qpt->epar[0] < up[1]->epar[0])) ||
-			   ((up[1]->epar[0] < qpt->epar[0] &&
-			     qpt->epar[0] < up[0]->epar[0]))) kcrv1 = -1;
+		       if ((kcrv1 &&
+			   (up[0]->epar[0] < qpt->epar[0] &&
+			    qpt->epar[0] < up[1]->epar[0])) ||
+			   (up[1]->epar[0] < qpt->epar[0] &&
+			    qpt->epar[0] < up[0]->epar[0])) kcrv1 = -1;
 
-		       if (kcrv2 &&
-			   ((up[0]->epar[po1->iobj] < qpt->epar[po1->iobj] &&
-			     qpt->epar[po1->iobj] < up[1]->epar[po1->iobj])) ||
-			   ((up[1]->epar[po1->iobj] < qpt->epar[po1->iobj] &&
-			     qpt->epar[po1->iobj] < up[0]->epar[po1->iobj])))
+		       if ((kcrv2 &&
+			   (up[0]->epar[po1->iobj] < qpt->epar[po1->iobj] &&
+			    qpt->epar[po1->iobj] < up[1]->epar[po1->iobj])) ||
+			   (up[1]->epar[po1->iobj] < qpt->epar[po1->iobj] &&
+			     qpt->epar[po1->iobj] < up[0]->epar[po1->iobj]))
 			  kcrv2 = -1;
 
 		       if (kcrv1 < 1 && kcrv2 < 1)
@@ -4575,7 +4566,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	      s6ang(po1->c1->pdir->ecoef,po1->c1->pdir->ecoef,kdim) <
 	      (double)10*ANGULAR_TOLERANCE)
      {
-	double tpar1, tpar2;
+	double tpar2;
 	SISLPoint *pt = SISL_NULL;
 	double *s1, *s2, *s3, *s4;
 
@@ -7387,6 +7378,7 @@ out:if (up != SISL_NULL)
     freearray (up);
 }
 
+#if 0
 #if defined(SISLNEEDPROTOTYPES)
 static void
 sh1762_s9reex (SISLObject * po1, SISLObject * po2, SISLEdge * vedge[],
@@ -7645,6 +7637,7 @@ out:if (up != SISL_NULL)
     freearray (up);
 }
 
+#endif /* if 0 */
 #if defined(SISLNEEDPROTOTYPES)
 static void
 sh1762_s9ptiter (SISLObject * po1, SISLObject * po2, double aepsge,

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1927.c,v 1.2 2001-03-19 15:58:56 afr Exp $
+ * $Id: s1927.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -90,7 +90,6 @@ s1927 (w1, nur, ik, ed, w2, nrc, w3, nlr, ex, ey, jstat)
 */
 {
   int kpos = 0;
-  int kstat = 0;
   int ii, jj;			/* Loop control parameters 		*/
   int di;			/* Pointer to diagonal element of W 	*/
   int midi;			/* Parameter always equal: ii-di	*/
@@ -98,7 +97,6 @@ s1927 (w1, nur, ik, ed, w2, nrc, w3, nlr, ex, ey, jstat)
   int mur;			/* Used in calculation of index for w3  */
   int nn;			/* Number of rows/columns in w3		*/
   int nlc;			/* Number of left columns in W		*/
-  int pos = 0;			/* Position indicator for errors	*/
   double wii;			/* Used to store values from matrix W	*/
   double sum;			/* Stores values for calculation of ex 	*/
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6spltgeo.c,v 1.2 2001-03-19 16:06:04 afr Exp $
+ * $Id: sh6spltgeo.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -96,7 +96,6 @@ sh6splitgeom (ps1, ps2, aepsge, ecentre, eaxis, cdist, crad, jstat)
    int kleft1=0, kleft2=0; /* Parameters to surface evaluator. */
    int kder=0;            /* Evaluate only position.           */
    int kdim=ps1->idim;    /* Dimension of geometry space.      */
-   double tpi4=PI/(double)4;
    double tpi6=PI/(double)6;
    double tsign;          /* Sign of vector.        */
    double tdot;           /* Scalar product.        */

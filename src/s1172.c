@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1172.c,v 1.2 2001-03-19 15:58:42 afr Exp $
+ * $Id: s1172.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -82,7 +82,6 @@ void s1172(pcurve,astart,aend,anext,cpos,jstat)
   int kpos = 0;             /* Position of error.                          */
   int kleft=0;              /* Variables used in the evaluator.            */
   int kder=3;               /* Order of derivatives to be calulated        */
-  int kdim=1;               /* Dimension of space the Curve lies in     */
   int knbit;                /* Number of iterations                        */
   int kdir;                 /* Changing direction.                         */
   double tdelta;            /* Parameter intervals of the Curve.        */

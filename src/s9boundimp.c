@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9boundimp.c,v 1.2 2001-03-19 15:59:02 afr Exp $
+ * $Id: s9boundimp.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -124,7 +124,6 @@ void s9boundimp(epnt1,epar1,psurf1,eimpli,ideg,apar,idir,aepsge,
   int klfv=0;             /* Pointer into knot vector                       */
   int kstat;              /* Status variable                                */
   int knbit=0;            /* Counter for number of iterations               */
-  int kdim = 3;           /* Set dimension to 3                             */
   int kmaxit = 100;       /* Maximal number of iterations allowed           */
   int kpos=0;             /* Position indicator ofr errors                  */
   int ksize;              /* Number of doubles for storage of derivateves

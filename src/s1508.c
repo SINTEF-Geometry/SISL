@@ -75,15 +75,13 @@ s1508(inbcrv, vpcurv, par_arr,
 */
 {
   int kind, kcopy, kdim;
-  int ktyp = 0;
-  int kn1, kord1, knbcrv;
+  int kn1, kord1;
   int i,ki,kj,kk;         /* Loop variables. */
   SISLCurve *qc;	  /* Pointer to curve representing surface */
   double *sknot1 = SISL_NULL;  /* Knot vector. */
   double *scoef2 = SISL_NULL;  /* Pointer to vertices expressed in same basis  */
   int kstat = 0;	  /* Status variable. */
   int kpos = 0;		  /* Position of error. */
-  int knbpar;		  /* Number of parameter values produced          */
   double *epcoef;
   double *evcoef;
   double *epweight;

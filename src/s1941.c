@@ -60,8 +60,6 @@ void s1941(pcurve,icont,jstat)
 {
   double *scycl=SISL_NULL;                    /* Cyclic version of knot vector */
   double *smatrix=SISL_NULL;                   /* Matrix converting between baes */
-  double *smatr1=SISL_NULL;
-  double *smatr2=SISL_NULL;                    /* Pointers to two conversion matrices */
   double *salloc=SISL_NULL;                    /* Matrix for memory allocation */
   double *salfa=SISL_NULL;                     /* The values of a discrete B-spline
                                              calculation */

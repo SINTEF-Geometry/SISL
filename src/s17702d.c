@@ -1145,7 +1145,6 @@ static int s1770_2D_s6local_pretop(dist,diff,normal,c1,c1_t,c1_tt,c2,c2_t,c2_tt,
 ************************************************************************
 */
 {
-  int kstat;
   int kpos = 0;
   int return_val;	 /* For return value.				*/
   double l_1,l_2;
@@ -1189,12 +1188,6 @@ static int s1770_2D_s6local_pretop(dist,diff,normal,c1,c1_t,c1_tt,c2,c2_t,c2_tt,
 
   goto out;
 
-
-  /* Degenerated system.  */
-
-  warn1:
-    return_val = -1;
-    goto out;
 
     /* Error in allocation */
 

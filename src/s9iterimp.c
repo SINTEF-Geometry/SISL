@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9iterimp.c,v 1.2 2001-03-19 15:59:02 afr Exp $
+ * $Id: s9iterimp.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 #define S9ITERIMP
@@ -124,8 +124,6 @@ void s9iterimp(epoint,epnt1,epar1,psurf1,eimpli,ideg,astep,aepsge,
   int kder = 1;           /* Derivative indicator                           */
   int klfu=0;             /* Pointer into knot vector                       */
   int klfv=0;             /* Pointer into knot vector                       */
-  int klfs=0;             /* Pointer into knot vector                       */
-  int klft=0;             /* Pointer into knot vector                       */
   int kstat;              /* Status variable                                */
   int knbit;              /* Counter for number of iterations               */
   int kdim = 3;           /* Set dimension to 3                             */

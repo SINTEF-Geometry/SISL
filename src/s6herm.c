@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6herm.c,v 1.2 2001-03-19 15:59:01 afr Exp $
+ * $Id: s6herm.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -101,7 +101,6 @@ s6herm(pt,uknots,vknots,unum,vnum,dim,uindex,vindex,herminfo,jstat)
 *********************************************************************
 */
 {
-  int kstat = 0;     /* Local status variable.     */
   int kpos = 0;      /* Position of error.          */
   int ki,kj,kk;       /* Loop variable. */
   double Lu[3];         /* Lagrange polynomials in u. */

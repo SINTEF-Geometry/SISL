@@ -128,12 +128,6 @@ void sh1831(pc1, pc2, isign, epoint, enorm, aepsge, jstat)
   
   goto out;
   
-  /* Error in space allocation.  */
-  
- err101: *jstat = -101;
-  s6err("sh1830",*jstat,kpos);
-  goto out;
-  
   /* Error in input. Dimension not equal to 2 or 3.  */
   
  err105: *jstat = -105;

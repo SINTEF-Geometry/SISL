@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2544.c,v 1.5 2001-03-19 15:59:00 afr Exp $
+ * $Id: s2544.c,v 1.6 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -144,7 +144,7 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
   double normal[3];      /* Array containing the computed normalvektor.     */
   double fundform[10];   /* The coefficients of the fundamental forms.
 			    The sequence is: E, F, G, e, f, g, P, Q, S, T.  */
-  double d1, d2, dl;     /* The normalised parameter direction
+  double d1, d2;         /* The normalised parameter direction
 			    (parvalue[2],parvalue[3]) and their length      */
   double temp1, temp2;   /* Temporary values				    */
   double length;         /* Square of normal length.                        */
@@ -167,7 +167,6 @@ s2544(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
   double psi;            /* Angle in the tangent plane.                     */
   double tanglenA;       /* Length of tangentA.                             */
   double tanglenB;       /* Length of tangentB.                             */
-  double crosslen;       /* Length of cross.                                */
   double asin_result;    /* Result of asin.                                 */
   double sin_contrib;    /* Contribution from sinus.                        */
   double cos_contrib;    /* Contribution form cosinus.                      */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1755.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1755.c,v 1.2 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -76,7 +76,6 @@ s1755 (orknt, in, ik, extknt, inh, jstat)
 *********************************************************************
 */
 {
-  int kstat = 0;
   int ki;			/* Loop control parameters 		*/
   int kstart, kstop;
   int numb;

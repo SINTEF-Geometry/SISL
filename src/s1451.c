@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1451.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1451.c,v 1.2 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -72,7 +72,6 @@ void s1451(pc1,aepsge,jdgen,jstat)
 *********************************************************************
 */                                     
 {
-  int kstat=0;        /* Local status variable.                          */
   int kpos=0;         /* Position of error.                              */
   int kdim;           /* Dimension of the space in which the surface lies. */
   int kn;             /* Number of vertices                              */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1310.c,v 1.7 2001-03-20 09:02:53 afr Exp $
+ * $Id: s1310.c,v 1.8 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -1689,7 +1689,7 @@ static void s1310_s9constline(ps1,ps2,pintcr,aepsge,icur,igraph,jstat)
 */
 {
   int kguide1,kguide2,kguide3,kguide4; /* Pointers to guide points       */
-  int kderc=2;        /* Number of derivatives to be claculated on curve */
+  /*int kderc=2;         Number of derivatives to be claculated on curve */
   int kders=1;        /* Number of derivatives to be calculated on surface*/
   int ki,kj,kl;            /* Control variables in for loops            */
   int kk,kn,kk1,kn1,kk2,kn2;/* Orders and numbers of knots               */

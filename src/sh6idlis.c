@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idlis.c,v 1.2 2001-03-19 15:59:08 afr Exp $
+ * $Id: sh6idlis.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -66,7 +66,6 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
 {
   int kstat;			/* Local status variable.          */
   int kpos = 0;			/* Position of error.              */
-  int no = 0;			/* Counter                         */
   int list_index = 0;		/* Counter                         */
   int knum = 0;			/* Counter                         */
   int indstart;			/* Indexes used in lists           */
@@ -77,7 +76,6 @@ sh6idlis (po1, po2, pintdat, aepsge, jstat)
   int ki1, ki2, ki, kj;		/* Counters                        */
   int r1, r2, l1, l2;		/* Pretopology info.		   */
   int ktype = 0;		/* To indicate type of list.       */
-  int more = TRUE;		/* Logical                         */
   int direction;		/* Direction of curve              */
   double *geom, *norm1, *norm2;	/* help pointers.		   */
   SISLIntpt *prev, *pcurr;	/* to traverse list of points.     */

@@ -277,7 +277,6 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
 
       if (ider>0 && ps1->idim ==3)
         {
-          double tlen1,tlen2,tnorm,tang=(double)0.0;
 
           s6crss(eder+ederpos+ps1->idim,eder+ederpos+2*ps1->idim,enorm);
 

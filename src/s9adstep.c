@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s9adstep.c,v 1.2 2001-03-19 15:59:02 afr Exp $
+ * $Id: s9adstep.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -91,7 +91,6 @@ double s9adstep(epnt1,epar1,epnt2,epar2,egd1,epgd1,egd2,epgd2,etang,
 *********************************************************************
 */
 {
-  int kpos=1;              /* Position indicator for errors           */
   int kstat;               /* Dummy status variable                   */
   int kdim=3;              /* This routine is only working in 3-D     */
   int k2dim=2;             /* Dimension of parameter plane            */

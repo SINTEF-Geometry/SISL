@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1771.c,v 1.4 2001-03-19 15:58:53 afr Exp $
+ * $Id: s1771.c,v 1.5 2005-02-28 09:04:49 afr Exp $
  *
  */
 #define S1771
@@ -27,15 +27,15 @@ static
 void
    s1771_s9point(SISLCurve *,double [],double [],double [],double,double,
 		 int,double *,double *,double,double *,double,int,int *);
-static
+/* static
 void
-s1771_s9corr(double[],double,double,double);
+ s1771_s9corr(double[],double,double,double); */
 static
 double
 s1771_s9del(double *,double *,double *,int);
 #else
 static void s1771_s9point();
-static void s1771_s9corr();
+/* static void s1771_s9corr(); */
 static double s1771_s9del();
 #endif
 
@@ -321,6 +321,7 @@ static void s1771_s9point(pcurve,eval1,eval2,ediff,astart,aend,max_it,cnext,ad,a
 
  out:   ;
 }
+/*
 
 #if defined(SISLNEEDPROTOTYPES)
 static
@@ -333,6 +334,7 @@ static void s1771_s9corr(gdn,acoef,astart,aend)
      double astart;
      double aend;
 #endif
+*/
 /*
 *********************************************************************
 *
@@ -362,12 +364,14 @@ static void s1771_s9corr(gdn,acoef,astart,aend)
 *
 *********************************************************************
 */
+/*
 {
   if (acoef + gdn[0] < astart)
     gdn[0] = astart - acoef;
   else if (acoef + gdn[0] > aend)
     gdn[0] = aend - acoef;
 }
+*/
 
 #if defined(SISLNEEDPROTOTYPES)
 static

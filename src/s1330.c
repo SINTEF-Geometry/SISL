@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1330.c,v 1.2 2001-03-19 15:58:44 afr Exp $
+ * $Id: s1330.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -296,13 +296,20 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
       *jbound = kbound2+4;
     }
   
-  if (kins1 == 1)                 
-    if (eval11[0] == epar11[0] || epar11[0] == eval11[1] ||
-        eval12[0] == epar11[1] || epar11[1] == eval12[1] ||
-        eval21[0] == epar12[0] || epar12[0] == eval21[1] ||
-        eval22[0] == epar12[1] || epar12[1] == eval22[1])goto war04;
-    else
-      goto war02; 
+  if (kins1 == 1)
+    {
+      if (eval11[0] == epar11[0] || epar11[0] == eval11[1] ||
+	  eval12[0] == epar11[1] || epar11[1] == eval12[1] ||
+	  eval21[0] == epar12[0] || epar12[0] == eval21[1] ||
+	  eval22[0] == epar12[1] || epar12[1] == eval22[1])
+        {
+	  goto war04;
+	}
+      else
+	{
+	  goto war02; 
+	}
+    }
   
   if (kins2 == 1) goto war03; 
   

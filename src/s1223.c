@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1223.c,v 1.4 2001-03-19 15:58:42 afr Exp $
+ * $Id: s1223.c,v 1.5 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -121,7 +121,6 @@ void s1223(et1, et2, ik1, ik2, in1, in2, ibase1, ibase2, par, ider1, ider2,
    int kder1, kder2;     /* Number of derivatives.                        */
    int knumb1;           /* Necessary size of sder1.                      */
    int knumb2;           /* Necessary size of sder2.                      */
-   int klimit;           /* Limit in for loop.                            */
    double sdum1[100];    /* Fixed utility array.                          */
    double sdum2[100];    /* Fixed utility array.                          */
    double *sder1 = SISL_NULL; /* Evaluation in the first parameter direction.  */

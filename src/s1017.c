@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1017.c,v 1.3 2001-03-19 15:58:41 afr Exp $
+ * $Id: s1017.c,v 1.4 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -78,7 +78,6 @@ s1017 (pc, rc, apar, jstat)
 {
 
   int kstat;			/* Local status variable.                     */
-  int kpos = 0;			/* Position of error.                         */
   int kmy;			/* An index to the knot-vector.               */
   int kpl, kfi, kla;		/* To posisjon elements in trans.-matrix.     */
   int kk = pc->ik;		/* Order of the input curve.                  */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6idaledg.c,v 1.4 2001-03-19 15:59:08 afr Exp $
+ * $Id: sh6idaledg.c,v 1.5 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -74,7 +74,6 @@ void
   int kedg, kedg1;		/* Number of edges.         */
   int kpar;			/* Parameter number.        */
   int kleft1 = 0;               /* Index of knot.          */
-  int kleft2 = 0;               /* Index of knot.          */
   int ln[4];                    /* Number of vertices in each par. dir. */
   int lk[4];                    /* Order in each par. dir.  */
   double tpar;			/* Parameter value at edge. */

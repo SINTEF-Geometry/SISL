@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6rotmat.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6rotmat.c,v 1.2 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -62,7 +62,6 @@ s6rotmat (eorigo, exaxis, enorm, ematrix, jstat)
   int idim = 3;
 
   int kpos = 0;
-  int kstat = 0;
 
   *jstat = 0;
 

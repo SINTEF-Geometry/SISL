@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1784.c,v 1.3 2001-03-19 15:59:05 afr Exp $
+ * $Id: sh1784.c,v 1.4 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -416,11 +416,11 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
              parameter direction.  */
 
 	  if (kleft1 != kleft1prev &&
-	      (DNEQUAL(spos[0]+tref,st1[kleft1]+tref) &&
-	       DNEQUAL(snext[0]+tref,st1[kleft1]+tref) ||
+	      ((DNEQUAL(spos[0]+tref,st1[kleft1]+tref) &&
+		DNEQUAL(snext[0]+tref,st1[kleft1]+tref)) ||
 	       kleft1 != kleft1prev+1) &&
-	      (DNEQUAL(snext[0]+tref,st1[kleft1prev]+tref) &&
-	       DNEQUAL(spos[0]+tref,st1[kleft1prev]+tref) ||
+	      ((DNEQUAL(snext[0]+tref,st1[kleft1prev]+tref) &&
+		DNEQUAL(spos[0]+tref,st1[kleft1prev]+tref)) ||
 	       kleft1 != kleft1prev - 1))
 	    {
 	      /* At least one parameter line is crossed. Fetch the constant parameter
@@ -561,11 +561,11 @@ sh1784 (pcurve, psurf, aepsge, epar, icur, idirc, elast, enext, jstat)
              parameter direction.  */
 
 	  if (kleft2 != kleft2prev &&
-	      (DNEQUAL(spos[1]+tref,st2[kleft2]+tref) &&
-	       DNEQUAL(snext[1]+tref,st2[kleft2]+tref) ||
+	      ((DNEQUAL(spos[1]+tref,st2[kleft2]+tref) &&
+		DNEQUAL(snext[1]+tref,st2[kleft2]+tref)) ||
 	       kleft2 != kleft2prev+1) &&
-	      (DNEQUAL(snext[1]+tref,st2[kleft2prev]+tref) &&
-	       DNEQUAL(spos[1]+tref,st2[kleft2prev]+tref) ||
+	      ((DNEQUAL(snext[1]+tref,st2[kleft2prev]+tref) &&
+		DNEQUAL(spos[1]+tref,st2[kleft2prev]+tref)) ||
 	       kleft2 != kleft2prev - 1))
 	    {
 	      /* At least one parameter line is crossed. Fetch the constant parameter

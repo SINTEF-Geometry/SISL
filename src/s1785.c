@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1785.c,v 1.2 2001-03-19 15:58:53 afr Exp $
+ * $Id: s1785.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 #define S1785
@@ -20,9 +20,9 @@
 
 
 #if defined(SISLNEEDPROTOTYPES)
-static void s1785_s9eval(double [], double [], double [],double [], int, int *);
+/* static void s1785_s9eval(double [], double [], double [],double [], int, int *); */
 #else
-static void s1785_s9eval();
+/* static void s1785_s9eval(); */
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -376,11 +376,11 @@ void
 	    /* for (khelp=kleft1prev-1; DEQUAL(st1[khelp],st1[kleft1prev]); khelp--); */
 	    for (khelp=kleft1prev-1; khelp >= 0 && DEQUAL(st1[khelp],st1[kleft1prev]); khelp--);
 	    if (kleft1 != kleft1prev && 
-		(DNEQUAL(spos[0]+tref,st1[kleft1]+tref) &&
-		 DNEQUAL(snext[0]+tref,st1[kleft1]+tref) || 
+		((DNEQUAL(spos[0]+tref,st1[kleft1]+tref) &&
+		 DNEQUAL(snext[0]+tref,st1[kleft1]+tref)) || 
 		 kleft1 != kleft1prev+1) &&
-		(DNEQUAL(snext[0]+tref,st1[kleft1prev]+tref) &&
-		 DNEQUAL(spos[0]+tref,st1[kleft1prev]+tref) || kleft1 != khelp))
+		((DNEQUAL(snext[0]+tref,st1[kleft1prev]+tref) &&
+		 DNEQUAL(spos[0]+tref,st1[kleft1prev]+tref)) || kleft1 != khelp))
 	    {
 	       /* At least one parameter line is crossed. Fetch the constant parameter
 		  curve at the closest parameter line in the direction of the marching. */
@@ -480,11 +480,11 @@ void
 	    /* for (khelp=kleft2prev-1; DEQUAL(st2[khelp],st2[kleft2prev]); khelp--); */
 	    for (khelp=kleft2prev-1; khelp >= 0 && DEQUAL(st2[khelp],st2[kleft2prev]); khelp--);
 	    if (kleft2 != kleft2prev && 
-		(DNEQUAL(spos[1]+tref,st2[kleft2]+tref) &&
-		 DNEQUAL(snext[1]+tref,st2[kleft2]+tref) || 
+		((DNEQUAL(spos[1]+tref,st2[kleft2]+tref) &&
+		 DNEQUAL(snext[1]+tref,st2[kleft2]+tref)) || 
 		 kleft2 != kleft2prev+1) &&
-		(DNEQUAL(snext[1]+tref,st2[kleft2prev]+tref) &&
-		 DNEQUAL(spos[1]+tref,st2[kleft2prev]+tref) ||
+		((DNEQUAL(snext[1]+tref,st2[kleft2prev]+tref) &&
+		 DNEQUAL(spos[1]+tref,st2[kleft2prev]+tref)) ||
 		 kleft2 != khelp))
 	    {
 	       /* At least one parameter line is crossed. Fetch the constant parameter
@@ -614,6 +614,7 @@ void
 	 return;
       }          
 	 
+#if 0
 	 
 #if defined(SISLNEEDPROTOTYPES)
    static
@@ -629,6 +630,7 @@ static void s1785_s9eval(eders,enorms,etanc,ederc,idim,jstat)
 	int idim;
 	int *jstat;
 #endif
+
 /*
 *********************************************************************
 *
@@ -705,3 +707,4 @@ static void s1785_s9eval(eders,enorms,etanc,ederc,idim,jstat)
       return;
 }
 
+#endif /* if 0 */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2541.c,v 1.3 2001-03-19 15:59:00 afr Exp $
+ * $Id: s2541.c,v 1.4 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -112,7 +112,6 @@ void
 */
 {
   int dimpnt;			/* Dimesion of each gridpoint        	*/
-  int kstat;                    /* Local status variable        	*/
   int kder = 0;                 /* Derivativ indicator          	*/
   int ki, kj;               	/* Loop control variable        	*/
   int klfs = 0;                 /* Pointer into knot vector           	*/

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1787.c,v 1.3 2001-03-19 15:59:05 afr Exp $
+ * $Id: sh1787.c,v 1.4 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -76,7 +76,6 @@ void
 */
 {
   int kstat = 0;		/* Status variable.                        */
-  int kleft = 0;		/* Parameter to evaluator.                 */
   int kdim;			/* Dimension of geometry space.              */
   int kn1;			/* Nmb vertices of surface in 1st direc.     */
   int kn2;			/* Nmb vertices of surface in 1st direc.     */
@@ -90,13 +89,11 @@ void
   double sder[21];		/* Result of surface evaluation.             */
   double *st1;			/* First knot vector of surface.             */
   double *st2;			/* Second knot vector of surface.            */
-  double *sptpar = pintpt->epar;/* Pointer to parameter array of int.pt.     */
   double tref1;			/* Referance value in equality test.         */
   double tref2;			/* Referance value in equality test.         */
   SISLSurf *qs;		        /* Pointer to current surface.               */
   double *ret_val;		/* Pointer to geo data from sh6getgeom       */
   double *ret_norm;		/* Pointer to geo data from sh6getgeom       */
-  double *nullp = SISL_NULL;
   int i;                        /* Loop variable.                            */
   double cross;                 /* utang x vtang.                            */
   double in_out[2];             /* To be used in touchy situations           */

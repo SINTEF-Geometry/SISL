@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6inv4.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6inv4.c,v 1.2 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -51,9 +51,6 @@ s6inv4 (em, einv, jstat)
 {
   int ki;
   double det;
-
-  int kpos = 0;
-  int kstat = 0;
 
   *jstat = 0;
 

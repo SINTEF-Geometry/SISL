@@ -90,8 +90,6 @@ void
    double snorm[3];    /* Normal vector of surface                        */
    double *st1;        /* First knot direction of surface                 */
    double *st2;        /* Second knot direction of surface                */
-   double sfirst[2];   /* Start parameter par in surface                  */
-   double slast[2];    /* End parameter par in surface                    */
    double sders[18];   /* Position, first and second derivatives of surface */
    double tstep;       /* Final step length     */
    double tlengthend;  /* Length of 1st derivative at end of segment */
@@ -256,10 +254,10 @@ void
       spos2[1] = spos1[1] + tincre*spardir[1];
 
      /* Make sure not to jump out of the surface */
-     if (epar2[0] > epar1[0] && spos2[0] >= epar2[0] ||
-	 epar2[0] < epar1[0] && spos2[0] <= epar2[0] ||
-	 epar2[1] > epar1[1] && spos2[1] >= epar2[1] ||
-	 epar2[1] < epar1[1] && spos2[1] <= epar2[1])
+     if ((epar2[0] > epar1[0] && spos2[0] >= epar2[0]) ||
+	 (epar2[0] < epar1[0] && spos2[0] <= epar2[0]) ||
+	 (epar2[1] > epar1[1] && spos2[1] >= epar2[1]) ||
+	 (epar2[1] < epar1[1] && spos2[1] <= epar2[1]))
        {
 	 spos2[0] = epar2[0];
 	 spos2[1] = epar2[1];
@@ -276,9 +274,9 @@ void
       kknot2 = s1789_s9knot(st2, kk2, kn2, spos1[1], spos2[1], &kmy2, &kstat);
       if (kstat < 0) goto error;
 
-      if (kknot1 && !kknot2 ||
-	  kknot1 && kknot2 && spardir[1]*(st1[kmy1]-spos1[0]) <
-	  spardir[0]*(st2[kmy2]-spos1[1]))
+      if ((kknot1 && !kknot2) ||
+	  (kknot1 && kknot2 && spardir[1]*(st1[kmy1]-spos1[0]) <
+	   spardir[0]*(st2[kmy2]-spos1[1])))
       {
 	 /* Pull back to knotline in first parameter direction. */
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2512.c,v 1.2 2001-03-19 15:58:59 afr Exp $
+ * $Id: s2512.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -141,7 +141,6 @@ void
 ******************************************************************************
 */
 {
-   int warn = 0;      	  /* Local staus variable(warning).                  */
    double derive[18];     /* Array containing the computed derivatives.      */
    double normal[3];      /* Array containing the computed normalvektor.     */
       

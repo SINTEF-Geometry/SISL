@@ -90,7 +90,6 @@ void s1630(epoint,inbpnt,astpar,iopen,idim,ik,rc,jstat)
   double tdist;       /* Distance */
   double tlastpar;    /* Last value in the parameterization array        */
   SISLCurve *qc=SISL_NULL;
-  SISLCurve *qc2 = SISL_NULL;
 
   /* Set local open/closed parameter. */
 

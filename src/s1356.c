@@ -132,11 +132,6 @@ void s1356(epoint,inbpnt,idim,nptyp,icnsta,icnend,iopen,ik,astpar,
   s6err("s1356",*jstat,kpos);
   goto out;
 
-  /* allocation error */
- err101: *jstat = -101;
-  s6err("s1356",*jstat,kpos);
-  goto out;
-  
  out:
   if (ltype != SISL_NULL)
     freearray (ltype);

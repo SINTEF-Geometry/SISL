@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1780.c,v 1.2 2001-03-19 15:59:05 afr Exp $
+ * $Id: sh1780.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -87,7 +87,7 @@ sh1780 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 {
   int kstat = 0;		/* Status variable.                        */
   int ki;			/* Counters.                               */
-  int kleft1 = 0, kleft2 = 0;	/* Parameters to the evaluator.            */
+  int kleft1 = 0;               /* Parameters to the evaluator.            */
   int kdim;			/* Dimension of geometry space.            */
   int kpos = 0;			/* Current position in output array.       */
   int kdir1, kdir2;		/* Directions in which to march the curves.*/

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1992.c,v 1.2 2001-03-19 15:59:07 afr Exp $
+ * $Id: sh1992.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -95,7 +95,6 @@ void sh1992(po,itype,aepsge,jstat)
 {
    int kstat = 0;                       /* Status variable.        */
    int kdim;                       /* Dimension of geometry space. */
-   int kpos = 0;                        /* Position of error.      */
    int ktype = itype % 10;              /* Kind of box.            */
    int knum;                            /* Number of sides of box. */
    int k2;                              /* Other box type.         */
@@ -323,13 +322,10 @@ void sh1992cu(pc,itype,aepsge,jstat)
 */                                     
 {
    int kstat = 0;                       /* Status variable.        */
-   int kpos = 0;                        /* Position of error.      */
    int kdim = pc->idim;                 /* Dimension of geometry space. */
    int ktype = itype % 10;              /* Kind of box.            */
    int knum;                            /* Number of sides of box. */
    int kbez = 0;                        /* Indicates if Bezier case. */
-   double *smin = SISL_NULL;                 /* Minimum values of box.  */
-   double *smax = SISL_NULL;                 /* Maximum values of box.  */
    double teps_inner;     /* Tolerance with which to expand in the inner. */
    double teps_edge;      /* Tolerance with which to expand at the edge.  */
 
@@ -454,13 +450,10 @@ void sh1992su(ps,itype,aepsge,jstat)
 */                                     
 {
    int kstat = 0;                       /* Status variable.        */
-   int kpos = 0;                        /* Position of error.      */
    int kdim = ps->idim;                 /* Dimension of geometry space. */
    int ktype = itype % 10;              /* Kind of box.            */
    int knum;                            /* Number of sides of box. */
    int kbez = 0;                        /* Indicates if Bezier.    */
-   double *smin = SISL_NULL;                 /* Minimum values of box.  */
-   double *smax = SISL_NULL;                 /* Maximum values of box.  */
    double teps_inner;     /* Tolerance with which to expand in the inner. */
    double teps_edge;      /* Tolerance with which to expand at the edge.  */
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1174.c,v 1.4 2001-03-19 15:58:42 afr Exp $
+ * $Id: s1174.c,v 1.5 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -85,7 +85,6 @@ void s1174(psurf,estart,eend,enext,gpos,jstat)
   int kleft1=0;             /* Variables used in the evaluator.            */
   int kleft2=0;             /* Variables used in the evaluator.            */
   int kder=2;               /* Order of derivatives to be calulated        */
-  int kdim=1;               /* Dimension of space the surface lies in      */
   int knbit;                /* Number of iterations                        */
   int kdir;                 /* Changing direction.                         */
   double tdelta[2];         /* Parameter intervals of the surface.         */

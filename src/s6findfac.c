@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6findfac.c,v 1.3 2001-03-19 15:59:01 afr Exp $
+ * $Id: s6findfac.c,v 1.4 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -131,13 +131,8 @@ void s6findfac(evecu,evecv,evecw,etang,idim,isign,coef1,coef2,coef3,jstat)
   if (s6scpr(sdum,evecw,idim) < DZERO) (*coef3) *= -(double)1.0;
 
   goto out;
-  
-  /* Dimension not equal to 3.  */
 
-  err104 :
-    *jstat = -104;
-    goto out;
-  
+
   out :
     return;
 }

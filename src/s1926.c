@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1926.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1926.c,v 1.2 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -106,7 +106,6 @@ s1926 (w1, nur, ik, ed, w2, nrc, w3, nlr, jstat)
 */
 {
   int kpos = 0;
-  int kstat = 0;
   int ii, jj;			/* Loop control parameters 		*/
   int ll;
   int nn;			/* Number of rows/columns in W 		*/

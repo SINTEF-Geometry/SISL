@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1991.c,v 1.3 2001-03-19 15:58:59 afr Exp $
+ * $Id: s1991.c,v 1.4 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -19,13 +19,13 @@
 #define S1991
 
 #include "sislP.h"
-
+/*
 #if defined(SISLNEEDPROTOTYPES)
 static void s1991_s9smooth(double [],int,int,double,double [],int *);
 #else
 static void s1991_s9smooth();
 #endif
-
+*/
 
 #if defined(SISLNEEDPROTOTYPES)
 void
@@ -78,7 +78,6 @@ void s1991(pc,aepsge,jstat)
 *********************************************************************
 */
 {
-   int kstat = 0;   /* Local status varaible.                          */
   int kpos = 0;     /* Position of the error.                          */
   int kfirst = 1;   /* Flag to mark if the first tangent is treating.  */
   int kn;           /* Number of vertices of curve.                    */
@@ -263,16 +262,11 @@ void s1991(pc,aepsge,jstat)
   s6err("s1991",*jstat,kpos);
   goto out;
 
-  /* Error in lower level routine.  */
-
-  error : *jstat = kstat;
-  goto out;
-
  out:    if (t != SISL_NULL) freearray(t);
 
 }
 
-
+#if 0
 #if defined(SISLNEEDPROTOTYPES)
 static void
   s1991_s9smooth(double ecoef1[],int in,int idim,double aepsge,
@@ -470,3 +464,4 @@ static void s1991_s9smooth(ecoef1,in,idim,aepsge,ecoef2,jstat)
       if (sdiff2) freearray(sdiff2);
       return;
 }
+#endif /* if 0 */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1753.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1753.c,v 1.2 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -82,7 +82,6 @@ s1753 (et, ecf, in, ik, idim, etr, ecfr, inr, ecc, ecw, jstat)
 *********************************************************************
 */
 {
-  int kstat = 0;
   int ki, kj, kk, kl, kr, kstop;/* Loop control variables 		*/
   int kjmid, ikmid;		/* kjmid=(kj-1)*idim  ikmid=(ik-1)*idim */
   int kpos = 0;			/* Error position indicator		*/

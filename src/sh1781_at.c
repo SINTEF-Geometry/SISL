@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1781_at.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1781_at.c,v 1.2 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -69,7 +69,6 @@ sh1781_at (po1, po2, pintpt, jstat)
   int kstat = 0;		/* Status variable.                        */
   int kn;			/* Number of vertices of curve.            */
   int kk;			/* Order of curve.                         */
-  int kpos = 0;			/* Current position in int.pt. array.      */
   int lleft[2];			/* Array storing pre-topology information. */
   int lright[2];		/* Array storing pre-topology information. */
   int *ll1, *ll2, *lr1, *lr2;	/* Pointers into pre-topology arrays.      */

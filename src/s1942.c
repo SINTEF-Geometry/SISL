@@ -98,15 +98,11 @@ void s1942(pc1,pc2,idim,ea,nstart,nstop,emxerr,el2err,jstat)
    int kjh;
    int kk = pc1->ik;
    int km = pc1->in;
-   int kn = pc2->in;
    int kj1,kj2;
-   int kstop;
    double tkindv = (double)1.0/(double)kk;
-   double tw;
    double thelp;
    double *st = pc1->et;
    double *sd = pc1->ecoef;
-   double *stau = pc2->et;
    double *sc = pc2->ecoef;
    double *stemp = SISL_NULL;
    

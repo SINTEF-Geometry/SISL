@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1894.c,v 1.2 2001-03-19 15:58:55 afr Exp $
+ * $Id: s1894.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -106,7 +106,6 @@ s1894 (oknots, oik, oin, der1, der2, earray, dimp1, narr, nknots,
   double prev;			/* Knot value. (extracted from orig) */
   double curr;			/* Knot value. (extracted from orig) */
   int kpos = 0;
-  int kstat = 0;
   int der = max(der1, der2);
 
   *jstat = 0;

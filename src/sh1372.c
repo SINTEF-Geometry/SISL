@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1372.c,v 1.3 2001-03-19 15:59:03 afr Exp $
+ * $Id: sh1372.c,v 1.4 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -193,7 +193,8 @@ void sh1372(pc1,epoint,edirec,aradiu,idim,aepsco,aepsge,
    * ----------------------------------------------
    */
 
-  if (!(qo1 = newObject(SISLCURVE)));
+  if ((qo1 = newObject(SISLCURVE)) == SISL_NULL)
+      goto err101;
   qo1 -> c1 = qc;
   qo1 -> o1 = qo1;
 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1834.c,v 1.2 2001-03-19 15:58:54 afr Exp $
+ * $Id: s1834.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -105,7 +105,6 @@ void s1834(ecoef1,in1,ecoef2,in2,idim,edir1,edir2,jstat)
 *********************************************************************
 */
 {                                   
-  int kstat = 0;   /* Local status variable.                     */
   int kpos = 0;    /* Position of error.                         */
   int kopen;       /* Indicates if boxes overlap as open sets.   */
   int kclose;      /* Indicates if boxes oberlap as closed sets. */

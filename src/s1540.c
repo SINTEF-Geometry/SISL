@@ -96,8 +96,7 @@ s1540 ( et, ik, in, ax, im, ider, ebder, ileft, jstat )
 {
   int kstat = 0;      /* Local status variable.                          */
   int kpos  = 0;      /* The position of error.                          */
-  int kleft = 0;      /* Local version of ileft.                         */
-  int i, j,k,kk;      /* Control variables in for loops and for stepping
+  int i, k;           /* Control variables in for loops and for stepping
                          through arrays.                                 */
   int size;           /* (ider+1) * ik.                                  */
   double *eder = SISL_NULL;/* B-spline evaluationas at a single value.        */

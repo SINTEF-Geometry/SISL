@@ -103,15 +103,15 @@ void
 *********************************************************************
 */
 {
-   int ki, kj, kr, kh, kih;   /* Counters.       */
+   int ki, kj, kr, kih;       /* Counters.       */
    int khindx;                /* Help in index computing. */
-   double tdiv, th;  /* Help variables. */
-   double *sr1 = SISL_NULL;  /* Help array used to store factors in equality
-			   constraints at the start of the spline curve. */
-   double *sr2 = SISL_NULL;  /* To store factors at the end of the curve.     */
-   double *stw1 = SISL_NULL; /* Knot intervals at the start of the curve.     */
-   double *stw2 = SISL_NULL; /* Knot intervals at the end of the curve.       */
-   double *shelp = SISL_NULL; /* Help array to avoid overwriting.             */
+   double tdiv, th;           /* Help variables. */
+   double *sr1 = SISL_NULL;   /* Help array used to store factors in equality
+			        constraints at the start of the spline curve.  */
+   double *sr2 = SISL_NULL;   /* To store factors at the end of the curve.     */
+   double *stw1 = SISL_NULL;  /* Knot intervals at the start of the curve.     */
+   double *stw2 = SISL_NULL;  /* Knot intervals at the end of the curve.       */
+   double *shelp = SISL_NULL; /* Help array to avoid overwriting.              */
       
    /* Test input. */
    

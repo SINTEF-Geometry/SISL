@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1388.c,v 1.2 2001-03-19 15:58:48 afr Exp $
+ * $Id: s1388.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -100,7 +100,6 @@ void s1388(ps1,gcoons,jnumb1,jnumb2,jdim,jstat)
   int ksize;          /* Number of doubles to store a Coons patch        */
   
   int kj;          /* Control variables in for loop                   */
-  int kquadr=0;       /* Where to store next Coons patch                 */
   int kn1;            /* Number of vertices in first parameter direction */
   int kn2;            /* Number of vertices in first parameter direction */
   int kk1;            /* Order in first parameter direction              */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1507.c,v 1.2 2001-03-19 15:58:50 afr Exp $
+ * $Id: s1507.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -77,7 +77,6 @@ void s1507(curves, nc, periodic, newcurves, jstat)
 *
 **********************************************************************/
 {
-  int kstat = 0;		/* Local parameter value                    */
   int kpos = 0;			/* Position of error                        */
 
   int i,j;                      /* Loop variables.                          */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6red.c,v 1.2 2001-03-19 16:06:03 afr Exp $
+ * $Id: sh6red.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -248,7 +248,9 @@ sh6red (po1, po2, pintdat, jstat)
 		       changed = TRUE;
 		       sh6disconnect(pcurr,p_neighb[ind_2],&kstat);
 		       if (kstat < 0) goto error;
-		       if (sh6nmbmain (p_neighb[ind_2], &kstat) == 0);
+		       /* afr: Changed line below from an empty if-statement. */
+		       sh6nmbmain (p_neighb[ind_2], &kstat);
+		       if (kstat < 0) goto error;
 		       sh6idkpt (&pintdat, &p_neighb[ind_2], 0, &kstat);
 		       if (kstat < 0) goto error;
 		    }

@@ -69,7 +69,7 @@ void s1522(normal, centre, ellipaxis, ratio, dim, ellipse, jstat)
   int kstat;       /* Status variable.                    */
   int kpos=0;      /* Position of error.                  */
   double cross[3]; /* Cross vector (the other axis). */
-  int i, j;        /* For-loop indices.   */
+  int i;           /* For-loop indices.   */
   double et[12];   /* Knot vector.        */
   double coef[36]; /* Vertices.           */
   double elliplen; /* Length of ellipaxis. */

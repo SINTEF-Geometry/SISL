@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1333cycli.c,v 1.3 2001-03-19 15:58:45 afr Exp $
+ * $Id: s1333cycli.c,v 1.4 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -66,8 +66,6 @@ void s1333_cyclic(vsurf,icont,jstat)
 {
   double *scycl=SISL_NULL;                    /* Cyclic version of knot vector */
   double *smatrix=SISL_NULL;                   /* Matrix converting between baes */
-  double *smatr1=SISL_NULL;
-  double *smatr2=SISL_NULL;                    /* Pointers to two conversion matrices */
   double *salloc=SISL_NULL;                    /* Matrix for memory allocation */
   double *salfa=SISL_NULL;                     /* The values of a discrete B-spline
                                              calculation */

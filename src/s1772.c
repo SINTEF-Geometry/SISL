@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1772.c,v 1.2 2001-03-19 15:58:53 afr Exp $
+ * $Id: s1772.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 #define S1772
@@ -155,7 +155,7 @@ void s1772(pcurve,psurf,aepsge,astart1,estart2,aend1,eend2,
   double prev_dist;         /* Previous difference between the curves.     */
   double par_val[3];        /* Parameter values                            */
   double local[45];
-  int corr = 0, div2 = 0, quick = *jstat;
+  int corr = 0, div2 = 0;
 
 
   

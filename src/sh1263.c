@@ -107,7 +107,6 @@ void sh1263(vcurve,iedge,vboundc,jstat)
   int ki;               /* Counter.          */
   int kcopy = 1;        /* Indicates that data arrays is to be copied
 			   when creating a new curve.                 */
-  int kdim = 3;         /* Dimension of geometry space.               */
   int knmbx = 8*iedge;  /* Number of coefficients of blending functions. */
 
   double tonethird = (double)1.0/(double)3.0;  /* Constant used to check

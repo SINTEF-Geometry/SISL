@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: shdivsurf.c,v 1.2 2001-03-19 16:06:04 afr Exp $
+ * $Id: shdivsurf.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -98,7 +98,6 @@ void
 **********************************************************************/
 {
   int kstat;			/* Local status variable.		*/
-  int kpos = 0;			/* Position of error.			*/
   int kdim = ps->idim;		/* Dimension of geometry space.        */
   int kkind = ps->ikind;	/* Kind of surface.                    */
   int kk1;			/* Order in 1. par. dir.               */

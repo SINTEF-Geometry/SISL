@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1780_at.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1780_at.c,v 1.2 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -68,7 +68,6 @@ sh1780_at (po1, po2, pintpt, jstat)
 */
 {
   int kstat = 0;		/* Status variable.                        */
-  int kpos = 0;			/* Current position in output array.       */
   int kk1, kk2;			/* Orders of the two curves.               */
   int kn1, kn2;			/* Number of vertices in the curves.       */
   int lleft[2];			/* Array storing pre-topology information. */

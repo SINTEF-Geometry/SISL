@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1603.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1603.c,v 1.2 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -62,7 +62,6 @@ void s1603(psurf,cmin1,cmin2,cmax1,cmax2,jstat)
 *********************************************************************
 */
 {
-  int kstat=0;             /* Local status variable      */
   int kpos=0;              /* Position of error          */
   
   /* Check surf pointer */

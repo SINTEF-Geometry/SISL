@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1788.c,v 1.2 2001-03-19 15:58:54 afr Exp $
+ * $Id: s1788.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -256,7 +256,7 @@ void s1788(ps1,ps2,aepsge,epar,gpar1,gpar2,jstat)
 	  else
             goto invcopy;
         }
-      else if (kmark1 ==1 || kmark2 == 1 && kclose == 0)
+      else if (kmark1 ==1 || (kmark2 == 1 && kclose == 0))
 	{
 	  /* Open curve one point inside status 12 or 13 */
 	  

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1386.c,v 1.4 2001-03-19 15:58:48 afr Exp $
+ * $Id: s1386.c,v 1.5 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -122,9 +122,7 @@ void s1386(ps,ider1,ider2,rsnew,jstat)
   double *ratcoef=SISL_NULL;       /* The vertices of rat.                */
   int ki, kj, kl, km;         /* Index in for loop.                  */
   int rdim;                   /* Rational dimension.                 */
-  double *coef1 = SISL_NULL;       /* Pointer to coefficients.            */
-  double *coef2 = SISL_NULL;       /* Vertices after derivation in first
-				 direction.                          */
+
   double eps;                 /* Knot equality resolution.               */
   int multadd;                /* Added multiplicity of interior knots.   */
   int mult;                   /* Original multiplicity of the knots.     */

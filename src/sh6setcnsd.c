@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh6setcnsd.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh6setcnsd.c,v 1.2 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -60,7 +60,6 @@ void sh6setcnsdir(pt1,pt2,ipar,jstat)
 {
    int kstat;         /* error flag. */
    int index1,index2; /* dummy indices.           */
-   int sgn=1;
    
    *jstat = 0;
    /* Legal value on ipar ? */

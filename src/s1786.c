@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1786.c,v 1.4 2001-03-19 15:58:53 afr Exp $
+ * $Id: s1786.c,v 1.5 2005-02-28 09:04:49 afr Exp $
  *
  */
 #define S1786
@@ -131,7 +131,6 @@ void s1786(pc1,pc2,aepsge,epar1,epar2,jstat)
   double txmax,tymax;        /* Local maximal step length                       */
   double tdist;       /* Distance */
   double tpos;        /* New iteration  point on curve pc2     */
-  SISLPoint *qpoint=SISL_NULL;
 
  /* Pointer to curve evaluator routine of 2. curve.  */
 

@@ -166,7 +166,6 @@ void s1535(points,der10, der01,der11,im1,im2,idim,par1, par2,
   double *coeffpos=SISL_NULL;  /* Array needed for call to s1357          */
   double *coeffder=SISL_NULL;  /* Array needed for call to s1357          */
   double *coeffposder=SISL_NULL; /* Array needed for call to s1357          */
-  double *newcoeff=SISL_NULL;  /* Array needed for call to s1357          */
   double *newpoint=SISL_NULL;
   double *newder=SISL_NULL;
   SISLCurve *curve1a=SISL_NULL, *curve1b=SISL_NULL;

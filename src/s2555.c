@@ -75,7 +75,6 @@ void s2555( derive, torsion, jstat )
 */
 {
   int kstat = 0;        /* Local status variable       */
-  int kpos = 0;         /* Local error position        */
   double crpr[3], a;    /* Temp. variable.             */
 
 

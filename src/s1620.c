@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1620.c,v 1.2 2001-03-19 15:58:52 afr Exp $
+ * $Id: s1620.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -88,8 +88,7 @@ void s1620(epoint,inbpnt1,inbpnt2,ipar,
 			 associated with the knot vector.                */
   int kk1, kk2;       /* The polynomial orders of the surafce.           */
   int kpos=0;         /* Position of error                               */
-  int i,j;            /* Counter for loop control                        */
-  int idimm1, idimm2, kpek;
+  int j;              /* Counter for loop control                        */
   int kopen1, kopen2; /* Local open/closed parameter. Closed,
 			 non-periodic is treated as an open curve.       */
   double *par1=SISL_NULL;  /* Pointer to parameterization array in first

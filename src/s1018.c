@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1018.c,v 1.2 2001-03-19 15:58:41 afr Exp $
+ * $Id: s1018.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -79,7 +79,6 @@ s1018 (pc, epar, inpar, rcnew, jstat)
   register double *s1;		/* Pointers used in loop.                     */
   int kstat;			/* Local status variable.                     */
   int k1, k2, k3;		/* Index to array of parameter values.        */
-  int kpos = 0;			/* Position of error.                         */
   int kmy;			/* An index to the knot-vector.               */
   int kpl, kfi, kla;		/* To posisjon elements in trans.-matrix.     */
   int kk = pc->ik;		/* Order of the input curve.                  */

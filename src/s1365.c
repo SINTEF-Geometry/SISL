@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1365.c,v 1.4 2001-03-19 15:58:47 afr Exp $
+ * $Id: s1365.c,v 1.5 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -97,7 +97,7 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
   int kpos = 0;      /* Position of error.                               */
   int kdim;          /* Dimension of the space in which the surface lies.*/
   int knbcrv = 2;    /* Number of curves in set. */
-  int kopen = 1;     /* Flag telling that the resulting surface should
+  /*  int kopen = 1;      Flag telling that the resulting surface should
 			be open in both parameter directions. */
   int kn13,kord13;   /* Number of vertices and order of edge curves along
 			1. parameter direction. */

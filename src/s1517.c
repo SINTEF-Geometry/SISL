@@ -72,9 +72,8 @@ void s1517(ep,ev,epar,im,mu,evnew,jstat)
 *********************************************************************
 */
 {
-  int ki,kj;          /* Loop variables                              */
+  int ki;             /* Loop variables                              */
   int kpos=0;         /* Position of error                           */
-  int kstat=0;        /* Status variable                             */
   double *evtemp;
   double mu3;
   double knotint1;
@@ -177,11 +176,6 @@ void s1517(ep,ev,epar,im,mu,evnew,jstat)
   s6err("s1517",*jstat,kpos);
   goto out;
 
-  /* Error in lower level routine. */
-
- error:  *jstat =kstat;
-  s6err("s1517",*jstat,kpos);
-  goto out;
 
  out:
 

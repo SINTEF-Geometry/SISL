@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1438.c,v 1.2 2001-03-19 15:58:49 afr Exp $
+ * $Id: s1438.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -69,7 +69,6 @@ void s1438(pc,iedge,rpedge,cpar,jstat)
 *********************************************************************
 */                                     
 {
-  int kstat = 0;        /* Local status parameter.                        */
   int kpos = 0;         /* Position of error.                             */
   
   if (iedge == 0)

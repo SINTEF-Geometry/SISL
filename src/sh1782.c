@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1782.c,v 1.2 2001-03-19 15:59:05 afr Exp $
+ * $Id: sh1782.c,v 1.3 2005-02-28 09:04:50 afr Exp $
  *
  */
 
@@ -101,7 +101,6 @@ sh1782 (po1, po2, aepsge, pintdat, ipar, apar, rintdat, jnewpt, jstat)
   int kstat = 0;		/* Status variable.                     */
   int kdim;			/* Dimension of geometry space.         */
   int knpoint;			/* Number of int.pt. in array.          */
-  int knewpt = 0;		/* Number of new intersection points.   */
   SISLIntpt **uintpt = SISL_NULL;	/* Array storing intersection points.   */
 
   *jnewpt = 0;

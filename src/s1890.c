@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1890.c,v 1.2 2001-03-19 15:58:55 afr Exp $
+ * $Id: s1890.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -74,7 +74,6 @@ s1890 (oknots, oik, oin, par, der, jstat)
 */
 {
   int kpos = 0;
-  int kstat = 0;
   int count1, count2;		/* Loop control variables     */
   int start, stop;
   int numb;			/* Number of wrong parameters */

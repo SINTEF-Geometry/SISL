@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1907.c,v 1.2 2001-03-19 15:58:55 afr Exp $
+ * $Id: s1907.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -103,7 +103,6 @@ void s1907(epoint, ntype, epar, iopen, icnsta, icnend, inbpnt, idim,
 */
 {
   int kpos = 0;
-  int kstat = 0;
   int count1, count2;		/* Loop control variables. */
   int dummy;
   int start, start2;

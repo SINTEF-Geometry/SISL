@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1705.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1705.c,v 1.2 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -62,7 +62,6 @@ void s1705(pc,jstat)
 *
 **********************************************************************/
 {
-  int kpos=0;              /* Position of error.                         */
   int kk=pc->ik;           /* Order of the input curve.                  */
   int kn=pc->in;           /* Number of the vertices in input curves.    */
   int kdim=pc->idim;       /* Dimensjon of the space in whice curve lies.*/

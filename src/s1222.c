@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1222.c,v 1.4 1995-10-25 10:09:06 jka Exp $
+ * $Id: s1222.c,v 1.5 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -90,7 +90,6 @@ void s1222(et, ik, in, ibase, ax, ider, ebder, jstat)
 *********************************************************************
 */                                     
 {
-   int kstat=0;         /* Local status variable.                          */
    int kpos=0;          /* The position of the error.                      */
    int ki, kj, kl;      /* Index in for loop.                              */
    int degree;          /* Degree of the basis function, ik - 1.           */
@@ -290,14 +289,8 @@ void s1222(et, ik, in, ibase, ax, ider, ebder, jstat)
       *jstat = -178;
    s6err("s1222",*jstat,kpos);
    goto out;
-   
-   /* Error in lower level routine.  */
-   
-   error:  
-      *jstat = kstat;
-   s6err("s1222",*jstat,kpos);
-   goto out;
-   
+
+
    out: 
       return;
 }

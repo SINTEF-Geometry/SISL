@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: mk_cv_cycl.c,v 1.2 2001-03-19 15:58:40 afr Exp $
+ * $Id: mk_cv_cycl.c,v 1.3 2005-02-28 09:04:47 afr Exp $
  *
  */
 
@@ -65,8 +65,9 @@ void make_cv_cyclic(pcurve,icont,jstat)
 {
   double *scycl=SISL_NULL;                    /* Cyclic version of knot vector */
   double *smatrix=SISL_NULL;                   /* Matrix converting between baes */
-  double *smatr1=SISL_NULL;
-  double *smatr2=SISL_NULL;                    /* Pointers to two conversion matrices */
+  /* Pointers to two conversion matrices  @afr: Commented out */
+  /*  double *smatr1=SISL_NULL; */
+  /*  double *smatr2=SISL_NULL; */ 
   double *salloc=SISL_NULL;                    /* Matrix for memory allocation */
   double *salfa=SISL_NULL;                     /* The values of a discrete B-spline
                                              calculation */ 

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1990.c,v 1.4 2005-01-06 10:55:07 vsk Exp $
+ * $Id: s1990.c,v 1.5 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -27,10 +27,12 @@
 #if defined(SISLNEEDPROTOTYPES)
 static void s1990_s9edg(double [],double [],double [],double,double *,
 			int,int *);
+/*
 static void s1990_s9smooth(double [],int,int,int,double,double [],int *);
+*/
 #else
 static void s1990_s9edg();
-static void s1990_s9smooth();
+/* static void s1990_s9smooth(); */
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -676,7 +678,7 @@ static void s1990_s9edg(et,etan,esen,aepsge,cang,idim,jstat)
  out: ;
 }
 
-   
+#if 0   
 #if defined(SISLNEEDPROTOTYPES)
 static  void
   s1990_s9smooth(double ecoef1[],int in1,int in2,int idim,
@@ -867,3 +869,4 @@ static void s1990_s9smooth(ecoef1,in1,in2,idim,aepsge,ecoef2,jstat)
    return;
 }
  
+#endif /* if 0 */

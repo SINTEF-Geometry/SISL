@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1602.c,v 1.2 2001-03-19 15:58:51 afr Exp $
+ * $Id: s1602.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -74,7 +74,6 @@ void s1602(estapt,endpt,ik,idim,astpar,cendpar,rc,jstat)
 *********************************************************************
 */
 {
-  int kstat=0;        /* Status variable                                 */
   int kit;            /* Loop control                                    */
   int kit2;           /* Loop contero                                    */
   int kvert;          /* Counter for position in vertex array            */

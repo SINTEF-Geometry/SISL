@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1025.c,v 1.2 2001-03-19 15:58:41 afr Exp $
+ * $Id: s1025.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -85,7 +85,6 @@ s1025 (ps, epar1, inpar1, epar2, inpar2, rsnew, jstat)
 **********************************************************************/
 {
   int kstat;			/* Local status variable.		*/
-  int kpos = 0;			/* Position of error.			*/
   int kdim = ps->idim;		/* Dimension of geometry space.        */
   int kkind = ps->ikind;	/* Kind of surface.                    */
   int kn1;			/* Number of vertices in 1. par. dir.  */

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1897.c,v 1.2 2001-03-19 15:58:55 afr Exp $
+ * $Id: s1897.c,v 1.3 2005-02-28 09:04:49 afr Exp $
  *
  */
 
@@ -73,7 +73,6 @@ s1897 (et, ik, ax, left, deriv, ebiatx, jstat)
 */
 {
   int kpos = 0;
-  int kstat = 0;
   int local_array_allocated = FALSE;
   int j;			         /* Loop control variables.    */
   int count;

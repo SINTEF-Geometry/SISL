@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1531.c,v 1.2 2001-03-19 15:58:50 afr Exp $
+ * $Id: s1531.c,v 1.3 2005-02-28 09:04:48 afr Exp $
  *
  */
 
@@ -63,7 +63,6 @@ void s1531(ea,idim,in1,in2,eb,jstat)
   int i,j,jbase;       /* Loop variable                             */
   int ki,kj,kk;        /* Loop variable                             */
   int idiff;           /*                                           */
-  int kstat=0;         /* Status variable                           */
   int kpos=0;          /* Position of error                         */
   double *mat=SISL_NULL;    /* Temporary output matrix                   */
 
