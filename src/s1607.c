@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1607.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1607.c,v 1.2 1994-09-05 15:12:34 pfu Exp $
  *
  */
 
@@ -107,6 +107,8 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 *              a singular matrix equation in s1616 I set itype = 1 in such
 *              a case).
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994.  Fixed memory
+*              leak from 'rc'.
 *
 *********************************************************************
 */
@@ -127,7 +129,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   double sum1, sum2, sum3;    /* Used in normalization of vector algorithm  */
   double dum;
   double limit, dist;
-  double tstpar;	      /* Parameter value to be used at the start 
+  double tstpar;	      /* Parameter value to be used at the start
 			       * of the curve (routine s1611)		*/
   double cndpar;	      /* Parameter value used at the end of the curve
 			       * (Routine s1611)			*/
@@ -150,7 +152,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   double norder2[3];
   double tcos, sang;
   int kstat1, kstat2;
-  
+
   *jstat = 0;
 
   /* Check if curves are  correct. */
@@ -293,7 +295,7 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 	  else
 	    sdum[ki] = 0.0;
 	}
-      
+
       /* Find deviation from plane */
 
       dum = (double) 0.0;
@@ -304,14 +306,14 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
     }
 
   /* Test if a conic in fact is a circle. */
-    
+
   if ((plane == 1 || idim == 2) && itype != 1)
      {
         dum = s6scpr(&kpoint1[idim], &kpoint2[idim], idim);
-  
+
         sum1 = s6length(&kpoint1[idim], idim, &kstat1);
         sum2 = s6length(&kpoint2[idim], idim, &kstat2);
-  
+
         if (!kstat1 || !kstat2)
           sang = DNULL;
         else
@@ -320,21 +322,21 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
             tcos = MIN((double)1.0,tcos);
             sang = acos(tcos);
           }
-    
+
         if ((PI - sang) < ANGULAR_TOLERANCE)
 	   {
 	      /* Opposite parallell start and end tangents. */
-	      
+
 	      for (ki = 0; ki < idim; ki++)
 		 norder1[ki] = kpoint2[ki] - kpoint1[ki];
-	      if (fabs(s6ang(norder1, &kpoint1[idim], idim) - PIHALF) 
+	      if (fabs(s6ang(norder1, &kpoint1[idim], idim) - PIHALF)
 		  < ANGULAR_TOLERANCE)
 		 itype = 1;
 	   }
 	else if (sang > ANGULAR_TOLERANCE)
 	   {
-	      /* Not parallell start and end tangents. */ 
-    
+	      /* Not parallell start and end tangents. */
+
 	      if (idim == 2)
 		 {
 		    norder1[0] = kpoint1[idim + 1];
@@ -361,17 +363,17 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 		    s6crss(sdum, &kpoint1[idim], norder1);
 		    s6crss(sdum, &kpoint2[idim], norder2);
 		 }
-		 
+
 	      for (ki = 0; ki < idim; ki++)
 	      {
 		 norder1[ki] -= norder2[ki];
 		 norder2[ki] = kpoint2[ki] - kpoint1[ki];
-	      }	  
+	      }
               if (s6ang(norder1, norder2, idim) < ANGULAR_TOLERANCE)
 		 itype = 1;
 	   }
-     }		 
-	      
+     }
+
   /* Copy kpoint1 and kpoint2 into one array only kpoint1 */
 
   kpoint1 = increasearray (kpoint1, idim * 4, DOUBLE);
@@ -404,6 +406,9 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
 	  knpoin = 3;
 	  tstpar = (double) 0.0;
 
+	  if (*rc)  freeCurve(*rc);  /* Re-use of 'rc' (PFU 05/09-94) */
+	  *rc = NULL;
+
 	  s1611 (kpoint1, knpoin, idim, type, iopen, ik, tstpar, aepsge,
 		 &cndpar, rc, &kstat);
 	  if (kstat != -104 && (*rc)->in >(*rc)->ik)
@@ -423,6 +428,10 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
   knpoin = 4;
   iopen = SISL_CRV_OPEN;
   tstpar = (double) 0.0;
+
+  if (*rc)  freeCurve(*rc);  /* Re-use of 'rc' (PFU 05/09-94) */
+  *rc = NULL;
+
 
   s1334 (kpoint1, knpoin, idim, type, 0, 0, iopen, ik, tstpar, &cndpar,
 	 rc, &ipar, &knbpar, &kstat);
@@ -453,9 +462,9 @@ s1607 (pc1, pc2, aepsge, aend1, afil1, aend2, afil2, itype,
     goto out;
 
   out:
-    if (kpoint1 != NULL) freearray(kpoint1); 
-    if (kpoint2 != NULL) freearray(kpoint2); 
-    if (type != NULL) freearray(type); 
-    if (sdum != NULL) freearray(sdum); 
+    if (kpoint1 != NULL) freearray(kpoint1);
+    if (kpoint2 != NULL) freearray(kpoint2);
+    if (type != NULL) freearray(type);
+    if (sdum != NULL) freearray(sdum);
     return;
 }
