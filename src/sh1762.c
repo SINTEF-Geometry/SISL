@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.13 2001-10-26 01:59:37 vsk Exp $
+ * $Id: sh1762.c,v 1.14 2003-01-10 12:53:36 vsk Exp $
  *
  */
 
@@ -3927,6 +3927,8 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 
 	  if (kstat == 1)
 	    {
+	      int kstat1 = 0;
+
 	      for (ki = 0; ki < knum; ki++)
 		sh6tomain (up[ki], &kstat);
 
@@ -3937,6 +3939,13 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 	      /*	      for (ind1 = 0; ind1 < 2; ind1++)
 		for (ind2 = 0; ind2 < 4; ind2++)
 		pretop[ind1][ind2] = SI_UNDEF; */
+
+	      /* Fetch existing pretopology. */
+	      sh6gettop (up[0], -1, &pretop[0][0], &pretop[0][1],
+			 &pretop[0][2], &pretop[0][3], &kstat1);
+
+	      sh6gettop (up[1],  -1, &pretop[1][0], &pretop[1][1],
+			 &pretop[1][2], &pretop[1][3], &kstat1);
 
 	      for (qobj = po1, obj = 0, ipar = 0; obj < 2;
 	       qobj = po2, obj++, ipar = ((po1->iobj == SISLCURVE) ? 1 : 2))

@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: hp_s1880.c,v 1.4 2001-03-19 15:58:40 afr Exp $
+ * $Id: hp_s1880.c,v 1.5 2003-01-10 12:53:36 vsk Exp $
  *
  */
 
@@ -126,7 +126,7 @@ void
   int jlist = pintdat->ilist;
   SISLIntlist **vlist = pintdat->vlist;
   SISLObject *qo2 = SISL_NULL;
-  int kdir,kdir1,kdir2;
+  int kdir,kdir1=-1,kdir2=-1;
   int exact=FALSE, exact_treat=FALSE;
   int log_test = 0;
   double dummy;
@@ -287,12 +287,11 @@ void
 	   if kdir1 is set and from 2. surf if only kdir2 is set. */
 	
 	/* UJK, January 1993, if exact curve mark it with type 9. */
+	kdir1 = kdir2 = -1;
 	if (exact_treat &&
 	    kj == 2 &&
 	    (qpfirst->curve_dir[(*vlist)->ind_first] & log_test))
 	{
-	   
-	   kdir1 = kdir2 = -1;
 	   /* Constant parameter curve */
 	   for (kdir = 0; kdir < qpfirst->ipar; kdir++)
 	      if (qpfirst->curve_dir[(*vlist)->ind_first] &

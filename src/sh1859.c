@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1859.c,v 1.2 2001-03-19 15:59:06 afr Exp $
+ * $Id: sh1859.c,v 1.3 2003-01-10 12:53:37 vsk Exp $
  *
  */
 
@@ -19,6 +19,7 @@
 #define SH1859
 
 #include "sislP.h"
+#include "draw_pintdat.h"
 
 #if defined(SISLNEEDPROTOTYPES)
 void
@@ -156,6 +157,12 @@ sh1859 (ps1, ps2, aepsco, aepsge,
   sh1761 (qo1, qo2, aepsge, &qintdat, &kstat);
   if (kstat < 0)
     goto error;
+
+  /*  if (kstat == 100)
+    {
+      int stat;
+      stat = dp(qo1, qo2, qintdat);
+      } */
 
   /* Represent degenerated intersection curves as one point.  */
 
