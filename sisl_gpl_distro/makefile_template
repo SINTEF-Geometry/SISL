@@ -33,6 +33,14 @@ ifdef USE_OPEN_GL
   GRAPHICS_LIBS=-lglut -lGLU -lGL
 endif
 
+ifdef WINDOWS_TYPE_PLATFORM
+  LIBPATH_PREFIX=-LIBPATH:
+endif
+ifeq "$(PLATFORM)" "linux"
+  LIBPATH_PREFIX=-L
+endif
+
+
 #------------------------------------------------------------
 #  Choosing C compiler and linker, and setting specifics
 #------------------------------------------------------------
@@ -45,7 +53,7 @@ ifdef WINDOWS_TYPE_PLATFORM
   ifeq "$(MODE)" "opt"
     CFLAGS		=-GX -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
     CDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
-    LDFLAGS		=-nologo -opt:ref
+    LDFLAGS		=-nologo 
   else
     CFLAGS		=-GX -nologo -Yd -Z7 -MDd
     CDEFS		=-DWIN32 -DMICROSOFT
@@ -81,7 +89,7 @@ ifdef WINDOWS_TYPE_PLATFORM
   ifeq "$(MODE)" "opt"
     CXXFLAGS		=-TP -GX -GR -G6 -GA -Gs -Gf -Gy -Ox -Ob2 -nologo -MD
     CXXDEFS		=-DWIN32 -DMICROSOFT -DNDEBUG
-    LDXXFLAGS		=-nologo -opt:ref
+    LDXXFLAGS		=-nologo 
   else
     CXXFLAGS		=-TP -GX -GR -nologo -Yd -Z7 -MDd
     CXXDEFS		=-DWIN32 -DMICROSOFT
@@ -178,7 +186,7 @@ lib/%.o:	src/%.cpp
 
 $(CXXAPPS):	$(wildcard $@.cpp) lib
 		$(CXX) $(CXXOPTS) $@.cpp -o $@  \
-		$(addprefix -L, $(LINKDIRS)) \
+		$(addprefix $(LIBPATH_PREFIX), $(LINKDIRS)) \
 		$(addsuffix _$(MODE), $(addprefix -l, $(LINKLIBS))) $(GRAPHICS_LIBS)
 
 varcheck:;	@echo "testing..."
