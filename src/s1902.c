@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1902.c,v 1.4 1995-12-12 14:59:53 jka Exp $
+ * $Id: s1902.c,v 1.5 1995-12-13 10:03:19 jka Exp $
  *
  */
 
@@ -196,15 +196,16 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       if (ik % 2 == 0)
 	{
 	  /* The order of the B-spline curve is even.
-	     Make the in - 1 first knots as a shift of the last knots.  */
-	   
-	  for (ki = 0, kpar = (in - ik + 1); ki < (ik - 1); ki++, kpar++)
-	    (*eknots)[ki] = epar[kpar] - tparint;
+	     Make the ik/2 first knots as a shift of the last knots.  */
 
+	  for (ki = 0, kpar = in -ik + ik / 2; ki < ik / 2; ki++, kpar++)
+	    (*eknots)[ki] = epar[kpar] - tparint;
+	  
 	  /* Make the knots corresponding to the data points. */
 
 	  for (kpar = 0; kpar < kn; ki++, kpar++)
 	    (*eknots)[ki] = epar[kpar];
+
 
 	  /* Make the ik+ik/2-2 last knots.  */
 
@@ -226,27 +227,22 @@ s1902 (epar, in, ik, cuopen, eknots, jstat)
       else
 	{
 	  /* The order of the B-spline curve is odd.
-	     /* Make the ik - 1 first knots.            */
-	   
-	  for (ki = 0, kpar = (in - ik + 1); ki < (ik - 1); ki++, kpar++)
+	     Make the ik/2+1 first knots.             */
+
+	  for (ki = 0, kpar = in -ik + ik / 2; ki < ik / 2 + 1; ki++, kpar++)
 	    (*eknots)[ki] = (double) 0.5 *(epar[kpar] + epar[kpar + 1]) -
 	     tparint;
 
 	  /* Make the in next knots.  */
 
-	  (*eknots)[ki] = epar[0];
-	  ki++;
-	  for (kpar = 1; kpar < in; ki++, kpar++)
+	  for (kpar = 0; kpar < in; ki++, kpar++)
 	    (*eknots)[ki] = (double) 0.5 *(epar[kpar] + epar[kpar + 1]);
 
 	  /* Make the ik remaining knots.  */
 
-	  tdum = tparint;
-
-	  (*eknots)[ki] = epar[in];
-	  ki++;
-	  for (kpar = 1; ki < kstop; ki++, kpar++)
+	  for (kpar = 0; ki < kstop; ki++, kpar++)
 	    {
+	      tdum = tparint;
 
 	      /* We may risk that a double cyclic use of the parameter
 	         values may result.        */
