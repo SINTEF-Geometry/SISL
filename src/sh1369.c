@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1369.c,v 1.2 1994-11-14 10:08:51 poeh Exp $
+ * $Id: sh1369.c,v 1.3 1994-12-02 09:33:13 vsk Exp $
  *
  */
 
@@ -114,6 +114,8 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
 * Changed by: Per OEyvind Hvidsten, SINTEF, 94-11.
 *             Added code to handle output parameters jcrv, jsurf
 *             when no intersection was found.
+* Chanbed by : Vibeke Skytt, SINTEF Oslo, 941202. Change in 1D tolerance
+*                                                 after scaling.
 *
 *********************************************************************
 */
@@ -239,11 +241,15 @@ void sh1369(ps,ecentr,enorm,abigr,asmalr,idim,aepsco,aepsge,
   for(ki=0; ki<qs->in1*qs->in2;ki++)
      nmax = max(fabs(qs->ecoef[ki]),nmax);
 
+  /* VSK, 941202. Justify nmax in order to avoid a too small tolerance. */
+  
+  nmax = MIN(nmax, aepsge2*1.0e11);
+             
   if (nmax >(double)10.0)
   {
      for(ki=0; ki<qs->in1*qs->in2;ki++)
-	qs->ecoef[ki] /= nmax;
-     aepsge2 = max((double)1.0e-09,aepsge2/nmax);
+        qs->ecoef[ki] /= nmax;
+     aepsge2 /= nmax;
   }
 
   /* UJK,sept 93, End of change */
