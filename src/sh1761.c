@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1761.c,v 1.3 1994-11-30 16:11:05 pfu Exp $
+ * $Id: sh1761.c,v 1.4 1998-04-02 13:13:10 vsk Exp $
  *
  */
 
@@ -50,6 +50,9 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 * INPUT      : po1    - First object in the intersection.
 *              po2    - Second object in the intersection.
 *              aepsge - Geometry resolution.
+*              *jstat    - Flag
+*                          = 202 : Complicated point-surface intersection
+*                                  in 3D. Perform extra interception test.
 *
 *
 *
@@ -103,6 +106,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
   int kstat = 0;		/* Local status variable.                 */
   int kpos = 0;			/* Position of error.                     */
   int ktotal = 1;		/* Make totally expanded box.             */
+  int kxintercept = (*jstat == 202);  // Extra interception
   double tpar;			/* Help variable used for parameter value
 				   and geometric distance.                */
   SISLObject *po1_kreg=NULL;    /* Pointer to first object converted to
@@ -410,6 +414,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
 	  if (kstat < 0)
 	    goto error;
 
+	  kstat = (kxintercept) ? 202 : 0;
 	  sh1762 (po1_kreg, po2_kreg, aepsge, pintdat, qedge, &kstat);
 	  if (kstat < 0)
 	    goto error;
