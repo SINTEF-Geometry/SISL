@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1235.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1235.c,v 1.2 1998-01-14 09:00:39 vsk Exp $
  *
  */
 
@@ -67,6 +67,8 @@ void s1235(et,in,ik,jnbreak,gbreak,jstat)
 * CALLS      :
 *
 * WRITTEN BY : Vibeke Skytt, SI, 88-11.
+* REVISED BY : Vibeke Skytt, SINTEF, 9801. Correction in loop counter
+*                                          for the periodic case.
 *
 *********************************************************************
 */
@@ -94,7 +96,7 @@ void s1235(et,in,ik,jnbreak,gbreak,jstat)
   
   tprev = et[ik-1];
   kmult = ik - 1;
-  for (st=et+ik,kj=0; kj<in; st++,kj++)
+  for (st=et+ik,kj=ik; kj<in; st++,kj++)
     {
       
       if (*st == tprev) kmult++;
