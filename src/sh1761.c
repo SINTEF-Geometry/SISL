@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1761.c,v 1.4 1998-04-02 13:13:10 vsk Exp $
+ * $Id: sh1761.c,v 1.5 1998-05-12 08:29:27 vsk Exp $
  *
  */
 
@@ -106,7 +106,7 @@ sh1761 (po1, po2, aepsge, pintdat, jstat)
   int kstat = 0;		/* Local status variable.                 */
   int kpos = 0;			/* Position of error.                     */
   int ktotal = 1;		/* Make totally expanded box.             */
-  int kxintercept = (*jstat == 202);  // Extra interception
+  int kxintercept = (*jstat == 202);  /* Extra interception               */
   double tpar;			/* Help variable used for parameter value
 				   and geometric distance.                */
   SISLObject *po1_kreg=NULL;    /* Pointer to first object converted to
