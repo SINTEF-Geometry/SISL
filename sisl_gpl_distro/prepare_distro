@@ -1,3 +1,5 @@
+#! /bin/bash
+
 # removing old files
 rm sisl/include/*.h 2> /dev/null
 rm sisl/src/*.c 2> /dev/null
