@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1515.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1515.c,v 1.2 1994-12-01 12:54:53 pfu Exp $
  *
  */
 
@@ -21,11 +21,11 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
 s1515 (SISLSurf * ps1, double *qpoint, double *bvec, int idim, double aepsco, double aepsge,
        double amax, SISLIntcurve * pintcr, int icur, int igraph, int *jstat)
 #else
-void 
+void
 s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jstat)
      SISLSurf *ps1;
      double *qpoint;
@@ -76,6 +76,7 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 *                       of the surface is added.
 *
 * OUTPUT:      jstat  - status messages
+*                         = 4      : No points produced on intersection curve.
 *                         = 3      : Iteration stopped due to singular
 *                                    point or degenerate surface. A part
 *                                    of intersection curve may have been
@@ -96,6 +97,9 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 * CALLS      : s6err, s1313
 * WRITTEN BY : Mike Floater, SI, Oslo, Norway, 31 . January 1991
 *                a modification of s1319
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Now gives
+*              a warning (jstat==4) if no curve has been produces (used to
+*              be error jstat==-185).
 *
 *********************************************************************
 */
@@ -130,7 +134,7 @@ s1515 (ps1, qpoint, bvec, idim, aepsco, aepsge, amax, pintcr, icur, igraph, jsta
 
   s1313 (ps1, simpli, kdeg, aepsco, aepsge, amax, pintcr, icur, igraph, &kstat);
   if (kstat == -185)
-    goto err185;
+    goto war04;
   if (kstat < 0)
     goto error;
 
@@ -145,9 +149,9 @@ err104:
   goto out;
 
   /* Couldn't march */
-
-err185:
-  *jstat = -185;
+  /* Only degenerate or singular guide points */
+war04:
+  *jstat = 4;
   goto out;
 
   /* Error in lower level routine.  */
