@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.3 1995-01-18 13:20:51 pfu Exp $
+ * $Id: s2501.c,v 1.4 1995-01-18 14:57:49 pfu Exp $
  *
  */
 
@@ -22,19 +22,18 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
-      double normal[], double *gaussian,
-      int *istat)
+s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
+      double normal[], double *gaussian, int *jstat)
 #else
- void s2501(surf, der, parvalue, derive, normal, gaussian,
-	    istat)
+ void s2501(surf, ider, parvalue, derive, normal, gaussian,
+	    jstat)
       SISLSurf *surf;
-      int der;
+      int ider;
       double parvalue[];
       double derive[],
       double normal[],
       double *gaussian;
-      int *istat;
+      int *jstat;
 #endif
 /*
 ***************************************************************************
@@ -45,7 +44,7 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
 *                  for evaluation of many K(u,v)'s.
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
-*          der      - Not used.
+*          ider     - Only implemented for ider=0 (derivative order).
 *      parvalue     - Parameter-value at which to evaluate. Dimension of
 *                     parvalue is 2.
 *       derive      - Array containing derivatives from routine s1421().
@@ -53,14 +52,11 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
 *       normal      - Array containing the normal from routine s1421().
 *                     Size = 3.
 *
-*  INPUT/OUTPUT :
-*
 *  OUTPUT       :
 *     gaussian      - Gaussian of the surface in (u,v) =
 *                     (parvalue[0],parvalue[1]).
-*        istat      - Status messages
+*        jstat      - Status messages
 *
-*                         > 0 : Warning
 *                         = 0 : Ok.
 *                         < 0 : Error.
 *
@@ -89,15 +85,16 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
 *                    K(u,v).
 *               (ii) If the surface is closed to degenerate, the Gaussian
 *                    K(u,v) can be numerical unstable.
-*              (iii) The surface should be C2, since the Gaussian is calculated
-*                    from the second derivatives. But since the routine is using
-*                    right derivatives, the Gaussian will be correct (provided
-*                    that the surface is not degenerate).
+*              (iii) The surface is Cr the Gaussian calculated is C(r-2).
+*                    To get the correct behavior use the sided evaluator s1422
+*		     instead of s1421.
 *               (iv) The dimension of the space in which the surface lies must
-*                    be 1,2 or 3.  The routine return istat < 0.
+*                    be 1,2 or 3, if not, jstat = -105 is returned.
 *
 *
-* WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
+* WRITTEN BY   :  Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
+* CORRECTED BY :  Ulf J Krystad, SINTEF, Oslo, Norway.             Date: 1995-1
+*                 Removed knot navigators + some clean up.
 *****************************************************************************
 */
 {
@@ -112,6 +109,8 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
 			    g = <N,Xvv>.                                   */
 
 
+
+  if (ider != 0) goto err178;
 
   if (surf->idim == 1) /* 1D surface */
   {
@@ -164,21 +163,28 @@ s2501(SISLSurf *surf, int der, double parvalue[], double derive[],
   }
 
 
+
+
   /* Successful computations  */
 
-  *istat = 0;
+  *jstat = 0;
   goto out;
-
 
 
    /* Error in input, surf->idim != 1,2 or 3 */
 err105:
-  *istat = -105;
-  s6err("s2501",*istat,0);
+  *jstat = -105;
+  s6err("s2501",*jstat,0);
   goto out;
 
+  /* Illegal derivative requested. */
+err178:
+  *jstat = -178;
+  s6err("s2501",*jstat,0);
+  goto out;
 
 out:
 
   return;
+
 }
