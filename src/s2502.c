@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2502.c,v 1.3 1995-01-18 13:20:09 pfu Exp $
+ * $Id: s2502.c,v 1.4 1995-01-18 14:44:25 pfu Exp $
  *
  */
 
@@ -22,16 +22,20 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-   s2502(SISLSurf *surf, double parvalue[], int *leftknot1,
-      int *leftknot2, double *meancurvature, int *istat)
+   s2502(SISLSurf *surf, int ider, int iside1, int iside2, double parvalue[],
+	 int *leftknot1, int *leftknot2, double *meancurvature, int *jstat)
 #else
- void s2502(surf, parvalue, leftknot1, leftknot2, meancurvature, istat)
+ void s2502(surf, ider, iside1, iside2, parvalue, leftknot1, leftknot2,
+	    meancurvature, jstat)
       SISLSurf *surf;
+      int    ider;
+      int    iside1;
+      int    iside2;
       double parvalue[];
       int *leftknot1;
       int *leftknot2;
       double *meancurvature;
-      int *istat;
+      int *jstat;
 #endif
 /*
 ***************************************************************************
@@ -45,6 +49,21 @@ void
 *
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
+*          ider     - Number of derivatives to calculate. Only implemented for ider=0
+*                       < 0 : No derivative calculated.
+*                       = 0 : Position calculated.
+*                       = 1 : Position and first derivative calculated.
+*                       etc.
+*          iside1   - Indicator telling if the derivatives in the first
+*                     parameter direction is to be calculated from the
+*                     left or from the right:
+*                        <  0 calculate derivative from the left hand side
+*                        >= 0 calculate derivative from the right hand side.
+*          iside2   - Indicator telling if the derivatives in the second
+*                     parameter direction is to be calculated from the
+*                     left or from the right:
+*                        <  0 calculate derivative from the left hand side
+*                        >= 0 calculate derivative from the right hand side.
 *      parvalue     - Parameter-value at which to evaluate. Dimension of
 *                     parvalue is 2.
 *
@@ -56,7 +75,7 @@ void
 *                     leftknot1 should be set equal to zero at the first call
 *                     to the routine.
 *
-*     leftknot1     - Pointer to the interval in the knot vector in the
+*     leftknot2     - Pointer to the interval in the knot vector in the
 *                     second parameter direction where parvalue[1] is found,
 *                     that is:
 *                          et2[leftknot2] <= parvalue[1] < et2[leftknot2+1].
@@ -66,7 +85,7 @@ void
 *  OUTPUT       :
 *    meancurvature  - Mean curvature of the surface in (u,v) =
 *                     (parvalue[0],parvalue[1]).
-*        istat      - Status messages
+*        jstat      - Status messages
 *                         = 2 : Surface is degenerate at the point, that is,
 *                               the surface is not regular at this point.
 *                         = 1 : Surface is close to degenerate at the point.
@@ -95,41 +114,42 @@ void
 *                    (Manfredo P. Do Carmo, Prentice Hall,
 *                      ISBN: 0-13-212589-7).
 *-
-*  CALLS        :  s1421() and s2503().
+*  CALLS        :  s1422() and s2503().
 *
 *  LIMITATIONS  :
 *                (i) If the surface is degenerated (not regular) at the point
 *                    (u,v), it makes no sense to speak about the mean curvature
-*                    H(u,v). The routine returns istat = 2.
+*                    H(u,v). The routine returns jstat = 2.
 *               (ii) If the surface is closed to degenerate, the mean curvature
 *                    H(u,v) can be numerical unstable. The routine returns
-*                    istat = 1.
-*              (iii) The surface should be C2, since the mean c. is calculated
-*                    from the second derivatives. But since the routine is using
-*                    right derivatives, the mean c. will be correct (provided
-*                    that the surface is not degenerate).
+*                    jstat = 1.
+*              (iii) If the surface is Cr the curvature calculated is C(r-2).
 *               (iv) The dimension of the space in which the surface lies must
-*                    be 1,2 or 3.  The routine returns istat < 0.
+*                    be 1,2 or 3.
 *
 *
-* WRITTEN BY :  Geir Westgaard, SINTEF, Oslo, Norway.             Date: 1995-1
+* WRITTEN BY :    Geir Westgaard, SINTEF, Oslo, Norway.            Date: 1995-1
+* CORRECTED BY :  Ulf J Krystad, SINTEF, Oslo, Norway.             Date: 1995-1
+*                 Added ider, iside1 and iside2 parameters.
 ******************************************************************************
 */
 {
+  int kwarn = 0;      /* Local staus variable(warning).                  */
   int kistat = 0;     /* Local staus variable.                           */
-  int der = 0;        /*  (dummy) */
   double derive[18];  /* Array containing the computed derivatives.      */
   double normal[3];   /* Array containing the computed normalvektor.     */
 
 
-
+  if (ider != 0) goto err178;
 
   if (surf == NULL)  goto err150;
   else
   {
     /* Compute derivates and normal. */
 
-    s1421(surf,2,parvalue,leftknot1,leftknot2,derive,normal,&kistat);
+    s1422(surf,2,iside1,iside2,parvalue,leftknot1,leftknot2,
+	  derive,normal,&kistat);
+    if (kistat > 0) kwarn=kistat;
 
     if (kistat < 0) /* Error in lower level routine. */
     {
@@ -137,7 +157,7 @@ void
     }
     else if (kistat != 2) /* The surface is not degenerate */
     {
-      s2503(surf, der, parvalue, derive, normal, meancurvature, &kistat);
+      s2503(surf, ider, parvalue, derive, normal, meancurvature, &kistat);
 
       if (kistat < 0)
 	goto error;
@@ -153,29 +173,33 @@ void
 
   /* Successful computations  */
 
-  *istat = kistat;
+  *jstat = kwarn;
   goto out;
 
 
 
    /* The surface is degenerated at (u,v) */
 war002:
-  *istat = 2;
+  *jstat = 2;
   goto out;
 
   /* Error. Input (surface) pointer is NULL. */
 err150:
-  *istat = -150;
-  s6err("s2502", *istat, 0);
+  *jstat = -150;
+  s6err("s2502", *jstat, 0);
+  goto out;
+
+  /* Illegal derivative requested. */
+err178:
+  *jstat = -178;
+  s6err("s2502",*jstat,0);
   goto out;
 
    /* Error in lower level routine.  */
 error:
-  *istat = kistat;
-  s6err("s2502",*istat,0);
+  *jstat = kistat;
+  s6err("s2502",*jstat,0);
   goto out;
 
-out:
-
-  return;
+out:;
 }
