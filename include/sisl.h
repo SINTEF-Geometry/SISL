@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.22 1995-02-08 10:02:23 vsk Exp $
+ * $Id: sisl.h,v 1.23 1995-03-21 08:16:26 pfu Exp $
  *
  */
 
@@ -711,6 +711,11 @@ extern
 #endif
 void s1538(int,SISLCurve *[],int [],double,int,int,int,SISLSurf **,
 	   double **,int *);
+#ifndef  S1539
+extern
+#endif
+void s1539(int,SISLCurve *[],int [],double [], double,int,int,int,SISLSurf **,
+	   double **,int *);
 #ifndef  S1600
 extern
 #endif
@@ -912,8 +917,8 @@ void s1921(SISLSurf *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef S1940
 extern
-#endif      
-void s1940(SISLCurve *oldcurve, double eps[], int startfix, int endfix, 
+#endif
+void s1940(SISLCurve *oldcurve, double eps[], int startfix, int endfix,
 	   int iopen, int itmax, SISLCurve **newcurve, double maxerr[],
 	   int *stat);
 #ifndef  S1953
@@ -945,7 +950,7 @@ extern
 void s1961(double ep[],int im,int idim,int ipar,double epar[],
 	   double eeps[],int ilend,int irend,int iopen,double afctol,
 	   int itmax,int ik,SISLCurve **rc,double emxerr[],
-	   int *jstat);   
+	   int *jstat);
 #ifndef S1962
 extern
 #endif
@@ -1458,6 +1463,10 @@ void s1537();
 extern
 #endif
 void s1538();
+#ifndef S1539
+extern
+#endif
+void s1539();
 #ifndef  S1600
 extern
 #endif
