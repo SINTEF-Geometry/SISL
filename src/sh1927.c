@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1927.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: sh1927.c,v 1.2 1995-02-08 10:05:02 vsk Exp $
  *
  */
 
@@ -125,7 +125,7 @@ void sh1927(etau,ik,in,idim,pcurve,ilend,irend,ec,jstat)
       goto err101;
    if ((sbder=newarray(ik*ik,DOUBLE)) == NULL) goto err101;
    if ((ssum = newarray(idim,DOUBLE)) == NULL) goto err101;
-   if ((shc = newarray(irend*idim,DOUBLE)) == NULL) goto err101;
+   if ((shc = newarray(MAX(1,irend)*idim,DOUBLE)) == NULL) goto err101;
    
    /* Check the input and adjust if necessary.  */
    
