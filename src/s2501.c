@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2501.c,v 1.4 1995-01-18 14:57:49 pfu Exp $
+ * $Id: s2501.c,v 1.5 1995-01-19 15:05:25 pfu Exp $
  *
  */
 
@@ -101,9 +101,6 @@ s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
   double a,b;            /* Dummy variables.                                */
   double hx,hy,
     hxx,hyy,hxy;        /* The derivatives of the 1D surface, h(x,y).      */
-  double E,F,G;          /* The coefficents of the first fundamental form,
-			    that is, E = <Xu,Xu>, F = <Xu,Xv>  and
-			    G = <Xv,Xv>.                                    */
   double e,f,g;          /* The coefficents of the second fundamental form,
 			    that is, e = <N,Xuu>, f = <N,Xuv> and
 			    g = <N,Xvv>.                                   */
@@ -132,18 +129,6 @@ s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
   }
   else if (surf->idim == 3) /* 3D surface */
   {
-    /* E = <Xu,Xu> */
-    E = derive[3]*derive[3]+derive[4]*derive[4]+derive[5]*derive[5];
-
-      /* F = <Xu,Xv> */
-    F = derive[3]*derive[6]+derive[4]*derive[7]+derive[5]*derive[8];
-
-    /* G = <Xv,Xv> */
-    G = derive[6]*derive[6]+derive[7]*derive[7]+derive[8]*derive[8];
-
-    /* b = EG + F^2. */
-    b = E*G-F*F;
-
     /* e = <N,Xuu> (/ sqrt(E*G-F*F)) */
     e = normal[0]*derive[9]+normal[1]*derive[10]+normal[2]*derive[11];
 
@@ -154,6 +139,7 @@ s2501(SISLSurf *surf, int ider, double parvalue[], double derive[],
     g = normal[0]*derive[15]+normal[1]*derive[16]+normal[2]*derive[17];
 
     /* Compute gaussian = (e*g-f*f)/(E*G-F*F). */
+    b = normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2];
     *gaussian = (e*g-f*f)/(b*b);
 
   }
