@@ -15,7 +15,7 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-void 
+void
    s1357(double epoint[],int inbpnt,int idim,int ntype[],double epar[],
 	   int icnsta,int icnend,int iopen,int ik,double astpar,
 	   double *cendpar,SISLCurve **rc,double **gpar,int *jnbpar,int *jstat)
@@ -112,13 +112,18 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
 *                                  but differ in the use of the parameter
 *                                  iopen and the input array ntype is of
 *                                  type int.
+* REWISED BY: Johannes Kaasa, 01.98. Made sure the start and end points
+*                  are correct in the periodic case. I also made proper
+*                  handling when the order is higher than the number of
+*                  interpolation points.
 *****************************************************************
 */
 {
   int kpos = 0;
   SISLCurve *qc = NULL;		/* Temporary SISLCurves.                    */
   SISLCurve *qc2 = NULL;
-  int *ltype = NULL;		/* Type of interpolation condition 
+  SISLCurve *dummy = NULL;
+  int *ltype = NULL;		/* Type of interpolation condition
 				   (temporary)                              */
   int *ltype2 = NULL;		/* Type of interpolation condition (finial) */
   int *sder = NULL;		/* Vector of derivative indicators.         */
@@ -126,26 +131,41 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   int kordr;			/* Local order.                             */
   int kstat;			/* Status variable.                         */
   int kn;			/* Number of coefficients of B-spline curve.*/
-  int ki;			/* Loop control variable.                   */
-  int kright = 1;		/* One equation system to solve in 
+  int ki, kj, kl;		/* Loop control variable.                   */
+  int kright = 1;		/* One equation system to solve in
 				   interpolation.                           */
   int knlr = 0;			/* Indicates shape of interpolation matrix. */
   int knrc = 0;			/* Indicates shape of interpolation matrix. */
   int kopen;                    /* Local open/closed parameter. Closed,
 				   non-periodic is treated as an open curve.*/
+  int kpair;                    /* Pair order or not.                       */
+  int kcont;                    /* Continuity in start/end point.           */
+  int kleft;                    /* Pointer into knot array.                 */
+  int klast1, klast2;           /* Last element in array.                   */
+  double split_par;             /* Splitting parameter.                     */
+  double tdiff;                 /* Length of parameter interval.            */
   double *lpar = NULL;		/* Parameter values. (temporary)            */
   double *lcond = NULL;		/* Interpolation conditions. (temporary)    */
   double *sknot = NULL;		/* Knot vector.                             */
   double *spar = NULL;		/* Parameter valued. (finial)               */
   double *scond = NULL;		/* Interpolation conditions. (finial)       */
   double *scoef = NULL;		/* Coefficients of curve.                   */
+  double *temp = NULL;          /* Temporary storage.                       */
 
   *jstat = 0;
 
+  /* If necessary reduce the order. */
+
+  kordr = MIN (ik, inbpnt);
+
   /* Set local open/closed parameter. */
-  
+
   kopen = (iopen == SISL_CRV_PERIODIC) ? 0 : 1;
-  
+
+  /* Check pair order or not. */
+
+  kpair = (kordr % 2 == 0) ? 1 : 0;
+
   /* Transform interpolation conditions. */
 
   s1907 (epoint, ntype, epar, iopen, icnsta, icnend, inbpnt,
@@ -155,7 +175,7 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   /* Test interpolation conditions, and adjust the input conditions
      if necessary.  */
 
-  s1908 (lcond, ltype, lpar, knpt, ik, idim, iopen, &scond, &ltype2,
+  s1908 (lcond, ltype, lpar, knpt, kordr, idim, iopen, &scond, &ltype2,
 	 &spar, &knpt, &kstat);
   if (kstat < 0) goto error;
 
@@ -167,7 +187,6 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   for (ki = 0; ki < knpt; ki++)
     sder[ki] = abs (ltype2[ki]);
 
-  kordr = MIN (ik, knpt);
 
   if (iopen == SISL_CRV_PERIODIC)
     {
@@ -187,12 +206,85 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
 	 &scoef, &kn, kordr, knlr, knrc, &kstat);
   if (kstat < 0) goto error;
 
+  /* Corrected start and end for odd order periodic curves. */
+
+  if (iopen == SISL_CRV_PERIODIC && kpair)
+  {
+     if ((temp = newarray(idim, double)) == NULL)
+	goto err101;
+
+     /* Find number of present starting knots. */
+
+     ki = 0;
+     while (sknot[ki] < epar[0]) ki++;
+
+     klast1 = kn + kordr - 1;
+     klast2 = idim*(kn - 1);
+     tdiff = lpar[knpt] - lpar[0];
+     for ( ; ki < (kordr - 1); ki++)
+     {
+	temp[0] = sknot[knpt - 1] - tdiff;
+	for (kj = klast1; kj > 0; kj--)
+	   sknot[kj] = sknot[kj - 1];
+	sknot[0] = temp[0];
+
+	for (kl = 0; kl < idim; kl++)
+	   temp[kl] = scoef[(knpt - 1)*idim + kl];
+	for (kj = klast2; kj > 0; kj -= idim)
+	{
+	   for (kl = 0; kl < idim; kl++)
+	      scoef[kj + kl] = scoef[kj - idim + kl];
+	}
+	for (kl = 0; kl < idim; kl++)
+	   scoef[kl] = temp[kl];
+     }
+  }
+
   /* Express the curve as a curve object.  */
 
   qc = newCurve (kn, kordr, sknot, scoef, 1, idim, 1);
   if (qc == NULL) goto err101;
   qc->cuopen = iopen;
-  
+
+  /* Corrected start and end for even order periodic curves. */
+
+  if (iopen == SISL_CRV_PERIODIC && !kpair &&
+      fabs(qc->et[qc->ik - 1] - epar[0]) > REL_PAR_RES)
+  {
+
+     /* Shift the start/end point. */
+
+     split_par = epar[0];
+     while (split_par < qc->et[qc->ik-1])
+        split_par += (qc->et[qc->in] - qc->et[qc->ik-1]);
+     while (split_par > qc->et[qc->in])
+        split_par -= (qc->et[qc->in] - qc->et[qc->ik-1]);
+     s1710(qc, split_par, &qc2, &dummy, &kstat);
+     if (kstat != 2) goto error;
+     tdiff = qc2->et[qc2->ik - 1] - epar[0];
+     if (fabs(tdiff) > REL_PAR_RES)
+     {
+        for (ki = 0; ki < (qc2->in + qc2->ik); ki++)
+           qc2->et[ki] -= tdiff;
+     }
+
+     /* qc2 is represented on a closed basis, and flagged
+        as SISL_CRV_CLOSED. We have to open it again. First
+        find the continuity in the new end point.           */
+
+     kcont = qc->ik - 1 - max(s6knotmult(qc->et, qc->ik, qc->in,
+                                     &kleft, epar[0], &kstat), 1);
+     if (kstat < 0) goto error;
+
+     make_cv_cyclic(qc2, kcont, &kstat);
+     if (kstat < 0) goto error;
+
+     if (qc != NULL) freeCurve (qc);
+     qc = qc2;
+     qc2 = NULL;
+
+  }
+
   if (kordr < ik)
     {
       /* The order of the curve is less than expected. Increase the order. */
@@ -200,9 +292,10 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
       qc2 = NULL;
       s1750 (qc, ik, &qc2, &kstat);
       if (kstat < 0) goto error;
-	
+
       if (qc != NULL) freeCurve (qc);
       qc = qc2;
+      qc2 = NULL;
     }
 
   /* Set open/closed parameter of curve. */
@@ -210,7 +303,7 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   qc->cuopen = iopen;
 
   /* Set end of parameter interval.  */
-  
+
   *cendpar = *(qc->et + qc->in);
 
   /* Interpolation performed. */
@@ -228,7 +321,7 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   for (ki = 1; ki<knpt; ki++)
     {
       if (spar[ki - 1] < spar[ki])
-	 
+
       /* Bug fix. MSF, 28.9.93 Change (*gpar)[(*jnbpar)++] = spar[ki]; to: */
 
 	(*gpar)[(*jnbpar)++] = spar[ki-1];
@@ -237,7 +330,7 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
   /* Bug fix. MSF, 28.9.93 Change (*gpar)[(*jnbpar)++] = spar[ki]; to: */
 
   (*gpar)[(*jnbpar)++] = spar[ki-1];
-  
+
   *rc = qc;
   goto out;
 
@@ -267,7 +360,7 @@ void s1357(epoint,inbpnt,idim,ntype,epar,icnsta,icnend,iopen,ik,astpar,
     if (lcond != NULL)    freearray (lcond);
     if (sknot != NULL)    freearray (sknot);
     if (spar != NULL)     freearray (spar);
+    if (temp != NULL)     freearray (temp);
 
     return;
 }
-
