@@ -196,14 +196,18 @@ void
   /* Find distinct parameter values. */
 
   *gpar = spar1;
-
   *jnbpar = 0;
+  for (ki = 0; ki < knpt; ki++)
+     printf("Org %lf \n",spar1[ki]);
+  printf("End %lf \n",*cendpar);
   for (ki = 1; spar1[ki] <= *cendpar; ki++)
     {
       if (spar1[ki - 1] < spar1[ki])
 	(*gpar)[(*jnbpar)++] = spar1[ki-1];
+      printf("In %lf \n",spar1[ki-1]);
     }
   (*gpar)[(*jnbpar)++] = spar1[ki-1];
+  printf("Out %lf \n",spar1[ki-1]);
 
   *gpar = increasearray (*gpar, *jnbpar, DOUBLE);
 
