@@ -25,5 +25,8 @@ The code in the 'examples' and 'viewer' directory links with 'sisl' and
 The code in the 'viewer' directory also links with OpenGL, which must be 
 available on your machine.
 
+Alternatively, from 'this' directory you can just type 'make' to make absolutely
+everything.
+
 --------------------------------------------------------------------------------
 Oslo, February 3, 2005
