@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1834.c,v 1.3 1994-08-02 07:49:26 pfu Exp $
+ * $Id: sh1834.c,v 1.4 1994-11-07 08:56:25 vsk Exp $
  *
  */
 
@@ -97,6 +97,8 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 * REVISED BY : Vibeke Skytt, SI, 91-01.
 * REVISED BY : Mike Floater, SI, 94-07. Updated for rationals
 *                                        (s1834 didn't need changing).
+* REVISED BY : Vibeke Skytt, SINTEF Oslo, 94-11. Introduced 2D point-surface
+*                                                intersection.
 *
 *********************************************************************
 */
@@ -104,7 +106,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   int kstat = 0;   /* Local status variable.                     */
   int kpos = 0;    /* Position of error.                         */
   int kinnerexp = 12; /* Expand box in the inner. No rotation.   */
-  int kn1,kn2;     /* Number of coefficients of objects.         */
+  int kn1=0,kn2=0;     /* Number of coefficients of objects.     */
   double *sc1,*sc2;/* Pointers to coefficients of objects.       */
   double *scoef1=NULL;  /* Rotated coefficients of first object. */
   double *scoef2=NULL;  /* Rotated coefficients of second object.*/
@@ -118,7 +120,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
   double *rc1,*rc2;     /* Pointers to homogeneous coefficients. */
   double *rcoef1=NULL;  /* Possibly homogeneous coefficients.    */
   double *rcoef2=NULL;  /* Possibly homogeneous coefficients.    */
-  int ikind1, ikind2;   /* Kinds of objects 1 and 2.             */
+  int ikind1=0, ikind2=0;   /* Kinds of objects 1 and 2.         */
   int i,i1,i2,j,k;      /* Loop variables.                       */
 
   /* Test input.  */
@@ -141,6 +143,13 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
      rc1 = po1->s1->rcoef;
      ikind1 = po1->s1->ikind;
   }
+  else
+  {
+     kn1 = 1;
+     sc1 = po1->p1->ecoef;
+     rc1 = NULL;
+     ikind1 = 1;
+  }
 
   if (po2->iobj == SISLCURVE)
   {
@@ -155,6 +164,13 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
      sc2 = po2->s1->ecoef;
      rc2 = po2->s1->rcoef;
      ikind2 = po2->s1->ikind;
+  }
+  else
+  {
+     kn2 = 1;
+     sc2 = po2->p1->ecoef;
+     rc2 = NULL;
+     ikind2 = 1;
   }
 
   /* Allocate space for local parameters.  */
@@ -245,7 +261,7 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 	goto err101;
      /* printf("Rotated box test. Curve - "); */
   }
-  else
+  else if (po1->iobj == SISLSURFACE)
   {
      if ((qo1->s1 = newSurf(po1->s1->in1,po1->s1->in2,po1->s1->ik1,
 			    po1->s1->ik2,po1->s1->et1,po1->s1->et2,
@@ -253,6 +269,10 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 	goto err101;
      /* printf("Rotated box test. Surface - "); */
 
+  }
+  else 
+  {
+     if ((qo1->p1 = newPoint(rcoef1,idim,0)) == NULL) goto err101;
   }
 
   if (po2->iobj == SISLCURVE)
@@ -262,13 +282,17 @@ void sh1834(po1,po2,aepsge,idim,edir1,edir2,jstat)
 	goto err101;
      /* printf("curve. "); */
   }
-  else
+  else if (po2->iobj == SISLSURFACE)
   {
      if ((qo2->s1 = newSurf(po2->s1->in1,po2->s1->in2,po2->s1->ik1,
 			    po2->s1->ik2,po2->s1->et1,po2->s1->et2,
 			     rcoef2,po2->s1->ikind,idim,0)) == NULL)
 	goto err101;
      /* printf("surface. "); */
+  }
+  else 
+  {
+     if ((qo2->p1 = newPoint(rcoef2,idim,0)) == NULL) goto err101;
   }
 
   /* Make box test.  */
@@ -357,9 +381,9 @@ static void sh1834_s9mat2d(emat,edir)
       /* Make rotation matrix.  */
 
       emat[0] = sdir[0];
-      emat[1] = -sdir[1];
+      emat[1] = sdir[1];
       emat[2] = sdir[1];
-      emat[3] = sdir[0];
+      emat[3] = -sdir[0];
     }
 }
 
