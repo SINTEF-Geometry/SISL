@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1015.c,v 1.2 1994-11-17 09:00:55 pfu Exp $
+ * $Id: s1015.c,v 1.3 1994-12-19 15:06:11 pfu Exp $
  *
  */
 #define S1015
@@ -50,7 +50,7 @@ void s1015(pc1,pc2,aepsge,eps1,eps2,aradius,parpt1,parpt2,
      double eps2[];
      double aradius;
      double *parpt1;
-     double parpt2[];
+     double *parpt2;
      double center[];
      int    *jstat;
 #endif
