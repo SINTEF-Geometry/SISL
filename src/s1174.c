@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1174.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1174.c,v 1.2 1994-11-07 10:09:56 vsk Exp $
  *
  */
 
@@ -120,6 +120,10 @@ void s1174(psurf,estart,eend,enext,gpos,jstat)
   /* Compute the Newton stepdistanse vector. */
   s1174_s9dir(td,td+1,sval);
   
+  if ( (fabs(td[0]/tdelta[0]) <= REL_COMP_RES) &&
+      (fabs(td[1]/tdelta[1]) <= REL_COMP_RES))
+     goto stop_it;
+  
   /* Adjust if we are not inside the parameter intervall. */
   t1[0] = td[0];
   t1[1] = td[1];
@@ -185,6 +189,8 @@ void s1174(psurf,estart,eend,enext,gpos,jstat)
   
   /* Iteration stopped, test if point is extremum */
   
+  stop_it:
+     
   if (tdist <= tol)
     *jstat = 1;
   else
@@ -367,7 +373,7 @@ static void s1174_s9dir(cdiff1,cdiff2,evals)
   else
     {
       tdiv    = ta11*ta22 - ta21*ta12;
-      if (fabs(tdiv) > tmax*REL_COMP_RES)
+      if (fabs(tdiv) > MAX(tmax*REL_COMP_RES,REL_COMP_RES))
 	{
 	  /* The matrix is ok, solve the system using Cramers rule. */
 	  tdeltax = tb1*ta22 - tb2*ta12;    
