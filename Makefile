@@ -223,10 +223,10 @@ ifeq "$(PLATFORM)" "hp-pa"
   LDXX		=$(CXX)
 
   ifeq "$(MODE)" "opt"
-    CXXFLAGS		=-O -G +DAportable -AA
+    CXXFLAGS		=-O -AA
     CXXDEFS		=-DHP -D$(EX)
   else
-    CXXFLAGS		=-g -G +DAportable -AA
+    CXXFLAGS		=-g -AA
     CXXDEFS		=-DHP -DCHECKLEVEL4 -DHP_ACC_Cplusplus -DHP_Cplusplus
   endif
 
@@ -351,9 +351,9 @@ CXXLIBS		= $(foreach lib, $(DEPLIBSLOCAL),-l$(lib)) $(foreach lib, $(DEPLIBSGLOB
 #
 #------------------------------------------------------------
 
-CINCLUDES	+=-I. -I.. -Iinclude -I../include
+CINCLUDES	+=-Iinclude
 
-CXXINCLUDES +=-I. -I.. -Iinclude -I../include $(foreach inc, $(DEPLIBSLOCAL),-I../$(inc)/include) $(foreach inc, $(GLOBALINCLUDEDIRS),-I$(inc)) $(foreach inc, $(SYSTEMINCLUDEDIRS),-I$(inc))
+CXXINCLUDES +=-Iinclude $(foreach inc, $(DEPLIBSLOCAL),-I../$(inc)/include) $(foreach inc, $(GLOBALINCLUDEDIRS),-I$(inc)) $(foreach inc, $(SYSTEMINCLUDEDIRS),-I$(inc))
 
 
 		  
