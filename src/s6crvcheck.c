@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s6crvcheck.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s6crvcheck.c,v 1.2 1998-07-29 06:23:58 vsk Exp $
  *
  */
 
@@ -144,7 +144,7 @@ void s6crvcheck(pc,jstat)
   
   /* An additional end knot might have been left */
   
-  if (snt[knnew-1] == st[knnew+kk-1]) knnew--;
+  if (snt[knnew-1] == snt[knnew+kk-1]) knnew--;
   
   /* Put compressed description back to curve object */      
   
