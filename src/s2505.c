@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2505.c,v 1.1 1995-01-19 15:25:02 pfu Exp $
+ * $Id: s2505.c,v 1.2 1995-01-23 09:26:07 pfu Exp $
  *
  */
 
@@ -22,14 +22,12 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void
-s2505(SISLSurf *surf, int der, double parvalue[], double derive[],
-      double normal[], double *absCurvature,
-      int *jstat)
+s2505(SISLSurf *surf, int der, double derive[], double normal[],
+      double *absCurvature, int *jstat)
 #else
- void s2505(surf, der, parvalue, derive, normal, absCurvature, jstat)
+ void s2505(surf, der, derive, normal, absCurvature, jstat)
       SISLSurf *surf;
       int der;
-      double parvalue[];
       double derive[],
       double normal[],
       double *absCurvature;
@@ -46,8 +44,6 @@ s2505(SISLSurf *surf, int der, double parvalue[], double derive[],
 *  INPUT        :
 *          surf     - Pointer to the surface to evaluate.
 *          der      - Not used.
-*      parvalue     - Parameter-value at which to evaluate. Dimension of
-*                     parvalue is 2.
 *       derive      - Array containing derivatives from routine s1421().
 *                     Size = idim*6.
 *       normal      - Array containing the normal from routine s1421().
@@ -57,7 +53,6 @@ s2505(SISLSurf *surf, int der, double parvalue[], double derive[],
 *
 *  OUTPUT       :
 *    absCurvature   - Absolute curvature of the surface in (u,v) =
-*                     (parvalue[0],parvalue[1]).
 *        jstat      - Staus messages
 *                         = 2 : Surface is degenrate at the point, that is,
 *                               the surface is not regular at this point.
