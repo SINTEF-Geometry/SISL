@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.5 1994-12-01 14:10:17 pfu Exp $
+ * $Id: s1313.c,v 1.6 1994-12-01 14:15:59 pfu Exp $
  *
  */
 
@@ -87,6 +87,12 @@ void s1313(ps1,eimpli,ideg,aepsco,aepsge,amax,pintcr,icur,igraph,jstat)
 *                       exist. When comming as output the 3-D geometry
 *                       and possibly the curve in the parameter plane
 *                       of the surface are added.
+*                       If the curves has already been generated in the
+*                       topology part of the intersections, nothing will
+*                       be done (i.e. not required).  This will be the
+*                       case when the intersection curve represents a
+*                       constant parameter line in the parmeter plane
+*                       of the surface.
 *
 * OUTPUT:      jstat  - status messages
 *                         = 3      : Iteration stopped due to singular
