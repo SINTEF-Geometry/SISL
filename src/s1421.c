@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1421.c,v 1.3 1994-06-30 13:11:43 vsk Exp $
+ * $Id: s1421.c,v 1.4 1995-11-29 14:21:15 jka Exp $
  *
  */
 #define S1421
@@ -171,6 +171,8 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
 *              version of s6sratder.
 * Revised by : Christophe Rene Birkeland, SINTEF Oslo, May 1993.
 *              NULL tests included
+* Revised by : Johannes Kaasa, SINTEF Oslo, Nov. 1995,
+*              Made local copies of leftknot.
 *
 *********************************************************************
 */                                     
@@ -222,6 +224,9 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
 
   int tot,temp;       /* Temporary variables. */
   int kinc;           /* For controlling kih.                */
+  
+  kleft1 = *ilfs;
+  kleft2 = *ilft;
   
   /* Copy surface to local parameters.  */
   
@@ -296,18 +301,15 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
   /* Compute the values and derivatives of the nonzero B-splines in the
      second parameter direction.                                        */
   
-  s1220(st2,kk2,kn2,ilft,epar[1],ider,ebder,&kstat);
+  s1220(st2,kk2,kn2,&kleft2,epar[1],ider,ebder,&kstat);
   
   if (kstat < 0) goto error;
   
   /* Update ilfs (ilft was updated above, in s1220). */
   
-  s1219(st1,kk1,kn1,ilfs,epar[0],&kstat);
+  s1219(st1,kk1,kn1,&kleft1,epar[0],&kstat);
   
   if (kstat < 0) goto error;
-  
-  kleft2 = *ilft;
-  kleft1 = *ilfs;
   
   /* Compute the first matrix product in (2) above. */
   
@@ -346,7 +348,7 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
   /* Compute the values and derivatives of the nonzero B-splines in the
      first parameter direction.                                        */
   
-  s1220(st1,kk1,kn1,ilfs,epar[0],ider,ebder,&kstat);         
+  s1220(st1,kk1,kn1,&kleft1,epar[0],ider,ebder,&kstat);         
   
   if (kstat < 0) goto error;
   
@@ -493,5 +495,8 @@ void s1421(ps1,ider,epar,ilfs,ilft,eder,enorm,jstat)
   s6err("s1421",*jstat,kpos);
   goto out;
   
- out: return;
+ out:
+    *ilfs = kleft1;
+    *ilft = kleft2;
+    return;
 }
