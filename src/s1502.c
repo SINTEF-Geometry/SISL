@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1502.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1502.c,v 1.2 1994-11-14 15:28:12 pfu Exp $
  *
  */
 
@@ -44,7 +44,7 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 *********************************************************************
 *
 *********************************************************************
-*                                                                   
+*
 * PURPOSE    : Find all intersections between a curve and an elliptic cone.
 *
 *
@@ -56,8 +56,8 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 *              axisA  - One of the two ellipse axis vectors.
 *              alpha  - The opening angle of the cone at axisA
 *              ratio  - The ratio of axisA to axisB
-*              idim   - Dimension of the space in which the plane/line
-*                       lies. idim should be equal to two or three.
+*              idim   - Dimension of the space in which the elliptic cone
+*                       lies. idim should be equal to three.
 *              aepsco - Computational resolution.
 *              aepsge - Geometry resolution.
 *
@@ -66,7 +66,7 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 * OUTPUT     : *jpt   - Number of single intersection points.
 *              gpar   - Array containing the parameter values of the
 *                       single intersection points in the parameter
-*                       interval of the curve. The points lie continuous. 
+*                       interval of the curve. The points lie continuous.
 *                       Intersection curves are stored in wcurve.
 *              *jcrv  - Number of intersection curves.
 *              wcurve  - Array containing descriptions of the intersection
@@ -74,7 +74,7 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 *                       in the parameter interval. The curve-pointers points
 *                       to nothing. (See description of Intcurve
 *                       in intcurve.dcl).
-*              jstat  - status messages  
+*              jstat  - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok
 *                                         < 0      : error
@@ -89,9 +89,11 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 * CALLS      : sh1502, s6err.
 *
 * WRITTEN BY : Christophe Rene Birkeland, SINTEF, 93-06.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994. Changed header
+*              text to reflect that the routine only handles 3D input.
 *
 *********************************************************************
-*/                                                               
+*/
 {
   int kstat = 0;           /* Local status variable.                       */
   int kpos = 0;            /* Position of error.                           */
@@ -105,9 +107,9 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
   if(kstat < 0) goto error;
 
   if(pretop != NULL) freearray(pretop);
-		
-  /* 
-   * Intersections found.  
+
+  /*
+   * Intersections found.
    * --------------------
    */
 
@@ -117,11 +119,11 @@ void s1502(pc1,base,norm,axisA,alpha,ratio,idim,aepsco,aepsge,
 
   /* Error in lower level routine.  */
 
-  error : 
+  error :
     *jstat = kstat;
     s6err("s1502",*jstat,kpos);
     goto out;
 
   out:
     return;
-}      
+}
