@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1222.c,v 1.1 1995-10-24 13:14:49 jka Exp $
+ * $Id: s1222.c,v 1.2 1995-10-25 08:18:16 jka Exp $
  *
  */
 
@@ -24,11 +24,11 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 void 
-   s1222(double *et, int ik, int in, int ibase, 
+   s1222(double et[], int ik, int in, int ibase, 
 	   double ax, int ider, double ebder[], int *jstat)
 #else
 void s1222(et, ik, in, ibase, ax, ider, ebder, jstat)
-     double *et;
+     double et[];
      int    ik;
      int    in;
      int    ibase;
