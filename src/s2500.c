@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2500.c,v 1.2 1995-01-18 13:12:23 pfu Exp $
+ * $Id: s2500.c,v 1.3 1995-01-18 13:20:33 pfu Exp $
  *
  */
 
@@ -136,8 +136,7 @@ s2500(SISLSurf *surf, double parvalue[], int *leftknot1,
     }
     else if (kistat != 2) /* The surface is not degenerate */
     {
-      s2501(surf, der, parvalue, derive, normal, leftknot1, leftknot2,
-	    gaussian, &kistat);
+      s2501(surf, der, parvalue, derive, normal, gaussian, &kistat);
 
       if (kistat < 0)
 	goto error;
