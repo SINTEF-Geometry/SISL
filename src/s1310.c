@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1310.c,v 1.3 1994-12-01 14:29:31 pfu Exp $
+ * $Id: s1310.c,v 1.4 1995-01-26 07:52:28 pfu Exp $
  *
  */
 
@@ -142,7 +142,7 @@ void s1310(psurf1,psurf2,pinter,aepsge,amax,icur,igraph,jstat)
 			      degenerate */
   int klast = 0;           /* Indicator telling if last guide point
 			      degenerate */
-  int kpos;                /* Position of error                         */
+  int kpos = 0;            /* Position of error                         */
   int kstat,kstat1;        /* Status variable returned form routine     */
   int kmaxinf=0;           /* Number of entries object that can be stored
 			      in s3dinf, sp1inf, sp2inf                 */
