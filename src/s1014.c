@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1014.c,v 1.4 1994-11-16 15:11:37 pfu Exp $
+ * $Id: s1014.c,v 1.5 1994-11-17 08:28:14 pfu Exp $
  *
  */
 #define S1014
@@ -98,9 +98,8 @@ void s1014(pc1,circ_cen,circ_rad,aepsge,eps1,eps2,aradius,
 *
 * WRITTEN BY : Johannes Kaasa, SI, April 1992.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Nov. 1994.  Clearified
-*              header and added allocation of 'center' after changing function
-*              interface declaration.  Initialized 'p1' and 'kstat' and fixed
-*              memory leak from 'p1'.
+*              header and changed the function interface declaration of 'center'.
+*              Initialized 'p1' and 'kstat' and fixed memory leak from 'p1'.
 *
 *********************************************************************
 */
