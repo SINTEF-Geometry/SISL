@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1303.c,v 1.3 1994-08-23 08:55:58 pfu Exp $
+ * $Id: s1303.c,v 1.4 1994-08-23 09:18:08 pfu Exp $
  *
  */
 #define S1303
@@ -218,6 +218,7 @@ void s1303(epstrt,aepsge,angle,epcent,eaxis,idim,rc,jstat)
 
  error:
   *jstat = kstat;
+  s6err("s1303", *jstat, kpos);
   goto out;
 
  out:
