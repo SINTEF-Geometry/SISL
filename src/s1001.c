@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1001.c,v 1.2 1994-08-31 09:26:27 pfu Exp $
+ * $Id: s1001.c,v 1.3 1994-11-16 08:59:47 pfu Exp $
  *
  */
 
@@ -46,7 +46,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
  *
  *
  *
-* INPUT      : ps	- Surface to be refined.
+* INPUT      : ps	- Surface to pick a part of.
 *	       min1     - Min value 1. parameter direction.
 *	       min2     - Min value 2. parameter direction.
 *	       max1     - Max value 1. parameter direction.
@@ -70,6 +70,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
 *
 * WRITTEN BY : Ulf J. Krystad, SI, 04.92.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-08. Added error propagation.
+* Revised by : Paal Fugelli, SINTEF, Oslo, Norway, 94-11. Handling of periodics.
 *
 **********************************************************************/
 {
@@ -94,7 +95,7 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
   SISLCurve *qc1 = NULL;	/* Input curve to pick curve.          */
   SISLCurve *qc2 = NULL;	/* Output curve from pick curve.       */
   SISLCurve *qc3 = NULL;	/* Output curve from pick curve.       */
-  double *oldcoef;           	/* Pointer to vertices of old surf.                */
+  double *oldcoef;           	/* Pointer to vertices of old surf.    */
   /* ----------------------------------------------------------------- */
 
   if(kkind == 2 || kkind == 4)
@@ -113,20 +114,24 @@ s1001 (ps, min1, min2, max1, max2, rsnew, jstat)
   kleft4=ps->in2;
   change_1 = change_2 = TRUE;
 
-  if (min1 == ps->et1[ps->ik1 -1] &&
-      max1 == ps->et1[ps->in1]  &&
-      s6knotmult(ps->et1,ps->ik1,ps->in1,
-		 &kleft1,ps->et1[ps->ik1-1],&kstat) == ps->ik1 &&
-      s6knotmult(ps->et1,ps->ik1,ps->in1,
-		 &kleft2,ps->et1[ps->in1],&kstat) == ps->ik1)
+  if ( min1 == ps->et1[ps->ik1 -1]  &&  max1 == ps->et1[ps->in1] )
+/* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
+ *   &&
+ *     s6knotmult(ps->et1,ps->ik1,ps->in1,
+ *		 &kleft1,ps->et1[ps->ik1-1],&kstat) == ps->ik1 &&
+ *     s6knotmult(ps->et1,ps->ik1,ps->in1,
+ *		 &kleft2,ps->et1[ps->in1],&kstat) == ps->ik1)
+ */
     change_1 = FALSE;
 
-  if (min2 == ps->et2[ps->ik2 -1] &&
-      max2 == ps->et2[ps->in2]  &&
-      s6knotmult(ps->et2,ps->ik2,ps->in2,
-		 &kleft3,ps->et2[ps->ik2-1],&kstat) == ps->ik2 &&
-      s6knotmult(ps->et2,ps->ik2,ps->in2,
-		 &kleft4,ps->et2[ps->in2],&kstat) == ps->ik2)
+  if ( min2 == ps->et2[ps->ik2 -1]  &&  max2 == ps->et2[ps->in2] )
+/* TAKEN OUT to handle periodics correctly (PFU 16/11-94).
+ *  &&
+ *     s6knotmult(ps->et2,ps->ik2,ps->in2,
+ *		 &kleft3,ps->et2[ps->ik2-1],&kstat) == ps->ik2 &&
+ *     s6knotmult(ps->et2,ps->ik2,ps->in2,
+ *		 &kleft4,ps->et2[ps->in2],&kstat) == ps->ik2)
+ */
     change_2 = FALSE;
 
   if (change_1)
