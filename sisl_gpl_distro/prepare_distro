@@ -24,9 +24,10 @@ do
    tail ../include/$n -n+32 >> $TARGETNAME
   fi
 done
-cp license_header sisl/include/copyright.h
-
-#cp ../include/*.h sisl/include/
+echo \#ifndef _SISL_COPYRIGHT_H > sisl/include/copyright.h
+echo \#define _SISL_COPYRIGHT_H >> sisl/include/copyright.h
+cat license_header >> sisl/include/copyright.h
+echo \#endif
 
 # generating source files
 SOURCEFILES=`ls ../src/*.c`
@@ -66,7 +67,7 @@ mkdir sisl_4.4_gpl
 cp -r doc sisl_4.4_gpl
 cp -r examples sisl_4.4_gpl
 cp -r sisl sisl_4.4_gpl
-cp -r streming sisl_4.4_gpl
+cp -r streaming sisl_4.4_gpl
 cp -r viewer sisl_4.4_gpl
 
 cp COPYING sisl_4.4_gpl
