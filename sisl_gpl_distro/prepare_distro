@@ -17,9 +17,10 @@ do
   #writing obligatory header
   cat license_header >> $TARGETNAME
   #writing rest of file
-  if $n eq sislP.h
+  if test $n = sislP.h
   then
-    tail ../include/$n -n+19 >> $TARGETNAME
+   # tail ../include/$n -n+19 >> $TARGETNAME
+   echo hoypolloy
   else 
     tail ../include/$n -n+32 >> $TARGETNAME
   fi
