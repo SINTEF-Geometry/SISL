@@ -27,7 +27,7 @@ done
 echo \#ifndef _SISL_COPYRIGHT_H > sisl/include/copyright.h
 echo \#define _SISL_COPYRIGHT_H >> sisl/include/copyright.h
 cat license_header >> sisl/include/copyright.h
-echo \#endif
+echo \#endif >> sisl/include/copyright.h
 
 # generating source files
 SOURCEFILES=`ls ../src/*.c`
