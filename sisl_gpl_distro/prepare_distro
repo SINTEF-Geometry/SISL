@@ -1,6 +1,7 @@
 #! /bin/bash
 
 # removing old files
+make clean
 rm sisl/include/*.h 2> /dev/null
 rm sisl/src/*.c 2> /dev/null
 
@@ -18,6 +19,7 @@ do
   #writing rest of file
   tail ../include/$n -n+32 >> $TARGETNAME
 done
+cp license_header sisl/include/copyright.h
 
 #cp ../include/*.h sisl/include/
 
@@ -53,3 +55,43 @@ do
    fi
       
 done
+
+#making zipped file of everything
+mkdir sisl_4.4_gpl
+cp -r doc sisl_4.4_gpl
+cp -r examples sisl_4.4_gpl
+cp -r sisl sisl_4.4_gpl
+cp -r streming sisl_4.4_gpl
+cp -r viewer sisl_4.4_gpl
+
+cp COPYING sisl_4.4_gpl
+cp Makefile sisl_4.4_gpl
+cp makefile_template sisl_4.4_gpl
+cp README sisl_4.4_gpl
+
+#removing CVS catalogues
+rm -r doc/CVS
+rm -r doc/manual/CVS
+rm -r doc/manual/tex/CVS
+rm -r doc/manual/tex/func/CVS
+rm -r doc/manual/text/type/CVS
+rm -r doc/users_guide/CVS
+rm -r doc/users_guide/tex/CVS
+rm -r examples/CVS
+rm -r examples/lib/CVS
+rm -r sisl/CVS
+rm -r sisl/include/CVS
+rm -r sisl/lib/CVS
+rm -r sisl/src/CVS
+rm -r streaming/CVS
+rm -r streaming/include/CVS
+rm -r streaming/include/lib/CVS
+rm -r streaming/src/CVS
+rm -r viewer/CVS
+rm -r viewer/include/CVS
+rm -r viewer/lib/CVS
+rm -r viewer/src/CVS
+
+#packing everything
+tar -zcvf sisl_4.4_gpl.tgz sisl_4.4_gpl
+
