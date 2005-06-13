@@ -70,27 +70,27 @@ cp makefile_template sisl_4.4_gpl
 cp README sisl_4.4_gpl
 
 #removing CVS catalogues
-rm -r doc/CVS
-rm -r doc/manual/CVS
-rm -r doc/manual/tex/CVS
-rm -r doc/manual/tex/func/CVS
-rm -r doc/manual/text/type/CVS
-rm -r doc/users_guide/CVS
-rm -r doc/users_guide/tex/CVS
-rm -r examples/CVS
-rm -r examples/lib/CVS
-rm -r sisl/CVS
-rm -r sisl/include/CVS
-rm -r sisl/lib/CVS
-rm -r sisl/src/CVS
-rm -r streaming/CVS
-rm -r streaming/include/CVS
-rm -r streaming/include/lib/CVS
-rm -r streaming/src/CVS
-rm -r viewer/CVS
-rm -r viewer/include/CVS
-rm -r viewer/lib/CVS
-rm -r viewer/src/CVS
+rm -r sisl_4.4_gpl/doc/CVS
+rm -r sisl_4.4_gpl/doc/manual/CVS
+rm -r sisl_4.4_gpl/doc/manual/tex/CVS
+rm -r sisl_4.4_gpl/doc/manual/tex/func/CVS
+rm -r sisl_4.4_gpl/doc/manual/text/type/CVS
+rm -r sisl_4.4_gpl/doc/users_guide/CVS
+rm -r sisl_4.4_gpl/doc/users_guide/tex/CVS
+rm -r sisl_4.4_gpl/examples/CVS
+rm -r sisl_4.4_gpl/examples/lib/CVS
+rm -r sisl_4.4_gpl/sisl/CVS
+rm -r sisl_4.4_gpl/sisl/include/CVS
+rm -r sisl_4.4_gpl/sisl/lib/CVS
+rm -r sisl_4.4_gpl/sisl/src/CVS
+rm -r sisl_4.4_gpl/streaming/CVS
+rm -r sisl_4.4_gpl/streaming/include/CVS
+rm -r sisl_4.4_gpl/streaming/include/lib/CVS
+rm -r sisl_4.4_gpl/streaming/src/CVS
+rm -r sisl_4.4_gpl/viewer/CVS
+rm -r sisl_4.4_gpl/viewer/include/CVS
+rm -r sisl_4.4_gpl/viewer/lib/CVS
+rm -r sisl_4.4_gpl/viewer/src/CVS
 
 #packing everything
 tar -zcvf sisl_4.4_gpl.tgz sisl_4.4_gpl
