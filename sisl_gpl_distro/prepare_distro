@@ -17,7 +17,7 @@ do
   #writing obligatory header
   cat license_header >> $TARGETNAME
   #writing rest of file
-  if test $n = csislP.h
+  if test $n = sislP.h
   then
    tail ../include/$n -n+19 >> $TARGETNAME
   else 
