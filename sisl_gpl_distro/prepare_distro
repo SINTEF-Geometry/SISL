@@ -5,7 +5,21 @@ rm sisl/include/*.h 2> /dev/null
 rm sisl/src/*.c 2> /dev/null
 
 # copying header files
-cp ../include/*.h sisl/include/
+HEADERFILES="sisl.h sislP.h"  # those headerfiles relevant for the GPL version
+
+for n in $HEADERFILES
+do
+  TARGETNAME=sisl/include/$n
+
+  #writing preliminary include guard
+  head --lines=2 ../include/$n > $TARGETNAME
+  #writing obligatory header
+  cat license_header >> $TARGETNAME
+  #writing rest of file
+  tail ../include/$n -n+32 >> $TARGETNAME
+done
+
+#cp ../include/*.h sisl/include/
 
 # generating source files
 SOURCEFILES=`ls ../src/*.c`
