@@ -17,12 +17,11 @@ do
   #writing obligatory header
   cat license_header >> $TARGETNAME
   #writing rest of file
-  if test $n = sislP.h
+  if test $n = csislP.h
   then
-   # tail ../include/$n -n+19 >> $TARGETNAME
-   echo hoypolloy
+   tail ../include/$n -n+19 >> $TARGETNAME
   else 
-    tail ../include/$n -n+32 >> $TARGETNAME
+   tail ../include/$n -n+32 >> $TARGETNAME
   fi
 done
 cp license_header sisl/include/copyright.h
