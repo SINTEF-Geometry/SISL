@@ -84,6 +84,7 @@ do
 done
 
 cp $EXTRA_CATALOG/streaming/Makefile $RESULT_CATALOG/sisl
+touch $RESULT_CATALOG/sisl/local_settings
 
 #making documentation
 cd $EXTRA_CATALOG/doc/manual/tex
