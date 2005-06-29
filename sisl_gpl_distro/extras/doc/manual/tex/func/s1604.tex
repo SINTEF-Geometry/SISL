@@ -1,0 +1,66 @@
+\subsection{B-spline approximation.}
+\funclabel{s1604}
+\begin{minipg1}
+        To make a B-spline curve using the input points as control vertices. The
+        distances between the points are used to make the parameterization.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1604(\begin{minipg3}
+                {\fov points}, {\fov numpt}, {\fov startpar}, {\fov open}, {\fov dim}, {\fov order}, {\fov curve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double  \>      {\fov points}[\,];\\
+                \>\>    int     \>      {\fov numpt};\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    int     \>      {\fov open};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      **{\fov curve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov points}   \> - \> \begin{minipg2}
+                                The array containing the points to be used as
+                                control vertices of the B-spline curve.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numpt}    \> - \> Number of points in points.\\
+        \>\>    {\fov startpar}\> - \>  \begin{minipg2}
+                                Parameter-value to be used at the
+                                start of the curve.
+                                \end{minipg2}\\
+        \>\>    {\fov open}     \> - \> Open or closed curve:\\
+                \>\>\>\>\>      0 :     Closed curve.\\
+                \>\>\>\>\>      1 :     Open curve.\\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the space in which
+                                the points lie.
+                                \end{minipg2}\\
+        \>\>    {\fov order}    \> - \> \begin{minipg2}
+                                The order of the NURBS curve
+                                to be produced.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to output curve\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov points[30]};\\
+                \>\>    int     \>      {\fov numpt} = 10;\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    int     \>      {\fov open} = 1;\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1604(\begin{minipg4}
+                {\fov points}, {\fov numpt}, {\fov startpar}, {\fov open}, {\fov dim}, {\fov order}, \&{\fov curve}, \&{\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

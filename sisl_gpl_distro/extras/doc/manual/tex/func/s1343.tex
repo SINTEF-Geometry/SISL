@@ -1,0 +1,79 @@
+\subsection{Degree reduction: B-spline curve as input.}
+\funclabel{s1343}
+\begin{minipg1}
+  To approximate the input B-spline (i.e.\ NOT rational) curve by a
+  cubic B-spline curve with error less than {\fov eps} in each of the
+  {\fov kdim} components.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1343(\begin{minipg3}
+        {\fov oldcurve}, {\fov eps}, {\fov startfix}, {\fov endfix}, {\fov epsco},
+        {\fov itmax}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov eps}[\,];\\
+                \>\>    int     \>      {\fov startfix};\\
+                \>\>    int     \>      {\fov endfix};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov oldcurve}\> - \> Pointer to the old B-spline curve.\\
+        \>\>    {\fov eps}      \> - \> \begin{minipg2}
+                        Array (length kdim) giving the desired accuracy of
+                                the spline-approximation in each component.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov startfix}\> - \>  \begin{minipg2}
+                        The no. of derivatives that are not allowed to
+                        change at the left end of the curve.
+                        The $(0 - (startfix-1))$ derivatives
+                        will be kept fixed. If startfix$<$0, this
+                        routine will set it to 0. If startfix$>$order,
+                        this routine will set it to order.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov endfix}   \> - \> \begin{minipg2}
+                        The no. of derivatives that are not allowed to
+                        change at the right end of the curve. The
+                        $(0 - (endfix-1))$ derivatives will be kept fixed.
+                        If endfix$<$0, this routine will set it to 0.
+                        If endfix$>$order, this routine will set it to order.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsco}    \> - \> \begin{minipg2}
+                        Two numbers differing by a relative amount
+                        $<$epsco, will in some cases be considered equal. A
+                        suitable value is just above the unit roundoff in the
+                        machine.  The computations are not guaranteed to
+                        have relative accuracy less than aepsco.
+                        Not used anymore.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov itmax}    \> - \> \begin{minipg2}
+                                Max. no. of iterations in the data-reduction routine.
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \> Pointer to the new B-spline curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov eps}[3];\\
+                \>\>    int     \>      {\fov startfix};\\
+                \>\>    int     \>      {\fov endfix};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1343(\begin{minipg4}
+        {\fov oldcurve}, {\fov eps}, {\fov startfix}, {\fov endfix}, {\fov epsco},
+        {\fov itmax}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

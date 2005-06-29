@@ -1,0 +1,99 @@
+\subsection{Curvature on a uniform grid of a NURBS surface.}
+\funclabel{s2540}
+\begin{minipg1}
+To compute a set of curvature values on a uniform grid 
+            in a selected subset of the parameter domain of a NURBS surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s2540(\begin{minipg3}
+            {\fov surf}, {\fov curvature\_type},  {\fov export\_par\_val},  {\fov pick\_subpart}, boundary[],  {\fov n\_u},  {\fov n\_v}, 
+       {\fov garr},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    int \> {\fov curvature\_type};\\
+                \>\>    int \> {\fov export\_par\_val};\\
+                \>\>    int \> {\fov pick\_subpart};\\
+                \>\>    double \> {\fov boundary}[\,];\\
+                \>\>    int \> {\fov n\_u};\\
+                \>\>    int \> {\fov n\_v};\\
+                \>\>    double \> **{\fov garr};\\
+                \>\>    int \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>  \begin{minipg2}
+                     The surface to evaluate.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov curvature}\> - \>  \begin{minipg2}
+                     The type of curvature:
+                               \end{minipg2}\\[0.8ex]
+        \>\>\>\> $0$  \> : Gaussian curvature.\\
+        \>\>\>\> $1$  \> : Mean curvature.\\
+        \>\>\>\> $2$  \> : Absolute curvature.\\
+        \>\>\>\> $3$  \> : Total curvature.\\
+        \>\>\>\> $4$  \> : Second order Mehlum curvature.\\
+        \>\>\>\> $5$  \> : Third order Mehlum curvature.\\
+        \>\>    {\fov export}\> - \>  \begin{minipg2}
+                     Flag indicating whether the parameter values
+                            of the grid points are to be exported:
+                               \end{minipg2}\\[0.8ex]
+        \>\>\>\> $0$  \> : False, do not export parameter values.\\
+        \>\>\>\> $1$  \> : True, do export parameter values.\\
+        \>\>    {\fov pick}\> - \>  \begin{minipg2}
+                     Flag indicating whether the grid is to be
+                            calculated on a subpart of the surface:
+                               \end{minipg2}\\[0.8ex]
+        \>\>\>\> $0$  \> : False, calculate grid on the complete surface.\\
+        \>\>\>\> $1$  \> : True, calculate grid on a part of the surface.\\
+        \>\>    {\fov boundary}\> - \>  \begin{minipg2}
+                     A rectangular subset of the parameter domain.
+                               \end{minipg2}\\[0.8ex]
+        \>\>\>\> $0$  \> : Minmum value in the first parameter.\\
+        \>\>\>\> $1$  \> : Minmum value in the second parameter.\\
+        \>\>\>\> $2$  \> : Maximum value in the first parameter.\\
+        \>\>\>\> $3$  \> : Maximum value in the second parameter.\\
+        \>\>\>\> \begin{minipg2}
+                            ONLY USED WHEN {\fov pick\_subpart} $= 1$.
+                            If {\fov pick\_subpart} $= 0$
+                            the parameter area of surf is returned here.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov n\_u}\> - \>  \begin{minipg2}
+                     Number of segments in the first parameter.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov n\_v}\> - \>  \begin{minipg2}
+                     Number of segments in the second parameter.
+                               \end{minipg2}\\[0.8ex]
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov garr}\> - \>  \begin{minipg2}
+                     Array containing the computed values on the grid.
+		     The allocation is done internally and the dimension 
+		    is  3*(n\_u+1)*(n\_v+1) if export\_par\_val is true,
+		     and (n\_u+1)*(n\_v+1) if export\_par\_val is false.
+                     Each gridpoint consists of a triple 
+                     $(u_i,v_j,curvature(u_i,v_j))$ or only $curvature(u_,v_j)$.
+		     The sequence runs first in the first parameter.
+                              \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>   $> 0$  \> : Warning.\\
+                \>\>\>\>   $= 0$  \> : Ok.\\
+                \>\>\>\>   $< 0$  \> : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    int \> {\fov curvature\_type};\\
+                \>\>    int \> {\fov export\_par\_val};\\
+                \>\>    int \> {\fov pick\_subpart};\\
+                \>\>    double \> {\fov boundary}[\,];\\
+                \>\>    int \> {\fov n\_u};\\
+                \>\>    int \> {\fov n\_v};\\
+                \>\>    double \> **{\fov garr};\\ 
+                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s2540(\begin{minipg4}
+            {\fov surf}, {\fov curvature\_type}, {\fov export\_par\_val}, {\fov pick\_subpart}, {\fov boundary}[], {\fov n\_u}, {\fov n\_v}, 
+       {\fov garr}, {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

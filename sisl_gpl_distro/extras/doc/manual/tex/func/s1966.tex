@@ -1,0 +1,194 @@
+\subsection{Data reduction: Point data as input.}
+\funclabel{s1966}
+\begin{minipg1}
+To compute a tensor-product spline-approximation of order
+           (ik1,ik2) to the rectangular array of idim-dimensional
+           points given by ep.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1966(\begin{minipg3}
+            {\fov ep}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov epar1}, {\fov epar2}, {\fov eeps}, {\fov nend}, {\fov iopen1}, {\fov iopen2},
+            {\fov edgeps}, {\fov afctol}, {\fov iopt}, {\fov itmax}, {\fov ik1}, {\fov ik2},
+            {\fov rs}, {\fov emxerr}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    double \> {\fov ep}[\,];\\
+                \>\>    int    \>  {\fov im1};\\
+                \>\>    int    \>  {\fov im2};\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    int    \>  {\fov ipar};\\
+                \>\>    double \> {\fov epar1}[\,];\\
+                \>\>    double \> {\fov epar2}[\,];\\
+                \>\>    double \> {\fov eeps}[\,];\\
+                \>\>    int    \>  {\fov nend}[\,];\\
+                \>\>    int    \>  {\fov iopen1};\\
+                \>\>    int    \>  {\fov iopen2};\\
+                \>\>    double \> {\fov edgeps}[\,];\\
+                \>\>    double \> {\fov afctol};\\
+                \>\>    int    \>  {\fov iopt};\\
+                \>\>    int    \>  {\fov itmax};\\
+                \>\>    int    \>  {\fov ik1};\\
+                \>\>    int    \>  {\fov ik2};\\
+                \>\>    SISLSurf    \>  **{\fov rs};\\
+                \>\>    double \> {\fov emxerr}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov ep}\> - \>  \begin{minipg2}
+                     Array (length idim*im1*im2) containing the points
+                  to be approximated.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov im1}\> - \>  \begin{minipg2}
+                    The no. of points in the first parameter.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov im2}\> - \>  \begin{minipg2}
+                    The no. of points in the second parameter.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                    The no. of components of each input point.
+                  The approximation will be a parametric surface
+                  situated in idim-dimensional Euclidean space
+                  (usually 3).
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ipar}\> - \>  \begin{minipg2}
+                     Flag determining the parametrization of the data points:
+                               \end{minipg2}\\[0.8ex]
+          \>\>\>\>  $= 1$  : Mean accumulated cord-length parameterization.\\
+          \>\>\>\>  $= 2$  : Uniform parametrization.\\
+          \>\>\>\>  $= 3$  : Parametrization given by epar1 and epar2.\\
+        \>\>    {\fov epar1}\> - \>  \begin{minipg2}
+                     Array (length im1) containing a parametrization
+                  in the first parameter. (Will only
+                  be used if $ipar=3$).
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epar2}\> - \>  \begin{minipg2}
+                     Array (length im2) containing a parametrization
+                  in the second parameter. (Will only
+                  be used if $ipar=3$).
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eeps}\> - \>  \begin{minipg2}
+                     Array (length idim) containing the max. permissible
+                  deviation of the approximation from the given data
+                  points, in each of the components. More specifically,
+                  the approximation will not deviate more than eeps(kdim)
+                  in component no. kdim, from the bilinear approximation
+                  to the data.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov nend}\> - \>  \begin{minipg2}
+                     Array (length 4) giving the no. of derivatives to be
+                  kept fixed along each edge of the bilinear interpolant.
+                  The numbering of the edges is the same as for edgeps below.
+                  All the derivatives of order $< (nend(i)-1)$ will be kept
+                  fixed along the edge $i$. Hence $nend(i)=0$ indicates that
+                  nothing is to be kept fixed along edge $i$.
+                  To be kept fixed here means to have error less than edgeps.
+                  In general, it is impossible to remove any knots and keep
+                  an edge completely fixed.
+                               \end{minipg2}\\[0.8ex]
+        \>\>   {\fov iopen1}\> - \> Open/closed parameter in first direction.\\
+          \>\>\>\>  $= 1$  : Produce open surface.\\
+          \>\>\>\>  $= 0$ : Produce closed, non-periodic surface if possible.\\
+          \>\>\>\>  $= -1$ : Produce closed, periodic surface\\
+        \>\>\>\>  \begin{minipg2}
+                  NB! The surface will be closed/periodic only if the first 
+                      and last column of data points are (approximately) equal.
+                               \end{minipg2}\\[0.8ex]
+        \>\>   {\fov iopen2}\> - \> Open/closed parameter in second direction.\\
+          \>\>\>\>  $= 1$  : Produce open surface.\\
+          \>\>\>\>  $= 0$ : Produce closed, non-periodic surface if possible.\\
+          \>\>\>\>  $= -1$ : Produce closed, periodic surface\\
+        \>\>\>\>  \begin{minipg2}
+                  NB! The surface will be closed/periodic only if the first 
+                      and last row of data points are (approximately) equal.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov edgeps}\> - \>  \begin{minipg2}
+                     Array (length idim*4) containing the max. deviation from
+                  the bilinear interpolant which is acceptable along the
+                  edges of the surface.
+                  edgeps(1,i):edgeps(idim,i) gives the tolerance along
+                  the edge corresponding to the i-th parameter having
+                  one of it`s extremal-values.
+                     \end{minipg2}\\[0.8ex]
+          \>\>\>\> $i=1$: min value of first parameter.\\ 
+          \>\>\>\> $i=2$: max value of first parameter.\\
+          \>\>\>\> $i=3$: min value of second parameter.\\
+          \>\>\>\> $i=4$: max value of second parameter.\\
+          \>\>\>\>  \begin{minipg2}
+                  edgeps(kp,i) will only have significance if $nend(i)>0$.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov afctol}\> - \>  \begin{minipg2}
+                     $0.0 >= afctol <= 1.0$.
+                  Afctol indicates how the tolerance is to be shared
+                  between the two data-reduction stages. For the linear
+                  reduction, a tolerance of $afctol*eeps$ will be used,
+                  while a tolerance of $(1.0-afctol)*eeps$ will be used
+                  during the final data reduction (similarly for edgeps.)
+                  Default is 0.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov iopt}\> - \>  \begin{minipg2}
+                  Flag indicating the order in which the data-reduction
+                  is to be performed:
+                               \end{minipg2}\\[0.8ex]
+          \>\>\>\> $=1$: Remove knots in parameter 1 only.\\
+          \>\>\>\> $=2$: Remove knots in parameter 2 only.\\
+          \>\>\>\> $=3$: Remove knots first in parameter 1 and then in 2.\\
+          \>\>\>\> $=4$: Remove knots first in parameter 2 and then in 1.\\
+        \>\>    {\fov itmax}\> - \>  \begin{minipg2}
+                    Max. no. of iterations in the data-reduction..
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ik1}\> - \>  \begin{minipg2}
+                     The order of the approximation in the first
+                  parameter.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ik2}\> - \>  \begin{minipg2}
+                     The order of the approximation in the second
+                  parameter.
+                               \end{minipg2}\\[0.8ex]
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov rs}\> - \>  \begin{minipg2}
+                     Pointer to surface.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov emxerr}\> - \>  \begin{minipg2}
+                     Array (length idim) (allocated outside this routine.)
+                  containing the error in the approximation to the data.
+                  This is a guaranteed upper bound on the max. deviation
+                  in each component, between the final approximation
+                  and the bilinear spline- pproximation to the original data.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    double \> {\fov ep}[\,];\\
+                \>\>    int    \>  {\fov im1};\\
+                \>\>    int    \>  {\fov im2};\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    int    \>  {\fov ipar};\\
+                \>\>    double \> {\fov epar1}[\,];\\
+                \>\>    double \> {\fov epar2}[\,];\\
+                \>\>    double \> {\fov eeps}[\,];\\
+                \>\>    int    \>  {\fov nend}[\,];\\
+                \>\>    int    \>  {\fov iopen1};\\
+                \>\>    int    \>  {\fov iopen2};\\
+                \>\>    double \> {\fov edgeps}[\,];\\
+                \>\>    double \> {\fov afctol};\\
+                \>\>    int    \>  {\fov iopt};\\
+                \>\>    int    \>  {\fov itmax};\\
+                \>\>    int    \>  {\fov ik1};\\
+                \>\>    int    \>  {\fov ik2};\\
+                \>\>    SISLSurf    \>  **{\fov rs};\\
+                \>\>    double \> {\fov emxerr}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1966(\begin{minipg4}
+            {\fov ep}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov epar1}, {\fov epar2}, {\fov eeps}, {\fov nend}, {\fov iopen1}, {\fov iopen2},
+            {\fov edgeps}, {\fov afctol}, {\fov iopt}, {\fov itmax}, {\fov ik1}, {\fov ik2},
+            {\fov rs}, {\fov emxerr}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

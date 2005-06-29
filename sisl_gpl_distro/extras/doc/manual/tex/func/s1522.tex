@@ -1,0 +1,71 @@
+\subsection{Express a 2D or 3D ellipse as a curve.}
+\funclabel{s1522}
+\begin{minipg1}
+  Convert a 2D or 3D analytical ellipse to a curve.
+  The curve will be geometrically exact.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1522(\begin{minipg3}
+            {\fov normal},  {\fov centre},  {\fov ellipaxis},  {\fov ratio},  {\fov dim},  {\fov ellipse},  {\fov jstat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double \> {\fov normal}[\,];\\
+                \>\>    double \> {\fov centre}[\,];\\
+                \>\>    double \> {\fov ellipaxis}[\,];\\
+                \>\>    double \> {\fov ratio};\\
+                \>\>    int    \> {\fov dim};\\
+                \>\>    SISLCurve \> **{\fov ellipse};\\
+                \>\>    int    \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov normal} \> - \>
+        \begin{minipg2}
+          3D normal to ellipse plane (not necessarily normalized).  Used
+          if $dim=3$.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov centre} \> - \>
+        \begin{minipg2}
+          Centre of ellipse (2D if $dim=2$ and 3D if $dim=3$).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ellipaxis} \> - \>
+        \begin{minipg2}
+          This will be used as starting point
+          for the ellipse curve (2D if $dim=2$ and 3D if $dim=3$).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ratio} \> - \>
+        \begin{minipg2}
+          The ratio between the length of the given ellipaxis and the
+          length of the other axis, i.e. $|ellipaxis| / |other axis|$
+          (a compact representation format).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov dim}\> - \>
+        \begin{minipg2}
+          Dimension of the space in which the elliptic nurbs curve lies (2 or 3).
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov ellipse} \> - \>
+        \begin{minipg2}
+          Ellipse curve (2D if $dim=2$ and 3D if $dim=3$).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov normal}[3];\\
+        \>\>    double \> {\fov centre}[3];\\
+        \>\>    double \> {\fov ellipaxis}[3];\\
+        \>\>    double \> {\fov ratio};\\
+        \>\>    int    \> {\fov dim} = 3;\\
+        \>\>    SISLCurve \> *{\fov ellipse};\\
+        \>\>    int    \> {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1522(\begin{minipg4}
+          {\fov normal},  {\fov centre},  {\fov ellipaxis},  {\fov ratio},  {\fov dim},  \&{\fov ellipse},  \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

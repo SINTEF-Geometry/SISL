@@ -1,0 +1,106 @@
+\subsection{Find the topology for the intersection of a surface and a \mbox{torus}.}
+\funclabel{s1369}
+\begin{minipg1}
+  Find all intersections between a surface and a torus.
+  Intersection curves are described by guide points.
+  To produce the intersection curves use s1318() described on page \pageref{s1318}.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1369(\begin{minipg3}
+                {\fov surf}, {\fov centre}, {\fov normal}, {\fov cendist}, {\fov radius}, {\fov dim}, {\fov epsco},
+                {\fov epsge}, {\fov \linebreak}
+                {\fov numintpt}, {\fov pointpar}, {\fov numintcr}, {\fov intcurves}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov centre}[\,];\\
+                \>\>    double  \>      {\fov normal}[\,];\\
+                \>\>    double  \>      {\fov cendist};\\
+                \>\>    double  \>      {\fov radius};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov pointpar};\\
+                \>\>    int     \>      *{\fov numintcr};\\
+                \>\>    SISLIntcurve\>  ***{\fov intcurves};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the surface.
+                                \end{minipg2}\\
+        \>\>    {\fov centre}\> - \>    \begin{minipg2}
+                                The centre of the torus (lying in the symmetry
+                                plane)
+                                \end{minipg2}\\
+        \>\>    {\fov normal}\> - \>    \begin{minipg2}
+                                Normal to the symmetry plane.
+                                \end{minipg2}\\
+        \>\>    {\fov cendist}\> - \>   \begin{minipg2}
+                                Distance from centre to centre circle of the torus.
+                                \end{minipg2} \\
+        \>\>    {\fov radius}\> - \>    \begin{minipg2}
+                                The radius of the torus surface.
+                                \end{minipg2}\\
+        \>\>    {\fov di}m      \> - \> \begin{minipg2}
+                                Dimension of the space in which the torus lies. dim
+                                should be equal to two or three.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2}\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  \begin{minipg2}
+                                Number of single intersection points.
+                                \end{minipg2}\\
+        \>\>    {\fov pointpar}\> - \>  \begin{minipg2}
+                                Array containing the parameter values of the single
+                                intersection points in the parameter plane of the
+                                surface. The points lie in sequence. Intersection curves
+                                are stored in intcurves.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcr}\> - \>  \begin{minipg2}
+                                Number of intersection curves.
+                                \end{minipg2}\\
+        \>\>    {\fov intcurves}\> - \>\begin{minipg2}
+                                Array containing the description of the intersection
+                                curves. The curves are only described by
+                                start points and end points (guide points) in
+                                the parameter planes.
+                                The curve pointers point
+                                to nothing.
+                                \end{minipg2}\\[0.3ex]
+%\newpagetabs
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov centre}[3];\\
+                \>\>    double  \>      {\fov normal}[3];\\
+                \>\>    double  \>      {\fov cendist};\\
+                \>\>    double  \>      {\fov radius};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov pointpar};\\
+                \>\>    int     \>      {\fov numintcr};\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1369(\begin{minipg4}
+                {\fov surf}, {\fov centre}, {\fov normal}, {\fov cendist}, {\fov radius}, {\fov dim}, {\fov epsco},
+                {\fov epsge}, \linebreak \&{\fov numintpt},
+                \&{\fov pointpar}, \&{\fov numintcr}, \&{\fov intcurves}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

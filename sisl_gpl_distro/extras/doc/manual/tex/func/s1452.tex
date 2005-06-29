@@ -1,0 +1,55 @@
+\subsection{Offset surface.}
+\funclabel{s1452}
+\begin{minipg1}
+To make a B-spline surface approximating an offset surface using a given distance from the input surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1452(\begin{minipg3}
+				{\fov surf}, {\fov epsge}, {\fov offdist}, {\fov newsurf}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	double	\>	{\fov offdist};\\
+		\>\>	SISLSurf	\>	**{\fov newsurf};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+			Pointer to the surface from which the offset surface is to be made.
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov epsge}\> - \>	\begin{minipg2}
+			Accepted deviation between the true offset surface and the approximated 
+			offset surface. If a small tolerance is 
+			given, the execution time will be long.
+				\end{minipg2}\\[0.3ex]
+	\>\>	{\fov offdist}\> - \>	\begin{minipg2}
+				The offset distance. If offdist is 
+				positive the offset will be along the 
+				positive direction of the normal vector, 
+				else along the negative 
+				direction.	
+				\end{minipg2}\\[0.3ex]
+	\>Output Arguments:\\
+	\>\>	{\fov newsurf}\> - \>	\begin{minipg2}
+				The produced offset surface.	
+				\end{minipg2}\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	double	\>	{\fov offdist};\\
+		\>\>	SISLSurf	\>	*{\fov newsurf};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1452(\begin{minipg4}
+		{\fov surf}, {\fov epsge}, {\fov offdist},\&{\fov newsurf}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

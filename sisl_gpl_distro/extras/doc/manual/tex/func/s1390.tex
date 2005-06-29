@@ -1,0 +1,101 @@
+\subsection{Compute a rectangular blending surface from a set of
+\mbox{B-spline} input curves.}
+\funclabel{s1390}
+\begin{minipg1}
+  Make a 4-edged blending surface between 4 B-spline (i.e.\ NOT
+  rational) curves where each curve is associated with a number of
+  cross-derivative B-spline (i.e.\ NOT rational) curves.
+  The output is represented as a B-spline surface.
+  The input curves are numbered successively around the blending
+  parameter, and the directions of the curves are expected to be as
+  follows when this routine is entered:
+\begin{center}
+\begin{picture}(180,110)(0,0)
+        \put(50,15){\framebox(80,80)}
+        \put(40,55){\vector(0,1){20}}
+        \put(140,55){\vector(0,1){20}}
+        \put(90,5){\vector(1,0){20}}
+        \put(90,105){\vector(1,0){20}}
+        \put(40,45){\makebox(0,0){4}}
+        \put(140,45){\makebox(0,0){2}}
+        \put(80,5){\makebox(0,0){1}}
+        \put(80,105){\makebox(0,0){3}}
+
+        \put(60,20){\vector(1,0){40}}
+        \put(85,28){\makebox(0,0){$(i)$}}
+        \put(55,25){\vector(0,1){40}}
+        \put(65,50){\makebox(0,0){$(ii)$}}
+\end{picture}\\
+$(i) \; \; \;$ first parameter direction of the surface.\\
+$(ii)$   second parameter direction of the surface.\\
+\end{center}
+        NB!     The cross-derivatives are always pointing into the patch, and note the
+                directions in the above diagram.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1390(\begin{minipg3}
+                {\fov curves}, {\fov surf}, {\fov numder}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curves}[\,];\\
+                \>\>    SISLSurf        \>      **{\fov surf};\\
+                \>\>    int     \>      {\fov numder}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curves}   \> - \>
+        \begin{minipg2}
+          Pointers to the boundary B-spline curves:\\
+          $curves[i], i=0,\ldots,numder[0]-1,$
+          are pointers to position and cross-derivatives along the first edge.
+        \end{minipg2}\\[0.3ex]
+        \>\>\>\>
+        \begin{minipg2}
+          $curves[i],$\\
+          $i=numder[0],\ldots,numder[0]+numder[1]-1,$
+          are pointers to position  and cross-derivatives
+          along the second edge.
+        \end{minipg2}\\[0.3ex]
+        \>\>\>\>
+        \begin{minipg2}
+          $curves[i], i=numder[0]+numder[1],\ldots,$\\
+          $numder[0]+numder[1]+numder[2]-1,$
+          are pointers to position and cross-derivatives
+          along the third edge.
+        \end{minipg2}\\[0.3ex]
+\newpagetabs
+        \>\>\>\>
+        \begin{minipg2}
+          $curves[i],$\\
+          $i=numder[0]+numder[1]+numder[2],\ldots,$\\
+          $numder[0]+numder[1]+numder[2]+numder[3]-1,$
+          are  pointers to position
+          and cross-derivatives along the fourth edge.
+        \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numder}   \> - \> \begin{minipg2}
+                                Array of length 4, numder[i] gives the
+                                 number of curves on edge number $i+1$.
+                                \end{minipg2}\\[0.3ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the blending B-spline surface.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curves}[8];\\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov numder}[4];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1390(\begin{minipg4}
+                {\fov curves}, \&{\fov surf}, {\fov numder}, \&{\fov stat})
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

@@ -1,0 +1,73 @@
+\subsection{Calculate the weight point and rotational momentum of
+               an area between a 2D curve and a 2D point.}
+\funclabel{s1243}
+\begin{minipg1}
+To calculate the weight point and rotational momentum of
+               an area between a 2D curve and a 2D point. The area is
+               also calculated.
+               When the curve is rotating counter-clockwise around the
+               point, the area contribution is positive.
+               When the curve is rotating clockwise around the point,
+               the area contribution is negative.
+               OBSERVE: FOR CALCULATION OF AREA ONLY, USE s1241().
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1243(\begin{minipg3}
+            {\fov pcurve},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov weight},  {\fov area},  {\fov moment},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov pcurve};\\
+                \>\>    double    \>  {\fov point}[\,];\\
+                \>\>    int    \>  {\fov dim};\\
+                \>\>    double    \>  {\fov epsge};\\
+                \>\>    double    \>  {\fov weight}[\,];\\
+                \>\>    double    \>  *{\fov area};\\
+                \>\>    double    \>  *{\fov moment};\\
+                \>\>    int    \>  *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov pcurve}\> - \>  \begin{minipg2}
+                     The 2D curve.
+                               \end{minipg2}\\
+        \>\>    {\fov point}\> - \>  \begin{minipg2}
+                     The reference point.
+                               \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>  \begin{minipg2}
+                     Dimension of geometry (must be 2).
+                               \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>  \begin{minipg2}
+                     Absolute geometrical tolerance.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov weight}\> - \>  \begin{minipg2}
+                     Weight point.
+                               \end{minipg2}\\
+        \>\>    {\fov area}\> - \>  \begin{minipg2}
+                     Area.
+                               \end{minipg2}\\
+        \>\>    {\fov moment}\> - \>  \begin{minipg2}
+                     Rotational momentum.
+                               \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov pcurve};\\
+                \>\>    double    \>  {\fov point}[\,];\\
+                \>\>    int    \>  {\fov dim};\\
+                \>\>    double    \>  {\fov epsge};\\
+                \>\>    double    \>  {\fov weight}[\,];\\
+                \>\>    double    \>  *{\fov area};\\
+                \>\>    double    \>  *{\fov moment};\\
+                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s1243(\begin{minipg4}
+            {\fov pcurve},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov weight},  {\fov area},  {\fov moment},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

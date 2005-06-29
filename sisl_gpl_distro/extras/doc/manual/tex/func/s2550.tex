@@ -1,0 +1,55 @@
+\subsection{Evaluate the curvature of a curve at given parameter values.}
+\funclabel{s2550}
+\begin{minipg1}
+Evaluate the curvature of a curve at given parameter values
+               ax[ 0 ],...,ax[ num\_ax - 1 ].
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s2550(\begin{minipg3}
+             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov curvature}, jstat )
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov curve};\\
+                \>\>    double    \>  {\fov ax}[\,];\\
+                \>\>    int    \>  {\fov num}\_ax;\\
+                \>\>    double    \>  {\fov curvature}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov curve}\> - \>  \begin{minipg2}
+                     Pointer to the curve.
+                               \end{minipg2}\\
+        \>\>    {\fov ax}\> - \>  \begin{minipg2}
+                     The parameter values
+                               \end{minipg2}\\
+        \>\>    {\fov num}\> - \>  \begin{minipg2}
+                     No. of parameter values
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov }\> - \>  \begin{minipg2}
+             
+                               \end{minipg2}\\
+        \>\>    {\fov curvature}\> - \>  \begin{minipg2}
+                     The "num\_ax" curvature values computed
+                               \end{minipg2}\\
+
+        \>\>    {\fov jstat} \> - \> Status messages\\
+                \>\>\>\>\>           $> 0$ : Warning.\\
+                \>\>\>\>\>           $= 0$ : Ok.\\
+                \>\>\>\>\>           $< 0$ : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov curve};\\
+                \>\>    double    \>  {\fov ax}[\,];\\
+                \>\>    int    \>  {\fov num}\_ax;\\
+                \>\>    double    \>  {\fov curvature}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s2550(\begin{minipg4}
+             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov curvature}, jstat );
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

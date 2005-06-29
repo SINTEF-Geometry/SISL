@@ -1,0 +1,87 @@
+\subsection{Pick the curve lying in a surface, described by a curve in the parameter plane of
+the surface.}
+\funclabel{s1383}
+\begin{minipg1}
+  To create a 3D approximation to the curve in a surface, traced out by
+  a curve in the parameter plane.
+  The output is represented as a B-spline curve.
+\end{minipg1} \\
+SYNOPSIS\\
+        \>void s1383(\begin{minipg3}
+                        {\fov surf}, {\fov curve}, {\fov epsge}, {\fov maxstep}, {\fov der}, {\fov newcurve1}, {\fov newcurve2}, {\fov newcurve3},
+                        stat)
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep};\\
+                \>\>    int     \>      {\fov der};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve1};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve2};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve3};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                The surface object
+                                \end{minipg2}\\
+        \>\>    {\fov curve}\> - \>     \begin{minipg2}
+                                The input curve in the parameter plane.
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Maximal deviation allowed between true 3D curve lying in the surface,
+                                and the approximated 3D curve.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov maxstep}\> - \>   \begin{minipg2}
+                                Maximum step length. Is neglected if
+                                $maxstep \leq epsge$ If
+                                $maxstep \leq 0.0$ the 3D box of the
+                                surface is used to estimate the maximum step length.
+                                \end{minipg2} \\[0.3ex]
+        \>\>    {\fov der}      \> - \>         \begin{minipg2}
+                                Derivative indicator
+                                \end{minipg2}\\
+                \>\>\>\>\>      $= 0$ : Calculate only position curve.\\
+                \>\>\>\>\>      $= 1$ : Calculate position + derivative curves.\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve1}\> - \> \begin{minipg2}
+                                Pointer to the B-spline curve
+                                approximating the position curve.
+                                \end{minipg2}\\
+        \>\>    {\fov newcurve2}\> - \> \begin{minipg2}
+                                Pointer to the B-spline curve
+                                approximating the derivative curve along
+                                the position curve in the first
+                                parameter direction of the surface.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov newcurve3}\> - \> \begin{minipg2}
+                                Pointer to the B-spline curve
+                                approximating derivative curve in
+                                the second parameter direction of the
+                                surface, along the position curve.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep};\\
+                \>\>    int     \>      {\fov der};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve1};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve2};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve3};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1383(\begin{minipg4}
+                {\fov surf}, {\fov curve}, {\fov epsge}, {\fov maxstep}, {\fov der}, \&{\fov newcurve1}, \&{\fov newcurve2}, \&{\fov newcurve3},
+                \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

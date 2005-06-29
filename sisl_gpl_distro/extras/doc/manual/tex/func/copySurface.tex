@@ -1,0 +1,47 @@
+\subsection{Make a copy of a surface object.}
+\funclabel{copySurface}
+\begin{minipg1}
+  Make a copy of a SISLSurface object.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>SISLSurf *copySurface(\begin{minipg3}
+          {\fov psurf})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf *{\fov psurf};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov psurf}\> - \>  \begin{minipg2}
+                      Surface to be copied.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov copySurface}\> - \>  \begin{minipg2}
+                     The new surface.
+                               \end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf\>      {\fov *surfcopy} = NULL;\\
+        \>\>    SISLSurf\>      {\fov *surf} = NULL;\\
+        \>\>    int    \>       {\fov number1} = 5;\\
+        \>\>    int    \>       {\fov number2} = 4;\\
+        \>\>    int    \>       {\fov order1} = 4;\\
+        \>\>    int    \>       {\fov order2} = 3;\\
+        \>\>    double \>       {\fov knot1}[9];\\
+        \>\>    double \>       {\fov knot2}[7];\\
+        \>\>    double \>       {\fov coef}[60];\\
+        \>\>    int    \>       {\fov kind} = 1;\\
+        \>\>    int    \>       {\fov dim} = 3;\\
+        \>\>    int    \>       {\fov copy} = 1;\\
+        \>\>    \ldots \\
+        \>\>{\fov surf} = newSurf(\begin{minipg4}
+          {\fov number}1, {\fov number}2, {\fov order}1, {\fov order}2, {\fov knot}1, {\fov knot}2,\\ {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>\>surfcopy = copySurface(\begin{minipg4}
+          {\fov surf});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

@@ -1,0 +1,56 @@
+\chapter{Curve Interrogation}
+\label{curveinterrogation}
+This chapter describes the functions in the Curve Interrogation module.
+\section{Intersections}
+
+\input{func/s1871}
+\pgsbreak
+\input{func/s1850}
+\pgsbreak
+\input{func/s1327}
+\pgsbreak
+\input{func/s1371}
+\pgsbreak
+\input{func/s1374}
+\pgsbreak
+\input{func/s1857}
+\pgsbreak
+\input{func/s1240}
+\pgsbreak
+\input{func/s1364}
+\pgsbreak
+\input{func/s1451}
+\pgsbreak
+\input{func/s1363}
+\pgsbreak
+\section{Closest Points}
+\input{func/s1953}
+\pgsbreak
+\input{func/s1957}
+\pgsbreak
+\input{func/s1774}
+\pgsbreak
+\input{func/s1955}
+\pgsbreak
+\input{func/s1013}
+\pgsbreak
+\input{func/s1920}
+\pgsbreak
+\section{Area between Curve and Point}
+\input{func/s1241}
+\pgsbreak
+\input{func/s1243}
+\pgsbreak
+\section{Bounding Box}
+Both curves and surfaces have bounding boxes. These are boxes surrounding an object not only parallel to the main axis, but also rotated 45 degrees around each main axis. These bounding boxes are used by the intersection functions to decide if an intersection is possible or not. They might also be used to find the position of objects under other circumstances.
+\input{sec_box_object}
+\pgsbreak
+\input{func/s1988}
+\pgsbreak
+\section {Normal Cone}
+Both curves and surfaces have normal cones. These are the cones that are convex hull of all normalized tangents of a curve and all normalized normals of a surface.
+
+These normal cones are used by the intersection functions to decide if only one intersection is possible. They might also be used to find directions of objects for other reasons.
+\input{sec_cone_object}
+\pgsbreak
+\input{func/s1986}

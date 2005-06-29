@@ -1,0 +1,36 @@
+\subsection{Basic graphics routine template - plot line.}
+\funclabel{s6line}
+\begin{minipg1}
+  Plot a line between the current 3D graphics plotting position and a
+  given 3D point.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s6line(\begin{minipg3}
+          {\fov point})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \>       {\fov point}[\,];\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov point}   \> - \> \begin{minipg2}
+                                A 3D point, i.e.\ $(x,y,z)$, to draw a
+                                line to, from the current
+                                graphics plotting position.
+                                \end{minipg2}\\[0.8ex]
+\\
+NOTE\\
+\>      \begin{minipg2}
+The functionality of s6line() is device dependent, so it is only an empty
+({\tt printf()} call) dummy routine. Before using it, make sure you have
+a version of s6line() interfaced to your graphic package.
+\end{minipg2} \\ \\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \>       {\fov point}[3];\\
+        \>\> \ldots \\
+        \>\>s6line(\begin{minipg4}
+          {\fov point})
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

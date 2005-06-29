@@ -1,0 +1,1361 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2004.4.6)  28 JUN 2005 17:16
+**manual
+(./manual.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/share/texmf/tex/latex/base/latex209.def
+File: latex209.def 1998/05/13 v0.52 Standard LaTeX file
+
+
+          Entering LaTeX 2.09 COMPATIBILITY MODE
+ *************************************************************
+    !!WARNING!!    !!WARNING!!    !!WARNING!!    !!WARNING!!   
+ 
+ This mode attempts to provide an emulation of the LaTeX 2.09
+ author environment so that OLD documents can be successfully
+ processed. It should NOT be used for NEW documents!
+ 
+ New documents should use Standard LaTeX conventions and start
+ with the \documentclass command.
+ 
+ Compatibility mode is UNLIKELY TO WORK with LaTeX 2.09 style
+ files that change any internal macros, especially not with
+ those that change the FONT SELECTION or OUTPUT ROUTINES.
+ 
+ Therefore such style files MUST BE UPDATED to use
+          Current Standard LaTeX: LaTeX2e.
+ If you suspect that you may be using such a style file, which
+ is probably very, very old by now, then you should attempt to
+ get it updated by sending a copy of this error message to the
+ author of that file.
+ *************************************************************
+
+\footheight=\dimen102
+\@maxsep=\dimen103
+\@dblmaxsep=\dimen104
+\@cla=\count79
+\@clb=\count80
+\mscount=\count81
+(/usr/share/texmf/tex/latex/base/tracefnt.sty
+Package: tracefnt 1997/05/29 v3.0j Standard LaTeX package (font tracing)
+\tracingfonts=\count82
+LaTeX Info: Redefining \selectfont on input line 96.
+)
+\symbold=\mathgroup4
+\symsans=\mathgroup5
+\symtypewriter=\mathgroup6
+\symitalic=\mathgroup7
+\symsmallcaps=\mathgroup8
+\symslanted=\mathgroup9
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 288.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 289.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 290.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 296.
+LaTeX Info: Redefining \em on input line 306.
+
+(/usr/share/texmf/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 42.
+)
+LaTeX Font Info:    Redeclaring math delimiter \lgroup on input line 370.
+LaTeX Font Info:    Redeclaring math delimiter \rgroup on input line 372.
+LaTeX Font Info:    Redeclaring math delimiter \bracevert on input line 374.
+
+(/usr/share/texmf/tex/latex/config/latex209.cfg
+File: latex209.cfg 2001/06/05 v1.0 teTeX customized LaTeX 2.09 compatibility mo
+de setup
+)
+(/usr/share/texmf/tex/latex/tools/rawfonts.sty
+Package: rawfonts 1994/05/08 Low-level LaTeX 2.09 font compatibility
+
+(/usr/share/texmf/tex/latex/tools/somedefs.sty
+Package: somedefs 1994/06/01 Toolkit for optional definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 44.
+
+(/usr/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)))
+Compatibility mode: loading sislman.sty rather than sislman.cls.
+ (./sislman.sty
+Document Style `sislman' <2 feb 90>.
+\descriptionmargin=\dimen105
+\c@part=\count83
+\c@chapter=\count84
+\c@section=\count85
+\c@subsection=\count86
+\c@subsubsection=\count87
+\c@paragraph=\count88
+\c@subparagraph=\count89
+\c@figure=\count90
+\c@table=\count91
+(./titlepage.sty)
+\c@@sc=\count92
+\c@@scp=\count93
+\c@@t=\count94
+\@x=\skip41
+\@xa=\skip42
+\@xb=\skip43
+\@y=\skip44
+\@ya=\skip45
+\@yb=\skip46
+\@pt=\box26
+) (/usr/share/texmf/tex/latex/ntgclass/a4.sty
+Package: a4 1999/03/03 v1.2f A4 based page layout
+
+! Undefined control sequence.
+l.41 \ifcase \@ptsize
+                     
+? 
+! Undefined control sequence.
+l.49 \ifcase \@ptsize
+                     
+? 
+) (/usr/share/texmf/tex/generic/misc/epsf.tex
+This is `epsf.tex' v2.7k <10 July 1997>
+\epsffilein=\read1
+\epsfframemargin=\dimen106
+\epsfframethickness=\dimen107
+\epsfrsize=\dimen108
+\epsftmp=\dimen109
+\epsftsize=\dimen110
+\epsfxsize=\dimen111
+\epsfysize=\dimen112
+\pspoints=\dimen113
+\epsfnoopenhelp=\toks14
+) (/usr/share/texmf/tex/latex/base/makeidx.sty
+Package: makeidx 2000/03/29 v1.0m Standard LaTeX package
+)
+\@indexfile=\write3
+\openout3 = `manual.idx'.
+
+
+Writing index file manual.idx
+(./manual.aux
+
+LaTeX Warning: Label `s1850' multiply defined.
+
+
+LaTeX Warning: Label `s1371' multiply defined.
+
+
+LaTeX Warning: Label `SISLBox' multiply defined.
+
+
+LaTeX Warning: Label `newbox' multiply defined.
+
+
+LaTeX Warning: Label `SISLdir' multiply defined.
+
+
+LaTeX Warning: Label `newdir' multiply defined.
+
+
+LaTeX Warning: Label `s6drawseq' multiply defined.
+
+
+LaTeX Warning: Label `s6move' multiply defined.
+
+
+LaTeX Warning: Label `s6line' multiply defined.
+
+)
+\openout1 = `manual.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+ [0
+
+] (./manual.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 2.
+
+Overfull \hbox (35.2561pt too wide) in paragraph at lines 19--19
+ [][] []\OT1/cmr/m/n/10.95 Compute a curve by Her-mite in-ter-po-la-tion, au-to
+-matic parameteriza- 
+ []
+
+[1
+
+]
+Overfull \hbox (5.99521pt too wide) in paragraph at lines 31--31
+ [][] []\OT1/cmr/m/n/10.95 Compute a curve us-ing the in-put points as con-trol
+-ling [], 
+ []
+
+
+Overfull \hbox (34.526pt too wide) in paragraph at lines 48--48
+ [][] []\OT1/cmr/m/n/10.95 Convert a curve/line in-ter-sec-tion into a two-dime
+nsional curve/origo 
+ []
+
+[2] [3]
+Overfull \hbox (29.53777pt too wide) in paragraph at lines 114--114
+ [][] []\OT1/cmr/m/n/10.95 Compute a sur-face by Her-mite in-ter-po-la-tion, au
+-to-matic parameter- 
+ []
+
+
+Overfull \hbox (2.77106pt too wide) in paragraph at lines 119--119
+ [][] []\OT1/cmr/m/n/10.95 Compute a rect-an-gu-lar blend-ing sur-face from a s
+et of [] 
+ []
+
+[4] [5]
+Overfull \hbox (14.20769pt too wide) in paragraph at lines 179--179
+ [][] []\OT1/cmr/m/n/10.95 March a sil-hou-ette curve of a sur-face, us-ing per
+-spec-tive []. []  
+ []
+
+[6] [7])
+\tf@toc=\write4
+\openout4 = `manual.toc'.
+
+ [8] (./chap_introduction.tex
+Chapter 1.
+[1
+
+
+] [2] [3] [4]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5]
+[6] [7] (./sec_spline_curve.tex [8] [9] [10] [11] [12] [13])
+(./sec_spline_surface.tex [14] [15]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16])
+[17]) [18
+
+] (./chap_curve_definition.tex
+Chapter 2.
+(./func/s1602.tex [19
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 37.
+ (/usr/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 37.
+) [20]
+(./func/s1356.tex
+Underfull \hbox (badness 1331) in paragraph at lines 36--38
+[]\OT1/cmr/m/n/10.95 Array (of length $\OML/cmm/m/it/10.95 idim \OMS/cmsy/m/n/1
+0.95 ^^B \OML/cmm/m/it/10.95 inbpnt$\OT1/cmr/m/n/10.95 ) con-tain-ing the
+ []
+
+
+Underfull \vbox (badness 7944) has occurred while \output is active []
+
+ [21]
+[22]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [23])
+[24] (./func/s1357.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [25]
+[26]) [27] (./func/s1380.tex [28]) [29] (./func/s1379.tex
+Overfull \hbox (4.85558pt too wide) in paragraph at lines 2--2
+[]\OT1/cmr/bx/n/12 Compute a curve by Her-mite in-ter-po-la-tion, parameter-iza
+tion
+ []
+
+[30]) [31] (./func/s1607.tex [32]) [33] (./func/s1608.tex
+Underfull \vbox (badness 6332) has occurred while \output is active []
+
+ [34]
+[35]
+Underfull \hbox (badness 2922) in paragraph at lines 61--63
+[]\OT1/cmr/m/n/10.95 Circle, in-ter-po-lat-ing tan-gent on first
+ []
+
+
+Underfull \hbox (badness 2334) in paragraph at lines 112--115
+[]\OT1/cmr/m/sl/10.95 curve1\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 curve2\OT1
+/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10
+.95 point1\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 startpt1\OT1/cmr/m/n/10.95 ,
+ \OT1/cmr/m/sl/10.95 point2\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 endpt2\OT1/
+cmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--115
+\OT1/cmr/m/sl/10.95 fill-type\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/c
+mr/m/n/10.95 , \OT1/cmr/m/sl/10.95 or-der\OT1/cmr/m/n/10.95 , &\OT1/cmr/m/sl/10
+.95 newcurve\OT1/cmr/m/n/10.95 , &\OT1/cmr/m/sl/10.95 parpt1\OT1/cmr/m/n/10.95 
+, &\OT1/cmr/m/sl/10.95 par-spt1\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [36])
+[37] (./func/s1609.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [38]
+Underfull \hbox (badness 2922) in paragraph at lines 69--71
+[]\OT1/cmr/m/n/10.95 Circle, in-ter-po-lat-ing tan-gent on first
+ []
+
+[39]) [40] (./func/s1014.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [41])
+[42] (./func/s1015.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [43]
+[44]) [45] (./func/s1016.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [46]
+[47]) [48] (./func/s1606.tex
+Underfull \hbox (badness 2922) in paragraph at lines 41--43
+[]\OT1/cmr/m/n/10.95 Circle, in-ter-po-lat-ing tan-gent on first
+ []
+
+
+Underfull \vbox (badness 1983) has occurred while \output is active []
+
+ [49]
+[50]) [51] (./func/s1303.tex
+Underfull \vbox (badness 1292) has occurred while \output is active []
+
+ [52]
+[53]) [54] (./func/s1611.tex
+Underfull \vbox (badness 1902) has occurred while \output is active []
+
+ [55]
+Underfull \hbox (badness 1009) in paragraph at lines 99--101
+[]\OT1/cmr/m/sl/10.95 point\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 numpt\OT1/c
+mr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 
+typept\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 open\OT1/cmr/m/n/10.95 , \OT1/cm
+r/m/sl/10.95 or-der\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 start-par\OT1/cmr/m
+/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 ,
+ []
+
+) [56] (./func/s1630.tex
+Overfull \hbox (11.64032pt too wide) in paragraph at lines 2--2
+[]\OT1/cmr/bx/n/12 Compute a curve us-ing the in-put points as con-trol-ling []
+,
+ []
+
+[57]) [58] (./func/s1360.tex
+Underfull \vbox (badness 3713) has occurred while \output is active []
+
+ [59]
+[60]) [61] (./func/s1613.tex) [62] (./func/s1600.tex) [63] (./func/s1389.tex)
+[64] (./func/s1730.tex) [65] (./func/s1732.tex [66]) [67] (./func/s1750.tex)
+[68] (./func/s1720.tex) [69] (./func/s1522.tex
+Underfull \hbox (badness 1742) in paragraph at lines 37--40
+[]\OT1/cmr/m/n/10.95 The ra-tio be-tween the length of the given el-
+ []
+
+
+Underfull \hbox (badness 2726) in paragraph at lines 37--40
+\OT1/cmr/m/n/10.95 li-paxis and the length of the other axis, i.e.
+ []
+
+[70]) [71] (./func/s1011.tex [72]) [73] (./func/s1012.tex
+Underfull \hbox (badness 10000) in paragraph at lines 9--11
+[]\OT1/cmr/m/sl/10.95 start[]pos\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 axis[]
+pos\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 axis[]dir\OT1/cmr/m/n/10.95 , \OT1/
+cmr/m/sl/10.95 fre-quency\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 numb[]quad\OT
+1/cmr/m/n/10.95 ,
+ []
+
+[74]
+Underfull \hbox (badness 10000) in paragraph at lines 54--56
+[]\OT1/cmr/m/sl/10.95 start[]pos\OT1/cmr/m/n/10.95 ,
+ []
+
+)) [75] [76
+
+] (./chap_curve_interrogation.tex
+Chapter 3.
+(./func/s1871.tex [77
+
+]
+Underfull \hbox (badness 1248) in paragraph at lines 41--54
+[]\OT1/cmr/m/n/10.95 Array con-tain-ing de-scrip-tions of the in-ter-sec-tion
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 56--60
+
+ []
+
+) [78] (./func/s1850.tex [79]) [80] (./func/s1327.tex
+Underfull \vbox (badness 1158) has occurred while \output is active []
+
+ [81])
+[82] (./func/s1371.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [83]
+[84]) [85] (./func/s1374.tex [86]
+Underfull \hbox (badness 1292) in paragraph at lines 83--85
+[]\OT1/cmr/m/sl/10.95 curve\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 conar-ray\O
+T1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10
+.95 ep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 , &\
+OT1/cmr/m/sl/10.95 nu-mintpt\OT1/cmr/m/n/10.95 , &\OT1/cmr/m/sl/10.95 int-par\O
+T1/cmr/m/n/10.95 ,
+ []
+
+) [87] (./func/s1857.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [88])
+[89] (./func/s1240.tex) [90] (./func/s1364.tex) [91] (./func/s1451.tex)
+[92] (./func/s1363.tex) [93] (./func/s1953.tex
+Underfull \hbox (badness 10000) in paragraph at lines 8--10
+[]\OT1/cmr/m/sl/10.95 curve\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 point\OT1/c
+mr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 
+ep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 , \OT1/c
+mr/m/sl/10.95 nu-mintpt\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 int-par\OT1/cmr
+/m/n/10.95 ,
+ []
+
+[94] [95]
+Underfull \hbox (badness 4467) in paragraph at lines 73--75
+[]\OT1/cmr/m/sl/10.95 curve\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 point\OT1/c
+mr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 
+ep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 , &\OT1/
+cmr/m/sl/10.95 nu-mintpt\OT1/cmr/m/n/10.95 , &\OT1/cmr/m/sl/10.95 int-par\OT1/c
+mr/m/n/10.95 ,
+ []
+
+) [96] (./func/s1957.tex [97]) [98] (./func/s1774.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [99])
+[100] (./func/s1955.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [101]
+[102]) [103] (./func/s1013.tex
+Underfull \hbox (badness 3895) in paragraph at lines 21--24
+[]\OT1/cmr/m/n/10.95 The an-gle (in ra-di-ans) de-scrib-ing the wanted
+ []
+
+) [104] (./func/s1920.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [105]
+[106]) [107] (./func/s1241.tex [108]) [109] (./func/s1243.tex [110]) [111]
+(./sec_box_object.tex (./type/SISLBox.tex) [112] (./func/newbox.tex)) [113]
+(./func/s1988.tex) [114] (./sec_cone_object.tex (./type/SISLDir.tex) [115]
+(./func/newdir.tex)) [116] (./func/s1986.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [117]))
+[118] (./chap_curve_analysis.tex
+Chapter 4.
+(./func/s2550.tex [119
+
+
+]) [120] (./func/s2553.tex) [121] (./func/s2556.tex)
+[122] (./func/s2559.tex
+Underfull \hbox (badness 10000) in paragraph at lines 37--41
+\OT1/cmr/m/n/10.95 ar-rays (t,n,b)
+ []
+
+
+Underfull \vbox (badness 1838) has occurred while \output is active []
+
+ [123])
+[124] (./func/s2562.tex
+Underfull \hbox (badness 10000) in paragraph at lines 50--54
+\OT1/cmr/m/n/10.95 ar-rays (t,n,b)
+ []
+
+
+Underfull \vbox (badness 2302) has occurred while \output is active []
+
+ [125]))
+[126] (./chap_curve_utilities.tex
+Chapter 5.
+(./sec_curve_object.tex (./type/SISLCurve.tex [127
+
+
+]) [128] (./func/newCurve.tex [129]) [130] (./func/copyCurve.tex) [131] (./func
+/freeCurve.tex)) [132]
+(./func/s1227.tex
+Underfull \hbox (badness 10000) in paragraph at lines 39--42
+
+ []
+
+[133]) [134] (./func/s1221.tex
+Underfull \hbox (badness 10000) in paragraph at lines 39--42
+
+ []
+
+[135]) [136] (./func/s1225.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [137]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [138])
+[139] (./func/s1226.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [140]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [141])
+[142] (./func/s1542.tex) (./func/s1710.tex [143]
+Underfull \hbox (badness 10000) in paragraph at lines 38--41
+[]\OT1/cmr/m/n/10.95 Parameter value at end of curve,
+ []
+
+[144]) [145] (./func/s1017.tex) [146] (./func/s1018.tex [147]) [148]
+(./func/s1714.tex) [149] (./func/s1712.tex) [150] (./func/s1713.tex) [151]
+(./func/s1715.tex [152]) [153] (./func/s1716.tex [154]) [155] (./func/s1706.tex
+) [156] (./func/s1233.tex [157]) [158] (./func/s6drawseq.tex) [159]
+(./func/s6move.tex) [160] (./func/s6line.tex)) [161] [162
+
+]
+(./chap_surface_definition.tex
+Chapter 6.
+(./func/s1536.tex [163
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 57--58
+
+ []
+
+
+Overfull \hbox (130.0pt too wide) detected at line 60
+[]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [164]
+[165]) [166] (./func/s1537.tex [167]
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
+
+ []
+
+
+Overfull \hbox (130.0pt too wide) detected at line 59
+[]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [168]
+[169]) [170] (./func/s1534.tex [171]
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
+
+ []
+
+
+Overfull \hbox (130.0pt too wide) detected at line 77
+[]
+ []
+
+[172]) [173] (./func/s1535.tex [174]
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
+
+ []
+
+
+Overfull \hbox (130.0pt too wide) detected at line 72
+[]
+ []
+
+[175]) [176] (./func/s1529.tex
+Underfull \hbox (badness 5847) in paragraph at lines 58--59
+[]\OT1/cmr/m/n/10.95 Mean ac-cu-mu-lated cord-length para-
+ []
+
+
+Underfull \vbox (badness 8056) has occurred while \output is active []
+
+ [177])
+[178] (./func/s1530.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [179])
+[180] (./func/s1538.tex
+Underfull \vbox (badness 1990) has occurred while \output is active []
+
+ [181]
+[182]) [183] (./func/s1539.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [184]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [185])
+[186] (./func/s1508.tex) [187] (./func/s1390.tex
+Overfull \hbox (14.27365pt too wide) in paragraph at lines 2--2
+[]\OT1/cmr/bx/n/12 Compute a rect-an-gu-lar blend-ing sur-face from a set of []
+
+ []
+
+
+Overfull \hbox (130.0pt too wide) detected at line 14
+[]
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [188]
+[189]) [190] (./func/s1391.tex
+Underfull \hbox (badness 6944) in paragraph at lines 32--40
+[]\OT1/cmr/m/n/10.95 Pointers to bound-ary B-spline curves. All
+ []
+
+
+Underfull \hbox (badness 1888) in paragraph at lines 32--40
+\OT1/cmr/m/n/10.95 the patch, ei-ther clock-wise or coun-ter-clock-wise.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 32--40
+
+ []
+
+
+Overfull \hbox (35.29225pt too wide) detected at line 42
+\OML/cmm/m/it/10.95 pc\OT1/cmr/m/n/10.95 1[\OML/cmm/m/it/10.95 i\OT1/cmr/m/n/10
+.95 ]\OML/cmm/m/it/10.95 ; i \OT1/cmr/m/n/10.95 = \OML/cmm/m/it/10.95 nder\OT1/
+cmr/m/n/10.95 [0] + [] + \OML/cmm/m/it/10.95 nder\OT1/cmr/m/n/10.95 [\OML/cmm/m
+/it/10.95 icurv \OMS/cmsy/m/n/10.95 ^^@ \OT1/cmr/m/n/10.95 2]\OML/cmm/m/it/10.9
+5 ; [] ; nder\OT1/cmr/m/n/10.95 [\OML/cmm/m/it/10.95 icurv \OMS/cmsy/m/n/10.95 
+^^@ \OT1/cmr/m/n/10.95 1] \OMS/cmsy/m/n/10.95 ^^@ \OT1/cmr/m/n/10.95 1
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [191]
+[192]) [193] (./func/s1401.tex
+Underfull \hbox (badness 10000) in paragraph at lines 28--29
+
+ []
+
+
+Overfull \hbox (130.0pt too wide) detected at line 31
+[]
+ []
+
+[194]) [195] (./func/s1620.tex [196] [197]) [198] (./func/s1332.tex
+Underfull \vbox (badness 3503) has occurred while \output is active []
+
+ [199])
+[200] (./func/s1302.tex [201]) [202] (./func/s1365.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [203]
+[204]) [205] (./func/s1601.tex) [206] (./func/s1388.tex
+Underfull \hbox (badness 2460) in paragraph at lines 28--37
+\OT1/cmr/m/n/10.95 The to-tal num-ber of patches is $\OML/cmm/m/it/10.95 numcoo
+ns\OT1/cmr/m/n/10.95 1 \OMS/cmsy/m/n/10.95 ^^B
+ []
+
+[207]) [208] (./func/s1731.tex) [209] (./func/s1733.tex
+Underfull \hbox (badness 3536) in paragraph at lines 14--16
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 num-ber1\OT1
+/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 num-ber2\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl
+/10.95 start-par1\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 end-par1\OT1/cmr/m/n/
+10.95 , \OT1/cmr/m/sl/10.95 start-par2\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [210]
+[211]) [212] (./func/s1387.tex) [213] (./func/s1386.tex
+Overfull \hbox (4.35423pt too wide) in paragraph at lines 1--1
+[]\OT1/cmr/bx/n/12 Express the ``i,j''-th deriva-tive of an open sur-face as a 
+[]. 
+ []
+
+) [214] (./func/s1023.tex [215]) [216] (./func/s1021.tex
+Underfull \vbox (badness 1436) has occurred while \output is active []
+
+ [217])
+[218] (./func/s1024.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [219]
+[220]) [221] (./func/s1022.tex [222]) [223]) [224
+
+]
+(./chap_surface_interrogation.tex
+Chapter 7.
+(./sec_intcurve_object.tex (./type/SISLIntcurve.tex [225
+
+]) [226]
+(./func/newIntcurve.tex [227]) [228] (./func/freeIntcurve.tex) [229]
+(./func/freeIntcrvlist.tex)) [230] (./func/s1850.tex
+Underfull \vbox (badness 1019) has occurred while \output is active []
+
+ [231]
+[232]) [233] (./func/s1371.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [234]
+[235]) [236] (./func/s1372.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [237]
+[238]) [239] (./func/s1373.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [240]
+[241]) [242] (./func/s1502.tex [243]) [244] (./func/s1375.tex [245]) [246]
+(./func/s1870.tex
+Underfull \hbox (badness 1248) in paragraph at lines 38--51
+[]\OT1/cmr/m/n/10.95 Array con-tain-ing de-scrip-tions of the in-ter-sec-tion
+ []
+
+[247] [248]) [249] (./func/s1856.tex
+Underfull \vbox (badness 2351) has occurred while \output is active []
+
+ [250]
+[251]) [252] (./func/s1518.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [253])
+[254] (./func/s1328.tex
+Underfull \vbox (badness 1158) has occurred while \output is active []
+
+ [255])
+[256] (./func/s1855.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [257]
+[258]) [259] (./func/s1858.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [260]
+[261]) [262] (./func/s1851.tex
+Underfull \hbox (badness 1248) in paragraph at lines 62--67
+[]\OT1/cmr/m/n/10.95 Array con-tain-ing de-scrip-tions of the in-ter-sec-tion
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [263]
+[264]) [265] (./func/s1852.tex
+Underfull \hbox (badness 2181) in paragraph at lines 61--66
+[]\OT1/cmr/m/n/10.95 Array con-tain-ing de-scrip-tion of the in-ter-sec-tion
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [266])
+[267] (./func/s1853.tex
+Underfull \hbox (badness 1394) in paragraph at lines 10--13
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 point\OT1/cm
+r/m/n/10.95 , \OT1/cmr/m/sl/10.95 cyldir\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.9
+5 ra-dius\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/
+cmr/m/sl/10.95 ep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n
+/10.95 , \OT1/cmr/m/sl/10.95 nu-mintpt\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 2181) in paragraph at lines 65--70
+[]\OT1/cmr/m/n/10.95 Array con-tain-ing de-scrip-tion of the in-ter-sec-tion
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [268]
+[269]) [270] (./func/s1854.tex [271]) [272] (./func/s1503.tex [273] [274])
+[275] (./func/s1369.tex
+Underfull \hbox (badness 1454) in paragraph at lines 10--13
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 cen-tre\OT1/
+cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 nor-mal\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/1
+0.95 cendist\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 ra-dius\OT1/cmr/m/n/10.95 
+, \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 ep-sco\OT1/cm
+r/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 7888) has occurred while \output is active []
+
+ [276]
+Underfull \hbox (badness 1515) in paragraph at lines 100--103
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 cen-tre\OT1/
+cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 nor-mal\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/1
+0.95 cendist\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 ra-dius\OT1/cmr/m/n/10.95 
+, \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 ep-sco\OT1/cm
+r/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 ,
+ []
+
+) [277] (./func/s1859.tex
+Underfull \hbox (badness 2181) in paragraph at lines 59--66
+[]\OT1/cmr/m/n/10.95 Array con-tain-ing de-scrip-tion of the in-ter-sec-tion
+ []
+
+
+Underfull \vbox (badness 4072) has occurred while \output is active []
+
+ [278]
+[279]) [280] (./func/s1860.tex [281]
+Underfull \hbox (badness 1953) in paragraph at lines 90--93
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 viewdir\OT1/
+cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95
+ ep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 , &\OT1
+/cmr/m/sl/10.95 num-silpt\OT1/cmr/m/n/10.95 , &\OT1/cmr/m/sl/10.95 point-par\OT
+1/cmr/m/n/10.95 ,
+ []
+
+) [282] (./func/s1510.tex [283] [284]
+Underfull \hbox (badness 1502) in paragraph at lines 82--83
+[]\OT1/cmr/m/sl/10.95 ps\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 eye-point\OT1/
+cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 idim\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.9
+5 aep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 aepsge\OT1/cmr/m/n/10.95 , &\
+OT1/cmr/m/sl/10.95 jpt\OT1/cmr/m/n/10.95 , &\OT1/cmr/m/sl/10.95 gpar\OT1/cmr/m/
+n/10.95 , &\OT1/cmr/m/sl/10.95 jcrv\OT1/cmr/m/n/10.95 ,
+ []
+
+) [285] (./func/s1511.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [286])
+[287] (./func/s1314.tex [288] [289]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [290])
+[291] (./func/s1315.tex [292] [293]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [294])
+[295] (./func/s1316.tex
+Overfull \hbox (5.80281pt too wide) in paragraph at lines 1--1
+[]\OT1/cmr/bx/n/12 March an in-ter-sec-tion curve be-tween a sur-face and a [].
+ 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [296]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [297])
+[298] (./func/s1317.tex
+Underfull \hbox (badness 1297) in paragraph at lines 12--15
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 toppt\OT1/cm
+r/m/n/10.95 , \OT1/cmr/m/sl/10.95 ax-ispt\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.
+95 conept\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 dim\OT1/cmr/m/n/10.95 , \OT1/
+cmr/m/sl/10.95 ep-sco\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n
+/10.95 , \OT1/cmr/m/sl/10.95 maxstep\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [299]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [300])
+[301] (./func/s1501.tex
+Overfull \hbox (2.16391pt too wide) in paragraph at lines 2--2
+[]\OT1/cmr/bx/n/12 March an in-ter-sec-tion curve be-tween a sur-face and an []
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [302]
+[303]) [304] (./func/s1318.tex
+Underfull \vbox (badness 5288) has occurred while \output is active []
+
+ [305]
+[306] [307]) [308] (./func/s1310.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [309]
+[310]) [311] (./func/s1319.tex
+Underfull \hbox (badness 1163) in paragraph at lines 1--1
+[]\OT1/cmr/bx/n/12 March a sil-hou-ette curve of a sur-face, us-ing par-al-lel
+ []
+
+[312] [313]) [314] (./func/s1514.tex
+Underfull \hbox (badness 10000) in paragraph at lines 56--58
+
+ []
+
+[315] [316])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [317]
+(./func/s1515.tex
+Underfull \hbox (badness 10000) in paragraph at lines 59--61
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [318]
+[319]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [320])
+[321] (./func/s1450.tex
+Overfull \hbox (130.0pt too wide) detected at line 8
+[]
+ []
+
+[322]) [323] (./func/s1603.tex) [324] (./func/s1954.tex [325] [326]) [327]
+(./func/s1958.tex [328]) [329] (./func/s1775.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [330])
+[331] (./func/s1921.tex
+Underfull \vbox (badness 1087) has occurred while \output is active []
+
+ [332]
+[333]) [334] (./sec_box_object.tex (./type/SISLBox.tex) [335]
+(./func/newbox.tex
+Overfull \hbox (4.90001pt too wide) in paragraph at lines 1--1
+[]\OT1/cmr/bx/n/12 Create and ini-tial-ize a curve/surface bound-ing box in-sta
+nce. 
+ []
+
+)) [336] (./func/s1989.tex) [337] (./sec_cone_object.tex (./type/SISLDir.tex)
+[338] (./func/newdir.tex)) [339] (./func/s1987.tex [340] [341])) [342]
+(./chap_surface_analysis.tex
+Chapter 8.
+(./func/s2500.tex [343
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 75--77
+[]\OT1/cmr/m/n/10.95 Gaussian of the sur-face at (u,v) $=$
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [344])
+[345] (./func/s2502.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [346])
+[347] (./func/s2504.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [348])
+[349] (./func/s2506.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [350])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [351]
+(./func/s2508.tex
+Underfull \hbox (badness 1910) in paragraph at lines 4--10
+\OT1/cmr/m/n/10.95 a sur-face at given val-ues (u,v) = (par-value[0],parvalue[1
+]),
+ []
+
+
+Underfull \hbox (badness 1496) in paragraph at lines 4--10
+\OT1/cmr/m/n/10.95 where et1[leftknot1] $\OML/cmm/m/it/10.95 <\OT1/cmr/m/n/10.9
+5 =$ par-value[0] $\OML/cmm/m/it/10.95 <$ \OT1/cmr/m/n/10.95 et1[leftknot1+1] a
+nd
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [352])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [353]
+(./func/s2510.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [354])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [355]
+(./func/s2532.tex
+Underfull \hbox (badness 3049) in paragraph at lines 19--21
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 u[]continuit
+y\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]continuity\OT1/cmr/m/n/10.95 , \OT
+1/cmr/m/sl/10.95 u[]surfnumb\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]surfnum
+b\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [356]
+Underfull \hbox (badness 3240) in paragraph at lines 86--88
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 u[]continuit
+y\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]continuity\OT1/cmr/m/n/10.95 , \OT
+1/cmr/m/sl/10.95 u[]surfnumb\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]surfnum
+b\OT1/cmr/m/n/10.95 ,
+ []
+
+) [357] (./func/s2536.tex
+Underfull \hbox (badness 3049) in paragraph at lines 19--21
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 u[]continuit
+y\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]continuity\OT1/cmr/m/n/10.95 , \OT
+1/cmr/m/sl/10.95 u[]surfnumb\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]surfnum
+b\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [358]
+Underfull \hbox (badness 3240) in paragraph at lines 87--89
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 u[]continuit
+y\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]continuity\OT1/cmr/m/n/10.95 , \OT
+1/cmr/m/sl/10.95 u[]surfnumb\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 v[]surfnum
+b\OT1/cmr/m/n/10.95 ,
+ []
+
+) [359] (./func/s2540.tex
+Underfull \hbox (badness 3098) in paragraph at lines 56--59
+[]\OT1/cmr/m/n/10.95 ONLY USED WHEN \OT1/cmr/m/sl/10.95 pick[]subpart $\OT1/cmr
+/m/n/10.95 = 1$. If
+ []
+
+
+Underfull \vbox (badness 1490) has occurred while \output is active []
+
+ [360])
+[361] (./func/s2542.tex
+Underfull \hbox (badness 1019) in paragraph at lines 4--9
+[]\OT1/cmr/m/n/10.95 To com-pute prin-ci-pal cur-va-tures (k1,k2) with cor-re-s
+pond-ing
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [362]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [363])
+[364] (./func/s2544.tex
+Underfull \hbox (badness 2608) in paragraph at lines 4--10
+[]\OT1/cmr/m/n/10.95 To com-pute the Nor-mal cur-va-ture of a splne sur-face at
+
+ []
+
+
+Underfull \hbox (badness 1968) in paragraph at lines 4--10
+\OT1/cmr/m/n/10.95 given val-ues (u,v) $=$ (par-value[0],parvalue[1]) in the di
+-rec-
+ []
+
+
+Underfull \hbox (badness 4353) in paragraph at lines 4--10
+\OT1/cmr/m/n/10.95 tion (par-value[2],parvalue[3]) where et1[leftknot1] $\OML/c
+mm/m/it/10.95 <\OT1/cmr/m/n/10.95 =$ par-
+ []
+
+[365]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [366])
+[367] (./func/s2545.tex
+Underfull \vbox (badness 1490) has occurred while \output is active []
+
+ [368]
+Underfull \hbox (badness 3098) in paragraph at lines 59--62
+[]\OT1/cmr/m/n/10.95 ONLY USED WHEN \OT1/cmr/m/sl/10.95 pick[]subpart $\OT1/cmr
+/m/n/10.95 = 1$. If
+ []
+
+
+Underfull \hbox (badness 1558) in paragraph at lines 75--84
+\OT1/cmr/m/n/10.95 is false. Each grid-point con-sists of dim $+$ 2
+ []
+
+))
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [369]
+[370
+
+] (./chap_surface_utilities.tex
+Chapter 9.
+(./sec_surface_object.tex (./type/SISLSurf.tex [371
+
+]) [372] (./func/newSurf.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [373]
+[374]) [375] (./func/copySurface.tex) [376] (./func/freeSurf.tex)) [377]
+(./func/s1421.tex
+Underfull \vbox (badness 3260) has occurred while \output is active []
+
+ [378]
+[379]) [380] (./func/s1424.tex
+Underfull \hbox (badness 1102) in paragraph at lines 5--10
+[]\OT1/cmr/m/n/10.95 Evaluate the sur-face the pa-ram-e-ter value (\OT1/cmr/m/s
+l/10.95 par-value\OT1/cmr/m/n/10.95 [0], \OT1/cmr/m/sl/10.95 par-
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [381]
+[382]) [383] (./func/s1422.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [384]
+[385] [386]) [387] (./func/s1425.tex
+Underfull \hbox (badness 5548) in paragraph at lines 41--45
+[]\OT1/cmr/m/n/10.95 No deriva-tives with re-spect to the
+ []
+
+[388]
+Underfull \hbox (badness 1005) in paragraph at lines 61--65
+\OT1/cmr/m/n/10.95 ond pa-ram-e-ter di-rec-tion will be com-
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [389]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [390]
+[391]) [392] (./func/s1506.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [393])
+[394] (./func/s1711.tex [395]) [396] (./func/s1025.tex [397]) [398]
+(./func/s1439.tex) [399] (./func/s1383.tex
+Underfull \hbox (badness 1642) in paragraph at lines 11--13
+[]\OT1/cmr/m/sl/10.95 surf\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 curve\OT1/cm
+r/m/n/10.95 , \OT1/cmr/m/sl/10.95 epsge\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95
+ maxstep\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 der\OT1/cmr/m/n/10.95 , \OT1/c
+mr/m/sl/10.95 newcurve1\OT1/cmr/m/n/10.95 , \OT1/cmr/m/sl/10.95 newcurve2\OT1/c
+mr/m/n/10.95 ,
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [400]
+[401]) [402] (./func/s1001.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [403])
+[404] (./func/s1440.tex) [405] (./func/s6drawseq.tex) [406] (./func/s6move.tex)
+[407] (./func/s6line.tex) [408] (./func/s1237.tex [409]) [410]
+(./func/s1238.tex [411])) [412] (./chap_data_reduction.tex
+Chapter 10.
+(./func/s1940.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [413
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [414])
+[415] (./func/s1961.tex
+Underfull \vbox (badness 3872) has occurred while \output is active []
+
+ [416]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [417])
+[418] (./func/s1962.tex [419]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [420])
+[421] (./func/s1963.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [422])
+[423] (./func/s1965.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [424]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [425]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [426])
+[427] (./func/s1966.tex
+Underfull \hbox (badness 1565) in paragraph at lines 4--7
+[]\OT1/cmr/m/n/10.95 To com-pute a tensor-product spline-approximation of or-de
+r
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [428]
+Underfull \hbox (badness 10000) in paragraph at lines 105--111
+\OT1/cmr/m/n/10.95 from
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [429]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [430])
+[431] (./func/s1967.tex
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [432]
+Underfull \hbox (badness 10000) in paragraph at lines 115--121
+\OT1/cmr/m/n/10.95 from
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [433]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [434])
+[435] (./func/s1968.tex [436]
+Underfull \hbox (badness 10000) in paragraph at lines 67--73
+\OT1/cmr/m/n/10.95 from
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [437]))
+[438] (./chap_error_codes.tex
+Chapter 11.
+
+Overfull \hbox (69.89502pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 ---------------------------------------------------------
+-----------------------[] 
+ []
+
+
+Overfull \hbox (46.90027pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err111 -111  Error in Curve description. Number of vertic
+es less than order.[] 
+ []
+
+[439
+
+
+]
+Overfull \hbox (35.4029pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err114 -114  Error in Curve description. Open Curve when 
+expecting closed.[] 
+ []
+
+
+Overfull \hbox (41.15158pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err116 -116  Error in Surf description. Number of vertice
+s less than order.[] 
+ []
+
+
+Overfull \hbox (18.15683pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err130 -130  Error in input. Parameter value is outside p
+arameter area.[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [440]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [441]
+Overfull \hbox (35.4029pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err153 -153  Lower level routine reported error. SHOULD u
+se label "error".[] 
+ []
+
+
+Overfull \hbox (18.15683pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err156 -156  Illegal derivative requested. Change this la
+bel to err178.[] 
+ []
+
+
+Overfull \hbox (6.65945pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err159 -159  No of vertices less than 1. SHOULD USE err11
+1 or err116.[] 
+ []
+
+
+Overfull \hbox (0.91077pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err164 -164  No point conditions specified in interpolati
+on problem.[] 
+ []
+
+
+Overfull \hbox (35.4029pt too wide) in paragraph at lines 215--215
+[]\OT1/cmtt/m/n/10.95 err171 -171  Memory allocation failure: Could not create 
+curve or surface.[] 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [442]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [443])
+[444] (./manual.ind [445
+
+
+] [446] [447
+
+]) (./manual.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 1478 strings out of 95847
+ 17057 string characters out of 1195963
+ 76831 words of memory out of 1000001
+ 3792 multiletter control sequences out of 10000+50000
+ 23114 words of font info for 86 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 25i,9n,23p,406b,380s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on manual.dvi (456 pages, 721676 bytes).

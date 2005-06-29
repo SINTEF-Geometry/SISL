@@ -6,7 +6,7 @@
 //                                                                           
 // Author: Odd A. Andersen <Odd.Andersen@sintef.no>
 //                                                                           
-// Revision: $Id: removecomments.C,v 1.1 2005-02-25 15:02:08 oan Exp $
+// Revision: $Id: removecomments.C,v 1.1 2005-06-29 07:08:31 oan Exp $
 //                                                                           
 // Description:
 //                                                                           

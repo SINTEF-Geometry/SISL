@@ -1,0 +1,77 @@
+\subsection{Calculate area, moment of inertia and weightpoint of area limited by 2-D curve.}
+\funclabel{s1242}
+\begin{minipg1}
+Compute the area surrounded by a 2D-curve and the straight lines from a reference
+point to the end points of the curve. The area might have a negative value
+dependent on the direction of the curve relative to the reference point. When
+used on a closed curve, the routine gives as output the area surrounded by the curve.
+The difference between the area calculated and the real area will be less than
+(aepsco/the area calculated). The weight point of the surface and the rotational
+momentum in accordance with a given axis are also computed.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1242(\begin{minipg3}
+        {\fov curve}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov weight}, {\fov area}, {\fov moment}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov weight}[\,];\\
+                \>\>    double  \>      *{\fov area};\\
+                \>\>    double  \>      *{\fov moment};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> B-spline curve.\\
+        \>\>    {\fov point}    \> - \>\begin{minipg2}
+                                Reference point in the area computation / axis vertical
+                                to a plane (given as point in 2D).
+                                \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>\begin{minipg2}
+                                Dimension of the space in which epoint lies. The
+                                dimension is supposed to be equal to 2.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco} \> - \>\begin{minipg2}
+                                Resolution.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov weight}   \> - \>\begin{minipg2}
+                                Weight point.
+                                \end{minipg2}\\
+        \>\>    {\fov area}     \> - \>\begin{minipg2}
+                                The area calculated.
+                                \end{minipg2}\\
+        \>\>    {\fov moment}   \> - \>\begin{minipg2}
+                                Rotational momentum.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+        The algorithm is based on recursive
+        subdivision and will thus for small values
+        of epsco require long computation time.
+\end{minipg6} \\ \\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov point[2]};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov weight[2]};\\
+                \>\>    double  \>      {\fov area};\\
+                \>\>    double  \>      {\fov moment};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1242(\begin{minipg4}
+                {\fov curve}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov weight}, \&{\fov area}, \&{\fov moment}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

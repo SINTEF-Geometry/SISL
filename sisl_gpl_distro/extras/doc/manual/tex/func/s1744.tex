@@ -1,0 +1,72 @@
+\subsection{Draw ``polygons'' in a surface limited by a closed B-spline 
+curve in the parameter plane of the surface
+using a recursive algorithm testing for 
+planarity of the subdivided parts.}
+\funclabel{s1744}
+\begin{minipg1}
+To draw a surface limited by a closed B-spline 
+curve in the parameter plane of the surface
+using recursive subdivision.
+This drawing function is slower than the one drawing constant parameter
+lines, s1238() (page~\pageref{s1238}). But the recursive algorithm
+will guarantee that all variations in the surface greater
+than the surface resolution will be drawn.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1744(\begin{minipg3}
+		{\fov surf}, {\fov curve}, {\fov epscur}, {\fov epssur}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	SISLCurve	\>	*{\fov curve};\\
+		\>\>	double	\>	{\fov epscur};\\
+		\>\>	double	\>	{\fov epssur};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				The B-spline surface to be drawn.
+				\end{minipg2}\\
+	\>\>	{\fov curve}\> - \>	\begin{minipg2}
+				SISLCurve limiting the part of the surface that is to be drawn
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov epscur}\> - \>	\begin{minipg2}
+				Geometry resolution for curve.
+				The maximal distance allowed between
+				the curves 
+				drawn and the surface.
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov epssur}\> - \>	\begin{minipg2}
+				Geometry resolution for surface.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+This function calls s6drawseq() which
+is device dependent. Before using the function make sure 
+to have a version of s6drawseq() 
+interfaced to your graphic package.
+More about s6drawseq() on page~\pageref{s6drawseq}.
+\end{minipg6}
+\\ \\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	SISLCurve	\>	*{\fov curve};\\
+		\>\>	double	\>	{\fov epscur};\\
+		\>\>	double	\>	{\fov epssur};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1744(\begin{minipg4}
+		{\fov surf}, {\fov curve}, {\fov epscur}, {\fov epssur}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

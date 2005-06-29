@@ -1,0 +1,68 @@
+\subsection{Express a conic arc as a curve.}
+\funclabel{s1011}
+\begin{minipg1}
+  Convert an analytic conic arc to a curve.
+  The curve will be geometrically exact.
+  The arc is given by position at start, shoulder point and end, and a
+  shape factor.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1011(\begin{minipg3}
+          {\fov start\_pos},  {\fov top\_pos},  {\fov end\_pos},  {\fov shape},  {\fov dim},  {\fov arc\_seg},  {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \> {\fov start\_pos}[\,];\\
+        \>\>    double \> {\fov top\_pos}[\,];\\
+        \>\>    double \> {\fov end\_pos}[\,];\\
+        \>\>    double \> {\fov shape};\\
+        \>\>    int    \> {\fov dim};\\
+        \>\>    SISLCurve \> **{\fov arc\_seg};\\
+        \>\>    int    \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov start\_pos} \> - \> Start point of segment.\\
+        \>\>    {\fov top\_pos}   \> - \> \begin{minipg2}
+                                            Shoulder point of
+                                            segment. This is the
+                                            intersection point of the
+                                            tangents in {\fov start\_pos} and
+                                            {\fov end\_pos}.
+                                          \end{minipg2}\\[0.8ex]
+        \>\>    {\fov end\_pos}   \> - \> End point of segment.\\
+        \>\>    {\fov shape}      \> - \> Shape factor, must be $\geq 0$.\\
+                \>\>\>\>\> $< 0.5$, an ellipse,\\
+                \>\>\>\>\> $= 0.5$, a parabola,\\
+                \>\>\>\>\> $> 0.5$, a hyperbola,\\
+                \>\>\>\>\> $\geq 1$,
+                           \begin{minipg5}
+                             the start and end points lies on different branches of
+                             the hyperbola.  We want a single arc
+                             segment, therefore if $shape\geq 1$, shape
+                             is set to $0.999999$.
+                           \end{minipg5}\\[0.8ex]
+        \>\>    {\fov dim}        \> - \> The spatial dimension of the curve to
+                                          be produced.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+        \>\>    {\fov arc\_seg} \> - \> Pointer to the curve produced.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov start\_pos}[3];\\
+        \>\>    double \> {\fov top\_pos}[3];\\
+        \>\>    double \> {\fov end\_pos}[3];\\
+        \>\>    double \> {\fov shape};\\
+        \>\>    int    \> {\fov dim} = 3;\\
+        \>\>    SISLCurve \> *{\fov arc\_seg};\\
+        \>\>    int    \> {\fov stat};\\
+        \>\>    \ldots \\
+        \>\>s1011(\begin{minipg4}
+        {\fov start\_pos},  {\fov top\_pos},  {\fov end\_pos},  {\fov shape},  {\fov dim},  \&{\fov arc\_seg},  \&{\fov stat});
+      \end{minipg4}\\
+      \>\>    \ldots \\
+      \>      \}
+\end{tabbing}

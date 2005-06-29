@@ -1,0 +1,102 @@
+\subsection{Create a lofted surface from a set of B-spline
+input curves.}
+\funclabel{s1538}
+\begin{minipg1}
+  To create a lofted surface from a set of B-spline (i.e.\ NOT rational)
+  input curves.
+  The output is represented as a B-spline surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1538(\begin{minipg3}
+          {\fov inbcrv}, {\fov vpcurv}, {\fov nctyp}, {\fov astpar}, {\fov iopen}, {\fov iord2},
+          {\fov iflag}, {\fov rsurf}, {\fov gpar}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    int       \> {\fov inbcrv};\\
+        \>\>    SISLCurve \> *{\fov vpcurv}[\,];\\
+        \>\>    int       \> {\fov nctyp}[\,];\\
+        \>\>    double    \> {\fov astpar};\\
+        \>\>    int       \> {\fov iopen};\\
+        \>\>    int       \> {\fov iord2};\\
+        \>\>    int       \> {\fov iflag};\\
+        \>\>    SISLSurf  \> **{\fov rsurf};\\
+        \>\>    double    \> **{\fov gpar};\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov inbcrv} \> - \> Number of B-spline curves in the curve set.\\
+        \>\>    {\fov vpcurv} \> - \>
+        \begin{minipg2}
+          Array (length {\fov inbcrv}) of pointers to the
+          curves in the curve-set.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov nctyp}  \> - \>
+        \begin{minipg2}
+          Array (length {\fov inbcrv}) containing the types
+          of curves in the curve-set.
+        \end{minipg2}\\[0.8ex]
+                \>\>\>\> $=1$ \> : Ordinary curve.\\
+                \>\>\>\> $=2$ \> : Knuckle curve. Treated as an ordinary curve.\\
+                \>\>\>\> $=3$ \> : Tangent to next curve.\\
+                \>\>\>\> $=4$ \> : Tangent to prior curve.\\
+                \>\>\>\> ($=5$ \> : Second derivative to prior curve.)\\
+                \>\>\>\> ($=6$ \> : Second derivative to next curve.)\\
+                \>\>\>\> $=13$ \> : Curve giving start of tangent to next curve.\\
+                \>\>\>\> $=14$ \> : Curve giving end of tangent to prior curve.\\
+        \>\>    {\fov astpar} \> - \> Start parameter for spline lofting
+                                      direction.\\
+        \>\>    {\fov iopen} \> - \>
+        \begin{minipg2}
+          Flag telling if the resulting surface should be open, closed
+          or periodic in the lofting direction (i.e.\ not the curve direction).
+        \end{minipg2}\\[0.3ex]
+        \>\>\>\>  $= 1$ \> : Open.\\
+        \>\>\>\>  $= 0$ \> : Closed.\\
+        \>\>\>\>  $= -1$ \> : Closed and periodic.\\
+        \>\>    {\fov iord2} \> - \>
+        \begin{minipg2}
+          Maximal order of the surface in the lofting direction.
+        \end{minipg2}\\[0.8ex]
+\newpagetabs
+        \>\>    {\fov iflag} \> - \>
+        \begin{minipg2}
+          Flag telling if the size of the tangents in the
+          derivative curves should be adjusted or not.
+        \end{minipg2}\\[0.3ex]
+                      \>\>\>\> $= 0$ \> : Do not adjust tangent sizes.\\
+                      \>\>\>\> $= 1$ \> : Adjust tangent sizes.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rsurf} \> - \> Pointer to the B-spline surface produced.\\
+        \>\>    {\fov gpar}  \> - \>
+        \begin{minipg2}
+          The input curves are constant parameter lines
+          in the parameter-plane of the produced surface.
+          The $i$-th element in this array contains the (constant) value
+          of this parameter of the $i$-th. input curve.
+        \end{minipg2}\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\> $< 0$ \> : Error.\\
+                \>\>\>\> $= 0$ \> : Ok.\\
+                \>\>\>\> $> 0$ \> : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    int       \> {\fov inbcrv};\\
+        \>\>    SISLCurve \> *{\fov vpcurv}[3];\\
+        \>\>    int       \> {\fov nctyp}[3];\\
+        \>\>    double    \> {\fov astpar};\\
+        \>\>    int       \> {\fov iopen};\\
+        \>\>    int       \> {\fov iord2};\\
+        \>\>    int       \> {\fov iflag};\\
+        \>\>    SISLSurf  \> *{\fov rsurf} = NULL;\\
+        \>\>    double    \> *{\fov gpar} = NULL;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1538(\begin{minipg4}
+          {\fov inbcrv}, {\fov vpcurv}, {\fov nctyp}, {\fov astpar}, {\fov iopen}, {\fov iord2},
+          {\fov iflag}, \&{\fov rsurf}, \&{\fov gpar}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

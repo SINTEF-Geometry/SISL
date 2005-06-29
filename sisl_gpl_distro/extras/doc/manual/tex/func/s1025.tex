@@ -1,0 +1,66 @@
+\subsection{Insert a given set of knots, in each parameter direction, into the description of a surface.}
+\funclabel{s1025}
+\begin{minipg1}
+  Insert a given set of knots in each parameter direction
+  into the description of a surface.\\
+  NOTE       : When the surface is periodic in one direction, the input
+               parameter values in this direction
+               must lie in the half-open interval $[et[kk-1], et[kn)$, the function
+               will automatically update the extra knots and
+               coeffisients.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1025(\begin{minipg3}
+          {\fov ps},  {\fov epar1},  {\fov inpar1},  {\fov epar2},  {\fov inpar2},  {\fov rsnew},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov epar1}[\,];\\
+        \>\>    int      \> {\fov inpar1};\\
+        \>\>    double   \> {\fov epar2}[\,];\\
+        \>\>    int      \> {\fov inpar2};\\
+        \>\>    SISLSurf \> **{\fov rsnew};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps}\> - \>  \begin{minipg2}
+                     Surface to be refined.
+                               \end{minipg2}\\
+        \>\>    {\fov epar1}\> - \>  \begin{minipg2}
+                     Knots to insert in first parameter direction.
+                               \end{minipg2}\\
+        \>\>    {\fov inpar1}\> - \>  \begin{minipg2}
+                     Number of new knots in first parameter direction.
+                               \end{minipg2}\\
+        \>\>    {\fov epar2}\> - \>  \begin{minipg2}
+                     Knots to insert in second parameter direction.
+                               \end{minipg2}\\
+        \>\>    {\fov inpar2}\> - \>  \begin{minipg2}
+                     Number of new knots in second parameter direction.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rsnew}\> - \>  \begin{minipg2}
+                     The new, refined surface.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $> 0$ : \>      Warning.\\
+                \>\>\>\>\>      $= 0$ : \>      Ok.\\
+                \>\>\>\>\>      $< 0$ : \>      Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov epar1}[3];\\
+        \>\>    int      \> {\fov inpar1} = 3;\\
+        \>\>    double   \> {\fov epar2}[4];\\
+        \>\>    int      \> {\fov inpar2} = 4;\\
+        \>\>    SISLSurf \> *{\fov rsnew} = NULL;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1025(\begin{minipg4}
+          {\fov ps},  {\fov epar1},  {\fov inpar1},  {\fov epar2},  {\fov inpar2},  \&{\fov rsnew},  \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

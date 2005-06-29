@@ -1,0 +1,111 @@
+\subsection{Absolute curvature of a spline surface.}
+\funclabel{s2504}
+\begin{minipg1}
+ To compute the absolute curvature A(u,v) of a spline surface at
+                   given values (u,v) $=$ (parvalue[0],parvalue[1]), where
+                   et1[leftknot1] $<=$ parvalue[0] $<$ et1[leftknot1+1] and
+                   et2[leftknot2] $<=$ parvalue[1] $<$ et2[leftknot2+1].
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>  void s2504(\begin{minipg3}
+            {\fov surf},  {\fov ider},  {\fov iside1},  {\fov iside2},  {\fov parvalue},  {\fov leftknot1},  {\fov leftknot2},
+	     {\fov absCurvature},  {\fov jstat})
+                \end{minipg3}\\
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    int    \>  {\fov ider};\\
+                \>\>    int    \>  {\fov iside1};\\
+                \>\>    int    \>  {\fov iside2};\\
+                \>\>    double \> {\fov parvalue}[\,];\\
+                \>\>    int \> *{\fov leftknot1};\\
+                \>\>    int \> *{\fov leftknot2};\\
+                \>\>    double \> *{\fov absCurvature};\\
+                \>\>    int \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>  \begin{minipg2}
+                     Pointer to the surface to evaluate.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ider}\> - \>  \begin{minipg2}
+                     Number of derivatives to calculate.
+                     Only implemented for ider=0.
+                               \end{minipg2}\\[0.8ex]
+                \>\>\>\>  $< 0$ : \> No derivative calculated.\\
+                \>\>\>\>  $= 0$ : \> Position calculated.\\
+                \>\>\>\>  $= 1$ : \> Position and first derivative calculated, etc.\\
+        \>\>    {\fov iside1}\> - \>  \begin{minipg2}
+                     Flag indicating whether the derivatives in the first
+                     parameter direction are to be calculated from the
+                     left or from the right:
+                               \end{minipg2}\\[0.8ex]
+         \>\>\>\>  $< 0$  : \> calculate derivative from the left hand side.\\
+         \>\>\>\>  $>= 0$ : \> calculate derivative from the right hand side.\\
+        \>\>    {\fov iside2}\> - \>  \begin{minipg2}
+                     Flag indicating whether the derivatives in the second
+                     parameter direction are to be calculated from the
+                     left or from the right:
+                               \end{minipg2}\\[0.8ex]
+         \>\>\>\>  $< 0$  : \> calculate derivative from the left hand side.\\
+         \>\>\>\>  $>= 0$ : \> calculate derivative from the right hand side.\\
+        \>\>    {\fov parvalue}\> - \>  \begin{minipg2}
+                     Parameter value at which to evaluate. Dimension of
+                     parvalue is 2.
+                               \end{minipg2}\\[0.8ex]
+\\
+	\>Input/Output Arguments:\\
+        \>\>    {\fov leftknot1}\> - \>  \begin{minipg2}
+                     Pointer to the interval in the knot vector in the
+                     first parameter direction where parvalue[0] is found,
+                     that is:
+                          et1[leftknot1] $<=$ parvalue[0] $<$ et1[leftknot1+1].
+                     leftknot1 should be set equal to zero at the first call
+                     to the routine.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov leftknot2}\> - \>  \begin{minipg2}
+                     Pointer to the interval in the knot vector in the
+                     second parameter direction where parvalue[1] is found,
+                     that is:
+                          et2[leftknot2] $<=$ parvalue[1] $<$ et2[leftknot2+1].
+                     leftknot2 should be set equal to zero at the first call
+                     to the routine.
+                               \end{minipg2}\\[0.8ex]
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov absCurvature}\> - \>  \begin{minipg2}
+                     Absolute curvature of the surface at (u,v) $=$
+                     (parvalue[0],parvalue[1]).
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\> $= 2$ : 
+                       \> \begin{minipg5}  
+                               Surface is degenerate at the point, that is,
+                               the surface is not regular at this point.
+                               \end{minipg5}\\[0.8ex]
+                \>\>\>\>  $= 1$ :
+                       \> \begin{minipg5}  
+                               Surface is close to degenerate at the point.
+                               Angle between tangents is less than the angular
+                               tolerance.
+                               \end{minipg5}\\[0.8ex]
+                \>\>\>\> $= 0$ : \> Ok.\\
+                \>\>\>\> $< 0$ : \> Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    int    \>  {\fov ider};\\
+                \>\>    int    \>  {\fov iside1};\\
+                \>\>    int    \>  {\fov iside2};\\
+                \>\>    double \> {\fov parvalue}[\,];\\
+                \>\>    int \> *{\fov leftknot1};\\
+                \>\>    int \> *{\fov leftknot2};\\
+                \>\>    double \> *{\fov absCurvature};\\
+                \>\>    int \> *{\fov jstat};\\                \>\>    \ldots \\
+        \> \>s2504(\begin{minipg4}
+            {\fov surf},  {\fov ider},  {\fov iside1},  {\fov iside2},  {\fov parvalue},  {\fov leftknot1},  {\fov leftknot2},
+	     {\fov absCurvature},  {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

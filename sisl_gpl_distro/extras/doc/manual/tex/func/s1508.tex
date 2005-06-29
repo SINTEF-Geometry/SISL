@@ -1,0 +1,53 @@
+\subsection{Create a rational lofted surface from a set of rational input-curves}
+\funclabel{s1508}
+\begin{minipg1}
+To create a rational lofted surface from a set of rational input-curves.
+\end{minipg1} \\ \\ 
+SYNOPSIS\\
+      \> void s1508(\begin{minipg3}
+	   {\fov inbcrv}, {\fov vpcurv}, {\fov par\_arr}, {\fov rsurf}, {\fov jstat})
+	       \end{minipg3}\\
+               \>\> int \> {\fov inbcrv};\\
+	       \>\> SISLCurve \> *{\fov vpcurv[\,]};\\
+	       \>\> double \> {\fov par\_arr[\,]};\\
+	       \>\> SISLSurf \> **{\fov rsurf};\\
+	       \>\> int \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+      \> Input Arguments:\\
+      \>\> {\fov inbcrv} \> - \> \begin{minipg2}
+	           Number of NURBS-curves in the curve set.
+		                 \end{minipg2}\\
+      \>\> {\fov vpcurv} \> - \> \begin{minipg2}
+	           Array (length {\fov inbcrv}) of pointers to the curves in the curve-set.
+		                 \end{minipg2}\\
+      \>\> {\fov par\_arr} \> - \> \begin{minipg2}
+	           The required parametrization, must be strictly increasing, 
+		   length {\fov inbcrv}.
+		                 \end{minipg2}\\
+
+      \> Output Arguments: \\
+      \>\> {\fov rsurf} \> - \> \begin{minipg2}
+	           Pointer to the NURBS surface produced.
+		                \end{minipg2}\\
+      \>\> {\fov jstat} \> - \> status message \\
+                 \>\>\>\>\>   $ < 0 $ : Error.\\
+		 \>\>\>\>\>   $ = 0 $ : Ok. \\
+		 \>\>\>\>\>   $ > 0 $ : Warning.\\
+\\
+EXAMPLE OF USE\\
+               \>      \{ \\
+	       
+	       \>\>    int \> {\fov inbcrv};\\
+	       \>\>    SISLCurve \> *{\fov vpcurv[3]};\\
+	       \>\>    double \> {\fov par\_arr[3]};\\
+	       \>\>    SISLSurf  \> *{\fov rsurf} = NULL;\\
+	       \>\>    int \> {\fov jstat} = 0;\\
+	       \>\>    \ldots \\
+	       \>\>    s1508({\fov inbcrv}, {\fov vpcurv}, {\fov par\_arr}, \&{\fov rsurf}, \&{\fov jstat}); \\
+	       \>\>    \ldots \\
+	       \>      \}
+
+
+\end{tabbing}
+      

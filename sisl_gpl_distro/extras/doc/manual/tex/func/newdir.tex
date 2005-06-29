@@ -1,0 +1,37 @@
+\subsection{Create and initialize a curve/surface direction instance.}
+\funclabel{newdir}
+\begin{minipg1}
+Create and initialize a curve/surface direction instance.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>SISLdir *newdir(\begin{minipg3}
+          {\fov idim})
+        \end{minipg3}\\[0.3ex]
+        \>\>    int \> {\fov idim};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov idim}\> - \>
+        \begin{minipg2}
+          Dimension of the space in which the object lies.
+        \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newdir}\> - \>
+        \begin{minipg2}
+          Pointer to new direction structure. If it is
+          impossible to allocate space for the structure,
+          newdir will return a NULL value.
+        \end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>int     \> {\fov idim};\\
+        \>\>SISLdir \> *{\fov dir};\\
+        \>\>    \ldots \\
+        \>\>{\fov dir} = newdir(\begin{minipg4}
+          {\fov idim});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

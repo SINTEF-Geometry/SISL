@@ -1,0 +1,43 @@
+\section{Turn the Direction of the Surface Normal Vector.}
+\funclabel{s1440}
+\begin{minipg1}
+  Interchange the two parameter directions used in the mathematical
+  description of a surface and thereby change the direction of the
+  normal vector of the surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1440(\begin{minipg3}
+                                {\fov surf}, {\fov newsurf}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the original surface.
+                                \end{minipg2}\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>   \begin{minipg2}
+                                Pointer to the surface where the parameter
+                                directions are interchanged.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1440(\begin{minipg4}
+                {\fov surf}, \&{\fov newsurf}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

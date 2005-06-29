@@ -1,0 +1,88 @@
+\subsection{Intersection between a curve and a torus.}
+\funclabel{s1375}
+\begin{minipg1}
+  Find all the intersections between a curve and a torus.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1375(\begin{minipg3}
+        {\fov curve}, {\fov centre}, {\fov normal}, {\fov centdist}, {\fov rad}, {\fov dim}, {\fov epsco}, {\fov epsge},\\ {\fov numintpt}, {\fov intpar},
+                        {\fov numintcu}, {\fov intcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov centre[\,]};\\
+                \>\>    double  \>      {\fov normal}[\,];\\
+                \>\>    double  \>      {\fov centdist};\\
+                \>\>    double  \>      {\fov rad};\\
+                \>\>    int             \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov intpar};\\
+                \>\>    int     \>      *{\fov numintcu};\\
+                \>\>    SISLIntcurve \> ***{\fov intcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the curve.\\
+        \>\>    {\fov centre}   \> - \> \begin{minipg2}
+                                The centre of the torus (lying in the symmetry plane)
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov normal}   \> - \> Normal of symmetry plane.\\
+        \>\>    {\fov centdist}\> - \>  \begin{minipg2}
+                                Distance from the centre of the cone to the centre circle of the torus.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov rad}      \> - \> The radius of the torus surface.\\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                Dimension of the space in which the
+                                torus and the curve
+                                lie, dim should be equal to  three.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}    \> - \> Computational resolution (not used).\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  Number of single intersection points.\\
+        \>\>    {\fov intpar}   \> - \> \begin{minipg2}
+                        Array containing the parameter values of the
+                        single intersection points in the parameter
+                        interval of the curve. The points lie in sequence.
+                        Intersection curves are stored in intcurve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcu}\> - \>Number of intersection curves.\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                        Array of pointers to the SISLIntcurve objects
+                        containing descriptions of the intersection
+                        curves. The curves are only described by start
+                        points and end points in
+                        the parameter interval of the curve. The curve
+                        pointers point to nothing.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov centre}[3];\\
+                \>\>    double  \>      {\fov normal}[3];\\
+                \>\>    double  \>      {\fov centdist};\\
+                \>\>    double  \>      {\fov rad};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov intpar};\\
+                \>\>    int     \>      {\fov numintcu};\\
+                \>\>    SISLIntcurve \> **{\fov intcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    {\fov \ldots} \\
+        \>\>s1375(\begin{minipg4}
+        {\fov curve}, {\fov centre}, {\fov normal}, {\fov centdist}, {\fov rad}, {\fov dim}, {\fov epsco}, {\fov epsge},\\ \&{\fov numintpt},
+                \&{\fov intpar}, \&{\fov numintcu}, \&{\fov intcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

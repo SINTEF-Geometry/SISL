@@ -1,0 +1,23 @@
+\section{\label{surfaceobject}Surface Object}
+
+In the library both B-spline and NURBS surfaces are stored in a struct SISLSurf containing
+the following:
+\input{type/SISLSurf}
+When using a surface, do not declare a Surface but a pointer to a Surface,
+and initialize it to point to NULL. Then you may use the
+dynamic allocation functions newSurface and freeSurface, which are described below,
+to create and delete surfaces.
+
+There are two ways to pass coefficient and knot arrays
+to newSurf.
+By setting $icopy=1$, newSurf
+allocates new arrays and copies the given ones.
+But by setting $icopy=0$ or 2, newSurf simply points
+to the given arrays. Therefore it is IMPORTANT that the
+given arrays have been allocated in free memory beforehand.
+\pgsbreak
+\input{func/newSurf}
+\pgsbreak
+\input{func/copySurface}
+\pgsbreak
+\input{func/freeSurf}

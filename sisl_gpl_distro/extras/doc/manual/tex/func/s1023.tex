@@ -1,0 +1,65 @@
+\subsection{Express the octants of a sphere as a surface.}
+\funclabel{s1023}
+\begin{minipg1}
+  To express the octants of a sphere as a surface. This can also
+  be used to describe the complete sphere.
+  The sphere/the octants of the sphere will be geometrically exact.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1023(\begin{minipg3}
+          {\fov centre},  {\fov axis},  {\fov equator},  {\fov latitude},  {\fov longitude},  {\fov sphere},  {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \> {\fov centre}[\,];\\
+        \>\>    double \> {\fov axis}[\,];\\
+        \>\>    double \> {\fov equator}[\,];\\
+        \>\>    int    \> {\fov latitude};\\
+        \>\>    int    \> {\fov longitude};\\
+        \>\>    SISLSurf \> **{\fov sphere};\\
+        \>\>    int    \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov centre}\> - \> Centre point of the sphere.\\
+        \>\>    {\fov axis}\> - \> Axis of the sphere (towards the north pole).\\
+        \>\>    {\fov equator}\> - \> Vector from centre to start point
+                                      on the equator.\\
+        \>\>    {\fov latitude} \> - \>
+        \begin{minipg2}
+          Flag indicating number of
+          octants in north/south direction:
+        \end{minipg2}\\[0.3ex]
+          \>\>\>\>\> $= 1$ : Octants in the northern hemisphere.\\
+          \>\>\>\>\> $= 2$ : Octants in both hemispheres.\\
+        \>\>    {\fov longitude} \> - \>
+        \begin{minipg2}
+          Flag indicating number of octants along the equator.
+          This is counted counterclockwise from equator.
+        \end{minipg2}\\[0.3ex]
+          \>\>\>\>\> $= 1$ : Octants in 1.\ quadrant.\\
+          \>\>\>\>\> $= 2$ : Octants in 1.\ and 2.\ quadrant.\\
+          \>\>\>\>\> $= 3$ : Octants in 1., 2.\ and 3.\ quadrant.\\
+          \>\>\>\>\> $= 4$ : Octants in all quadrants.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov sphere} \> - \> The sphere produced.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov centre}[3];\\
+        \>\>    double \> {\fov axis}[3];\\
+        \>\>    double \> {\fov equator}[3];\\
+        \>\>    int    \> {\fov latitude};\\
+        \>\>    int    \> {\fov longitude};\\
+        \>\>    SISLSurf \> *{\fov sphere} = NULL;\\
+        \>\>    int    \> {\fov stat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1023(\begin{minipg4}
+          {\fov centre},  {\fov axis},  {\fov equator},  {\fov latitude},  {\fov longitude},  \&{\fov sphere},  \&{\fov stat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

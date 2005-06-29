@@ -1,0 +1,49 @@
+\subsection{Find a point on a 2D curve along a given direction.}
+\funclabel{s1013}
+\begin{minipg1}
+  Find a point on a 2D curve along a given direction.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1013(\begin{minipg3}
+        {\fov pcurve}, {\fov ang}, {\fov ang\_tol}, {\fov guess\_par}, {\fov iter\_par}, {\fov jstat})
+      \end{minipg3}\\[0.3ex]
+      \>\>      SISLCurve \>  *{\fov pcurve};\\
+      \>\>      double    \>   {\fov ang};\\
+      \>\>      double    \>   {\fov ang\_tol};\\
+      \>\>      double    \>   {\fov guess\_par};\\
+      \>\>      double    \>  *{\fov iter\_par};\\
+      \>\>      int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pcurve}    \> - \> Pointer to the curve.\\
+        \>\>    {\fov ang}       \> - \> \begin{minipg2}
+                                           The angle (in radians)
+                                           describing the wanted
+                                           \mbox{direction}.
+                                         \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ang\_tol}  \> - \> The angular tolerance (in radians).\\
+        \>\>    {\fov guess\_par}\> - \> Start parameter value on the curve.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov iter\_par} \> - \> The parameter value found on the curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $= 2$   : A minimum distance found.\\
+                \>\>\>\>\>              $= 1$   : Intersection found.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \>  *{\fov pcurve};\\
+        \>\>    double    \>  {\fov ang};\\
+        \>\>    double    \>  {\fov ang\_tol};\\
+        \>\>    double    \>  {\fov guess\_par};\\
+        \>\>    double    \>  {\fov iter\_par};\\
+        \>\>    int       \>  {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1013(\begin{minipg4}
+        {\fov pcurve}, {\fov ang}, {\fov ang\_tol}, {\fov guess\_par}, \&{\fov iter\_par}, \&{\fov jstat});
+      \end{minipg4}\\
+      \>\>    \ldots \\
+      \>      \}
+\end{tabbing}

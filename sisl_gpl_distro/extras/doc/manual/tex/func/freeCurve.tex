@@ -1,0 +1,35 @@
+\subsection{Delete a curve object.}
+\funclabel{freeCurve}
+\begin{minipg1}
+Free the space occupied by the curve. Before using freeCurve, make sure the curve object exists.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void freeCurve(\begin{minipg3}
+          {\fov curve})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve    \> *{\fov curve};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the curve to delete.\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve    \> *{\fov curve} = NULL;\\
+        \>\>    int    \>       {\fov number} = 10;\\
+        \>\>    int    \>       {\fov order} = 4;\\
+        \>\>    double \>       {\fov knots}[14];\\
+        \>\>    double \>       {\fov coef}[30];\\
+        \>\>    int    \>       {\fov kind} = 1;\\
+        \>\>    int    \>       {\fov dim} = 3;\\
+        \>\>    int    \>       {\fov copy} = 1;\\
+        \>\>    \ldots \\
+        \>\>curve = newCurve(\begin{minipg4}
+          {\fov number}, {\fov order}, {\fov knots}, {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>\>freeCurve(\begin{minipg4}
+          {\fov curve});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

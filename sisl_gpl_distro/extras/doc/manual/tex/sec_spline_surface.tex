@@ -1,0 +1,150 @@
+\section{B-spline Surfaces}
+
+This section is optional reading for those who want to
+become acquainted with some of the mathematics of
+tensor-product B-splines surfaces. For a description of the data structure for
+B-spline surfaces in SISL, see section \ref{surfaceobject}.
+
+A tensor product B-spline surface is defined as
+\[{\bf s}(u,v) = \sum_{i=1}^{n_1}\sum_{j=1}^{n_2}{\bf p}_{i,j} 
+	B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v) \]
+with control points ${\bf p}_{i,j}$ and two variables
+(or parameters) $u$ and $v$.
+The formula shows that a basis function of a B-spline surface is a
+product of two basis functions of B-spline curves (B-splines).
+This is why a B-spline surface is called a tensor-product surface.
+The following is a list of the components of the representation:
+\begin{description}
+\item[$dim$]: The dimension of the underlying Euclidean space.
+\item[$n_1$]: The number of vertices with respect to the first parameter.
+\item[$n_1$]: The number of vertices with respect to the second parameter.
+\item[$k_1$]: The order of the B-splines in the first parameter.
+\item[$k_2$]: The order of the B-splines in the second parameter.
+\item[${\bf u}$]: The knot vector of the B-splines with respect to
+                  the first parameter,
+                  ${\bf u} = (u_1,u_2,\ldots,u_{n_1+k_1})$.
+\item[${\bf v}$]: The knot vector of the B-splines with respect to
+                  the second parameter,
+                  ${\bf v} = (v_1,v_2,\ldots,v_{n_2+k_2})$.
+\item[${\bf p}$]: The control points of the B-spline surface,
+           $c_{d,i,j}$, $d=1,\ldots,dim$, $i=1,\ldots,n_1$,
+		$j=1,\ldots,n_2$.
+	When $dim = 3$, we have
+          ${\bf p} = (x_{1,1},y_{1,1},z_{1,1},x_{2,1},y_{2,1},z_{2,1},\ldots$,
+                  $x_{n_1,1},y_{n_1,1},z_{n_1,1},\ldots$,
+                     $x_{n_1,n_2},y_{n_1,n_2},z_{n_1,n_2})$.
+\end{description}
+
+The data of the B-spline surface must fulfill the following requirements:
+\begin{itemize}
+\item
+Both knot vectors must be non-decreasing.
+\item
+The number of vertices must be greater than or equal to the order
+with respect to both parameters: $n_1 \ge k_1$ and $n_2 \ge k_2$.
+\item
+There should be $k_1$ equal knots at the beginning and end 
+of knot vector ${\bf u}$ and $k_2$ equal knots at the beginning and
+end of knot vector ${\bf v}$.
+\end{itemize}
+
+The properties of the representation of a B-spline surface are
+similar to the properties of the representation of a B-spline curve.
+The control points ${\bf p}_{i,j}$ form a {\it control net} as shown in
+figure~\ref{surf1}.
+The control net has similar properties to the control
+polygon of a B-spline curve, described in section~\ref{contrlpoly}.
+A B-spline surface has two knot vectors, one
+for each parameter. In figure~\ref{surf1} we can
+see {\it isocurves}, surface curves
+defined by fixing the value of one of the parameters.
+
+\begin{figure}
+\vspace{50 mm}
+  \special{psfile=surf1.ps hoffset=-30 voffset=-170 hscale=90 vscale=60}
+  %\special{psfile=surf1.ps hoffset=95 hscale=40 vscale=40}
+%  \epsffile{surf1.ps}
+  \caption{\label{surf1}
+		A B-spline surface and its control net.
+		The surface is drawn using isocurves.
+		The dimension is 3.}
+\end{figure}
+
+\subsection{The Basis Functions}
+
+A basis function of a B-spline surface is the product of two
+basis functions of two B-spline curves,
+\[ B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v). \]
+Its support is the rectangle $[u_i,u_{i+k_1}] \times [v_j,v_{j+k_2}]$.
+If the basis functions in both directions are of degree one and all
+knots have multiplicity one, then the surface basis functions are
+pyramid-shaped 
+(see figure~\ref{surf2}).
+For higher degrees, the surface basis functions are bell shaped.
+
+\begin{figure}
+	\begin{center}
+		\begin{picture}(250,125)(0,0)
+
+		\put(10,39){\vector(0,1){86}}
+		\put(8,45){\line(1,0){4}}
+		\put(8,120){\line(1,0){4}}
+		\put(0,45){\makebox(0,0){0.0}}
+		\put(0,120){\makebox(0,0){1.0}}
+
+		\put(50,5){\circle*{2}}
+		\put(100,5){\circle*{2}}
+		\put(150,5){\circle*{2}}
+
+		\put(190,20){\circle*{2}}
+		\put(215,45){\circle*{2}}
+		\put(240,70){\circle*{2}}
+
+		\thicklines
+		\put(65,20){\line(1,0){100}}
+		\put(165,20){\line(1,1){50}}
+		\multiput(65,20)(18,18){3}{\line(1,1){10}}
+		\multiput(115,70)(20,0){5}{\line(1,0){10}}
+
+
+		\put(65,20){\line(3,4){75}}
+		\put(165,20){\line(-1,4){25}}
+		\put(215,70){\line(-3,2){75}}
+		\multiput(115,70)(8,16){3}{\line(1,2){5}}
+		\end{picture}\\
+	\end{center}
+
+  \caption{\label{surf2}
+		A basis function of degree one in
+		both variables.}
+\end{figure}
+
+\subsection{NURBS Surfaces}
+
+A NURBS (Non-Uniform Rational B-Spline) surface is a generalization
+of a B-spline surface,
+$$ {\bf s}(u,v) = {\sum_{i=1}^{n_1}\sum_{j=1}^{n_2} w_{i,j} {\bf p}_{i,j} 
+	    B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v)  \over
+             \sum_{i=1}^{n_1}\sum_{j=1}^{n_2} w_{i,j}
+	         B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v)}. $$
+In addition to the data of a B-spline surface, the NURBS surface
+has a weights $w_{i,j}$.
+NURBS surfaces can be used to exactly represent several common
+`analytic' surfaces such as spheres, cylinders, tori, and cones.
+A disadvantage is that NURBS surfaces depend nonlinearly on their weights,
+making some calculations, like with NURBS curves,
+less efficient.
+
+The representation of a NURBS surface is the same as for a B-spline
+except that it also includes
+\begin{description}
+\item[${\bf w}$]: The weights of the NURBS surface,
+           $w_{i,j}$, $i=1,\ldots,n_1$, $j=1,\ldots,n_2$, so
+          ${\bf w} = (w_{1,1},w_{2,1},\ldots,w_{n_1,1},\ldots$,
+                  $w_{1,2},\ldots,w_{n_1,n_2})$.
+\end{description}
+In SISL we make the assumption that
+\begin{itemize}
+\item The weights are (strictly) positive: $w_{i,j} > 0$.
+\end{itemize}
+

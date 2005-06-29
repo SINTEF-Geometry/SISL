@@ -1,0 +1,88 @@
+\subsection{Pick the next Bezier surface from a surface.}
+\funclabel{s1733}
+\begin{minipg1}
+  To pick the next Bezier surface from a surface. This function
+  requires a surface represented as the result of s1731(). See page
+  \pageref{s1731}.
+  This routine does not check that the surface is correct.
+  If the input surface is rational, the generated Bezier surfaces will be
+  rational too (i.e.\ there will be rational weights in the
+  representation of the Bezier surfaces).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1733(\begin{minipg3}
+                {\fov surf}, {\fov number1}, {\fov number2}, {\fov startpar1}, {\fov endpar1}, {\fov startpar2},
+                 \linebreak  {\fov endpar2}, {\fov coef}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov number1};\\
+                \>\>    int     \>      {\fov number2};\\
+                \>\>    double  \>      *{\fov startpar1};\\
+                \>\>    double  \>      *{\fov endpar1};\\
+                \>\>    double  \>      *{\fov startpar2};\\
+                \>\>    double  \>      *{\fov endpar2};\\
+                \>\>    double  \>      {\fov coef}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                The surface to convert.
+                                \end{minipg2}\\
+        \>\>    {\fov number1}\> - \>
+        \begin{minipg2}
+          The number of the Bezier patch to pick in the horizontal
+          direction, where $0\leq number1<in1/ik1$ of the surface.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov number2}\> - \>
+        \begin{minipg2}
+          The number of the Bezier patch to pick in the vertical
+          direction, , where $0\leq number2<in2/ik2$ of the surface.
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov startpar1}        \> - \> \begin{minipg2}
+                                The start parameter value of the Bezier
+                                patch in the horizontal direction.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov endpar1}  \> - \> \begin{minipg2}
+                                The end parameter value of the Bezier
+                                patch in the horizontal direction.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov startpar2}        \> - \> \begin{minipg2}
+                                The start parameter value of the Bezier patch                           in the vertical direction.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov endpar2}  \> - \> \begin{minipg2}
+                                The end parameter value of the Bezier patch                             in the vertical direction.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov coef}     \> - \>
+        \begin{minipg2}
+          The vertices of the Bezier patch.
+          Space must be allocated with a size of $(idim+1)\times ik1\times ik2$
+          as given by the surface (this is done for reasons of efficiency).
+        \end{minipg2}\\
+\newpagetabs
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov number1};\\
+                \>\>    int     \>      {\fov number2};\\
+                \>\>    double  \>      {\fov startpar1};\\
+                \>\>    double  \>      {\fov endpar1};\\
+                \>\>    double  \>      {\fov startpar2};\\
+                \>\>    double  \>      {\fov endpar2};\\
+                \>\>    double  \>      {\fov coef}[48];\\
+                \>\>    int     \>      stat;\\
+                \>\>    \ldots \\
+        \>\>s1733(\begin{minipg4}
+                {\fov surf}, {\fov number1}, {\fov number2}, \&{\fov startpar1}, \&{\fov endpar1},
+                        \&{\fov startpar2}, \&{\fov endpar2}, {\fov coef}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

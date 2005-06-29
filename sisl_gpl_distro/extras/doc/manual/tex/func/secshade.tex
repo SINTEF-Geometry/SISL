@@ -1,0 +1,94 @@
+\subsection{Shade a polygone.}
+\funclabel{s6shadepol}
+\begin{minipg1}
+	Shade a polygon using Gouraud shading.
+	The polygon is represented by a sequence of points 
+	(vertices) and a normal to each point. 
+	Only for dimension equal 3.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s6shadepol(\begin{minipg3}
+		{\fov points}, {\fov normals}, {\fov numpoints})
+		\end{minipg3}\\[0.3ex]
+  		\>\>	double \>	{\fov points}[\,];\\
+  		\>\>	double \>	{\fov normals}[\,];\\
+  		\>\>	int    \>	{\fov numpoints};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov points}	\> - \> \begin{minipg2}
+				Points in sequence. 
+				ie. $(x_{0},y_{0},z_{0},x_{1},y_{1},z_{1},\ldots)$
+				\end{minipg2}\\
+        \>\>    {\fov normals }\> - \> \begin{minipg2}
+				Normals in sequence.
+				ie. $(x^n_{0},y^n_{0},z^n_{0},
+				x^n_{1},y^n_{1},z^n_{1},\ldots)$
+				\end{minipg2}\\
+	\>\>	{\fov numpoints}\> - \> \begin{minipg2}
+				Number of points in sequence.
+				\end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+  		\>\>	double \>	{\fov points[12]};\\
+  		\>\>	double \>	{\fov normals[12]};\\
+  		\>\>	int    \>	{\fov numpoints = 4};\\
+		\>\> \ldots \\
+	\>\>s6shadepol(\begin{minipg4}
+		{\fov points}, {\fov normals}, {\fov numpoints})
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}
+
+
+\subsection{Examples of s6shadepol().}
+In the following example of s6shadepol() we have used line2()
+and line3() as drawing primitives. Instead of such move and draw
+function for simple lines there might be possibilities to use
+a polyline() function.
+
+
+\begin{tabbing}
+******\=*****\=*****\=*****\=*****\=*****\=    \kill
+	void s6shadepol(\begin{minipg3}
+		{\fov points}, {\fov normals}, {\fov numpoints})
+		\end{minipg3}\\[0.3ex]
+  		\>	double \>\>	{\fov points}[\,];\\
+  		\>	double \>\>	{\fov normals}[\,];\\
+  		\>	int    \>\>	{\fov numpoints};\\
+\{ \\
+\>  extern void line2(\,);\>\>\>\> /* Local drawing function for dim=2. */\\
+\>  extern void line3(\,);\>\>\>\> /* Local drawing function for dim=3. */\\
+  \\
+\>  double *pt;\>\>\>\>  /* Pointer to traverse points. */\\
+\>  double *ptend;\>\>\>\>  /* Pointer to mark end of points. */\\
+  \\
+\> if (dim==2)\\
+\>\{ \\
+\>\>  /* Move pen at start of the broken line.  */\\
+ \\ 
+\>\>  line2(points[0], points[1], 0);\\
+  \\
+\>\>  /* Draw sequence of line-segments.  */\\
+  \\
+\>\>  for (pt=points+2, ptend=points+2*numpoints ; pt$<$ptend; pt+=2)\\
+\>\>\>    line2(pt[0], pt[1], 1);\\
+\>\} \\
+\>  else if (dim==3)\\
+\>\{ \\
+
+\>\>  /* Move pen at start of the broken line.  */\\
+ \\ 
+\>\>  line3(points[0], points[1], points[2], 0);\\
+  \\
+\>\>  /* Draw sequence of line-segments.  */\\
+  \\
+\>\>  for (pt=points+3, ptend=points+3*numpoints ; pt$<$ptend; pt+=3)\\
+\>\>\>    line3(pt[0], pt[1], pt[2], 1);\\
+\>\} \\
+  \\
+\>  return; \\
+\}                                   
+\end{tabbing}

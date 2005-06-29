@@ -1,0 +1,79 @@
+\subsection{Express the octants of a torus as a surface.}
+\funclabel{s1024}
+\begin{minipg1}
+  To express the octants of a torus as a surface. This can also be used
+  to describe the complete torus.
+  The torus/the octants of the torus will be geometrically exact.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1024(\begin{minipg3}
+          {\fov centre}, {\fov axis}, {\fov equator}, {\fov minor\_radius}, {\fov start\_minor}, {\fov end\_minor},
+          {\fov numb\_major}, {\fov torus}, {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \> {\fov centre}[\,];\\
+        \>\>    double \> {\fov axis}[\,];\\
+        \>\>    double \> {\fov equator}[\,];\\
+        \>\>    double \> {\fov minor\_radius};\\
+        \>\>    int    \> {\fov start\_minor};\\
+        \>\>    int    \> {\fov end\_minor};\\
+        \>\>    int    \> {\fov numb\_major};\\
+        \>\>    SISLSurf \> **{\fov torus};\\
+        \>\>    int    \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov centre} \> - \> Centre point of the torus.\\
+        \>\>    {\fov axis}   \> - \> Normal to the torus plane.\\
+        \>\>    {\fov equator}\> - \> \begin{minipg2}
+                                        Vector from centre to start point
+                                        on the major circle.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov minor\_radius} \> - \> Radius of the minor circle.\\
+        \>\>    {\fov start\_minor}  \> - \> \begin{minipg2}
+                                               Start quadrant on the
+                                               minor circle (1,2,3 or 4).
+                                               This is counted clockwise
+                                               from the extremum in the
+                                               direction of axis.
+                                             \end{minipg2}\\[0.8ex]
+        \>\>    {\fov end\_minor}    \> - \> \begin{minipg2}
+                                               End quadrant on the minor
+                                               circle (1,2,3 or 4). This
+                                               is counted clockwise from
+                                               the extremum in the
+                                               direction of axis.
+                                             \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numb\_major}   \> - \> \begin{minipg2}
+                                               Number of quadrants on
+                                               the major circle (1,2,3
+                                               or 4). This is counted
+                                               counterclockwise from
+                                               equator.
+                                             \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov torus} \> - \> Pointer to the torus produced.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov centre}[3];\\
+        \>\>    double \> {\fov axis}[3];\\
+        \>\>    double \> {\fov equator}[3];\\
+        \>\>    double \> {\fov minor\_radius};\\
+        \>\>    int    \> {\fov start\_minor};\\
+        \>\>    int    \> {\fov end\_minor};\\
+        \>\>    int    \> {\fov numb\_major};\\
+        \>\>    SISLSurf \> *{\fov torus} = NULL;\\
+        \>\>    int    \> {\fov stat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1024(\begin{minipg4}
+          {\fov centre}, {\fov axis}, {\fov equator}, {\fov minor\_radius}, {\fov start\_minor}, {\fov end\_minor},
+          {\fov numb\_major}, \&{\fov torus}, \&{\fov stat})
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

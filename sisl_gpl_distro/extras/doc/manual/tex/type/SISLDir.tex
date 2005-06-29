@@ -1,0 +1,40 @@
+\typelabel{SISLdir}
+ \> int         \>{\fov igtpi}; \>\> \begin{minipg2}
+                                To mark if the angle of direction cone
+                                is greater than $\pi$.
+                                \end{minipg2}\\
+                \>\>\>\>\>      $= 0$   :\>\hspace*{0.3em}\begin{minipg5}
+                                The direction of a surface
+                                and its boundary curves or a curve
+                                is not greater than $\pi$ in any
+                                parameter direction.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 1$   :\>\hspace*{0.3em}\begin{minipg5}
+                                The direction of a surface or a curve
+                                is greater than $\pi$ in the first
+                                parameter direction.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 2$   :\>\hspace*{0.3em}\begin{minipg5}
+                                The angle of direction cone of a surface is greater
+                                than $\pi$ in the second parameter
+                                direction.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 10:$\>\hspace*{0.3em}\begin{minipg5}
+                                The angle of direction cone of a boundary curve
+                                in first parameter direction of a
+                                surface is greater than $\pi$.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 20:$\>\hspace*{0.3em}\begin{minipg5}
+                                The angle of direction cone of a boundary curve
+                                in second parameter direction of a
+                                surface is greater than $\pi$.
+                                \end{minipg5}\\[0.3ex]
+ \> double      \>*{\fov ecoef};        \>\> \begin{minipg2}
+                                Allocated array containing
+                                the coordinates of the centre of the cone.
+                                \end{minipg2}\\[0.3ex]
+ \> double      \>{\fov aang};          \>\> \begin{minipg2}
+                                The angle from the centre which
+                                describes the cone.
+                                \end{minipg2}\\[0.3ex]
+\end{tabbing}

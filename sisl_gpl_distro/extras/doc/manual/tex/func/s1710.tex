@@ -1,0 +1,61 @@
+\subsection{Subdivide a curve at a given parameter value.}
+\funclabel{s1710}
+\begin{minipg1}
+  Subdivide a curve at a given parameter value.\\
+  NOTE: When the curve is periodic (i.e.\ when the {\fov cuopen} flag of
+  the curve has value $=-1$), this function will return only ONE curve
+  through {\fov rcnew1}. This curve is the same geometric curve as {\fov pc1},
+  but is represented on a closed basis, i.e.\ with k-tuple start/end
+  knots and coinciding start/end coefficients.
+  The {\fov cuopen} flag of the curve will then be set to closed ($=0$)
+  and a status value {\fov jstat} equal to 2 will be returned.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1710(\begin{minipg3}
+          {\fov pc1},  {\fov apar},  {\fov rcnew1},  {\fov rcnew2},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc1};\\
+        \>\>    double    \> {\fov apar};\\
+        \>\>    SISLCurve \> **{\fov rcnew1};\\
+        \>\>    SISLCurve \> **{\fov rcnew2};\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc1}  \> - \> The curve to subdivide.\\
+        \>\>    {\fov apar} \> - \> Parameter value at which to subdivide.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rcnew1} \> - \> First part of the subdivided curve.\\
+        \>\>    {\fov rcnew2} \> - \>
+        \begin{minipg2}
+          Second part of the subdivided curve.
+          If the parameter value is at the end of a
+          curve NULL pointers might be returned
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat} \> - \> Status messages\\
+                      \>\>\>\>\> $= 5$      : \begin{minipg5}
+                                                Parameter value at end of
+                                                curve, $rcnew1$=NULL or
+                                                {\fov rcnew2}=NULL.
+                                              \end{minipg5}\\[0.8ex]
+                      \>\>\>\>\> $= 2$      : {\fov pc1} periodic,
+                                              {\fov rcnew2}=NULL.\\
+                      \>\>\>\>\> $> 0$      : Warning.\\
+                      \>\>\>\>\> $= 0$      : Ok.\\
+                      \>\>\>\>\> $< 0$      : Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc1};\\
+        \>\>    double    \> {\fov apar};\\
+        \>\>    SISLCurve \> *{\fov rcnew1} = NULL;\\
+        \>\>    SISLCurve \> *{\fov rcnew2} = NULL;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>s1710(\begin{minipg4}
+          {\fov pc1},  {\fov apar}, \&{\fov rcnew1}, \&{\fov rcnew2}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

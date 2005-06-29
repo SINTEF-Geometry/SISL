@@ -1,0 +1,78 @@
+\subsection{Compute a first derivative continuous blending surface set,
+over a 3-, 4-, 5- or 6-sided region in space, from a set of B-spline
+input curves.}
+\funclabel{s1391}
+\begin{minipg1}
+  To create a first derivative continuous blending surface set over a
+  3-, 4-, 5- and 6-sided region in space. The boundary of the
+  region are B-spline (i.e.\ NOT rational) curves and the cross boundary
+  derivatives  are given as B-spline (i.e.\ NOT rational) curves.
+  This function automatically
+  preprocesses the input cross tangent curves in order to
+  make them suitable for the blending. Thus, the cross tangent
+  curves should be taken as the cross tangents of the
+  surrounding surface. It is not necessary and not advisable
+  to match tangents etc. in the corners.
+  The output is represented as a set of B-spline surfaces.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1391(\begin{minipg3}
+          {\fov pc}, {\fov ws}, {\fov icurv}, {\fov nder}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> **{\fov pc};\\
+        \>\>    SISLSurf  \> ***{\fov ws};\\
+        \>\>    int       \>  {\fov icurv};\\
+        \>\>    int       \>  {\fov nder}[\,];\\
+        \>\>    int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc} \> - \>
+        \begin{minipg2}
+          Pointers to boundary B-spline curves. All curves must
+          have same parameter direction around the patch,
+          either clockwise or counterclockwise.
+          $pc1[i], i=0,\dots nder[0]-1$ are pointers to position
+          and cross-derivatives along first edge.
+          $pc1[i], i=nder[0],\dots nder[1]-1$ are pointers
+          to position and cross-derivatives along second edge.\\
+          \hspace*{4em}$\vdots$\\
+          \[
+            pc1[i], i=nder[0]+\dots+nder[icurv-2],\dots, nder[icurv-1]-1
+          \]
+          are pointers to position and cross-derivatives along fourth edge.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov icurv} \> - \> Number of boundary curves (3, 5, 4 or 6).\\
+        \>\>    {\fov nder} \> - \>
+        \begin{minipg2}
+          {\fov nder[i]} gives number of curves on edge number
+          $i+1$. These numbers has to be equal to 2.
+          The vector is of length {\fov icurv}.
+        \end{minipg2}\\[0.8ex]
+\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov ws} \> - \>
+        \begin{minipg2}
+          These are pointers to the blending B-spline surfaces. The vector is of
+          length {\fov icurv}.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> **{\fov pc};\\
+        \>\>    SISLSurf  \> **{\fov ws} = NULL;\\
+        \>\>    int       \> {\fov icurv} = 5;\\
+        \>\>    int       \> {\fov nder}[5];\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1391(\begin{minipg4}
+          {\fov pc}, \&{\fov ws}, {\fov icurv}, {\fov nder}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

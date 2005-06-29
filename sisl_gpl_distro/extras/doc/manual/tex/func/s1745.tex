@@ -1,0 +1,51 @@
+\subsection{Shade a surface.}
+\funclabel{s1745}
+\begin{minipg1}
+To shade a surface 
+using a recursive algorithm testing for 
+planarity of the subdivided parts.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1745(\begin{minipg3}
+		{\fov surf}, {\fov epsge}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				The B-spline surface to be drawn.
+				\end{minipg2}\\
+	\>\>	{\fov epsge}\> - \>	\begin{minipg2}
+				Geometry resolution for surface.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+This function calls s6shadepol() which
+is device dependent. Before using the function make sure 
+to have a version of s6shadepol() 
+interfaced to your graphic package.
+More about s6shadepol() on page~\pageref{s6shadepol}.
+\end{minipg6}
+\\ \\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1745(\begin{minipg4}
+		{\fov surf}, {\fov epsge}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

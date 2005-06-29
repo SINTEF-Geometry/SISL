@@ -1,0 +1,74 @@
+\subsection{Approximate a circular arc with a curve.}
+\funclabel{s1303}
+\begin{minipg1}
+  To create a curve approximating a circular arc around
+  the axis defined by the centre point, an axis vector,
+  a start point and a rotational angle.
+  The maximal deviation between the true circular arc and the
+  approximation to the arc is controlled by the geometric
+  tolerance (epsge).
+  The output will be represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1303(\begin{minipg3}
+                {\fov startpt}, {\fov epsge}, {\fov angle}, {\fov centrept}, {\fov axis}, {\fov dim},
+                {\fov curve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double  \>      {\fov startpt}[\,];\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov angle};\\
+                \>\>    double  \>      {\fov centrept}[\,];\\
+                \>\>    double  \>      {\fov axis}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    SISLCurve       \>      **{\fov curve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov startpt}  \> - \> Start point of the circular arc\\
+        \>\>    {\fov epsge}    \> - \> \begin{minipg2}
+                                Maximal deviation allowed between the true
+                                circle and the circle approximation.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov angle}    \> - \> \begin{minipg2}
+                                The rotational angle. Counterclockwise around
+                                axis. If the rotational angle
+                                is outside $<-2\pi,+2\pi>$
+                                then a closed curve is produced.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov centrept}\> - \>  Point on the axis of the circle.\\
+        \>\>    {\fov axis}     \> - \> \begin{minipg2}
+                                Normal vector to plane in which the circle lies.
+                                Used if dim = 3.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the space in which the
+                                circular arc lies (2 or 3).
+                                \end{minipg2}\\[0.3ex]
+\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the B-spline curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov startpt}[3];\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov angle};\\
+                \>\>    double  \>      {\fov centrept}[3];\\
+                \>\>    double  \>      {\fov axis}[3];\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1303(\begin{minipg4}
+                        {\fov startpt}, {\fov epsge}, {\fov angle}, {\fov centrept},
+                        {\fov axis}, {\fov dim}, \&{\fov curve}, \&{\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

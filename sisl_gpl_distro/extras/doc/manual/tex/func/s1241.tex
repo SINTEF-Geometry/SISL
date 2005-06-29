@@ -1,0 +1,65 @@
+\subsection{Calculate the area between a 2D curve and a 2D point.}
+\funclabel{s1241}
+\begin{minipg1}
+To calculate the area between a 2D curve and a 2D point.
+               When the curve is rotating counter-clockwise around the
+               point, the area contribution is positive.
+               When the curve is rotating clockwise around the point,
+               the area contribution is negative.
+               If the curve is closed or periodic, the area calculated
+               is independent of where the point is situated.
+               The area is calculated exactly for B-spline curves, for
+               NURBS the result is an approximation.
+               This routine will only perform if the order of the curve is
+               less than 7 (can easily be extended).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1241(\begin{minipg3}
+            {\fov pcurve},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov area},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov pcurve};\\
+                \>\>    double    \>  {\fov point}[\,];\\
+                \>\>    int    \>  {\fov dim};\\
+                \>\>    double    \>  {\fov epsge};\\
+                \>\>    double    \>  *{\fov area};\\
+                \>\>    int    \>  *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov pcurve}\> - \>  \begin{minipg2}
+                     The 2D curve.
+                               \end{minipg2}\\
+        \>\>    {\fov point}\> - \>  \begin{minipg2}
+                     The reference point.
+                               \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>  \begin{minipg2}
+                     Dimension of geometry (must be 2).
+                               \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>  \begin{minipg2}
+                     Absolute geometrical tolerance.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov area}\> - \>  \begin{minipg2}
+                     Calculated area.
+                               \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov pcurve};\\
+                \>\>    double    \>  {\fov point}[\,];\\
+                \>\>    int    \>  {\fov dim};\\
+                \>\>    double    \>  {\fov epsge};\\
+                \>\>    double    \>  *{\fov area};\\
+                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s1241(\begin{minipg4}
+            {\fov pcurve},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov area},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

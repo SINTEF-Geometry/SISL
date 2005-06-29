@@ -1,0 +1,62 @@
+\subsection{Find the direction cone of a curve.}
+\funclabel{s1986}
+\begin{minipg1}
+Find the direction cone of a curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1986(\begin{minipg3}
+          {\fov pc}, {\fov aepsge}, {\fov jgtpi}, {\fov gaxis}, {\fov cang}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov aepsge};\\
+        \>\>    int       \> *{\fov jgtpi};\\
+        \>\>    double    \> **{\fov gaxis};\\
+        \>\>    double    \> *{\fov cang};\\
+        \>\>    int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc}     \> - \> The curve to treat.\\
+        \>\>    {\fov aepsge} \> - \> Geometry tolerance.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jgtpi} \> - \>
+                \begin{minipg2}
+                  To mark if the angle of the direction cone is greater than $\pi$.
+                \end{minipg2}\\[0.3ex]
+                \>\>\>\>\> $= 0$ \begin{minipg5}
+                                   The direction cone of the curve $\leq\pi$.
+                                 \end{minipg5}\\[0.3ex]
+                \>\>\>\>\> $= 1$ \begin{minipg5}
+                                   The direction cone of the curve $> \pi$.
+                                 \end{minipg5}\\[0.8ex]
+        \>\>    {\fov gaxis} \> - \>
+        \begin{minipg2}
+          Allocated array containing the coordinates of the
+          centre of the cone. It is only computed if $jgtpi=0$.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov cang} \> - \>
+        \begin{minipg2}
+          The angle from the centre to the boundary of the
+          cone. It is only computed if $jgtpi=0$.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat} \> - \> Status messages\\
+                \>\>\>\>\>           $> 0$ : Warning.\\
+                \>\>\>\>\>           $= 0$ : Ok.\\
+                \>\>\>\>\>           $< 0$ : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov aepsge};\\
+        \>\>    int       \> {\fov jgtpi} = 0;\\
+        \>\>    double    \> *{\fov gaxis} = NULL;\\
+        \>\>    double    \> {\fov cang} = 0.0;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1986(\begin{minipg4}
+          {\fov pc}, {\fov aepsge}, \&{\fov jgtpi}, \&{\fov gaxis}, \&{\fov cang}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

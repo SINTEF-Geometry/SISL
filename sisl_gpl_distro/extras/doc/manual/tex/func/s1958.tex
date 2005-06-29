@@ -1,0 +1,74 @@
+\subsection{Find the closest point between a surface and a point.
+Simple version.}
+\funclabel{s1958}
+\begin{minipg1}
+  Find the closest point between a surface and a point.
+  The method is fast and should work well in clear cut cases, but there is
+  no guarantee it will find the right solution. As long as it doesn't
+  fail, it will find exactly one point.  In other cases, use s1954() on
+  page~\pageref{s1954}.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1958(\begin{minipg3}
+          {\fov psurf}, {\fov epoint}, {\fov idim}, {\fov aepsco}, {\fov aepsge}, {\fov gpar}, {\fov dist}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov psurf};\\
+        \>\>    double   \> {\fov epoint}[\,];\\
+        \>\>    int      \> {\fov idim};\\
+        \>\>    double   \> {\fov aepsco};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    double   \> {\fov gpar}[\,];\\
+        \>\>    double   \> *{\fov dist};\\
+        \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov psurf}\> - \>  \begin{minipg2}
+                     Pointer to the surface in the closest point problem.
+                               \end{minipg2}\\
+        \>\>    {\fov epoint}\> - \>  \begin{minipg2}
+                     The point in the closest point problem.
+                               \end{minipg2}\\
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                     Dimension of the space in which epoint lies.
+                               \end{minipg2}\\
+        \>\>    {\fov aepsco}\> - \>  \begin{minipg2}
+                     Computational resolution (not used).
+                               \end{minipg2}\\
+        \>\>    {\fov aepsge}\> - \>  \begin{minipg2}
+                     Geometry resolution.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov gpar}\> - \>  \begin{minipg2}
+                     2D array containing the parameter values of the
+                       closest point in the parameter space
+                       of the surface.
+                               \end{minipg2}\\
+        \>\>    {\fov dist}\> - \>  \begin{minipg2}
+                     The closest distance between point and the surface.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>              $> 2$ \> : Warning.\\
+                \>\>\>\>              $= 2$ \> : Solution at a corner.\\
+                \>\>\>\>              $= 1$ \> : Solution at an edge.\\
+                \>\>\>\>              $= 0$ \> : Solution in interior.\\
+                \>\>\>\>              $< 0$ \> : Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf  \>  *{\fov psurf};\\
+        \>\>    double    \>  {\fov epoint}[3];\\
+        \>\>    int       \>  {\fov idim} = 3;\\
+        \>\>    double    \>  {\fov aepsco};\\
+        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    double    \>  {\fov gpar}[2];\\
+        \>\>    double    \>  {\fov dist} = 0;\\
+        \>\>    int       \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1958(\begin{minipg4}
+          {\fov psurf}, {\fov epoint}, {\fov idim}, {\fov aepsco}, {\fov aepsge}, {\fov gpar}, \&{\fov dist}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

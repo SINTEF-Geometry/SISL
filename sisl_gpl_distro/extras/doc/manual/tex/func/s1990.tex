@@ -1,0 +1,52 @@
+\subsection{Create and compute normal cone of a surface.}
+\funclabel{s1990}
+\begin{minipg1}
+		To create the normal cone on the unit sphere to
+	       	a NURBS surface, the surface is represented with
+	       	a surrounding cone picked from the unit sphere. The cone centre and cone angle are placed in the SISLdir element pointed to by pdir in the surface object.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1990(\begin{minipg3}
+		surf, epsge, stat)
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLSurf 	\>	*{\fov surf};\\
+		\>\>	double 	\>	{\fov epsge};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}	\> - \>	Input surface.\\
+	\>\>	{\fov epsge}	\> - \>	Geometry resolution.\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+  		\>\>	SISLSurf    \>	*{\fov surf} = NULL;\\
+  		\>\>	int    \>	{\fov number1} = 5;\\
+		\>\>	int    \>	{\fov number2} = 4;\\
+  		\>\>	int    \>	{\fov order1} = 4;\\
+		\>\>	int    \>	{\fov order2} = 3;\\
+  		\>\>	double \>	{\fov knot1[9]};\\
+		\>\>	double \>	{\fov knot2[7]};\\
+  		\>\>	double \>	{\fov coef[60]};\\
+  		\>\>	double \>	{\fov epsge} = 1e-10;\\
+  		\>\>	int    \>	{\fov kind} = 1;\\
+  		\>\>	int    \>	{\fov dim} = 3;\\
+  		\>\>	int    \>	{\fov copy} = 0;\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>surf$=$newSurf(\begin{minipg4}
+	{\fov number1}, {\fov number2}, {\fov order1}, {\fov order2}, {\fov knot1}, {\fov knot2}, {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+	\>\>s1990(\begin{minipg4}
+		{\fov surf}, {\fov epsge}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

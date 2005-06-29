@@ -1,0 +1,133 @@
+\subsection{Compute the position and the left- or right-hand derivatives of
+a surface at a given parameter value pair.}
+\funclabel{s1422}
+\begin{minipg1}
+  Evaluate and compute the left- or right-hand derivatives of
+  a surface at a given parameter position.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1422(\begin{minipg3}
+          {\fov ps1}, {\fov ider}, {\fov iside1}, {\fov iside2}, {\fov epar}, {\fov ilfs}, {\fov ilft}, {\fov eder}, {\fov enorm}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf    \>  *{\fov ps1};\\
+        \>\>    int    \>  {\fov ider};\\
+        \>\>    int    \>  {\fov iside1};\\
+        \>\>    int    \>  {\fov iside2};\\
+        \>\>    double \>  {\fov epar}[\,];\\
+        \>\>    int    \>  *{\fov ilfs};\\
+        \>\>    int    \>  *{\fov ilft};\\
+        \>\>    double \>  {\fov eder}[\,];\\
+        \>\>    double \>  {\fov enorm}[\,];\\
+        \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps1}\> - \>  \begin{minipg2}
+                     Pointer to the surface to evaluate.
+                               \end{minipg2}\\
+        \>\>    {\fov ider}\> - \>  \begin{minipg2}
+                     Number of derivatives to calculate.
+                     \end{minipg2}\\
+                     \>\>\>\> $<0$ \> : No derivative calculated.\\
+                     \>\>\>\> $=0$ \> : Position calculated.\\
+                     \>\>\>\> $=1$ \> : Position and first derivative calculated.\\
+                     \>\>\>\>      \>   etc.\\
+        \>\>    {\fov iside1}\> - \>  \begin{minipg2}
+                        Indicator telling if the derivatives in the first
+                        parameter direction is to be calculated from the
+                        left or from the right:
+                      \end{minipg2}\\[0.3ex]
+                      \>\>\>\> $<0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the left hand side.
+                      \end{minipg5}\\[0.8ex]
+                      \>\>\>\> $\geq 0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the right hand side.
+                      \end{minipg5}\\[0.8ex]
+        \>\>    {\fov iside2}\> - \>  \begin{minipg2}
+                     Indicator telling if the derivatives in the second
+                        parameter direction is to be calculated from the
+                        left or from the right:
+                               \end{minipg2}\\[0.3ex]
+                      \>\>\>\> $<0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the left hand side.
+                      \end{minipg5}\\[0.8ex]
+                      \>\>\>\> $\geq 0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the right hand side.
+                      \end{minipg5}\\[0.8ex]
+        \>\>    {\fov epar}\> - \>  \begin{minipg2}
+                    Parameter value at which to calculate. Dimension
+                       of {\fov epar} is 2.
+                               \end{minipg2}\\[0.8ex]
+\newpagetabs
+        \>Input/Output Arguments:\\
+        \>\>    {\fov ilfs}\> - \>  \begin{minipg2}
+                     Pointer to the interval in the knotvector
+                        in first parameter direction where {\fov epar}[0]
+                        is found. The relation
+                        \[
+                          et1[ilfs]\leq epar[0] < et1[ilfs+1],
+                        \]
+                        where {\fov et1} is the knotvektor, should hold.
+                        {\fov ilfs} is set equal to zero at the first call
+                        to the routine.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ilft}\> - \>  \begin{minipg2}
+                     Corresponding to {\fov ilfs} in the second parameter
+                        direction.
+                               \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov eder}\> - \>  \begin{minipg2}
+                     Array where the derivative of the curve in
+                       {\fov apar} is placed. The sequence is position,
+                       first derivative in first parameter direction,
+                       first derivative in second parameter direction,
+                       (2,0) derivative, (1,1) derivative, (0,2)
+                       derivative, etc. The expression
+                       \[
+                       idim*(1+2+...+(ider+1))
+                       \]
+                       gives the dimension of the {\fov eder} array.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov enorm}\> - \>  \begin{minipg2}
+                     Normal of surface. Is calculated if $ider\geq 1$.
+                       Dimension is {\fov idim}. The normal is not normalized.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>\>      $= 2$ : \>
+                                \begin{minipg5}
+                                  Surface is degenerate at the point,
+                                  normal has zero length.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 1$ : \>
+                                \begin{minipg5}
+                                  Surface is close to degenerate at the
+                                  point. Angle between tangents is less
+                                  than the angular tolerance.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 0$ : \>      Ok.\\
+                \>\>\>\>\>      $< 0$ : \>      Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf    \>  *{\fov ps1};\\
+        \>\>    int    \>  {\fov ider} = 1;\\
+        \>\>    int    \>  {\fov iside1};\\
+        \>\>    int    \>  {\fov iside2};\\
+        \>\>    double \>  {\fov epar}[2];\\
+        \>\>    int    \>  {\fov ilfs} = 0;\\
+        \>\>    int    \>  {\fov ilft} = 0;\\
+        \>\>    double \>  {\fov eder}[9];\\
+        \>\>    double \>  {\fov enorm}[3];\\
+        \>\>    int    \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1422(\begin{minipg4}
+          {\fov ps1}, {\fov ider}, {\fov iside1}, {\fov iside2}, {\fov epar}, \&{\fov ilfs}, \&{\fov ilft}, {\fov eder}, {\fov enorm}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

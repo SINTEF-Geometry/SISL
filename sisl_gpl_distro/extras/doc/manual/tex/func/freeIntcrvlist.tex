@@ -1,0 +1,38 @@
+\subsection{Free a list of intersection curves.}
+\funclabel{freeIntcrvlist}
+\begin{minipg1}
+      Free a list of SISLIntcurve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void freeIntcrvlist(\begin{minipg3}
+            {\fov vilist}, {\fov icrv})
+                \end{minipg3}\\
+                \>\>    SISLIntcurve **{\fov vilist};\\
+                \>\>    int    \>  {\fov icrv};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov vilist}\> - \>  \begin{minipg2}
+                     Array of pointers to pointers to instance
+                           of Intcurve.
+                               \end{minipg2}\\
+        \>\>    {\fov icrv}\> - \>  \begin{minipg2}
+                     number of SISLIntcurves in the list.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov None}\> - \>  \begin{minipg2}
+                None.
+                               \end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+
+                \>\>    SISLIntcurve **{\fov vilist};\\
+                \>\>    int    \>  {\fov icrv};\\                \>\>    \ldots \\
+        \>\>freeIntcrvlist(\begin{minipg4}
+            {\fov vilist}, {\fov icrv});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

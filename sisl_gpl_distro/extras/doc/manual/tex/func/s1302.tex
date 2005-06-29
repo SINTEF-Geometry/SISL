@@ -1,0 +1,73 @@
+\subsection{Compute a rotational swept surface.}
+\funclabel{s1302}
+\begin{minipg1}
+  To create a rotational swept surface by rotating a curve
+  a given angle around the axis defined by {\fov point}[\,] and
+  {\fov axis}[\,].
+  The maximal deviation allowed between the true rotational surface and the
+  generated surface, is {\fov epsge}.
+  If {\fov epsge} is set to 0, a NURBS surface is generated and if
+  $epsge >0$, a B-spline surface is generated.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1302(\begin{minipg3}
+                        {\fov curve}, {\fov epsge}, {\fov angle}, {\fov point}, {\fov axis}, {\fov surf}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov angle};\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    double  \>      {\fov axis}[\,];\\
+                \>\>    SISLSurf        \>      **{\fov surf};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> \begin{minipg2}
+                                Pointer to the curve that is to be rotated.
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}    \> - \> \begin{minipg2}
+                                Maximal deviation allowed between the true rotational
+                                surface and the generated surface.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov angle}    \> - \> \begin{minipg2}
+                        The rotational angle. The angle is counterclockwise around axis. If the absolute
+                        value of the angle is greater than $2\pi$ then a rotational surface that is
+                        closed in the rotation direction is made.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov point}    \> - \> \begin{minipg2}
+                                Point on the rotational axis.
+                                \end{minipg2} \\
+        \>\>    {\fov axis}     \> - \> \begin{minipg2}
+                                Direction of rotational axis.
+                                \end{minipg2} \\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov surf}     \> - \> \begin{minipg2}
+                                        Pointer to the produced surface.
+                                        This will be a NURBS (i.e.\
+                                        rational) surface if $epsge=0$
+                                        and a \mbox{B-spline} (i.e.\
+                                        non-rational) surface if $epsge>0$.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $>0$    : warning\\
+                \>\>\>\>\>              $=0$    : ok\\
+                \>\>\>\>\>              $<0$    : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov angle};\\
+                \>\>    double  \>      {\fov point}[3];\\
+                \>\>    double  \>      {\fov axis}[3];\\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>    s1302(\begin{minipg4}
+                        {\fov curve}, {\fov epsge}, {\fov angle}, {\fov point}, {\fov axis}, \&{\fov surf}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots\\
+                \>      \}
+\end{tabbing}

@@ -1,0 +1,86 @@
+\chapter{Preface}
+\section{A word of welcome}
+Welcome to the SISL 4.4 user's guide!  This document is written to make you able to use
+the powerful routines of SISL in as short time as possible.  SISL stands for
+\emph{\textbf{Si}ntef \textbf{S}pline \textbf{L}ibrary}, and has been gradually 
+developed and enhanced for more than two decades by the geometry group at SINTEF in Oslo.
+Although it is very comprehensive, its organisation is simple.  There are but a 
+few structures, and its nearly four hundred main functions can usually be employed
+directly and individually.  The SISL 4.4 distribution comes with a comprehensive
+reference manual, which organises and explains the main routines.  However, much of this
+information can also be found directly in the code in the form of commentaries.
+
+The complete software package you have in your hands should contain the following:
+\begin{itemize}
+\item The SISL 4.4 distribution and reference guide
+\item The User's Guide (the document you are reading now)
+\item Supplementary routines for writing SISL objects to streams (including file 
+streams) in a simple ASCII format called \textbf{\verb/Go/} (\textbf{G}eometric
+\textbf{O}bject)
+\item A selection of \emph{sample programs}, designed to demonstrate functionalities
+and use of SISL
+\item Source code for a \emph{viewer} that can be used to view geometric objects stored
+in the \verb/Go/-format.  This allows visual inspection of SISL-generated curves
+and surfaces, as well as points
+\end{itemize}
+
+\section{The structure of this document}
+\textbf{Chapter 2} is a general introduction to SISL and its programming style.  Since
+it is strongly recommended that the user has some general knowledge of splines, this 
+chapter also contains a couple of sections introducing the subject of spline curves and
+surfaces.  The text in chapter 2 can also be found in the SISL 4.4 reference guide.\\
+\\
+\textbf{Chapter 3} goes through the provided sample programs and explain what these do,
+and what the user can expect to learn from them.  There are a total of 15 sample 
+programs, ranging from very basic to intermediate complexity.\\
+\\
+The goal of \textbf{Chapter 4} is to explain the use of the \emph{viewer program}, 
+which is a small but handy tool for visually inspecting results from SISL routines.\\
+\\
+Finally there is an \textbf{annex}, citing the text of the General Public License.
+
+\section{The structure of the software package}\label{compile}
+There are five directories:
+\begin{itemize}
+\item \textbf{\verb-sisl/-} - the source code of the 4.4 release of SISL
+\item \textbf{\verb-doc/-} - documentation (reference manual and user's guide)
+\item \textbf{\verb-streaming/-} - source code for the routines that can read and write
+SISL objects to a stream
+\item \textbf{\verb-examples/-} - sample programs making use of the SISL 4.4 source code
+\item \textbf{\verb-viewer/-} - source code for a viewer that can be used to view SISL 
+objects saved in the \verb/Go/-format
+\end{itemize}
+
+\subsubsection{Compiling libraries and example programs}
+Each of these directories, with the exception of \verb-doc/-, contains a Makefile, which
+can be used to compile the code in that directory.  The programs in the \verb-examples/-
+directory links with libraries generated from \verb-sisl\_4.4/- and \verb-streaming/-, so
+these should be compiled first.
+In order to compile the source code, this is what you should do:
+\begin{itemize}
+\item To compile \emph{SISL 4.4}, enter the \verb-sisl_4.4/- directory and type
+      '\verb-make lib-' .
+\item To compile \emph{the streaming routines}, enter the \verb-streaming- directory and type
+      '\verb-make lib-' .
+\item To compile an \emph{example program}, enter the \verb-examples/- directory and type
+      '\verb-make exampleXX-', where \verb-XX- is a number from 01 to 15.  In order to 
+      link successfully, make sure you have already compiled the streaming routines as well
+      as SISL 4.4.
+\item To compile the \emph{viewer}, enter the \verb-viewer/- directory and type 
+      '\verb-make viewer-'.
+\end{itemize}
+By default, the files will be compiled in optimized mode.  If you want to compile in 
+non-optimized mode, you should add the argument \verb-OPT_TAG=nopt- to your command line.
+
+\section{Licensing information}
+SISL is distibuted under the \emph{General Public License} (GPL).  The license text 
+is given in its entirety as an annex to this document.  Commercial licenses are also
+available from SINTEF.  You can contact Tor Dokken (tor.dokken@sintef.no) for more
+information.
+
+%% *what is included in this distibution
+%% *explain chapters
+%% *the manual
+%% *licensing information
+%% *compilation
+%% *the object viewer

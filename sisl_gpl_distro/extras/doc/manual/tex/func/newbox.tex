@@ -1,0 +1,37 @@
+\subsection{Create and initialize a curve/surface bounding box instance.}
+\funclabel{newbox}
+\begin{minipg1}
+Create and initialize a curve/surface bounding box instance.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>SISLbox *newbox(\begin{minipg3}
+          {\fov idim})
+        \end{minipg3}\\
+        \>\>    int \> {\fov idim};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov idim}\> - \>
+        \begin{minipg2}
+          Dimension of geometry space.
+        \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newbox}\> - \>
+        \begin{minipg2}
+          Pointer to new SISLbox structure. If it is
+          impossible to allocate space for the structure,
+          newbox will return a NULL value.
+        \end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>int   \> {\fov idim};\\
+        \>\>SISLbox *{\fov box};\\
+        \>\>    \ldots \\
+        \>\>{\fov box} = newbox(\begin{minipg4}
+          {\fov idim});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

@@ -1,0 +1,37 @@
+\subsection{Shade a polygon.}
+\funclabel{s6shadepol}
+\begin{minipg1}
+	Shade a polygon using Gouraud shading.
+	The polygon is represented by a sequence of points 
+	(vertices) and a normal to each point. 
+	Only for dimension equal to 3.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s6shadepol(\begin{minipg3}
+		{\fov points}, {\fov numpoints})
+		\end{minipg3}\\[0.3ex]
+  		\>\>	double \>	{\fov points}[\,];\\
+  		\>\>	int    \>	{\fov numpoints};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov points}	\> - \> \begin{minipg2}
+				Points and normals stored in sequence. 
+				ie. $(x_{0},y_{0},z_{0},x^n_{0},y^n_{0},z^n_{0},
+				x_{1},y_{1},z_{1},x^n_{1},y^n_{1},z^n_{1},\ldots)$
+				\end{minipg2}\\
+	\>\>	{\fov numpoints}\> - \> \begin{minipg2}
+				Number of points in the sequence.
+				\end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+  		\>\>	double \>	{\fov points[24]};\\
+  		\>\>	int    \>	{\fov numpoints = 4};\\
+		\>\> \ldots \\
+	\>\>s6shadepol(\begin{minipg4}
+		{\fov points}, {\fov numpoints})
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

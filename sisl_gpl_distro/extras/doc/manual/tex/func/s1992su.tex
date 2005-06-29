@@ -1,0 +1,51 @@
+\subsection{Create and compute bounding box to a surface.}
+\funclabel{s1992su}
+\begin{minipg7}
+		Make a box from the control polygon of the surface given by
+              	ecoef. If dimension is 2 then one
+	       	box rotated 45 degrees is also made. If dimension
+	       	is 3 then boxes rotated 45 degrees around each
+	       	main axis are made. The min/max values of the boxes are placed in the SISLbox element pointed to by pbox in the surface object.
+\end{minipg7} \\ \\
+SYNOPSIS\\
+	\>void s1992su(\begin{minipg3}
+		{\fov surf}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLSurf 	\>	*{\fov surf};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\newpagetabs
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}	\> - \>	Input surface.\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+  		\>\>	SISLSurf    \>	*{\fov surf} = NULL;\\
+  		\>\>	int    \>	{\fov number}1=5;\\
+  		\>\>	int    \>	{\fov number}2=4;\\
+  		\>\>	int    \>	{\fov order}1=4;\\
+  		\>\>	int    \>	{\fov order}2=3;\\
+  		\>\>	double \>	{\fov knot1[9]};\\
+  		\>\>	double \>	{\fov knot2[7]};\\
+  		\>\>	double \>	{\fov coef[60]};\\
+  		\>\>	int    \>	{\fov kind} = 1;\\
+  		\>\>	int    \>	{\fov dim} = 3;\\
+  		\>\>	int    \>	{\fov copy} = 0;\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>surf$=$newSurf(\begin{minipg4}
+	{\fov number1}, {\fov number2}, {\fov order1}, {\fov order2}, {\fov knot1}, {\fov knot2},\\ {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+	\>\>s1992su(\begin{minipg4}
+		{\fov surf}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

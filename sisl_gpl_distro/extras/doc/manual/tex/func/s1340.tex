@@ -1,0 +1,88 @@
+\subsection{Data reduction: B-spline curve as input.}
+\funclabel{s1340}
+\begin{minipg1}
+  To remove knots from a B-spline (i.e.\ NOT rational) curve, and
+  calculate an approximation to the original spline from the reduced
+  spline space.
+  The output is represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1340(\begin{minipg3}
+                {\fov oldcurve}, {\fov eps}, {\fov startfix}, {\fov endfix}, {\fov epsco}, {\fov itmax},
+                {\fov newcurve}, {\fov maxerr}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov eps}[\,];\\
+                \>\>    int     \>      {\fov startfix};\\
+                \>\>    int     \>      {\fov endfix};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    double  \>      {\fov maxerr}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov oldcurve}\> - \>  Pointer to the original B-spline
+                                        curve.\\
+        \>\>    {\fov eps}      \> - \> \begin{minipg2}
+                                Array (length dim) giving the desired accuracy of
+                                the spline-approximation in each component.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov startfix}\> - \>  \begin{minipg2}
+                                The no. of derivatives that are not allowed to
+                                change at the left end of the curve. The (0 -
+                                (startfix-1)) derivatives will be kept fixed. If startfix
+                                $<$0, this routine will set it to 0. If startfix$>$the curve order, this
+                                routine will set it to the curve order.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov endfix}   \> - \> \begin{minipg2}
+                                The number of derivatives that are not allowed to
+                                change at the right end of the curve. All the derivatives up to order endfix-1 will be kept fixed. If endfix
+                                $<$0, this routine will set it to 0. If endfix$>$the curve order, this
+                                routine will set it to the curve order.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsco}    \> - \> \begin{minipg2}
+                                Two numbers differing by a relative amount
+                                $<$epsco, will in some cases be considered equal. A
+                                suitable value is just above the unit roundoff of the
+                                machine. The computations are not guaranteed to
+                                have relative accuracy less than
+                                epsco. Not used anymore.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov itmax}    \> - \> Max. no. of iterations.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>  Pointer to the new B-spline curve.\\
+        \>\>    {\fov maxerr}   \> - \> \begin{minipg2}
+                                Array (length dim)
+                                contains an upper bound
+                                for the  maximum
+                                pointwise error in each of the components
+                                of the spline approximation. E.g.
+                                for dim$=$3 $(x_{max},y_{max},z_{max})$.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov eps}[3];\\
+                \>\>    int     \>      {\fov startfix};\\
+                \>\>    int     \>      {\fov endfix};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    double  \>      {\fov maxerr}[3];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1340(\begin{minipg4}
+                {\fov oldcurve}, {\fov eps}, {\fov startfix}, {\fov endfix}, {\fov epsco}, {\fov itmax},
+                \&{\fov newcurve},\\ {\fov maxerr}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

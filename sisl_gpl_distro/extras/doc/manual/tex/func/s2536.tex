@@ -1,0 +1,92 @@
+\subsection{Mehlum curvature of a B-spline or NURBS 
+            surface as a NURBS surface.}
+\funclabel{s2536}
+\begin{minipg1}
+To interpolate or approximate the Mehlum curvature of a B-spline or NURBS 
+            surface by a NURBS surface. 
+            The desired continuity of the Mehlum curvature surface is
+            input and this may lead to a patchwork of output surfaces. 
+            Interpolation results in a high order surface.
+            If the original surface is a B-spline surface of order $k$,
+            the result is of order $12k-17$, in the NURBS case,
+            order $48k-53$.
+            To avoid instability beacuse of this, a maximum order is
+            applied. This may lead to an approximation rather than
+            an interpolation.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s2536(\begin{minipg3}
+            {\fov surf}, {\fov u\_continuity}, {\fov v\_continuity}, {\fov u\_surfnumb}, 
+	    {\fov v\_surfnumb}, {\fov mehlum\_surf}, {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    int    \>  {\fov u\_continuity};\\
+                \>\>    int    \>  {\fov v\_continuity};\\
+                \>\>    int    \>  *{\fov u\_surfnumb};\\
+                \>\>    int    \>  *{\fov v\_surfnumb};\\
+                \>\>    SISLSurf \> ***{\fov mehlum\_surf};\\
+                \>\>    int    \>  *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>  \begin{minipg2}
+                     The original surface.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov u\_continuity}\> - \>  \begin{minipg2}
+                     Desired continuity of the Mehlum curvature surfaces
+                          in the u direction: $0$ implies positional continuity,
+                          $1$ implies tangential continuity, and so on.
+                          SISL only accepts surfaces of continuity 0 or higher.
+                          If the surface is to be intersected with another,
+                          the continuity must be 1 or higher to find all the
+                          intersection curves.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov v\_continuity}\> - \>  \begin{minipg2}
+                     Desired continuity of the Mehlum curvature surfaces
+                          in the v direction: $0$ implies positional continuity,
+                          $1$ implies tangential continuity, and so on.
+                          SISL only accepts surfaces of continuity 0 or higher.
+                          If the surface is to be intersected with another,
+                          the continuity must be 1 or higher to find all the
+                          intersection curves.
+                               \end{minipg2}\\[0.8ex]
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov u\_surfnumb}\> - \>  \begin{minipg2}
+                     Number of Mehlum curvature surface patches
+                          in the u direction.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov v\_surfnumb}\> - \>  \begin{minipg2}
+                     Number of Mehlum curvature surface patches
+                          in the v direction.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov mehlum\_surf}\> - \>  \begin{minipg2}
+                     The Mehlum curvature interpolation surfaces.
+                          This will be a pointer to an array of length
+                          {\fov u\_surfnum} * {\fov v\_surfnumb} of
+                          SISLSurf pointers, where the indexing runs
+                          fastest in the u direction.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>   $> 0$  \> : Warning.\\
+                \>\>\>\>   $= 2$  \> : The surface is degenerate.\\
+                \>\>\>\>   $= 0$  \> : Ok.\\
+                \>\>\>\>   $< 0$  \> : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    int    \>  {\fov u\_continuity};\\
+                \>\>    int    \>  {\fov v\_continuity};\\
+                \>\>    int    \>  *{\fov u\_surfnumb};\\
+                \>\>    int    \>  *{\fov v\_surfnumb};\\
+                \>\>    SISLSurf \> ***{\fov mehlum\_surf};\\
+                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s2536(\begin{minipg4}
+            {\fov surf},  {\fov u\_continuity},  {\fov v\_continuity},  {\fov u\_surfnumb}, 
+	    {\fov v\_surfnumb}, {\fov mehlum\_surf}, {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

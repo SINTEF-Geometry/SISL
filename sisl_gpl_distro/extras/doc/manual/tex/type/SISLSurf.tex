@@ -1,0 +1,80 @@
+\typelabel{SISLSurf}
+  \>int         \>{\fov ik1};    \>\>Order of surface in first parameter direction.     \\
+  \>int         \>{\fov ik2};    \>\>Order of surface in second parameter direction.    \\
+  \>int         \>{\fov in1};    \>\>Number of coefficients in first parameter direction.  \\
+  \>int         \>{\fov in2};    \>\>Number of coefficients in second parameter direction. \\
+  \>double      \>*{\fov et1};   \>\>Pointer to knot vector in first parameter direction.  \\
+  \>double      \>*{\fov et2};   \>\>Pointer to knot vector in second parameter direction. \\
+  \>double      \>*{\fov ecoef}; \>\>
+                \begin{minipg2}
+                  Pointer to array of non-rational coefficients of the
+                  surface, size $in1\times in2\times idim$.
+                \end{minipg2}\\[0.8ex]
+  \>double      \>*{\fov rcoef}; \>\>
+                \begin{minipg2}
+                  Pointer to the array of rational vertices and weights,
+                  size $in1\times in2\times (idim+1)$.
+                \end{minipg2}\\[0.8ex]
+  \>int         \>{\fov ikind};  \>\>Type of surface\\
+        \>\>\>\>     $= 1$ \>: Polynomial B-spline tensor-product surface.\\
+        \>\>\>\>     $= 2$ \>: Rational B-spline (nurbs) tensor-product surface.\\
+        \>\>\>\>     $= 3$ \>: Polynomial Bezier tensor-product surface.\\
+        \>\>\>\>     $= 4$ \>: Rational Bezier tensor-product surface.\\
+  \>int         \>{\fov idim};   \>\>Dimension of the space in which the
+                                        surface lies.  \\
+\newpagetabs
+  \>int         \>{\fov icopy};  \>\> \begin{minipg2}
+                                Indicates whether the arrays of the surface are
+                                allocated and copied or referenced
+                                when the surface was created.
+                                \end{minipg2}\\[0.8ex]
+        \>\>\>\>     $= 0$ \>: \begin{minipg5}
+                                 Pointer set to input arrays. The
+                                arrays are not deleted by freeSurf.
+                                \end{minipg5}\\[0.3ex]
+        \>\>\>\>     $= 1$ \>: \begin{minipg5}
+                                 Array allocated and copied. The
+                                arrays are deleted by freeSurf.
+                                \end{minipg5}\\[0.3ex]
+        \>\>\>\>     $= 2$ \>: \begin{minipg5}
+                                Pointer set to input arrays,
+                                but the arrays are to be treated
+                                as allocated and copied. The
+                                arrays are deleted by freeSurf.
+                                \end{minipg5}\\[0.8ex]
+  \>SISLdir     \>\hspace*{2em}*{\fov pdir}; \>\>\begin{minipg2}
+                        Pointer to a SISLdir object used for storing
+                        surface direction.
+                                \end{minipg2}\\[0.8ex]
+  \>SISLbox     \>\hspace*{2em}*{\fov pbox}; \>\>\begin{minipg2}
+                        Pointer to a SISLbox object used for storing the surrounded boxes.
+                                \end{minipg2}\\[0.8ex]
+  \>int         \>{\fov cuopen\_1}; \>\>
+                \begin{minipg2}
+                  Open/closed/periodic flag for the first parameter direction.
+                \end{minipg2}\\[0.8ex]
+        \>\>\>\>     $=-1$ \>: \begin{minipg5}
+                                Closed curve with periodic (cyclic)
+                                parameterization and overlapping
+                                end vertices.
+                                   \end{minipg5}\\[0.8ex]
+        \>\>\>\>     $=0$ \>: \begin{minipg5}
+                                Closed curve with k-tuple end knots and
+                                coinciding start/end vertices.
+                                  \end{minipg5}\\[0.8ex]
+        \>\>\>\>     $=1$ \>: Open curve (default).\\[0.3ex]
+  \>int         \>{\fov cuopen\_2}; \>\>
+                \begin{minipg2}
+                  Open/closed/periodic flag for the second parameter direction.
+                \end{minipg2}\\[0.8ex]
+        \>\>\>\>     $=-1$ \>: \begin{minipg5}
+                                Closed curve with periodic (cyclic)
+                                parameterization and overlapping
+                                end vertices.
+                                   \end{minipg5}\\[0.8ex]
+        \>\>\>\>     $=0$ \>: \begin{minipg5}
+                                Closed curve with k-tuple end knots and
+                                coinciding start/end vertices.
+                                  \end{minipg5}\\[0.8ex]
+        \>\>\>\>     $=1$ \>: Open curve (default).\\
+\end{tabbing}

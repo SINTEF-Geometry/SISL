@@ -1,0 +1,57 @@
+\subsection{Compute a linear swept surface.}
+\funclabel{s1332}
+\begin{minipg1}
+  To create a linear swept surface by making the tensor-product of two curves.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1332(\begin{minipg3}
+                                {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point}, {\fov surf}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    SISLSurf        \>      **{\fov surf};\\
+                \>\>    int     \>      *{\fov stat};\\
+
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> \begin{minipg2}
+                                Pointer to curve 1.
+                                \end{minipg2}\\
+        \>\>    {\fov curve2}   \> - \> \begin{minipg2}
+                                Pointer to curve 2.
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Maximal deviation allowed between the true swept
+                                surface and the generated surface.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov point}    \> - \> \begin{minipg2}
+                Point near the curve to sweep along. The vertices of the new surface are made by adding the vector from point to each of the vertices on the sweep curve, to each of the vertices on the other curve.
+                                \end{minipg2} \\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov surf}     \> - \> \begin{minipg2}
+                                Pointer to the surface produced.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $>0$    : warning\\
+                \>\>\>\>\>              $=0$    : ok\\
+                \>\>\>\>\>              $<0$    : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    curve   \>      *{\fov curve1};\\
+                \>\>    curve   \>       *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov point}[3];\\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1332(\begin{minipg4}
+                {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point}, \&{\fov surf}, \&{\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

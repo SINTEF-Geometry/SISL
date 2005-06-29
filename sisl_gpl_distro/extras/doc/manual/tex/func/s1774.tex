@@ -1,0 +1,77 @@
+\subsection{Local iteration to closest point between point and curve.}
+\funclabel{s1774}
+\begin{minipg1}
+Newton iteration on the distance function between
+               a curve and a point, to find a closest point or an
+               intersection point.
+               If a bad choice for the guess parameter is given in, the
+               iteration may end at a local, not global closest point.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1774(\begin{minipg3}
+            {\fov crv},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov start},  {\fov end},  {\fov guess},  {\fov clpar},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLCurve \> *{\fov crv};\\
+                \>\>    double \> {\fov point}[\,];\\
+                \>\>    int \> {\fov dim};\\
+                \>\>    double \> {\fov epsge};\\
+                \>\>    double \> {\fov start};\\
+                \>\>    double \> {\fov end};\\
+                \>\>    double \> {\fov guess};\\
+                \>\>    double \> *{\fov clpar};\\
+                \>\>    int \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov crv}\> - \>  \begin{minipg2}
+                     The curve in the closest point problem.
+                               \end{minipg2}\\
+        \>\>    {\fov point}\> - \>  \begin{minipg2}
+                     The point in the closest point problem.
+                               \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>  \begin{minipg2}
+                     Dimension of the geometry.
+                               \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>  \begin{minipg2}
+                     Geometrical resolution.
+                               \end{minipg2}\\
+        \>\>    {\fov start}\> - \>  \begin{minipg2}
+                     Curve parameter giving the start of the search
+                        interval.
+                               \end{minipg2}\\
+        \>\>    {\fov end}\> - \>  \begin{minipg2}
+                     Curve parameter giving the end of the search
+                        interval.
+                               \end{minipg2}\\
+        \>\>    {\fov guess}\> - \>  \begin{minipg2}
+                     Curve guess parameter for the closest point
+                        iteration.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov clpar}\> - \>  \begin{minipg2}
+                     Resulting curve parameter from the iteration.
+                               \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : A minimum distance found.\\
+                \>\>\>\>\>              $= 0$   : Intersection found.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve \> *{\fov crv};\\
+                \>\>    double \> {\fov point}[\,];\\
+                \>\>    int \> {\fov dim};\\
+                \>\>    double \> {\fov epsge};\\
+                \>\>    double \> {\fov start};\\
+                \>\>    double \> {\fov end};\\
+                \>\>    double \> {\fov guess};\\
+                \>\>    double \> *{\fov clpar};\\
+                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s1774(\begin{minipg4}
+            {\fov crv},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov start},  {\fov end},  {\fov guess},  {\fov clpar},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

@@ -1,0 +1,130 @@
+\subsection{March a circular silhouette curve of a surface.}
+\funclabel{s1515}
+\begin{minipg1}
+  To march the circular silhouette curve described by an intersection
+  curve object, a surface, point Q and direction B
+  i.e.\ solution of  $f(u,v)=N(u,v)\times (P(u,v)-Q)\cdot B$.\\
+  The generated geometric curves are represented as B-spline curves.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1515(\begin{minipg3}
+          {\fov ps1},  {\fov qpoint},  {\fov bvec},  {\fov idim},  {\fov aepsco},  {\fov aepsge},  {\fov amax},  {\fov pintcr},  {\fov icur},  {\fov igraph},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov ps1};\\
+        \>\>    double   \> {\fov qpoint}[\,];\\
+        \>\>    double   \> {\fov bvec}[\,];\\
+        \>\>    int      \> {\fov idim};\\
+        \>\>    double   \> {\fov aepsco};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    double   \> {\fov amax};\\
+        \>\>    SISLIntcurve \> *{\fov pintcr};\\
+        \>\>    int      \> {\fov icur};\\
+        \>\>    int      \> {\fov igraph};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps1}\> - \>  \begin{minipg2}
+                     Pointer to surface.
+                               \end{minipg2}\\
+        \>\>    {\fov qpoint}\> - \>  \begin{minipg2}
+                     Point Q for circular silhouette.
+                               \end{minipg2}\\
+        \>\>    {\fov bvec}\> - \>  \begin{minipg2}
+                     Direction B for circular silhouette.
+                               \end{minipg2}\\
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                     Dimension of the space in which Q lies.
+                               \end{minipg2}\\
+        \>\>    {\fov aepsco}\> - \>  \begin{minipg2}
+                     Computational resolution (not used).
+                               \end{minipg2}\\
+        \>\>    {\fov aepsge}\> - \>  \begin{minipg2}
+                     Geometry resolution.
+                               \end{minipg2}\\
+        \>\>    {\fov amax}\> - \>  \begin{minipg2}
+                     Maximal allowed step length. If $amax\leq aepsge$
+                       {\fov amax} is neglected.
+                               \end{minipg2}\\
+        \>\>    {\fov icur}\> - \>  \begin{minipg2}
+                    Indicator telling if a 3D curve is to be made.
+                               \end{minipg2}\\
+                    \>\>\>\>\> $= 0$ \> : Don't make 3D curve.\\
+                    \>\>\>\>\> $= 1$ \> : Make 3D curve.\\
+                    \>\>\>\>\> $= 2$ \> : \begin{minipg5}
+                                            Make 3D curve and curves in
+                                            the parameter plane.
+                                          \end{minipg5}\\[0.8ex]
+        \>\>    {\fov igraph}\> - \>  \begin{minipg2}
+                     Indicator telling if the curve is to be output
+                       through function calls:\\
+                               \end{minipg2}\\
+                    \>\>\>\>\> $= 0$ \> : \begin{minipg5}
+                                            Don't output curve through
+                                            function call.
+                                          \end{minipg5}\\[0.3ex]
+                    \>\>\>\>\> $= 0$ \> : \begin{minipg5}
+                                             Output as straight line
+                                             segments through s6move()
+                                             and s6line().
+                                          \end{minipg5}\\[0.8ex]
+\newpagetabs
+        \>Input/Output Arguments:\\
+        \>\>    {\fov pintcr}\> - \>
+        \begin{minipg2}
+          The intersection curve. When coming in as input
+          only parameter values in the parameter plane
+          exist. When coming as output the 3-D geometry
+          and possibly the curve in the parameter plane
+          of the surface is added.
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+        \>\>\>\> $= 3$ \>\> :
+                \begin{minipg5}
+                  Iteration stopped due to singular
+                  point or degenerate surface. A part
+                  of intersection curve may have been
+                  traced out. If no curve is traced out
+                  the curve pointers in the Intcurve
+                  object point to NULL.
+                \end{minipg5}\\[0.8ex]
+        \>\>\>\> $> 0$ \>\> : Warning.\\
+        \>\>\>\> $= 0$ \>\> : Ok.\\
+        \>\>\>\> $< 0$ \>\> : Error.\\
+        \>\>\>\> $= -185$ \>\> :
+        \begin{minipg5}
+          No points produced on intersection curve.
+        \end{minipg5}\\[0.8ex]
+\\
+NOTE\\
+\>      \begin{minipg6}
+If the draw option is used the empty dummy functions s6move() and
+s6line() are called.
+Thus if the draw option is used, make sure
+you have versions of s6move() and s6line() interfaced to your graphic package.
+More about s6move() and s6line() on pages~\pageref{s6move}
+and~\pageref{s6line}.
+\end{minipg6}\\
+\\ %\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps1};\\
+        \>\>    double   \> {\fov qpoint}[3];\\
+        \>\>    double   \> {\fov bvec}[3];\\
+        \>\>    int      \> {\fov idim};\\
+        \>\>    double   \> {\fov aepsco};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    double   \> {\fov amax};\\
+        \>\>    SISLIntcurve \> *{\fov pintcr};\\
+        \>\>    int      \> {\fov icur};\\
+        \>\>    int      \> {\fov igraph};\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \> s1515(\begin{minipg4}
+          {\fov ps1},  {\fov qpoint},  {\fov bvec},  {\fov idim},  {\fov aepsco},  {\fov aepsge},  {\fov amax},  {\fov pintcr},  {\fov icur},  {\fov igraph}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

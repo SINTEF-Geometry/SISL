@@ -1,0 +1,110 @@
+\subsection{March an intersection curve between two surfaces.}
+\funclabel{s1310}
+\begin{minipg1}
+  To march an intersection curve between two surfaces.
+  The intersection curve is described by guide parameter pairs stored in
+  an intersection curve object.
+  The guide points are expected to be found by s1859() described on
+  page \pageref{s1859}.
+  The generated geometric curves are represented as B-spline curves.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1310(\begin{minipg3}
+                        {\fov surf1}, {\fov surf2}, {\fov intcurve}, {\fov epsge}, {\fov maxstep}, {\fov makecurv}, {\fov graphic}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf1};\\
+                \>\>    SISLSurf        \>      *{\fov surf2};\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep};\\
+                \>\>    int     \>      {\fov makecurv};\\
+                \>\>    int     \>      {\fov graphic};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf1}\> - \>     \begin{minipg2}
+                                Pointer to the first surface.
+                                \end{minipg2}\\
+        \>\>    {\fov surf2}\> - \>     \begin{minipg2}
+                                Pointer to the second surface.
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2} \\
+        \>\>    {\fov maxstep}\> - \>   \begin{minipg2}
+                                Maximum step length. If maxstep$\leq$0, maxstep is ignored.
+                                maxstep = 0.0 is recommended.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov makecurv}\> - \>  \begin{minipg2}
+                                Indicator specifying if a geometric curve is to be made:
+                                \end{minipg2}\\
+                \>\>\>\>\>      0 -     \>Do not make curves at all\\
+                \>\>\>\>\>      1 -     \>Make only a geometric curve.\\
+                \>\>\>\>\>      2 -     \>\begin{minipg5}
+                                        Make geometric curve and curves in the parameter
+                                        planes
+                                        \end{minipg5} \\[0.3ex]
+        \>\>    {\fov graphic}\> - \>   \begin{minipg2}
+                                Indicator specifying if the function
+                                should draw the geometric curve:
+                                \end{minipg2}\\
+                \>\>\>\>\>      0 -     \>Don't draw the curve\\
+                \>\>\>\>\>      1 -     \>\begin{minipg5}
+                                        Draw the geometric curve. If this option
+                                        is used see NOTE!
+                                        \end{minipg5} \\[0.8ex]
+\\ %\newpagetabs
+        \>Input/Output Arguments:\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                                Pointer to the intersection curve.
+                                As input only
+                                guide points (points in parameter space)
+                                exist. These guide points
+                                are used for guiding the marching.
+                                The routine adds
+                                intersection curve and curves in the parameter
+                                planes to the SISLIntcurve object, according to the value
+                                of makecurv.
+                                \end{minipg2}\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $= 3$ : \>      \begin{minipg5}
+                                                        Iteration stopped due to singular
+                                                        point or degenerate surface. A part of an
+                                                        intersection curve may have been
+                                                        traced out. If no curve is traced out,
+                                                        the curve pointers in the SISLIntcurve
+                                                        object point to NULL.
+                                                        \end{minipg5} \\[0.3ex]
+                \>\>\>\>\>              $= 0$ : \>       ok\\
+                \>\>\>\>\>              $< 0$ : \>       error\\
+\\
+NOTE\\
+\>      \begin{minipg6}
+If the draw option is used the empty dummy functions s6move() and
+s6line() are called.
+Thus if the draw option is used, make sure
+you have versions of s6move() and s6line() interfaced to your graphic package.
+More about s6move() and s6line() on pages~\pageref{s6move}
+and~\pageref{s6line}.
+\end{minipg6}\\ \\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf1};\\
+                \>\>    SISLSurf        \>      *{\fov surf2};\\
+                \>\>    SISLIntcurve \> *{\fov intcurve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep};\\
+                \>\>    int     \>      {\fov makecurv};\\
+                \>\>    int     \>      {\fov graphic};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
+                \>\>    \ldots \\
+        \>\>s1310(\begin{minipg4}
+                {\fov surf1}, {\fov surf2}, {\fov intcurve}, {\fov epsge}, {\fov maxstep}, {\fov makecurv}, {\fov graphic}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

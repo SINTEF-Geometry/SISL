@@ -1,0 +1,56 @@
+\subsection{Convert a curve of order up to four, to a sequence of cubic polynomials.}
+\funclabel{s1389}
+\begin{minipg1}
+  Convert a curve of order up to 4 to a sequence of non-rational cubic
+  segments with uniform parameterization.
+\end{minipg1} \\
+SYNOPSIS\\
+        \>void s1389(\begin{minipg3}
+                                {\fov curve}, {\fov cubic}, {\fov numcubic}, {\fov dim}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      **{\fov cubic};\\
+                \>\>    int     \>      *{\fov numcubic};\\
+                \>\>    int     \>      *{\fov dim};\\
+                \>\>    int     \>      *{\fov stat};\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> \begin{minipg2}
+                                Pointer to the curve that is to be converted
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov cubic}    \> - \> \begin{minipg2}
+                                Array containing the sequence of cubic segments.
+                                Each segment is represented by the start point,
+                                followed by the start tangent, end point and end
+                                tangent. Each segment needs 4*dim doubles for storage.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numcubic}\> - \>  \begin{minipg2}
+                                Number of elements of length
+                                (4*dim) in the array cubic
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the geometric space.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $> 0$   :\>\begin{minipg5}
+                                                warning
+                                        \end{minipg5}\\
+                \>\>\>\>\>      $= 0$   :\> ok\\
+                \>\>\>\>\>      $< 0$   :\> error\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      *{\fov cubic};\\
+                \>\>    int     \>      {\fov numcubic};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1389(\begin{minipg4}
+                {\fov curve}, \&{\fov cubic}, \&{\fov numcubic}, \&{\fov dim},
+                 \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

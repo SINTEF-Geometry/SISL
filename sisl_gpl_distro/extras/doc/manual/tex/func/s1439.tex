@@ -1,0 +1,50 @@
+\subsection{Pick a curve along a constant parameter line in a surface.}
+\funclabel{s1439}
+\begin{minipg1}
+  Make a constant parameter curve along a given parameter direction in a surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1439(\begin{minipg3}
+          {\fov ps1}, {\fov apar}, {\fov idirec}, {\fov rcurve}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov ps1};\\
+        \>\>    double   \> {\fov apar};\\
+        \>\>    int      \> {\fov idirec};\\
+        \>\>    SISLCurve \> **{\fov rcurve};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps1}\> - \>  \begin{minipg2}
+                     Pointer to the surface.
+                               \end{minipg2}\\
+        \>\>    {\fov apar}\> - \>  \begin{minipg2}
+                     Parameter value to use when picking out constant
+                       parameter curve.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov idirec}\> - \>
+                     Parameter direction in which to pick (must be 1 or 2).\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rcurve}\> - \>  \begin{minipg2}
+                     Constant parameter curve.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat} \> - \> Status messages\\
+                \>\>\>\>\>           $> 0$ \> : Warning.\\
+                \>\>\>\>\>           $= 0$ \> : Ok.\\
+                \>\>\>\>\>           $< 0$ \> : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps1};\\
+        \>\>    double   \> {\fov apar};\\
+        \>\>    int      \> {\fov idirec};\\
+        \>\>    SISLCurve \> *{\fov rcurve} = NULL;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1439(\begin{minipg4}
+          {\fov ps1}, {\fov apar}, {\fov idirec}, \&{\fov rcurve}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

@@ -1,0 +1,34 @@
+\subsection{Basic graphics routine template - move plotting position.}
+\funclabel{s6move}
+\begin{minipg1}
+  Move the graphics plotting position to a 3D point.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s6move(\begin{minipg3}
+          {\fov point})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \>       {\fov point}[\,];\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov point}   \> - \> \begin{minipg2}
+                                A 3D point, i.e.\ $(x,y,z)$, to move the
+                                graphics plotting position to.
+                                \end{minipg2}\\[0.8ex]
+\\
+NOTE\\
+\>      \begin{minipg2}
+The functionality of s6move() is device dependent, so it is only an empty
+({\tt printf()} call) dummy routine. Before using it, make sure you have
+a version of s6move() interfaced to your graphic package.
+\end{minipg2} \\ \\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \>       {\fov point}[3];\\
+        \>\> \ldots \\
+        \>\>s6move(\begin{minipg4}
+          {\fov point})
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

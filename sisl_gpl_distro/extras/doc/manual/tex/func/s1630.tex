@@ -1,0 +1,68 @@
+\subsection{Compute a curve using the input points as
+controlling \mbox{vertices}, automatic parameterization.}
+\funclabel{s1630}
+\begin{minipg1}
+  To compute a curve using the input points as controlling
+  vertices. The distances between the points are used as
+  parametrization.
+  The output will be represented as a B-spline curve.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1630(\begin{minipg3}
+          {\fov epoint}, {\fov inbpnt}, {\fov astpar}, {\fov iopen}, {\fov idim}, {\fov ik}, {\fov rc}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\> double \>  {\fov epoint}[\,];\\
+        \>\> int    \>  {\fov inbpnt};\\
+        \>\> double \>  {\fov astpar};\\
+        \>\> int    \>  {\fov iopen};\\
+        \>\> int    \>  {\fov idim};\\
+        \>\> int    \>  {\fov ik};\\
+        \>\> SISLCurve \> **{\fov rc};\\
+        \>\> int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov epoint} \> - \>
+        \begin{minipg2}
+          The array containing the points to be used as
+          controlling vertices of the B-spline curve.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov inbpnt} \> - \> No. of points in epoint.\\
+        \>\>    {\fov astpar} \> - \>
+        \begin{minipg2}
+          Parameter value to be used at the start of the curve.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov iopen} \> - \>
+        \begin{minipg2}
+          Open/closed/periodic condition.
+        \end{minipg2}\\[0.8ex]
+            \>\>\>\> $=-1$ \> : Closed and periodic.\\
+            \>\>\>\> $=0$  \> : Closed.\\
+            \>\>\>\> $=1$  \> : Open.\\
+        \>\>    {\fov idim} \> - \> The dimension of the space.\\
+        \>\>    {\fov ik}   \> - \> The order of the spline curve to be produced.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rc} \> - \> Pointer to the B-spline curve.\\
+        \>\>    {\fov jstat}\> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov epoint}[30];\\
+        \>\>    int    \> {\fov inbpnt} = 10;\\
+        \>\>    double \> {\fov astpar} = 0.0;\\
+        \>\>    int    \> {\fov iopen} = 1;\\
+        \>\>    int    \> {\fov idim} = 3;\\
+        \>\>    int    \> {\fov ik} = 4;\\
+        \>\>    SISLCurve \> *{\fov rc} = NULL;\\
+        \>\>    int    \> {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1630(\begin{minipg4}
+          {\fov epoint}, {\fov inbpnt}, {\fov astpar}, {\fov iopen}, {\fov idim}, {\fov ik}, \&{\fov rc}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

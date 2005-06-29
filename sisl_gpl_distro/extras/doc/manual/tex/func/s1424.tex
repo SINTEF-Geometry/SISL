@@ -1,0 +1,105 @@
+\subsection{Compute the position and derivatives of a surface at a given
+parameter value pair.}
+\funclabel{s1424}
+\begin{minipg1}
+  Evaluate the surface the parameter value ({\fov parvalue}[0],
+  {\fov parvalue}[1]).
+  Compute the $der1\times der2$ first derivatives.
+  The derivatives that will be computed are $D^{i,j}$,
+  $i=0,1,\ldots,der1$, $j=0,1,...,der2$.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1424(\begin{minipg3}
+          {\fov surf}, {\fov der1}, {\fov der2}, {\fov parvalue}, {\fov leftknot1}, {\fov leftknot2}, {\fov derive}, {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf        \>      *{\fov surf};\\
+        \>\>    int     \>      {\fov der1};\\
+        \>\>    int     \>      {\fov der2};\\
+        \>\>    double  \>      {\fov parvalue}[\,];\\
+        \>\>    int     \>      *{\fov leftknot1};\\
+        \>\>    int     \>      *{\fov leftknot2};\\
+        \>\>    double  \>      {\fov derive}[\,];\\
+        \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the surface to evaluate.
+                                \end{minipg2}\\
+        \>\>    {\fov der1}\> - \>      \begin{minipg2}
+                                Number (order) of derivatives to be
+                                evaluated in
+                                first parameter direction, where $0\leq der1$.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov der2}\> - \>              \begin{minipg2}
+                                Number (order) of derivatives to be
+                                evaluated in
+                                second parameter direction, where $0\leq
+                                der2$.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov parvalue}\> - \>          \begin{minipg2}
+                                Parameter-value at which to evaluate. The dimension
+                                of {\fov parvalue} is 2.
+                                \end{minipg2}\\[0.8ex]
+\\
+        \>Input/Output Arguments:\\
+        \>\>    {\fov leftknot1}\> - \> \begin{minipg2}
+                                Pointer to the interval in the knot vector in first
+                                parameter direction where {\fov parvalue}[0] is
+                                found. The relation
+                                \[
+                                etl[leftknot1]\leq parvalue[0]<etl[leftknot1+1],
+                                \]
+                                where {\fov etl} is the knot vector, should
+                                hold. {\fov leftknot1}  should be set
+                                equal to zero at the first call to the
+                                routine.
+                                Do not change the value of {\fov leftknot1}
+                                between calls to the routine.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov leftknot2}\> - \> \begin{minipg2}
+                                Corresponding to {\fov leftknot1} in the
+                                second parameter direction.
+                                \end{minipg2}\\[0.8ex]
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov derive}\> - \>    \begin{minipg2}
+                                Array of size $d(der1+1)(der2+1)$
+                                where the position and the derivative
+                                vectors of the surface in
+                                ({\fov parvalue}[0], {\fov parvalue}[1]) is placed.
+                                $d=surf\rightarrow dim$ is the number of
+                                elements in each vector and is equal to
+                                the geometrical dimension.
+                       The vectors are stored in the following order:
+                       First the $d$ components of the position vector,
+                       then the $d$ components of the $D^{1,0}$ vector,
+                       and so on up to the $d$ components of the $D^{der1,0}$
+                       vector,
+                       then the $d$ components of the $D^{0,1}$ vector etc.
+                       If derive is considered to be a
+                       three dimensional array, then its declaration in C
+                       would be $derive[der2+1][der1+1][d]$.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $> 0$ : \>      Warning.\\
+                \>\>\>\>\>      $= 0$ : \>      Ok.\\
+                \>\>\>\>\>      $< 0$ : \>      Error.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov der1} = 2;\\
+                \>\>    int     \>      {\fov der2} = 1;\\
+                \>\>    double  \>      {\fov parvalue}[2];\\
+                \>\>    int     \>      {\fov leftknot1} = 0;\\
+                \>\>    int     \>      {\fov leftknot2} = 0;\\
+                \>\>    double  \>      {\fov derive}[18];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1424(\begin{minipg4}
+                {\fov surf}, {\fov der1}, {\fov der2}, {\fov parvalue}, \&{\fov leftknot1}, \&{\fov leftknot2}, {\fov derive}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

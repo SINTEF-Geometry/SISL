@@ -1,0 +1,54 @@
+\subsection{Express a truncated cylinder as a surface.}
+\funclabel{s1021}
+\begin{minipg1}
+  To express a truncated cylinder as a surface. The cylinder can be
+  elliptic.
+  The cylinder will be geometrically exact.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1021(\begin{minipg3}
+        {\fov bottom\_pos}, {\fov bottom\_axis}, {\fov ellipse\_ratio}, {\fov axis\_dir},
+        {\fov height}, {\fov cyl}, {\fov stat})
+      \end{minipg3}\\[0.3ex]
+      \>\>    double \> {\fov bottom\_pos}[\,];\\
+      \>\>    double \> {\fov bottom\_axis}[\,];\\
+      \>\>    double \> {\fov ellipse\_ratio};\\
+      \>\>    double \> {\fov axis\_dir}[\,];\\
+      \>\>    double \> {\fov height};\\
+      \>\>    SISLSurf \> **{\fov cyl};\\
+      \>\>    int    \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov bottom\_pos}  \> - \> Center point of the bottom.\\
+        \>\>    {\fov bottom\_axis} \> - \> One of the bottom axis
+                                            (major or minor).\\
+        \>\>    {\fov ellipse\_ratio} \> - \> Ratio between the other
+                                              axis and bottom\_axis.\\
+        \>\>    {\fov axis\_dir}    \> - \> Direction of the cylinder axis.\\
+        \>\>    {\fov height}       \> - \> Height of the cone, can be negative.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov cyl}  \> - \> Pointer to the cylinder produced.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov bottom\_pos}[3];\\
+        \>\>    double \> {\fov bottom\_axis}[3];\\
+        \>\>    double \> {\fov ellipse\_ratio};\\
+        \>\>    double \> {\fov axis\_dir}[3];\\
+        \>\>    double \> {\fov height};\\
+        \>\>    SISLSurf \> *{\fov cyl} = NULL;\\
+        \>\>    int    \> {\fov stat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1021(\begin{minipg4}
+        {\fov bottom\_pos}, {\fov bottom\_axis}, {\fov ellipse\_ratio}, {\fov axis\_dir},
+        {\fov height}, \&{\fov cyl}, \&{\fov stat})
+      \end{minipg4}\\
+      \>\>    \ldots \\
+      \>      \}
+\end{tabbing}

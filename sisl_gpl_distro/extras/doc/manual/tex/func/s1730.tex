@@ -1,0 +1,45 @@
+\subsection{Convert a curve to a sequence of Bezier curves.}
+\funclabel{s1730}
+\begin{minipg1}
+  To convert a curve to a sequence of Bezier curves. The Bezier
+  curves are stored as one curve with all knots of multiplicity
+  newcurve-$>$ik (order of the curve).
+  If the input curve is rational, the generated Bezier curves will be
+  rational too (i.e.\ there will be rational weights in the
+  representation of the Bezier curves).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1730(\begin{minipg3}
+        {\fov curve}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve to convert.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>\begin{minipg2}
+                                The new curve
+                                containing all
+                                the Bezier curves.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1730(\begin{minipg4}
+                {\fov curve}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

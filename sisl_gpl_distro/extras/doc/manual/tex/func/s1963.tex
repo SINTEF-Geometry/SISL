@@ -1,0 +1,76 @@
+\subsection{Degree reduction: B-spline curve as input.}
+\funclabel{s1963}
+\begin{minipg1}
+To approximate the input spline curve by a cubic spline
+           curve with error less than eeps in each of the kdim components.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1963(\begin{minipg3}
+            {\fov pc}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax}, {\fov rc}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov pc};\\
+                \>\>    double \> {\fov eeps}[\,];\\
+                \>\>    int    \>  {\fov ilend};\\
+                \>\>    int    \>  {\fov irend};\\
+                \>\>    int    \>  {\fov iopen};\\
+                \>\>    int    \>  {\fov itmax};\\
+                \>\>    SISLCurve    \>  **{\fov rc};\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov pc}\> - \>  \begin{minipg2}
+                     Pointer to curve.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eeps}\> - \>  \begin{minipg2}
+                     Array (length kdim) giving the desired accuracy of
+                  the spline-approximation in each component.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ilend}\> - \>  \begin{minipg2}
+                     The no. of derivatives that are not allowed to change
+                 at the left end of the curve.
+                 The $0,\ldots,(ilend-1)$ derivatives will be kept fixed.
+                 If ilend $<0$, this routine will set it to 0.
+                 If ilend $<ik$, this routine will set it to ik.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov irend}\> - \>  \begin{minipg2}
+                     The no. of derivatives that are not allowed to change
+                 at the right end of the curve.
+                 The $0,\ldots,(irend-1)$ derivatives will be kept fixed.
+                 If irend $<0$, this routine will set it to 0.
+                 If irend $<ik$, this routine will set it to ik.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov iopen}\> - \>  Open/closed parameter\\
+            \>\>\>\>  $= 1$  : Produce open curve.\\
+            \>\>\>\>  $= 0$ : Produce closed, non-periodic curve if possible.\\
+            \>\>\>\>  $= -1$ : Produce closed, periodic curve if possible.\\
+        \>\>    {\fov itmax}\> - \>  \begin{minipg2}
+                     Max. no. of iterations.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov rc}\> - \>  \begin{minipg2}
+                     Pointer to curve.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov pc};\\
+                \>\>    double \> {\fov eeps}[\,];\\
+                \>\>    int    \>  {\fov ilend};\\
+                \>\>    int    \>  {\fov irend};\\
+                \>\>    int    \>  {\fov iopen};\\
+                \>\>    int    \>  {\fov itmax};\\
+                \>\>    SISLCurve    \>  **{\fov rc};\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1963(\begin{minipg4}
+            {\fov pc}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax}, {\fov rc}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

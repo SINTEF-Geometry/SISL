@@ -1,0 +1,54 @@
+\typelabel{SISLCurve}
+  \>int         \>{\fov ik};     \>\>Order of curve. \\
+  \>int         \>{\fov in};     \>\>Number of vertices. \\
+  \>double      \>*{\fov et};    \>\>Pointer to the knot vector.  \\
+  \>double      \>*{\fov ecoef}; \>\> \begin{minipg2}
+                         Pointer to the array containing
+                         non-rational vertices, size $in\times idim$.
+                                      \end{minipg2}\\[0.8ex]
+ \>double       \>*{\fov rcoef}; \>\> \begin{minipg2}
+                         Pointer to the array of rational
+                         vertices and weights, size $in\times (idim+1)$.
+                                      \end{minipg2}\\[0.8ex]
+ \>int  \>{\fov ikind};  \>\>Type of curve\\
+        \>\>\>\>\>     $= 1$ :\> Polynomial B-spline curve.\\
+        \>\>\>\>\>     $= 2$ :\> Rational B-spline (nurbs) curve.\\
+        \>\>\>\>\>     $= 3$ :\> Polynomial Bezier curve.\\
+        \>\>\>\>\>     $= 4$ :\> Rational Bezier curve.\\
+  \>int         \>{\fov idim};   \>\>Dimension of the space in which the
+                                        curve lies.  \\
+  \>int         \>{\fov icopy};  \>\> \begin{minipg2}
+                        Indicates whether the arrays of the curve are
+                       allocated and copied or referenced by creation of the curve.
+                                \end{minipg2}\\[0.3ex]
+        \>\>\>\>\>     $= 0$ :\>        \begin{minipg5}
+                                 Pointer set to input arrays. The
+                                arrays are not deleted by freeCurve.
+                                        \end{minipg5}\\[0.3ex]
+        \>\>\>\>\>     $= 1$ :\>        \begin{minipg5}
+                                Array allocated and copied. The
+                                arrays are deleted by freeCurve.
+                                        \end{minipg5}\\[0.3ex]
+        \>\>\>\>\>     $= 2$ :\>        \begin{minipg5}
+                                Pointer set to input arrays,
+                             but are to be treated as copied. The
+                                arrays are deleted by freeCurve.
+                                        \end{minipg5}\\[0.3ex]
+  \>SISLdir     \>*{\fov pdir}; \>\>\begin{minipg2}
+                        Pointer to a SISLdir object used for storing curve direction.
+                                \end{minipg2}\\[0.8ex]
+  \>SISLbox     \>*{\fov pbox}; \>\>\begin{minipg2}
+                        Pointer to a SISLbox object used for storing the surrounding boxes.
+                                \end{minipg2}\\[0.8ex]
+  \>int         \>{\fov cuopen}; \>\>       Open/closed/periodic flag. \\
+        \>\>\>\>\>     $=-1$ \> : \begin{minipg5}
+                                Closed curve with periodic (cyclic)
+                                parameterization and overlapping
+                                end vertices.
+                                   \end{minipg5}\\[0.3ex]
+        \>\>\>\>\>     $=0$ \>  : \begin{minipg5}
+                                Closed curve with k-tuple end knots and
+                                coinciding start/end vertices.
+                                  \end{minipg5}\\[0.3ex]
+        \>\>\>\>\>     $=1$ \>  : Open curve (default).\\
+\end{tabbing}

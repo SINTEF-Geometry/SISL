@@ -1,0 +1,55 @@
+\documentstyle[a4,twoside,epsf,makeidx]{sislman}
+\def \RR{\hbox{\rm I\negthinspace R}}
+
+\pagestyle{headings}
+\makeindex
+\begin{document}
+
+\begin{titlepage}
+  \vspace{5 cm}
+  \begin{center}
+  \Huge
+  \textbf{SISL} \\
+  \huge
+  The SINTEF Spline Library \\ 
+  \LARGE
+  Reference Manual \\
+  (version 4.4)\\ 
+  \vspace{10 mm}
+  \large
+  SINTEF ICT, Applied Mathematics \\
+  \today
+  \end{center}
+
+\end{titlepage}
+
+\pagenumbering{roman}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\input{chap_introduction}
+\cleardoublepage
+\input{chap_curve_definition}
+\cleardoublepage
+\input{chap_curve_interrogation}
+\cleardoublepage
+\input{chap_curve_analysis}
+\cleardoublepage
+\input{chap_curve_utilities}
+\cleardoublepage
+\input{chap_surface_definition}
+\cleardoublepage
+\input{chap_surface_interrogation}
+\cleardoublepage
+\input{chap_surface_analysis}
+\cleardoublepage
+\input{chap_surface_utilities}
+\cleardoublepage
+\input{chap_data_reduction}
+\cleardoublepage
+\input{chap_error_codes}
+\cleardoublepage
+%\input{index}
+\printindex
+\end{document}

@@ -1,0 +1,195 @@
+\begin{theindex}
+
+  \item copyCurve(), 131
+  \item copySurface(), 376
+
+  \indexspace
+
+  \item freeCurve(), 132
+  \item freeIntcrvlist(), 230
+  \item freeIntcurve(), 229
+  \item freeSurf(), 377
+
+  \indexspace
+
+  \item newbox(), 113, 336
+  \item newCurve(), 129
+  \item newdir(), 116, 339
+  \item newIntcurve(), 227
+  \item newSurf(), 373
+
+  \indexspace
+
+  \item s1001(), 403
+  \item s1011(), 72
+  \item s1012(), 74
+  \item s1013(), 104
+  \item s1014(), 41
+  \item s1015(), 43
+  \item s1016(), 46
+  \item s1017(), 146
+  \item s1018(), 147
+  \item s1021(), 217
+  \item s1022(), 222
+  \item s1023(), 215
+  \item s1024(), 219
+  \item s1025(), 397
+  \item s1221(), 135
+  \item s1225(), 137
+  \item s1226(), 140
+  \item s1227(), 133
+  \item s1233(), 157
+  \item s1237(), 409
+  \item s1238(), 411
+  \item s1240(), 90
+  \item s1241(), 108
+  \item s1243(), 110
+  \item s1302(), 201
+  \item s1303(), 52
+  \item s1310(), 309
+  \item s1314(), 288
+  \item s1315(), 292
+  \item s1316(), 296
+  \item s1317(), 299
+  \item s1318(), 305
+  \item s1319(), 312
+  \item s1327(), 81
+  \item s1328(), 255
+  \item s1332(), 199
+  \item s1356(), 21
+  \item s1357(), 25
+  \item s1360(), 59
+  \item s1363(), 93
+  \item s1364(), 91
+  \item s1365(), 203
+  \item s1369(), 276
+  \item s1371(), 83, 234
+  \item s1372(), 237
+  \item s1373(), 240
+  \item s1374(), 86
+  \item s1375(), 245
+  \item s1379(), 30
+  \item s1380(), 28
+  \item s1383(), 400
+  \item s1386(), 214
+  \item s1387(), 213
+  \item s1388(), 207
+  \item s1389(), 64
+  \item s1390(), 188
+  \item s1391(), 191
+  \item s1401(), 194
+  \item s1421(), 378
+  \item s1422(), 384
+  \item s1424(), 381
+  \item s1425(), 388
+  \item s1439(), 399
+  \item s1440(), 405
+  \item s1450(), 322
+  \item s1451(), 92
+  \item s1501(), 302
+  \item s1502(), 243
+  \item s1503(), 273
+  \item s1506(), 393
+  \item s1508(), 187
+  \item s1510(), 283
+  \item s1511(), 286
+  \item s1514(), 315
+  \item s1515(), 318
+  \item s1518(), 253
+  \item s1522(), 70
+  \item s1529(), 177
+  \item s1530(), 179
+  \item s1534(), 171
+  \item s1535(), 174
+  \item s1536(), 163
+  \item s1537(), 167
+  \item s1538(), 181
+  \item s1539(), 184
+  \item s1542(), 143
+  \item s1600(), 63
+  \item s1601(), 206
+  \item s1602(), 19
+  \item s1603(), 324
+  \item s1606(), 49
+  \item s1607(), 32
+  \item s1608(), 34
+  \item s1609(), 38
+  \item s1611(), 55
+  \item s1613(), 62
+  \item s1620(), 196
+  \item s1630(), 57
+  \item s1706(), 156
+  \item s1710(), 144
+  \item s1711(), 395
+  \item s1712(), 150
+  \item s1713(), 151
+  \item s1714(), 149
+  \item s1715(), 152
+  \item s1716(), 154
+  \item s1720(), 69
+  \item s1730(), 65
+  \item s1731(), 209
+  \item s1732(), 66
+  \item s1733(), 210
+  \item s1750(), 68
+  \item s1774(), 99
+  \item s1775(), 330
+  \item s1850(), 79, 231
+  \item s1851(), 263
+  \item s1852(), 266
+  \item s1853(), 268
+  \item s1854(), 271
+  \item s1855(), 257
+  \item s1856(), 250
+  \item s1857(), 88
+  \item s1858(), 260
+  \item s1859(), 278
+  \item s1860(), 281
+  \item s1870(), 247
+  \item s1871(), 77
+  \item s1920(), 105
+  \item s1921(), 332
+  \item s1940(), 413
+  \item s1953(), 94
+  \item s1954(), 325
+  \item s1955(), 101
+  \item s1957(), 97
+  \item s1958(), 328
+  \item s1961(), 416
+  \item s1962(), 419
+  \item s1963(), 422
+  \item s1965(), 424
+  \item s1966(), 428
+  \item s1967(), 432
+  \item s1968(), 436
+  \item s1986(), 117
+  \item s1987(), 340
+  \item s1988(), 114
+  \item s1989(), 337
+  \item s2500(), 343
+  \item s2502(), 346
+  \item s2504(), 348
+  \item s2506(), 350
+  \item s2508(), 352
+  \item s2510(), 354
+  \item s2532(), 356
+  \item s2536(), 358
+  \item s2540(), 360
+  \item s2542(), 362
+  \item s2544(), 365
+  \item s2545(), 368
+  \item s2550(), 119
+  \item s2553(), 121
+  \item s2556(), 122
+  \item s2559(), 123
+  \item s2562(), 125
+  \item s6drawseq(), 159, 406
+  \item s6line(), 161, 408
+  \item s6move(), 160, 407
+  \item SISLBox(), 112, 335
+  \item SISLCurve(), 127
+  \item SISLdir(), 115, 338
+  \item SISLIntcurve(), 225
+  \item SISLSurf(), 371
+
+\end{theindex}

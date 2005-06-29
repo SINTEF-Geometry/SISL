@@ -1,0 +1,141 @@
+\subsection{Data reduction: B-spline surface as input.}
+\funclabel{s1965}
+\begin{minipg1}
+To remove as many knots as possible from a spline surface
+           without perturbing the surface more than the given tolerance.
+           The error in continuity over the start and end of
+           a closed or periodic surface is only guaranteed to be within
+           edgeps.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1965(\begin{minipg3}
+            {\fov oldsurf},  {\fov eps},  {\fov edgefix},  {\fov iopen1},  {\fov iopen2},  {\fov edgeps},  {\fov opt}, 
+	     {\fov itmax},  {\fov newsurf}, {\fov maxerr},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLSurf \> 	*{\fov oldsurf};\\
+                \>\>    double	\> {\fov eps}[\,];\\
+                \>\>    int	\> {\fov edgefix}[{\fov 4}];\\
+                \>\>    int    \>  {\fov iopen1};\\
+                \>\>    int    \>  {\fov iopen2};\\
+                \>\>    double	\> {\fov edgeps}[\,];\\
+                \>\>    int 	\> {\fov opt};\\
+                \>\>    int	\> {\fov itmax};\\
+                \>\>    SISLSurf\> 	**{\fov newsurf};\\
+                \>\>    double	\> {\fov maxerr}[\,];\\
+                \>\>    int	\> *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov oldsurf}\> - \>  \begin{minipg2}
+                     pointer to the original spline surface. Note
+			 if the polynomial orders of the surface are
+			 k1 and k2, then the two knot vectors are
+			 assumed to have knots of multiplicity k1 and
+			 k2 at the ends.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eps}\> - \>  \begin{minipg2}
+                     double array of length dim (the number of
+			 components of the surface, typically three)
+			 giving the desired accuracy of the
+			 final approximation compared to oldcurve.
+                        Note that in such comparisons the two
+			 surfaces are not reparametrized in any way.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov edgefix}\> - \>  \begin{minipg2}
+                     integer array of dimension (4) giving the number
+			 of derivatives to be kept fixed along each edge
+			 of the surface. The numbering of the edges is the
+			 same as for edgeps below. All the derivatives of
+			 order $< nend(i)-1$ will be kept fixed along
+			 edge $i$. Hence $nend(i)=0$ indicates that nothing is
+			 to be kept fixed along edge $i$.
+                NB! TO BE KEPT FIXED HERE MEANS TO HAVE ERROR LESS THAN
+		     EDGEPS. IN GENERAL, IT IS IMPOSSIBLE TO REMOVE KNOTS
+                    AND KEEP AN EDGE COMPLETELY FIXED.
+                               \end{minipg2}\\[0.8ex]
+        \>\>   {\fov iopen1}\> - \> Open/closed parameter in first direction.\\
+          \>\>\>\>  $= 1$  : Produce open surface.\\
+          \>\>\>\>  $= 0$ : Produce closed, non-periodic surface if possible.\\
+          \>\>\>\>  $= -1$ : Produce closed, periodic surface\\
+        \>\>   {\fov iopen2}\> - \> Open/closed parameter in second direction.\\
+          \>\>\>\>  $= 1$  : Produce open surface.\\
+          \>\>\>\>  $= 0$ : Produce closed, non-periodic surface if possible.\\
+          \>\>\>\>  $= -1$ : Produce closed, periodic surface\\
+        \>\>    {\fov edgeps}\> - \>  \begin{minipg2}
+                     double array of length 4*dim ([4,dim]) (dim is
+                        the number of components of each coefficient)
+			 containing the maximum deviation which is
+			 acceptable along the edges of the surface.
+                         $edgeps[0]-edgeps[dim-1]$ gives the tolerance along
+			 the edge corresponding to x1 (the first parameter)
+ 			 having it's minimum value.
+			 $edgeps[dim]-edgeps[2*dim-1]$ gives the tolerance
+			 along the edge corresponding to x1 (the first
+			 parameter) having it's maximum value.
+              		 $edgeps[2*dim]-edgeps[3*dim-1]$ gives the tolerance
+			 along the edge corresponding to x2 (the second
+			 parameter) having it's minimum value.
+              		 $edgeps[3*dim]-edgeps[4*dim-1]$ gives the tolerance
+			 along the edge corresponding to x2 (the second
+			 parameter) having its maximum value.
+           	 NB! EDGEPS WILL ONLY HAVE ANY SIGNIFICANCE IF THE
+		     CORRESPONDING ELEMENT OF EDGEFIX IS POSITIVE.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov itmax}\> - \>  \begin{minipg2}
+                     maximum number of iterations. The routine will
+                        follow an iterative procedure trying to remove
+                        more and more knots, one direction at a time.
+                        The process will almost always stop after less
+                        than 10 iterations and it will often stop after
+                        less than 5 iterations. A suitable value for itmax
+                        is therefore usually in the region 3-10.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov opt}\> - \>  \begin{minipg2}
+                     integer indicating the order in which the
+	       	         knot removal is to be performed.
+                               \end{minipg2}\\[0.8ex]
+          \>\>\>\>  1 : remove knots in parameter 1 only.\\
+          \>\>\>\>  2 : remove knots in parameter 2 only.\\
+          \>\>\>\>  3 : remove knots first in parameter 1 and then 2.\\
+          \>\>\>\>  4 : remove knots first in parameter 2 and then 1.\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>  \begin{minipg2}
+                     the approximating surface on the reduced knot vectors.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov maxerr}\> - \>  \begin{minipg2}
+                     double array of length dim containing an upper
+		         bound for the pointwise error in each of the
+		         components of the spline approximation. The two
+                        surfaces oldsurf and newsurf are compared at the
+                        same parameter vaues, i.e., if oldsurf is f and
+                        newsurf is g then
+                              $|f(u,v)-g(u,v)| <= eps$
+                        in each of the components.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLSurf \> 	*{\fov oldsurf};\\
+                \>\>    double	\> {\fov eps}[\,];\\
+                \>\>    int	\> {\fov edgefix}[{\fov 4}];\\
+                \>\>    int    \>  {\fov iopen1};\\
+                \>\>    int    \>  {\fov iopen2};\\
+                \>\>    double	\> {\fov edgeps}[\,];\\
+                \>\>    int 	\> {\fov opt};\\
+                \>\>    int	\> {\fov itmax};\\
+                \>\>    SISLSurf	\> **{\fov newsurf};\\
+                \>\>    double	\> {\fov maxerr}[\,];\\
+                \>\>    int	\> *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s1965(\begin{minipg4}
+            {\fov oldsurf},  {\fov eps},  {\fov edgefix},  {\fov iopen1},  {\fov iopen2},  {\fov edgeps},  {\fov opt}, 
+	     {\fov itmax},  {\fov newsurf}, {\fov maxerr},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

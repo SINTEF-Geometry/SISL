@@ -1,0 +1,65 @@
+\subsection{Create new curve object.}
+\funclabel{newCurve}
+\begin{minipg1}
+Create and initialize a SISLCurve-instance.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>SISLCurve *newCurve(\begin{minipg3}
+        {\fov number}, {\fov order}, {\fov knots}, {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy})
+                \end{minipg3}\\[0.3ex]
+                \>\>    int    \>       {\fov number};\\
+                \>\>    int    \>       {\fov order};\\
+                \>\>    double \>       {\fov knots}[\,];\\
+                \>\>    double \>       {\fov coef}[\,];\\
+                \>\>    int    \>       {\fov kind};\\
+                \>\>    int    \>       {\fov dim};\\
+                \>\>    int    \>       {\fov copy};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov number}   \> - \> Number of vertices in the new curve.\\
+        \>\>    {\fov order} \> - \> Order of curve.\\
+        \>\>    {\fov knots} \> - \> Knot vector of curve.\\
+        \>\>    {\fov coef}  \> - \> \begin{minipg2}
+                      Vertices of curve. These can either be the $dim$
+                      \mbox{dimensional}
+                      non-rational vertices, or the $(dim+1)$ dimensional rational
+                      vertices.
+                                     \end{minipg2}\\[0.8ex]
+        \>\>    {\fov kind} \> - \> Type of curve.\\
+        \>\>\>\>\>       $= 1$ :\> Polynomial B-spline curve.\\
+        \>\>\>\>\>       $= 2$ :\> Rational B-spline (nurbs) curve.\\
+        \>\>\>\>\>       $= 3$ :\> Polynomial Bezier curve.\\
+        \>\>\>\>\>       $= 4$ :\> Rational Bezier curve.\\
+        \>\>    {\fov dim} \> - \> Dimension of the space in which the
+                                   curve lies.\\
+        \>\>    {\fov copy} \> - \> Flag \\
+        \>\>\>\>\>       $= 0$ :\> Set pointer to input arrays.\\
+        \>\>\>\>\>       $= 1$ :\> Copy input arrays.\\
+        \>\>\>\>\>       $= 2$ :\> Set pointer and remember to free arrays.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newCurve} \> - \> \begin{minipg2}
+                                 Pointer to the new curve. If it is impossible
+                                 to allocate space for the curve, newCurve
+                                 returns NULL.
+                                \end{minipg2}\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve    \> *{\fov curve} = NULL;\\
+        \>\>    int    \>       {\fov number} = 10;\\
+        \>\>    int    \>       {\fov order} = 4;\\
+        \>\>    double \>       {\fov knots}[14];\\
+        \>\>    double \>       {\fov coef}[30];\\
+        \>\>    int    \>       {\fov kind} = 1;\\
+        \>\>    int    \>       {\fov dim} = 3;\\
+        \>\>    int    \>       {\fov copy} = 1;\\
+        \>\>    \ldots \\
+        \>\>{\fov curve} = newCurve(\begin{minipg4}
+          {\fov number}, {\fov order}, {\fov knots}, {\fov coef}, {\fov kind},
+          {\fov dim}, {\fov copy});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \} \\
+\end{tabbing}

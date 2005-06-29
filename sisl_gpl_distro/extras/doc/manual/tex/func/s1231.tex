@@ -1,0 +1,47 @@
+\subsection{Subdivide a NURBS curve at a specified internal parameter value.}
+\funclabel{s1231}
+\begin{minipg1}
+Subdivide a NURBS curve at a given {\bf internal} parameter-value. If the subdivision parameter is at an end of the parameter interval, an error message is given.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1231(\begin{minipg3}
+	{\fov curve}, {\fov parval}, {\fov newcurve1}, {\fov newcurve2}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLCurve 	\>	*{\fov curve};\\
+		\>\>	double 	\>	{\fov parval};\\
+		\>\>	SISLCurve 	\>	**{\fov newcurve1};\\
+		\>\>	SISLCurve 	\>	**{\fov newcurve2};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov curve}	\> - \>	SISLCurve to subdivide.\\
+	\>\>	{\fov parval}	\> - \>	\begin{minipg2}
+				Parameter value at which to subdivide.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov newcurve1}\> - \>\begin{minipg2}
+				First part of the subdivided curve.
+				\end{minipg2}\\
+	\>\>	{\fov newcurve2}\> - \>\begin{minipg2}
+				Second part of the subdivided curve. 
+				\end{minipg2}\\[0.3ex]
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLCurve 	\>	*{\fov curve};\\
+		\>\>	double 	\>	{\fov parval};\\
+		\>\>	SISLCurve 	\>	*{\fov newcurve1};\\
+		\>\>	SISLCurve 	\>	*{\fov newcurve2};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1231(\begin{minipg4}
+		{\fov curve}, {\fov parval}, \&{\fov newcurve1}, \&{\fov newcurve2}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

@@ -1,0 +1,104 @@
+\subsection{Approximate a conic arc with a curve.}
+\funclabel{s1611}
+\begin{minipg1}
+  To approximate a conic arc with a curve in two or three
+  dimensional space. If two points are given, a straight line is
+  produced, if three an approximation of a circular arc, and if four or
+  five a conic arc.
+  The output will be represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1611(\begin{minipg3}
+                {\fov point}, {\fov numpt}, {\fov dim}, {\fov typept}, {\fov open}, {\fov order},
+                {\fov startpar}, {\fov epsge}, {\fov endpar}, {\fov curve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    int     \>      {\fov numpt};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov typept}[\,];\\
+                \>\>    int     \>      {\fov open};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      *{\fov endpar};\\
+                \>\>    SISLCurve       \>      **{\fov curve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov point}    \> - \>
+                \begin{minipg2}
+                  Array of length $dim\times numpt$ containing the
+                  points/ derivatives to be interpolated.
+                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numpt}    \> - \>
+                                No. of points/derivatives in the
+                                point array.
+                                \\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the space in which
+                                the points lie.
+                                \end{minipg2}\\
+        \>\>    {\fov typept}   \> - \> \begin{minipg2}
+                                Array (length numpt) containing type
+                                indicator for points/derivatives/
+                                second-derivatives:
+                                \end{minipg2} \\[0.3ex]
+                \>\>\>\>\>      1 : Ordinary point.\\
+                \>\>\>\>\>      3 : Derivative to next point.\\
+                \>\>\>\>\>      4 : Derivative to prior point.\\
+        \>\>    {\fov open}     \> - \> Open or closed curve:\\
+                \>\>\>\>\>      0 :     Closed curve, not implemented.\\
+                \>\>\>\>\>      1 :     Open curve.\\
+        \>\>    {\fov order}    \> - \> \begin{minipg2}
+                                The order of the B-spline curve
+                                to be produced.
+                                \end{minipg2}\\
+        \>\>    {\fov startpar}\> - \>  \begin{minipg2}
+                                Parameter-value to be used at the
+                                start of the curve.
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}    \> - \> The geometry resolution.\\
+\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov endpar}   \> - \> \begin{minipg2}
+                                Parameter-value used at the end
+                                of the curve.
+                                \end{minipg2}\\
+        \>\>    {\fov curve}    \> - \> Pointer to the output B-spline curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+When four points/tangents are given as input, the xy term of the
+implicit equation is set to zero. Thus the points might end on two
+branches of a hyperbola and a straight line is produced. When
+four or five points/tangents are given only three of these should
+actually be points.
+\end{minipg6}
+\\ \\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov point}[30];\\
+                \>\>    int     \>      {\fov numpt} = 10;\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov typept}[10];\\
+                \>\>    int     \>      {\fov open};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov endpar};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1611(\begin{minipg4}
+                {\fov point}, {\fov numpt}, {\fov dim}, {\fov typept}, {\fov open}, {\fov order}, {\fov startpar}, {\fov epsge},\linebreak
+                \&{\fov endpar}, \&{\fov curve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

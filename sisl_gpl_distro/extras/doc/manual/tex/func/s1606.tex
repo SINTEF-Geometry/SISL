@@ -1,0 +1,79 @@
+\subsection{Compute a blending curve between two curves.}
+\funclabel{s1606}
+\begin{minipg1}
+  To compute a blending curve between two curves.
+  Two points indicate between which
+  ends the blend is to be produced.
+  The blending curve is either a circle or
+  an approximated conic section if this is
+  possible, otherwise it is a quadratic polynomial spline curve.
+  The output is represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1606(\begin{minipg3}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point1}, {\fov point2},
+        {\fov blendtype}, {\fov dim}, {\fov order}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov point1}[\,];\\
+                \>\>    double  \>      {\fov point2}[\,];\\
+                \>\>    int     \>      {\fov blendtype};\\
+                \>\>    int     \>      {\fov dim;}\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> The first input curve.\\
+        \>\>    {\fov curve2}   \> - \> The second input curve.\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+        \>\>    {\fov point1}   \> - \> \begin{minipg2}
+                        Point near the end of curve 1 where the blend starts.
+                                \end{minipg2}\\
+        \>\>    {\fov point2}   \> - \> \begin{minipg2}
+                        Point near the end of curve 2 where the blend starts.
+                                \end{minipg2}\\
+        \>\>    {\fov blendtype}\> - \> Indicator of type of blending.\\
+                \>\>\>\>\>      $=1$ : \>\begin{minipg5}
+                                Circle, interpolating tangent on first
+                                curve, not on curve 2, if possible.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $=2$ : \>\begin{minipg5}
+                                Conic if possible,
+                                \end{minipg5}\\
+                \>\>\>\>\>      else : \>\begin{minipg5}
+                                polynomial segment.
+                                \end{minipg5}\\
+        \>\>    {\fov dim}      \> - \> Dimension of the geometry space.\\
+        \>\>    {\fov order}    \> - \> Order of the blending curve.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \> Pointer to the B-spline blending curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov point1}[3];\\
+                \>\>    double  \>      {\fov point2}[3];\\
+                \>\>    int     \>      {\fov blendtype};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1606(\begin{minipg4}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point1}, {\fov point2},
+        {\fov blendtype}, {\fov dim}, {\fov order}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

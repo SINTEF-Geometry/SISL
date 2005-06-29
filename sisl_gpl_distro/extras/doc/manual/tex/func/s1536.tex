@@ -1,0 +1,138 @@
+\subsection{Compute a surface interpolating a set of points,
+automatic parameterization.}
+\funclabel{s1536}
+\begin{minipg1}
+  To compute a tensor surface interpolating a set of points,
+  automatic parameterization.
+  The output is represented as a B-spline surface.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1536(\begin{minipg3}
+          {\fov points}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov con1}, {\fov con2}, {\fov con3},
+          {\fov con4}, {\fov order1},  {\fov order2},  {\fov iopen1}, {\fov iopen2}, {\fov rsurf}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \> {\fov points}[\,];\\
+        \>\>    int \> {\fov im1};\\
+        \>\>    int \> {\fov im2};\\
+        \>\>    int \> {\fov idim};\\
+        \>\>    int \> {\fov ipar};\\
+        \>\>    int \> {\fov con1};\\
+        \>\>    int \> {\fov con2};\\
+        \>\>    int \> {\fov con3};\\
+        \>\>    int \> {\fov con4};\\
+        \>\>    int \> {\fov order1};\\
+        \>\>    int \> {\fov order2};\\
+        \>\>    int \> {\fov iopen1};\\
+        \>\>    int \> {\fov iopen2};\\
+        \>\>    SISLSurf \> **{\fov rsurf};\\
+        \>\>    int \> *{\fov jstat};\\
+\newpagetabs
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov points}\> - \>
+        \begin{minipg2}
+          Array of dimension $idim\times im1\times im2$ containing
+          the positions of the nodes (using the same ordering
+          as ecoef in the SISLSurf structure).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov im1}\> - \>
+        \begin{minipg2}
+          The number of interpolation points in the
+          first parameter direction.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov im2}\> - \>
+        \begin{minipg2}
+          The number of interpolation points in the
+          second parameter direction.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov idim} \> - \> Dimension of the space we are working in.\\
+        \>\>    {\fov ipar} \> - \> Flag showing the desired
+                                    parametrization to be used:\\
+                \>\>\>\>\> $= 1$ : \begin{minipg5}
+                                     Mean accumulated cord-length
+                                     parameterization.
+                                   \end{minipg5}\\[0.3ex]
+                \>\>\>\>\> $= 2$ : Uniform parametrization.\\
+        \>\>\>\>\begin{minipg2}
+                Numbering of surface edges:\\
+                \begin{center}
+                  \begin{picture}(180,110)(0,0)
+                    \put(50,15){\framebox(80,80)}
+                    \put(40,55){\makebox(0,0){3}}
+                    \put(140,55){\makebox(0,0){4}}
+                    \put(90,5){\makebox(0,0){1}}
+                    \put(90,105){\makebox(0,0){2}}
+
+                    \put(60,20){\vector(1,0){40}}
+                    \put(85,28){\makebox(0,0){$(i)$}}
+                    \put(55,25){\vector(0,1){40}}
+                    \put(65,50){\makebox(0,0){$(ii)$}}
+                  \end{picture}\\
+                  $(i) \; \; \;$ first parameter direction of surface.\\
+                  $(ii)$   second parameter direction of surface.\\
+                \end{center}
+              \end{minipg2}\\ \\
+        \>\>    {\fov con1} \> - \> Additional condition along edge 1:\\
+                      \>\>\>\>\> $= 0$ : No additional condition.\\
+                      \>\>\>\>\> $= 1$ : Zero curvature.\\
+        \>\>    {\fov con2} \> - \> Additional condition along edge 2:\\
+                      \>\>\>\>\> $= 0$ : No additional condition.\\
+                      \>\>\>\>\> $= 1$ : Zero curvature.\\
+        \>\>    {\fov con3} \> - \> Additional condition along edge 3:\\
+                      \>\>\>\>\> $= 0$ : No additional condition.\\
+                      \>\>\>\>\> $= 1$ : Zero curvature.\\
+        \>\>    {\fov con4} \> - \> Additional condition along edge 4:\\
+                      \>\>\>\>\> $= 0$ : No additional condition.\\
+                      \>\>\>\>\> $= 1$ : Zero curvature.\\
+        \>\>    {\fov order1}\> - \> Order of surface in first parameter
+                                     direction.\\
+        \>\>    {\fov order2}\> - \> Order of surface in second\\
+        \>\>    {\fov iopen1}\> - \>
+                     \begin{minipg2}
+                       Open/closed/periodic in first parameter direction.
+                     \end{minipg2}\\
+                      \>\>\>\> $= 1$ \> : Open surface.\\
+                      \>\>\>\> $= 0$ \> : Closed surface.\\
+                      \>\>\>\> $= -1$ \> : Closed and periodic
+                      surface.\\
+\newpagetabs
+        \>\>    {\fov iopen2}\> - \>
+                     \begin{minipg2}
+                       Open/closed/periodic in second parameter direction.
+                     \end{minipg2}\\
+                      \>\>\>\> $= 1$ \> : Open surface.\\
+                      \>\>\>\> $= 0$ \> : Closed surface.\\
+                      \>\>\>\> $= -1$ \> : Closed and periodic surface.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rsurf}\> - \> Pointer to the B-spline surface produced.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov points}[300];\\
+        \>\>    int    \> {\fov im1} = 10;\\
+        \>\>    int    \> {\fov im2} = 10;\\
+        \>\>    int    \> {\fov idim} = 3;\\
+        \>\>    int    \> {\fov ipar};\\
+        \>\>    int    \> {\fov con1};\\
+        \>\>    int    \> {\fov con2};\\
+        \>\>    int    \> {\fov con3};\\
+        \>\>    int    \> {\fov con4};\\
+        \>\>    int    \> {\fov order1};\\
+        \>\>    int    \> {\fov order2};\\
+        \>\>    int    \> {\fov iopen1};\\
+        \>\>    int    \> {\fov iopen2};\\
+        \>\>    SISLSurf \> *{\fov rsurf};\\
+        \>\>    int    \> {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1536(\begin{minipg4}
+          {\fov points}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov con1}, {\fov con2}, {\fov con3},
+          {\fov con4}, {\fov order1},  {\fov order2},  {\fov iopen1},  {\fov iopen2}, \&{\fov rsurf}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

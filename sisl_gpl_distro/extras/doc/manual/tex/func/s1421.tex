@@ -1,0 +1,111 @@
+\subsection{Compute the position, the derivatives and the normal of a
+surface at a given parameter value pair.}
+\funclabel{s1421}
+\begin{minipg1}
+  Evaluate the surface at a given parameter value pair.
+  Compute {\fov der} derivatives and the normal if $der \geq 1$.
+  See also s1424() on page \pageref{s1424}.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1421(\begin{minipg3}
+          {\fov surf}, {\fov der}, {\fov parvalue}, {\fov leftknot1}, {\fov leftknot2}, {\fov derive}, {\fov normal}, {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf        \>      *{\fov surf};\\
+        \>\>    int     \>      {\fov der};\\
+        \>\>    double  \>      {\fov parvalue}[\,];\\
+        \>\>    int     \>      *{\fov leftknot1};\\
+        \>\>    int     \>      *{\fov leftknot2};\\
+        \>\>    double  \>      {\fov derive}[\,];\\
+        \>\>    double  \>      {\fov normal}[\,];\\
+        \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>              \begin{minipg2}
+                                Pointer to the surface to evaluate.
+                                \end{minipg2}\\
+        \>\>    {\fov der}\> - \>               \begin{minipg2}
+                                Number (order) of derivatives to evaluate.
+                                \end{minipg2}\\
+                \>\>\>\>\>      $< 0$ \> : No derivatives evaluated.\\
+                \>\>\>\>\>      $= 0$ \> : Position evaluated.\\
+                \>\>\>\>\>      $> 0$ \> : \begin{minipg5}
+                                              Position and derivatives
+                                              evaluated.
+                                            \end{minipg5}\\
+        \>\>    {\fov parvalue}\> - \>          \begin{minipg2}
+                                Parameter value at which to evaluate. Dimension
+                                of parvalue is 2.
+                                \end{minipg2}\\[0.3ex]
+\\
+        \>Input/Output Arguments:\\
+        \>\>    {\fov leftknot1}\> - \>
+                \begin{minipg2}
+                  Pointer to the interval in the knot
+                  vector in first
+                  parameter direction where $parvalue[0]$ is
+                  found. The relation
+                  \[
+                  etl[leftknot1]\leq parvalue[0]<etl[leftknot1+1],
+                  \]
+                  where {\fov etl} is the knot
+                  vector, should hold. {\fov leftknot1} should be set
+                  equal to zero at the first call to the routine. Do not
+                  change {\fov leftknot} during a section of calls to
+                  s1421().
+                \end{minipg2} \\[0.8ex]
+        \>\>    {\fov leftknot2}\> - \> \begin{minipg2}
+                                Corresponding to {\fov leftknot1}
+                                in the second parameter
+                                direction.
+                                \end{minipg2}\\[0.8ex]
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov derive}\> - \>    \begin{minipg2}
+                                Array where the derivatives of the surface in parvalue are
+                                placed. The sequence is position, first derivative in
+                                first parameter direction, first derivative in second
+                                parameter direction, (2,0) derivative, (1,1)
+                                derivative, (0,2) derivative, etc. The expresion
+                                \[
+                                dim*(1+2+\ldots+(der+1))=dim*(der+1)(der+2)/2
+                                \]
+                                gives the dimension of the {\fov derive} array.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov normal}\> - \>    \begin{minipg2}
+                                Normal of surface. Is evaluated if
+                                $der \geq 1$.
+                                Dimension is dim. The normal is not normalised.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $= 2$ \> :
+                                \begin{minipg5}
+                                  Surface is degenerate at the point,
+                                  normal has zero length.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 1$ \> :
+                                \begin{minipg5}
+                                  Surface is close to degenerate at the
+                                  point. Angle between tangents is less
+                                  than the angular tolerance.
+                                \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 0$ \> : Ok.\\
+                \>\>\>\>\>      $< 0$ \> : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf        \>      *{\fov surf};\\
+        \>\>    int     \>      {\fov der} = 2;\\
+        \>\>    double  \>      {\fov parvalue}[2];\\
+        \>\>    int     \>      {\fov leftknot1} = 0;\\
+        \>\>    int     \>      {\fov leftknot2} = 0;\\
+        \>\>    double  \>      {\fov derive}[18];\\
+        \>\>    double  \>      {\fov normal}[3];\\
+        \>\>    int     \>      {\fov stat};\\
+        \>\>    \ldots \\
+        \>\>s1421(\begin{minipg4}
+          {\fov surf}, {\fov der}, {\fov parvalue}, \&{\fov leftknot1}, \&{\fov leftknot2}, {\fov derive}, {\fov normal}, \&{\fov stat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

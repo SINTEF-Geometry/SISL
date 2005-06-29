@@ -1,0 +1,66 @@
+\section{Extend a B-spline Curve.}
+\funclabel{s1233}
+\begin{minipg1}
+  To extend a B-spline curve (i.e.\ NOT rationals) at the start and/or
+  the end of the curve by continuing the polynomial behaviour of the
+  curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1233(\begin{minipg3}
+          {\fov pc}, {\fov afak1}, {\fov afak2}, {\fov rc}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \>  *{\fov pc};\\
+        \>\>    double    \>  {\fov afak1};\\
+        \>\>    double    \>  {\fov afak2};\\
+        \>\>    SISLCurve \>  **{\fov rc};\\
+        \>\>    int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc}    \> - \>
+        \begin{minipg2}
+          Pointer to the B-spline curve to be extended.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov afak1} \> - \>
+        \begin{minipg2}
+          How much the curve is to be stretched at the
+          start of the curve. The length of the stretched
+          curve will be equal to $(1+afak1)$ times the
+          input curve. $afak1\geq 0$ and will be set to 0 if
+          negative.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov afak2} \> - \>
+        \begin{minipg2}
+          How much the curve is to be stretched at the
+          end of the curve. The length of the stretched
+          curve will be equal to $(1+afak2)$ times the
+          input curve. $afak2\geq 0$ and will be set to 0 if
+          negative.
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rc}    \> - \> Pointer to the extended B-spline curve.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $= 1$ : \begin{minipg5}
+                                     Stretching factors less than 0
+                                     -- readjusted factor(s)
+                                     have been used.
+                                   \end{minipg5}\\[0.3ex]
+                \>\>\>\>\> $> 0$ : Warning.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \>  *{\fov pc};\\
+        \>\>    double    \>  {\fov afak1};\\
+        \>\>    double    \>  {\fov afak2};\\
+        \>\>    SISLCurve \>  *{\fov rc} = NULL;\\
+        \>\>    int       \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1233(\begin{minipg4}
+          {\fov pc}, {\fov afak1}, {\fov afak2}, \&{\fov rc}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

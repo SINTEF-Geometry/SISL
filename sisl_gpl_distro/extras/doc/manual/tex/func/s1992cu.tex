@@ -1,0 +1,47 @@
+\subsection{Create and compute bounding box to a curve.}
+\funclabel{s1992cu}
+\begin{minipg7}
+		Make a box from the control polygon to the curve given by
+              	ecoef. If dimension is 2, then one box rotated 45 degrees is also made. If the dimension
+	       	is 3, then boxes  rotated 45 degrees around each
+	       	main axis are made. The min/max values of the boxes are placed in the SISLbox element pointed to by pbox in the curve object.
+\end{minipg7} \\ \\
+SYNOPSIS\\
+	\>void s1992cu(\begin{minipg3}
+		{\fov curve}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLCurve 	\>	*{\fov curve};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\newpagetabs
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov curve}	\> - \>	Input curve.\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+  		\>\>	SISLCurve    \>	*{\fov curve = NULL};\\
+  		\>\>	int    \>	{\fov number} = 10;\\
+  		\>\>	int    \>	{\fov order} = 4;\\
+  		\>\>	double \>	{\fov knots[14]};\\
+  		\>\>	double \>	{\fov coef[30]};\\
+  		\>\>	int    \>	{\fov kind} = 1;\\
+  		\>\>	int    \>	{\fov dim} = 3;\\
+  		\>\>	int    \>	{\fov copy} = 0;\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>curve$=$newCurve(\begin{minipg4}
+	{\fov number}, {\fov order}, {\fov knots}, {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+	\>\>s1992cu(\begin{minipg4}
+		{\fov curve}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

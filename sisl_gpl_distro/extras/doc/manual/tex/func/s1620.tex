@@ -1,0 +1,88 @@
+\subsection{Compute a surface using the input points as
+control vertices, automatic parameterization.}
+\funclabel{s1620}
+\begin{minipg1}
+  To calculate a surface using the input points as
+  control vertices. The parametrization is calculated
+  according to {\fov ipar}.
+  The output is represented as a B-spline surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1620(\begin{minipg3}
+          {\fov epoint}, {\fov inbpnt1}, {\fov inbpnt2}, {\fov ipar},
+          {\fov iopen1}, {\fov iopen2}, {\fov ik1}, {\fov ik2}, {\fov idim}, {\fov rs}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \> {\fov epoint}[\,];\\
+        \>\>    int    \> {\fov inbpnt1};\\
+        \>\>    int    \> {\fov inbpnt2};\\
+        \>\>    int    \> {\fov ipar};\\
+        \>\>    int    \> {\fov iopen1};\\
+        \>\>    int    \> {\fov iopen2};\\
+        \>\>    int    \> {\fov ik1};\\
+        \>\>    int    \> {\fov ik2};\\
+        \>\>    int    \> {\fov idim};\\
+        \>\>    SISLSurf \> **{\fov rs};\\
+        \>\>    int    \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov epoint} \> - \>
+        \begin{minipg2}
+          The array containing the points to be used as
+          controlling vertices of the B-spline surface.
+        \end{minipg2}\\
+        \>\>    {\fov inbpnt1} \> - \> The number of points in first
+                                       parameter direction.\\
+        \>\>    {\fov inbpnt2} \> - \> The number of points in second
+                                       parameter direction.\\
+        \>\>    {\fov ipar} \> - \> Flag showing the desired
+                                    parametrization to be used:\\
+                 \>\>\>\> $= 1$ \>:
+                 \begin{minipg5}
+                   Mean accumulated cord-length
+                   parameterization.
+                 \end{minipg5}\\[0.8ex]
+                 \>\>\>\> $= 2$ \>: Uniform parametrization.\\
+        \>\>    {\fov iopen1} \> - \>
+          Open/close condition in the first parameter direction:\\
+          \>\>\>\> $=1$ \>: Open.\\
+          \>\>\>\> $=0$ \>: Closed. \\
+          \>\>\>\> $=-1$ \>: Closed and periodic.\\
+\newpagetabs
+        \>\>    {\fov iopen2} \> - \>
+          Open/close condition in the second parameter direction:\\
+          \>\>\>\> $=1$ \>: Open.\\
+          \>\>\>\> $=0$ \>: Closed. \\
+          \>\>\>\> $=-1$ \>: Closed and periodic.\\
+        \>\>    {\fov ik1} \> - \> The order of the surface in first direction.\\
+        \>\>    {\fov ik2} \> - \> The order of the surface in second direction.\\
+        \>\>    {\fov idim} \> - \> The dimension of the space.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rs} \> - \> Pointer to the B-spline surface.\\
+         \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\> $< 0$ \>: Error.\\
+                \>\>\>\> $= 0$ \>: Ok.\\
+                \>\>\>\> $> 0$ \>: Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov epoint}[300];\\
+        \>\>    int    \> {\fov inbpnt1} = 10;\\
+        \>\>    int    \> {\fov inbpnt2} = 10;\\
+        \>\>    int    \> {\fov ipar};\\
+        \>\>    int    \> {\fov iopen1};\\
+        \>\>    int    \> {\fov iopen2};\\
+        \>\>    int    \> {\fov ik1};\\
+        \>\>    int    \> {\fov ik2};\\
+        \>\>    int    \> {\fov idim} = 3;\\
+        \>\>    SISLSurf \> *{\fov rs} = NULL;\\
+        \>\>    int    \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1620(\begin{minipg4}
+          {\fov epoint}, {\fov inbpnt1}, {\fov inbpnt2}, {\fov ipar},
+          {\fov iopen1}, {\fov iopen2}, {\fov ik1}, {\fov ik2}, {\fov idim}, \&{\fov rs}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

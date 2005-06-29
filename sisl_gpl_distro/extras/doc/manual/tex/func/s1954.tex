@@ -1,0 +1,83 @@
+\subsection{Find the closest point between a surface and a point.}
+\funclabel{s1954}
+\begin{minipg1}
+  Find the points on a surface lying closest to a given point.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1954(\begin{minipg3}
+                        {\fov surf}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov numclopt}, {\fov pointpar},
+                        {\fov numclocr}, {\fov clocurves}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numclopt};\\
+                \>\>    double  \>      **{\fov pointpar};\\
+                \>\>    int     \>      *{\fov numclocr};\\
+                \>\>    SISLIntcurve\>  ***{\fov clocurves};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the surface in the closest point
+                                problem.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov point}\> - \>     \begin{minipg2}
+                                The point in the closest point problem.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>       \begin{minipg2}
+                                Dimension of the space in which the point lies.
+                                \end{minipg2}\\
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2}\\
+        \>Output Arguments:\\
+        \>\>    {\fov numclopt}\> - \>  \begin{minipg2}
+                                Number of single closest points.
+                                \end{minipg2}\\
+        \>\>    {\fov pointpar}\> - \>  \begin{minipg2}
+                                Array containing the parameter values of the
+                                single closest points in the parameter area of
+                                the surface. The points lie in sequence. Closest
+                                curves are stored in clocurves.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numclocr}\> - \>  \begin{minipg2}
+                                Number of closest curves.
+                                \end{minipg2}\\
+        \>\>    {\fov clocurves}\> - \> \begin{minipg2}
+                                Array containing the description of the closest
+                                curves. The curves are only described by points
+                                in the parameter area. The curve pointers
+                                point to nothing.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov point}[3];\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numclopt};\\
+                \>\>    double  \>      *{\fov pointpar};\\
+                \>\>    int     \>      {\fov numclocr};\\
+                \>\>    SISLIntcurve\>  **{\fov clocurves};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1954(\begin{minipg4}
+                {\fov surf}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numclopt}, \&{\fov pointpar},
+        \&{\fov numclocr}, \&{\fov clocurves}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

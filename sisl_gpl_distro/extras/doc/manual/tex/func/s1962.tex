@@ -1,0 +1,131 @@
+\subsection{Data reduction: Points and tangents as input.}
+\funclabel{s1962}
+\begin{minipg1}
+To compute the approximation to the data given by the points
+           ep and the derivatives (tangents) ev, and represent it as a
+           B-spline curve with parametrization determined by the parameter
+           ipar. The approximation is determined by first forming the cubic
+           hermite interpolant to the data, and then performing knot
+           removal on this initial approximation.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1962(\begin{minipg3}
+            {\fov ep}, {\fov ev}, {\fov im}, {\fov idim}, {\fov ipar}, {\fov epar}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax},
+            {\fov rc}, {\fov emxerr}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    double \> {\fov ep}[\,];\\
+                \>\>    double \> {\fov ev}[\,];\\
+                \>\>    int    \>  {\fov im};\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    int    \>  {\fov ipar};\\
+                \>\>    double \> {\fov epar}[\,];\\
+                \>\>    double \> {\fov eeps}[\,];\\
+                \>\>    int    \>  {\fov ilend};\\
+                \>\>    int    \>  {\fov irend};\\
+                \>\>    int    \>  {\fov iopen};\\
+                \>\>    int    \>  {\fov itmax};\\
+                \>\>    SISLCurve    \>  **{\fov rc};\\
+                \>\>    double \> {\fov emxerr}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov ep}\> - \>  \begin{minipg2}
+                     Array (length idim*im) comtaining the points
+                  to be approximated.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ev}\> - \>  \begin{minipg2}
+                     Array (length idim*im) containing the derivatives
+                  of the points to be approximated.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov im}\> - \>  \begin{minipg2}
+                     The no. of data points.
+                               \end{minipg2}\\
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                     The dimension of the euclidean space in which the
+                  curve lies.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ipar}\> - \> \begin{minipg2}
+                     Flag indicating the type of parameterization to be used:
+                               \end{minipg2}\\[0.8ex]
+                \>\>\>\>   $= 1$ : Paramterize by accumulated cord length.\\
+                \>\>\>\>         (Arc length parametrization for the piecewise\\
+                \>\>\>\>         linear interpolant.)\\
+                \>\>\>\>   $= 2$ : Uniform parameterization.\\
+                \>\>\>\>   $= 3$ : Parametrization given by epar.\\
+                \>\>\>\>  If ipar $<1$  or ipar $>3$, it will be set to 1.\\
+        \>\>    {\fov epar}\> - \>  \begin{minipg2}
+                     Array (length im) containing a parameterization
+                  of the given data.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eeps}\> - \>  \begin{minipg2}
+                     Array (length idim) giving the desired accuracy of
+                  the spline-approximation in each component.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ilend}\> - \>  \begin{minipg2}
+                     The no. of derivatives that are not allowed to change
+                 at the left end of the curve.
+                 The $0,\ldots,(ilend-1)$ derivatives will be kept fixed.
+                 If ilend $<0$, this routine will set it to 0.
+                 If ilend $<ik$, this routine will set it to ik.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov irend}\> - \>  \begin{minipg2}
+                     The no. of derivatives that are not allowed to change
+                 at the right end of the curve.
+                 The $0,\ldots,(irend-1)$ derivatives will be kept fixed.
+                 If irend $<0$, this routine will set it to 0.
+                 If irend $<ik$, this routine will set it to ik.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov iopen}\> - \>  Open/closed parameter\\
+            \>\>\>\>  $= 1$  : Produce open curve.\\
+            \>\>\>\>  $= 0$ : Produce closed, non-periodic curve if possible.\\
+            \>\>\>\>  $= -1$ : Produce closed, periodic curve if possible.\\
+                 \>\>\>\>  \begin{minipg2}
+                 If a closed or periodic curve is to be produced and the
+                 start- and endpoint is more distant than the length of
+                 the tolerance, a new point is added. Note that if the
+                 parametrization is given as input, the parametrization
+                 if the last point will be arbitrary.
+                                \end{minipg2}\\
+        \>\>    {\fov itmax}\> - \>  \begin{minipg2}
+                     Max. no. of iteration.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov rc}\> - \>  \begin{minipg2}
+                     Pointer to curve.
+                               \end{minipg2}\\
+        \>\>    {\fov emxerr}\> - \>  \begin{minipg2}
+                     Array (length idim) (allocated outside this routine.)
+                  containing an upper bound for the pointwise error
+                  in each of the components of the spline-approximation.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    double \> {\fov ep}[\,];\\
+                \>\>    double \> {\fov ev}[\,];\\
+                \>\>    int    \>  {\fov im};\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    int    \>  {\fov ipar};\\
+                \>\>    double \> {\fov epar}[\,];\\
+                \>\>    double \> {\fov eeps}[\,];\\
+                \>\>    int    \>  {\fov ilend};\\
+                \>\>    int    \>  {\fov irend};\\
+                \>\>    int    \>  {\fov iopen};\\
+                \>\>    int    \>  {\fov itmax};\\
+                \>\>    SISLCurve    \>  **{\fov rc};\\
+                \>\>    double \> {\fov emxerr}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1962(\begin{minipg4}
+            {\fov ep}, {\fov ev}, {\fov im}, {\fov idim}, {\fov ipar}, {\fov epar}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax},
+            {\fov rc}, {\fov emxerr}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

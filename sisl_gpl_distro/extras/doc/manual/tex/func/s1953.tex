@@ -1,0 +1,78 @@
+\subsection{Find the closest point between a curve and a point.}
+\funclabel{s1953}
+\begin{minipg1}
+  Find the closest points between a curve and a point.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1953(\begin{minipg3}
+        {\fov curve}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov numintpt},
+        {\fov intpar},\linebreak {\fov numintcu}, {\fov intcurve}, {\fov jstat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov intpar};\\
+                \>\>    int     \>      *{\fov numintcu};\\
+                \>\>    SISLIntcurve \> ***{\fov intcurve};\\
+                \>\>    int     \>      *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> \begin{minipg2}
+                                Pointer to the curve in the closest point problem.
+                                \end{minipg2}\\
+        \>\>    {\fov point}    \> - \> \begin{minipg2}
+                                The point in the closest point problem.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                Dimension of the space in which the
+                                curve and point lie.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsco}    \> - \> Computational resolution (not used).\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  Number of single closest points.\\
+        \>\>    {\fov intpar}   \> - \> \begin{minipg2}
+                                Array containing the parameter values of the
+                                single closest points in the parameter
+                                interval of the curve. The points lie in sequence.
+                                Closest curves are stored in intcurve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcu}\> - \>  Number of closest curves.\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                                Array of pointers to the SISLIntcurve objects
+                                containing descriptions of the closest
+                                curves. The curves are only described by
+                                start points and end points in
+                                the parameter interval of the curve. The
+                                curve pointers point to nothing.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov curve};\\
+        \>\>    double  \>   {\fov point}[3];\\
+        \>\>    int     \>   {\fov dim} = 3;\\
+        \>\>    double  \>   {\fov epsco};\\
+        \>\>    double  \>   {\fov epsge};\\
+        \>\>    int     \>   {\fov numintpt};\\
+        \>\>    double  \>   *{\fov intpar};\\
+        \>\>    int     \>   {\fov numintcu};\\
+        \>\>    SISLIntcurve \> **{\fov intcurve};\\
+        \>\>    int     \>   {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1953(\begin{minipg4}
+          {\fov curve}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},
+          \&{\fov intpar},\linebreak \&{\fov numintcu}, \&{\fov intcurve}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

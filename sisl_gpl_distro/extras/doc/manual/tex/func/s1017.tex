@@ -1,0 +1,44 @@
+\subsection{Insert a given knot into the description of a curve.}
+\funclabel{s1017}
+\begin{minipg1}
+  Insert a given knot into the description of a curve.\\
+  NOTE       : When the curve is periodic (i.e.\ the curve flag
+  $cuopen=-1$), the input parameter value must lie in the half-open
+  $[et[kk-1], et[kn)$ interval, the function will automatically update
+  the extra knots and  coeffisients. {\fov rcnew}{\tt ->}{\fov in} is
+  still equal to  $pc${\tt ->}$in + 1$!
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1017(\begin{minipg3}
+          {\fov pc},  {\fov rc},  {\fov apar},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    int       \> *{\fov jstat};\\
+        \>\>    double    \> {\fov apar};\\
+        \>\>    SISLCurve \> **{\fov rc};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc}   \> - \> The curve to be refined.\\
+        \>\>    {\fov apar} \> - \> Parameter value of the knot to be inserted.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rc}    \> - \> The new, refined curve.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                      \>\>\>\>\> $> 0$ : Warning.\\
+                      \>\>\>\>\> $= 0$ : Ok.\\
+                      \>\>\>\>\> $< 0$ : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov apar};\\
+        \>\>    SISLCurve \> *{\fov rc} = NULL;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1017(\begin{minipg4}
+          {\fov pc},  \&{\fov rc},  {\fov apar}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

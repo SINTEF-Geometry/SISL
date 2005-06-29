@@ -1,0 +1,56 @@
+\section{Pick the Parameter Ranges of a Surface}
+\funclabel{s1603}
+\begin{minipg1}
+  To pick the parameter ranges of a surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1603(\begin{minipg3}
+                                {\fov surf}, {\fov min1}, {\fov min2}, {\fov max1}, {\fov max2}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      *{\fov min1};\\
+                \>\>    double  \>      *{\fov min2};\\
+                \>\>    double  \>      *{\fov max1};\\
+                \>\>    double  \>      *{\fov max2};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                The surface.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov min1}\> - \>      \begin{minipg2}
+                                Start parameter in the first parameter direction.
+                                \end{minipg2}\\
+        \>\>    {\fov min2}\> - \>      \begin{minipg2}
+                                Start parameter in the second parameter direction.
+                                \end{minipg2}\\
+        \>\>    {\fov max1}\> - \>      \begin{minipg2}
+                                End parameter in the first parameter direction.
+                                \end{minipg2}\\
+        \>\>    {\fov max2}\> - \>      \begin{minipg2}
+                                End parameter in the second parameter direction.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov min1};\\
+                \>\>    double  \>      {\fov min2};\\
+                \>\>    double  \>      {\fov max1};\\
+                \>\>    double  \>      {\fov max2};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1603(\begin{minipg4}
+                {\fov surf}, \&{\fov min1}, \&{\fov min2}, \&{\fov max1}, \&{\fov max2}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

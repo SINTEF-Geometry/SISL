@@ -1,0 +1,215 @@
+\chapter{Appendix: Error Codes}
+\label{errorcodes}
+For reference, here is a list of the error codes used in SISL.
+They can be useful for diagnosing problems encountered
+when calling SISL routines.
+However please note that a small number of SISL routines
+use their own convention.
+
+\begin{verbatim}
+Label Value  Description
+--------------------------------------------------------------------------------
+err101 -101  Error in memory allocation.
+
+err102 -102  Error in input. Dimension less than 1.
+
+err103 -103  Error in input. Dimension less than 2.
+
+err104 -104  Error in input. Dimension not equal 3.
+
+err105 -105  Error in input. Dimension not equal 2 or 3.
+
+err106 -106  Error in input. Conflicting dimensions.
+
+err107 -107  			
+
+err108 -108  Error in input. Dimension not equal 2.
+
+err109 -109  Error in input. Order less than 2.
+
+err110 -110  Error in Curve description. Order less than 1.
+
+err111 -111  Error in Curve description. Number of vertices less than order.
+
+err112 -112  Error in Curve description. Error in knot vector.
+
+err113 -113  Error in Curve description. Unknown kind of Curve.
+
+err114 -114  Error in Curve description. Open Curve when expecting closed.
+
+err115 -115  Error in Surf description. Order less than 1.
+
+err116 -116  Error in Surf description. Number of vertices less than order.
+
+err117 -117  Error in Surf description. Error in knot vector.
+
+err118 -118  Error in Surf description. Unknown kind of Surf.
+
+err119 -119
+
+err120 -120  Error in input. Negative relative tolerance.
+
+err121 -121  Error in input. Unknown kind of Object.
+
+err122 -122  Error in input. Unexpected kind of Object found.
+
+err123 -123  Error in input. Parameter direction does not exist.
+
+err124 -124  Error in input. Zero length parameter interval.
+
+err125 -125
+
+err126 -126
+
+err127 -127  Error in input. The whole curve lies on axis.
+
+err128 -128
+
+err129 -129
+
+err130 -130  Error in input. Parameter value is outside parameter area.
+
+err131 -131
+
+err132 -132
+
+err133 -133
+
+err134 -134
+
+err135 -135  Error in data structure.
+             Intersection point exists when it should not.
+
+err136 -136  Error in data structure.
+             Intersection list exists when it should not.
+
+err137 -137  Error in data structure.
+             Expected intersection point not found.
+
+err138 -138  Error in data structure.
+             Wrong number of intersections on edges/endpoints.
+
+err139 -139  Error in data structure.
+             Edge intersection does not lie on edge/endpoint.
+
+err140 -140  Error in data structure. Intersection interval crosses
+             subdivision line when not expected to.
+   						
+err141 -141  Error in input. Illegal edge point requested.
+
+err142 -142  
+
+err143 -143
+
+err144 -144  Unknown kind of intersection curve.
+
+err145 -145  Unknown kind of intersection list (internal format).
+
+err146 -146  Unknown kind of intersection type.
+
+err147 -147
+
+err148 -147
+
+err149 -149
+
+err150 -150  Error in input. NULL pointer was given.
+
+err151 -151  Error in input. One or more illegal input values.
+
+err152 -152  Too many knots to insert.
+
+err153 -153  Lower level routine reported error. SHOULD use label "error".
+
+err154 -154
+
+err155 -155
+
+err156 -156  Illegal derivative requested. Change this label to err178.
+
+err157 -157
+
+err158 -158  Intersection point outside Curve.
+
+err159 -159  No of vertices less than 1. SHOULD USE err111 or err116.
+
+err160 -160  Error in dimension of interpolation problem.
+
+err161 -161  Error in interpolation problem.
+
+err162 -162  Matrix may be noninvertible.
+
+err163 -163  Matrix part contains diagonal elements.
+
+err164 -164  No point conditions specified in interpolation problem.
+
+err165 -165  Error in interpolation problem.
+
+err166 -166
+
+err167 -167
+
+err168 -168
+
+err169 -169
+
+err170 -170  Internal error: Error in moving knot values.
+
+err171 -171  Memory allocation failure: Could not create curve or surface.
+
+err172 -172  Input error, inarr < 1 || inarr > 3.
+
+err173 -173  Direction vector zero length.
+
+err174 -174  Degenerate condition.
+
+err175 -175  Unknown degree/type of implicit surface.
+
+err176 -176  Unexpected iteration situation.
+
+err177 -177  Error in input. Negative step length requested.
+
+err178 -178  Illegal derivative requested.
+
+err179 -179  No. of Curves < 2.
+
+err180 -180  Error in torus description.
+
+err181 -181  Too few points as input.
+
+err182 -182
+
+err183 -183  Order(s) specified to low.
+
+err184 -184  Negative tolerance given.
+
+err185 -185  Only degenerate or singular guide points.
+
+err186 -186  Special error in traversal of curves.
+
+err187 -187  Error in description of input curves.
+
+err188 -188
+
+err189 -189
+
+err190 -190  Too small array for storing Curve segments.
+
+err191 -191  Error in inserted parameter number.
+
+err192 -192
+
+err193 -193
+
+err194 -194
+
+err195 -195
+
+err196 -196
+
+err197 -197
+
+err198 -198
+
+err199 -199  Error in vectors?
+\end{verbatim}

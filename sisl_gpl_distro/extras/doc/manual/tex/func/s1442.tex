@@ -1,0 +1,81 @@
+\subsection{Compute area, weight point and moment of inertia of a B-spline patch.}
+\funclabel{s1442}
+\begin{minipg1}
+Compute the area and the weight point of a surface by using recursive 
+subdivision. The rotational momentum relative to  a given axis is also 
+calculated. The difference between the area computed and the real area of the 
+surface is less than (epssurf/area computed).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1442(\begin{minipg3}
+			{\fov surf}, {\fov point}, {\fov dir}, {\fov dim}, {\fov epssurf}, {\fov epsge}, {\fov weight}, {\fov area}, 	
+			{\fov moment}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov point}[\,];\\
+		\>\>	double	\>	{\fov dir}[\,];\\
+		\>\>	int	\>	{\fov dim};\\
+		\>\>	double	\>	{\fov epssurf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	double	\>	{\fov weight}[\,];\\
+		\>\>	double 	\>	*{\fov area};\\
+		\>\>	double 	\>	*{\fov moment};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				Pointer to the surface.
+				\end{minipg2}\\
+	\>\>	{\fov point}\> - \>	\begin{minipg2}
+				(Reference) point on the rotational axis.
+				\end{minipg2}\\
+	\>\>	{\fov dir}\> - \>	\begin{minipg2}
+				Direction of the rotational axis.	
+				\end{minipg2}\\
+	\>\>	{\fov dim}\> - \>	\begin{minipg2}
+				Dimension of the space in which point and dir lie.
+				\end{minipg2} \\
+	\>\>	{\fov epssurf}\> - \> 	\begin{minipg2}
+				Relative resolution used on surfaces.
+				\end{minipg2}\\
+	\>\>	{\fov epsge}\> - \>	\begin{minipg2}
+				Geometry resolution.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov weight}\> - \>	\begin{minipg2}
+				Area weight point.
+				\end{minipg2}\\
+	\>\>	{\fov area}\> - \>	\begin{minipg2}
+				The area calculated.
+				\end{minipg2}\\
+	\>\>	{\fov moment}\> - \>	\begin{minipg2}
+				Rotational weight moment.
+				\end{minipg2}\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*surf;\\
+		\>\>	double	\>	{\fov point}[3];\\
+		\>\>	double	\>	{\fov dir}[3];\\
+		\>\>	int	\>	{\fov dim} = 3;\\
+		\>\>	double	\>	{\fov epssurf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	double	\>	{\fov weight}[3];\\
+		\>\>	double 	\>	{\fov area};\\
+		\>\>	double 	\>	{\fov moment};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1442(\begin{minipg4}
+		{\fov surf}, {\fov point}, {\fov dir}, {\fov dim}, {\fov epssurf}, {\fov epsge}, {\fov weight}, \&{\fov area}, 		
+		\&{\fov moment}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

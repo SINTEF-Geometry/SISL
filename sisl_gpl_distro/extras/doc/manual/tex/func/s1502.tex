@@ -1,0 +1,98 @@
+\subsection{Intersection between a curve and an elliptic cone.}
+\funclabel{s1502}
+\begin{minipg1}
+  Find all the intersections between a curve and an elliptic cone.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1502(\begin{minipg3}
+         {\fov curve}, {\fov basept}, {\fov normdir}, {\fov ellipaxis}, {\fov alpha}, {\fov ratio}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov numintpt}, {\fov intpar},
+                        {\fov numintcu}, {\fov intcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov basept}[\,];\\
+                \>\>    double  \>      {\fov normdir}[\,];\\
+                \>\>    double  \>      {\fov ellipaxis}[\,];\\
+                \>\>    double  \>      {\fov alpha};\\
+                \>\>    double  \>      {\fov ratio};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov intpar};\\
+                \>\>    int     \>      *{\fov numintcu};\\
+                \>\>    SISLIntcurve \> ***{\fov intcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the curve.\\
+        \>\>    {\fov basept}\> - \>    \begin{minipg2}
+                                Base point of the cone, centre of elliptic base.
+                                \end{minipg2}\\
+        \>\>    {\fov normdir}\> - \>   \begin{minipg2}
+                                Direction of the cone axis, normal to the elliptic base. The default is pointing from the base point to the top point of the cone.
+                                \end{minipg2}\\
+        \>\>    {\fov ellipaxis}\> - \> \begin{minipg2}
+                                One of the axes of the ellipse (major or minor).
+                                \end{minipg2}\\
+        \>\>    {\fov alpha}\> - \>     \begin{minipg2}
+                                The opening angle of the cone at the ellipaxis.
+                                \end{minipg2}\\
+        \>\>    {\fov ratio}\> - \>     \begin{minipg2}
+                                The ratio of the major and minor
+                                axes = ellipaxis/otheraxis.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                Dimension of the space in which the
+                                cone and the curve
+                                lie, dim should be equal to three.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}    \> - \> Computational resolution (not used).\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  Number of single intersection points.\\
+        \>\>    {\fov intpar}   \> - \> \begin{minipg2}
+                        Array containing the parameter values of the
+                        single intersection points in the parameter
+                        interval of the curve. The points lie in sequence.
+                        Intersection curves are stored in intcurve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcu}\> - \>Number of intersection curves.\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                        Array of pointers to the SISLIntcurve object
+                        containing descriptions of the intersection
+                        curves. The curves are only described by start
+                        points and end points in
+                        the parameter interval of the curve. The curve
+                        pointers point to nothing.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov basept}[3];\\
+                \>\>    double  \>      {\fov normdir}[3];\\
+                \>\>    double  \>      {\fov ellipaxis}[3];\\
+                \>\>    double  \>      {\fov alpha};\\
+                \>\>    double  \>      {\fov ratio};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov intpar};\\
+                \>\>    int     \>      {\fov numintcu};\\
+                \>\>    SISLIntcurve \> **{\fov intcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1502(\begin{minipg4}
+        {\fov curve}, {\fov basept}, {\fov normdir}, {\fov ellipaxis}, {\fov alpha}, {\fov ratio}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},
+                \&{\fov intpar}, \&{\fov numintcu}, \&{\fov intcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

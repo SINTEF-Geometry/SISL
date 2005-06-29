@@ -1,0 +1,117 @@
+\subsection{Create a lofted surface
+               from a set of B-spline input curves and parametrization.}
+\funclabel{s1539}
+\begin{minipg1}
+To create a spline lofted surface
+               from a set of input curves. The parametrization
+               of the position curves is given in epar.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1539(\begin{minipg3}
+            {\fov inbcrv}, {\fov vpcurv}, {\fov nctyp}, {\fov epar}, {\fov astpar}, {\fov iopen}, {\fov iord2},
+            {\fov iflag}, {\fov rsurf}, {\fov gpar}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    int    \>  	{\fov inbcrv};\\
+                \>\>    SISLCurve    \>  *{\fov vpcurv}[\,];\\
+                \>\>    int    \>  	{\fov nctyp}[\,];\\
+                \>\>    double    \>  {\fov epar}[\,];\\
+                \>\>    double	\> {\fov astpar};\\
+                \>\>    int    \>  	{\fov iopen};\\
+                \>\>    int    \>  	{\fov iord2};\\
+                \>\>    int    \>  	{\fov iflag};\\
+                \>\>    SISLSurf    \>  **{\fov rsurf};\\
+                \>\>    double 	\> **{\fov gpar};\\
+                \>\>    int    \>  	*{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov inbcrv}\> - \>  \begin{minipg2}
+                    set.
+                               \end{minipg2}\\
+        \>\>    {\fov vpcurv}\> - \>  \begin{minipg2}
+                     Array (length inbcrv) of pointers to the
+                       curves in the curve-set.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov nctyp}\> - \>  \begin{minipg2}
+                     Array (length inbcrv) containing the types
+                       of curves in the curve-set.
+                               \end{minipg2}\\[0.8ex]
+                \>\>\>\> $=1$ \> : Ordinary curve.\\
+                \>\>\>\> $=2$ \> : Knuckle curve. Treated as an ordinary curve.\\
+                \>\>\>\> $=3$ \> : Tangent to next curve.\\
+                \>\>\>\> $=4$ \> : Tangent to previous curve.\\
+                \>\>\>\> ($=5$ \> : Second derivative to previous curve.)\\
+                \>\>\>\> ($=6$ \> : Second derivative to next curve.)\\
+                \>\>\>\> $=13$ \> : Curve giving start of tangent to next curve.\\
+                \>\>\>\> $=14$ \> : Curve giving end of tangent to previous curve.\\
+        \>\>    {\fov epar}\> - \>  \begin{minipg2}
+                     Array containing the wanted parametrization. Only
+                       parametervalues corresponding to position
+                       curves are given. For closed curves, one additional
+                       parameter value must be spesified. The last entry
+                       contains the parametrization of the repeted start
+                       curve. (if the endpoint is equal to the startpoint
+                       of the interpolation the lenght of the array should
+                       be equal to inpt1 also in the closed case). The
+                       number of entries in the array is thus equal to
+                       the number of position curves (number plus one
+                       if the curve is closed).
+                               \end{minipg2}\\
+        \>\>    {\fov astpar}\> - \>  \begin{minipg2}
+                    parameter for spline lofting direction.
+                               \end{minipg2}\\
+        \>\>    {\fov iopen}\> - \>  \begin{minipg2}
+                     Flag saying whether the resulting surface should
+                       be closed or open.
+                               \end{minipg2}\\
+        \>\>\>\>  $= 1$ \> : Open.\\
+        \>\>\>\>  $= 0$ \> : Closed.\\
+        \>\>\>\>  $= -1$ \> : Closed and periodic.\\
+        \>\>    {\fov iord2}\> - \>  \begin{minipg2}
+                    spline basis in the
+                       lofting direction.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov iflag}\> - \>  \begin{minipg2}
+                     Flag saying whether the size of the tangents in the
+                       derivative curves should be adjusted or not.
+                               \end{minipg2}\\
+                      \>\>\>\> $= 0$ \> : Do not adjust tangent sizes.\\
+                      \>\>\>\> $= 1$ \> : Adjust tangent sizes.\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov rsurf}\> - \>  \begin{minipg2}
+                     Pointer to the surface produced.
+                               \end{minipg2}\\
+        \>\>    {\fov gpar}  \> - \>
+        \begin{minipg2}
+          The input curves are constant parameter lines
+          in the parameter-plane of the produced surface.
+          The $i$-th element in this array contains the (constant) value
+          of this parameter of the $i$-th. input curve.
+        \end{minipg2}\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\> $< 0$ \> : Error.\\
+                \>\>\>\> $= 0$ \> : Ok.\\
+                \>\>\>\> $> 0$ \> : Warning.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    int    \>  	{\fov inbcrv};\\
+                \>\>    SISLCurve    \>  *{\fov vpcurv}[\,];\\
+                \>\>    int    \>  	{\fov nctyp}[\,];\\
+                \>\>    double    \>  {\fov epar}[\,];\\
+                \>\>    double	\> {\fov astpar};\\
+                \>\>    int    \>  	{\fov iopen};\\
+                \>\>    int    \>  	{\fov iord2};\\
+                \>\>    int    \>  	{\fov iflag};\\
+                \>\>    SISLSurf    \>  **{\fov rsurf};\\
+                \>\>    double 	\> **{\fov gpar};\\
+                \>\>    int    \>  	*{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1539(\begin{minipg4}
+            {\fov inbcrv}, {\fov vpcurv}, {\fov nctyp}, {\fov epar}, {\fov astpar}, {\fov iopen}, {\fov iord2},
+            {\fov iflag}, {\fov rsurf}, {\fov gpar}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

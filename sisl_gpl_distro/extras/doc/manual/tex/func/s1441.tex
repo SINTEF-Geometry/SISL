@@ -1,0 +1,67 @@
+\subsection{Compute volume between a B-spline surface and a point.}
+\funclabel{s1441}
+\begin{minipg1}
+Compute the volume of the object surrounded by the input surface and the 
+surface defined by the reference point and the boundary of the input surface. The 
+volume might have a negative value dependent on the "direction" of the surface 
+relative to the reference point. When used on a closed surface, the routine 
+gives as output the volume of the object surrounded by the surface. The 
+difference between the volume calculated and the real volume will be less than 
+(epssurf/the volume calculated).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1441	(\begin{minipg3}
+				{\fov surf}, {\fov point}, {\fov dim}, {\fov epssurf}, {\fov epsge}, {\fov volume}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov point}[\,];\\
+		\>\>	int	\>	{\fov dim};\\
+		\>\>	double 	\>	{\fov epssurf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	double	\>	*{\fov volume};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				Pointer to the surface.
+				\end{minipg2}\\
+	\>\>	{\fov point}\> - \>	\begin{minipg2}
+				Reference point in the volume computation.
+				\end{minipg2}\\
+	\>\>	{\fov dim}\> - \>	\begin{minipg2}
+				Dimension of the space in which the point and surface lie.
+				\end{minipg2}\\
+	\>\>	{\fov epssurf}\> - \>	\begin{minipg2}
+				Relative resolution used on surfaces.
+				\end{minipg2} \\
+	\>\>	{\fov epsge}\> - \> \begin{minipg2}
+				Geometry resolution.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov volume}\> - \>	\begin{minipg2}
+				The volume calculated
+				\end{minipg2}\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov point[3]};\\
+		\>\>	int	\>	{\fov dim = 3};\\
+		\>\>	double 	\>	{\fov epssurf};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	double	\>	{\fov volume};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1441	(\begin{minipg4}
+		{\fov surf}, {\fov point}, {\fov dim}, {\fov epssurf}, {\fov epsge}, \&{\fov volume}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

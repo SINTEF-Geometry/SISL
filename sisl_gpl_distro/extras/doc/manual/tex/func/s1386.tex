@@ -1,0 +1,50 @@
+\subsection{Express the ``i,j''-th derivative of an open surface as a \mbox{surface}.}
+\funclabel{s1386}
+\begin{minipg1}
+  To express the $(der1, der2)$-th derivative of an open surface as a surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1386(\begin{minipg3}
+          {\fov surf}, {\fov der1}, {\fov der2}, {\fov newsurf}, {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf        \>      *{\fov surf};\\
+        \>\>    int     \>      {\fov der1};\\
+        \>\>    int     \>      {\fov der2};\\
+        \>\>    SISLSurf        \>      **{\fov newsurf};\\
+        \>\>    int     \>      *{\fov stat};\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}     \> - \> \begin{minipg2}
+                                Surface to differentiate.
+                                \end{minipg2}\\
+        \>\>    {\fov der1}     \> - \> \begin{minipg2}
+                                The derivative to be produced in the first
+                                parameter direction: $0\leq der1$
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov der2}     \> - \> \begin{minipg2}
+                                The derivative to be produced in the second
+                                parameter direction: $0\leq der2$
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}  \> - \> \begin{minipg2}
+                                The result of the (der1, der2) differentiation of surf.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\[1.0ex]
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov der1};\\
+                \>\>    int     \>      {\fov der2};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1386(\begin{minipg4}
+                {\fov surf}, {\fov der1}, {\fov der2}, \&{\fov newsurf}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

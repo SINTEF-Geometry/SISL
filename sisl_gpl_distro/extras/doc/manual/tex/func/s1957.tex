@@ -1,0 +1,63 @@
+\subsection{Find the closest point between a curve and a point. Simple version.}
+\funclabel{s1957}
+\begin{minipg1}
+  Find the closest point between a curve and a point.
+  The method is fast and should work well in clear cut cases but does not
+  guarantee finding the right solution. As long as it doesn't fail, it
+  will find exactly one point.  In other cases, use s1953().
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1957(\begin{minipg3}
+          {\fov pcurve}, {\fov epoint}, {\fov idim}, {\fov aepsco}, {\fov aepsge}, {\fov gpar}, {\fov dist}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \>  *{\fov pcurve};\\
+        \>\>    double    \>  {\fov epoint}[\,];\\
+        \>\>    int       \>  {\fov idim};\\
+        \>\>    double    \>  {\fov aepsco};\\
+        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    double    \>  *{\fov gpar};\\
+        \>\>    double    \>  *{\fov dist};\\
+        \>\>    int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pcurve} \> - \>
+        \begin{minipg2}
+          Pointer to the curve in the closest point problem.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epoint} \> - \> The point in the closest point problem.\\
+        \>\>    {\fov idim}   \> - \> Dimension of the space in which
+                                      {\fov epoint} lies.\\
+        \>\>    {\fov aepsco} \> - \> Computational resolution (not used).\\
+        \>\>    {\fov aepsge} \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov gpar}  \> - \>
+        \begin{minipg2}
+          The parameter value of the closest point in the parameter
+          interval of the curve.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov dist}  \> - \> The closest distance between curve and point.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Point found by iteration.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+                \>\>\>\>\> $= 1$ : Point lies at an end.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \>  *{\fov pcurve};\\
+        \>\>    double    \>  {\fov epoint}[3];\\
+        \>\>    int       \>  {\fov idim} = 3;\\
+        \>\>    double    \>  {\fov aepsco};\\
+        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    double    \>  {\fov gpar} = 0;\\
+        \>\>    double    \>  {\fov dist} = 0;\\
+        \>\>    int       \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1957(\begin{minipg4}
+          {\fov pcurve}, {\fov epoint}, {\fov idim}, {\fov aepsco}, {\fov aepsge}, \&{\fov gpar}, \&{\fov dist}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

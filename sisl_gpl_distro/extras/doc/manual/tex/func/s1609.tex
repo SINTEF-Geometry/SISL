@@ -1,0 +1,131 @@
+\subsection{Compute a fillet curve based on radius.}
+\funclabel{s1609}
+\begin{minipg1}
+  To calculate a constant radius fillet curve between two curves
+  if possible.
+  The output is represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1609(\begin{minipg3}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point1}, {\fov pointf}, {\fov point2}, {\fov radius}, {\fov normal},\linebreak
+        {\fov filltype}, {\fov dim}, {\fov order}, {\fov newcurve}, {\fov parend1}, {\fov parspt1}, {\fov parend2},\linebreak
+        {\fov parept2}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov point1}[\,];\\
+                \>\>    double  \>      {\fov pointf}[\,];\\
+                \>\>    double  \>      {\fov point2}[\,];\\
+                \>\>    double  \>      {\fov radius};\\
+                \>\>    double  \>      {\fov normal}[\,];\\
+                \>\>    int     \>      {\fov filltype};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    double  \>      *{\fov parend1};\\
+                \>\>    double  \>      *{\fov parspt1};\\
+                \>\>    double  \>      *{\fov parend2};\\
+                \>\>    double  \>      *{\fov parept2};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> The first input curve.\\
+        \>\>    {\fov curve2}   \> - \> The second input curve.\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+        \>\>    {\fov point1}   \> - \> \begin{minipg2}
+                        Point indicating that the fillet should be put on the
+                        side of {\fov curve1} where {\fov point1} is situated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov pointf}\> - \>    \begin{minipg2}
+                        Point indicating where the fillet curve should go.
+                        {\fov point1} together with {\fov pointf}
+                        indicates the direction of the start tangent of
+                        the curve, while pointf together with {\fov point2}
+                        indicates the direction of the end tangent of
+                        the curve.  If more than one position of the fillet
+                        curve is possible, the closest curve to {\fov pointf}
+                        is chosen.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov point2}   \> - \> \begin{minipg2}
+                        Point indicating that the fillet should be put on the
+                        side of {\fov curve2} where {\fov point2} is situated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov radius}   \> - \> \begin{minipg2}
+                The radius to be used on the fillet if a circular fillet is
+                possible, otherwise a conic or a quadratic polynomial
+                curve is used, approximating the circular fillet.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov normal}   \> - \> \begin{minipg2}
+                        Normal to the plane the fillet curve
+                        should lie close to. This is only used in 3D
+                        fillet calculations, and the fillet centre will
+                        be in the direction of the cross product of the
+                        curve tangents and the normal.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov filltype}\> - \>  Indicator of type of fillet.\\
+                \>\>\>\>\>      $=1$ : \>\begin{minipg5}
+                                Circle, interpolating tangent on first
+                                curve, not on curve 2.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $=2$ : \>\begin{minipg5}
+                                Conic if possible,
+                                \end{minipg5}\\
+                \>\>\>\>\>      else : \>\begin{minipg5}
+                                polynomial segment.
+                                \end{minipg5}\\
+        \>\>    {\fov dim}      \> - \> Dimension of space.\\
+        \>\>    {\fov order}    \> - \> Order of fillet curve, which is not always used.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \> Pointer to the B-spline fillet curve.\\
+        \>\>    {\fov parend1}  \> - \> \begin{minipg2}
+                        Parameter value of the end of curve 1 not affected
+                        by the fillet.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov parspt1}  \> - \> \begin{minipg2}
+                        Parameter value of the point on curve 1 where the
+                        fillet starts.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov parend2}  \> - \> \begin{minipg2}
+                        Parameter value of the end of curve 2 not affected
+                        by the fillet.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov parept2}  \> - \> \begin{minipg2}
+                        Parameter value of the point on curve 2 where the
+                        fillet ends.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov point1}[3];\\
+                \>\>    double  \>      {\fov pointf}[3];\\
+                \>\>    double  \>      {\fov point2}[3];\\
+                \>\>    double  \>      {\fov radius};\\
+                \>\>    double  \>      {\fov normal}[3];\\
+                \>\>    int     \>      {\fov filltype};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    double  \>      {\fov parend1};\\
+                \>\>    double  \>      {\fov parspt1};\\
+                \>\>    double  \>      {\fov parend2};\\
+                \>\>    double  \>      {\fov parept2};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1609(\begin{minipg4}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point1}, {\fov pointf}, {\fov point2}, {\fov radius},\\ {\fov normal},
+        {\fov filltype}, {\fov dim}, {\fov order}, \&{\fov newcurve}, \&{\fov parend1}, \&{\fov parspt1},\\ \&{\fov parend2},
+        \&{\fov parept2}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

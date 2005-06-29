@@ -1,0 +1,54 @@
+\subsection{Evaluate the Variation of Curvature (VoC) of a curve at given parameter values.}
+\funclabel{s2556}
+\begin{minipg1}
+Evaluate the Variation of Curvature (VoC) of a curve
+               at given parameter values ax[ 0 ],...,ax[ num\_ax - 1 ].
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s2556(\begin{minipg3}
+             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov VoC}, jstat )
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov curve};\\
+                \>\>    double    \>  {\fov ax}[\,];\\
+                \>\>    int    \>  {\fov num}\_ax;\\
+                \>\>    double    \>  {\fov VoC}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov curve}\> - \>  \begin{minipg2}
+                     Pointer to the curve.
+                               \end{minipg2}\\
+        \>\>    {\fov ax}\> - \>  \begin{minipg2}
+                     The parameter values
+                               \end{minipg2}\\
+        \>\>    {\fov num}\> - \>  \begin{minipg2}
+                     No. of parameter values
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov }\> - \>  \begin{minipg2}
+             
+                               \end{minipg2}\\
+        \>\>    {\fov VoC}\> - \>  \begin{minipg2}
+                     The "num\_ax" Variation of Curvature (VoC) values computed
+                               \end{minipg2}\\
+        \>\>    {\fov jstat} \> - \> Status messages\\
+                \>\>\>\>\>           $> 0$ : Warning.\\
+                \>\>\>\>\>           $= 0$ : Ok.\\
+                \>\>\>\>\>           $< 0$ : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov curve};\\
+                \>\>    double    \>  {\fov ax}[\,];\\
+                \>\>    int    \>  {\fov num}\_ax;\\
+                \>\>    double    \>  {\fov VoC}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s2556(\begin{minipg4}
+             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov VoC}, jstat );
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

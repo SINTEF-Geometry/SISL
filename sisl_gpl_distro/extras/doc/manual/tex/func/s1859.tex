@@ -1,0 +1,92 @@
+\subsection{Find the topology for the intersection between two surfaces.}
+\funclabel{s1859}
+\begin{minipg1}
+  Find all intersections between two surfaces.
+  Intersection curves are described by guide points.
+  To produce the intersection curves use s1310() described on page \pageref{s1310}.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1859    (\begin{minipg3}
+                {\fov surfl}, {\fov surf2}, {\fov epsco}, {\fov epsge}, {\fov numintpt},
+                {\fov pointpar1}, {\fov pointpar2}, \linebreak {\fov numintcr}, {\fov intcurves},
+                {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf1};\\
+                \>\>    SISLSurf        \>      *{\fov surf2};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov pointpar1};\\
+                \>\>    double  \>      **{\fov pointpar2};\\
+                \>\>    int     \>      *{\fov numintcr};\\
+                \>\>    SISLIntcurve\>  ***{\fov intcurves};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf1}\> - \>     \begin{minipg2}
+                                Pointer to the first surface.
+                                \end{minipg2}\\
+        \>\>    {\fov surf2}\> - \>     \begin{minipg2}
+                                Pointer to the second surface.
+                                \end{minipg2}\\
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2} \\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  \begin{minipg2}
+                                Number of single intersection points.
+                                \end{minipg2}\\
+        \>\>    {\fov pointpar1}\> - \>\begin{minipg2}
+                                Array containing the parameter values of the single
+                                intersection points in the parameter plane of the
+                                first surface. The points lie in sequence. Intersection
+                                curves are stored in intcurves.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov pointpar2}\> - \>\begin{minipg2}
+                                Array containing the parameter values of the single
+                                intersection points in the parameter plane of the
+                                second surface.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcr}\> - \>  \begin{minipg2}
+                                Number of intersection curves.
+                                \end{minipg2}\\
+        \>\>    {\fov intcurves}\> - \>\begin{minipg2}
+                                Array containing description of the intersection
+                                curves. The curves are only described
+                                by start points and end points (guide
+                                points) in
+                                the parameter planes of the surfaces.
+                                The curve pointers point to
+                                nothing.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf1};\\
+                \>\>    SISLSurf        \>      *{\fov surf2};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov pointpar1};\\
+                \>\>    double  \>      *{\fov pointpar2};\\
+                \>\>    int     \>      {\fov numintcr};\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1859(\begin{minipg4}
+                {\fov surfl}, {\fov surf2}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},
+                \&{\fov pointpar1}, \&{\fov pointpar2}, \&{\fov numintcr}, \&{\fov intcurves},
+                \&{\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

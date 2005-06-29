@@ -1,0 +1,51 @@
+\subsection{Find the bounding box of a curve.}
+\funclabel{s1988}
+\begin{minipg1}
+Find the bounding box of a SISLCurve. NB. The geometric
+               bounding box is returned also in the rational case, that
+               is the box in homogenous coordinates is NOT computed.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1988(\begin{minipg3}
+          {\fov pc}, {\fov emax}, {\fov emin}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> **{\fov emax};\\
+        \>\>    double    \> **{\fov emin};\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc} \> - \> The curve to treat.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov emin} \> - \>
+        \begin{minipg2}
+          Array of dimension {\fov idim} containing
+          the minimum values of the bounding box,
+          i.e.\ bottom-left corner of the box.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov emax} \> - \>
+        \begin{minipg2}
+          Array of dimension {\fov idim} containing
+          the maximum values of the bounding box,
+          i.e.\ upper-right corner of the box.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}  \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> *{\fov emax} = NULL;\\
+        \>\>    double    \> *{\fov emin} = NULL;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1988(\begin{minipg4}
+          {\fov pc}, \&{\fov emax}, \&{\fov emin}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

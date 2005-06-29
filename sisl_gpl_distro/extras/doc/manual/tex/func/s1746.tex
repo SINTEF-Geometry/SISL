@@ -1,0 +1,58 @@
+\subsection{Shade a surface limited by a closed B-spline 
+curve in the parameter plane of the surface.}
+\funclabel{s1746}
+\begin{minipg1}
+To shade a surface 
+limited by a closed B-spline 
+curve in the parameter plane of the surface, using a recursive algorithm testing for 
+planarity of the subdivided parts
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1746(\begin{minipg3}
+		{\fov surf}, {\fov curve}, {\fov epsge}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	SISLCurve	\>	*{\fov curve};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				The B-spline surface to be drawn.
+				\end{minipg2}\\
+	\>\>	{\fov curve}\> - \>	\begin{minipg2}
+				SISLCurve limiting the part of the surface that is to be drawn
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov epsge}\> - \>	\begin{minipg2}
+				Geometry resolution for surface.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+This function calls s6shadepol() which
+is device dependent. Before using the function make sure 
+to have a version of s6shadepol() 
+interfaced to your graphic package.
+More about s6shadepol() on page~\pageref{s6shadepol}.
+\end{minipg6}
+\\ \\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	SISLCurve	\>	*{\fov curve};\\
+		\>\>	double	\>	{\fov epsge};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1746(\begin{minipg4}
+		{\fov surf}, {\fov curve}, {\fov epsge}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

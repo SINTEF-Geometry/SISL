@@ -1,0 +1,138 @@
+\subsection{Data reduction: Points and tangents as input.}
+\funclabel{s1342}
+\begin{minipg1}
+  To compute the approximation to the data given by points and the
+  derivatives (tangents), and represent it as a B-spline curve with
+  parameterization determined by the parameter par. The approximation is
+  determined by first forming the cubic Hermite interpolant to the data, and then
+  performing knot removal on this initial approximation.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1342(\begin{minipg3}
+        {\fov points}, {\fov derives}, {\fov numpt}, {\fov dim}, {\fov typepar}, {\fov par}, {\fov eps}, {\fov startfix}, {\fov endfix}, {\fov epsco},
+        {\fov itmax}, {\fov curve}, {\fov maxerr}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double  \>      {\fov points}[\,];\\
+                \>\>    double  \>      {\fov derives}[\,];\\
+                \>\>    int     \>      {\fov numpt};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    double  \>      {\fov par}[\,];\\
+                \>\>    double  \>      {\fov eps}[\,];\\
+                \>\>    int     \>      {\fov startfix};\\
+                \>\>    int     \>      {\fov endfix};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLCurve       \>      **{\fov curve};\\
+                \>\>    double  \>      *{\fov maxerr};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov points}   \> - \> \begin{minipg2}
+                                Array (length dim *numpt) containing the points to be
+                                approximated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov derives}  \> - \> \begin{minipg2}
+                                Array (length dim *numpt) containing
+                                the derivatives
+                                of the points to be
+                                approximated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numpt}    \> - \> \begin{minipg2}
+                                The number of data points.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the Euclidean space in which the
+                                data points lie, i.e. the number of components of
+                                each data point.
+                                \end{minipg2}\\
+        \>\>    {\fov typepar}  \> - \> \begin{minipg2}
+                                Flag indicating the type of parameterization to be
+                                        used:
+                                \end{minipg2}\\[0.8ex]
+                \>\>\>\>\>      $=1$ :\> \begin{minipg5}
+                                        Parameterize by accumulated cord length.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $=2$ :\> Uniform parameterization.\\
+                \>\>\>\>\>      $=3$ :\> \begin{minipg5}
+                                        Parameterization given by {\fov par}.\\
+                                        If typepar$<$1 or typepar$>$3, it
+                                        will be set to 1.
+                                        \end{minipg5}\\[0.8ex]
+        \>\>    {\fov par}      \> - \> \begin{minipg2}
+                                Array (length numpt) containing a
+                                parameterization of the given data.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov eps}      \> - \> \begin{minipg2}
+                                Array (length dim) containing the tolerance to be
+                                used during the data reduction phase. The final
+                                approximation to the data will deviate less than
+                                eps from the cubic Hermite interpolant in each
+                                of the dim components.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov startfix}\> - \>  \begin{minipg2}
+                                The number of derivatives that are not allowed to
+                                change at the left end of the curve.
+                                The $(0 - (startfix -1))$
+                                derivatives will be kept fixed. If startfix$<$0, this
+                                routine will set it to 0. If startfix$>$order,
+                                this routine will set it to order.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov endfix}   \> - \> \begin{minipg2}
+                                The number of derivatives that are not allowed to
+                                change at the right end of the curve.
+                                The $(0 - (endfix-1))$ derivatives will
+                                be kept fixed.
+                                If endfix$<$0, this routine will set it to 0.
+                                If endfix$>$order, this routine will
+                                set it to order.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsco}    \> - \> \begin{minipg2}
+                                Two numbers differing by a relative amount less
+                                than epsco will in some cases be
+                                considered equal.
+                                Not used anymore.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov itmax}    \> - \> \begin{minipg2}
+                                Max. number of iterations in the data-reduction routine.
+                                \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the B-spline curve.\\
+        \>\>    {\fov maxerr}   \> - \> \begin{minipg2}
+                                Array (length dim)
+                                containing for each component an upper
+                                bound on the max. deviation of the final
+                                approximation from the initial cubic Hermite
+                                interpolant.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov points}[30];\\
+                \>\>    double  \>      {\fov derives}[30];\\
+                \>\>    int     \>      {\fov numpt} = 10;\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    double  \>      {\fov par}[10];\\
+                \>\>    double  \>      {\fov eps}[3];\\
+                \>\>    int     \>      {\fov startfix};\\
+                \>\>    int     \>      {\fov endfix};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov itmax} = 6;\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov maxerr}[3];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1342(\begin{minipg4}
+        {\fov points}, {\fov derives}, {\fov numpt}, {\fov dim}, {\fov typepar}, {\fov par}, {\fov eps}, {\fov startfix}, {\fov endfix}, {\fov epsco},
+        {\fov itmax}, \&{\fov curve}, {\fov maxerr}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

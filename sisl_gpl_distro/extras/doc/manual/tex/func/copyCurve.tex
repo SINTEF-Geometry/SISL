@@ -1,0 +1,40 @@
+\subsection{Make a copy of a curve.}
+\funclabel{copyCurve}
+\begin{minipg1}
+Make a copy of a curve.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>SISLCurve *copyCurve(\begin{minipg3}
+          {\fov pcurve})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pcurve};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pcurve}    \> - \> Curve to be copied.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov copyCurve} \> - \> The new curve.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov curvecopy} = NULL;\\
+        \>\>    SISLCurve \> *{\fov curve} = NULL;\\
+        \>\>    int       \> {\fov number} = 10;\\
+        \>\>    int       \> {\fov order} = 4;\\
+        \>\>    double    \> {\fov knots}[14];\\
+        \>\>    double    \> {\fov coef}[30];\\
+        \>\>    int       \> {\fov kind} = 1;\\
+        \>\>    int       \> {\fov dim} = 3;\\
+        \>\>    int       \> {\fov copy} = 1;\\
+        \>\>    \ldots \\
+        \>\>curve = newCurve(\begin{minipg4}
+          {\fov number}, {\fov order}, {\fov knots}, {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>\>curvecopy = copyCurve(\begin{minipg4}
+          {\fov curve});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

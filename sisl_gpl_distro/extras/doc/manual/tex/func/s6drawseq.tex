@@ -1,0 +1,44 @@
+\subsection{Draw a sequence of straight lines.}
+\funclabel{s6drawseq}
+\begin{minipg1}
+        Draw a broken line as a sequence of straight lines
+        described \\ by the array points.
+        For dimension 3.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s6drawseq(\begin{minipg3}
+                {\fov points}, {\fov numpoints})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double \>       {\fov points}[\,];\\
+                \>\>    int    \>       {\fov numpoints};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov points}   \> - \> \begin{minipg2}
+                                Points stored in sequence.
+                                i.e.\ \\
+                                $(x_{0},y_{0},z_{0},x_{1},y_{1},z_{1},\ldots)$.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numpoints}\> - \> \begin{minipg2}
+                                Number of points in the sequence.
+                                \end{minipg2}\\
+\\
+NOTE\\
+\>      \begin{minipg6}
+s6drawseq() is device dependent, it calls the empty dummy functions s6move() and
+s6line().
+Before using it, make sure you have a version of these two functions
+interfaced to your graphic package.\\
+More about s6move() and s6line() on pages~\pageref{s6move} and~\pageref{s6line}.
+\end{minipg6} \\ \\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \>       {\fov points}[30];\\
+        \>\>    int    \>       {\fov numpoints} = 10;\\
+        \>\> \ldots \\
+        \>\>s6drawseq(\begin{minipg4}
+          {\fov points}, {\fov numpoints})
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

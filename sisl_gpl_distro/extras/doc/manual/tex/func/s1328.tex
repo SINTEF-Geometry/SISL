@@ -1,0 +1,63 @@
+\subsection{Convert a surface/line intersection into a two-dimensional surface/origo intersection}
+\funclabel{s1328}
+\begin{minipg1}
+Put the equation of the surface pointed at by psold
+               into two planes given by the point epoint and the normals
+               enorm1 and enorm2. The result is an equation where the 
+               new two-dimensional surface rsnew is to be equal to origo.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1328(\begin{minipg3}
+            {\fov psold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, {\fov rsnew}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    SISLSurf    \>  *{\fov psold};\\
+                \>\>    double \> epoint[\,];\\
+                \>\>    double \> enorm1[\,];\\
+                \>\>    double \> enorm2[\,];\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    SISLSurf    \>  **{\fov rsnew};\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov psold}\> - \>  \begin{minipg2}
+                     Pointer to input surface.
+                               \end{minipg2}\\
+        \>\>    {\fov epoint}\> - \>  \begin{minipg2}
+                     SISLPoint in the planes.
+                               \end{minipg2}\\
+        \>\>    {\fov enorm1}\> - \>  \begin{minipg2}
+                     Normal to the first plane.
+                               \end{minipg2}\\
+        \>\>    {\fov enorm2}\> - \>  \begin{minipg2}
+                     Normal to the second plane.
+                               \end{minipg2}\\
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                     Dimension of the space in which the planes lie.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov rsnew}\> - \>  \begin{minipg2}
+                    dimensional surface.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}\> - \> status messages  \\
+	            \>\>\>\>\>          $ > 0 $      : warning\\
+		    \>\>\>\>\>          $ = 0 $      : ok \\
+		    \>\>\>\>\>          $ < 0 $      : error \\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLSurf    \>  *{\fov psold};\\
+                \>\>    double \> epoint[\,];\\
+                \>\>    double \> enorm1[\,];\\
+                \>\>    double \> enorm2[\,];\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    SISLSurf    \>  **{\fov rsnew};\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1328(\begin{minipg4}
+            {\fov psold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, {\fov rsnew}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

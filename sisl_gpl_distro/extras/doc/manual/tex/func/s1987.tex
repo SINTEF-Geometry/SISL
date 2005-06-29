@@ -1,0 +1,88 @@
+\subsection{Find the direction cone of a surface.}
+\funclabel{s1987}
+\begin{minipg1}
+  Find the direction cone of a surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1987(\begin{minipg3}
+          {\fov ps}, {\fov aepsge}, {\fov jgtpi}, {\fov gaxis}, {\fov cang}, {\fov jstat})
+        \end{minipg3}\\[0.ex]
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    int      \> *{\fov jgtpi};\\
+        \>\>    double   \> **{\fov gaxis};\\
+        \>\>    double   \> *{\fov cang};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps}\> - \>  \begin{minipg2}
+                     Surface to treat.
+                               \end{minipg2}\\
+        \>\>    {\fov aepsge}\> - \>  \begin{minipg2}
+                     Geometry tolerance.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jgtpi}\> - \>
+        \begin{minipg2}
+          To mark if the angle of the direction cone is
+          greater than $\pi$.
+        \end{minipg2}\\[0.8ex]
+                \>\>\>\> $=0$ \> :
+                \begin{minipg5}
+                  The direction cone of the surface
+                  is not greater than $\pi$ in any parameter direction.
+                \end{minipg5}\\[0.8ex]
+                \>\>\>\> $=1$ \> :
+                \begin{minipg5}
+                  The direction cone of the surface
+                  is greater than $\pi$ in the first parameter direction.
+                \end{minipg5}\\[0.8ex]
+                \>\>\>\> $=2$ \> :
+                \begin{minipg5}
+                  The direction cone of the surface is greater
+                  than $\pi$ in the second parameter direction.
+                \end{minipg5}\\[0.8ex]
+                \>\>\>\> $=10$ \> :
+                \begin{minipg5}
+                  The direction cone of a boundary curve of
+                  the surface is greater than $\pi$ in the first
+                  parameter direction.
+                \end{minipg5}\\[0.8ex]
+                \>\>\>\> $=20$ \> :
+                \begin{minipg5}
+                  The direction cone of a boundary curve of
+                  the surface is greater than $\pi$ in the second
+                  parameter direction.
+                \end{minipg5}\\[0.8ex]
+        \>\>    {\fov gaxis}\> - \>
+        \begin{minipg2}
+          Allocated array containing the coordinates of the
+          centre of the cone. It is only computed if $jgtpi=0$.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov cang}\> - \>
+        \begin{minipg2}
+          The angle from the centre to the boundary of the
+          cone. It is only computed if $jgtpi=0$.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>              $> 0$ \> : Warning.\\
+                \>\>\>\>              $= 0$ \> : Ok.\\
+                \>\>\>\>              $< 0$ \> : Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    int      \> {\fov jgtpi} = 0;\\
+        \>\>    double   \> *{\fov gaxis} = NULL;\\
+        \>\>    double   \> {\fov cang} = 0.0;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1987(\begin{minipg4}
+          {\fov ps}, {\fov aepsge}, \&{\fov jgtpi}, \&{\fov gaxis}, \&{\fov cang}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

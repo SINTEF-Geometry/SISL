@@ -1,0 +1,123 @@
+\subsection{Spline interpolation automatic paramete\-risation.}
+\funclabel{s1334}
+\begin{minipg1}
+To calculate a B-spline curve interpolating a set of points. Each
+point can be assigned a tangent (derivative). The curve can be closed
+or open. If end-conditions are conflicting, the condition closed curve
+rules out other end conditions.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1334(\begin{minipg3}
+		{\fov point}, {\fov numpt}, {\fov dim}, {\fov typept}, {\fov startcon}, {\fov endcon},
+		{\fov open}, {\fov order},\\ {\fov startpar}, {\fov endpar}, {\fov curve}, {\fov pointpar},
+		{\fov numptpar},{\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	double	\> 	{\fov point}[\,];\\
+		\>\>	int 	\>	{\fov numpt};\\
+		\>\>	int 	\>	{\fov dim};\\
+		\>\>	double 	\>	{\fov typept}[\,];\\
+		\>\>	int 	\>	{\fov startcon};\\
+		\>\>	int 	\>	{\fov endcon};\\
+		\>\>	int 	\>	{\fov open};\\
+		\>\>	int 	\>	{\fov order};\\
+		\>\>	double 	\>	{\fov startpar};\\
+		\>\>	double 	\>	*{\fov endpar};\\		
+		\>\>	SISLCurve 	\>	**{\fov curve};\\
+		\>\>	double 	\>	**{\fov pointpar};\\
+		\>\>	int 	\>	*{\fov numptpar};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov point}	\> - \>	\begin{minipg2}
+				Array (length dim*numpt) containing the
+				points/derivatives to be interpolated.
+				\end{minipg2}\\[0.3ex]
+	\>\>	{\fov numpt}	\> - \>	
+				No. of points/derivatives in the
+				point array.
+				\\
+	\>\>	{\fov dim}	\> - \>	\begin{minipg2}
+				The dimension of the space in which
+				the points lie.
+				\end{minipg2}\\
+	\>\>	{\fov typept}	\> - \>	\begin{minipg2}
+				Array (length numpt) containing type
+				indicator for points/derivatives:
+				\end{minipg2} \\[0.3ex]
+		\>\>\>\>\>	1 : Ordinary point.\\
+		\>\>\>\>\>	3 : Derivative to next point.\\
+		\>\>\>\>\>	4 : Derivative to prior point.\\
+		\>\>\>\>\>	13 : Start-point of tangent to next point.\\
+		\>\>\>\>\>	14 : End-point of tangent to prior point.\\
+\newpagetabs
+	\>\>	{\fov startcon}	\> - \>	\begin{minipg2}
+				Additional condition at the start
+				of the curve:
+				\end{minipg2}\\
+		\>\>\>\>\>	0 : 	No additional condition.\\
+		\>\>\>\>\>	1 : 	Zero curvature at start.\\
+	\>\>	{\fov endcon}	\> - \>	\begin{minipg2}
+				Additional condition at the end
+				of the curve:
+				\end{minipg2}\\
+		\>\>\>\>\>	0 : 	No additional condition.\\
+		\>\>\>\>\>	1 : 	Zero curvature at end.\\
+	\>\>	{\fov open}	\> - \>	Open or closed curve:\\
+		\>\>\>\>\>	0 : 	Closed curve.\\
+		\>\>\>\>\>	1 : 	Open curve.\\
+	\>\>	{\fov order}	\> - \> \begin{minipg2}
+				The order of the B-spline curve
+				to be produced.
+				\end{minipg2}\\
+	\>\>	{\fov startpar}	\> - \>	\begin{minipg2}
+				Parameter-value to be used at the
+				start of the curve.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov endpar}	\> - \>	\begin{minipg2}
+				Parameter-value used at the end
+				of the curve.
+				\end{minipg2}\\
+	\>\>	{\fov curve}	\> - \>	Pointer to output-curve\\
+	\>\>	{\fov pointpar}	\> - \>	\begin{minipg2}
+				Pointer to the parameter values of
+				the interpolation conditions. Represented only once, although
+				derivative conditions 
+				will have the same 	
+				parameter-value as the point.
+				\end{minipg2} \\[0.3ex]
+	\>\>	{\fov numptpar}	\> - \>	\begin{minipg2}
+				No. of different parameter-values.
+				\end{minipg2}\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\newpagetabs
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	double	\> 	{\fov point}[30];\\
+		\>\>	int 	\>	{\fov numpt} = 10;\\
+		\>\>	int 	\>	{\fov dim} = 3;\\
+		\>\>	double 	\>	{\fov typept}[10];\\
+		\>\>	int 	\>	{\fov startcon};\\
+		\>\>	int 	\>	{\fov endcon};\\
+		\>\>	int 	\>	{\fov open};\\
+		\>\>	int 	\>	{\fov order};\\
+		\>\>	double 	\>	{\fov startpar};\\
+		\>\>	double 	\>	{\fov endpar};\\		
+		\>\>	SISLCurve 	\>	*{\fov curve};\\
+		\>\>	double 	\>	*{\fov pointpar};\\
+		\>\>	int 	\>	{\fov numptpar};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1334(\begin{minipg4}
+			{\fov point}, {\fov numpt}, {\fov dim}, {\fov typept},
+			{\fov startcon}, {\fov endcon}, {\fov open}, {\fov order},\\ {\fov startpar},
+			\&{\fov endpar}, \&{\fov curve}, \&{\fov pointpar}, \&{\fov numptpar}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\} \\
+\end{tabbing}

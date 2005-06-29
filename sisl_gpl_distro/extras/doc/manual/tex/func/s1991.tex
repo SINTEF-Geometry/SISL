@@ -1,0 +1,47 @@
+\subsection{Create and compute direction cone to a curve.} 
+\funclabel{s1991}
+\begin{minipg1}
+		To make the orientation cone on the unit sphere of
+	       	a NURBS curve. The curve is represented with
+	       	a surrounding cone picked from the unit sphere. The cone centre and cone angle are placed in the SISLdir element pointed to by pdir in the curve object.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1991(\begin{minipg3}
+		{\fov curve}, {\fov epsge}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLCurve 	\>	*{\fov curve};\\
+		\>\>	double 	\>	{\fov epsge};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov curve}	\> - \>	Input curve.\\
+	\>\>	{\fov epsge}	\> - \>	Geometry resolution.\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+  		\>\>	SISLCurve    \>	*{\fov curve} = NULL;\\
+  		\>\>	int    \>	{\fov number} = 10;\\
+  		\>\>	int    \>	{\fov order} = 4;\\
+  		\>\>	double \>	{\fov knots[14]};\\
+  		\>\>	double \>	{\fov coef[30]};\\
+  		\>\>	double \>	{\fov epsge} = 1e-10;\\
+  		\>\>	int    \>	{\fov kind} = 1;\\
+  		\>\>	int    \>	{\fov dim} = 3;\\
+  		\>\>	int    \>	{\fov copy} = 0;\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>{\fov curve}$=$newCurve(\begin{minipg4}
+	{\fov number}, {\fov order}, {\fov knots}, {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+	\>\>s1991(\begin{minipg4}
+		{\fov curve}, {\fov epsge}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

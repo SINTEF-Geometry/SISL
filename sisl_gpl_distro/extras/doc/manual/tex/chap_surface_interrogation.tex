@@ -1,0 +1,105 @@
+\chapter{Surface Interrogation}
+\label{surfaceinterrogation}
+This chapter describes the functions in the Surface Interrogation module.
+
+\input{sec_intcurve_object}
+\pgsbreak
+
+\section{Find the Intersections}
+\input{func/s1850}
+\pgsbreak
+\input{func/s1371}
+\pgsbreak
+\input{func/s1372}
+\pgsbreak
+\input{func/s1373}
+\pgsbreak
+\input{func/s1502}
+\pgsbreak
+\input{func/s1375}
+\pgsbreak
+\input{func/s1870}
+\pgsbreak
+\input{func/s1856}
+\pgsbreak
+\input{func/s1518}
+\pgsbreak
+\input{func/s1328}
+\pgsbreak
+\input{func/s1855}
+\pgsbreak
+\input{func/s1858}
+\pgsbreak
+\section{Find the Topology of the Intersection}
+\input{func/s1851}
+\pgsbreak
+\input{func/s1852}
+\pgsbreak
+\input{func/s1853}
+\pgsbreak
+\input{func/s1854}
+\pgsbreak
+\input{func/s1503}
+\pgsbreak
+\input{func/s1369}
+\pgsbreak
+\input{func/s1859}
+\pgsbreak
+\section{Find the Topology of a Silhouette}
+\input{func/s1860}
+\pgsbreak
+\input{func/s1510}
+\pgsbreak
+\input{func/s1511}
+\pgsbreak
+\section{Marching}
+\input{func/s1314}
+\pgsbreak
+\input{func/s1315}
+\pgsbreak
+\input{func/s1316}
+\pgsbreak
+\input{func/s1317}
+\pgsbreak
+\input{func/s1501}
+\pgsbreak
+\input{func/s1318}
+\pgsbreak
+\input{func/s1310}
+\pgsbreak
+\section{Marching of Silhouettes}
+\input{func/s1319}
+\pgsbreak
+\input{func/s1514}
+\pgsbreak
+\input{func/s1515}
+\pgsbreak
+% \section{Closed or Degenerate Edges} %, moved into s1450.tex
+\input{func/s1450}
+\pgsbreak
+\input{func/s1603}
+\pgsbreak
+\section{Closest Points}
+\input{func/s1954}
+\pgsbreak
+\input{func/s1958}
+\pgsbreak
+\input{func/s1775}
+\pgsbreak
+% \section{Calculation of Absolute Extremals on a NURBS Surface} %,
+% moved into s1921.tex
+\input{func/s1921}
+\pgsbreak
+\section{Bounding Box}
+Both curves and surfaces have bounding boxes. These are boxes surrounding an object not only parallel to the main axis, but also rotated 45 degrees around each main axis. These bounding boxes are used by the intersection functions to decide if an intersection is possible or not. They might also be used to find the position of objects under other circumstances.
+\input{sec_box_object}
+\pgsbreak
+\input{func/s1989}
+\pgsbreak
+\section{Normal Cone}
+Both curves and surfaces have normal cones. These are the cones that are convex hull of all normalized tangents of a curve and all normalized normals of a surface.
+
+These normal cones are used by the intersection functions to decide if only one intersection is possible. They might also be used to find directions of objects for other reasons.
+\input{sec_cone_object}
+\pgsbreak
+\input{func/s1987}

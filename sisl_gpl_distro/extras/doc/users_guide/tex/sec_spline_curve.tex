@@ -1,0 +1,436 @@
+\section{B-spline Curves}
+
+This section is optional reading for those who want to
+become acquainted with some of the mathematics of
+B-splines curves. For a description of the data structure for
+B-spline curves in SISL, see the SISL 4.4 manual.
+
+A B-spline curve is defined by the formula
+$$ {\bf c}(t) = \sum_{i=1}^{n} {\bf p}_{i} B_{i,k,{\bf t}}(t). $$
+The dimension of the curve ${\bf c}$ is equal to that of its
+{\it control points} ${\bf p}_i$. For example, if the dimension of the
+control points
+is one, the curve is a function, if the dimension is two,
+the curve is planar, and if the dimension is three,
+the curve is spatial.
+Usually the dimension of the curve will be at most three,
+but SISL also allows higher dimensions.
+
+Thus, a B-spline curve is a linear combination of a sequence of B-splines
+$B_{i,k,{\bf t}}$ (called a B-basis)
+uniquely determined by a knot vector ${\bf t}$ and
+the order $k$. Order is equivalent to polynomial degree plus one.
+For example, if the order is two, the degree is one and the B-splines
+and the curve $c$ they generate are (piecewise) linear.
+If the order is three, the degree is two and the B-splines and
+the curve are quadratic. Cubic B-splines and
+curves have order 4 and degree 3, etc.
+
+The parameter range of a B-spline curve ${\bf c}$ is the interval
+$$ [t_k, t_{n+1}], $$
+and so mathematically, the curve is a mapping
+${\bf c}: [t_k, t_{n+1}] \to \RR^d$, where $d$ is the Euclidean space
+dimension of its control points.
+
+The complete representation of a B-spline curve consists of
+\begin{description}
+\item[$dim$]: The dimension of the underlying Euclidean space,
+              $1,2,3,\ldots$.
+\item[$n$]: The number of vertices (also the number of B-splines)
+\item[$k$]: The order of the B-splines.
+\item[${\bf t}$]: The knot vector of the B-splines.
+            ${\bf t} = (t_1, t_2, \ldots, t_{n+k})$.
+\item[${\bf p}$]: The control points of the B-spline curve.
+           $p_{d,i}\;,\; d=1,\ldots,dim\;,\;
+                i=1,\ldots,n.\;\;$
+                e.g. when $dim = 3$, we have
+                ${\bf p} = (x_1,y_1,z_1,x_2,y_2,z_2,\ldots,x_n,y_n,z_n)$.
+\end{description}
+
+We note that arrays in $c$ start at index 0 which means,
+for example, that if the array $t$ holds the knot vector,
+then $t[0] = t_1,\ldots, t[n+k-1] = t_{n+k}$
+and the parameter interval goes from
+$t[k-1]$ to $t[n]$. Similar considerations apply to the other arrays.
+
+The data in the representation must satisfy certain conditions:
+\begin{itemize}
+\item The knot vector must be non-decreasing: $t_i \le t_{i+1}$.
+      Moreover, two knots $t_i$ and $t_{i+k}$ must be distinct:
+      $t_i < t_{i+k}$.
+\item The number of vertices should be greater than or equal
+      to the order of the curve: $n \ge k$.
+\item There should be $k$ equal knots at the beginning and at the end
+      of the knot vector; that is the knot vector ${\bf t}$
+      must satisfy the conditions $t_1 = t_2 = \ldots = t_k$
+      and $t_{n+1} = t_{n+2} = \ldots = t_{n + k}$.
+\end{itemize}
+
+To understand the representation better, we will look at
+three parts of the
+representation: the B-splines (the basis functions),
+the knot vector and the control polygon.
+
+\subsection{B-splines}
+
+A set of B-splines is determined by the order $k$
+and the knots. For example,
+to define a single B-spline of degree one, we need three knots.
+In figure~\ref{curve1} the three knots are marked as dots.
+Knots can also be equal as shown in figure
+\ref{curve2}.
+By taking a linear combination of the three types of B-splines shown
+in figures~\ref{curve1} and~\ref{curve2}
+we can generate a linear spline function
+as shown in figure~\ref{curve3}.
+\begin{figure}
+        \begin{center}
+                \begin{picture}(250,80)(0,0)
+                \put(80,0){\circle*{2}}
+                \put(150,0){\circle*{2}}
+                \put(230,0){\circle*{2}}
+
+                \put(30,4){\vector(0,1){76}}
+                \put(28,10){\line(1,0){4}}
+                \put(28,70){\line(1,0){4}}
+                \put(20,10){\makebox(0,0){0.0}}
+                \put(20,70){\makebox(0,0){1.0}}
+
+                \thicklines
+                \put(80,10){\line(6,5){70}}
+                \put(150,70){\line(4,-3){80}}
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve1}A linear B-spline (order 2) defined by
+                        three knots.}
+\end{figure}
+\begin{figure}
+        \begin{center}
+                \begin{picture}(300,85)(0,0)
+                \put(40,0){\circle*{2}}
+                \put(280,0){\circle*{2}}
+                \put(120,5){\circle*{2}}
+                \put(200,5){\circle*{2}}
+                \put(40,5){\circle*{2}}
+                \put(280,5){\circle*{2}}
+
+                \put(20,9){\vector(0,1){76}}
+                \put(18,15){\line(1,0){4}}
+                \put(18,75){\line(1,0){4}}
+                \put(10,15){\makebox(0,0){0.0}}
+                \put(10,75){\makebox(0,0){1.0}}
+
+                \put(170,9){\vector(0,1){76}}
+                \put(168,15){\line(1,0){4}}
+                \put(168,75){\line(1,0){4}}
+                \put(160,15){\makebox(0,0){0.0}}
+                \put(160,75){\makebox(0,0){1.0}}
+
+                \thicklines
+                \put(120,15){\line(-4,3){80}}
+                \put(200,15){\line(4,3){80}}
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve2}Linear B-splines of with multiple knots at one end.}
+\end{figure}
+\begin{figure}
+        \begin{center}
+                \begin{picture}(300,90)(0,0)
+                \put(0,0){\circle*{2}}
+                \put(0,5){\circle*{2}}
+                \put(60,5){\circle*{2}}
+                \put(120,5){\circle*{2}}
+                \put(160,5){\circle*{2}}
+                \put(240,5){\circle*{2}}
+                \put(300,5){\circle*{2}}
+                \put(300,0){\circle*{2}}
+
+                \multiput(0,10)(12,10){5}{\line(6,5){10}}
+                \multiput(60,10)(-12,8){5}{\line(-3,2){10}}
+                \multiput(60,10)(12,2){5}{\line(6,1){10}}
+                \multiput(120,10)(-12,10){5}{\line(-6,5){10}}
+                \multiput(120,10)(12,6){3}{\line(2,1){10}}
+                \multiput(160,10)(-12,3){3}{\line(-4,1){10}}
+                \multiput(160,10)(12,12){6}{\line(1,1){10}}
+                \multiput(240,10)(-12,3){6}{\line(-4,1){10}}
+                \multiput(240,10)(12,12){5}{\line(1,1){10}}
+                \multiput(300,10)(-12,16){5}{\line(-3,4){10}}
+
+                \thicklines
+                \put(0,50){\line(6,1){60}}
+                \put(60,60){\line(3,-2){60}}
+                \put(120,20){\line(4,1){40}}
+                \put(160,30){\line(4,3){80}}
+                \put(240,90){\line(3,-1){60}}
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve3}A B-spline curve of dimension 1 as a linear
+            combination of a sequence of B-splines.
+            Each B-spline (dashed) is scaled by a coefficient.}
+\end{figure}
+
+A quadratic B-spline is a linear combination of two linear
+B-splines. Shown in figure~\ref{curve4}
+is a quadratic B-spline defined by four knots.
+A quadratic B-spline is
+the sum of two products, the first product between the linear B-spline
+on the left and a corresponding line from 0 to 1,
+the second product between the linear B-spline
+on the right and a corresponding line from 1 to 0;
+see figure~\ref{curve4}.
+For higher degree B-splines there is a similar definition.
+A B-spline of order $k$ is the sum of two B-splines of
+order $k-1$, each weighted with weights in the interval [0,1].
+In fact we define B-splines of order 1 explicitly as box functions,
+$$  B_{i,1}(t) =  \cases{1 & if $t_i \le t < t_{i+1}$; \cr
+                              0 &  otherwise, \cr } $$
+and then the complete definition of a $k$-th order B-spline is
+$$ B_{i,k}(t) = {t - t_i \over t_{i+k-1} - t_i} B_{i,k-1}(t)
+             +
+             {t_{i+k} - t \over t_{i+k} - t_{i+1}} B_{i-1,k-1}(t). $$
+
+\begin{figure}
+        \begin{center}
+                \begin{picture}(250,70)(0,0)
+
+                \put(10,4){\vector(0,1){76}}
+                \put(8,10){\line(1,0){4}}
+                \put(8,70){\line(1,0){4}}
+                \put(0,10){\makebox(0,0){0.0}}
+                \put(0,70){\makebox(0,0){1.0}}
+
+                \put(35,0){\circle*{2}}
+                \put(95,0){\circle*{2}}
+                \put(155,0){\circle*{2}}
+                \put(215,0){\circle*{2}}
+
+                \multiput(35,10)(18,9){7}{\line(2,1){10}}
+                \multiput(215,10)(-18,9){7}{\line(-2,1){10}}
+
+                \thicklines
+                \put(35,10){\line(1,1){60}}
+                \put(95,10){\line(1,1){60}}
+                \put(155,10){\line(-1,1){60}}
+                \put(215,10){\line(-1,1){60}}
+
+                \bezier{70}(35,10)(65,10)(95,40)
+                \bezier{70}(95,40)(125,70)(155,40)
+                \bezier{70}(215,10)(185,10)(155,40)
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve4}A quadratic B-spline, the two linear
+           B-splines and the corresponding lines (dashed)
+           in the quadratic B-spline definition.}
+\end{figure}
+
+B-splines satisfy some important properties for curve and surface design.
+Each B-spline is non-negative and it can be shown that they sum to
+one,
+$$ \sum_{i=1}^{n}B_{i,k,{\bf t}}(t) = 1. $$
+These properties combined mean that B-spline curves
+satisfy the {\it convex hull property}: the curve lies in the convex
+hull of its control points.
+Furthermore, the support of the B-spline $B_{i,k,{\bf t}}$ is
+the interval $[t_i,t_{i+k}]$ which means that B-spline
+curves has {\it local control}: moving one control point only
+alters the curve locally.
+
+Due to the demand of $k$ multiple knots at the ends of the knot
+vector, B-spline curves in SISL also have the {\it endpoint property}:
+the start point of the B-spline curve
+equals the first control point and the end point equals the
+last control point, in other words
+$$ {\bf c}(t_k) = {\bf p}_1
+     \qquad \hbox{and} \qquad
+   {\bf c}(t_{n+1}) = {\bf p}_n. $$
+
+\subsection{\label{contrlpoly}The Control Polygon}
+
+The control points ${\bf p}_i$ define the vertices
+The {\it control polygon} of a B-spline curve is the polygonal
+arc formed by its control points,
+${\bf p}_0, {\bf p}_1, \ldots,{\bf p}_n$.
+This means that
+the control polygon, regarded as a parametric curve,
+is itself piecewise linear B-spline curve (order two).
+If we increase the order, the distance between the control polygon
+and the curve increases (see figure~\ref{curve5}).
+A higher order B-spline curve tends to smooth
+the control polygon and at the same time mimic its shape.
+For example, if the control polygon is convex, so is the B-spline curve.
+
+Another property of the control polygon is that it will get closer
+to the curve if it is redefined by inserting knots into the curve
+and thereby increasing the number of vertices;
+see figure~\ref{curve6}.
+If the refinement is infinite then the control polygon converges to the curve.
+\begin{figure}
+        \begin{center}
+                \begin{picture}(240,80)(0,0)
+                \thicklines
+                \put(0,40){\line(2,1){80}}
+                \put(80,80){\line(1,-1){80}}
+                \put(160,0){\line(1,1){80}}
+
+                \bezier{120}(0,40)(80,80)(120,40)
+                \bezier{120}(120,40)(160,0)(240,80)
+
+                \bezier{120}(0,40)(60,70)(120,40)
+                \bezier{120}(120,40)(180,20)(240,80)
+
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve5}Linear, quadratic, and cubic B-spline
+           curves sharing the same control polygon. The control polygon is
+                equal to the linear B-spline curve. The curves
+                are planar, i.e. the space dimension is two.}
+\end{figure}
+
+\begin{figure}
+        \begin{center}
+                \begin{picture}(240,80)(0,0)
+                \thicklines
+                \put(0,40){\line(2,1){40}}
+                \put(40,60){\line(5,0){40}}
+                \put(80,60){\line(2,-1){60}}
+                \put(140,30){\line(6,1){60}}
+                \put(200,40){\line(1,1){40}}
+
+                \bezier{120}(0,40)(60,70)(120,40)
+                \bezier{120}(120,40)(180,20)(240,80)
+
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve6}The cubic B-spline curve with a
+                redefined knot vector.}
+\end{figure}
+
+\subsection{The Knot Vector}
+
+The knots of a B-spline curve describe the following properties of the curve:
+\begin{itemize}
+\item The parameterization of the B-spline curve
+\item The continuity at the joins between the adjacent polynomial
+   segments of the B-spline curve.
+\end{itemize}
+In figure~\ref{curve7} we have two curves
+with the same control polygon and order but
+with different parameterization.
+
+This example is not meant as an encouragement to use
+parameterization for modelling, rather to make users
+aware of the effect of parameterization. Something close to
+curve length parameterization is in most cases
+preferable. For interpolation, chord-length parameterization
+is used in most cases.
+
+The number of equal knots determines the degree
+of continuity. If $k$ consecutive internal knots are equal,
+the curve is discontinuous.
+Similarly if $k-1$ consecutive internal knots are equal,
+the curve is continuous but not in general differentiable.
+A continuously differentiable curve
+with a discontinuity in the second derivative
+can be modelled using $k-2$ equal knots etc. (see figure~\ref{curve8}).
+Normally, B-spline curves in SISL are expected to be continuous.
+For intersection algorithms, curves are usually expected to
+be continuously differentiable ($C^1$).
+
+\begin{figure}
+        \begin{center}
+                \begin{picture}(240,240)(0,0)
+                \thicklines
+                \put(0,130){\circle*{2}}
+                \put(0,135){\circle*{2}}
+                \put(0,140){\circle*{2}}
+                \put(240,130){\circle*{2}}
+                \put(240,135){\circle*{2}}
+                \put(240,140){\circle*{2}}
+
+                \put(60,140){\circle*{2}}
+                \put(180,10){\circle*{2}}
+
+
+                \put(0,0){\circle*{2}}
+                \put(0,5){\circle*{2}}
+                \put(0,10){\circle*{2}}
+                \put(240,0){\circle*{2}}
+                \put(240,5){\circle*{2}}
+                \put(240,10){\circle*{2}}
+
+                \put(0,185){\line(2,1){80}}
+                \put(80,225){\line(1,-1){80}}
+                \put(160,145){\line(1,1){80}}
+
+                \put(0,55){\line(2,1){80}}
+                \put(80,95){\line(1,-1){80}}
+                \put(160,15){\line(1,1){80}}
+
+                \bezier{130}(0,185)(80,225)(100,205)
+                \bezier{160}(100,205)(160,145)(240,225)
+
+                \bezier{160}(0,55)(80,95)(140,35)
+                \bezier{130}(140,35)(160,15)(240,95)
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve7}Two quadratic B-spline curves with the same
+control polygon but different knot vectors. The curves and the control
+polygons are two-dimensional.}
+\end{figure}
+
+\begin{figure}
+        \begin{center}
+                \begin{picture}(300,90)(0,0)
+                \thicklines
+                \put(0,0){\circle*{2}}
+                \put(0,5){\circle*{2}}
+                \put(0,10){\circle*{2}}
+
+                \put(150,5){\circle*{2}}
+                \put(150,10){\circle*{2}}
+
+                \put(300,0){\circle*{2}}
+                \put(300,5){\circle*{2}}
+                \put(300,10){\circle*{2}}
+
+                \bezier{200}(0,50)(80,90)(150,20)
+                \bezier{200}(150,20)(220,80)(300,90)
+                \end{picture}\\
+        \end{center}
+  \caption{\label{curve8}A quadratic B-spline curve with two
+equal internal knots.}
+\end{figure}
+
+\subsection{NURBS Curves}
+
+A NURBS (Non-Uniform Rational B-Spline) curve is a generalization
+of a B-spline curve,
+$$ {\bf c}(t) = {\sum_{i=1}^{n} w_i {\bf p}_{i} B_{i,k,{\bf t}}(t)
+                 \over
+                 \sum_{i=1}^{n} w_i B_{i,k,{\bf t}}(t)} . $$
+In addition to the data of a B-spline curve, the NURBS curve
+${\bf c}$ has a sequence of weights $w_1,\ldots,w_n$.
+One of the advantages of NURBS curves over B-spline curves is that
+they can be used to represent conic sections exactly (taking the
+order $k$ to be three).
+A disadvantage is that NURBS curves depend nonlinearly on their weights,
+making some calculations, like the evaluation of derivatives,
+more complicated and less efficient than with B-spline curves.
+
+The representation of a NURBS curve is the same as for a B-spline
+except that it also includes
+\begin{description}
+\item[${\bf w}$]: A sequence of weights
+            ${\bf w} = (w_1, w_2, \ldots, w_n)$.
+\end{description}
+
+In SISL we make the assumption that
+\begin{itemize}
+\item The weights are (strictly) positive: $w_i > 0$.
+\end{itemize}
+
+Under this condition, a NURBS curve, like its B-spline cousin,
+enjoys the convex hull property. 
+Due to $k$-fold knots at the ends of the knot vector,
+NURBS curves in SISL also have the endpoint property.
+

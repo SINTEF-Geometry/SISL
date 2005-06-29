@@ -1,0 +1,46 @@
+\typelabel{SISLIntcurve}
+ \> int 	\>{\fov ipoint};	\>\>Number of guide points defining the curve.\\
+ \> double 	\>*{\fov epar1};   	\>\> \begin{minipg2}
+				Pointer to the parameter values of the points in the first object. 
+				\end{minipg2}\\[0.3ex]
+ \> double	\>*{\fov epar2};	\>\> \begin{minipg2}
+				Pointer to the parameter values of the points in the second object.
+				\end{minipg2}\\[0.3ex]
+ \> int		\>{\fov ipar1};		\>\> Number of parameter directions of first object.\\
+ \> int		\>{\fov ipar2};		\>\>Number of parameter directions of second object.\\
+ \> SISLCurve 	\>*{\fov pgeom}; 	\>\> \begin{minipg2}
+				Pointer to the intersection curve in the
+                           	geometry space. If the curve is not 
+                           	computed, pgeom points to NULL.
+				\end{minipg2}\\[0.3ex]
+ \> SISLCurve 	\>*{\fov ppar1};  	\>\> \begin{minipg2}
+				Pointer to the intersection curve in the
+                           	parameter plane of the first object. If 
+                           	the curve is not computed, ppar1 points 
+                           	to NULL.
+				\end{minipg2}\\[0.3ex]
+ \> SISLCurve 	\>*{\fov ppar2};  	\>\> \begin{minipg2}
+				Pointer to the intersection curve in the
+                           	parameter plane of the second object. If 
+                           	the curve is not computed, ppar2 points 
+                           	to NULL.
+				\end{minipg2}\\[0.3ex]
+ \> int 	\>{\fov itype};	\>\>Type of curve:\\
+	\>\>\>\>\>	$= 1$ :\> Straight line.\\
+	\>\>\>\>\>	$= 2$ :\> Closed loop. No singularities.\\
+	\>\>\>\>\>	$= 3$ :\> Closed loop. One singularity. Not used.\\
+	\>\>\>\>\>	$= 4$ :\> Open curve. No singularity.\\
+	\>\>\>\>\>	$= 5$ :\> \begin{minipg5}
+				Open curve. Singularity at the 
+                           	beginning of the curve.
+				\end{minipg5}\\[0.8ex]
+	\>\>\>\>\>	$= 6$ :\> \begin{minipg5}
+				Open curve. Singularity at the end
+                            	of the curve.
+				\end{minipg5}\\[0.8ex]
+	\>\>\>\>\>	$= 7$ :\> \begin{minipg5}
+				Open curve. Singularity at the beginning
+                            	and end of the curve.
+				\end{minipg5}\\[0.8ex]
+	\>\>\>\>\>	$= 8$ :\> An isolated singularity. Not used.\\
+\end{tabbing}

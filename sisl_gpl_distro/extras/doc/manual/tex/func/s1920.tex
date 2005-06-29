@@ -1,0 +1,84 @@
+\section{Find the Absolute Extremals of a Curve.}
+\funclabel{s1920}
+\begin{minipg1}
+  Find the absolute extremal points/intervals of a curve relative to a
+  given direction.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1920(\begin{minipg3}
+        {\fov curve}, {\fov dir}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov numintpt},
+        {\fov intpar},\\ {\fov numintcu}, {\fov intcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov dir}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov intpar};\\
+                \>\>    int     \>      *{\fov numintcu};\\
+                \>\>    SISLIntcurve \> ***{\fov intcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the curve.\\
+        \>\>    {\fov dir}      \> - \> \begin{minipg2}
+                                The direction in which the extremal point(s)
+                                and/or interval(s) are to be
+                                calculated. If $dim=1$, a positive value
+                                indicates the maximum of the
+                                function and a negative value the minimum.
+                                If the dimension is greater than 1, the array
+                                contains the coordinates of the direction vector.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                Dimension of the space in which the
+                                curve and {\fov dir} lie.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}    \> - \> Computational resolution (not used).\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  Number of single extremal points.\\
+        \>\>    {\fov intpar}   \> - \> \begin{minipg2}
+                                Array containing the parameter values of the
+                                single extremal points in the parameter
+                                interval of the curve. The points lie in sequence.
+                                Extremal curves are stored in intcurve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcu}\> - \>  Number of extremal curves.\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                                Array of pointers to the SISLIntcurve objects
+                                containing descriptions of the extremal
+                                curves. The curves are only described by
+                                start points and end points in
+                                the parameter interval of the curve. The
+                                curve pointers point to nothing.
+                                \end{minipg2}\\[0.3ex]
+\newpagetabs
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov dir}[3];\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov intpar};\\
+                \>\>    int     \>      {\fov numintcu};\\
+                \>\>    SISLIntcurve \> **{\fov intcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1920(\begin{minipg4}
+                {\fov curve}, {\fov dir}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},
+                \&{\fov intpar}, \&{\fov numintcu}, \&{\fov intcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

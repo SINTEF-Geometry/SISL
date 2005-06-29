@@ -1,0 +1,45 @@
+\section{Mirror a Curve}
+\funclabel{s1600}
+\begin{minipg1}
+  To mirror a curve around a plane.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1600(\begin{minipg3}
+                {\fov oldcurve}, {\fov point}, {\fov normal}, {\fov dim}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    double  \>      {\fov normal}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov oldcurve}\> - \>  Pointer to original curve.\\
+        \>\>    {\fov point}    \> - \> A point in the plane.\\
+        \>\>    {\fov normal}   \> - \> Normal vector to the plane.\\
+        \>\>    {\fov dim}      \> - \> The dimension of the space.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>  Pointer to the mirrored curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov point}[3];\\
+                \>\>    double  \>      {\fov normal}[3];\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1600(\begin{minipg4}
+                {\fov oldcurve}, {\fov point}, {\fov normal}, {\fov dim}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

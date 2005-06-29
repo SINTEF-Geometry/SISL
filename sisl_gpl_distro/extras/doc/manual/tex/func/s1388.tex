@@ -1,0 +1,70 @@
+\subsection{Convert a surface of order up to four to a mesh of Coons
+patches.}
+\funclabel{s1388}
+\begin{minipg1}
+  To convert a surface of order less than or equal to 4 in both
+  directions to a mesh of Coons patches with uniform parameterization.
+  The function assumes that the surface is $C^1$ continuous.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1388(\begin{minipg3}
+                        {\fov surf}, {\fov coons}, {\fov numcoons1}, {\fov numcoons2}, {\fov dim}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      **{\fov coons};\\
+                \>\>    int     \>      *{\fov numcoons1};\\
+                \>\>    int     \>      *{\fov numcoons2};\\
+                \>\>    int     \>      *{\fov dim}\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}     \> - \> \begin{minipg2}
+                                Pointer to the surface that is to be converted
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov coons}    \> - \> \begin{minipg2}
+                                Array containing the (sequence of) Coons patches.
+                                The total number of patches is
+                                $numcoons1\times numcoons2$. The patches
+                                are stored in sequence with $dim\times
+                                16$ values for each patch. For each
+                                corner of the patch we store in
+                                sequence, positions, derivative in first
+                                direction, derivative in second
+                                direction, and twists.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numcoons1}\> - \> \begin{minipg2}
+                                Number of Coons patches in first
+                                parameter direction.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numcoons2}\> - \> \begin{minipg2}
+                                Number of Coons patches in second
+                                parameter direction.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the geometric space.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $= 1$   :\>\begin{minipg5}
+                                        Order too high, surface interpolated.
+                                        \end{minipg5}\\
+                \>\>\>\>\>      $= 0$   :\> Ok.\\
+                \>\>\>\>\>      $< 0$   :\> Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      *{\fov coons};\\
+                \>\>    int     \>      {\fov numcoons1};\\
+                \>\>    int     \>      {\fov numcoons2};\\
+                \>\>    int     \>      {\fov dim}\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1388(\begin{minipg4}
+                {\fov surf}, \&{\fov coons}, \&{\fov numcoons1}, \&{\fov numcoons2}, \&{\fov dim}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

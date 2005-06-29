@@ -1,0 +1,38 @@
+\section{Check if a Curve is Closed}
+\funclabel{s1364}
+\begin{minipg1}
+  To check if a curve is closed, i.e.\ test if the distance between the
+  end points of the curve is less than a given tolerance.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1364(\begin{minipg3}
+        {\fov curve}, {\fov epsge}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve.\\
+        \>\>    {\fov epsge}    \> - \> Geometric tolerance.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $= 2$   : Curve is closed and periodic.\\
+                \>\>\>\>\>              $= 1$   : Curve is closed.\\
+                \>\>\>\>\>              $= 0$   : Curve is open.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1364(\begin{minipg4}
+                {\fov curve}, {\fov epsge}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

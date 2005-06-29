@@ -1,0 +1,100 @@
+\subsection{\sloppy Compute a surface by Hermite interpolation, automatic parameter\-ization.}
+\funclabel{s1529}
+\begin{minipg1}
+  Compute the cubic Hermite surface interpolant to the data given.
+  More specifically, given positions, (u',v), (u,v'), and (u',v')
+  derivatives at points of a rectangular grid,
+  the routine
+  computes a cubic tensor-product B-spline interpolant to
+  the given data with double knots at each data (the first
+  knot vector will have double knots at all interior points
+  in epar1, quadruple knots at the first and last points,
+  and similarly for the second knot vector).
+  The output is represented as a B-spline surface.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1529(\begin{minipg3}
+          {\fov ep}, {\fov eder10}, {\fov eder01}, {\fov eder11},
+          {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov rsurf}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \>  {\fov ep}[\,];\\
+        \>\>    double \>  {\fov eder10}[\,];\\
+        \>\>    double \>  {\fov eder01}[\,];\\
+        \>\>    double \>  {\fov eder11}[\,];\\
+        \>\>    int    \>  {\fov im1};\\
+        \>\>    int    \>  {\fov im2};\\
+        \>\>    int    \>  {\fov idim};\\
+        \>\>    int    \>  {\fov ipar};\\
+        \>\>    SISLSurf \>  **{\fov rsurf};\\
+        \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ep}     \> - \>
+        \begin{minipg2}
+          Array of dimension $idim\times im1\times im2$ containing the
+          positions of the nodes (using the same ordering as ecoef in
+          the SISLSurf structure).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eder10} \> - \>
+        \begin{minipg2}
+          Array of dimension $idim\times im1\times im2$ containing the
+          first derivative in the first parameter direction.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eder01} \> - \>
+        \begin{minipg2}
+          Array of dimension $idim\times im1\times im2$ containing the
+          first derivative in the second parameter direction.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eder11} \> - \>
+        \begin{minipg2}
+          Array of dimension $idim\times im1\times im2$ containing the
+          cross derivative (twist vector).
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ipar}   \> - \>
+          Flag showing the desired parametrization to be used:\\
+          \>\>\>\>$= 1$\>:
+          \begin{minipg5}
+            Mean accumulated cord-length para\-meter\-ization.
+          \end{minipg5}\\[0.8ex]
+          \>\>\>\>$= 2$\>: Uniform parametrization.\\
+        \>\>    {\fov im1}    \> - \>
+        \begin{minipg2}
+          The number of interpolation points in the first parameter
+          direction.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov im2}    \> - \>
+        \begin{minipg2}
+          The number of interpolation points in the second parameter
+          direction.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov idim}   \> - \> Spatial dimension.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rsurf}  \> - \> Pointer to the B-spline surface produced.\\
+        \>\>    {\fov jstat}  \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\ %\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \>  {\fov ep}[300];\\
+        \>\>    double \>  {\fov eder10}[300];\\
+        \>\>    double \>  {\fov eder01}[300];\\
+        \>\>    double \>  {\fov eder11}[300];\\
+        \>\>    int    \>  {\fov im1} = 10;\\
+        \>\>    int    \>  {\fov im2} = 10;\\
+        \>\>    int    \>  {\fov idim} = 3;\\
+        \>\>    int    \>  {\fov ipar};\\
+        \>\>    SISLSurf \> *{\fov rsurf} = NULL;\\
+        \>\>    int    \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1529(
+        \begin{minipg4}
+          {\fov ep}, {\fov eder10}, {\fov eder01}, {\fov eder11},
+          {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, \&{\fov rsurf}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

@@ -1,0 +1,46 @@
+\section{Mirror a Surface}
+\funclabel{s1601}
+\begin{minipg1}
+  Mirror a surface about a plane.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1601(\begin{minipg3}
+          {\fov psurf}, {\fov epoint}, {\fov enorm}, {\fov idim}, {\fov rsurf}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov psurf};\\
+        \>\>    double   \> {\fov epoint}[\,];\\
+        \>\>    double   \> {\fov enorm}[\,];\\
+        \>\>    int      \> {\fov idim};\\
+        \>\>    SISLSurf \> **{\fov rsurf};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov psurf} \> - \> The input surface.\\
+        \>\>    {\fov epoint}\> - \> A point in the plane.\\
+        \>\>    {\fov enorm} \> - \> The normal vector to the plane.\\
+        \>\>    {\fov idim}  \> - \>
+        \begin{minipg2}
+          The dimension of the space, must be the same as the surface.
+        \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov rsurf} \> - \> Pointer to the mirrored surface.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov psurf};\\
+        \>\>    double   \> {\fov epoint}[3];\\
+        \>\>    double   \> {\fov enorm}[3];\\
+        \>\>    int      \> {\fov idim} = 3;\\
+        \>\>    SISLSurf \> *{\fov rsurf} = NULL;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1601(\begin{minipg4}
+          {\fov psurf}, {\fov epoint}, {\fov enorm}, {\fov idim}, \&{\fov rsurf}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

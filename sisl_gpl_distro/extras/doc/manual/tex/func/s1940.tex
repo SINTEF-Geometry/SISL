@@ -1,0 +1,110 @@
+\subsection{Data reduction: B-spline curve as input.}
+\funclabel{s1940}
+\begin{minipg1}
+To remove as many knots as possible from a spline curve
+ 	   without perturbing the curve more than a given
+ 	   tolerance.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1940(\begin{minipg3}
+            {\fov oldcurve},  {\fov eps},  {\fov startfix},  {\fov endfix},  {\fov iopen},  {\fov itmax},  {\fov newcurve},
+       {\fov maxerr},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLCurve \> *{\fov oldcurve};\\
+                \>\>    double \> {\fov eps}[\,];\\
+                \>\>    int \> {\fov startfix};\\
+                \>\>    int \> {\fov endfix};\\
+                \>\>    int \> {\fov iopen};\\
+                \>\>    int \> {\fov itmax};\\
+                \>\>    SISLCurve \> **{\fov newcurve};\\
+                \>\>    double \> {\fov maxerr}[\,];\\
+                \>\>    int \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov oldcurve}\> - \>  \begin{minipg2}
+                     pointer to the original spline curve. 
+                               \end{minipg2}\\
+        \>\>    {\fov eps}\> - \>  \begin{minipg2}
+                     double array giving the desired absolute accuracy
+                        of the final approximation as compared to oldcurve.
+                        If oldcurve is a spline curve in a space of
+			 dimension dim, then eps must have length dim.
+                        Note that it is not relative, but absolute accuracy
+                        that is being used. This means that the difference
+                        in component i at any parameter value, between
+                        the given curve and the approximation, is to be
+                        less than eps[i]. Note that in such comparisons
+                        the same parametrization is used for both curves.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov startfix}\> - \>  \begin{minipg2}
+                     the number of derivatives to be kept fixed at
+			 the beginning of the knot interval.
+                     The $0,\ldots,(startfix-1)$ derivatives will be kept fixed.
+                        If startfix $<0$, this routine will set it to 0.
+                        If startfix $<$ the order of the curve, this routine
+                        will set it to the order.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov endfix}\> - \>  \begin{minipg2}
+                     the number of derivatives to be kept fixed at
+		         the end of the knot interval.
+                     The $0,\ldots,(endfix-1)$ derivatives will be kept fixed.
+                        If endfix $<0$, this routine will set it to 0.
+                        If endfix $<$ the order of the curve, this routine
+                        will set it to the order.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov iopen}\> - \>  Open/closed parameter\\
+            \>\>\>\>  $= 1$  : Produce open curve.\\
+            \>\>\>\>  $= 0$ : Produce closed, non-periodic curve if possible.\\
+            \>\>\>\>  $= -1$ : Produce closed, periodic curve if possible.\\
+        \>\>    {\fov itmax}\> - \>  \begin{minipg2}
+                     maximum number of iterations. The routine will
+                        follow an iterative procedure trying to remove
+                        more and more knots. The process will almost always
+                        stop after less than 10 iterations and it will often
+                        stop after less than 5 iterations. A suitable
+                        value for itmax is therefore usually in the region
+                        3-10.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov }\> - \>  \begin{minipg2}
+        
+                               \end{minipg2}\\
+        \>\>    {\fov newcurve}\> - \>  \begin{minipg2}
+                     the spline approximation on the reduced
+                        knot vector.
+                               \end{minipg2}\\
+        \>\>    {\fov maxerr}\> - \>  \begin{minipg2}
+                     double array containing an upper bound for the
+			 pointwise error in each of the components of the
+		         spline approximation. The two curves oldcurve and
+			 newcurve are compared at the same parameter value,
+                        i.e., if oldcurve is f and newcurve is g, then
+			               $|f(t)-g(t)| <= eps$
+			 in each of the components.
+                               \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve \> *{\fov oldcurve};\\
+                \>\>    double \> {\fov eps}[\,];\\
+                \>\>    int \> {\fov startfix};\\
+                \>\>    int \> {\fov endfix};\\
+                \>\>    int \> {\fov iopen};\\
+                \>\>    int \> {\fov itmax};\\
+                \>\>    SISLCurve \> **{\fov newcurve};\\
+                \>\>    double \> {\fov maxerr}[\,];\\
+                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s1940(\begin{minipg4}
+            {\fov oldcurve},  {\fov eps},  {\fov startfix},  {\fov endfix},  {\fov iopen},  {\fov itmax},  {\fov newcurve},
+       {\fov maxerr},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

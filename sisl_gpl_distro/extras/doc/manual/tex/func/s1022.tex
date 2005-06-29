@@ -1,0 +1,60 @@
+\subsection{Express a truncated cone as a surface.}
+\funclabel{s1022}
+\begin{minipg1}
+  To express a truncated cone as a surface. The cone can be elliptic.
+  The cone will be geometrically exact.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1022(\begin{minipg3}
+        {\fov bottom\_pos}, {\fov bottom\_axis}, {\fov ellipse\_ratio}, {\fov axis\_dir},
+        {\fov cone\_angle}, {\fov height}, {\fov cone}, {\fov stat})
+      \end{minipg3}\\[0.3ex]
+      \>\>    double \> {\fov bottom\_pos}[\,];\\
+      \>\>    double \> {\fov bottom\_axis}[\,];\\
+      \>\>    double \> {\fov ellipse\_ratio};\\
+      \>\>    double \> {\fov axis\_dir}[\,];\\
+      \>\>    double \> {\fov cone\_angle};\\
+      \>\>    double \> {\fov height};\\
+      \>\>    SISLSurf \> **{\fov cone};\\
+      \>\>    int    \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov bottom\_pos}  \> - \> Center point of the bottom.\\
+        \>\>    {\fov bottom\_axis} \> - \> One of the bottom axis (major or minor).\\
+        \>\>    {\fov ellipse\_ratio} \> - \> Ratio between the other axis and bottom\_axis.\\
+        \>\>    {\fov axis\_dir}    \> - \> Direction of the cone axis.\\
+        \>\>    {\fov cone\_angle}  \> - \> \begin{minipg2}
+                                              Angle between axis\_dir
+                                              and the cone at the end of
+                                              bottom\_axis, positive if
+                                              the cone is sloping
+                                              inwards.
+                                            \end{minipg2}\\[0.8ex]
+        \>\>    {\fov height}       \> - \> Height of the cone, can be negative.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov cone} \> - \> Pointer to the cone produced.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov bottom\_pos}[3];\\
+        \>\>    double \> {\fov bottom\_axis}[3];\\
+        \>\>    double \> {\fov ellipse\_ratio};\\
+        \>\>    double \> {\fov axis\_dir}[3];\\
+        \>\>    double \> {\fov cone\_angle};\\
+        \>\>    double \> {\fov height};\\
+        \>\>    SISLSurf \> *{\fov cone} = NULL;\\
+        \>\>    int    \> {\fov stat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1022(\begin{minipg4}
+          {\fov bottom\_pos}, {\fov bottom\_axis}, {\fov ellipse\_ratio}, {\fov axis\_dir},
+          {\fov cone\_angle}, {\fov height}, \&{\fov cone}, \&{\fov stat})
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

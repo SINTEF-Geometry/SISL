@@ -1,0 +1,70 @@
+\subsection{Create a new intersection curve object.}
+\funclabel{newIntcurve}
+\begin{minipg1}
+Create and initialize a SISLIntcurve-instance. Note that the arrays
+{\fov guidepar1} and {\fov guidepar2} will be freed by freeIntcurve. In most cases the SISLIntcurve objects will be generated internally in the SISL intersection routines.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>SISLIntcurve *newIntcurve(\begin{minipg3}
+        {\fov numgdpt}, {\fov numpar1}, {\fov numpar2}, {\fov guidepar1},\\ {\fov guidepar2}, type)
+                \end{minipg3}\\[0.3ex]
+                \>\>    int    \>       {\fov numgdpt};\\
+                \>\>    int    \>       {\fov numpar1};\\
+                \>\>    int    \>       {\fov numpar2};\\
+                \>\>    double \>       {\fov guidepar1}[\,];\\
+                \>\>    double \>       {\fov guidepar2}[\,];\\
+                \>\>    int    \>       {\fov type};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov numgdpt}  \> - \> \begin{minipg2}
+                                Number of guide points that describe the curve.
+                                \end{minipg2}\\
+        \>\>    {\fov numpar1} \> - \> \begin{minipg2}
+                                Number of parameter directions of first object
+                                involved in the intersection.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numpar2}  \> - \> \begin{minipg2}
+                                Number of parameter directions of second object
+                                involved in the intersection.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov guidepar1}\> - \> \begin{minipg2}
+                                Parameter values of the guide points in the parameter
+                                area of the first object.
+                                NB! The epar1 pointer is set to point to this
+                                array. The values are not copied.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov guidepar2}\> - \> \begin{minipg2}
+                                Parameter values of the guide points in the parameter
+                                area of the second object.
+                                NB! The epar2 pointer is set to point to this
+                                array. The values are not copied.
+                                \end{minipg2}\\[0.3ex].
+        \>\>    {\fov type} \> - \> \begin{minipg2}
+                                Kind of curve, see type SISLIntcurve on
+                                page \pageref{SISLIntcurve}
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newIntcurve} \> \> \begin{minipg2}
+                                 Pointer to new SISLIntcurve. If it is impossible
+                                 to allocate space for the SISLIntcurve, newIntcurve
+                                 returns NULL.
+                                \end{minipg2}\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLIntcurve    \>      *{\fov intcurve = NULL};\\
+                \>\>    int    \>       {\fov numgdpt} = 2;\\
+                \>\>    int    \>       {\fov numpar1} = 2;\\
+                \>\>    int    \>       {\fov numpar2} = 2;\\
+                \>\>    double \>       {\fov guidepar1}[4];\\
+                \>\>    double \>       {\fov guidepar2}[4];\\
+                \>\>    int    \>       {\fov type} = 4;\\
+                \>\>    \ldots \\
+        \>\>{\fov intcurve} = newIntcurve(\begin{minipg4}
+                {\fov numgdpt}, {\fov numpar1}, {\fov numpar2}, {\fov guidepar1},\\ {\fov guidepar2}, type);
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

@@ -1,0 +1,79 @@
+\subsection{Intersection between a curve and a point.}
+\funclabel{s1871}
+\begin{minipg1}
+  Find all the intersections between a curve and a point.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1871(\begin{minipg3}
+        {\fov pc1}, {\fov pt1}, {\fov idim}, {\fov aepsge}, {\fov jpt}, {\fov gpar1}, {\fov jcrv},
+        {\fov wcurve}, {\fov jstat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve \>  *{\fov pc1};\\
+                \>\>    double    \>  *{\fov pt1};\\
+                \>\>    int       \>  {\fov idim};\\
+                \>\>    double    \>  {\fov aepsge};\\
+                \>\>    int       \>  *{\fov jpt};\\
+                \>\>    double    \>  **{\fov gpar1};\\
+                \>\>    int       \>  *{\fov jcrv};\\
+                \>\>    SISLIntcurve \> ***{\fov wcurve};\\
+                \>\>    int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc1}    \> - \> Pointer to the curve.\\
+        \>\>    {\fov pt1}    \> - \> coordinates of the point.\\
+        \>\>    {\fov idim}   \> - \> number of coordinates in {\fov pt1}.\\
+        \>\>    {\fov aepsge} \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jpt}    \> - \> Number of single intersection points.\\
+        \>\>    {\fov gpar1}  \> - \> \begin{minipg2}
+                                        Array containing the parameter
+                                        values of the single
+                                        intersection points in the
+                                        parameter interval of the
+                                        curve. The points lie
+                                        continuous. Intersection curves
+                                        are stored in {\fov wcurve}.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jcrv}   \> - \> Number of intersection curves.\\
+        \>\>    {\fov wcurve} \> - \> \begin{minipg2}
+                                        Array containing descriptions of
+                                        the intersection curves. The
+                                        curves are only described by
+                                        points in the parameter
+                                        plane. The curve-pointers points
+                                        to nothing.\\
+                                        If the curves given as input are
+                                        degenerate, an intersection
+                                        point can be returned as an
+                                        intersection curve. Use s1327() to
+                                        decide if an intersection curve
+                                        is a point on one of the
+                                        curves.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}  \> - \> \begin{minipg2}
+                                        Status messages\\
+                                        $> 0$      : Warning.\\
+                                        $= 0$      : Ok.\\
+                                        $< 0$      : Error.\\
+                                      \end{minipg2}\\[0.8ex]
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \>  *{\fov pc1};\\
+        \>\>    double    \>  *{\fov pt1};\\
+        \>\>    int       \>  {\fov idim};\\
+        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    int       \>  {\fov jpt} = 0;\\
+        \>\>    double    \>  *{\fov gpar1} = NULL;\\
+        \>\>    int       \>  {\fov jcrv} = 0;\\
+        \>\>    SISLIntcurve \> **{\fov wcurve} = NULL;\\
+        \>\>    int       \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1871(\begin{minipg4}
+        {\fov pc1}, {\fov pt1}, {\fov idim}, {\fov aepsge}, \&{\fov jpt}, \&{\fov gpar1}, \&{\fov jcrv}, \&{\fov wcurve}, \&{\fov jstat});
+      \end{minipg4}\\
+      \>\>    \ldots \\
+      \>      \}
+\end{tabbing}

@@ -1,0 +1,45 @@
+\subsection{Express the ``i''-th derivative of an open curve as a curve.}
+\funclabel{s1720}
+\begin{minipg1}
+To express the ``i''-th derivative of an open curve as a curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1720(\begin{minipg3}
+        {\fov curve}, {\fov derive}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov derive};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> Curve to be differentiated.\\
+        \>\>    {\fov derive}   \> - \> \begin{minipg2}
+                                The order "i" of the derivative, where
+                                $0 \leq derive $.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>\begin{minipg2}
+                                The "i"-th derivative of a curve
+                                represented as a curve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov derive};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1720(\begin{minipg4}
+                {\fov curve}, {\fov derive}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

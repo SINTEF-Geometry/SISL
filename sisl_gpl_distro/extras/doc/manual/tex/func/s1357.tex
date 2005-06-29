@@ -1,0 +1,134 @@
+\subsection{Compute a curve interpolating a set of points,
+parameter\-ization as input.}
+\funclabel{s1357}
+\begin{minipg1}
+Compute a curve interpolating a set of points.  The points
+can be assigned a tangent (derivative).  The curve can be open, closed
+or periodic. If end-conditions are conflicting, the condition closed
+curve rules out other end conditions. The parameterization is given by
+the array {\fov epar}.
+The output will be represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1357(\begin{minipg3}
+        {\fov epoint}, {\fov inbpnt}, {\fov idim}, {\fov ntype}, {\fov epar}, {\fov icnsta}, {\fov icnend}, {\fov iopen}, {\fov ik}, {\fov astpar},
+        {\fov cendpar}, {\fov rc}, {\fov gpar}, {\fov jnbpar}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \>  {\fov epoint}[\,];\\
+        \>\>    int    \>  {\fov inbpnt};\\
+        \>\>    int    \>  {\fov idim};\\
+        \>\>    int    \>  {\fov ntype}[\,];\\
+        \>\>    double \>  {\fov epar}[\,];\\
+        \>\>    int    \>  {\fov icnsta};\\
+        \>\>    int    \>  {\fov icnend};\\
+        \>\>    int    \>  {\fov iopen};\\
+        \>\>    int    \>  {\fov ik};\\
+        \>\>    double \>  {\fov astpar};\\
+        \>\>    double \>  *{\fov cendpar};\\
+        \>\>    SISLCurve \> **{\fov rc};\\
+        \>\>    double \>  **{\fov gpar};\\
+        \>\>    int    \>  *{\fov jnbpar};\\
+        \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov epoint}\> - \>
+        \begin{minipg2}
+          Array (length $idim\times inbpnt$) containing the
+          points/\-derivatives to be interpolated.
+        \end{minipg2}\\
+        \>\>    {\fov inbpnt}\> - \>
+        \begin{minipg2}
+          No. of points/\-derivatives in the {\fov epoint} array.
+        \end{minipg2}\\
+        \>\>    {\fov idim}\> - \>
+        The dimension of the space in which the points lie.\\
+        \>\>    {\fov ntype}\> - \> \begin{minipg2}
+                  Array (length {\fov inbpnt}) containing type indicator for
+                  points/\-derivatives/\-second-derivatives:
+                \end{minipg2}\\
+                \>\>\>\> $=1$\>: Ordinary point.\\
+                \>\>\>\> $=2$\>:
+                \begin{minipg5}
+                  Knuckle point.  (Is treated as an ordinary point.)
+                \end{minipg5}\\
+                \>\>\>\> $=3$\>: Derivative to next point.\\
+                \>\>\>\> $=4$\>: Derivative to prior point.\\
+                \>\>\>\> ($=5$\>: Second-derivative to next point.)\\
+                \>\>\>\> ($=6$\>: Second derivative to prior point.)\\
+                \>\>\>\> $=13$\>: Point of tangent to next point.\\
+                \>\>\>\> $=14$\>: Point of tangent to prior  point.\\
+        \>\>    {\fov epar}\> - \>
+        \begin{minipg2}
+          Array containing the wanted parameterization. Only parameter
+          values corresponding to position points are given.
+          For closed curves, one additional parameter value
+          must be specified. The last entry contains
+          the parametrization of the repeated start point.
+          (if the end point is equal to the start point of
+          the interpolation the length of the array should
+          be equal to inpt1 also in the closed case).
+        \end{minipg2}\\
+        \>\>    {\fov icnsta}\> - \>
+                Additional condition at the start of the curve:\\
+                  \>\>\>\> $=0$\>: No additional condition.\\
+                  \>\>\>\> $=1$\>: Zero curvature at start.\\
+        \>\>    {\fov icnend}\> - \>
+                Additional condition at the end of the curve:\\
+                  \>\>\>\> $=0$\>: No additional condition.\\
+                  \>\>\>\> $=1$\>: Zero curvature at end.\\
+        \>\>    {\fov iopen}\> - \>
+                Flag telling if the curve should be open or closed:\\
+                  \>\>\>\> $=1$\>: The curve should be open.\\
+                  \>\>\>\> $=0$\>: The curve should be closed.\\
+                  \>\>\>\> $=-1$\>: The curve should be closed and periodic.\\
+        \>\>    {\fov ik}\> - \> The order of the spline curve to be produced.\\
+        \>\>    {\fov astpar}\> - \>
+        \begin{minipg2}
+          Parameter value to be used at the start of the curve.
+        \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov cendpar}\> - \>
+        \begin{minipg2}
+          Parameter value used at the end of the curve.
+        \end{minipg2}\\
+        \>\>    {\fov rc}\> - \> Pointer to the output B-spline curve.\\
+        \>\>    {\fov gpar}\> - \>
+        \begin{minipg2}
+          Pointer to the parameter values of the points in the
+          curve. Represented only once, although derivatives and
+          second-derivatives will have the same parameter value as the
+          points.
+        \end{minipg2}\\
+        \>\>    {\fov jnbpar}\> - \>  No, of unique parameter values.\\
+        \>\>    {\fov jstat}\> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \>  {\fov epoint}[30];\\
+        \>\>    int    \>  {\fov inbpnt} = 10;\\
+        \>\>    int    \>  {\fov idim} = 3;\\
+        \>\>    int    \>  {\fov ntype}[10];\\
+        \>\>    double \>  {\fov epar}[10];\\
+        \>\>    int    \>  {\fov icnsta} = 0;\\
+        \>\>    int    \>  {\fov icnend} = 0;\\
+        \>\>    int    \>  {\fov iopen} = 0;\\
+        \>\>    int    \>  {\fov ik} = 4;\\
+        \>\>    double \>  {\fov astpar} = 0.0;\\
+        \>\>    double \>  {\fov cendpar};\\
+        \>\>    SISLCurve \> *{\fov rc};\\
+        \>\>    double \>  *{\fov gpar};\\
+        \>\>    int    \>  {\fov jnbpar};\\
+        \>\>    int    \>  {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1357(\begin{minipg4}
+          {\fov epoint}, {\fov inbpnt}, {\fov idim}, {\fov ntype}, {\fov epar}, {\fov icnsta}, {\fov icnend}, {\fov iopen}, {\fov ik}, {\fov astpar},
+          \&{\fov cendpar}, \&{\fov rc}, \&{\fov gpar}, \&{\fov jnbpar}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

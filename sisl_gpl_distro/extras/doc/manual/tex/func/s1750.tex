@@ -1,0 +1,43 @@
+\subsection{Express a curve using a higher order basis.}
+\funclabel{s1750}
+\begin{minipg1}
+  To describe a curve using a higher order basis.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1750(\begin{minipg3}
+        {\fov curve}, {\fov order}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The input curve.\\
+        \>\>    {\fov order}    \> - \> \begin{minipg2}
+                                Order of the new curve.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>\begin{minipg2}
+                                The new curve of higher order.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov order};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      stat;\\
+                \>\>    \ldots \\
+        \>\>s1750(\begin{minipg4}
+                {\fov curve}, {\fov order}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

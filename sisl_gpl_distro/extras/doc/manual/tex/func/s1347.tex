@@ -1,0 +1,216 @@
+\subsection{Data reduction: Points and tangents as input.}
+\funclabel{s1347}
+\begin{minipg1}
+  To compute a bicubic hermite B-spline approximation to the position and
+  derivative data given by points, tangent1, tangent2 and derive.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1347(\begin{minipg3}
+        {\fov points}, {\fov tangent1}, {\fov tangent2}, {\fov derive}, {\fov numpt1}, {\fov numpt2}, {\fov dim},\linebreak {\fov typepar}, {\fov par1},
+        {\fov par2}, {\fov eps}, {\fov edgefix}, {\fov edgeps}, {\fov epsco}, {\fov optim}, {\fov itmax}, {\fov newsurf}, {\fov maxerr},
+                                stat)
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    double  \>      {\fov points}[\,];\\
+                \>\>    double  \>      {\fov tangent1}[\,];\\
+                \>\>    double  \>      {\fov tangent2}[\,];\\
+                \>\>    double  \>      {\fov derive}[\,];\\
+                \>\>    int     \>      {\fov numpt1};\\
+                \>\>    int     \>      {\fov numpt2};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    double  \>      {\fov par1}[\,];\\
+                \>\>    double  \>      {\fov par2}[\,];\\
+                \>\>    double  \>      {\fov eps}[\,];\\
+                \>\>    int     \>      {\fov edgefix}[\,];\\
+                \>\>    double  \>      {\fov edgeps}[\,];\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov optim};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf};\\
+                \>\>    double  \>      {\fov maxerr}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov points}   \> - \> \begin{minipg2}
+                                Array (length dim*numpt1*numpt2) containing the points to be
+                                approximated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov tangent1}\> - \>  \begin{minipg2}
+                                Array (length dim*numpt1*numpt2) containing the
+                                derivatives (tangents) at the data-points in the first parameter-
+                                direction.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov tangent2}\> - \>  \begin{minipg2}
+                                Array (length dim*numpt1*numpt2) containing the
+                                derivatives (tangents) at the data-points in the second parameter-
+                                direction.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov derive}\> - \>    \begin{minipg2}
+                                Array (length dim*numpt1*numpt2) containing the cross
+                                (twist) derivatives at the data-points.
+                                \end{minipg2} \\[0.3ex]
+        \>\>    {\fov numpt1}\> - \> \begin{minipg2}
+                                The no. of points in the first parameter-direction.
+                                \end{minipg2}\\
+        \>\>    {\fov numpt2}   \> - \> \begin{minipg2}
+                                The no. of points in the second parameter-direction.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The no. of components of each input-point. The
+                                approximation will be a parametric surface situated in
+                                the {\fov dim}-dimensional Euclidean
+                                space (usually 3).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov typepar}\> - \> \begin{minipg2}
+                                Flag determining the parameterization of the data-
+                                points.
+                                \end{minipg2} \\[0.3ex]
+                \>\>\>\>\>      $= 1$ :\>       \begin{minipg5}
+                                                Means accumulated cord-length
+                                                  para\-meterization.
+                                        \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 2$ : \>Uniform parameterization.\\
+                \>\>\>\>\>      $= 3$ : \>Parameterization given by par1 and par2.\\
+        \>\>    {\fov par1}\> - \>      \begin{minipg2}
+                                Array (length numpt1) containing the parameterization in
+                                the first parameter-direction. (Will only be used if
+                                typepar=3.)
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov par2}\> - \>      \begin{minipg2}
+                                Array (length numpt2) containing the parameterization in the
+                                second parameter direction.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eps}\> - \>               \begin{minipg2}
+                                Array (length dim) containing the maximum
+                                deviation which is acceptable in each of the dim
+                                components of the surface (except possibly along the
+                                ends).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov edgefix}\> - \>   \begin{minipg2}
+                                Array (length 4) containing the no. of derivatives to
+                                be kept fixed along each edge of the surface. The
+                                numbering of the edges is the same as for edgeps
+                                below. All the derivatives of
+                                $\mbox{order}<(\mbox{edgefix}(i)-1)$ will
+                                be kept fixed along edge no. i.
+                                Hence $\mbox{edgefix}(i)=0$
+                                indicates that nothing is to be kept fixed along edge
+                                no. $i$. To be kept fixed here means to have error less
+                                than edgeps. In general, it is impossible to  remove
+                                any knots and keep an edge completely fixed.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov edgeps}\> - \>    \begin{minipg2}
+                                Array (length dim*4) containing the max.
+                                deviation which is acceptable along the edges of
+                                the surfaces.
+                                \end{minipg2}\\[0.3ex]
+                \>\>\>\>        \begin{minipg2}
+                                $edgeps[dim*i],\ldots,edgeps[(dim*(i+1)-1]$
+                                gives the
+                                tolerance along the edge nr. $i$.
+                                $edgeps[dim*i],\ldots,edgeps[(dim*(i+1)-1]$
+                                will only have any significance if
+                                $\mbox{edgefix}[i]>0$.
+                                The edge numbers correspond to the
+                                following:
+                                \end{minipg2}\\
+                \>\>\>\>        \begin{minipg2}
+                                \begin{center}
+                                        \begin{picture}(180,110)(0,0)
+                                        \put(50,15){\framebox(80,80)}
+                                        \put(40,55){\makebox(0,0){0}}
+                                        \put(140,55){\makebox(0,0){1}}
+                                        \put(90,5){\makebox(0,0){2}}
+                                        \put(90,105){\makebox(0,0){3}}
+
+                                        \put(60,20){\vector(1,0){40}}
+                                        \put(85,28){\makebox(0,0){$(i)$}}
+                                        \put(55,25){\vector(0,1){40}}
+                                        \put(65,50){\makebox(0,0){$(ii)$}}
+                                        \end{picture}\\
+                                        $(i) \; \; \;$ first parameter direction of surface.\\
+                                        $(ii)$   second parameter direction of surface.\\
+                                \end{center}
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Two numbers differing by a relative amount less
+                                than epsco will in some cases be considered equal.
+                                A suitable value is just above the unit roundoff of
+                                the machine.
+                                A reasonable choice might be $10^{-15}$.
+                                The computations are not guaranteed to
+                                have relative accuracy less than epsco.
+                                Not used anymore.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov optim}\> - \>     \begin{minipg2}
+                                Flag indicating the order in which the data-
+                                reduction is to be performed:
+                                \end{minipg2}\\[0.3ex]
+                \>\>\>\>\>      $= 1$ :\>\begin{minipg5}
+                                Remove knots in parameter-direction 1 only.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 2$ : \>\begin{minipg5}
+                                Remove knots in parameter-direction 2 only.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 3$ : \>\begin{minipg5}
+                                        Remove knots in parameter-direction 1
+                                                and then in parameter-direction 2.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 4$ : \>\begin{minipg5}
+                                        Remove knots in parameter-direction 2
+                                                and then in parameter-direction 1.
+                                \end{minipg5}\\[0.3ex]
+        \>\>    {\fov itmax}\> - \>     \begin{minipg2}
+                                Max. no. of iterations.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>   \begin{minipg2}
+                                Pointer to the produced B-spline surface.
+                                \end{minipg2}\\
+        \>\>    {\fov maxerr}\> - \>    \begin{minipg2}
+                                Array (length dim)
+                                containing the error in the approximation to the data.
+                                This is a guaranteed upper bound on the max. deviation
+                                in each component, between the final approximation
+                                and the bicubic Hermite spline-approximation to the original data.
+
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov points}[90];\\
+                \>\>    double  \>      {\fov tangent1}[90];\\
+                \>\>    double  \>      {\fov tangent2}[90];\\
+                \>\>    double  \>      {\fov derive}[90];\\
+                \>\>    int     \>      {\fov numpt1} = 5;\\
+                \>\>    int     \>      {\fov numpt2} = 6;\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    double  \>      {\fov par1}[5];\\
+                \>\>    double  \>      {\fov par2}[6];\\
+                \>\>    double  \>      {\fov eps}[3];\\
+                \>\>    int     \>      {\fov edgefix}[4];\\
+                \>\>    double  \>      {\fov edgeps}[12];\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov optim};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    double  \>      {\fov maxerr}[3];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1347(\begin{minipg4}
+                {\fov points}, {\fov tangent1}, {\fov tangent2}, {\fov derive}, {\fov numpt1}, {\fov numpt2}, {\fov dim},
+                \linebreak {\fov typepar}, {\fov par1},
+                {\fov par2}, {\fov eps}, {\fov edgefix}, {\fov edgeps}, {\fov epsco}, {\fov optim}, {\fov itmax}, \&{\fov newsurf}, {\fov maxerr},
+                        \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

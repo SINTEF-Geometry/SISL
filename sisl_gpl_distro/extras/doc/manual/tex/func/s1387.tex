@@ -1,0 +1,54 @@
+\subsection{Express a surface using a higher order basis.}
+\funclabel{s1387}
+\begin{minipg1}
+  To express a surface as a surface of higher order.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1387(\begin{minipg3}
+                                {\fov surf}, {\fov order1}, {\fov order2}, {\fov newsurf}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov order1};\\
+                \>\>    int     \>      {\fov order2};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>              \begin{minipg2}
+                                Surface to raise the order of.
+                                \end{minipg2}\\
+        \>\>    {\fov order1}\> - \>            \begin{minipg2}
+                                New order in the first parameter direction.
+                                \end{minipg2}\\
+        \>\>    {\fov order2}\> - \>            \begin{minipg2}
+                                New order in the second parameter direction.
+                                \end{minipg2}\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>   \begin{minipg2}
+                                The resulting order elevated surface.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $= 1$   : \> \begin{minipg5}
+                                                Input order equal to
+                                                order of surface.
+                                                Pointer set to input.
+                                        \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 0$   : \>Ok.\\
+                \>\>\>\>\>      $< 0$   : \>Error.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov order1};\\
+                \>\>    int     \>      {\fov order2};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1387(\begin{minipg4}
+                                {\fov surf}, {\fov order1}, {\fov order2}, \&{\fov newsurf}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

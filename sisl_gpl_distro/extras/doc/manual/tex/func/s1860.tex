@@ -1,0 +1,96 @@
+\subsection{Find the topology of the silhouette curves of a surface,
+using parallel projection.}
+\funclabel{s1860}
+\begin{minipg1}
+  Find the silhouette curves and points of a surface when the surface is viewed
+  from a specific direction (i.e.\ parallel projection).
+  In addition to the points and curves found by this routine, break
+  curves and edge-curves might be silhouette curves.
+  Silhouette curves are described by guide points.
+  To produce the silhouette curves use s1319() described on page \pageref{s1319}.
+\end{minipg1} \\ \\
+NOTE\\
+\>     \begin{minipg6}
+The silhouette curves are defined as curves on the surface where the inner product of the surface normal and the direction vector of the viewing is 0. This definition will include surface points where the normal is zero.
+\end{minipg6}\\ \\
+SYNOPSIS\\
+        \>void s1860(\begin{minipg3}
+                {\fov surf}, {\fov viewdir}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov numsilpt}, {\fov pointpar}, {\fov numsilcr}, {\fov silcurves},
+                {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov viewdir}[];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numsilpt};\\
+                \>\>    double  \>      **{\fov pointpar};\\
+                \>\>    int     \>      *{\fov numsilcr};\\
+                \>\>    SISLIntcurve\>  ***{\fov silcurves};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>              \begin{minipg2}
+                                Pointer to the surface.
+                                \end{minipg2}\\
+        \>\>    {\fov viewdir}\> - \>   \begin{minipg2}
+                                The direction vector of the viewing.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>       \begin{minipg2}
+                                Dimension of the space in which {\fov viewdir} lies.
+                                \end{minipg2}\\
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numsilpt}\> - \>  \begin{minipg2}
+                                Number of single silhouette points.
+                                \end{minipg2}\\
+        \>\>    {\fov pointpar}\> - \>  \begin{minipg2}
+                                Array containing the parameter values of the
+                                single silhouette points in the parameter plane of
+                                the surface. The points lie in sequence. Silhouette
+                                curves are stored in silcurves.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numsilcr}\> - \>  \begin{minipg2}
+                                Number of silhouette curves.
+                                \end{minipg2}\\
+%\newpagetabs
+        \>\>    {\fov silcurves}\> - \>\begin{minipg2}
+                                Array containing the description of the silhouette
+                                curves. The curves are only described by
+                                start points and end points (guide points) in
+                                the parameter plane. The curve pointers point to
+                                nothing.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov viewdir}[3];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numsilpt} = 0;\\
+                \>\>    double  \>      *{\fov pointpar} = NULL;\\
+                \>\>    int     \>      {\fov numsilcr} = 0;\\
+                \>\>    SISLIntcurve\>  **{\fov silcurves} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
+                \>\>    \ldots \\
+        \>\>s1860(\begin{minipg4}
+                {\fov surf}, {\fov viewdir}, {\fov dim}, {\fov epsco}, {\fov epsge},
+                \&{\fov numsilpt}, \&{\fov pointpar}, \linebreak \&{\fov numsilcr}, \&{\fov silcurves},
+                \&{\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

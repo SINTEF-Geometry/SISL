@@ -1,0 +1,128 @@
+\subsection{\sloppy March a silhouette curve of a surface, using parallel \mbox{projection}.}
+\funclabel{s1319}
+\begin{minipg1}
+  To march the silhouette curve described by an intersection curve object, a
+  surface and a view direction (i.e.\ parallel projection).
+  The guide points are expected to be found by s1860(), described on
+  page \pageref{s1860}.
+  The generated geometric curves are represented as B-spline curves.
+\end{minipg1} \\ \\
+NOTE\\
+\>     \begin{minipg6}
+The silhouette curves are defined as curves on the surface where the inner product of the surface normal and the direction vector of the viewing is 0. This definition will include surface points where the normal is zero.
+\end{minipg6} \\ \\
+SYNOPSIS\\
+        \>void s1319(\begin{minipg3}
+                        {\fov surf}, {\fov viewdir}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov maxstep}, {\fov intcurve}, {\fov makecurv},
+                        {\fov graphic}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov viewdir}[\,];\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep};\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
+                \>\>    int     \>      {\fov makecurv};\\
+                \>\>    int     \>      {\fov graphic};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>              \begin{minipg2}
+                                Pointer to the surface.
+                                \end{minipg2}\\
+        \>\>    {\fov viewdir}\> - \>   \begin{minipg2}
+                                View direction.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>       \begin{minipg2}
+                                Dimension of the space in which vector describing the view
+                                direction lies. Should be 3.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2}\\
+        \>\>    {\fov maxstep}\> - \>   \begin{minipg2}
+                                Maximum step length allowed.
+                                If maxstep $\leq$ epsge maxstep is
+                                neglected. maxstep = 0.0 is recommended.
+                                \end{minipg2}\\
+\newpagetabs
+        \>\>    {\fov makecurv}\> - \>  \begin{minipg2}
+                                Indicator specifying if a geometric curve is to be made:
+                                \end{minipg2}\\
+                \>\>\>\>\>      0 -     \>Do not make curves at all.\\
+                \>\>\>\>\>      1 -     \>Make only a geometric curve.\\
+                \>\>\>\>\>      2 -     \>\begin{minipg5}
+                                        Make geometric curve and curve in the parameter
+                                        plane.
+                                        \end{minipg5} \\[0.3ex]
+        \>\>    {\fov graphic}\> - \>   \begin{minipg2}
+                                Indicator specifying if the function
+                                should draw the geometric curve:
+                                \end{minipg2}\\
+                \>\>\>\>\>      0 -     \>Don't draw the curve.\\
+                \>\>\>\>\>      1 -     \>\begin{minipg5}
+                                        Draw the geometric curve. If this option
+                                        is used see NOTE!
+                                        \end{minipg5} \\[0.8ex]
+\\
+        \>Input/Output Arguments:\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                                Pointer to the intersection curve.
+                                As input, only
+                                guide points (points in parameter space)
+                                exist. These guide points
+                                are used for guiding the marching.
+                                The routine adds
+                                intersection curve and curve in the parameter
+                                plane to the SISLIntcurve object according to the value
+                                of makecurv.
+                                \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $= 3$ : \>      \begin{minipg5}
+                                                Iteration stopped due to singular
+                                                point or degenerate surface. A part of
+                                                an intersection curve may have been
+                                                traced out. If no curve is traced out
+                                                the curve pointers in the SISLIntcurve
+                                                object point to NULL.
+                                                \end{minipg5} \\[0.3ex]
+                \>\>\>\>\>      $= 0$   :\> ok\\
+                \>\>\>\>\>      $< 0$   :\> error\\
+\\
+NOTE\\
+\>      \begin{minipg6}
+If the draw option is used the empty dummy functions s6move() and
+s6line() are called.
+Thus if the draw option is used, make sure
+you have versions of s6move() and s6line() interfaced to your graphic package.
+More about s6move() and s6line() on pages~\pageref{s6move}
+and~\pageref{s6line}.
+\end{minipg6}\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov viewdir}[3];\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep} = 0.0;\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
+                \>\>    int     \>      {\fov makecurv};\\
+                \>\>    int     \>      {\fov graphic};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
+                \>\>    \ldots \\
+        \>\>s1319(\begin{minipg4}
+                {\fov surf}, {\fov viewdir}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov maxstep}, {\fov intcurve}, {\fov makecurv},
+                graphic, \&stat);
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

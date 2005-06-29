@@ -1,0 +1,51 @@
+\subsection{Draw piecewise straight lines approximating a B-spline curve.}
+\funclabel{s1740}
+\begin{minipg1}
+Draw piecewise straight lines approximating a B-spline curve.
+The distance between the B-spline curve and the 
+straight lines is less than a tolerance epsge. NB see NOTE!
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1740(\begin{minipg3}
+		{\fov curve}, {\fov epsge}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLCurve	\> 	*{\fov curve};\\
+		\>\>	double 	\>	{\fov epsge};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov curve}\> - \>	\begin{minipg2}
+				Pointer to the curve.
+				\end{minipg2}\\
+	\>\>	{\fov epsge}\> - \>	\begin{minipg2}
+				The maximal distance allowed between the lines 
+				drawn and the curve.
+				\end{minipg2} \\[0.8ex]
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+This function calls s6drawseq() which
+is device dependent. Before using the function you therefore have to be sure 
+that you have a version of s6drawseq() capable for your equipment.
+More about s6drawseq() on page~\pageref{s6drawseq}.
+\end{minipg6}
+\\ \\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLCurve	\> 	*{\fov curve};\\
+		\>\>	double 	\>	{\fov epsge};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1740(\begin{minipg4}
+			{\fov curve}, {\fov epsge}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\} \\
+\end{tabbing}

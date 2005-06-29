@@ -1,0 +1,91 @@
+\subsection{Compute a fillet curve based on parameter value.}
+\funclabel{s1607}
+\begin{minipg1}
+  To calculate a fillet curve between two curves. The start and end point
+  for the fillet is given as one parameter value for each of the
+  curves.
+  The output is represented as a B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1607(\begin{minipg3}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov end1}, {\fov fillpar1}, {\fov end2}, {\fov fillpar2},
+        {\fov filltype}, {\fov dim}, {\fov order}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov end1};\\
+                \>\>    double  \>      {\fov fillpar1};\\
+                \>\>    double  \>      {\fov end2};\\
+                \>\>    double  \>      {\fov fillpar2};\\
+                \>\>    int     \>      {\fov filltype};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> The first input curve.\\
+        \>\>    {\fov curve2}   \> - \> The second input curve.\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+        \>\>    {\fov end1}     \> - \> \begin{minipg2}
+                        Parameter value on the first curve. The parameter fillpar1 divides the first curve in two pieces. End1 is used to select which of these pieces the fillet should extend.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov fillpar1}\> - \>  \begin{minipg2}
+                        Parameter value of the start point of the fillet
+                                on the first curve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov end2}     \> - \> \begin{minipg2}
+                        Parameter value on the second curve indicating that
+                        the part of the curve lying on this side of fillpar2
+                                shall not be replaced by the fillet.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov fillpar2}\> - \>  \begin{minipg2}
+                        Parameter value of the start point of the fillet
+                                on the second curve.
+                                \end{minipg2}\\
+\newpagetabs
+        \>\>    {\fov filltype}\> - \>  Indicator of the type of fillet.\\
+                \>\>\>\>\>      $=1$ : \>\begin{minipg5}
+                                Circle approximation, interpolating tangent on first
+                                curve, not on curve 2.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $=2$ : \>\begin{minipg5}
+                                Conic approximation if possible,
+                                \end{minipg5}\\
+                \>\>\>\>\>      else : \>\begin{minipg5}
+                                polynomial segment.
+                                \end{minipg5}\\
+        \>\>    {\fov dim}      \> - \> Dimension of space.\\
+        \>\>    {\fov order}    \> - \> Order of the fillet curve, which is not always used.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \> Pointer to the B-spline fillet curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov end1};\\
+                \>\>    double  \>      {\fov fillpar1};\\
+                \>\>    double  \>      {\fov end2};\\
+                \>\>    double  \>      {\fov fillpar2};\\
+                \>\>    int     \>      {\fov filltype};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1607(\begin{minipg4}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov end1}, {\fov fillpar1}, {\fov end2}, {\fov fillpar2},
+        {\fov filltype}, {\fov dim}, {\fov order}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

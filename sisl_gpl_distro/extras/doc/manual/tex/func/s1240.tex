@@ -1,0 +1,47 @@
+\section{Compute the Length of a Curve}
+\funclabel{s1240}
+\begin{minipg1}
+  Compute the length of a curve. The length calculated will not deviate
+  more than {\fov epsge} divided by the calculated length, from the real
+  length of the curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1240(\begin{minipg3}
+        {\fov curve}, {\fov epsge}, {\fov length}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      *{\fov length};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve.\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov length}   \> - \> The length of the curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+NOTE\\
+\>\begin{minipg6}
+        The algorithm is based on recursive
+        subdivision and will thus for small values
+        of {\fov epsge} require long computation time.
+\end{minipg6} \\ \\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov length};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1240(\begin{minipg4}
+                {\fov curve}, {\fov epsge}, \&{\fov length}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

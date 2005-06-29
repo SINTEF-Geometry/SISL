@@ -1,0 +1,39 @@
+\section{Pick the Parameter Range of a Curve}
+\funclabel{s1363}
+\begin{minipg1}
+  To pick the parameter range of a curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1363(\begin{minipg3}
+        {\fov curve}, {\fov startpar}, {\fov endpar}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      *{\fov startpar};\\
+                \>\>    double  \>      *{\fov endpar};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov startpar}\> - \>  Start of the parameter interval of the curve.\\
+        \>\>    {\fov endpar}   \> - \> End of the parameter interval of the curve.\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $= 1$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    double  \>      {\fov endpar};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1363(\begin{minipg4}
+                {\fov curve}, \&{\fov startpar}, \&{\fov endpar}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

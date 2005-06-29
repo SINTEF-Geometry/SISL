@@ -1,0 +1,80 @@
+\subsection{Newton iteration on the intersection between a 3D NURBS surface and a line.}
+\funclabel{s1518}
+\begin{minipg1}
+Newton iteration on the intersection between
+               a 3D NURBS surface and a line.
+               If a good initial guess is given, the intersection will
+               be found quickly. However if a bad initial guess is given,
+               the iteration might not converge.
+               We only search in the rectangular subdomain specified
+               by "start" and "end". This can be the whole domain if desired.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>     void s1518(\begin{minipg3}
+            {\fov surf},  {\fov point},  {\fov dir},  {\fov epsge},  {\fov start},  {\fov end},  {\fov parin},  {\fov parout},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLSurf    \>  *{\fov surf};\\
+                \>\>    double \> point[\,];\\
+                \>\>    double \> dir[\,];\\
+                \>\>    double \> epsge;\\
+                \>\>    double \> start[\,];\\
+                \>\>    double \> end[\,];\\
+                \>\>    double \> parin[\,];\\
+                \>\>    double \> parout[\,];\\
+                \>\>    int    \>  *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>  \begin{minipg2}
+                     The NURBS surface.
+                               \end{minipg2}\\
+        \>\>    {\fov point}\> - \>  \begin{minipg2}
+                     A point on the line.
+                               \end{minipg2}\\
+        \>\>    {\fov dir}\> - \>  \begin{minipg2}
+                     The vector direction of the line
+                        (not necessarily normalized).
+                               \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>  \begin{minipg2}
+                     Geometric resolution.
+                               \end{minipg2}\\
+        \>\>    {\fov start}\> - \>  \begin{minipg2}
+                     Lower limits of search rectangle (umin, vmin).
+                               \end{minipg2}\\
+        \>\>    {\fov end}\> - \>  \begin{minipg2}
+                     Upper limits of search rectangle (umax, vmax).
+                               \end{minipg2}\\
+        \>\>    {\fov parin}\> - \>  \begin{minipg2}
+                     Initial guess (u0,v0) for parameter point of
+                        intersection (which should be inside the
+                        search rectangle).
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov parout}\> - \>  \begin{minipg2}
+                     Parameter point (u,v) of intersection.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}\> - \>  \begin{minipg2}
+                     status messages  
+                                = 1   : Intersection found.
+                                < 0   : error.
+                               \end{minipg2}\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLSurf    \>  *{\fov surf};\\
+                \>\>    double \> point[\,];\\
+                \>\>    double \> dir[\,];\\
+                \>\>    double \> epsge;\\
+                \>\>    double \> start[\,];\\
+                \>\>    double \> end[\,];\\
+                \>\>    double \> parin[\,];\\
+                \>\>    double \> parout[\,];\\
+                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+        \>    \>s1518(\begin{minipg4}
+            {\fov surf},  {\fov point},  {\fov dir},  {\fov epsge},  {\fov start},  {\fov end},  {\fov parin},  {\fov parout},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

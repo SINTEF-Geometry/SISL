@@ -1,0 +1,45 @@
+\section{Check if a Curve is Degenerated.}
+\funclabel{s1451}
+\begin{minipg1}
+  To check if a curve is degenerated.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1451(\begin{minipg3}
+          {\fov pc1}, {\fov aepsge}, {\fov jdgen}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc1};\\
+        \>\>    double    \> {\fov aepsge};\\
+        \>\>    int       \> *{\fov jdgen};\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc1}    \> - \> Pointer to the curve to be tested.\\
+        \>\>    {\fov aepsge} \> - \>
+        \begin{minipg2}
+          The curve is degenerate if all vertices lie
+          within the distance aepsge from each other
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jdgen}  \> - \> Degenerate indicator\\
+                \>\>\>\>\> $= 0$ : The curve is not degenerate.\\
+                \>\>\>\>\> $= 1$ : The curve is degenerate.\\
+        \>\>    {\fov jstat}  \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve    \>  *{\fov pc1};\\
+        \>\>    double \>  {\fov aepsge};\\
+        \>\>    int    \>  *{\fov jdgen};\\
+        \>\>    int    \>  *{\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1451(\begin{minipg4}
+          {\fov pc1}, {\fov aepsge}, {\fov jdgen}, {\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

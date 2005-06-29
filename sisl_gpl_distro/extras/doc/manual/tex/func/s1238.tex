@@ -1,0 +1,77 @@
+\subsection{Draw constant parameter lines in a
+surface bounded by a closed curve in the parameter plane of the surface.}
+\funclabel{s1238}
+\begin{minipg1}
+  Draw constant parameter lines in a surface. The lines are limited by a closed
+  curve lying in the parameter plane of the surface, i.e.\ a 2D curve.
+  All lines are drawn as piecewise straight lines. Also see NOTE!
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1238(\begin{minipg3}
+                {\fov surf}, {\fov curve}, {\fov numline1}, {\fov numline2}, {\fov epsco}, {\fov epsge}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov numline1};\\
+                \>\>    int     \>      {\fov numline2};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the surface.
+                                \end{minipg2}\\
+        \>\>    {\fov curve}\> - \>     \begin{minipg2}
+                                The 2D curve, in the parameter plane of
+                                the surface, bounding the part of the
+                                surface that is to be drawn.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numline1}\> - \>  \begin{minipg2}
+                                Number of constant parameter lines to be drawn in the first
+                                parameter direction.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numline2}\> - \>  \begin{minipg2}
+                                Number of constant parameter lines to be drawn in the
+                                second parameter direction.
+                                \end{minipg2} \\[0.3ex]
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Not in use!
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                The maximal distance allowed between the drawn curves
+                                and the surface.
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov sta}t     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+NOTE\\
+\>\begin{minipg6}
+This function calls s6drawseq() which
+is device dependent. Before using the function make sure
+you have a version of s6drawseq()
+interfaced to your graphic package.
+More about s6drawseq() on page~\pageref{s6drawseq}.
+\end{minipg6}
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov numline1};\\
+                \>\>    int     \>      {\fov numline2};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1238(\begin{minipg4}
+                        {\fov surf}, {\fov curve}, {\fov numline1}, {\fov numline2}, {\fov epsco}, {\fov epsge}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

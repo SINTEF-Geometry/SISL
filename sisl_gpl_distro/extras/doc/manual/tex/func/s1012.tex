@@ -1,0 +1,59 @@
+\subsection{Express a truncated helix as a curve.}
+\funclabel{s1012}
+\begin{minipg1}
+  Convert an analytical truncated helix to a curve.
+  The curve will be geometrically exact.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1012(\begin{minipg3}
+          {\fov start\_pos}, {\fov axis\_pos}, {\fov axis\_dir}, {\fov frequency}, {\fov numb\_quad},
+          {\fov counter\_clock}, {\fov helix}, {\fov stat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double \> {\fov start\_pos}[\,];\\
+        \>\>    double \> {\fov axis\_pos}[\,];\\
+        \>\>    double \> {\fov axis\_dir}[\,];\\
+        \>\>    double \> {\fov frequency};\\
+        \>\>    int    \> {\fov numb\_quad};\\
+        \>\>    int    \> {\fov counter\_clock};\\
+        \>\>    SISLCurve \> **{\fov helix};\\
+        \>\>    int    \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov start\_pos} \> - \> Start position on the helix.\\
+        \>\>    {\fov axis\_pos}  \> - \> Point on the helix axis.\\
+        \>\>    {\fov axis\_dir}  \> - \> Direction of the helix axis.\\
+        \>\>    {\fov frequency}  \> - \> \begin{minipg2}
+                                            The length along the helix
+                                            axis for one period of revolution.
+                                          \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numb\_quad} \> - \> Number of quadrants in the helix.\\
+        \>\>    {\fov counter\_clock} \> - \> Flag for direction of revolution:\\
+                \>\>\>\>\> $= 0$ : clockwise,\\
+                \>\>\>\>\> $= 1$ : counter\_clockwise.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+        \>\>    {\fov helix} \> - \> Pointer to the helix curve produced.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    double \> {\fov start\_pos}[3];\\
+        \>\>    double \> {\fov axis\_pos}[3];\\
+        \>\>    double \> {\fov axis\_dir}[3];\\
+        \>\>    double \> {\fov frequency};\\
+        \>\>    int    \> {\fov numb\_quad};\\
+        \>\>    int    \> {\fov counter\_clock};\\
+        \>\>    SISLCurve \> *{\fov helix};\\
+        \>\>    int    \> {\fov stat};\\
+        \>\>    \ldots \\
+        \>\>s1012(\begin{minipg4}
+          {\fov start\_pos}, {\fov axis\_pos}, {\fov axis\_dir}, {\fov frequency}, {\fov numb\_quad},
+          {\fov counter\_clock}, \&{\fov helix}, \&{\fov stat})
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

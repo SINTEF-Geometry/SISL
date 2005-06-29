@@ -1,0 +1,140 @@
+\subsection{Degree reduction: B-spline surface as input}
+\funclabel{s1348}
+\begin{minipg1}
+  To compute a cubic tensor-product B-spline approximation to a given tensor
+  product B-spline (i.e.\ NOT rational) surface of arbitrary order, with
+  error less than {\fov eps}[i], $i=0,1,2$ in each of the {\fov dim} components.
+  The output is represented as a B-spline surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1348(\begin{minipg3}
+                {\fov surf}, {\fov eps}, {\fov edgefix}, {\fov edgeps}, {\fov epsco}, {\fov optim}, {\fov itmax}, {\fov newsurf}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov eps}[\,];\\
+                \>\>    int     \>      {\fov edgefix}[\,];\\
+                \>\>    double  \>      {\fov edgeps}[\,];\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov optim};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the original B-spline surface.
+                                \end{minipg2}\\
+        \>\>    {\fov eps}\> - \>       \begin{minipg2}
+                                Array (length {\fov dim}) containing the maximum
+                                deviation which is acceptable in each of the dim
+                                components of the surface (except possibly along the
+                                edges).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov edgefix}\> - \>   \begin{minipg2}
+                                Array (length 4) containing the no. of derivatives to
+                                be kept fixed along each edge of the surface. The
+                                numbering of the edges is the same as for edgeps
+                                below. All the derivatives of
+                                $\mbox{order} < \mbox{edgefix}(i)-1$ will
+                                be kept "fixed" along edge no. $i$.
+                                Hence $\mbox{edgefix}(i)=0$
+                                indicates that nothing is to be kept "fixed" along edge
+                                no. $i$. To be kept "fixed" here means to have error less
+                                than edgeps. In general, it is impossible to  remove
+                                any knots and keep an edge completely fixed.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov edgeps}\> - \>    \begin{minipg2}
+                                Array (length dim*4) containing the max.
+                                deviation which is acceptable along the edges of
+                                the surfaces.
+                                \end{minipg2} \\[0.3ex]
+                \>\>\>\>        \begin{minipg2}
+                                $edgeps[dim*i],\ldots,edgeps[(dim*(i+1)-1]$
+                                gives the
+                                tolerance along the edge nr. $i$.
+                                $edgeps[dim*i],\ldots,edgeps[(dim*(i+1)-1]$
+                                will only have any significance if
+                                $\mbox{edgefix}[i]>0$.
+                                The edge numbers correspond to the
+                                following:
+                                \end{minipg2}\\
+\newpagetabs
+                \>\>\>\>        \begin{minipg2}
+                                \begin{center}
+                                        \begin{picture}(180,110)(0,0)
+                                        \put(50,15){\framebox(80,80)}
+                                        \put(40,55){\makebox(0,0){0}}
+                                        \put(140,55){\makebox(0,0){1}}
+                                        \put(90,5){\makebox(0,0){2}}
+                                        \put(90,105){\makebox(0,0){3}}
+
+                                        \put(60,20){\vector(1,0){40}}
+                                        \put(85,28){\makebox(0,0){$(i)$}}
+                                        \put(55,25){\vector(0,1){40}}
+                                        \put(65,50){\makebox(0,0){$(ii)$}}
+                                        \end{picture}\\
+                                        $(i) \; \; \;$ first parameter direction of surface.\\
+                                        $(ii)$   second parameter direction of surface.\\
+                                \end{center}
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}\> - \>      \begin{minipg2}
+                                Two numbers differing by a relative amount less
+                                than epsco will in some cases be considered equal.
+                                A suitable value is just above the unit roundoff of
+                                the machine.
+                                A reasonable choice might be $10^{-15}$. The
+                                computations are not guaranteed to have relative
+                                accuracy less than epsco.
+                                Not used anymore.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov optim}\> - \>             \begin{minipg2}
+                                Flag indicating the order in which the data-
+                                reduction is to be performed.
+                                \end{minipg2}\\[0.3ex]
+                \>\>\>\>\>      $= 1$ :\>\begin{minipg5}
+                                Remove knots in parameter-direction 1 only.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 2$ : \>\begin{minipg5}
+                                Remove knots in parameter-direction 2 only.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 3$ : \>\begin{minipg5}
+                                        Remove knots in parameter-direction 1
+                                                and then in parameter-direction 2.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 4$ : \>\begin{minipg5}
+                                        Remove knots in parameter-direction 2
+                                                and then in parameter-direction 1.
+                                \end{minipg5}\\[0.3ex]
+        \>\>    {\fov itmax}\> - \>     \begin{minipg2}
+                                Max. no. of iterations.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>   \begin{minipg2}
+                                Pointer to the produced B-spline surface.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov eps}[3];\\
+                \>\>    int     \>      {\fov edgefix}[4];\\
+                \>\>    double  \>      {\fov edgeps}[12];\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov optim};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1348(\begin{minipg4}
+                {\fov surf}, {\fov eps}, {\fov edgefix}, {\fov edgeps}, {\fov epsco}, {\fov optim}, {\fov itmax}, \&{\fov newsurf}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

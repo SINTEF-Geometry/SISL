@@ -1,0 +1,57 @@
+\subsection{Join two curves at specified ends.}
+\funclabel{s1715}
+\begin{minipg1}
+  To join one end of one curve with one end of another curve by
+  translating the second curve. If {\fov curve1} is to be joined at the start,
+  the direction of the curve is turned. If {\fov curve2} is to be joined at the
+  end, the direction of this curve is turned. This means that {\fov curve1}
+  always makes the first part of the new curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1715(\begin{minipg3}
+        {\fov curve1}, {\fov curve2}, {\fov end1}, {\fov end2}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    int     \>      {\fov end1};\\
+                \>\>    int     \>      {\fov end2};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> First curve to join.\\
+        \>\>    {\fov curve2}   \> - \> Second curve to join.\\
+        \>\>    {\fov end1}     \> - \> \begin{minipg2}
+                                True (1) if the first curve is to be joined at the end,
+                                else false (0).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov end2}     \> - \> \begin{minipg2}
+                                True (1) if the second curve is to be joined at the end,
+                                else false (0).
+                                \end{minipg2}\\[0.3ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>\begin{minipg2}
+                                The new joined curve.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    int     \>      {\fov end1};\\
+                \>\>    int     \>      {\fov end2};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1715(\begin{minipg4}
+                {\fov curve1}, {\fov curve2}, {\fov end1}, {\fov end2}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

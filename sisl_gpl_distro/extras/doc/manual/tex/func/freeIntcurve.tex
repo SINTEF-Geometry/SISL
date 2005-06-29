@@ -1,0 +1,36 @@
+\subsection{Delete an intersection curve object.}
+\funclabel{freeIntcurve}
+\begin{minipg1}
+  Free the space occupied by a SISLIntcurve.\\
+  Note that the arrays {\fov guidepar1} and {\fov guidepar2} will be freed as well.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void freeIntcurve(\begin{minipg3}
+        intcurve)
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLIntcurve \> *{\fov intcurve};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov intcurve} \> - \> Pointer to the SISLIntcurve to delete.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLIntcurve    \>      *{\fov intcurve} = NULL;\\
+                \>\>    int    \>       {\fov numgdpt} = 2;\\
+                \>\>    int    \>       {\fov numpar1} = 2;\\
+                \>\>    int    \>       {\fov numpar2} = 2;\\
+                \>\>    double \>       {\fov guidepar1}[4];\\
+                \>\>    double \>       {\fov guidepar2}[4];\\
+                \>\>    int    \>       {\fov type} = 4;\\
+                \>\>    \ldots \\
+        \>\>{\fov intcurve} = newIntcurve(\begin{minipg4}
+                {\fov numgdpt}, {\fov numpar1}, {\fov numpar2}, {\fov guidepar1},\\ {\fov guidepar2}, {\fov type});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+        \>\>freeIntcurve(\begin{minipg4}
+                {\fov intcurve});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

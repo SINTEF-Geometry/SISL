@@ -1,0 +1,91 @@
+\subsection{Compute volume, weight point and moment of inertia of an object defined by a B-spline 
+patch and a point.}
+\funclabel{s1443}
+\begin{minipg1}
+Compute the volume and the weight point of the object surrounded (by the 
+input 
+surface and the surface defined by the reference point) and boundary of the input surface, by using recursive subdivision. The 
+rotational momentum relative to a given axis is also calculated. The 
+difference between the volume computed and the real volume of the object 
+is 
+less than (epssurf/volume computed).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1443(\begin{minipg3}
+			{\fov surf}, {\fov refpoint}, {\fov axpoint}, {\fov dir}, {\fov dim}, {\fov epssurf}, {\fov epsge}, {\fov weight}, 	
+			{\fov volume}, {\fov moment}, {\fov stat}))
+		\end{minipg3}\\[0.3ex]
+
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov refpoint}[\,];\\
+		\>\>	double	\>	{\fov axpoint}[\,];\\
+		\>\>	double 	\>	{\fov dir}[\,];\\
+		\>\>	int 	\>	{\fov dim};\\
+		\>\>	double	\>	{\fov epssurf};\\
+		\>\>	double 	\>	{\fov epsge};\\
+		\>\>	double 	\>	{\fov weight}[\,];\\
+		\>\>	double 	\>	*{\fov volume};\\
+		\>\>	double	\>	*{\fov moment};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				Pointer to the surface.
+				\end{minipg2}\\
+	\>\>	{\fov refpoint}\> - \>	\begin{minipg2}
+				Reference point in volume computation.
+				\end{minipg2}\\
+	\>\>	{\fov axpoint}\> - \>		\begin{minipg2}
+				Point on the rotational axis.
+				\end{minipg2}\\
+	\>\>	{\fov dir}\> - \>	\begin{minipg2}
+				Direction of the rotational axis
+				\end{minipg2} \\
+	\>\>	{\fov dim}\> - \> 	\begin{minipg2}
+				Dimension of the space in which point, axpoint and dir 
+				lie.
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov epssurf}\> - \>	\begin{minipg2}
+				Relative resolution used on surfaces.
+				\end{minipg2}\\
+	\>\>	{\fov epsge}\> - \>	\begin{minipg2}
+				Geometry resolutions.
+				\end{minipg2}\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov weight}\> - \>	\begin{minipg2}
+				Weight point of object.
+				\end{minipg2}\\
+	\>\>	{\fov volume}\> - \>		\begin{minipg2}
+				The volume calculated.
+				\end{minipg2}\\
+	\>\>	{\fov moment}\> - \>	\begin{minipg2}
+				Rotational weight moment.
+				\end{minipg2}\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov refpoint[3]};\\
+		\>\>	double	\>	{\fov axpoint[3]};\\
+		\>\>	double 	\>	{\fov dir[3]};\\
+		\>\>	int 	\>	{\fov dim = 3};\\
+		\>\>	double	\>	{\fov epssurf};\\
+		\>\>	double 	\>	{\fov epsge};\\
+		\>\>	double 	\>	{\fov weight[3]};\\
+		\>\>	double 	\>	{\fov volume};\\
+		\>\>	double	\>	{\fov moment};\\
+		\>\>	int 	\>	stat;\\
+		\>\>	\ldots \\
+	\>\>s1443(\begin{minipg4}
+		{\fov surf}, {\fov refpoint}, {\fov axpoint}, {\fov dir}, {\fov dim}, {\fov epssurf}, {\fov epsge}, {\fov weight},\linebreak
+		\&{\fov volume},\&{\fov moment}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

@@ -1,0 +1,55 @@
+\subsection{Approximate a curve with a sequence of straight lines.}
+\funclabel{s1613}
+\begin{minipg1}
+  To calculate a set of points on a curve. The straight lines between the
+  points will not deviate more than {\fov epsge} from the curve at any
+  point.  The generated points will have the same spatial dimension as
+  the input curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1613(\begin{minipg3}
+        {\fov curve}, {\fov epsge}, {\fov points}, {\fov numpoints}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      **{\fov points};\\
+                \>\>    int     \>      *{\fov numpoints};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> \begin{minipg2}
+                                The input curve.
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution, maximum distance allowed
+                                between the curve and the straight lines that are to be
+                                calculated.
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov points}   \> - \> \begin{minipg2}
+                                Calculated points,\\
+                                (a vector of
+                                $numpoints\times curve${\tt ->}$idim$ elements).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numpoints}\> - \>\begin{minipg2}
+                                Number of calculated points.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      *{\fov points};\\
+                \>\>    int     \>      {\fov numpoints};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1613(\begin{minipg4}
+                {\fov curve}, {\fov epsge}, \&{\fov points}, \&{\fov numpoints}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

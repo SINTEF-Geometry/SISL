@@ -1,0 +1,53 @@
+\subsection{Compute a curve interpolating a straight line between two points.}
+\funclabel{s1602}
+\begin{minipg1}
+To make a straight line represented as a B-spline curve between two points.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1602(\begin{minipg3}
+                {\fov startpt}, {\fov endpt}, {\fov order}, {\fov dim}, {\fov startpar}, {\fov endpar},
+                {\fov curve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    double  \>      {\fov startpt}[\,];\\
+                \>\>    double  \>      {\fov endpt}[\,];\\
+                \>\>    int     \>      {\fov order};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    double  \>      *{\fov endpar};\\
+                \>\>    SISLCurve       \>      **{\fov curve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\newpagetabs
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov startpt}  \> - \> Start point of the straight line\\
+        \>\>    {\fov endpt}    \> - \> End point of the straight line\\
+        \>\>    {\fov order}    \> - \> The order of the curve to be made.\\
+        \>\>    {\fov dim}      \> - \> The dimension of the geometric space\\
+        \>\>    {\fov startpar} \> - \> Start value of the parameterization of the curve\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov endpar }\> - \>   Parameter value used at the end of the curve\\
+        \>\>    {\fov curve}    \> - \> Pointer to the B-spline curve\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double          \>{\fov startpt}[2];\\
+                \>\>    double          \>{\fov endpt}[2];\\
+                \>\>    int             \>{\fov order};\\
+                \>\>    int             \>{\fov dim};\\
+                \>\>    double          \>{\fov startpar};\\
+                \>\>    double          \>{\fov endpar};\\
+                \>\>    SISLCurve               \>*{\fov curve};\\
+                \>\>    int             \>{\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1602(\begin{minipg4}
+                {\fov startpt}, {\fov endpt}, {\fov order}, {\fov dim},
+        {\fov startpar}, \&{\fov endpar}, \&{\fov curve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

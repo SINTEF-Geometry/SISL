@@ -1,0 +1,77 @@
+\subsection{Local iteration to closest point bewteen point and surface.}
+\funclabel{s1775}
+\begin{minipg1}
+Newton iteration on the distance function between
+               a surface and a point, to find a closest point or an
+               intersection point.
+               If a bad choice for the guess parameters is given in, the
+               iteration may end at a local, not global closest point.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1775(\begin{minipg3}
+            {\fov surf},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov start},  {\fov end},  {\fov guess},  {\fov clpar},  {\fov stat})
+                \end{minipg3}\\
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    double \> {\fov point}[\,];\\
+                \>\>    int \> {\fov dim};\\
+                \>\>    double \> {\fov epsge};\\
+                \>\>    double \> {\fov start}[\,];\\
+                \>\>    double \> {\fov end}[\,];\\
+                \>\>    double \> {\fov guess}[\,];\\
+                \>\>    double \> {\fov clpar}[\,];\\
+                \>\>    int \> *{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>  \begin{minipg2}
+                     The surface in the closest point problem.
+                               \end{minipg2}\\
+        \>\>    {\fov point}\> - \>  \begin{minipg2}
+                     The point in the closest point problem.
+                               \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>  \begin{minipg2}
+                     Dimension of the geometry.
+                               \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>  \begin{minipg2}
+                     Geometry resolution.
+                               \end{minipg2}\\
+        \>\>    {\fov start}\> - \>  \begin{minipg2}
+                     Surface parameters giving the start of the search
+                        area (umin, vmin).
+                               \end{minipg2}\\
+        \>\>    {\fov end}\> - \>  \begin{minipg2}
+                     Surface parameters giving the end of the search
+                        area (umax, vmax).
+                               \end{minipg2}\\
+        \>\>    {\fov guess}\> - \>  \begin{minipg2}
+                     Surface guess parameters for the closest point
+                        iteration.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov clpar}\> - \>  \begin{minipg2}
+                     Resulting surface parameters from the iteration.
+                               \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : A minimum distance found.\\
+                \>\>\>\>\>              $= 0$   : Intersection found.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLSurf \> *{\fov surf};\\
+                \>\>    double \> {\fov point}[\,];\\
+                \>\>    int \> {\fov dim};\\
+                \>\>    double \> {\fov epsge};\\
+                \>\>    double \> {\fov start}[\,];\\
+                \>\>    double \> {\fov end}[\,];\\
+                \>\>    double \> {\fov guess}[\,];\\
+                \>\>    double \> {\fov clpar}[\,];\\
+                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+        \>\>s1775(\begin{minipg4}
+            {\fov surf},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov start},  {\fov end},  {\fov guess},  {\fov clpar},  {\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

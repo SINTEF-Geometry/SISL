@@ -1,0 +1,92 @@
+\section{Find the Absolute Extremals of a Surface.}
+\funclabel{s1921}
+\begin{minipg1}
+  Find the absolute extremal points/curves of a surface along a given direction.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1921(\begin{minipg3}
+          {\fov ps1}, {\fov edir}, {\fov idim}, {\fov aepsco}, {\fov aepsge}, {\fov jpt}, {\fov gpar}, {\fov jcrv}, {\fov wcurve}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf  \>  *{\fov ps1};\\
+        \>\>    double    \>  {\fov edir}[\,];\\
+        \>\>    int       \>  {\fov idim};\\
+        \>\>    double    \>  {\fov aepsco};\\
+        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    int       \>  *{\fov jpt};\\
+        \>\>    double    \>  **{\fov gpar};\\
+        \>\>    int       \>  *{\fov jcrv};\\
+        \>\>    SISLIntcurve \> ***{\fov wcurve};\\
+        \>\>    int       \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps1}\> - \>  \begin{minipg2}
+                     Pointer to the surface.
+                               \end{minipg2}\\
+        \>\>    {\fov edir}\> - \>
+        \begin{minipg2}
+          The direction in which the extremal point(s)
+          and/or interval(s) are to be calculated. If
+          $idim=1$ a positive value indicates the maximum
+          of the function and a negative value
+          the minimum. If the dimension is greater that
+          1 the array contains the coordinates of the
+          direction vector.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                     Dimension of the space in which the vector {\fov edir}
+                       lies.
+                               \end{minipg2}\\
+        \>\>    {\fov aepsco}\> - \>  \begin{minipg2}
+                     Computational resolution (not used).
+                               \end{minipg2}\\
+        \>\>    {\fov aepsge}\> - \>  \begin{minipg2}
+                     Geometry resolution.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov jpt}\> - \>  \begin{minipg2}
+                     Number of single extremal points.
+                               \end{minipg2}\\
+        \>\>    {\fov gpar}\> - \>
+        \begin{minipg2}
+          Array containing the parameter values of the
+          single extremal points in the parameter
+          area of the surface. The points lie continuous.
+          Extremal curves are stored in {\fov wcurve}.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jcrv}\> - \>  \begin{minipg2}
+                     Number of extremal curves.
+                               \end{minipg2}\\
+        \>\>    {\fov wcurve}\> - \>
+        \begin{minipg2}
+          Array containing descriptions of the extremal
+          curves. The curves are only described by points
+          in the parameter area. The curve-pointers point
+          to nothing.
+        \end{minipg2}\\[0.8ex]
+\newpagetabs
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>              $> 0$ \> : Warning.\\
+                \>\>\>\>              $= 0$ \> : Ok.\\
+                \>\>\>\>              $< 0$ \> : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf  \>  *{\fov ps1};\\
+        \>\>    double    \>  {\fov edir}[3];\\
+        \>\>    int       \>  {\fov idim} = 3;\\
+        \>\>    double    \>  {\fov aepsco};\\
+        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    int       \>  {\fov jpt} = 0;\\
+        \>\>    double    \>  *{\fov gpar} = NULL;\\
+        \>\>    int       \>  {\fov jcrv} = 0;\\
+        \>\>    SISLIntcurve \> **{\fov wcurve} = NULL;\\
+        \>\>    int       \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1921(\begin{minipg4}
+          {\fov ps1}, {\fov edir}, {\fov idim}, {\fov aepsco}, {\fov aepsge}, \&{\fov jpt}, \&{\fov gpar}, \&{\fov jcrv}, \&{\fov wcurve}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

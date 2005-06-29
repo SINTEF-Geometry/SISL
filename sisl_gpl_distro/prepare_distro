@@ -1,21 +1,44 @@
 #! /bin/bash
 
-# removing old files
-make clean
-rm sisl/include/*.h 2> /dev/null
-rm sisl/src/*.c 2> /dev/null
+# removing result file structure
+EXTRA_CATALOG=extras
+RESULT_CATALOG=sisl_4.4_gpl
+rm -r $RESULT_CATALOG
 
-# copying header files
+# reporting activity to user
+echo GPL distribution of SISL will be made in catalog $RESULT_CATALOG
+echo It will be zipped to $RESULT_CATALOG.tgz
+
+# making result file structure
+mkdir $RESULT_CATALOG
+mkdir $RESULT_CATALOG/doc
+mkdir $RESULT_CATALOG/doc/manual
+mkdir $RESULT_CATALOG/doc/users_guide
+mkdir $RESULT_CATALOG/examples
+mkdir $RESULT_CATALOG/examples/lib
+mkdir $RESULT_CATALOG/sisl
+mkdir $RESULT_CATALOG/sisl/include
+mkdir $RESULT_CATALOG/sisl/lib
+mkdir $RESULT_CATALOG/sisl/src
+mkdir $RESULT_CATALOG/streaming
+mkdir $RESULT_CATALOG/streaming/include
+mkdir $RESULT_CATALOG/streaming/lib
+mkdir $RESULT_CATALOG/streaming/src
+mkdir $RESULT_CATALOG/viewer
+mkdir $RESULT_CATALOG/viewer/include
+mkdir $RESULT_CATALOG/viewer/lib
+mkdir $RESULT_CATALOG/viewer/src
+
+#copying SISL header files
 HEADERFILES="sisl.h sislP.h"  # those headerfiles relevant for the GPL version
 
 for n in $HEADERFILES
 do
-  TARGETNAME=sisl/include/$n
-
+  TARGETNAME=$RESULT_CATALOG/sisl/include/$n
   #writing preliminary include guard
   head --lines=2 ../include/$n > $TARGETNAME
   #writing obligatory header
-  cat license_header >> $TARGETNAME
+  cat $EXTRA_CATALOG/license_header >> $TARGETNAME
   #writing rest of file
   if test $n = sislP.h
   then
@@ -24,80 +47,72 @@ do
    tail ../include/$n -n+32 >> $TARGETNAME
   fi
 done
-echo \#ifndef _SISL_COPYRIGHT_H > sisl/include/copyright.h
-echo \#define _SISL_COPYRIGHT_H >> sisl/include/copyright.h
-cat license_header >> sisl/include/copyright.h
-echo \#endif >> sisl/include/copyright.h
+TARGETNAME=$RESULT_CATALOG/sisl/include/copyright.h
+echo \#ifndef _SISL_COPYRIGHT_H > $TARGETNAME
+echo \#define _SISL_COPYRIGHT_H >> $TARGETNAME
+cat $EXTRA_CATALOG/license_header >> $TARGETNAME
+echo \#endif >> $TARGETNAME
 
-# generating source files
+#generating source files
 SOURCEFILES=`ls ../src/*.c`
 
-# make sure the 'removecomments' program is compiled
-g++ -O3 removecomments.C -o removecomments
+# make sure the 'removecomments' program is compiler
+g++ -O3 $EXTRA_CATALOG/removecomments.C -o $EXTRA_CATALOG/removecomments
 
 for n in $SOURCEFILES
 do
-   FILENAME=`basename $n`
-   TARGETNAME=sisl/src/$FILENAME
-
-   # writing obligatory header
-   cat license_header > $TARGETNAME
-
-   # determining whether comments should be removed
-   # or not
-   if test `grep $FILENAME documented_routines`
-   then
-      # this routine should be docummented.
-      # writing file, minus header to target
-      tail $n -n+9 >> $TARGETNAME
-      echo $FILENAME documented.
-   else
-      # we need to remove comments from this file
-      # before writing it to target.
-      ./removecomments < $n > xcmklp_temp
-      cat xcmklp_temp >> $TARGETNAME
-      rm xcmklp_temp
-      echo $FILENAME undocumented.      
-   fi
-      
+  FILENAME=`basename $n`
+  TARGETNAME=$RESULT_CATALOG/sisl/src/$FILENAME
+  
+  # writing obligatory header
+  cat $EXTRA_CATALOG/license_header > $TARGETNAME
+  
+  # determining whether comments should be removed or not
+  if test `grep $FILENAME $EXTRA_CATALOG/documented_routines`
+  then 
+    # this routine should be documented.
+    # writing file, minus header, to target
+    tail $n -n+9 >> $TARGETNAME
+    echo $FILENAME documented.
+  else
+    # we need to remove comments from this file before writing it to target
+    $EXTRA_CATALOG/removecomments < $n > xcmklp_temp
+    cat xcmklp_temp >> $TARGETNAME
+    rm xcmklp_temp
+    echo $FILENAME undocumented.
+  fi
 done
 
-#making zipped file of everything
-mkdir sisl_4.4_gpl
-cp -r doc sisl_4.4_gpl
-cp -r examples sisl_4.4_gpl
-cp -r sisl sisl_4.4_gpl
-cp -r streaming sisl_4.4_gpl
-cp -r viewer sisl_4.4_gpl
+#making documentation
+cd $EXTRA_CATALOG/doc/manual/tex
+latex manual
+dvipdf manual.dvi
+cd ../../users_guide/tex
+latex guide
+dvipdf guide.dvi
+cd ../../../../
 
-cp COPYING sisl_4.4_gpl
-cp Makefile sisl_4.4_gpl
-cp makefile_template sisl_4.4_gpl
-cp README sisl_4.4_gpl
+#copying other information
+cp $EXTRA_CATALOG/README $RESULT_CATALOG
+cp $EXTRA_CATALOG/COPYING $RESULT_CATALOG
+cp $EXTRA_CATALOG/makefile_template $RESULT_CATALOG
+cp $EXTRA_CATALOG/Makefile $RESULT_CATALOG
 
-#removing CVS catalogues
-rm -r sisl_4.4_gpl/doc/CVS
-rm -r sisl_4.4_gpl/doc/manual/CVS
-rm -r sisl_4.4_gpl/doc/manual/tex/CVS
-rm -r sisl_4.4_gpl/doc/manual/tex/func/CVS
-rm -r sisl_4.4_gpl/doc/manual/text/type/CVS
-rm -r sisl_4.4_gpl/doc/users_guide/CVS
-rm -r sisl_4.4_gpl/doc/users_guide/tex/CVS
-rm -r sisl_4.4_gpl/examples/CVS
-rm -r sisl_4.4_gpl/examples/lib/CVS
-rm -r sisl_4.4_gpl/sisl/CVS
-rm -r sisl_4.4_gpl/sisl/include/CVS
-rm -r sisl_4.4_gpl/sisl/lib/CVS
-rm -r sisl_4.4_gpl/sisl/src/CVS
-rm -r sisl_4.4_gpl/streaming/CVS
-rm -r sisl_4.4_gpl/streaming/include/CVS
-rm -r sisl_4.4_gpl/streaming/include/lib/CVS
-rm -r sisl_4.4_gpl/streaming/src/CVS
-rm -r sisl_4.4_gpl/viewer/CVS
-rm -r sisl_4.4_gpl/viewer/include/CVS
-rm -r sisl_4.4_gpl/viewer/lib/CVS
-rm -r sisl_4.4_gpl/viewer/src/CVS
+cp $EXTRA_CATALOG/viewer/* $RESULT_CATALOG/viewer
+cp $EXTRA_CATALOG/viewer/include/*.h $RESULT_CATALOG/viewer/include
+cp $EXTRA_CATALOG/viewer/src/*.cpp $RESULT_CATALOG/viewer/src
 
-#packing everything
-tar -zcvf sisl_4.4_gpl.tgz sisl_4.4_gpl
+cp $EXTRA_CATALOG/streaming/* $RESULT_CATALOG/streaming
+cp $EXTRA_CATALOG/streaming/include/*.h $RESULT_CATALOG/streaming/include
+cp $EXTRA_CATALOG/streaming/src/*.cpp $RESULT_CATALOG/streaming/src
+
+cp $EXTRA_CATALOG/examples/* $RESULT_CATALOG/examples
+cp $EXTRA_CATALOG/examples/include/*.h $RESULT_CATALOG/examples/include
+cp $EXTRA_CATALOG/examples/src/*.cpp $RESULT_CATALOG/examples/src
+
+cp $EXTRA_CATALOG/doc/manual/tex/manual.pdf $RESULT_CATALOG/doc/manual/
+cp $EXTRA_CATALOG/doc/users_guide/tex/guide.pdf $RESULT_CATALOG/doc/users_guide/
+
+# making zipped file of everything
+tar -zcvf $RESULT_CATALOG.tgz $RESULT_CATALOG
 

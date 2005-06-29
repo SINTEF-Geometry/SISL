@@ -1,0 +1,64 @@
+\subsection{Convert a curve/line intersection into a two-dimensional curve/origo intersection}
+
+\funclabel{s1327}
+\begin{minipg1}
+Put the equation of the curve pointed at by pcold
+               into two planes given by the point epoint and the normals
+               enorm1 and enorm2. The result is an equation where the
+               new two-dimensional curve rcnew is to be equal to origo.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1327(\begin{minipg3}
+            {\fov pcold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, {\fov rcnew}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov pcold};\\
+                \>\>    double       \> epoint[\,];\\
+                \>\>    double       \> enorm1[\,];\\
+                \>\>    double       \> enorm2[\,];\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    SISLCurve    \>  **{\fov rcnew};\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov pcold}\> - \>  \begin{minipg2}
+                     Pointer to input curve.
+                               \end{minipg2}\\
+        \>\>    {\fov epoint}\> - \>  \begin{minipg2}
+                     SISLPoint in the planes.
+                               \end{minipg2}\\
+        \>\>    {\fov enorm1}\> - \>  \begin{minipg2}
+                     Normal to the first plane.
+                               \end{minipg2}\\
+        \>\>    {\fov enorm2}\> - \>  \begin{minipg2}
+                     Normal to the second plane.
+                               \end{minipg2}\\
+        \>\>    {\fov idim}\> - \>  \begin{minipg2}
+                     Dimension of the space in which the planes lie.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov rcnew}\> - \>  \begin{minipg2}
+                    2-dimensional curve.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}\> - \> status messages \\
+	                   \>\>\>\>\>   $ > 0 $     : warning \\
+                           \>\>\>\>\>   $ = 0 $     : ok \\
+			   \>\>\>\>\>   $ < 0 $     : error \\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov pcold};\\
+                \>\>    double \> epoint[\,];\\
+                \>\>    double \> enorm1[\,];\\
+                \>\>    double \> enorm2[\,];\\
+                \>\>    int    \>  {\fov idim};\\
+                \>\>    SISLCurve    \>  **{\fov rcnew};\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1327(\begin{minipg4}
+            {\fov pcold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, {\fov rcnew}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

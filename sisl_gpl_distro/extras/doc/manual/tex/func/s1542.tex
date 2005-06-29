@@ -1,0 +1,56 @@
+\subsection{Evaluate the curve over a grid of m points.  Only positions are evaluated.}
+\funclabel{s1542}
+\begin{minipg1}
+Evaluate the curve pointed at by pc1 over a m grid
+               of points (x[i]). Only positions are evaluated.
+               This does not work for in the rational case.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1542(\begin{minipg3}
+            {\fov pc1}, {\fov m}, {\fov x}, {\fov eder}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    SISLCurve \> *{\fov pc1};\\
+                \>\>    int    \>  {\fov m};\\
+                \>\>    double    \>  {\fov x}[\,];\\
+                \>\>    double    \>  {\fov eder}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov pc1}\> - \>  \begin{minipg2}
+                     Pointer to the curve to evaluate.
+                               \end{minipg2}\\
+        \>\>    {\fov m}\> - \>  \begin{minipg2}
+                     Number of grid points.
+                               \end{minipg2}\\
+        \>\>    {\fov x}\> - \>  \begin{minipg2}
+                     Array of parameter values of the grid.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov eder}\> - \>  \begin{minipg2}
+                     Array where the derivatives of the curve
+                       are placed, dimension
+                         idim * (ider+1) * m.
+                       The sequence is position at point x[0],
+                       followed by the same information at x[1],
+                       etc.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}\> - \>  status messages \\
+	              \>\>\>\>\>   $ = 0 $  : Ok.\\
+		      \>\>\>\>\>   $ < 0 $  : Error.\\
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve \> *{\fov pc1};\\
+                \>\>    int    \>  {\fov m};\\
+                \>\>    double    \>  {\fov x}[\,];\\
+                \>\>    double    \>  {\fov eder}[\,];\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1542(\begin{minipg4}
+            {\fov pc1}, {\fov m}, {\fov x}, {\fov eder}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

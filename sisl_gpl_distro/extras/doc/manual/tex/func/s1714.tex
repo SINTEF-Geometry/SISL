@@ -1,0 +1,55 @@
+\subsection{Split a curve into two new curves.}
+\funclabel{s1714}
+\begin{minipg1}
+  Split a curve in two parts at two specified parameter values. The
+  first curve starts at {\fov parval1}. If the curve is open, the last
+  part of the curve is translated so that the end of the curve joins the
+  start.
+\end{minipg1} \\
+SYNOPSIS\\
+        \>void s1714(\begin{minipg3}
+        {\fov curve}, {\fov parval1}, {\fov parval2}, {\fov newcurve1}, {\fov newcurve2}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov parval1};\\
+                \>\>    double  \>      {\fov parval2};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve1};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve2};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve to split.\\
+        \>\>    {\fov parval1}  \> - \> \begin{minipg2}
+                                Start parameter value of the first new curve.
+                                \end{minipg2}\\
+        \>\>    {\fov parval2}  \> - \> \begin{minipg2}
+                                Start parameter value of the second new curve.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve1}\> - \>\begin{minipg2}
+                                The first new curve.
+                                \end{minipg2}\\
+        \>\>    {\fov newcurve2}\> - \>\begin{minipg2}
+                                The second new curve.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov parval1};\\
+                \>\>    double  \>      {\fov parval2};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve1};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve2};\\
+                \>\>    int     \>      stat;\\
+                \>\>    \ldots \\
+        \>\>s1714(\begin{minipg4}
+                {\fov curve}, {\fov parval1}, {\fov parval2}, \&{\fov newcurve1}, \&{\fov newcurve2}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

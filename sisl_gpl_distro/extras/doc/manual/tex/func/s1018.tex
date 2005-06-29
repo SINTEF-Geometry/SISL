@@ -1,0 +1,51 @@
+\subsection{Insert a given set of knots into the description of a curve.}
+\funclabel{s1018}
+\begin{minipg1}
+  Insert a given set of knots into the description of a curve.\\
+  NOTE       : When the curve is periodic (i.e.\ when the curve flag
+  $cuopen=-1$), the input parameter values must lie in the half-open
+  $[et[kk-1], et[kn)$, the function will automatically update the extra
+  knots and coeffisients.
+  The {\fov rcnew}{\tt ->}{\fov in} will still be equal to $pc${\tt ->}$in + inpar$.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1018(\begin{minipg3}
+          {\fov pc},  {\fov epar},  {\fov inpar},  {\fov rcnew},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov epar}[\,];\\
+        \>\>    int       \> {\fov inpar};\\
+        \>\>    SISLCurve \> **{\fov rcnew};\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc}   \> - \> The curve to be refined.\\
+        \>\>    {\fov epar} \> - \>
+        \begin{minipg2}
+          Knots to be inserted. The values are stored in increasing
+          order and may be multiple.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov inpar} \> - \> Number of knots in {\fov epar}.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rcnew} \> - \> The new, refined curve.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                      \>\>\>\>\> $> 0$ : Warning.\\
+                      \>\>\>\>\> $= 0$ : Ok.\\
+                      \>\>\>\>\> $< 0$ : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov epar}[5];\\
+        \>\>    int       \> {\fov inpar} = 5;\\
+        \>\>    SISLCurve \> *{\fov rcnew} = NULL;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1018(\begin{minipg4}
+          {\fov pc},  {\fov epar},  {\fov inpar}, \&{\fov rcnew}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

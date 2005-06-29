@@ -1,0 +1,52 @@
+\subsection{Find the bounding box of a surface.}
+\funclabel{s1989}
+\begin{minipg1}
+  Find the bounding box of a surface.\\
+  NOTE: The geometric
+  bounding box is returned also in the rational case, that
+  is the box in homogeneous coordinates is NOT computed.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1989(\begin{minipg3}
+          {\fov ps}, {\fov emax}, {\fov emin}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> **{\fov emax};\\
+        \>\>    double   \> **{\fov emin};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps}\> - \>  \begin{minipg2}
+                     Surface to treat.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov emin}\> - \>  \begin{minipg2}
+                     Array of dimension {\fov idim} containing
+                          the minimum values of the bounding box,
+                          i.e.\ bottom-left corner of the box.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov emax}\> - \>  \begin{minipg2}
+                     Array of dimension {\fov idim} containing
+                          the maximum values of the bounding box,
+                          i.e.\ upper-right corner of the box.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>              $> 0$ \> : Warning.\\
+                \>\>\>\>              $= 0$ \> : Ok.\\
+                \>\>\>\>              $< 0$ \> : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> *{\fov emax} = NULL;\\
+        \>\>    double   \> *{\fov emin} = NULL;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1989(\begin{minipg4}
+          {\fov ps}, \&{\fov emax}, \&{\fov emin}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

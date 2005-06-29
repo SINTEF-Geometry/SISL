@@ -1,0 +1,147 @@
+\subsection{March an intersection curve between a surface and an
+\mbox{elliptic} cone.}
+\funclabel{s1501}
+\begin{minipg1}
+  To march an intersection curve described by parameter pairs in an intersection
+  curve object, a surface and an elliptic cone.
+  The guide points are expected to be found by s1503() described on
+  page \pageref{s1503}.
+  The generated geometric curves are represented as B-spline curves.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1501(\begin{minipg3}
+        {\fov surf}, {\fov basept}, {\fov normdir}, {\fov ellipaxis},
+        {\fov alpha}, {\fov ratio}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov maxstep},
+        {\fov intcurve}, {\fov makecurv}, {\fov graphic}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov basept}[\,];\\
+                \>\>    double  \>      {\fov normdir}[\,];\\
+                \>\>    double  \>      {\fov ellipaxis}[\,];\\
+                \>\>    double  \>      {\fov alpha};\\
+                \>\>    double  \>      {\fov ratio};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep};\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
+                \>\>    int     \>      {\fov makecurv};\\
+                \>\>    int     \>      {\fov graphic};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Pointer to the surface.
+                                \end{minipg2}\\
+        \>\>    {\fov basept}\> - \>    \begin{minipg2}
+                                Base point of the cone, centre of elliptic base.
+                                \end{minipg2}\\
+        \>\>    {\fov normdir}\> - \>   \begin{minipg2}
+                                Direction of the cone axis, normal to the elliptic base. The default is pointing from the base point to the top point.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov ellipaxis}\> - \> \begin{minipg2}
+                                One of the axes of the ellipse (major or
+                                minor).
+                                The other axis will be calculated as
+                                $normdir\times ellipaxis$ scaled with
+                                {\fov ratio}.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov alpha}\> - \>     \begin{minipg2}
+                                The opening angle in radians of the cone at the ellipaxis.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov ratio}\> - \>     \begin{minipg2}
+                                The ratio of the major and minor
+                                axes = ellipaxis/otheraxis.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov dim}\> - \>       \begin{minipg2}
+                                Dimension of the space in which the cone lies.
+                                Should be 3.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2}\\
+        \>\>    {\fov maxstep}\> - \>   \begin{minipg2}
+                                Maximum step length allowed. If maxstep $\leq$ epsge,
+                                maxstep is neglected. maxstep = 0.0 is recommended.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov makecurv}\> - \>          \begin{minipg2}
+                                Indicator specifying if a geometric curve is to be made:
+                                \end{minipg2}\\
+                \>\>\>\>\>      0 -     \>Do not make curves at all.\\
+                \>\>\>\>\>      1 -     \>Make only a geometric curve.\\
+                \>\>\>\>\>      2 -     \>\begin{minipg5}
+                                        Make geometric curve and curve in the parameter
+                                        plane
+                                        \end{minipg5} \\[0.3ex]
+        \>\>    {\fov graphic}\> - \>   \begin{minipg2}
+                                Indicator specifying if the function
+                                should draw the curve:
+                                \end{minipg2}\\
+                \>\>\>\>\>      0 -     \>Don't draw the curve.\\
+                \>\>\>\>\>      1 -     \>\begin{minipg5}
+                                        Draw the geometric curve. If this option
+                                        is used see NOTE!
+                                        \end{minipg5} \\[0.8ex]
+        \>Input/Output Arguments:\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                                Pointer to the intersection curve.
+                                As input only
+                                guide points (points in parameter space)
+                                exist. These guide points
+                                are used for guiding the marching.
+                                The routine adds the
+                                intersection curve and curve in the parameter
+                                plane to the SISLIntcurve object according to the value
+                                of makecurv.
+                                \end{minipg2}\\[0.8ex]
+        \>Output Arguments:\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>      $= 3$ : \>      \begin{minipg5}
+                                                Iteration stopped due to singular
+                                                point or degenerate surface. A part of
+                                                an intersection curve may have been
+                                                traced out. If no curve is traced out,
+                                                the curve pointers in the SISLIntcurve
+                                                object point to NULL.
+                                                \end{minipg5} \\[0.3ex]
+                \>\>\>\>\>      $= 0$   :\> ok\\
+                \>\>\>\>\>      $< 0$   :\> error\\
+\\
+NOTE\\
+\>      \begin{minipg6}
+If the draw option is used the empty dummy functions s6move() and
+s6line() are called.
+Thus if the draw option is used, make sure
+you have versions of s6move() and s6line() interfaced to your graphic package.
+More about s6move() and s6line() on pages~\pageref{s6move} and~\pageref{s6line}.
+\end{minipg6}\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov basept}[3];\\
+                \>\>    double  \>      {\fov normdir}[3];\\
+                \>\>    double  \>      {\fov ellipaxis}[3];\\
+                \>\>    double  \>      {\fov alpha};\\
+                \>\>    double  \>      {\fov ratio};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov maxstep} = 0.0;\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
+                \>\>    int     \>      {\fov makecurv};\\
+                \>\>    int     \>      {\fov graphic};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
+                \>\>    \ldots \\
+        \>\>s1501(\begin{minipg4}
+                {\fov surf}, {\fov basept}, {\fov normdir}, {\fov ellipaxis}, {\fov alpha}, {\fov ratio}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov maxstep},
+                {\fov intcurve}, {\fov makecurv}, {\fov graphic}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

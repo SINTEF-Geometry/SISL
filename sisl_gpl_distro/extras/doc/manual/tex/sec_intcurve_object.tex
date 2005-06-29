@@ -1,0 +1,27 @@
+\section{Intersection Curves}
+Intersection curves are tied to two objects where at
+least one is a surface or a curve.
+The representation of the intersection curves in the SISLIntcurve structure has two levels.
+The first level is guide points which are
+points in the parametric space and on the intersection
+curve. In every case
+there must be at least one guide point, but there is no
+upper bound. This will be the result from the topology routines.
+The second level is curves,
+one curve in the geometric space and one curve in each
+parameter plane if each surface is parametric. This will be the result from the marching routines.
+
+\subsection{Intersection curve object.}
+
+In the library an intersection curve is stored in a struct SISLIntcurve
+containing the following:
+\input{type/SISLIntcurve}
+Singularities are points on the intersection curve where, in an intersection between a curve and a surface, the tangent
+of the curve lies in the tangent plane of the surface, or in an intersection between two surfaces, the tangent plane
+of the surfaces coincide.
+\pgsbreak
+\input{func/newIntcurve}
+\pgsbreak
+\input{func/freeIntcurve}
+\pgsbreak
+\input{func/freeIntcrvlist}

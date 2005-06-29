@@ -1,0 +1,87 @@
+\subsection{Compute the position and the right-hand derivatives of a
+curve at a given parameter value.}
+\funclabel{s1221}
+\begin{minipg1}
+  To compute the positione and the first derivatives of a curve at
+  a given parameter value.
+  Evaluation from the right hand side.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1221(\begin{minipg3}
+        {\fov curve}, {\fov der}, {\fov parvalue}, {\fov leftknot},
+        {\fov derive}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov der};\\
+                \>\>    double  \>      {\fov parvalue};\\
+                \>\>    int     \>      *{\fov leftknot};\\
+                \>\>    double  \>      {\fov derive}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> \begin{minipg2}
+                                Pointer to the curve for which position and
+                                derivatives are to be computed.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov der}      \> - \> The number (order) of derivatives to compute.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+                \>\>\>\>\>              $= 0$   : Compute position.\\
+                \>\>\>\>\>              $= 1$   : Compute position and derivative.\\
+                \>\>\>\>\>              etc.\\
+        \>\>    {\fov parvalue}\> - \>  \begin{minipg2}
+                                The parameter value at which to compute position
+                                and derivatives.
+                                \end{minipg2}\\[0.3ex]
+\\
+        \>Input/Output Arguments:\\
+        \>\>    {\fov leftknot}\> - \>  \begin{minipg2}
+                                Pointer to the interval in the knot
+                                vector where {\fov parvalue}
+                                is located. If $et[\,]$ is the knot vector, the relation:\\
+                                \[ et[leftknot] \leq parvalue < et[leftknot+1] \]
+                                should hold. (If $parvalue\geq et[in]$)
+                                then {\fov leftknot} should be
+                                ``in-1''. Here ``in'' is the number of coefficients.)
+                                If leftknot does not have the right value when entering
+                                the routine, its value will be changed to the value
+                                satisfying the above condition.
+                                \end{minipg2}\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov derive}   \> - \> \begin{minipg2}
+                                        Double array of dimension $(der+1)\times dim$
+                                        containing the position and derivative vectors.
+                                        ({\fov dim} is
+                                         the dimension of the Euclidean
+                                        space in which the curve lies.) These vectors are
+                                        stored in the following order: first the dim
+                                        components of the position vector, then the dim
+                                        components of the tangent vector, then the dim
+                                        components of the second derivative vector, and so
+                                        on. (The C declaration of derive as a two dimensional
+                                        array would therefore be
+                                        $derive[der+1][dim]$.)
+
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov der} = 3;\\
+                \>\>    double  \>      {\fov parvalue};\\
+                \>\>    int     \>      {\fov leftknot} = 0;\\
+                \>\>    double  \>      {\fov derive}[12];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1221(\begin{minipg4}
+                {\fov curve}, {\fov der}, {\fov parvalue}, \&{\fov leftknot},
+                {\fov derive}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

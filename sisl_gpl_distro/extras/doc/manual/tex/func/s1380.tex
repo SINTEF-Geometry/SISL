@@ -1,0 +1,73 @@
+\subsection{\sloppy Compute a curve by Hermite interpolation, automatic parameteriza\-tion.}
+\funclabel{s1380}
+\begin{minipg1}
+  To compute the cubic Hermite interpolant to the data given by the points
+  point and the derivatives derivate.
+ The output is represented as a B-spline curve.
+\end{minipg1}\\ \\
+SYNOPSIS\\
+        \>void s1380(\begin{minipg3}
+                {\fov point}, {\fov derivate}, {\fov numpt}, {\fov dim}, {\fov typepar}, {\fov curve}, {\fov stat})
+                \end{minipg3}\\
+                \>\>    double  \>      {\fov point}[\,];\\
+                \>\>    double  \>      {\fov derivate}[\,];\\
+                \>\>    int     \>      {\fov numpt};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    SISLCurve       \>      **{\fov curve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov point}    \> - \> \begin{minipg2}
+                                Array (length dim*numpt) containing the
+                                points in sequence
+                                $(x_{0},y_{0},x_{1},y_{1},\ldots)$
+                                to be interpolated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov derivate}\> - \>  \begin{minipg2}
+                                Array (length dim*numpt) containing the
+                                derivate in sequence
+                                $(\frac{dx_{0}}{dt},\frac{dy_{0}}{dt},
+                                \frac{dx_{1}}{dt},\frac{dy_{1}}{dt},\ldots)$
+                                to be interpolated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numpt}    \> - \> \begin{minipg2}
+                                No. of points/derivatives in the
+                                point and derivative arrays.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The dimension of the space in which
+                                the points lie.
+                                \end{minipg2}\\
+        \>\>    {\fov typepar}  \> - \>
+                                Type of parameterization:\\
+                \>\>\>\>\>      $=1$ : \>  \begin{minipg5}
+                                Parameterization using cord length\\
+                                between the points.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $\neq 1$ :\>  Uniform parameterization.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov curve}    \> - \> Pointer to the output B-spline curve\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov point}[10];\\
+                \>\>    double  \>      {\fov derivate}[10];\\
+                \>\>    int     \>      {\fov numpt} = 5;\\
+                \>\>    int     \>      {\fov dim} = 2;\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1380(\begin{minipg4}
+                {\fov point}, {\fov derivate}, {\fov numpt}, {\fov dim}, {\fov typepar}, \&{\fov curve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

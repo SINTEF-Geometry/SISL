@@ -1,0 +1,41 @@
+\subsection{Delete a surface object.}
+\funclabel{freeSurf}
+\begin{minipg1}
+  Free the space occupied by the surface. Before using freeSurf, make
+  sure that the surface object exists.
+\end{minipg1} \\
+SYNOPSIS\\
+        \>void freeSurf(\begin{minipg3}
+          {\fov surf})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf    \>  *{\fov surf};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}     \> - \> Pointer to the surface to
+        delete.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf\>      *{\fov surf} = NULL;\\
+        \>\>    int    \>       {\fov number1} = 5;\\
+        \>\>    int    \>       {\fov number2} = 4;\\
+        \>\>    int    \>       {\fov order1} = 4;\\
+        \>\>    int    \>       {\fov order2} = 3;\\
+        \>\>    double \>       {\fov knot1}[9];\\
+        \>\>    double \>       {\fov knot2}[7];\\
+        \>\>    double \>       {\fov coef}[60];\\
+        \>\>    int    \>       {\fov kind} = 1;\\
+        \>\>    int    \>       {\fov dim} = 3;\\
+        \>\>    int    \>       {\fov copy} = 1;\\
+        \>\>    \ldots \\
+        \>\>{\fov surf}$=$newSurf(\begin{minipg4}
+          {\fov number1}, {\fov number2}, {\fov order1}, {\fov order2}, {\fov knot1}, {\fov knot2},\\ {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>\>{\fov freeSurf}(\begin{minipg4}
+          {\fov surf});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

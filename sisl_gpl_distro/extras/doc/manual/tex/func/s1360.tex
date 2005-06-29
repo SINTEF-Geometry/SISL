@@ -1,0 +1,80 @@
+\subsection{Approximate the offset of a curve with a curve.}
+\funclabel{s1360}
+\begin{minipg1}
+  To create a approximation of the offset to a curve within a
+  tolerance.
+  The output will be represented as a B-spline curve.\\
+  With an offset of zero, this routine can be used to approximate any
+  NURBS curve, within a tolerance, with a (non-rational) B-spline curve.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1360(\begin{minipg3}
+        {\fov oldcurve}, {\fov offset}, {\fov epsge}, {\fov norm}, {\fov max}, {\fov dim}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov offset};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov norm}[\,];\\
+                \>\>    double  \>      {\fov max};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov oldcurve}\> - \> The input curve.\\
+        \>\>    {\fov offset}   \> - \> \begin{minipg2}
+                        The offset distance. If dim=2, a positive sign on
+                        this value put the offset on the side of the positive
+                        normal vector, and a negative sign puts the offset on
+                        the negative normal vector. If dim=3, the offset direction is
+                        determined by the cross product of the tangent
+                        vector and the normal vector. The offset distance is
+                        multiplied by this cross product.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov epsge}    \> - \> \begin{minipg2}
+                        Maximal deviation allowed between the true offset
+                        curve and the approximated offset curve.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov norm}     \> - \> Vector used in 3D calculations.\\
+        \>\>    {\fov max}      \> - \> \begin{minipg2}
+                        Maximal step length. It is neglected if
+                        max$\leq$epsge. If max=0.0, then a maximal step
+                        equal to the longest box side of the curve is used.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov dim}      \> - \>The dimension of the space must be 2 or 3.\\
+\\
+NOTE\\
+\>\begin{minipg6}
+  If the vector norm and the curve tangent are parallel at some point,
+  then the curve produced will not be an offset at this point, and it
+  will probably move from one side of the input curve to the other side.
+\end{minipg6}\\
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \> \begin{minipg2}
+                        Pointer to the B-spline curve
+                        approximating the offset curve.
+                                       \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages.\\
+                \>\>\>\>\>              $> 0$   : Warning.\\
+                \>\>\>\>\>              $= 0$   : Ok.\\
+                \>\>\>\>\>              $< 0$   : Error.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
+                \>\>    double  \>      {\fov offset};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov norm}[3];\\
+                \>\>    double  \>      {\fov max};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1360(\begin{minipg4}
+        {\fov oldcurve}, {\fov offset}, {\fov epsge}, {\fov norm}, {\fov max}, {\fov dim}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \} \\
+\end{tabbing}

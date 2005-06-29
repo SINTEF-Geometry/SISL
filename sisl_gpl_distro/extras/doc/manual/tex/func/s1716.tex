@@ -1,0 +1,57 @@
+\subsection{Join two curves at closest ends.}
+\funclabel{s1716}
+\begin{minipg1}
+  To join two curves at the ends that lie closest to each other, if the
+  distance between the ends is less than the tolerance {\fov epsge}. If
+  {\fov curve1} is to be joined at the start, the direction of the curve is turned.
+  If {\fov curve2} is to be joined at the end, the direction of this
+  curve is turned. This means that {\fov curve1} always makes up the
+  first part of the new curve. If {\fov epsge} is positive, but smaller
+  than the smallest distance between the ends of the two curves, a NULL
+  pointer is returned.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1716(\begin{minipg3}
+        {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> First curve to join.\\
+        \>\>    {\fov curve2}   \> - \> Second curve to join.\\
+        \>\>    {\fov epsge}    \> - \> \begin{minipg2}
+                                The curves are to be joined if {\fov epsge} is
+                                greater than or equal to the distance
+                                between the ends lying closest to each
+                                other. If {\fov epsge} is negative, the
+                                curves are automatically joined.
+                                \end{minipg2}\\[0.3ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>\begin{minipg2}
+                                The new joined curve.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\ %\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1716(\begin{minipg4}
+                {\fov curve1}, {\fov curve2}, {\fov epsge}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

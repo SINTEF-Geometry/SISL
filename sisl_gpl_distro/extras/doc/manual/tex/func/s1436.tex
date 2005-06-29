@@ -1,0 +1,46 @@
+\subsection{Pick a curve lying in surface, with constant second parameter value.}
+\funclabel{s1436}
+\begin{minipg1}
+Make constant parameter curve in the surface. The constant parameter value 
+used is parvalue and is in the second parameter direction. 
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1436(\begin{minipg3}
+			{\fov surf}, {\fov parvalue}, {\fov curve}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov parvalue};\\
+		\>\>	SISLCurve	\>	**{\fov curve};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				Surface to pick the curve from.
+				\end{minipg2}\\[0.3ex]
+	\>\>	{\fov parvalue}\> - \>	\begin{minipg2}
+				Parameter value in the second parameter direction used when picking 
+				the curve.
+				\end{minipg2}\\[0.3ex]
+	\>Output Arguments:\\
+	\>\>	{\fov curve}\> - \>	\begin{minipg2}
+				SISLCurve at constant parameter value.
+				\end{minipg2}\\
+	\>\>	{\fov stat}	\> - \>	Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	SISLSurf	\> 	*{\fov surf};\\
+		\>\>	double	\>	{\fov parvalue};\\
+		\>\>	SISLCurve	\>	*{\fov curve};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1436(\begin{minipg4}
+		{\fov surf}, {\fov parvalue}, \&{\fov curve}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots \\
+		\>	\}
+\end{tabbing}

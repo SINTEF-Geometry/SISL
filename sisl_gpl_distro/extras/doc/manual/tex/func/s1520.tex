@@ -1,0 +1,54 @@
+\subsection{Create a NURBS rotational surface by rotating
+a curve around an axis over a given angle.}
+\funclabel{s1520}
+\begin{minipg1}
+  To create a NURBS rotational surface by rotating
+  a curve around an axis over a given angle.
+  This will be an exact representation.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1520(\begin{minipg3}
+          {\fov pc},  {\fov angle},  {\fov ep},  {\fov eaxis},  {\fov rs},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov angle};\\
+        \>\>    double    \> {\fov ep}[\,];\\
+        \>\>    double    \> {\fov eaxis}[\,];\\
+        \>\>    SISLSurf  \> **{\fov rs};\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc}   \> - \> The curve to be rotated (NURBS or B-spline).\\
+        \>\>    {\fov angle}\> - \>
+        \begin{minipg2}
+          The rotational angle. Counter clockwise around axis.
+          If the absolute value of the angle is greater than
+          $2\pi$ then a rotational surface closed in the
+          rotation direction is made.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ep} \> - \> A point on the rotational axis.\\
+        \>\>    {\fov eaxis}\> - \> Direction of the rotational axis.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rs}\> - \> The surface produced (NURBS or B-spline).\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc};\\
+        \>\>    double    \> {\fov angle};\\
+        \>\>    double    \> {\fov ep}[3];\\
+        \>\>    double    \> {\fov eaxis}[3];\\
+        \>\>    SISLSurf  \> *{\fov rs} = NULL;\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>s1520(\begin{minipg4}
+          {\fov pc}, {\fov angle}, {\fov ep}, {\fov eaxis}, \&{\fov rs}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

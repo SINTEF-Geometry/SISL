@@ -1,0 +1,56 @@
+\subsection{Subdivide a surface along a given parameter line.}
+\funclabel{s1711}
+\begin{minipg1}
+  Subdivide a surface along a given internal parameter line.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1711(\begin{minipg3}
+        {\fov surf}, {\fov pardir}, {\fov parval}, {\fov newsurf1}, {\fov newsurf2}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov pardir};\\
+                \>\>    double  \>      {\fov parval};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf1};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf2};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}     \> - \> Surface to subdivide.\\
+        \>\>    {\fov pardir}   \> - \> \begin{minipg2}
+                                Value used to indicate in which
+                                parameter direction the subdivision is to take place.
+                                \end{minipg2}\\[0.8ex]
+                \>\>\>\>\>      $= 1$\> : First parameter direction.\\
+                \>\>\>\>\>      $= 2$\> : Second parameter direction.\\
+        \>\>    {\fov parval}   \> - \> \begin{minipg2}
+                                Parameter value at which to subdivide.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf1}\> - \>\begin{minipg2}
+                                First part of the subdivided surface.
+                                \end{minipg2}\\
+        \>\>    {\fov newsurf2}\> - \>\begin{minipg2}
+                                Second part of the subdivided surface.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\ %\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    int     \>      {\fov pardir};\\
+                \>\>    double  \>      {\fov parval};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf1};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf2};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1711(\begin{minipg4}
+                {\fov surf}, {\fov pardir}, {\fov parval}, \&{\fov newsurf1}, \&{\fov newsurf2}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

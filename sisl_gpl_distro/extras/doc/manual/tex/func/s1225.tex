@@ -1,0 +1,97 @@
+\subsection{Evaluate position, first derivative, curvature and radius of curvature of a curve at a given parameter value, from the left hand side.}
+\funclabel{s1225}
+\begin{minipg1}
+Evaluate position, first derivative, curvature and radius of
+               curvature of a curve at a given parameter value, from the
+               left hand side.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \> void s1225(\begin{minipg3}
+            {\fov curve}, {\fov der}, {\fov parvalue}, {\fov leftknot}, {\fov derive}, {\fov curvature},
+	   radius\_of\_ {\fov curvature}, {\fov jstat})
+                \end{minipg3}\\
+                \>\>    SISLCurve    \>  *{\fov curve};\\
+                \>\>    int    \>  {\fov der};\\
+                \>\>    double \> parvalue;\\
+                \>\>    int    \>  *{\fov leftknot};\\
+                \>\>    double \> derive[\,];\\
+                \>\>    double \> curvature[\,];\\
+                \>\>    double \> *{\fov radius}\_of\_curvature;\\
+                \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+        \>\>    {\fov curve}\> - \>  \begin{minipg2}
+                     Pointer to the curve for which position
+                       and derivatives are to be computed.
+                               \end{minipg2}\\
+        \>\>    {\fov der}\> - \> The number of derivatives to compute. \\
+	            \>\>\>\>\>          $ < 0$ : Error. \\
+		    \>\>\>\>\>          $ = 0$ : Compute position.\\
+		    \>\>\>\>\>          $ = 1$ : Compute position and first derivative.\\
+		    \>\>\>\>\>          etc. \\
+        \>\>    {\fov parvalue}\> - \>  \begin{minipg2}
+                     The parameter value at which to compute
+                       position and derivatives.
+                               \end{minipg2}\\
+\\
+	\>Input/Output Arguments:\\
+        \>\>    {\fov leftknot}\> - \>  \begin{minipg2}
+                     Pointer to the interval in the knot vector
+                        where ax is located. If et is the knot vector,
+                        the relation
+                          $$et[ileft] < parvalue <= et[ileft+1]$$
+                        should hold. (If parvalue = et[ik-1] then ileft
+                        should be ik-1. Here in is the number of B-spline
+                        coefficients.)
+                        If ileft does not have the right value upon
+                        entry to the routine, its value will be changed
+                        to the value satisfying the above condition.
+                               \end{minipg2}\\
+\\
+	\>Output Arguments:\\
+        \>\>    {\fov derive}\> - \>  \begin{minipg2}
+                     Double array of dimension $[(ider+1)*idim]$
+                       containing the position and derivative vectors.
+                       (idim is the number of components of each B-spline
+                       coefficient, i.e. the dimension of the Euclidean
+                       space in which the curve lies.)
+                       These vectors are stored in the following order:
+                       First the idim components of the position vector,
+                       then the idim components of the tangent vector,
+                       then the idim components of the second derivative
+                       vector, and so on.
+                       (The C declaration of eder as a two dimensional array
+                       would therefore be eder[ider+1,idim].)
+                               \end{minipg2}\\
+        \>\>    {\fov curvature}\> - \>  \begin{minipg2}
+                     Array of dimension idim
+                               \end{minipg2}\\
+        \>\>    {\fov radius}\> - \>  \begin{minipg2}
+                    1, indicates
+                       that the radius of curvature is infinit.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat}\> - \> Status messages \\
+                    \>\>\>\>\>          $ > 0$      : Warning. \\
+                    \>\>\>\>\>          $ = 0$      : Ok. \\
+                    \>\>\>\>\>          $ < 0$      : Error. \\
+					 
+\\
+EXAMPLE OF USE\\
+		\>      \{ \\
+
+                \>\>    SISLCurve    \>  *{\fov curve};\\
+                \>\>    int    \>  {\fov der};\\
+                \>\>    double \> parvalue;\\
+                \>\>    int    \>  *{\fov leftknot};\\
+                \>\>    double \> derive[\,];\\
+                \>\>    double \> curvature[\,];\\
+                \>\>    double \> *{\fov radius}\_of\_curvature;\\
+                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+        \>\>s1225(\begin{minipg4}
+            {\fov curve}, {\fov der}, {\fov parvalue}, {\fov leftknot}, {\fov derive}, {\fov curvature},
+	   radius\_of\_ {\fov curvature}, {\fov jstat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+		\>      \}
+\end{tabbing}

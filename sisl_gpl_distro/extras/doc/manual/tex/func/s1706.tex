@@ -1,0 +1,31 @@
+\section{Reverse the Orientation of a Curve.}
+\funclabel{s1706}
+\begin{minipg1}
+  Turn the direction of a curve by reversing the ordering of the
+  coefficients.
+  The start parameter value of the new curve is the same as the start
+  parameter value of the old curve.
+  This routine turns the direction of the orginal curve.
+  If you want a copy with a turned direction, just make a copy and turn
+  the direction of the copy.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1706(\begin{minipg3}
+        {\fov curve})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve to turn.\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    \ldots \\
+        \>\>s1706(\begin{minipg4}
+                {\fov curve});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

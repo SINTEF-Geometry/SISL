@@ -1,0 +1,184 @@
+\subsection{Compute the position and the derivatives of a surface at a
+given parameter value pair.}
+\funclabel{s1425}
+\begin{minipg1}
+  To compute the value and $ider1\times ider2$ first derivatives
+  of a tensor product surface at the point with parameter value
+  ({\fov epar}[0], {\fov epar}[1]).
+  The derivatives that will be computed are $D(i,j)$,
+  $i=0,1,\dots,ider1$, $j=0,1,\dots,ider2$. The calculations are
+  from the right hand or left hand side.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1425(\begin{minipg3}
+          {\fov ps1}, {\fov ider1}, {\fov ider2}, {\fov iside1}, {\fov iside2}, {\fov epar}, {\fov ileft1}, {\fov ileft2}, {\fov eder}, {\fov jstat})
+        \end{minipg3}\\
+        \>\>    SISLSurf    \>  *{\fov ps1};\\
+        \>\>    int    \>  {\fov ider1};\\
+        \>\>    int    \>  {\fov ider2};\\
+        \>\>    int    \>  {\fov iside1};\\
+        \>\>    int    \>  {\fov iside2};\\
+        \>\>    double \>  {\ epar}[\,];\\
+        \>\>    int    \>  *{\fov ileft1};\\
+        \>\>    int    \>  *{\fov ileft2};\\
+        \>\>    double \>  {\fov eder}[\,];\\
+        \>\>    int    \>  *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps1}\> - \>  \begin{minipg2}
+                     Pointer to the surface for which position
+                       and derivatives are to be computed.
+                               \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ider1}\> - \>
+        \begin{minipg2}
+          The number of derivatives to be computed with respect
+          to the first parameter direction.
+        \end{minipg2}\\[0.8ex]
+                     \>\>\>\> $<0$ \> \> : Error, no derivative calculated.\\
+                     \>\>\>\> $=0$ \> \> :
+                     \begin{minipg5}
+                       No derivatives with respect to the first
+                       parameter direction will be computed.
+                       (Only derivatives of the type
+                       $D(0,0),D(0,1),\dots,D(0,ider2)$).
+                     \end{minipg5}\\[0.8ex]
+                     \>\>\>\> $=1$ \> :
+                     \begin{minipg5}
+                       Derivatives up to first order with respect to
+                       the first parameter direction will be
+                       computed.
+                     \end{minipg5}\\[0.8ex]
+                     \>\>\>\>      \>   etc.\\
+\newpagetabs
+        \>\>    {\fov ider2}\> - \>  \begin{minipg2}
+                     The number of derivatives to be computed with respect
+                       to the second parameter direction.
+        \end{minipg2}\\[0.8ex]
+                     \>\>\>\> $<0$ \> \> : Error, no derivative calculated.\\
+                     \>\>\>\> $=0$ \> \> :
+                     \begin{minipg5}
+                       No derivatives with respect to the second
+                       parameter direction will be computed.
+                       (Only derivatives of the type
+                       $D(0,0),D(1,0),\dots,D(ider1,0)$).
+                     \end{minipg5}\\[0.8ex]
+                     \>\>\>\> $=1$ \> :
+                     \begin{minipg5}
+                       Derivatives up to first order with respect to
+                       the second parameter direction will be computed.
+                     \end{minipg5}\\[0.8ex]
+                     \>\>\>\>      \>   etc.\\
+        \>\>    {\fov iside1}\> - \>
+        \begin{minipg2}
+          Indicator telling if the derivatives in the first
+          parameter direction is to be calculated from the
+          left or from the right:
+        \end{minipg2}\\[0.3ex]
+                      \>\>\>\> $<0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the left hand side.
+                      \end{minipg5}\\[0.8ex]
+                      \>\>\>\> $\geq 0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the right hand side.
+                      \end{minipg5}\\[0.8ex]
+        \>\> {\fov iside2}\> - \>
+        \begin{minipg2}
+          Indicator telling if the derivatives in the second
+          parameter direction is to be calculated from the
+          left or from the right:
+        \end{minipg2}\\[0.3ex]
+                      \>\>\>\> $<0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the left hand side.
+                      \end{minipg5}\\[0.8ex]
+                      \>\>\>\> $\geq 0$ \> :
+                      \begin{minipg5}
+                        Calculate derivative from the right hand side.
+                      \end{minipg5}\\[0.8ex]
+        \>\>    {\fov epar}\> - \>
+        \begin{minipg2}
+          Array of dimension 2 containing the
+          parameter values of the point at which the position
+          and derivatives are to be computed.
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Input/Output Arguments:\\
+        \>\>    {\fov ileft1}\> - \>
+        \begin{minipg2}
+          Pointer to the interval in the knot vector
+          in the first parameter direction where {\fov epar}[0]
+          is located. If {\fov et1} is the knot vector in the first
+          parameter direction, the relation
+          \[
+          et1[ileft]\leq epar[0] < et1[ileft+1],
+          \]
+          should hold. (If $epar[0]=et1[in1]$ then {\fov ileft} should
+          be $in1-1$. Here {\fov in1} is the number of B-spline
+          coefficients associated with {\fov et1}.)
+          If {\fov ileft1} does not have the right value upon
+          entry to the routine, its value will be changed
+          to the value satisfying the above condition.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov ileft2}\> - \>
+        \begin{minipg2}
+          Pointer to the interval in the knot vector
+          in the second parameter direction where {\fov epar}[1]
+          is located. If {\fov et2} is the knot vector in the second
+          parameter direction, the relation
+          \[
+          et2[ileft]\leq epar[1] < et2[ileft+1],
+          \]
+          should hold. (If $epar[1]=et2[in2]$ then {\fov ileft} should
+          be $in2-1$. Here {\fov in2} is the number of B-spline
+          coefficients associated with {\fov et2}.)
+          If {\fov ileft2} does not have the right value upon
+          entry to the routine, its value will be changed
+          to the value satisfying the above condition.
+        \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov eder}\> - \>
+        \begin{minipg2}
+          Array of dimension $(ider2+1)*(ider1+1)*idim$
+          containing the position and the derivative vectors
+          of the surface at the point with parameter value
+          ({\fov epar}[0], {\fov epar}[1]).
+          ({\fov idim} is the number of components of each B-spline
+          coefficient, i.e. the dimension of the Euclidean
+          space in which the surface lies.)
+          These vectors are stored in the following order:
+          First the {\fov idim} components of the position vector,
+          then the {\fov idim} components of the $D(1,0)$ vector,
+          and so on up to the {\fov idim} components of the $D(ider1,0)$
+          vector,
+          then the {\fov idim} components of the $D(1,1)$ vector etc.
+          Equivalently, if {\fov eder} is considered to be a
+          three dimensional array, then its declaration in C
+          would be $eder[ider2+1,ider1+1,idim]$.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat}     \> - \> Status messages\\
+                \>\>\>\>\>      $> 0$ : \>      Warning.\\
+                \>\>\>\>\>      $= 0$ : \>      Ok.\\
+                \>\>\>\>\>      $< 0$ : \>      Error.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf    \>  *{\fov ps1};\\
+        \>\>    int    \>  {\fov ider1} = 1;\\
+        \>\>    int    \>  {\fov ider2} = 1;\\
+        \>\>    int    \>  {\fov iside1};\\
+        \>\>    int    \>  {\fov iside2};\\
+        \>\>    double \>  {\fov epar}[2];\\
+        \>\>    int    \>  {\fov ileft1} = 0;\\
+        \>\>    int    \>  {\fov ileft2} = 0;\\
+        \>\>    double \>  {\fov eder}[12];\\
+        \>\>    int    \>  {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1425(\begin{minipg4}
+          {\fov ps1}, {\fov ider1}, {\fov ider2}, {\fov iside1}, {\fov iside2}, {\fov epar}, \&{\fov ileft1}, \&{\fov ileft2}, {\fov eder}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

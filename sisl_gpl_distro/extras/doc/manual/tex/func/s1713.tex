@@ -1,0 +1,52 @@
+\subsection{Pick a part of a closed curve.}
+\funclabel{s1713}
+\begin{minipg1}
+  To pick one part of a closed curve and make a new curve of that
+  part. If the routine is used on an open curve and $endpar\leq begpar$,
+  the last part of the curve is translated so that the end of the curve
+  joins the start.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1713(\begin{minipg3}
+        {\fov curve}, {\fov begpar}, {\fov endpar}, {\fov newcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov begpar};\\
+                \>\>    double  \>      {\fov endpar};\\
+                \>\>    SISLCurve       \>      **{\fov newcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> The curve to pick a part from.\\
+        \>\>    {\fov begpar}   \> - \> \begin{minipg2}
+                                Start parameter value of the part of the curve
+                                to be picked.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov endpar}   \> - \> \begin{minipg2}
+                                End parameter value of the part of the curve
+                                to be picked.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newcurve}\> - \>\begin{minipg2}
+                                The new curve that is a part of the original curve.
+                                \end{minipg2}\\
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    double  \>      {\fov begpar};\\
+                \>\>    double  \>      {\fov endpar};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1713(\begin{minipg4}
+                {\fov curve}, {\fov begpar}, {\fov endpar}, \&{\fov newcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

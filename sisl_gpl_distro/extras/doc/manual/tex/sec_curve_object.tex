@@ -1,0 +1,24 @@
+\section{\label{curveobject}Curve Object}
+
+In the library both B-spline and NURBS curves are stored in a struct SISLCurve containing
+the following:
+\input{type/SISLCurve}
+When using a curve, do not declare a SISLCurve but a pointer to a SISLCurve,
+and initialize it to point on NULL. Then you may use the
+dynamic allocation functions newCurve and freeCurve described below,
+to create and delete curves.
+
+There are two ways to pass coefficient and knot arrays
+to newCurve.
+By setting $icopy=1$, newCurve
+allocates new arrays and copies the given ones.
+But by setting $icopy=0$ or 2, newCurve simply points
+to the given arrays. Therefore it is IMPORTANT that the
+given arrays have been allocated in free memory beforehand.
+
+\pgsbreak
+\input{func/newCurve}
+\pgsbreak
+\input{func/copyCurve}
+\pgsbreak
+\input{func/freeCurve}

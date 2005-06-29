@@ -1,0 +1,225 @@
+\subsection{Data reduction: Point data as input.}
+\funclabel{s1346}
+\begin{minipg1}
+  To compute a tensor-product B-spline approximation of order $(order1,
+  order2)$ to the rectangular array of {\fov dim}-dimensional points given by
+  points.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1346(\begin{minipg3}
+                {\fov points}, {\fov numpt1}, {\fov numpt2}, {\fov dim}, {\fov typepar}, {\fov par1}, {\fov par2}, {\fov eps}, {\fov edgefix}, {\fov edgeps},
+                {\fov tolshare}, {\fov epsco}, {\fov optim}, {\fov itmax}, {\fov order1}, {\fov order2},
+                {\fov newsurf}, {\fov maxerr}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    double  \>      {\fov points}[\,];\\
+                \>\>    int     \>      {\fov numpt1};\\
+                \>\>    int     \>      {\fov numpt2};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    double  \>      {\fov par1}[\,];\\
+                \>\>    double  \>      {\fov par2}[\,];\\
+                \>\>    double  \>      {\fov eps}[\,];\\
+                \>\>    int     \>      {\fov edgefix}[\,];\\
+                \>\>    double  \>      {\fov edgeps}[\,];\\
+                \>\>    double  \>      {\fov tolshare};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov optim};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    int     \>      {\fov order1};\\
+                \>\>    int     \>      {\fov order2};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf};\\
+                \>\>    double  \>      {\fov maxerr}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov points}\> - \>    \begin{minipg2}
+                                Array (length dim*numpt1*numpt2) containing the points
+                                to be approximated.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov numpt1}\> - \>    \begin{minipg2}
+                                The no. of points in first parameter-direction.
+                                \end{minipg2}\\
+        \>\>    {\fov numpt2}\> - \>    \begin{minipg2}
+                                The no. of points in second parameter-direction.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}      \> - \> \begin{minipg2}
+                                The no. of components of each input-point. The
+                                approximation will be a parametric surface situated in
+                                the {\fov dim}-dimensional Euclidean
+                                space (usually 3).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov typepar}\> - \>   \begin{minipg2}
+                                Flag determining the para\-meterization of the data
+                                points:
+                                \end{minipg2} \\[0.3ex]
+                \>\>\>\>\>      $= 1$ :\>       \begin{minipg5}
+                                                Means accumulated cord-length
+                                                  para\-meterization.
+                                        \end{minipg5}\\[0.8ex]
+                \>\>\>\>\>      $= 2$ : \>Uniform parameterization.\\
+                \>\>\>\>\>      $= 3$ : \>Parameterization given by par1 and par2.\\
+        \>\>    {\fov par1}\> - \>      \begin{minipg2}
+                                Array (length numptl) containing a parameterization in
+                                the first parameter-direction. (Will only be used if
+                                typepar=3).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov par2}\> - \>      \begin{minipg2}
+                                Array (length numpt2) containing a parameterization in
+                                the second parameter-direction. (Will only be used if
+                                typepar=3).
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov eps}\> - \>       \begin{minipg2}
+                                Array (length dim) containing the max. permissible
+                                deviation of the approximation from the given data
+                                points, in each of the components. More specifically, the
+                                approximation will not deviate more than eps(dim)
+                                from the bilinear
+                                approximation to the data in component no. dim.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov edgefix}\> - \>   \begin{minipg2}
+                                Array (length 4) giving the no. of derivatives to be
+                                kept fixed along each edge of the bilinear interpolant.
+                                The numbering of the edges is the same as for edgeps
+                                below. All the derivatives of
+                                $\mbox{order}<(\mbox{edgefix}(i)-1)$ will be
+                                kept fixed along the edge i.
+                                Hence $\mbox{edgefix}(i)=0$ indicates
+                                that nothing is to be kept fixed along edge $i$. (Used by the
+                                data reduction routine.)
+                                To be kept fixed here means to have error less than
+                                edgeps. In general, it is impossible to remove any knots
+                                and keep an edge completely fixed.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov edgeps}\> - \>    \begin{minipg2}
+                                Array (length dim*4) containing the max. deviation
+                                from the bilinear interpolant which is acceptable along
+                                the edges of the surface.
+                                \end{minipg2}\\[0.3ex]
+                \>\>\>\>        \begin{minipg2}
+                                $edgeps[dim*i],\ldots,edgeps[(dim*(i+1)-1]$
+                                gives the
+                                tolerance along the edge nr. $i$.
+                                $edgeps[dim*i],\ldots,edgeps[(dim*(i+1)-1]$
+                                will only have any significance if
+                                $\mbox{edgefix}[i]>0$.
+                                The edge numbers correspond to the
+                                following:
+                                \end{minipg2}\\
+                \>\>\>\>        \begin{minipg2}
+                                \begin{center}
+                                        \begin{picture}(180,110)(0,0)
+                                        \put(50,15){\framebox(80,80)}
+                                        \put(40,55){\makebox(0,0){0}}
+                                        \put(140,55){\makebox(0,0){1}}
+                                        \put(90,5){\makebox(0,0){2}}
+                                        \put(90,105){\makebox(0,0){3}}
+
+                                        \put(60,20){\vector(1,0){40}}
+                                        \put(85,28){\makebox(0,0){$(i)$}}
+                                        \put(55,25){\vector(0,1){40}}
+                                        \put(65,50){\makebox(0,0){$(ii)$}}
+                                        \end{picture}\\
+                                        $(i) \; \; \;$ first parameter direction of surface.\\
+                                        $(ii)$   second parameter direction of surface.\\
+                                \end{center}
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov tolshare}\> - \>  \begin{minipg2}
+                                $0.0 \leq \mbox{tolshare} \leq 1.0$.
+                                Tolshare indicates how the tolerance is to be shared
+                                between the two data-reduction stages. For the linear
+                                reduction, a tolerance of tolshare*eps will be used, while
+                                a tolerance of ($1.0-$tolshare)*eps will be used during the
+                                final data reduction (similarly for
+                                edgeps.)
+                                Use $0\leq tolshare\leq 1$, a general
+                                advice is to use a {\fov tolshare} value
+                                closer to zero than one.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Two numbers differing by a relative amount less
+                                than epsco, will in some cases be considered equal.
+                                A suitable value is just above the unit roundoff of
+                                the computer. The computations are not guaranteed
+                                to have relative accuracy less than
+                                epsco.
+                                Not used anymore.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov optim}\> - \>     \begin{minipg2}
+                                Flag indicating the order in which the data-
+                                reduction is to be performed:
+                                \end{minipg2}\\[0.3ex]
+                \>\>\>\>\>      $= 1$ :\>\begin{minipg5}
+                                Remove knots in parameter-direction 1 only.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 2$ : \>\begin{minipg5}
+                                Remove knots in parameter-direction 2 only.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 3$ : \>\begin{minipg5}
+                                        Remove knots in parameter-direction 1
+                                                and then in parameter-direction 2.
+                                \end{minipg5}\\[0.3ex]
+                \>\>\>\>\>      $= 4$ : \>\begin{minipg5}
+                                        Remove knots in parameter-direction 2
+                                                and then in parameter-direction 1.
+                                \end{minipg5}\\[0.3ex]
+        \>\>    {\fov itmax}\> - \>     \begin{minipg2}
+                                Max. no. of iterations in the data-reduction.
+                                \end{minipg2}\\
+        \>\>    {\fov order1}\> - \>    \begin{minipg2}
+                                The order of the approximation in the first parameter-
+                                direction.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov order2}\> - \>    \begin{minipg2}
+                                The order of the approximation in the second parameter-
+                                direction.
+                                \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>           \begin{minipg2}
+                                Pointer to the B-spline surface produced.
+                                \end{minipg2}\\
+        \>\>    {\fov maxerr}\> - \>    \begin{minipg2}
+                                Array (length dim)
+                                containing the error in the approximation to the data.
+                                This is a guaranteed upper bound on the max. deviation
+                                in each component, between the final approximation
+                                and the bilinear spline-approximation to the original
+                                data.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    double  \>      {\fov points}[90];\\
+                \>\>    int     \>      {\fov numpt1} = 5;\\
+                \>\>    int     \>      {\fov numpt2} = 6;\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov typepar};\\
+                \>\>    double  \>      {\fov par1}[5];\\
+                \>\>    double  \>      {\fov par2}[6];\\
+                \>\>    double  \>      {\fov eps}[3];\\
+                \>\>    int     \>      {\fov edgefix}[4];\\
+                \>\>    double  \>      {\fov edgeps}[12];\\
+                \>\>    double  \>      {\fov tolshare};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    int     \>      {\fov optim};\\
+                \>\>    int     \>      {\fov itmax};\\
+                \>\>    int     \>      {\fov order1};\\
+                \>\>    int     \>      {\fov order2};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    double  \>      {\fov maxerr}[3];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1346(\begin{minipg4}
+                {\fov points}, {\fov numpt1}, {\fov numpt2}, {\fov dim}, {\fov typepar}, {\fov par1}, {\fov par2}, {\fov eps}, {\fov edgefix}, {\fov edgeps},
+                {\fov tolshare}, {\fov epsco}, {\fov optim}, {\fov itmax}, {\fov order1}, {\fov order2},
+                \linebreak \&{\fov newsurf}, {\fov maxerr}, \&{\fov stat});
+                \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

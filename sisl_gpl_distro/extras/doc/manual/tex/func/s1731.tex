@@ -1,0 +1,48 @@
+\subsection{Convert a surface to a mesh of Bezier surfaces.}
+\funclabel{s1731}
+\begin{minipg1}
+  To convert a surface to a mesh of Bezier surfaces.
+  The Bezier surfaces are stored in a surface with all knots having
+  multiplicity equal to the order of the surface in the
+  corresponding parameter direction.
+  If the input surface is rational, the generated Bezier surfaces will be
+  rational too (i.e.\ there will be rational weights in the
+  representation of the Bezier surfaces).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1731(\begin{minipg3}
+                                {\fov surf}, {\fov newsurf}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLSurf        \>      **{\fov newsurf};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>      \begin{minipg2}
+                                Surface to convert.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov newsurf}\> - \>   \begin{minipg2}
+                                The new surface
+                                storing the Bezier represented\\ surfaces.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov sta}t     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLSurf        \>      *{\fov newsurf};\\
+                \>\>    int     \>      {\fov sta}t;\\
+                \>\>    \ldots \\
+        \>\>s1731(\begin{minipg4}
+                {\fov surf}, \&{\fov newsurf}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

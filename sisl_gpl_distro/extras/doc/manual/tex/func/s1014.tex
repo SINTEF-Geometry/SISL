@@ -1,0 +1,89 @@
+\subsection{Compute a circular fillet between a 2D curve and a circle.}
+\funclabel{s1014}
+\begin{minipg1}
+  Compute the fillet by iterating to the start and end points of a
+  fillet between a 2D curve and a circle. The centre of the circular
+  fillet is also calculated.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1014(\begin{minipg3}
+        {\fov pc1}, {\fov circ\_cen}, {\fov circ\_rad}, {\fov aepsge}, {\fov eps1}, {\fov eps2}, {\fov aradius},
+        {\fov parpt1}, {\fov parpt2}, {\fov centre}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLCurve \> *{\fov pc1};\\
+        \>\>    double    \> {\fov circ\_cen}[\,];\\
+        \>\>    double    \> {\fov circ\_rad};\\
+        \>\>    double    \> {\fov aepsge};\\
+        \>\>    double    \> {\fov eps1}[\,];\\
+        \>\>    double    \> {\fov eps2}[\,];\\
+        \>\>    double    \> {\fov aradius};\\
+        \>\>    double    \> *{\fov parpt1};\\
+        \>\>    double    \> *{\fov parpt2};\\
+        \>\>    double    \> {\fov centre}[\,];\\
+        \>\>    int       \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov pc1}    \> - \> The first input curve.\\
+        \>\>    {\fov circ\_cen}   \> - \> 2D centre of the circle.\\
+        \>\>    {\fov circ\_rad}   \> - \> Radius of the circle.\\
+        \>\>    {\fov aepsge} \> - \> Geometry resolution.\\
+        \>\>    {\fov eps1}   \> - \> \begin{minipg2}
+                                        2D point telling that the fillet
+                                        should be put on the side of
+                                        curve 1 where {\fov eps1} is situated.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov eps2}   \> - \> \begin{minipg2}
+                                        2D point telling that the fillet
+                                        should be put on the side of the
+                                        input circle where {\fov eps2} is
+                                        situated.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov aradius} \> - \> The radius to be used on the fillet.\\
+\\
+        \>Input/Output Arguments:\\
+        \>\>    {\fov parpt1} \> - \> \begin{minipg2}
+                                        Parameter value of the point on
+                                        curve 1 where the fillet
+                                        starts. Input is a guess value
+                                        for the iteration.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov parpt2} \> - \> \begin{minipg2}
+                                        Parameter value of the point on
+                                        the input circle where the
+                                        fillet ends. Input is a guess
+                                        value for the iteration.
+                                      \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov centre} \> - \> \begin{minipg2}
+                                        2D centre of the circular
+                                        fillet.  Space must be allocated
+                                        outside the function.
+                                      \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $= 1$      : Converged,\\
+                \>\>\>\>\> $= 2$      : Diverged,\\
+                \>\>\>\>\> $< 0$      : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLCurve \> *{\fov pc1};\\
+        \>\>    double    \> {\fov circ\_cen}[2];\\
+        \>\>    double    \> {\fov circ\_rad};\\
+        \>\>    double    \> {\fov aepsge};\\
+        \>\>    double    \> {\fov eps1}[2];\\
+        \>\>    double    \> {\fov eps2}[2];\\
+        \>\>    double    \> {\fov aradius};\\
+        \>\>    double    \> {\fov parpt1};\\
+        \>\>    double    \> {\fov parpt2};\\
+        \>\>    double    \> {\fov centre}[2];\\
+        \>\>    int       \> {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1014(\begin{minipg4}
+        {\fov pc1}, {\fov circ\_cen}, {\fov circ\_rad}, {\fov aepsge}, {\fov eps1}, {\fov eps2}, {\fov aradius},
+        \&{\fov parpt1}, \&{\fov parpt2}, {\fov centre}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

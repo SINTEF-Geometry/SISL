@@ -1,0 +1,79 @@
+\subsection{Compute a surface, representing a Gordon patch, from a set
+of B-spline input curves.}
+\funclabel{s1401}
+\begin{minipg1}
+  Compute a Gordon patch, given position and cross tangent conditions as
+  B-spline (i.e.\ NOT rational) curves at the boundary of a squared
+  region and the twist vector in the corners.
+  The output is represented as a B-spline surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1401(\begin{minipg3}
+          {\fov vcurve}, {\fov etwist}, {\fov rsurf}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    double    \> {\fov etwist}[\,];\\
+        \>\>    SISLCurve \> *{\fov vcurve}[\,];\\
+        \>\>    int       \> *{\fov jstat};\\
+        \>\>    SISLSurf  \> **{\fov rsurf};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov vcurve} \> - \>
+        \begin{minipg2}
+          Position and cross-tangent B-spline curves around the square
+          region. For each edge of the region position and cross-tangent
+          curves are given. The dimension of the array is 8.
+        \end{minipg2}\\[0.8ex]
+        \>\>\>\>\begin{minipg2}
+                  The orientation is as follows:\\
+                  \begin{center}
+                    \begin{picture}(180,110)(0,0)
+                      \put(50,15){\framebox(80,80)}
+                      \put(40,55){\vector(0,1){20}}
+                      \put(140,55){\vector(0,1){20}}
+                      \put(90,5){\vector(1,0){20}}
+                      \put(90,105){\vector(1,0){20}}
+                      \put(40,45){\makebox(0,0){4}}
+                      \put(140,45){\makebox(0,0){2}}
+                      \put(80,5){\makebox(0,0){1}}
+                      \put(80,105){\makebox(0,0){3}}
+
+                      \put(60,20){\vector(1,0){40}}
+                      \put(85,28){\makebox(0,0){$(i)$}}
+                      \put(55,25){\vector(0,1){40}}
+                      \put(65,50){\makebox(0,0){$(ii)$}}
+                    \end{picture}\\
+                    $(i) \; \; \;$ first parameter direction of the surface.\\
+                    $(ii)$   second parameter direction of the surface.\\
+                  \end{center}
+                \end{minipg2}\\ \\
+        \>\>    {\fov etwist} \> - \>
+        \begin{minipg2}
+          Twist-vectors of the corners of the vertex region. The first
+          element of the array is the twist in the corner before the
+          first edge, etc. The dimension of the array is 4 times the
+          spatial dimension of the input curves (currently only 3D).
+        \end{minipg2}\\[0.8ex]
+\newpagetabs
+        \>Output Arguments:\\
+        \>\>    {\fov rsurf} \> - \> Gordons-patch represented as a
+                                     B-spline surface.\\
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    int       \> {\fov idim} = 3;\\
+        \>\>    double    \> {\fov etwist}[4*{\fov idim}];\\
+        \>\>    SISLCurve \> *{\fov vcurve}[8];\\
+        \>\>    int       \> {\fov jstat} = 0;\\
+        \>\>    SISLSurf  \> *{\fov rsurf} = NULL;\\
+        \>\>    \ldots \\
+        \>\>s1401(\begin{minipg4}
+          {\fov vcurve}, {\fov etwist}, \&{\fov rsurf}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

@@ -1,0 +1,93 @@
+\subsection{Find the topology for the intersection of a surface and a sphere.}
+\funclabel{s1852}
+\begin{minipg1}
+  Find all intersections between a tensor-product surface and a sphere.
+  Intersection curves are described by guide points.
+  To produce the intersection curves use s1315() described on page \pageref{s1315}.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1852(\begin{minipg3}
+                {\fov surf}, {\fov centre}, {\fov radius}, {\fov dim}, {\fov epsco}, {\fov epsge}, {\fov numintpt},
+                {\fov pointpar}, \linebreak {\fov numintcr},
+                {\fov intcurves}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov centre} [];\\
+                \>\>    double  \>      {\fov radius};\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov pointpar};\\
+                \>\>    int     \>      *{\fov numintcr};\\
+                \>\>    SISLIntcurve\>  ***{\fov intcurves};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov surf}\> - \>              \begin{minipg2}
+                                Pointer to the surface.
+                                \end{minipg2}\\
+        \>\>    {\fov centre}\> - \>    \begin{minipg2}
+                                Center of the sphere.
+                                \end{minipg2}\\
+        \>\>    {\fov radius}\> - \>    \begin{minipg2}
+                                Radius of the sphere.
+                                \end{minipg2}\\
+        \>\>    {\fov dim}\> - \>       \begin{minipg2}
+                                Dimension of the space in which the sphere lies.
+                                \end{minipg2}\\
+        \>\>    {\fov epsco}\> - \>     \begin{minipg2}
+                                Computational resolution (not used).
+                                \end{minipg2}\\
+        \>\>    {\fov epsge}\> - \>     \begin{minipg2}
+                                Geometry resolution.
+                                \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>\begin{minipg2}
+                                Number of single intersection points.
+                                \end{minipg2}\\
+        \>\>    {\fov pointpar}\> - \>  \begin{minipg2}
+                                Array containing the parameter values of the single
+                                intersection points in the parameter plane of the
+                                surface. The points lie in sequence. Intersection curves
+                                are stored in intcurves.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcr}\> - \>  \begin{minipg2}
+                                Number of intersection curves.
+                                \end{minipg2}\\
+        \>\>    {\fov intcurves}\> - \> \begin{minipg2}
+                                Array containing description of the intersection
+                                curves. The curves are only described by
+                                start points and end points (guide points) in
+                                the parameter plane. The curve pointers point to
+                                nothing.
+                                \end{minipg2}\\[0.3ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+%\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    double  \>      {\fov centre}[3];\\
+                \>\>    double  \>      {\fov radius};\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov pointpar};\\
+                \>\>    int     \>      {\fov numintcr};\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1852(\begin{minipg4}
+                        {\fov surf}, {\fov centre}, {\fov radius}, {\fov dim}, {\fov epsco}, {\fov epsge},
+                        \&{\fov numintpt}, \&{\fov pointpar}, \&{\fov numintcr},
+                        \&{\fov intcurves}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

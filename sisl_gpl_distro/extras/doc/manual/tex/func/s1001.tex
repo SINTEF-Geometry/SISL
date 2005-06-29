@@ -1,0 +1,62 @@
+\section{Pick a Part of a Surface.}
+\funclabel{s1001}
+\begin{minipg1}
+  To pick a part of a surface.
+  The surface produced will always be k-regular, i.e.\ with
+  k-tupple start/end knots.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1001(\begin{minipg3}
+          {\fov ps},  {\fov min1},  {\fov min2},  {\fov max1},  {\fov max2},  {\fov rsnew},  {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov min1};\\
+        \>\>    double   \> {\fov min2};\\
+        \>\>    double   \> {\fov max1};\\
+        \>\>    double   \> {\fov max2};\\
+        \>\>    SISLSurf \> **{\fov rsnew};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps}\> - \>  \begin{minipg2}
+                     Surface to pick a part of.
+                               \end{minipg2}\\
+        \>\>    {\fov min1}\> - \>  \begin{minipg2}
+                     Minimum value in first parameter direction.
+                               \end{minipg2}\\
+        \>\>    {\fov min2}\> - \>  \begin{minipg2}
+                     Minimum value in second parameter direction.
+                               \end{minipg2}\\
+        \>\>    {\fov max1}\> - \>  \begin{minipg2}
+                     Maximum value in first parameter direction.
+                               \end{minipg2}\\
+        \>\>    {\fov max2}\> - \>  \begin{minipg2}
+                     Maximum value second parameter direction.
+                               \end{minipg2}\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rsnew}\> - \>  \begin{minipg2}
+                     The new, picked surface.
+                               \end{minipg2}\\
+        \>\>    {\fov jstat} \> - \> Status messages\\
+                \>\>\>\>\>           $> 0$ \> : Warning.\\
+                \>\>\>\>\>           $= 0$ \> : Ok.\\
+                \>\>\>\>\>           $< 0$ \> : Error.\\
+\\
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov min1};\\
+        \>\>    double   \> {\fov min2};\\
+        \>\>    double   \> {\fov max1};\\
+        \>\>    double   \> {\fov max2};\\
+        \>\>    SISLSurf \> *{\fov rsnew} = NULL;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
+        \>\>    \ldots \\
+        \>\>s1001(\begin{minipg4}
+          {\fov ps},  {\fov min1},  {\fov min2},  {\fov max1},  {\fov max2}, \&{\fov rsnew},  \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

@@ -1,0 +1,74 @@
+\subsection{Compute a surface approximating the offset of a surface.}
+\funclabel{s1365}
+\begin{minipg1}
+  Create a surface approximating the offset of a surface.
+  The output is represented as a B-spline surface.\\
+  With an offset of zero, this routine can be used to approximate any
+  NURBS (rational) surface with a B-spline (non-rational) surface.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1365(\begin{minipg3}
+          {\fov ps}, {\fov aoffset}, {\fov aepsge}, {\fov amax}, {\fov idim}, {\fov rs}, {\fov jstat})
+        \end{minipg3}\\[0.3ex]
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov aoffset};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    double   \> {\fov amax};\\
+        \>\>    int      \> {\fov idim};\\
+        \>\>    SISLSurf \> **{\fov rs};\\
+        \>\>    int      \> *{\fov jstat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov ps} \> - \> The input surface.\\
+        \>\>    {\fov aoffset} \> - \>
+        \begin{minipg2}
+          The offset distance.
+          If $idim=2$ a positive signe on this value put the
+          offset on the side of the positive normal vector,
+          and a negative sign puts the offset on the sign
+          of the negative normal vector.
+          If $idim=3$ the offset is determined by the cross
+          product of the tangent vector and the anorm vector.
+          The offset distance is multiplied by this vector.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov aepsge} \> - \>
+        \begin{minipg2}
+          Maximal deviation allowed between true offset surface
+          and the approximated offset surface.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov amax} \> - \>
+        \begin{minipg2}
+          Maximal stepping length. Is negleceted if $amax\leq aepsge$.
+          If $amax=0$ then a maximal step length of the longest box side
+          is used.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov idim} \> - \> The dimension of the space (2 or 3).
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov rs} \> - \>
+        \begin{minipg2}
+          The approximated offset represented as
+          a \mbox{B-spline} surface.
+        \end{minipg2}\\[0.8ex]
+        \>\>    {\fov jstat} \> - \> Status message\\
+                \>\>\>\>\> $< 0$ : Error.\\
+                \>\>\>\>\> $= 0$ : Ok.\\
+                \>\>\>\>\> $> 0$ : Warning.\\
+\newpagetabs
+EXAMPLE OF USE\\
+        \>      \{ \\
+        \>\>    SISLSurf \> *{\fov ps};\\
+        \>\>    double   \> {\fov aoffset};\\
+        \>\>    double   \> {\fov aepsge};\\
+        \>\>    double   \> {\fov amax};\\
+        \>\>    int      \> {\fov idim};\\
+        \>\>    SISLSurf \> *{\fov rs};\\
+        \>\>    int      \> {\fov jstat};\\
+        \>\>    \ldots \\
+        \>\>s1365(\begin{minipg4}
+          {\fov ps}, {\fov aoffset}, {\fov aepsge}, {\fov amax}, {\fov idim}, \&{\fov rs}, \&{\fov jstat});
+        \end{minipg4}\\
+        \>\>    \ldots \\
+        \>      \}
+\end{tabbing}

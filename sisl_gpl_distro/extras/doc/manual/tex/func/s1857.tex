@@ -1,0 +1,79 @@
+\subsection{\sloppy Intersection between two curves.}
+\funclabel{s1857}
+\begin{minipg1}
+  Find all the intersections between two curves.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1857(\begin{minipg3}
+        {\fov curve1}, {\fov curve2}, {\fov epsco}, {\fov epsge}, {\fov numintpt},
+        {\fov intpar1}, {\fov intpar2}, {\fov \\numintcu}, {\fov intcurve}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      *{\fov numintpt};\\
+                \>\>    double  \>      **{\fov intpar1};\\
+                \>\>    double  \>      **{\fov intpar2};\\
+                \>\>    int     \>      *{\fov numintcu};\\
+                \>\>    SISLIntcurve \> ***{\fov intcurve};\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve1}   \> - \> Pointer to the first curve.\\
+        \>\>    {\fov curve2}   \> - \> Pointer to the second curve.\\
+        \>\>    {\fov epsco}    \> - \> Computational resolution (not used).\\
+        \>\>    {\fov epsge}    \> - \> Geometry resolution.\\
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov numintpt}\> - \>  Number of single intersection points.\\
+        \>\>    {\fov intpar1}  \> - \> \begin{minipg2}
+                        Array containing the parameter values of the
+                        single intersection points in the parameter
+                        interval of the first curve.
+                        Intersection curves are stored in intcurve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov intpar2}  \> - \> \begin{minipg2}
+                        Array containing the parameter values of the
+                        single intersection points in the parameter
+                        interval of the second curve.
+                        Intersection curves are stored in intcurve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov numintcu}\> - \>Number of intersection curves.\\
+        \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
+                        Array of pointers to the SISLIntcurve objects
+                        containing descriptions of the intersection
+                        curves. The curves are only described by start
+                        points and end points in the parameter interval
+                        of the curve. The curve pointers point
+                        to nothing.
+                        If the curves given as input are
+                        degenerate, an intersection point can be returned as
+                        an intersection curve.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\\ %\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve1};\\
+                \>\>    SISLCurve       \>      *{\fov curve2};\\
+                \>\>    double  \>      {\fov epsco};\\
+                \>\>    double  \>      {\fov epsge};\\
+                \>\>    int     \>      {\fov numintpt};\\
+                \>\>    double  \>      *{\fov intpar1};\\
+                \>\>    double  \>      *{\fov intpar2};\\
+                \>\>    int     \>      {\fov numintcu};\\
+                \>\>    SISLIntcurve \> **{\fov intcurve};\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1857(\begin{minipg4}
+                {\fov curve1}, {\fov curve2}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},
+                \&{\fov intpar1}, \&{\fov intpar2}, \&{\fov numintcu}, \&{\fov intcurve}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}

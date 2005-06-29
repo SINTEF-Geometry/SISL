@@ -1,0 +1,100 @@
+\subsection{Lofted surface.}
+\funclabel{s1333}
+\begin{minipg1}
+To create a spline lofted surface from a set of input curves.
+\end{minipg1} \\ \\
+SYNOPSIS\\
+	\>void s1333(\begin{minipg3}
+			{\fov numcurve}, {\fov curves}, {\fov typecur}, {\fov startpar}, {\fov open}, {\fov order2},
+			{\fov flag}, {\fov surf}, {\fov parval}, {\fov stat})
+		\end{minipg3}\\[0.3ex]
+		\>\>	int	\> 	{\fov numcurve};\\
+		\>\>	SISLCurve	\>	*{\fov curves}[\,];\\
+		\>\>	int	\>	{\fov typecur}[\,];\\
+		\>\>	double	\>	{\fov startpar};\\
+		\>\>	int 	\>	{\fov open};\\
+		\>\>	int 	\>	{\fov order2};\\
+		\>\>	int	\>	{\fov flag};\\
+		\>\>	SISLSurf	\>	**{\fov surf};\\
+		\>\>	double 	\>	**{\fov parval};\\
+		\>\>	int 	\>	*{\fov stat};\\
+\\
+ARGUMENTS\\
+	\>Input Arguments:\\
+	\>\>	{\fov numcurve}\> - \>	\begin{minipg2}
+				Number of curves in the curve-set.
+				\end{minipg2}\\
+	\>\>	{\fov curves}\> - \>	\begin{minipg2}
+				Array (length numcurve) of pointers to the curves in the 
+				curve-set.
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov typecur}\> - \>	\begin{minipg2}
+				Array (length numcurve) containing the types of the curves	
+				in the curve-set.
+				\end{minipg2}\\[0.8ex]
+		\>\>\>\>\>	 1 : \>	Ordinary curve.\\
+		\>\>\>\>\>	 3 : \>	Tangent to next curve.\\
+		\>\>\>\>\>	 4 : \>	Tangent to prior curve.\\
+		\>\>\>\>\>	13 : \>	\begin{minipg5}
+					SISLCurve giving start of the tangent to next curve.
+					\end{minipg5}\\[0.8ex]
+		\>\>\>\>\>	14 : \>	\begin{minipg5}
+					SISLCurve giving end of the tangent to prior curve.
+					\end{minipg5}\\[0.8ex]
+	\>\>	{\fov startpar}\> - \>	\begin{minipg2}
+				Start parameter of the parameter interval in the spline lofting direction.	
+				\end{minipg2} \\[0.3ex]
+	\>\>	{\fov open}\> - \>	\begin{minipg2}
+				Flag specifying if the resulting surface from the lofting should be closed 
+						or open.
+				\end{minipg2} \\[0.8ex]
+		\>\>\>\>\>	$=0$ : \>	The surface should be closed.\\
+		\>\>\>\>\>	$=1$ : \>	The surface should be open.\\
+{\fov 	}\>\>	order2	\> - \> \begin{minipg2}
+				Maximal order of the B-spline basis in the lofting 	
+				direction.
+				\end{minipg2}\\[0.8ex]
+	\>\>	{\fov flag}\> - \>	\begin{minipg2}
+				Flag specifying if the length of the
+				tangents in the derivative curves 
+				should be adjusted or not.
+				\end{minipg2}\\[0.3ex]
+		\>\>\>\>\>	$=0$ : \>	Do not adjust tangent-lengths.\\
+		\>\>\>\>\>	$=1$ : \>	Adjust tangent-lengths\\
+\\
+	\>Output Arguments:\\
+	\>\>	{\fov surf}\> - \>	\begin{minipg2}
+				Pointer to the produced surface .
+				\end{minipg2}\\
+	\>\>	{\fov parval}\> - \>	\begin{minipg2}
+			The input curves are constant parameter lines in the parameter
+			plane of the produced surface.
+				\end{minipg2}\\[0.3ex]
+		\>\>\>\>\>	[i]: \>	\begin{minipg5}
+					contains the (constant) parameter value of input curve no. i.
+					\end{minipg5}\\[0.3ex]
+	\>\>	{\fov stat}\> - \>		Status messages\\
+		\>\>\>\>\>		$> 0$	: warning\\
+		\>\>\>\>\>		$= 0$	: ok\\
+		\>\>\>\>\>		$< 0$	: error\\		
+\\
+EXAMPLE OF USE\\
+		\>	\{ \\
+		\>\>	int	\> 	{\fov numcurve = 4};\\
+		\>\>	SISLCurve	\>	*{\fov curves[4]};\\
+		\>\>	int	\>	{\fov typecur[4]};\\
+		\>\>	double	\>	{\fov startpar};\\
+		\>\>	int 	\>	{\fov open};\\
+		\>\>	int 	\>	{\fov order2};\\
+		\>\>	int	\>	{\fov flag};\\
+		\>\>	SISLSurf	\>	*{\fov surf};\\
+		\>\>	double 	\>	*{\fov parval};\\
+		\>\>	int 	\>	{\fov stat};\\
+		\>\>	\ldots \\
+	\>\>s1333(\begin{minipg4}
+		{\fov numcurve}, {\fov curves}, {\fov typecur}, {\fov startpar}, {\fov open}, {\fov order2}, {\fov flag}, \&{\fov surf},	
+		\&{\fov parval}, \&{\fov stat});
+			\end{minipg4}\\
+		\>\>	\ldots\\
+		\>	\}
+\end{tabbing}

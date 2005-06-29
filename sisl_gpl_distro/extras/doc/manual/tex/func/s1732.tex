@@ -1,0 +1,64 @@
+\subsection{Pick out the next Bezier curve from a curve.}
+\funclabel{s1732}
+\begin{minipg1}
+  To pick out the next Bezier curve from a curve. This function requires a
+  curve represented as the curve that is output from s1730().
+  If the input curve is rational, the generated Bezier curves will be
+  rational too (i.e.\ there will be rational weights in the
+  representation of the Bezier curves).
+\end{minipg1} \\ \\
+SYNOPSIS\\
+        \>void s1732(\begin{minipg3}
+        {\fov curve}, {\fov number}, {\fov startpar}, {\fov endpar}, {\fov coef}, {\fov stat})
+                \end{minipg3}\\[0.3ex]
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov number};\\
+                \>\>    double  \>      *{\fov startpar};\\
+                \>\>    double  \>      *{\fov endpar};\\
+                \>\>    double  \>      {\fov coef}[\,];\\
+                \>\>    int     \>      *{\fov stat};\\
+\\
+ARGUMENTS\\
+        \>Input Arguments:\\
+        \>\>    {\fov curve}    \> - \> curve to pick from.\\
+        \>\>    {\fov number}   \> - \>\begin{minipg2}
+                                The number of the Bezier curve that is
+                                to be picked, where $0\leq number<in/ik$
+                                (i.e.\ the number of vertices in the
+                                curve divided by the order of the curve).
+                                \end{minipg2}\\[0.8ex]
+\\
+        \>Output Arguments:\\
+        \>\>    {\fov startpar}\> - \>\begin{minipg2}
+                                The start parameter value of the Bezier curve.
+                                \end{minipg2}\\
+        \>\>    {\fov endpar} \> - \>\begin{minipg2}
+                                The end parameter value of the Bezier curve.
+                                \end{minipg2}\\
+        \>\>    {\fov coef}     \> - \>\begin{minipg2}
+                                The vertices of the Bezier curve.
+                                Space of size $(idim+1)\times ik$ (i.e.\
+                                spatial dimension of curve $+1$ times the
+                                order of the curve) must be allocated
+                                outside the function.
+                                \end{minipg2}\\[0.8ex]
+        \>\>    {\fov stat}     \> - \> Status messages\\
+                \>\>\>\>\>              $> 0$   : warning\\
+                \>\>\>\>\>              $= 0$   : ok\\
+                \>\>\>\>\>              $< 0$   : error\\
+\newpagetabs
+EXAMPLE OF USE\\
+                \>      \{ \\
+                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    int     \>      {\fov number};\\
+                \>\>    double  \>      {\fov startpar};\\
+                \>\>    double  \>      {\fov endpar};\\
+                \>\>    double  \>      {\fov coef}[12];\\
+                \>\>    int     \>      {\fov stat};\\
+                \>\>    \ldots \\
+        \>\>s1732(\begin{minipg4}
+                {\fov curve}, {\fov number}, \&{\fov startpar}, \&{\fov endpar}, {\fov coef}, \&{\fov stat});
+                        \end{minipg4}\\
+                \>\>    \ldots \\
+                \>      \}
+\end{tabbing}
