@@ -12,7 +12,7 @@ echo It will be zipped to $RESULT_CATALOG.tgz
 # making result file structure
 mkdir $RESULT_CATALOG
 mkdir $RESULT_CATALOG/doc
-mkdir $RESULT_CATALOG/doc/manualx
+mkdir $RESULT_CATALOG/doc/manual
 mkdir $RESULT_CATALOG/doc/users_guide
 mkdir $RESULT_CATALOG/examples
 mkdir $RESULT_CATALOG/examples/lib
