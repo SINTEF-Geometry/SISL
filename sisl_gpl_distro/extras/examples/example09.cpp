@@ -42,7 +42,7 @@ namespace {
 
     string DESCRIPTION = 
     //==========================================================
-    "This program generates a series of surfaces that "
+    "This program generates a series of surfaces that \n"
     "each interpolate an array of (internally defined) points in \n"
     "3D space.  The results will be written to file in Go-format.\n"
     "The generated surfaces will be written to the file \n"

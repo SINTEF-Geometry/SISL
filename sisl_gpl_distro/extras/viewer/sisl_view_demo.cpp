@@ -147,6 +147,7 @@ static std::string hotkey_help_string =
 "'-' - decrease thickness of axes\n"
 "'>' - increase size of points\n"
 "'<' - decrease size of points\n"
+"'*' / increase length of axes\n"
 "'/' - decrease length of axes\n"
 "\n"
 "---Load/save viewpoint---\n"

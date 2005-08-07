@@ -48,7 +48,7 @@ namespace {
     "earlier example programs (example10 and example11), so you\n"
     "should run these first. The filenames for these surfaces \n"
     "are '" + IN_FILE_SURFACE_1 + "' and '" + IN_FILE_SURFACE_2 +
-    "'.  The resulting curves will be written to the file \n'" 
+    "'.  \n The resulting curves will be written to the file \n'" 
     + OUT_FILE_CURVE + "'.\n\n";
     //==========================================================
 
