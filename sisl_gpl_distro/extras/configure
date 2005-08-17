@@ -1,0 +1,61 @@
+#! /bin/bash
+# The only thing this configure script does is to check that the user has GLUT 
+# installed.
+
+# hopefully a unique name
+DUMMY_FILE_NAME=ndsjklf_dummy.C 
+DUMMY_OUT=ndsjklf_dummy.out
+
+LACKING_LIB_MESSAGE="You will be able to compile sisl, the streaming library
+and the examples, but not the viewer."
+OK_MESSAGE="Everything found to be OK.  You should be able to compile everything."
+
+echo Checking for necessary libraries....
+
+# making dummy file
+echo int main\(\)\{main\(\)\;return 0\;\} > $DUMMY_FILE_NAME
+
+# trying to compile dummy file
+# g++ -Wall -c $DUMMY_FILE_NAME -o $DUMMY_FILE_NAME.o
+
+
+echo Checking for GL...
+g++ -o $DUMMY_OUT $DUMMY_FILE_NAME -lGL
+RET=$?
+if [ $RET -eq 0 ]
+then echo found\!
+else 
+  echo "Error: could not find 'GL'"
+  echo $LACKING_LIB_MESSAGE
+  exit 1
+fi
+
+echo Checking for GLU...
+g++ -o $DUMMY_OUT $DUMMY_FILE_NAME -lGLU -lGL
+RET=$?
+if [ $RET -eq 0 ]
+then echo found\!
+else 
+  echo "Error: could not find 'GLU'"
+  echo $LACKING_LIB_MESSAGE
+  exit 1
+fi
+
+echo checking for glut...
+g++ -o $DUMMY_OUT $DUMMY_FILE_NAME -lglut -lGLU -lGL
+RET=$?
+if [ $RET -eq 0 ]
+then echo found\!
+else 
+  echo "Error: could not find 'glut'" 
+  echo $LACKING_LIB_MESSAGE
+  exit 1
+fi
+
+echo
+echo $OK_MESSAGE
+echo
+# deleting dummy file
+rm $DUMMY_FILE_NAME
+rm $DUMMY_OUT
+
