@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1313.c,v 1.11 2004-10-29 14:01:49 afr Exp $
+ * $Id: s1313.c,v 1.12 2005-12-09 14:08:45 afr Exp $
  *
  */
 
@@ -633,7 +633,7 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 	    {
 	      sp1[0] = - sp1[0];
 	      sp1[1] = - sp1[1];
-	      sp1[2] = - sp1[2];
+/* 	      sp1[2] = - sp1[2]; */
 	    }
 
 	  /* Turn direction of remembered start tangent */
