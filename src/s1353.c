@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1353.c,v 1.2 2001-03-19 15:58:46 afr Exp $
+ * $Id: s1353.c,v 1.3 2006-05-02 15:06:56 sbr Exp $
  *
  */
 
@@ -196,7 +196,7 @@ void s1353(curve, eps, ranking, stat)
       /* pm1h is the first entry in last column of the coefficient matrix. */
 
 	       pm1h = 1.0;
-      if ( fmod((float) dm, 2.0) == 0 )  pm1h = -1.0;
+      if ( fmod((float) dm, (float) 2.0) == 0 )  pm1h = -1.0;
 
       /* The integer j is used to step through the equations during
 	 elimination, while muj is used to hold the mu of equation j

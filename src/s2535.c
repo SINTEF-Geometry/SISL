@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s2535.c,v 1.2 2001-03-19 15:58:59 afr Exp $
+ * $Id: s2535.c,v 1.3 2006-05-02 15:06:04 sbr Exp $
  *
  */
 
@@ -107,9 +107,9 @@ void s2535(surf, u_continuity, v_continuity, u_surfnumb, v_surfnumb, patches,
    u_mult = max(surf->ik1 - u_continuity, 1);
    v_mult = max(surf->ik2 - v_continuity, 1);
    
-   if ((u_splitpar = newarray(((int) floor(surf->in1/u_mult)) - 1, DOUBLE)) 
+   if ((u_splitpar = newarray(((int) floor((double) surf->in1/u_mult)) - 1, DOUBLE)) 
        == SISL_NULL) goto err101;
-   if ((v_splitpar = newarray(((int) floor(surf->in2/v_mult)) - 1, DOUBLE)) 
+   if ((v_splitpar = newarray(((int) floor((double) surf->in2/v_mult)) - 1, DOUBLE)) 
        == SISL_NULL) goto err101;
    
    *u_surfnumb = 0;
