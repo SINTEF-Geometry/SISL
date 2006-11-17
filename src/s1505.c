@@ -288,11 +288,6 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
     }
   }
 
-  /* Free memory. */
-  if(sder != SISL_NULL) freearray(sder);
-  if(enorm != SISL_NULL) freearray(enorm);
-  if (ew != SISL_NULL) freearray(ew);
-
   goto out;
 
   /* Not enough memory. */
@@ -327,5 +322,10 @@ void s1505(ps1,ider,m1,m2,ebder1,ebder2,ileft1,ileft2,eder,norm,jstat)
   goto out;
 
  out:
+  /* Free memory. */
+  if(sder != SISL_NULL) freearray(sder);
+  if(enorm != SISL_NULL) freearray(enorm);
+  if (ew != SISL_NULL) freearray(ew);
+
     return;
 }

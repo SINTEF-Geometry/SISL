@@ -146,12 +146,6 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
       ileft1,ileft2,eder,norm,&kstat);
   if(kstat < 0) goto error;
 
-  /* Free memory. */
-  if(ebder1 != SISL_NULL) freearray(ebder1);
-  if(ileft1 != SISL_NULL) freearray(ileft1);
-  if(ebder2 != SISL_NULL) freearray(ebder2);
-  if(ileft2 != SISL_NULL) freearray(ileft2);
-
   *jstat = 0;
   goto out;
 
@@ -187,5 +181,11 @@ void s1506(ps1,ider,m1,x,m2,y,eder,norm,jstat)
   goto out;
 
  out:
+  /* Free memory. */
+  if(ebder1 != SISL_NULL) freearray(ebder1);
+  if(ileft1 != SISL_NULL) freearray(ileft1);
+  if(ebder2 != SISL_NULL) freearray(ebder2);
+  if(ileft2 != SISL_NULL) freearray(ileft2);
+
     return;
 }

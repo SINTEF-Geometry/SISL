@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1504.c,v 1.2 2001-03-19 15:58:50 afr Exp $
+ * $Id: s1504.c,v 1.3 2006-11-17 20:55:25 vsk Exp $
  *
  */
 
@@ -92,7 +92,7 @@ void s1504(et,ik,in,ax,im,ider,ebder,ileft,jstat)
   int kleft=0;        /* Local version of ileft.                         */
   int j,k,kk;         /* Control variables in for loops and for stepping
 			 through arrays.                                 */
-  double *eder;       /* B-spline evaluationas at a single value.        */
+  double *eder = SISL_NULL;  /* B-spline evaluationas at a single value. */
   int size;           /* (ider+1) * ik.                                  */
 
   if (ider < 0) goto err178;
@@ -134,5 +134,8 @@ void s1504(et,ik,in,ax,im,ider,ebder,ileft,jstat)
   s6err("s1504",*jstat,kpos);
   goto out;
 
- out: return;
+ out: 
+  if (eder != SISL_NULL)
+      freearray(eder);
+  return;
 }
