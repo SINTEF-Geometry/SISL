@@ -68,6 +68,7 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
 *
 * WRITTEN BY:	Geir Westgaard, SINTEF, Oslo, November 1999
 * REVISED BY:   Vibeke Skytt, SINTEF, Dec. 2006. Allow dimension different from 3
+*                                                and rational curves
 *
 *********************************************************************
 */
