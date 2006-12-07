@@ -67,22 +67,32 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
 * METHOD:
 *
 * WRITTEN BY:	Geir Westgaard, SINTEF, Oslo, November 1999
+* REVISED BY:   Vibeke Skytt, SINTEF, Dec. 2006. Allow dimension different from 3
 *
 *********************************************************************
 */
 {
    int m = 0, m1 = 0;
    int my, my1;
-   int np, i;
+   int np, i, j;
    int ik;
    double bas;
-   double cx, cy, cz;
    double* ecoef = SISL_NULL;
+   int kdim = pc1->idim;
+   double scratch[3];
+   double *xyz = NULL;
 
 
    /* Check the input. */
 
-   if ( pc1->idim != 3 ) goto err104;
+   //if ( pc1->idim != 3 ) goto err104;
+
+   if (kdim > 3)
+   {
+       if ((xyz = newarray(kdim, DOUBLE) == SISL_NULL))
+	   goto err101;
+   }
+   else xyz = scratch;
 
 
    /* Set input to local variables. */
@@ -94,22 +104,22 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
    for ( np = 0; np < npol; np++ )
    {
      my  = ileft[ np ] - ik;
-
-     cx = cy = cz = 0.0;
+     
+     for (j=0; j<kdim; j++)
+	 xyz[j] = 0.0;
 
      for ( i = 0; i < ik; i++ )
      {
        my++;
-       my1 = 3*my;
+       my1 = kdim*my;
        bas = ebder[ m1++ ];
 
-       cx += ecoef[ my1   ]*bas;
-       cy += ecoef[ my1+1 ]*bas;
-       cz += ecoef[ my1+2 ]*bas;
+       for (j=0; j<kdim; j++)
+	   xyz[j] += ecoef[my1+j]*bas;
      }
-     eder[ m++ ] = cx;
-     eder[ m++ ] = cy;
-     eder[ m++ ] = cz;
+
+     for (j=0; j<kdim; j++)
+	 eder[m++] = xyz[j];
    }
 
 
@@ -123,6 +133,13 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
          s6err( "s1541", *jstat, 0 );
          goto out;
 
-out: return;
+ err101: *jstat = -101;
+         s6err( "s1541", *jstat, 0 );
+         goto out;
+
+out: 
+	 if (xyz != SISL_NULL && xyz != scratch)
+	     freearray(xyz);
+	 return;
 
 }
