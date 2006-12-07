@@ -79,15 +79,19 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
    double bas;
    double* ecoef = SISL_NULL;
    int kdim = pc1->idim;
-   double scratch[3];
+   double scratch[4];
    double *xyz = NULL;
+   int krat = (pc1->ikind == 2 || pc1->ikind == 4);
 
 
    /* Check the input. */
 
    //if ( pc1->idim != 3 ) goto err104;
 
-   if (kdim > 3)
+   if (krat)
+       kdim++;
+
+   if (kdim > 4)
    {
        if ((xyz = newarray(kdim, DOUBLE) == SISL_NULL))
 	   goto err101;
@@ -98,7 +102,7 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
    /* Set input to local variables. */
 
    ik    = pc1 -> ik;
-   ecoef = pc1 -> ecoef;
+   ecoef = (krat) ? pc1->rcoef : pc1 -> ecoef;
 
 
    for ( np = 0; np < npol; np++ )
@@ -118,7 +122,13 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
 	   xyz[j] += ecoef[my1+j]*bas;
      }
 
-     for (j=0; j<kdim; j++)
+     if (krat)
+     {
+	 for (j=0; j<pc1->idim; j++)
+	     xyz[j] /= xyz[pc1->idim];
+     }
+
+     for (j=0; j<pc1->idim; j++)
 	 eder[m++] = xyz[j];
    }
 
