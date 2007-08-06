@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: sh1992.c,v 1.3 2005-02-28 09:04:50 afr Exp $
+ * $Id: sh1992.c,v 1.4 2007-08-06 13:09:13 vsk Exp $
  *
  */
 
@@ -177,11 +177,11 @@ void sh1992(po,itype,aepsge,jstat)
 	 s6newbox(po->c1->pbox,knum,ktype,aepsge,&kstat);
 	 if (kstat < 0) goto error;
 	 
-	 if (po->c1->ik == po->c1->in) 
+	 /*if (po->c1->ik == po->c1->in) 
          {
             teps_inner = DZERO;
             kbez = 1;
-         }
+	    }*/
 	 
 	 /* Make the requested box. First allocate scratch for
 	    box arrays.  */
@@ -221,11 +221,11 @@ void sh1992(po,itype,aepsge,jstat)
 	 s6newbox(po->s1->pbox,knum,ktype,aepsge,&kstat);
 	 if (kstat < 0) goto error;
 	 
-	 if (po->s1->ik1 == po->s1->in1 && po->s1->ik2 == po->s1->in2) 
+	 /*if (po->s1->ik1 == po->s1->in1 && po->s1->ik2 == po->s1->in2) 
          {
 	    teps_inner = DZERO;
             kbez = 1;
-         }
+	    }*/
 	 
 	 /* Make the requested box. First allocate scratch for
 	    box arrays.  */

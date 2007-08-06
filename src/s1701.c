@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1701.c,v 1.1 1994-04-21 12:10:42 boh Exp $
+ * $Id: s1701.c,v 1.2 2007-08-06 13:09:12 vsk Exp $
  *
  */
 
@@ -123,18 +123,24 @@ void s1701(ij,imy,ik,in,jpl,jfi,jla,et,etau,ep,galfa,jstat)
      the real knot inserten matrix. */
   
   *jpl=ik-imy-1;
-  
-  
-  /* Changing the galfa so we may use the index in the real matrix. */
-  
-  galfa += *jpl;
-  
-  
-  /* Initialise the last element. */
-  
-  galfa[imy] = 1;
-  
-  
+
+//----> KYS 990414. Replaced the following lines:
+//  /* Changing the galfa so we may use the index in the real matrix. */
+//
+//  galfa += *jpl;
+//
+//
+//  /* Initialise the last element. */
+//
+//  galfa[imy] = 1;   	
+//			
+//
+// Replacement:
+
+  galfa[ik-1] = 1;	// since ik-1 = imy+ *jpl
+
+// <--- end kys 990414
+
   /* Here we go one time for each new knot from et(j+1)
      until et(j+k) we insert. */
   
@@ -153,16 +159,20 @@ void s1701(ij,imy,ik,in,jpl,jfi,jla,et,etau,ep,galfa,jstat)
       /* Here we note the special case where we are at the
 	 start of the matrix and we does not have a k-touple
 	 knot at this end. */
-      
-      if (kp>=imy) tbeta1=(*ep - *etau)*(*galfa)/(etau[kkv] - *etau);
+      // KYS 990414: Replaced "(*galfa)" by "(galfa[*jpl])" in next line
+
+      if (kp>=imy) tbeta1=(*ep - *etau)*(galfa[*jpl])/(etau[kkv] - *etau);
       else         tbeta1=0;
       
       *jfi=max(1,imy-kp); *jla=min(imy,ij-kp);
       
       
       /* For details about this loop look in the reference. */
-      
-      for (et=etau+ *jfi,tu=etau+ *jla,ah=galfa+ *jfi; et<=tu; et++,ah++)
+      // KYS 990414: Replaced "galfa" by "galfa+ *jpl" in next line
+
+      for (et=etau+ *jfi,tu=etau+ *jla,ah=galfa+ *jpl+ *jfi;
+	   et<=tu;
+	   et++,ah++)
 	{
 	  td1 = *ep - *et;
 	  td2 = et[kkv] - *ep;
@@ -182,10 +192,11 @@ void s1701(ij,imy,ik,in,jpl,jfi,jla,et,etau,ep,galfa,jstat)
 	  *(ah-1) = tbeta1+(*et-*ep)*(*ah)/(*et - *(tu+1));
 	} else  *(ah-1) = tbeta1;
     }
-  
-  
-  /* Adjusting the index of first and last in galfa. */
-  
+
+
+  /* Adjusting the global indices corresponding to first and last
+     nonzero element in galfa. */
+
   if (kv) (*jfi)--;
   else   *jfi = *jla = imy;
   

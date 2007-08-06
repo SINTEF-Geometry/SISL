@@ -12,7 +12,7 @@
 
 /*
  *
- * $Id: sh1762.c,v 1.17 2005-02-28 09:04:50 afr Exp $
+ * $Id: sh1762.c,v 1.18 2007-08-06 13:09:12 vsk Exp $
  *
  */
 
@@ -354,9 +354,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	  s1741 (po1, po2, aepsge, &kstat);
 	  if (kstat < 0)
 	    goto error;
-	  else if (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE &&
-		   vedge[0]->ipoint + vedge[1]->ipoint > 0 && !kstat)
-	    sh1762_s9simple (po1, po2, vedge, &kstat);
+	  //else if (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE &&
+	  //	   vedge[0]->ipoint + vedge[1]->ipoint > 0 && !kstat)
+	  //  sh1762_s9simple (po1, po2, vedge, &kstat);
 	  if (kstat < 0)
 	    goto error;
 	  /* } */
