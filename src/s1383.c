@@ -11,7 +11,7 @@
 
 /*
  *
- * $Id: s1383.c,v 1.4 2001-03-19 15:58:48 afr Exp $
+ * $Id: s1383.c,v 1.5 2009-03-18 13:30:55 vsk Exp $
  *
  */
 
@@ -235,8 +235,8 @@ void s1383(psurf,pcurv,aepsge,amax,ider,rcpos,rcder1,rcder2,jstat)
       
       if (DEQUAL(tlengthend,DZERO))
         { 
-	  /* Step equal to computer resolution */
-	  tincre = tx1*((double)1.0+REL_COMP_RES);
+	  /* Step equal to parameter resolution */
+	  tincre = max(tx1*((double)1.0+REL_PAR_RES),REL_PAR_RES);
         }
       else
         tincre = tstep/tlengthend;
