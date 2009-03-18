@@ -25,7 +25,7 @@
 #include "sisl.h"
 /*
  *
- * $Id: sislP.h,v 1.55 2004-01-21 13:50:14 vsk Exp $
+ * $Id: sislP.h,v 1.56 2009-03-18 13:30:41 vsk Exp $
  *
  */
 
@@ -396,10 +396,10 @@ enum
 /* Macros checking for equality/non-equality  between two double numbers */
 
 #define DEQUAL(a,b) \
-  ( (fabs((a) - (b)) <= (REL_PAR_RES * MAX(fabs(a),fabs(b)))) ? (1) : (0) )
+  ( (fabs((a) - (b)) <= (REL_PAR_RES * MAX(MAX(fabs(a),fabs(b)),(double)1.0))) ? (1) : (0) )
 
 #define DNEQUAL(a,b) \
-  ( (fabs((a) - (b)) >  (REL_PAR_RES * MAX(fabs(a),fabs(b)))) ? (1) : (0) )
+  ( (fabs((a) - (b)) >  (REL_PAR_RES * MAX(MAX(fabs(a),fabs(b)),(double)1.0))) ? (1) : (0) )
 
 #define ZEROLEN(a) \
   ( (fabs(a) <= AEPSGE) ? (1) : (0) )
