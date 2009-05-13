@@ -25,7 +25,7 @@
 /*****************************************************************************/
 /*
  *
- * $Id: sisl.h,v 1.46 2005-03-04 13:18:54 oan Exp $
+ * $Id: sisl.h,v 1.47 2009-05-13 07:32:15 vsk Exp $
  *
  */
 
@@ -43,6 +43,18 @@
 #undef SISLNEEDPROTOTYPES
 #define SISLNEEDPROTOTYPES
 #endif
+
+#ifdef __BORLANDC__
+# define GO_API __declspec(package)
+#elif defined(MICROSOFT) || defined(_MSC_VER)
+# if defined(__DLL__) || defined(_DLL)
+#  define GO_API __declspec(dllexport)
+# else
+#  define GO_API __declspec(dllimport)
+# endif // __DLL__
+#else
+# define GO_API
+#endif // __BORLANDC__
 
 typedef struct SISLdir
 {
@@ -247,612 +259,612 @@ enum
 #ifndef CONSTRUCT
 extern
 #endif
-SISLbox      *newbox(int);
+SISLbox GO_API *newbox(int);
 #ifndef CONSTRUCT
 extern
 #endif
-SISLCurve    *newCurve(int,int,double *,double *,int,int,int);
+SISLCurve GO_API *newCurve(int,int,double *,double *,int,int,int);
 #ifndef CONSTRUCT
 extern
 #endif
-SISLCurve    *copyCurve(SISLCurve *);
+SISLCurve GO_API *copyCurve(SISLCurve *);
 #ifndef CONSTRUCT
 extern
 #endif
-SISLdir      *newdir(int);
+SISLdir GO_API *newdir(int);
 #ifndef CONSTRUCT
 extern
 #endif
-SISLIntcurve *newIntcurve(int,int,int,double *,double *,int);
+SISLIntcurve GO_API *newIntcurve(int,int,int,double *,double *,int);
 #ifndef CONSTRUCT
 extern
 #endif
-SISLSurf     *newSurf(int,int,int,int,double *,double *,double *,int,int,int);
+SISLSurf GO_API *newSurf(int,int,int,int,double *,double *,double *,int,int,int);
 #ifndef CONSTRUCT
 extern
 #endif
-SISLSurf     *copySurface(SISLSurf *);
+SISLSurf GO_API *copySurface(SISLSurf *);
 
 #ifndef DESTRUCT
 extern
 #endif
-void freeCurve(SISLCurve *);
+void GO_API freeCurve(SISLCurve *);
 #ifndef DESTRUCT
 extern
 #endif
-void freeIntcrvlist(SISLIntcurve **,int);
+void GO_API freeIntcrvlist(SISLIntcurve **,int);
 #ifndef DESTRUCT
 extern
 #endif
-void freeIntcurve(SISLIntcurve *);
+void GO_API freeIntcurve(SISLIntcurve *);
 #ifndef DESTRUCT
 extern
 #endif
-void freeSurf(SISLSurf *);
+void GO_API freeSurf(SISLSurf *);
 #ifndef  S1001
 extern
 #endif
-void s1001(SISLSurf *,double,double,double,double,SISLSurf **,int *);
+void GO_API s1001(SISLSurf *,double,double,double,double,SISLSurf **,int *);
 #ifndef  S1011
 extern
 #endif
-void s1011(double [],double [],double [],double,int,SISLCurve **,int *);
+void GO_API s1011(double [],double [],double [],double,int,SISLCurve **,int *);
 #ifndef  S1012
 extern
 #endif
-void s1012(double [],double [],double [],double,int,int,
+void GO_API s1012(double [],double [],double [],double,int,int,
 		SISLCurve **,int *);
 #ifndef  S1013
 extern
 #endif
-void s1013(SISLCurve *,double,double,double,double *,int *);
+void GO_API s1013(SISLCurve *,double,double,double,double *,int *);
 #ifndef  S1014
 extern
 #endif
-void s1014(SISLCurve *,double[],double,double,double[],double[],double,
+void GO_API s1014(SISLCurve *,double[],double,double,double[],double[],double,
                   double *,double *,double[],int *);
 #ifndef  S1015
 extern
 #endif
-void s1015(SISLCurve *,SISLCurve *,double,double[],double[],double,
+void GO_API s1015(SISLCurve *,SISLCurve *,double,double[],double[],double,
 		  double *,double *,double[],int *);
 #ifndef  S1016
 extern
 #endif
-void s1016(SISLCurve *,double[],double[],double,double[],double[],
+void GO_API s1016(SISLCurve *,double[],double[],double,double[],double[],
 		  double,double *,double *,double[],int *);
 #ifndef  S1017
 extern
 #endif
-void s1017(SISLCurve *,SISLCurve **,double,int *);
+void GO_API s1017(SISLCurve *,SISLCurve **,double,int *);
 #ifndef  S1018
 extern
 #endif
-void s1018(SISLCurve *,double [],int,SISLCurve **,int *);
+void GO_API s1018(SISLCurve *,double [],int,SISLCurve **,int *);
 #ifndef  S1021
 extern
 #endif
-void s1021(double [],double [],double,double [],double,SISLSurf **,int *);
+void GO_API s1021(double [],double [],double,double [],double,SISLSurf **,int *);
 #ifndef  S1022
 extern
 #endif
-void s1022(double [],double[],double,double [],double,double,
+void GO_API s1022(double [],double[],double,double [],double,double,
 	       SISLSurf **,int *);
 #ifndef  S1023
 extern
 #endif
-void s1023(double [],double [],double [],int,int,SISLSurf **,int *);
+void GO_API s1023(double [],double [],double [],int,int,SISLSurf **,int *);
 #ifndef  S1024
 extern
 #endif
-void s1024(double [],double [],double [],double,int,int,int,
+void GO_API s1024(double [],double [],double [],double,int,int,int,
 	      SISLSurf **,int *);
 #ifndef  S1025
 extern
 #endif
-void s1025(SISLSurf *,double [],int,double [],int,SISLSurf **,int *);
+void GO_API s1025(SISLSurf *,double [],int,double [],int,SISLSurf **,int *);
 #ifndef  S1221
 extern
 #endif
-void s1221(SISLCurve *,int,double,int *,double [],int *);
+void GO_API s1221(SISLCurve *,int,double,int *,double [],int *);
 #ifndef  S1225
 extern
 #endif
-void s1225(SISLCurve *,int,double,int *,double [],double [],double *,int *);
+void GO_API s1225(SISLCurve *,int,double,int *,double [],double [],double *,int *);
 #ifndef  S1226
 extern
 #endif
-void s1226(SISLCurve *,int,double,int *,double [],double [],double *,int *);
+void GO_API s1226(SISLCurve *,int,double,int *,double [],double [],double *,int *);
 #ifndef  S1227
 extern
 #endif
-void s1227(SISLCurve *,int,double,int *,double [],int *);
+void GO_API s1227(SISLCurve *,int,double,int *,double [],int *);
 #ifndef  S1233
 extern
 #endif
-void s1233(SISLCurve *,double,double,SISLCurve **,int *);
+void GO_API s1233(SISLCurve *,double,double,SISLCurve **,int *);
 #ifndef  S1237
 extern
 #endif
-void s1237(SISLSurf *,int,int,double,int *);
+void GO_API s1237(SISLSurf *,int,int,double,int *);
 #ifndef  S1238
 extern
 #endif
-void s1238(SISLSurf *,SISLCurve *,int,int,double,double,int *);
+void GO_API s1238(SISLSurf *,SISLCurve *,int,int,double,double,int *);
 #ifndef  S1240
 extern
 #endif
-void s1240(SISLCurve *,double,double *,int *);
+void GO_API s1240(SISLCurve *,double,double *,int *);
 #ifndef  S1241
 extern
 #endif
-void s1241(SISLCurve *,double [],int,double,double *,int *);
+void GO_API s1241(SISLCurve *,double [],int,double,double *,int *);
 #ifndef  S1243
 extern
 #endif
-void s1243(SISLCurve *,double [],int,double,double[],double *,
+void GO_API s1243(SISLCurve *,double [],int,double,double[],double *,
             double *,int *);
 #ifndef  S1302
 extern
 #endif
-void s1302(SISLCurve *,double,double,double [],double [],SISLSurf **,int *);
+void GO_API s1302(SISLCurve *,double,double,double [],double [],SISLSurf **,int *);
 #ifndef  S1303
 extern
 #endif
-void s1303(double [],double,double,double [],double [],int,SISLCurve **,int *);
+void GO_API s1303(double [],double,double,double [],double [],int,SISLCurve **,int *);
 #ifndef  S1310
 extern
 #endif
-void s1310(SISLSurf *,SISLSurf *,SISLIntcurve *,double,double,int,int,int *);
+void GO_API s1310(SISLSurf *,SISLSurf *,SISLIntcurve *,double,double,int,int,int *);
 #ifndef  S1314
 extern
 #endif
-void s1314(SISLSurf *,double *,double *,int,double,double,double,
+void GO_API s1314(SISLSurf *,double *,double *,int,double,double,double,
 	   SISLIntcurve *,int,int,int *);
 #ifndef  S1315
 extern
 #endif
-void s1315(SISLSurf *,double *,double,int,double,double,double,
+void GO_API s1315(SISLSurf *,double *,double,int,double,double,double,
 	   SISLIntcurve *,int,int,int *);
 #ifndef  S1316
 extern
 #endif
-void s1316(SISLSurf *,double *,double *,double,int,double,double,double,
+void GO_API s1316(SISLSurf *,double *,double *,double,int,double,double,double,
 	   SISLIntcurve *,int,int,int *);
 #ifndef  S1317
 extern
 #endif
-void s1317(SISLSurf *,double *,double *,double *,int,double,double,double,
+void GO_API s1317(SISLSurf *,double *,double *,double *,int,double,double,double,
 	   SISLIntcurve *,int,int,int *);
 #ifndef  S1318
 extern
 #endif
-void s1318(SISLSurf *,double *,double *,double,double,int,double,double,
+void GO_API s1318(SISLSurf *,double *,double *,double,double,int,double,double,
 	   double,SISLIntcurve *,int,int,int *);
 #ifndef  S1319
 extern
 #endif
-void s1319(SISLSurf *,double *,int,double,double,double,SISLIntcurve *,
+void GO_API s1319(SISLSurf *,double *,int,double,double,double,SISLIntcurve *,
 	   int,int,int *);
 #ifndef  S1327
 extern
 #endif
-void s1327(SISLCurve *,double [],double [],double [],int,SISLCurve **,int *);
+void GO_API s1327(SISLCurve *,double [],double [],double [],int,SISLCurve **,int *);
 #ifndef  S1328
 extern
 #endif
-void s1328(SISLSurf *,double [],double [],double [],int,SISLSurf **,int *);
+void GO_API s1328(SISLSurf *,double [],double [],double [],int,SISLSurf **,int *);
 #ifndef  S1332
 extern
 #endif
-void s1332(SISLCurve *,SISLCurve *,double,double [],SISLSurf **,int *);
+void GO_API s1332(SISLCurve *,SISLCurve *,double,double [],SISLSurf **,int *);
 #ifndef  S1356
 extern
 #endif
-void s1356(double [],int,int,int [],int,int,int,int,double,
+void GO_API s1356(double [],int,int,int [],int,int,int,int,double,
 	   double *,SISLCurve **,double **,int *,int *);
 #ifndef  S1357
 extern
 #endif
-void s1357(double [],int,int,int [],double [],int,int,int,int,double,
+void GO_API s1357(double [],int,int,int [],double [],int,int,int,int,double,
 	   double *,SISLCurve **,double **,int *,int *);
 #ifndef  S1360
 extern
 #endif
-void s1360(SISLCurve *,double,double,double [],double,int,SISLCurve **,int *);
+void GO_API s1360(SISLCurve *,double,double,double [],double,int,SISLCurve **,int *);
 #ifndef  S1363
 extern
 #endif
-void s1363(SISLCurve *,double *,double *,int *);
+void GO_API s1363(SISLCurve *,double *,double *,int *);
 #ifndef  S1364
 extern
 #endif
-void s1364(SISLCurve *,double,int *);
+void GO_API s1364(SISLCurve *,double,int *);
 #ifndef S1365
 extern
 #endif
-void s1365(SISLSurf *,double,double, double,int,SISLSurf **,int *);
+void GO_API s1365(SISLSurf *,double,double, double,int,SISLSurf **,int *);
 #ifndef  S1369
 extern
 #endif
-void s1369(SISLSurf *,double [],double [],double,double,int,double,double,
+void GO_API s1369(SISLSurf *,double [],double [],double,double,int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1371
 extern
 #endif
-void s1371(SISLCurve *,double [],double,int,double,double,
+void GO_API s1371(SISLCurve *,double [],double,int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1372
 extern
 #endif
-void s1372(SISLCurve *,double [],double [],double,int,double,double,
+void GO_API s1372(SISLCurve *,double [],double [],double,int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1373
 extern
 #endif
-void s1373(SISLCurve *,double [],double [],double [],int,double,double,
+void GO_API s1373(SISLCurve *,double [],double [],double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1374
 extern
 #endif
-void s1374(SISLCurve *,double [],int,double,double,
+void GO_API s1374(SISLCurve *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1375
 extern
 #endif
-void s1375(SISLCurve *,double [],double [],double,double,int,double,double,
+void GO_API s1375(SISLCurve *,double [],double [],double,double,int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1379
 extern
 #endif
-void s1379(double [],double [],double [],int,int,SISLCurve **,int *);
+void GO_API s1379(double [],double [],double [],int,int,SISLCurve **,int *);
 #ifndef  S1380
 extern
 #endif
-void s1380(double [],double [],int,int,int,SISLCurve **,int *);
+void GO_API s1380(double [],double [],int,int,int,SISLCurve **,int *);
 #ifndef  S1383
 extern
 #endif
-void s1383(SISLSurf *,SISLCurve *,double,double,int,SISLCurve **,
+void GO_API s1383(SISLSurf *,SISLCurve *,double,double,int,SISLCurve **,
 	   SISLCurve **,SISLCurve **,int *);
 #ifndef  S1386
 extern
 #endif
-void s1386(SISLSurf *,int,int,SISLSurf **,int *);
+void GO_API s1386(SISLSurf *,int,int,SISLSurf **,int *);
 #ifndef  S1387
 extern
 #endif
-void s1387(SISLSurf *,int,int,SISLSurf **,int *);
+void GO_API s1387(SISLSurf *,int,int,SISLSurf **,int *);
 #ifndef  S1388
 extern
 #endif
-void s1388(SISLSurf *,double *[],int *,int *,int *,int *);
+void GO_API s1388(SISLSurf *,double *[],int *,int *,int *,int *);
 #ifndef  S1389
 extern
 #endif
-void s1389(SISLCurve *,double *[],int *,int *,int *);
+void GO_API s1389(SISLCurve *,double *[],int *,int *,int *);
 #ifndef  S1390
 extern
 #endif
-void s1390(SISLCurve *[],SISLSurf **,int [],int *);
+void GO_API s1390(SISLCurve *[],SISLSurf **,int [],int *);
 #ifndef  S1391
 extern
 #endif
-void s1391(SISLCurve **,SISLSurf ***,int,int [],int *);
+void GO_API s1391(SISLCurve **,SISLSurf ***,int,int [],int *);
 #ifndef  S1401
 extern
 #endif
-void s1401(SISLCurve *[],double [],SISLSurf **,int *);
+void GO_API s1401(SISLCurve *[],double [],SISLSurf **,int *);
 #ifndef  S1421
 extern
 #endif
-void s1421(SISLSurf *,int,double [],int *,int *,double [],double [],int *);
+void GO_API s1421(SISLSurf *,int,double [],int *,int *,double [],double [],int *);
 #ifndef  S1422
 extern
 #endif
-void s1422(SISLSurf *,int,int,int,double [],int *,int *,
+void GO_API s1422(SISLSurf *,int,int,int,double [],int *,int *,
 		 double [],double [],int *);
 #ifndef  S1424
 extern
 #endif
-void s1424(SISLSurf *,int,int,double [],int *,int *,double [],int *);
+void GO_API s1424(SISLSurf *,int,int,double [],int *,int *,double [],int *);
 #ifndef  S1425
 extern
 #endif
-void s1425(SISLSurf *,int,int,int,int,double [],int *,int *,
+void GO_API s1425(SISLSurf *,int,int,int,int,double [],int *,int *,
 		 double [],int *);
 #ifndef  S1439
 extern
 #endif
-void s1439(SISLSurf *,double,int,SISLCurve **,int *);
+void GO_API s1439(SISLSurf *,double,int,SISLCurve **,int *);
 #ifndef  S1440
 extern
 #endif
-void s1440(SISLSurf *,SISLSurf **,int *);
+void GO_API s1440(SISLSurf *,SISLSurf **,int *);
 #ifndef  S1450
 extern
 #endif
-void s1450(SISLSurf *,double,int *,int *,int *,int *,int *,int *,int *);
+void GO_API s1450(SISLSurf *,double,int *,int *,int *,int *,int *,int *,int *);
 #ifndef  S1451
 extern
 #endif
-void s1451(SISLCurve *,double,int *,int *);
+void GO_API s1451(SISLCurve *,double,int *,int *);
 #ifndef S1501
 extern
 #endif
-void s1501(SISLSurf *,double *,double *,double *,double,double,int,
+void GO_API s1501(SISLSurf *,double *,double *,double *,double,double,int,
 	   double,double,double,SISLIntcurve *,int,int,int *);
 #ifndef S1502
 extern
 #endif
-void s1502(SISLCurve *,double [],double [],double [],double,double,int,
+void GO_API s1502(SISLCurve *,double [],double [],double [],double,double,int,
 	   double,double,int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef S1503
 extern
 #endif
-void s1503(SISLSurf *,double [],double [],double [],double,double,int,
+void GO_API s1503(SISLSurf *,double [],double [],double [],double,double,int,
 	   double,double,int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef S1506
 extern
 #endif
-void s1506(SISLSurf *,int,int,double *,int,double *,double [],
+void GO_API s1506(SISLSurf *,int,int,double *,int,double *,double [],
            double [],int *);
 #ifndef S1508
 extern
 #endif
-void s1508(int,SISLCurve **,double[],SISLSurf **,int *);
+void GO_API s1508(int,SISLCurve **,double[],SISLSurf **,int *);
 #ifndef S1510
 extern
 #endif
-void s1510(SISLSurf *,double [],int,double,double,
+void GO_API s1510(SISLSurf *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef S1511
 extern
 #endif
-void s1511(SISLSurf *,double [],double [],int,double,double,
+void GO_API s1511(SISLSurf *,double [],double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef S1514
 extern
 #endif
-void s1514(SISLSurf *,double [],int,double,double,double,SISLIntcurve *,
+void GO_API s1514(SISLSurf *,double [],int,double,double,double,SISLIntcurve *,
 	   int,int,int *);
 #ifndef S1515
 extern
 #endif
-void s1515(SISLSurf *,double [],double [],int,double,double,double,
+void GO_API s1515(SISLSurf *,double [],double [],int,double,double,double,
 	   SISLIntcurve *,int,int,int *);
 #ifndef S1518
 extern
 #endif
-void s1518(SISLSurf *surf, double point[], double dir[], double epsge,
+void GO_API s1518(SISLSurf *surf, double point[], double dir[], double epsge,
 	   double start[], double end[], double parin[], double parout[],
 	   int *stat);
 #ifndef  S1522
 extern
 #endif
-void s1522(double [],double [],double [],double,int,SISLCurve **,int *);
+void GO_API s1522(double [],double [],double [],double,int,SISLCurve **,int *);
 #ifndef S1529
 extern
 #endif
-void s1529(double [],double [],double [],double [],
+void GO_API s1529(double [],double [],double [],double [],
            int,int,int,int,SISLSurf **,int *);
 #ifndef S1530
 extern
 #endif
-void s1530(double [],double [],double [],double [], double [],double [],
+void GO_API s1530(double [],double [],double [],double [], double [],double [],
            int ,int ,int , SISLSurf **,int *);
 #ifndef S1534
 extern
 #endif
-void s1534(double [],double [],double [],double [],int,int,int,
+void GO_API s1534(double [],double [],double [],double [],int,int,int,
 	   int,int,int,int,int,int,int,int,int,SISLSurf **,int *);
 #ifndef S1535
 extern
 #endif
-void s1535(double [],double [],double [],double [],int,int,int,double [],
+void GO_API s1535(double [],double [],double [],double [],int,int,int,double [],
 	   double [],int,int,int,int,int,int,int,int,SISLSurf **,int *);
 #ifndef S1536
 extern
 #endif
-void s1536(double [],int,int,int,int,int,int,int,int,int,int,
+void GO_API s1536(double [],int,int,int,int,int,int,int,int,int,int,
 	   int,int,SISLSurf **,int *);
 #ifndef S1537
 extern
 #endif
-void s1537(double [],int,int,int,double [],double [],int,int,
+void GO_API s1537(double [],int,int,int,double [],double [],int,int,
 	   int,int,int,int,int,int,SISLSurf **,int *);
 #ifndef  S1538
 extern
 #endif
-void s1538(int,SISLCurve *[],int [],double,int,int,int,SISLSurf **,
+void GO_API s1538(int,SISLCurve *[],int [],double,int,int,int,SISLSurf **,
 	   double **,int *);
 #ifndef  S1539
 extern
 #endif
-void s1539(int,SISLCurve *[],int [],double [], double,int,int,int,SISLSurf **,
+void GO_API s1539(int,SISLCurve *[],int [],double [], double,int,int,int,SISLSurf **,
 	   double **,int *);
 #ifndef  S1542
 extern
 #endif
-void s1542(SISLCurve *, int, double *, double [], int *);
+void GO_API s1542(SISLCurve *, int, double *, double [], int *);
 #ifndef  S1600
 extern
 #endif
-void s1600(SISLCurve *,double [],double [],int,SISLCurve **,int *);
+void GO_API s1600(SISLCurve *,double [],double [],int,SISLCurve **,int *);
 #ifndef  S1601
 extern
 #endif
-void s1601(SISLSurf *,double [],double [],int,SISLSurf **,int *);
+void GO_API s1601(SISLSurf *,double [],double [],int,SISLSurf **,int *);
 #ifndef  S1602
 extern
 #endif
-void s1602(double [],double [],int,int,double,double *,SISLCurve **,int *);
+void GO_API s1602(double [],double [],int,int,double,double *,SISLCurve **,int *);
 #ifndef  S1603
 extern
 #endif
-void s1603(SISLSurf *,double *,double *,double *,double *,int *);
+void GO_API s1603(SISLSurf *,double *,double *,double *,double *,int *);
 #ifndef  S1606
 extern
 #endif
-void s1606(SISLCurve *,SISLCurve *,double,double [],double [],
+void GO_API s1606(SISLCurve *,SISLCurve *,double,double [],double [],
 	   int,int,int,SISLCurve **,int *);
 #ifndef  S1607
 extern
 #endif
-void s1607(SISLCurve *,SISLCurve *,double,double,double,double,double,
+void GO_API s1607(SISLCurve *,SISLCurve *,double,double,double,double,double,
 	   int,int,int,SISLCurve **,int *);
 #ifndef  S1608
 extern
 #endif
-void s1608(SISLCurve *,SISLCurve *,double,double [],double [],double [],
+void GO_API s1608(SISLCurve *,SISLCurve *,double,double [],double [],double [],
 	   double [],int,int,int,SISLCurve **,double *,double *,
 	   double *,double *,int *);
 #ifndef  S1609
 extern
 #endif
-void s1609(SISLCurve *,SISLCurve *,double,double [],double [],double [],
+void GO_API s1609(SISLCurve *,SISLCurve *,double,double [],double [],double [],
 	   double,double [],int,int,int,SISLCurve **,double *,double *,
 	   double *,double *,int *);
 #ifndef  S1611
 extern
 #endif
-void s1611(double [],int,int,double [],int,int,double,double,
+void GO_API s1611(double [],int,int,double [],int,int,double,double,
 	   double *,SISLCurve **,int *);
 #ifndef  S1613
 extern
 #endif
-void s1613(SISLCurve *,double,double **,int *,int *);
+void GO_API s1613(SISLCurve *,double,double **,int *,int *);
 #ifndef S1620
 extern
 #endif
-void s1620(double epoint[],int inbpnt1, int inbpnt2, int ipar,
+void GO_API s1620(double epoint[],int inbpnt1, int inbpnt2, int ipar,
            int iopen1, int iopen2, int ik1, int ik2, int idim,
            SISLSurf **rs,int *jstat);
 #ifndef  S1630
 extern
 #endif
-void s1630(double [],int,double,int,int,int,SISLCurve **,int *);
+void GO_API s1630(double [],int,double,int,int,int,SISLCurve **,int *);
 #ifndef  S1706
 extern
 #endif
-void s1706(SISLCurve *);
+void GO_API s1706(SISLCurve *);
 #ifndef  S1710
 extern
 #endif
-void s1710(SISLCurve *,double,SISLCurve **,SISLCurve **,int *);
+void GO_API s1710(SISLCurve *,double,SISLCurve **,SISLCurve **,int *);
 #ifndef  S1711
 extern
 #endif
-void s1711(SISLSurf *,int,double,SISLSurf **,SISLSurf **,int *);
+void GO_API s1711(SISLSurf *,int,double,SISLSurf **,SISLSurf **,int *);
 #ifndef  S1712
 extern
 #endif
-void s1712(SISLCurve *,double,double,SISLCurve **,int *);
+void GO_API s1712(SISLCurve *,double,double,SISLCurve **,int *);
 #ifndef  S1713
 extern
 #endif
-void s1713(SISLCurve *,double,double,SISLCurve **,int *);
+void GO_API s1713(SISLCurve *,double,double,SISLCurve **,int *);
 #ifndef  S1714
 extern
 #endif
-void s1714(SISLCurve *,double,double,SISLCurve **,SISLCurve **,int *);
+void GO_API s1714(SISLCurve *,double,double,SISLCurve **,SISLCurve **,int *);
 #ifndef  S1715
 extern
 #endif
-void s1715(SISLCurve *,SISLCurve *,int,int,SISLCurve **,int *);
+void GO_API s1715(SISLCurve *,SISLCurve *,int,int,SISLCurve **,int *);
 #ifndef  S1716
 extern
 #endif
-void s1716(SISLCurve *,SISLCurve *,double,SISLCurve **,int *);
+void GO_API s1716(SISLCurve *,SISLCurve *,double,SISLCurve **,int *);
 #ifndef  S1720
 extern
 #endif
-void s1720(SISLCurve *,int,SISLCurve **,int *);
+void GO_API s1720(SISLCurve *,int,SISLCurve **,int *);
 #ifndef  S1730
 extern
 #endif
-void s1730(SISLCurve *,SISLCurve **,int *);
+void GO_API s1730(SISLCurve *,SISLCurve **,int *);
 #ifndef  S1731
 extern
 #endif
-void s1731(SISLSurf *,SISLSurf **,int *);
+void GO_API s1731(SISLSurf *,SISLSurf **,int *);
 #ifndef  S1732
 extern
 #endif
-void s1732(SISLCurve *,int,double *,double *,double *,int *);
+void GO_API s1732(SISLCurve *,int,double *,double *,double *,int *);
 #ifndef  S1733
 extern
 #endif
-void s1733(SISLSurf *,int,int,double *,double *,double *,double *,
+void GO_API s1733(SISLSurf *,int,int,double *,double *,double *,double *,
 	   double *,int *);
 #ifndef  S1750
 extern
 #endif
-void s1750(SISLCurve *,int,SISLCurve **,int *);
+void GO_API s1750(SISLCurve *,int,SISLCurve **,int *);
 #ifndef  S1774
 extern
 #endif
-void s1774(SISLCurve *,double [],int,double,double,double,double,double *,
+void GO_API s1774(SISLCurve *,double [],int,double,double,double,double,double *,
 	   int *);
 #ifndef  S1775
 extern
 #endif
-void s1775(SISLSurf *,double [],int,double,double [],double [],double [],
+void GO_API s1775(SISLSurf *,double [],int,double,double [],double [],double [],
 	   double [],int *);
 #ifndef  S1850
 extern
 #endif
-void s1850(SISLCurve *,double [],double [],int,double,double,
+void GO_API s1850(SISLCurve *,double [],double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1851
 extern
 #endif
-void s1851(SISLSurf *,double [],double [],int,double,double,
+void GO_API s1851(SISLSurf *,double [],double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1852
 extern
 #endif
-void s1852(SISLSurf *,double [],double,int,double,double,
+void GO_API s1852(SISLSurf *,double [],double,int,double,double,
 	   int *,double **, int *,SISLIntcurve ***,int *);
 #ifndef  S1853
 extern
 #endif
-void s1853(SISLSurf *,double [],double [],double,int,double,double,
+void GO_API s1853(SISLSurf *,double [],double [],double,int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1854
 extern
 #endif
-void s1854(SISLSurf *,double [],double [],double [],int,double,double,
+void GO_API s1854(SISLSurf *,double [],double [],double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1855
 extern
 #endif
-void s1855(SISLSurf *,double [],double,double [],int,double,double,
+void GO_API s1855(SISLSurf *,double [],double,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1856
 extern
 #endif
-void s1856(SISLSurf *,double [],double [],int,double,double,
+void GO_API s1856(SISLSurf *,double [],double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1857
 extern
 #endif
-void s1857(SISLCurve *,SISLCurve *,double,double,
+void GO_API s1857(SISLCurve *,SISLCurve *,double,double,
 	   int *,double **,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1858
 extern
 #endif
-void s1858(SISLSurf *,SISLCurve *,double,double,
+void GO_API s1858(SISLSurf *,SISLCurve *,double,double,
 	   int *,double **,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1859
 extern
 #endif
-void s1859(SISLSurf *,SISLSurf *,double,double,
+void GO_API s1859(SISLSurf *,SISLSurf *,double,double,
 	   int *,double **,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1860
 extern
 #endif
-void s1860(SISLSurf *,double [],int,double,double,
+void GO_API s1860(SISLSurf *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1870
 extern
@@ -869,77 +881,77 @@ void
 #ifndef  S1920
 extern
 #endif
-void s1920(SISLCurve *,double [],int,double,double,
+void GO_API s1920(SISLCurve *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1921
 extern
 #endif
-void s1921(SISLSurf *,double [],int,double,double,
+void GO_API s1921(SISLSurf *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef S1940
 extern
 #endif
-void s1940(SISLCurve *oldcurve, double eps[], int startfix, int endfix,
+void GO_API s1940(SISLCurve *oldcurve, double eps[], int startfix, int endfix,
 	   int iopen, int itmax, SISLCurve **newcurve, double maxerr[],
 	   int *stat);
 #ifndef  S1953
 extern
 #endif
-void s1953(SISLCurve *,double [],int,double,double,
+void GO_API s1953(SISLCurve *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1954
 extern
 #endif
-void s1954(SISLSurf *,double [],int,double,double,
+void GO_API s1954(SISLSurf *,double [],int,double,double,
 	   int *,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1955
 extern
 #endif
-void s1955(SISLCurve *,SISLCurve *,double,double,
+void GO_API s1955(SISLCurve *,SISLCurve *,double,double,
 	   int *,double **,double **,int *,SISLIntcurve ***,int *);
 #ifndef  S1957
 extern
 #endif
-void s1957(SISLCurve *,double [],int,double,double,double *,double *,int *);
+void GO_API s1957(SISLCurve *,double [],int,double,double,double *,double *,int *);
 #ifndef  S1958
 extern
 #endif
-void s1958(SISLSurf *,double [],int,double,double,double [],double *,int *);
+void GO_API s1958(SISLSurf *,double [],int,double,double,double [],double *,int *);
 #ifndef S1961
 extern
 #endif
-void s1961(double ep[],int im,int idim,int ipar,double epar[],
+void GO_API s1961(double ep[],int im,int idim,int ipar,double epar[],
 	   double eeps[],int ilend,int irend,int iopen,double afctol,
 	   int itmax,int ik,SISLCurve **rc,double emxerr[],
 	   int *jstat);
 #ifndef S1962
 extern
 #endif
-void s1962(double ep[],double ev[],int im,int idim,int ipar,double epar[],
+void GO_API s1962(double ep[],double ev[],int im,int idim,int ipar,double epar[],
            double eeps[],int ilend,int irend,int iopen,int itmax,
            SISLCurve **rc,double emxerr[],int *jstat);
 #ifndef S1963
 extern
 #endif
-void s1963(SISLCurve *pc,double eeps[],int ilend,int irend,int iopen,
+void GO_API s1963(SISLCurve *pc,double eeps[],int ilend,int irend,int iopen,
            int itmax, SISLCurve **rc,int *jstat);
 #ifndef S1965
 extern
 #endif
-void s1965(SISLSurf *oldsurf,double eps[],int edgefix[4],int iopen1,
+void GO_API s1965(SISLSurf *oldsurf,double eps[],int edgefix[4],int iopen1,
            int iopen2,double edgeps[],int opt,int itmax,
            SISLSurf **newsurf,double maxerr[],int *stat);
 #ifndef S1966
 extern
 #endif
-void s1966(double ep[],int im1,int im2,int idim,int ipar,double epar1[],
+void GO_API s1966(double ep[],int im1,int im2,int idim,int ipar,double epar1[],
            double epar2[],double eeps[],int nend[],int iopen1,int iopen2,
            double edgeps[],double afctol,int iopt,int itmax,
            int ik1,int ik2,SISLSurf **rs,double emxerr[],int *jstat);
 #ifndef S1967
 extern
 #endif
-void s1967(double ep[],double etang1[],double etang2[],double eder11[],
+void GO_API s1967(double ep[],double etang1[],double etang2[],double eder11[],
            int im1,int im2,int idim,int ipar,double epar1[],double epar2[],
            double eeps[],int nend[],int iopen1,int iopen2,double edgeps[],
            int iopt,int itmax,SISLSurf **rs,double emxerr[],
@@ -947,103 +959,103 @@ void s1967(double ep[],double etang1[],double etang2[],double eder11[],
 #ifndef S1968
 extern
 #endif
-void s1968(SISLSurf *ps,double eeps[],int nend[],int iopen1,int iopen2,
+void GO_API s1968(SISLSurf *ps,double eeps[],int nend[],int iopen1,int iopen2,
            double edgeps[],int iopt,int itmax,SISLSurf **rs,
            int *jstat);
 #ifndef S1986
 extern
 #endif
-void s1986(SISLCurve *pc, double aepsge, int *jgtpi, double **gaxis,
+void GO_API s1986(SISLCurve *pc, double aepsge, int *jgtpi, double **gaxis,
 	   double *cang,int *jstat);
 #ifndef S1987
 extern
 #endif
-void s1987(SISLSurf *ps, double aepsge, int *jgtpi, double **gaxis,
+void GO_API s1987(SISLSurf *ps, double aepsge, int *jgtpi, double **gaxis,
 	   double *cang,int *jstat);
 #ifndef S1988
 extern
 #endif
-void s1988(SISLCurve *,double **,double **,int *);
+void GO_API s1988(SISLCurve *,double **,double **,int *);
 #ifndef S1989
 extern
 #endif
-void s1989(SISLSurf *,double **,double **,int *);
+void GO_API s1989(SISLSurf *,double **,double **,int *);
 #ifndef  S2500
 extern
 #endif
-void s2500(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2500(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2502
 extern
 #endif
-void s2502(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2502(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2504
 extern
 #endif
-void s2504(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2504(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2506
 extern
 #endif
-void s2506(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2506(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2508
 extern
 #endif
-void s2508(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2508(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2510
 extern
 #endif
-void s2510(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2510(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2532
 extern
 #endif
-void s2532(SISLSurf *, int, int, int *, int *, SISLSurf ***, int *);
+void GO_API s2532(SISLSurf *, int, int, int *, int *, SISLSurf ***, int *);
 #ifndef  S2536
 extern
 #endif
-void s2536(SISLSurf *, int, int, int *, int *, SISLSurf ***, int *);
+void GO_API s2536(SISLSurf *, int, int, int *, int *, SISLSurf ***, int *);
 #ifndef  S2540
 extern
 #endif
-void s2540(SISLSurf *, int, int, int, double [], int, int, double **, int *);
+void GO_API s2540(SISLSurf *, int, int, int, double [], int, int, double **, int *);
 #ifndef  S2542
 extern
 #endif
-void s2542(SISLSurf *, int, int, int, double [], int *, int *, double *,
+void GO_API s2542(SISLSurf *, int, int, int, double [], int *, int *, double *,
 	   double *, double [], double [],int *);
 #ifndef  S2544
 extern
 #endif
-void s2544(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
+void GO_API s2544(SISLSurf *, int, int, int, double [], int *, int *, double *, int *);
 #ifndef  S2545
 extern
 #endif
-void s2545(SISLSurf *, int, int, int, double [], int, int, double, double **,
+void GO_API s2545(SISLSurf *, int, int, int, double [], int, int, double, double **,
 	   int *);
 #ifndef  S2550
 extern
 #endif
-void s2550(SISLCurve *, double [], int, double [], int *);
+void GO_API s2550(SISLCurve *, double [], int, double [], int *);
 #ifndef  S2553
 extern
 #endif
-void s2553(SISLCurve *, double [], int, double [], int *);
+void GO_API s2553(SISLCurve *, double [], int, double [], int *);
 #ifndef  S2556
 extern
 #endif
-void s2556(SISLCurve *, double [], int, double [], int *);
+void GO_API s2556(SISLCurve *, double [], int, double [], int *);
 #ifndef  S2559
 extern
 #endif
-void s2559(SISLCurve *, double [], int, double [], double [], double [],
+void GO_API s2559(SISLCurve *, double [], int, double [], double [], double [],
            double [], int *);
 #ifndef  S2562
 extern
 #endif
-void s2562(SISLCurve *, double [], int, int, double [], double [], double [],
+void GO_API s2562(SISLCurve *, double [], int, int, double [], double [], double [],
            double [], double [], int *);
 #ifndef  S6DRAWSEQ
 extern
 #endif
-void s6drawseq(double [],int);
+void GO_API s6drawseq(double [],int);
 
 #else /* not SISLNEEDPROTOTYPES */
 
