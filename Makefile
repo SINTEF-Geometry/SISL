@@ -1,1 +1,1 @@
-include ../GenericMakefile
+include MakeUtils/GenericMakefile
