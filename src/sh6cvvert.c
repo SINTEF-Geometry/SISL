@@ -1,4 +1,4 @@
-#include "copyright.h"
+#include "sisl-copyright.h"
 #define SH6CVVERT
 
 #include "sislP.h"

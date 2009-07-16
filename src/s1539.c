@@ -3,11 +3,11 @@
 /*                                                                           */
 /* (c) Copyright 1989,1990,1991,1992 by                                      */
 /*     Senter for Industriforskning, Oslo, Norway                            */
-/*     All rights reserved. See the copyright.h for more details.            */
+/*     All rights reserved. See the sisl-copyright.h for more details.            */
 /*                                                                           */
 /*****************************************************************************/
 /*$Id: s1539.c,v 1.2 2001-03-19 15:58:51 afr Exp $*/
-#include "copyright.h"
+#include "sisl-copyright.h"
 
 #define S1539
 

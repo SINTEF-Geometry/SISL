@@ -3,7 +3,7 @@
 /*****************************************************************************/
 /*                                                                           */
 /*                                                                           */
-/* (c) Copyright 1989-2001 by                                                */
+/* (c) Copyright 1989-2009 by                                                */
 /*     SINTEF Applied Mathematics, Oslo, Norway                              */
 /*     All rights reserved.                                                  */
 /*                                                                           */

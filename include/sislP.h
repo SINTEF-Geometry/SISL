@@ -5,12 +5,12 @@
 /*                                                                           */
 /* (c) Copyright 1989,1990,1991,1992 by                                      */
 /*     Senter for Industriforskning, Oslo, Norway                            */
-/*     All rights reserved. See the copyright.h for more details.            */
+/*     All rights reserved. See the sisl-copyright.h for more details.            */
 /*                                                                           */
 /*****************************************************************************/
 
 /*
- * If _SISL_COPYRIGHT_H is defined before copyright.h is included
+ * If _SISL_COPYRIGHT_H is defined before sisl-copyright.h is included
  * then flag this by defining SISL_INTERNAL as we're compiling SISL
  * library source files. By doing this we can hide internal SISL macros
  * if this header file is included in external files.
@@ -20,7 +20,7 @@
 #define SISL_INTERNAL 1
 #endif
 
-#include "copyright.h"
+#include "sisl-copyright.h"
 
 #include "sisl.h"
 /*

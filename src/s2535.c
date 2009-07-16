@@ -3,11 +3,11 @@
 /*                                                                           */
 /* (c) Copyright 1995 by                                                     */
 /*     SINTEF, Oslo, Norway.                                                 */
-/*     All rights reserved. See the copyright.h for more details.            */
+/*     All rights reserved. See the sisl-copyright.h for more details.            */
 /*                                                                           */
 /*****************************************************************************/
 
-#include "copyright.h"
+#include "sisl-copyright.h"
 
 /*
  *
