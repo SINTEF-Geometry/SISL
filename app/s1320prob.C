@@ -13,9 +13,14 @@
 //===========================================================================
 
 #include "sisl.h"
+#include <cmath>
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
  
+
+using namespace std;
+
+
 int main()
 {
   unsigned n;
