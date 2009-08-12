@@ -94,7 +94,7 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
 
    if (kdim > 4)
    {
-       if ((xyz = newarray(kdim, DOUBLE) == SISL_NULL))
+       if ((xyz = newarray(kdim, DOUBLE)) == SISL_NULL)
 	   goto err101;
    }
    else xyz = scratch;
