@@ -12,7 +12,7 @@ INCLUDE_DIRECTORIES(
 
 # Make the sisl library
 
-FILE(GLOB sisl_SRCS src/*.c)
+FILE(GLOB sisl_SRCS src/*.c include/*.h)
 ADD_LIBRARY(sisl ${sisl_SRCS})
 
 
