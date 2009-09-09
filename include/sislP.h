@@ -1318,6 +1318,11 @@ extern
 void
 s1927(double *,int,int,int *,double *,int,double *,int,double *[],
       double *,int *);
+#ifndef S1930
+extern
+#endif
+void
+s1930(int,SISLCurve **,double **,double **,int *,int *,int *);
 #ifndef S1931
 extern
 #endif
