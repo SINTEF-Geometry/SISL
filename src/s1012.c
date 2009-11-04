@@ -162,7 +162,7 @@ void s1012(start_pos, axis_pos, axis_dir, frequency, numb_quad,
       z_comp = ki*frequency/8;
        
       for (kj = 0; kj < 3; kj++)
-	 rcoef[4*ki + kj] = origo[kj] + w1*(x_comp*x_axis[kj]
+	rcoef[4*ki + kj] = w1*(origo[kj] + x_comp*x_axis[kj]
 			+ y_comp*y_axis[kj] + z_comp*z_axis[kj]);
       rcoef[4*ki + 3] = w1;
       
