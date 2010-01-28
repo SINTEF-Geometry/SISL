@@ -930,6 +930,7 @@ static void s1770_2D_s6sekant1(pcurve1,pcurve2,par_val,delta,dist,aepsge,
   if (ki == 20)
   {
      *jstat = 2;
+     new_cu_val = par_val[0];
      goto out;
   }
 
