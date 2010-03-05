@@ -83,6 +83,9 @@ void make_cv_cyclic(pcurve,icont,jstat)
   int    kdim = pcurve->idim; 
   int    kk = pcurve->ik;
   int    kn = pcurve->in;
+  int    rat = (pcurve->ikind == 1 || pcurve->ikind == 3) ? 0 : 1;
+  double *sourcecoef = (rat) ? pcurve->rcoef : pcurve->ecoef;
+  int    kdim2 = kdim + rat;
   
   int    kcont;                           /* Checked continuity */
   int    kmult;                           /* Multiplicity of knot kk2-1 and kn2*/ 
@@ -120,13 +123,13 @@ void make_cv_cyclic(pcurve,icont,jstat)
   mpiv = new0array(2*kk,INT);
   if (mpiv == SISL_NULL) goto err101;
   
-  salloc = new0array(3*kn+9*kk+4*kk*kk+kdim*kn,DOUBLE);
+  salloc = new0array(3*kn+9*kk+4*kk*kk+kdim2*kn,DOUBLE);
   if (salloc == SISL_NULL) goto err101;
   scycl = salloc;                  /* Size kn+kk */
   smatrix = scycl + kn + kk;  /* Max size 4*kk*kk */
   salfa = smatrix + 4*kk*kk;     /* Size kk */
-  scoef = salfa + kk;           /* Size kdim*kn */
-  sb    = scoef + kdim*kn;    /* Size 2*kk */  
+  scoef = salfa + kk;           /* Size kdim2*kn */
+  sb    = scoef + kdim2*kn;    /* Size 2*kk */  
   sp    = sb + 2*kk;              /* Size kk */
   st1   = sp + kk;                /* Size kn + 2*kk */
   stx   = st1 + kn + 2*kk;       /* Size kn + 2*kk */
@@ -135,7 +138,7 @@ void make_cv_cyclic(pcurve,icont,jstat)
   
   /* Copy vertices, to avoid destruction of curve */
   
-  memcopy(scoef,pcurve->ecoef,kdim*kn,DOUBLE);
+  memcopy(scoef, (rat) ? pcurve->rcoef : pcurve->ecoef, kdim2*kn, DOUBLE);
   
   
   
@@ -221,10 +224,10 @@ void make_cv_cyclic(pcurve,icont,jstat)
      copy back into the curve object */
   
   
-    for (kl=0 ; kl<kdim ; kl++)
+    for (kl=0 ; kl<kdim2 ; kl++)
       {
-	for (kj=0, sfrom=(pcurve->ecoef)+kl,sto=sb ;
-	     kj<kk ; kj++,sfrom+=kdim,sto++)
+	for (kj=0, sfrom=(sourcecoef)+kl,sto=sb ;
+	     kj<kk ; kj++,sfrom+=kdim2,sto++)
 	  *sto = *sfrom;
 	
 	/* sb now contains the vertices to be backsubsituted */
@@ -235,7 +238,7 @@ void make_cv_cyclic(pcurve,icont,jstat)
 	/* Copy the backsubsituted vertices back into scoef */
 	
 	for (kj=0, sto=scoef+kl,sfrom=sb ;
-	     kj<kk ; kj++,sfrom++,sto+=kdim)
+	     kj<kk ; kj++,sfrom++,sto+=kdim2)
 	  *sto = *sfrom;
       }
   
@@ -273,10 +276,10 @@ void make_cv_cyclic(pcurve,icont,jstat)
      parts of the vertices into a temporary array. Do backsubstitution and
      copy back into the curve object */
   
-    for (kl=0 ; kl<kdim ; kl++)  
+    for (kl=0 ; kl<kdim2 ; kl++)  
       {
-	for (kj=0, sfrom=scoef+kdim*(kn-kk)+kl,sto=sb ;
-	     kj<kk ; kj++,sfrom+=kdim,sto++)
+	for (kj=0, sfrom=scoef+kdim2*(kn-kk)+kl,sto=sb ;
+	     kj<kk ; kj++,sfrom+=kdim2,sto++)
 	  *sto = *sfrom;
 	
 	/* sb now contains the vertices to be backsubsituted */
@@ -286,18 +289,28 @@ void make_cv_cyclic(pcurve,icont,jstat)
 	
 	/* Copy the backsubsituted vertices back into scoef */
 	
-	for (kj=0, sto=scoef+kdim*(kn-kk)+kl,sfrom=sb ;
-	     kj<kk ; kj++,sto+=kdim,sfrom++)
+	for (kj=0, sto=scoef+kdim2*(kn-kk)+kl,sfrom=sb ;
+	     kj<kk ; kj++,sto+=kdim2,sfrom++)
 	  *sto = *sfrom;
       }
   
   
-/* Copy knots and vertices into the curve object */
+    /* Copy knots and vertices into the curve object */
 
-memcopy(pcurve->ecoef,scoef,kdim*kn,DOUBLE);
-memcopy(pcurve->et,scycl,kn+kk,DOUBLE); 
-pcurve->cuopen = SISL_CRV_PERIODIC;
+    memcopy((rat) ? pcurve->rcoef : pcurve->ecoef, scoef, kdim2*kn, DOUBLE);
+    memcopy(pcurve->et,scycl,kn+kk,DOUBLE); 
+    pcurve->cuopen = SISL_CRV_PERIODIC;
 
+    /* Update divided coefficients */
+    if (rat)
+      {
+	for (ki=0; ki<kn; ++ki)
+	  {
+	    for (kj=0; kj<kdim; ++kj)
+	      pcurve->ecoef[ki*kdim+kj] = 
+		pcurve->rcoef[ki*kdim2+kj]/pcurve->rcoef[ki*kdim2+kdim];
+	  }
+      }
 
   
   /* Task done */

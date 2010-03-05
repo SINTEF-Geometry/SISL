@@ -2479,10 +2479,6 @@ extern
 #endif
 void int_join_per(SISLIntdat **,SISLObject *,SISLObject *,double [],
 		  int,double,int *);
-#ifndef  MAKE_CV_CYCLIC
-extern
-#endif
-void make_cv_cyclic(SISLCurve *,int,int *);
 #ifndef  MAKE_CV_KREG
 extern
 #endif
@@ -4331,10 +4327,6 @@ void hp_s1880();
 extern
 #endif
 void int_join_per();
-#ifndef  MAKE_CV_CYCLIC
-extern
-#endif
-void make_cv_cyclic();
 #ifndef  MAKE_CV_KREG
 extern
 #endif

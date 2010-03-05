@@ -1056,6 +1056,10 @@ void GO_API s2562(SISLCurve *, double [], int, int, double [], double [], double
 extern
 #endif
 void GO_API s6drawseq(double [],int);
+#ifndef  MAKE_CV_CYCLIC
+extern
+#endif
+void make_cv_cyclic(SISLCurve *,int,int *);
 
 #else /* not SISLNEEDPROTOTYPES */
 
@@ -1756,6 +1760,10 @@ void s2562();
 extern
 #endif
 void s6drawseq();
+#ifndef  MAKE_CV_CYCLIC
+extern
+#endif
+void make_cv_cyclic();
 #endif /* End of forward declarations of sisl top level routines */
 
 #if defined(__cplusplus)

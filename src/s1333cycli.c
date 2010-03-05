@@ -79,10 +79,13 @@ void s1333_cyclic(vsurf,icont,jstat)
                                              at start */
 
   int    kdim = vsurf->idim;
+  int    rat = (vsurf->ikind == 1 || vsurf->ikind == 3) ? 0 : 1;
+  double *sourcecoef = (rat) ? vsurf->rcoef : vsurf->ecoef;
+  int    kdim2 = kdim + rat;
   int    kk1 = vsurf->ik1;
   int    kn1 = vsurf->in1;
   int    kn2 = vsurf->in2;
-  int    knumb = kdim*kn1;
+  int    knumb = kdim2*kn1;
 
   int    kcont;                           /* Checked continuity */
   int    kmult;                           /* Multiplicity of knot kk2-1 and kn2*/
@@ -120,13 +123,13 @@ void s1333_cyclic(vsurf,icont,jstat)
   mpiv = new0array(2*kk1,INT);
   if (mpiv == SISL_NULL) goto err101;
 
-  salloc = new0array(3*kn1+9*kk1+4*kk1*kk1+kdim*kn1*kn2,DOUBLE);
+  salloc = new0array(3*kn1+9*kk1+4*kk1*kk1+kdim2*kn1*kn2,DOUBLE);
   if (salloc == SISL_NULL) goto err101;
   scycl = salloc;                  /* Size kn1+kk1 */
   smatrix = scycl + kn1 + kk1;  /* Max size 4*kk1*kk1 */
   salfa = smatrix + 4*kk1*kk1;     /* Size kk1 */
-  scoef = salfa + kk1;           /* Size kdim*kn1*kn2 */
-  sb    = scoef + kdim*kn1*kn2;    /* Size 2*kk1 */
+  scoef = salfa + kk1;           /* Size kdim2*kn1*kn2 */
+  sb    = scoef + kdim2*kn1*kn2;    /* Size 2*kk1 */
   sp    = sb + 2*kk1;              /* Size kk1 */
   st1   = sp + kk1;                /* Size kn1 + 2*kk1 */
   stx   = st1 + kn1 + 2*kk1;       /* Size kn1 + 2*kk1 */
@@ -135,7 +138,7 @@ void s1333_cyclic(vsurf,icont,jstat)
 
   /* Copy vertices, to avoid destruction of surface */
 
-  memcopy(scoef,vsurf->ecoef,kdim*kn1*kn2,DOUBLE);
+  memcopy(scoef,sourcecoef,kdim2*kn1*kn2,DOUBLE);
 
 
 
@@ -226,10 +229,10 @@ void s1333_cyclic(vsurf,icont,jstat)
 
 
   for (ki=0 ; ki<kn2 ; ki++)
-    for (kl=0 ; kl<kdim ; kl++)
+    for (kl=0 ; kl<kdim2 ; kl++)
       {
-	for (kj=0, sfrom=(vsurf->ecoef)+ki*knumb+kl,sto=sb ;
-	     kj<kk1 ; kj++,sfrom+=kdim,sto++)
+	for (kj=0, sfrom=sourcecoef+ki*knumb+kl,sto=sb ;
+	     kj<kk1 ; kj++,sfrom+=kdim2,sto++)
 	  *sto = *sfrom;
 
 	/* sb now contains the vertices to be backsubsituted */
@@ -240,7 +243,7 @@ void s1333_cyclic(vsurf,icont,jstat)
 	/* Copy the backsubsituted vertices back into scoef */
 
 	for (kj=0, sto=scoef+ki*knumb+kl,sfrom=sb ;
-	     kj<kk1 ; kj++,sfrom++,sto+=kdim)
+	     kj<kk1 ; kj++,sfrom++,sto+=kdim2)
 	  *sto = *sfrom;
       }
 
@@ -281,10 +284,10 @@ void s1333_cyclic(vsurf,icont,jstat)
      copy back into the surface object */
 
   for (ki=0 ; ki<kn2 ; ki++)
-    for (kl=0 ; kl<kdim ; kl++)
+    for (kl=0 ; kl<kdim2 ; kl++)
       {
-	for (kj=0, sfrom=scoef+ki*knumb+kdim*(kn1-kk1)+kl,sto=sb ;
-	     kj<kk1 ; kj++,sfrom+=kdim,sto++)
+	for (kj=0, sfrom=scoef+ki*knumb+kdim2*(kn1-kk1)+kl,sto=sb ;
+	     kj<kk1 ; kj++,sfrom+=kdim2,sto++)
 	  *sto = *sfrom;
 
 	/* sb now contains the vertices to be backsubsituted */
@@ -294,20 +297,30 @@ void s1333_cyclic(vsurf,icont,jstat)
 
 	/* Copy the backsubsituted vertices back into scoef */
 
-	for (kj=0, sto=scoef+ki*knumb+kdim*(kn1-kk1)+kl,sfrom=sb ;
-	 kj<kk1 ; kj++,sto+=kdim,sfrom++)
+	for (kj=0, sto=scoef+ki*knumb+kdim2*(kn1-kk1)+kl,sfrom=sb ;
+	 kj<kk1 ; kj++,sto+=kdim2,sfrom++)
 	  *sto = *sfrom;
       }
 
 
   /* Copy knots and vertices into the surface object */
 
-  memcopy(vsurf->ecoef,scoef,kdim*kn1*kn2,DOUBLE);
+  memcopy(sourcecoef,scoef,kdim2*kn1*kn2,DOUBLE);
   memcopy(vsurf->et1,scycl,kn1+kk1,DOUBLE);
 
   /* Set periodicity flag */
   vsurf->cuopen_1 = SISL_SURF_PERIODIC;
 
+    /* Update divided coefficients */
+    if (rat)
+      {
+	for (ki=0; ki<kn1*kn2; ++ki)
+	  {
+	    for (kj=0; kj<kdim; ++kj)
+	      vsurf->ecoef[ki*kdim+kj] = 
+		vsurf->rcoef[ki*kdim2+kj]/vsurf->rcoef[ki*kdim2+kdim];
+	  }
+      }
 
   /* Task done */
 
