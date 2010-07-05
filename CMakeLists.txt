@@ -15,6 +15,11 @@ INCLUDE_DIRECTORIES(
 FILE(GLOB sisl_SRCS src/*.c include/*.h)
 ADD_LIBRARY(sisl ${sisl_SRCS})
 
+# This line may be needed only on AMD 64 bit... @jbt
+IF(NOT WIN32)
+  SET_TARGET_PROPERTIES(sisl PROPERTIES COMPILE_FLAGS "-fPIC")
+ENDIF(NOT WIN32)
+
 
 # Apps, examples, tests, ...?
 
