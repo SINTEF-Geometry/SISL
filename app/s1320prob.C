@@ -23,7 +23,7 @@ using namespace std;
 
 int main()
 {
-  unsigned n;
+  // unsigned n;
   const unsigned dim = 2;
   const unsigned NoPoints = 3;
   const unsigned Order = 3;

@@ -1,9 +1,7 @@
-#ifndef _SISL_COPYRIGHT_H
-#define _SISL_COPYRIGHT_H
 /*****************************************************************************/
 /*                                                                           */
 /*                                                                           */
-/* (c) Copyright 1989-2009 by                                                */
+/* (c) Copyright 1989-2009, 2010 by                                          */
 /*     SINTEF Applied Mathematics, Oslo, Norway                              */
 /*     All rights reserved.                                                  */
 /*                                                                           */
@@ -23,4 +21,6 @@
 /*                                                                           */
 /*                                                                           */
 /*****************************************************************************/
+#ifndef _SISL_COPYRIGHT_H
+#define _SISL_COPYRIGHT_H
 #endif

@@ -1,0 +1,18 @@
+--------------------------------------------------------------------------------
+Thank you for downloading SISL - the SINTEF Spline Library.  This
+software is written by the Geometry Group at SINTEF ICT,
+Department of Applied Mathematics.
+
+Requirements:
+* CMake
+  www.cmake.org
+
+For information on installation, see the INSTALL file.
+
+You can generate Doxygen information by typing 'doxygen' in the base
+directory.
+
+Good luck!
+
+
+ 

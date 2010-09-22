@@ -1,0 +1,96 @@
+#!/bin/bash
+
+MODULE="sisl"
+RESULT_CATALOG=sisl-4.5.0
+
+clear
+
+# checking for existence
+if [ -d $RESULT_CATALOG ] 
+then
+   echo Catalog \'$RESULT_CATALOG\' already exists. 
+   echo Type \'yes\' to continue \(replace existing structure\), 
+   echo or anything else to abort.
+   read choice
+   if [ $choice ] && [ $choice == "yes" ]
+   then
+      echo You chose to continue.  Removing old file structure...
+      rm -rf $RESULT_CATALOG
+   else
+      echo Aborting script.  No changes carried out.
+      exit 1
+   fi
+fi
+if [ -d $RESULT_CATALOG ] 
+then
+   echo Unable to remove the already-existing catalog of name $RESULT_CATALOG.
+   echo Aborting script.  No changes carried out.
+   exit 1
+fi
+echo
+
+# reporting activity to user 
+echo GPL distribution of \'$MODULE\' will be made in catalog
+echo \'$RESULT_CATALOG\'.
+echo
+
+#making file structure
+mkdir $RESULT_CATALOG
+
+# copy files
+cp ../CMakeLists.txt ../Doxyfile $RESULT_CATALOG 2> /dev/null
+cp -r ../include ../src ../doc $RESULT_CATALOG 2> /dev/null
+
+# get all header and source files
+header_files=`find $RESULT_CATALOG | grep -e '\.h' -e '\.hpp' | grep -v '.svn'`
+source_files=`find $RESULT_CATALOG | grep -e '\.C' -e '\.cpp' -e '\.c' | grep -v '.svn'`
+
+TMP_FILENAME=mnisojdnlsdbewusdfglkcxjvbncvxsdfg
+
+# generating GPL header files
+for f in $header_files
+do
+    ftmp=`echo $f | cut -b 4-`
+    if [ `grep $ftmp excluded_files` ]
+    then 
+       echo excluded file $f.
+    else
+       filename=`basename $f`
+       # first, write license header information
+       cat license_header > $TMP_FILENAME
+       
+       # remove all information between include guards, and write result
+       sed -n -e'/#ifndef/,$p' $f >> $TMP_FILENAME
+    fi
+    cp -f $TMP_FILENAME $f
+done
+
+# generating GPL source files
+for f in $source_files
+do
+    ftmp=`echo $f | cut -b 4-`
+    if [ `grep $ftmp excluded_files` ]
+    then 
+       echo excluded file $f.
+    else
+       filename=`basename $f`
+       # first, write license header information
+       cat license_header > $TMP_FILENAME
+   
+       # remove all preliminary header information and add result to file
+       sed -n -e'/^[^/ \t]/,$p' $f >> $TMP_FILENAME
+    fi
+    cp -f $TMP_FILENAME $f
+done
+
+rm $TMP_FILENAME	  
+
+
+# adding additional files
+cp ChangeLog $RESULT_CATALOG 2> /dev/null
+cp COPYING $RESULT_CATALOG 2> /dev/null
+cp INSTALL $RESULT_CATALOG 2> /dev/null
+cp README $RESULT_CATALOG 2> /dev/null
+
+
+echo DONE

@@ -1,14 +1,14 @@
-#ifndef SISLP_INCLUDED
-#define SISLP_INCLUDED
 /*****************************************************************************/
 /*                                                                           */
 /*                                                                           */
-/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/* (c) Copyright 1989,1990,1991,1992, 2010 by                                */
 /*     Senter for Industriforskning, Oslo, Norway                            */
-/*     All rights reserved. See the sisl-copyright.h for more details.            */
+/*     All rights reserved. See the sisl-copyright.h for more details.       */
 /*                                                                           */
 /*****************************************************************************/
 
+#ifndef SISLP_INCLUDED
+#define SISLP_INCLUDED
 /*
  * If _SISL_COPYRIGHT_H is defined before sisl-copyright.h is included
  * then flag this by defining SISL_INTERNAL as we're compiling SISL

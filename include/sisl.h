@@ -1,9 +1,7 @@
-#ifndef SISL_INCLUDED
-#define SISL_INCLUDED
 /*****************************************************************************/
 /*                                                                           */
 /*                                                                           */
-/* (c) Copyright 1989,1990,1991,1992 by                                      */
+/* (c) Copyright 1989,1990,1991,1992, 2010 by                                */
 /*     Senter for Industriforskning, Oslo, Norway                            */
 /*     All rights reserved.                                                  */
 /*                                                                           */
@@ -23,11 +21,17 @@
 /*                                                                           */
 /*                                                                           */
 /*****************************************************************************/
-/*
- *
- * $Id: sisl.h,v 1.47 2009-05-13 07:32:15 vsk Exp $
- *
- */
+
+#ifndef SISL_INCLUDED
+#define SISL_INCLUDED
+
+
+/// \mainpage SISL Documentation
+///
+/// SISL is a comprehensive NURBS library for the modeling and
+/// interrogation of curves and surfaces.
+
+
 
 /*
  * Enable function prototypes for ANSI C and C++

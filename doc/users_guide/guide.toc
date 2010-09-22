@@ -78,7 +78,7 @@
 \contentsline {subsection}{\numberline {3.2.15}example15.C}{25}
 \contentsline {subsubsection}{What it does}{25}
 \contentsline {subsubsection}{What it demonstrates}{26}
-\contentsline {subsubsection}{Input/output}{27}
+\contentsline {subsubsection}{Input/output}{26}
 \contentsline {chapter}{\numberline {4}The object viewer program}{28}
 \contentsline {section}{\numberline {4.1}General}{28}
 \contentsline {section}{\numberline {4.2}Command line arguments}{28}

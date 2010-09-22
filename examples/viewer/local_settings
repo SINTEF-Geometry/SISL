@@ -1,0 +1,4 @@
+INCLUDEDIRS +=../sisl/include ../streaming/include
+LINKDIRS+=../sisl/lib ../streaming/lib
+LINKLIBS+= viewer sisl streaming 
+USE_OPEN_GL=yes

@@ -1,0 +1,3 @@
+INCLUDEDIRS +=../streaming/include ../sisl/include
+LINKDIRS+=../streaming/lib ../sisl/lib
+LINKLIBS+= streaming sisl

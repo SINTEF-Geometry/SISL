@@ -49,20 +49,20 @@ int main()
 //  			  0.013332148306149432, 0.99991112296120743, 0,
 //  			  0, 0.001768, -0.001768,
 //  			  0, 0.70710678118654746, -0.70710678118654746 };
-    double epoint[12] = { 0, 0, 0,
-			  1, 0, 0,
-			  0, 0, 1,
-			  0.000000001, 1, 0 };
-    double eptyp[4] = { 1, 4, 1, 4 };
+    // double epoint[12] = { 0, 0, 0,
+    // 			  1, 0, 0,
+    // 			  0, 0, 1,
+    // 			  0.000000001, 1, 0 };
+    // double eptyp[4] = { 1, 4, 1, 4 };
     s1606(cv[0], cv[1], epsge, point0, point1,
   	  blendtype, dim, order, &cv[2], &stat);
-    double astpar = 0.0;
-    double cendpar;
-    double aepsge = 1e-6;
+    // double astpar = 0.0;
+    // double cendpar;
+    // double aepsge = 1e-6;
     //    s1611(epoint, 4, 3, eptyp, 1, 4, astpar, aepsge, &cendpar, &cv[2], &stat);
     int n = cv[2]->in;
     int k = cv[2]->ik;
-    int t = cv[2]->ikind;
+    // int t = cv[2]->ikind;
     int d = cv[2]->idim;
     cout.precision(15);
     cout << "GoNurbsCurve3D\ndimension 3\nbounding_box 0\n"
