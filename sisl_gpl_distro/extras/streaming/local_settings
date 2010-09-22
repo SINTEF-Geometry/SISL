@@ -1,3 +1,0 @@
-INCLUDEDIRS +=../sisl/include
-LINKDIRS+=../sisl/lib
-LINKLIBS+= sisl
