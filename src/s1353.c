@@ -514,9 +514,9 @@ void s1353(curve, eps, ranking, stat)
   if (antrem == 0)
     {
       if (antgr > 1)
-	antrem = 0.75*groups[1]/(antgr-1);
+	antrem = (int)(0.75*groups[1]/(antgr-1));
       else
-	antrem = 0.9*groups[0];
+	antrem = (int)(0.9*groups[0]);
     }
   else
     antrem = 1;

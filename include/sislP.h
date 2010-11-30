@@ -470,7 +470,7 @@ enum
 #define FALSE 0
 #endif
 #endif          /* SISL_INTERNAL */
-
+
 
 /*
  * --------------------------------------------------------------
@@ -1118,7 +1118,7 @@ void s1788(SISLSurf *,SISLSurf *,double,double [],double [],double [],int *);
 #ifndef  S1789
 extern
 #endif
-void  s1789(SISLPoint *,SISLSurf *,double ,double [],double [],int *);
+void s1789(SISLPoint *,SISLSurf *,double ,double [],double [],int *);
 #ifndef  S1790
 extern
 #endif
@@ -3159,6 +3159,10 @@ void s1787();
 extern
 #endif
 void s1788();
+#ifndef  S1789
+extern
+#endif
+void s1789();
 #ifndef  S1790
 extern
 #endif
@@ -3611,6 +3615,10 @@ int s6existbox();
 extern
 #endif
 void s6findfac();
+#ifndef S6FNDINTVL
+extern
+#endif
+void s6fndintvl();
 #ifndef  S6HERM
 extern
 #endif

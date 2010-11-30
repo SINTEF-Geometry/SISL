@@ -140,9 +140,9 @@ s1541 ( pc1, npol, ebder, ileft, eder, jstat )
    goto out;
 
 /* Error in input, crv->idim != 3 */
- err104: *jstat = -104;
-         s6err( "s1541", *jstat, 0 );
-         goto out;
+ //err104: *jstat = -104;
+ //        s6err( "s1541", *jstat, 0 );
+ //        goto out;
 
  err101: *jstat = -101;
          s6err( "s1541", *jstat, 0 );
