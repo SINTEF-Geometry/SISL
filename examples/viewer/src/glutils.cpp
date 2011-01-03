@@ -26,7 +26,7 @@
 /* - Building commercial software.                                        */
 /* - Building software whose source code you wish to keep private.        */
 
-#ifdef MICROSOFT
+#ifdef _MSC_VER
 #  include <io.h>
 #else
 #  include <unistd.h>
@@ -162,7 +162,7 @@ void assert_gl_dummy_and_empty(void)
 
 
 
-#ifndef MICROSOFT
+#ifndef _MSC_VER
 
 //----------------------------------------------------------------------
 //

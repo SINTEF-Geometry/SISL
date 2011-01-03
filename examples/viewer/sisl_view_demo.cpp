@@ -45,7 +45,7 @@
 #  define MIDDLE_EMU
 #endif
 
-#ifdef MICROSOFT
+#ifdef _MSC_VER
 #  include <time.h>
 #endif
 
@@ -866,7 +866,7 @@ static void parse_keys(const int key_in,
 
 	  printf("Storing viewing parameters in slot %d.\n", slot);
 	  char tmp[1000];
-#ifdef MICROSOFT
+#ifdef _MSC_VER
 	  // don't know which headerfile to use for VC++...
 	  // Also: Using root instead of home directory...
 	  sprintf(tmp, "view%d", slot);
@@ -896,7 +896,7 @@ static void parse_keys(const int key_in,
 
 	  printf("Retrieving viewing parameters from slot %d.\n", slot);
 	  char tmp[1000];
-#ifdef MICROSOFT
+#ifdef _MSC_VER
 	  // don't know which headerfile to use for VC++...
 	  // Also: Using root instead of home directory...
 	  sprintf(tmp, "/view%d", slot);
@@ -1293,7 +1293,7 @@ int main(int argc, char *argv[])
   {
     int tx=32, ty=32;	// gl_init needs variables, but doesn't do
     // anything when texfile==NULL.
-#ifdef MICROSOFT
+#ifdef _MSC_VER
     gl_init(argc, argv, 500, 500, 180, 100, true,
 #else
 	    gl_init(argc, argv, 1100, 1100, 460, 20, true,

@@ -30,7 +30,7 @@
 #define GLUT_DISABLE_ATEXIT_HACK
 #include <GL/glut.h>
 #include <math.h>
-#ifndef MICROSOFT
+#ifndef _MSC_VER
 #  include <unistd.h>
 #endif
 

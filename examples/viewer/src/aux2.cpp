@@ -29,22 +29,22 @@
 #include <stdio.h>
 #include <math.h>
 
-// #ifdef MICROSOFT
+// #ifdef _MSC_VER
 // #  include <vector>
 // #else
 // #  include <vector.h>
 // #endif
 #include <vector>
 
-#ifdef MICROSOFT
+#ifdef _MSC_VER
 #  define max(a, b) ((a)>(b)? (a) : (b))
 #endif
 
-#if defined(MICROSOFT) || defined(LINUX)
+#if defined(_MSC_VER) || defined(LINUX)
 #  include <sys/timeb.h>
 #endif
 
-#ifndef MICROSOFT
+#ifndef _MSC_VER
 #  include <strings.h>
 #  include <unistd.h>
 #else
@@ -61,7 +61,7 @@ double jon_timer;
 
 static double jon_sec(void)
 {
-#ifndef MICROSOFT
+#ifndef _MSC_VER
 #ifdef LINUX
   struct timeb jon_ts;
 #else
@@ -71,7 +71,7 @@ static double jon_sec(void)
   struct _timeb jon_ts;
 #endif
   
-#ifndef MICROSOFT
+#ifndef _MSC_VER
 #ifdef LINUX
   ftime(&jon_ts);
   return (jon_ts.time + 0.001*jon_ts.millitm);

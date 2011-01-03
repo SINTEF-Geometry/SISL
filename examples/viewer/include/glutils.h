@@ -29,7 +29,7 @@
 #ifndef GLUTILS_H_INCLUDED
 
 
-#ifndef MICROSOFT // 041103
+#ifndef _MSC_VER // 041103
 #  include <GL/glx.h>
 #endif
 #include "GL/glut.h"
@@ -64,7 +64,7 @@ void assert_gl_dummy_and_empty(void);
 //
 #define assert_gl assert_gl_m(__LINE__, __FILE__); assert_gl_dummy_and_empty
 
-#ifndef MICROSOFT // 041103
+#ifndef _MSC_VER // 041103
 void list_FBConfigs(GLXFBConfig *config, int nelements);
 #endif
 
