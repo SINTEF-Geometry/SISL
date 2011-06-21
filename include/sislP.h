@@ -60,8 +60,6 @@
 #  define M_PI_2      1.57079632679489661923
 #  define M_SQRT2     1.41421356237309504880
 #  define M_SQRT1_2   0.70710678118654752440
-#else
-#  include <values.h>
 #endif
 
 /* Get floating point limits */
