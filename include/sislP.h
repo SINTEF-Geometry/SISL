@@ -51,7 +51,7 @@
 #include <limits.h>
 
 /* Get system spesific values */
-#if defined(_MSC_VER) || defined(__BORLANDC__) || defined(MICROSOFT)
+#if defined(_MSC_VER) || defined(__BORLANDC__) || defined(MICROSOFT)|| defined(__APPLE__)
 #  define MAXDOUBLE   1.79769313486231570e+308
 #  define MAXFLOAT    ((float)3.40282346638528860e+38)
 #  define MINDOUBLE   2.22507385850720140e-308
