@@ -103,13 +103,13 @@ void s1518(surf, point, dir, epsge, start, end, parin, parout, stat)
   double pminuss[3];        /* p - s. */
   double epsge2;            /* square of epsge. */
 
-  if(surf->idim != 3) goto error;
-  if(start[0] < surf->et1[surf->ik1 - 1]) goto error;
-  if(end[0] > surf->et1[surf->in1]) goto error;
-  if(start[1] < surf->et2[surf->ik2 - 1]) goto error;
-  if(end[1] > surf->et2[surf->in2]) goto error;
-  if(parin[0] < start[0] || parin[0] > end[0]) goto error;
-  if(parin[1] < start[1] || parin[1] > end[1]) goto error;
+  if(surf->idim != 3) { kstat = -1; goto error; }
+  if(start[0] < surf->et1[surf->ik1 - 1]) { kstat = -1; goto error; }
+  if(end[0] > surf->et1[surf->in1]) { kstat = -1; goto error; }
+  if(start[1] < surf->et2[surf->ik2 - 1]) { kstat = -1; goto error; }
+  if(end[1] > surf->et2[surf->in2]) { kstat = -1; goto error; }
+  if(parin[0] < start[0] || parin[0] > end[0]) { kstat = -1; goto error; }
+  if(parin[1] < start[1] || parin[1] > end[1]) { kstat = -1; goto error; }
 
   /* Represent line as intersection of two planes, i.e. find
      two vectors norm1 and norm2 of length one,
@@ -118,15 +118,15 @@ void s1518(surf, point, dir, epsge, start, end, parin, parout, stat)
   s6twonorm(dir,norm1,norm2,&kstat);
     if(kstat < 0) goto error;
 
-  printf("norm1 = %lf %lf %lf\n",norm1[0],norm1[1],norm1[2]);
-  printf("norm2 = %lf %lf %lf\n",norm2[0],norm2[1],norm2[2]);
+  /* printf("norm1 = %lf %lf %lf\n",norm1[0],norm1[1],norm1[2]); */
+  /* printf("norm2 = %lf %lf %lf\n",norm2[0],norm2[1],norm2[2]); */
 
   epsge2 = epsge * epsge;
 
   parpoint[0] = parin[0];
   parpoint[1] = parin[1];
 
-  printf("parpoint = %lf %lf\n",parpoint[0],parpoint[1]);
+  /* printf("parpoint = %lf %lf\n",parpoint[0],parpoint[1]); */
 
   for(i=0; i< num_its; i++)
   {
@@ -135,10 +135,10 @@ void s1518(surf, point, dir, epsge, start, end, parin, parout, stat)
     s1421(surf,nder,parpoint,&kleft1,&kleft2,der,norm,&kstat);
     if (kstat < 0) goto error;
 
-    printf("pos = %lf %lf %lf\n",der[0],der[1],der[2]);
-    printf("s_u = %lf %lf %lf\n",der[3],der[4],der[5]);
-    printf("s_v = %lf %lf %lf\n",der[6],der[7],der[8]);
-    printf("norm = %lf %lf %lf\n",norm[0],norm[1],norm[2]);
+    /* printf("pos = %lf %lf %lf\n",der[0],der[1],der[2]); */
+    /* printf("s_u = %lf %lf %lf\n",der[3],der[4],der[5]); */
+    /* printf("s_v = %lf %lf %lf\n",der[6],der[7],der[8]); */
+    /* printf("norm = %lf %lf %lf\n",norm[0],norm[1],norm[2]); */
     
     /* We assume that s(u,v) is close to the
        parametric plane s(u_0,v_0) + (u-u_0) * s_u + (v-v_0) * s_v,
@@ -203,7 +203,7 @@ void s1518(surf, point, dir, epsge, start, end, parin, parout, stat)
     parpoint[0] += du;    /* u1 = u0 + du; */
     parpoint[1] += dv;    /* v1 = v0 + dv; */
 
-    printf("parpoint = %lf %lf\n",parpoint[0],parpoint[1]);
+    /* printf("parpoint = %lf %lf\n",parpoint[0],parpoint[1]); */
 
    if(surf->cuopen_1 == 1)
    {
@@ -229,10 +229,11 @@ void s1518(surf, point, dir, epsge, start, end, parin, parout, stat)
 
   }
 
+  *stat = 1;
   parout[0] = parpoint[0];
   parout[1] = parpoint[1];
 
-  printf("parout = %lf %lf\n\n",parout[0],parout[1]);
+  /* printf("parout = %lf %lf\n\n",parout[0],parout[1]); */
 
   goto out;
 
