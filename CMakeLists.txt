@@ -16,16 +16,17 @@ FILE(GLOB sisl_SRCS src/*.c include/*.h)
 ADD_LIBRARY(sisl ${sisl_SRCS})
 
 # This line may be needed only on AMD 64 bit...
-IF(NOT WIN32)
-  SET_TARGET_PROPERTIES(sisl PROPERTIES COMPILE_FLAGS "-fPIC")
-ENDIF(NOT WIN32)
+#IF(NOT WIN32)
+#  SET_TARGET_PROPERTIES(sisl PROPERTIES COMPILE_FLAGS "-fPIC")
+#ENDIF(NOT WIN32)
 
 
 # Set various compiler flags
 
 IF(NOT WIN32)
   # Set warning level to '-Wall' on Linux
-  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-unused-but-set-variable -fPIC")
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-unused-but-set-variable -fPIC")
 ELSE(NOT WIN32)
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP8 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS")
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP8 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS")
