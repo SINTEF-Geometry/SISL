@@ -3,6 +3,10 @@ PROJECT(sisl)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 
+# Organize the project in folders (VS only?)
+SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
+
+
 # Include directories
 
 INCLUDE_DIRECTORIES(
@@ -14,6 +18,8 @@ INCLUDE_DIRECTORIES(
 
 FILE(GLOB sisl_SRCS src/*.c include/*.h)
 ADD_LIBRARY(sisl ${sisl_SRCS})
+SET_PROPERTY(TARGET sisl
+  PROPERTY FOLDER "sisl/Libs")
 
 # This line may be needed only on AMD 64 bit...
 #IF(NOT WIN32)
@@ -40,6 +46,8 @@ FOREACH(app ${sisl_APPS})
   GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
   ADD_EXECUTABLE(${appname} ${app})
   TARGET_LINK_LIBRARIES(${appname} sisl)
+  SET_PROPERTY(TARGET ${appname}
+    PROPERTY FOLDER "sisl/Apps")
 ENDFOREACH(app)
 
 
