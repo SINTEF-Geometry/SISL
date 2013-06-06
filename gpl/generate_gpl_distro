@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MODULE="sisl"
-RESULT_CATALOG=sisl-4.5.0
+RESULT_CATALOG=sisl-4.6.0
 
 clear
 
@@ -39,7 +39,7 @@ mkdir $RESULT_CATALOG
 
 # copy files
 cp ../CMakeLists.txt ../Doxyfile $RESULT_CATALOG 2> /dev/null
-cp -r ../include ../src ../doc $RESULT_CATALOG 2> /dev/null
+cp -r ../include ../src ../doc ../app ../examples $RESULT_CATALOG 2> /dev/null
 
 # get all header and source files
 header_files=`find $RESULT_CATALOG | grep -e '\.h' -e '\.hpp' | grep -v '.svn'`
