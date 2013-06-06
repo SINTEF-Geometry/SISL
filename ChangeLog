@@ -1,0 +1,14 @@
+2013-06-06	Jan Thomassen	<jan.b.thomassen@sintef.no>
+	* Released version 4.6.0 of SISL.
+	* Updated license to dual license: GNU Affero  GPL 3 or
+	commercial
+	* Fixed a number of bugs.
+
+16.9.2010	Jan Thomassen	<jan.b.thomassen@sintef.no>
+	* Released version 4.5.0 of SISL. This is a minor update from the
+	previous version.
+	* Changed building system to CMake.
+	* Fixed a number of bugs.
+
+3.2.2005
+	* Released version 4.4 of SISL.

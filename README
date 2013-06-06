@@ -1,0 +1,19 @@
+SISL is a comprehensive NURBS library for the modeling and
+interrogation of curves and surfaces. It is implemented in C.
+
+This software was written by the Geometry Group at SINTEF ICT,
+Department of Applied Mathematics.
+
+Requirements:
+* CMake
+  www.cmake.org
+
+For information on installation, see the INSTALL file.
+
+You can generate Doxygen information by typing 'doxygen' in the base
+directory.
+
+Good luck!
+
+
+ 
