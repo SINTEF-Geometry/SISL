@@ -237,7 +237,8 @@ void sh1839(po1,po2,aepsge,jstat)
 	/* Remove set of rotation vectors.  */
 	
 	if (ki+2 < kvec)
-	   memcopy(sdir+ki*kdim, sdir+(ki+2)*kdim, (kvec-ki-2)*kdim, DOUBLE);
+	  memmove(sdir+ki*kdim, sdir+(ki+2)*kdim, (kvec-ki-2)*kdim*sizeof(double));
+	//memcopy(sdir+ki*kdim, sdir+(ki+2)*kdim, (kvec-ki-2)*kdim, DOUBLE);
 	kvec -= 2;
      }
      else ki+=2;
