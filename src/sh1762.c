@@ -1857,13 +1857,34 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	if (spar[0] < sstart[0] + tdel1 || spar[0] > send[0] - tdel1)
 	{
 	   kf1--;
-	   qpt = SISL_NULL;
 	}
 	if (spar[1] < sstart[1] + tdel2 || spar[1] > send[1] - tdel2)
 	{
 	   kf2--;
-	   qpt = SISL_NULL;
 	}
+
+	/* Check if the intersection curve passing through
+	   the point is always parallel to an iso-curve. */
+		    
+	if ((*pintdat)->ipoint > 1 && kf1 > 0 && qo2->iobj == SISLSURFACE)
+	  {
+	    if (sh1762_is_taboo(qo1->s1, qo2->s1,
+				qpt, 1, &kstat))
+	      {
+		kf1--;
+	      }
+	  }
+
+	if ((*pintdat)->ipoint > 1 && kf2 > 0 && qo2->iobj == SISLSURFACE)
+	  {
+	    if (sh1762_is_taboo(qo1->s1, qo2->s1,
+			    qpt, 2, &kstat))
+	      {
+		kf2--;
+	      }
+	  }
+	if (kf1 == 0 || kf2 == 0)
+	  qpt = SISL_NULL;
      }
 
      kfound = 0;   /* If no iteration is tryed, use the midpoint. */
@@ -1956,7 +1977,12 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	/* If the surface is almost a Bezier surface, make it Bezier. */
 
 	s9simple_knot(qo1->s1, idiv, spar, fixflag, &kstat);
-	if ( kstat < 0 ) goto error;
+	if ( kstat < 0 ) 
+	  goto error;
+	if (kf1 == 1)
+	  spar[0] = sparsave[0];
+	if (kf2 == 1)
+	  spar[1] = sparsave[1];
 
 	memcopy(sparsave, spar, 2, DOUBLE);
 	if (((*fixflag) == 1 || (*fixflag) == 3) &&
@@ -2167,7 +2193,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		 spar[0] = pt1->epar[kpar];
 		 (*fixflag)++;
 	      }
-	      else
+	      else if (kf1 == 0)
 		 spar[0] = tmean[0];
 
 	      if (*fixflag == 2)
@@ -2184,7 +2210,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		 spar[1] = pt2->epar[kpar+1];
 		 (*fixflag) += 2;
 	      }
-	      else
+	      else if (kf2 == 0)
 		 spar[1] = tmean[1];
 	   }
 	   else
@@ -3903,6 +3929,16 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 	       if (kstat < 0)
 		  goto error;
 	       kstat2 = MAX(kstat2,kstat);
+	       /* if (false /\*kstat == 1*\/) */
+	       /* 	 { */
+	       /* 	   /\* VSK 1117. Locally this makes sense, but since the */
+	       /* 	      intersection surface is not brought forward to the */
+	       /* 	      application of the intersection function, it might */
+	       /* 	      be better to stop the computations and keep the */
+	       /* 	      boundary curves. *\/ */
+	       /* 	   for (kr=0,kj=kpt; kr<kpt2; ++kr, ++kj) */
+	       /* 	     up[kj]->iinter = SI_TRIM; */
+	       /* 	 } */
 	    }
 	    else if (kpt == 0 && kpt2 == knum)
 	    {
@@ -3924,7 +3960,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 
 	 if (kstat2 == 1)
 	 {
-	    /* Do something with the pertopology. */
+	    /* Do something with the pretopology. */
 	    /* fprintf (stdout, "\n Coincidence, kstat=%d", kstat); */
 	 }
       }

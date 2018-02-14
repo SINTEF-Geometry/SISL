@@ -882,6 +882,7 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 
 	  while (kstpch == 0 || koutside_resolution == 0)
 	    {
+	      spoint = s3dinf + 10*(knbinf-1);  // To avoid confusing valgrind
 	      if (kstpch!=0)
 		{
 		  /* Candidate end point exist, iterate to find point close
@@ -1037,7 +1038,8 @@ s1313(SISLSurf *ps1,double eimpli[],int ideg,double aepsco,double aepsge,
 			    }
 
 			}
-		      else if (tdum <= (double)0.75 || tdump <= (double)0.0)
+		      /*else if (tdum <= (double)0.75 || tdump <= (double)0.0)*/
+		      else if (tdum <= (double)0.75 || tdump <= -REL_PAR_RES)
 			{
 			  /* Find new end point of segment */
 			  koutside_resolution = 0;

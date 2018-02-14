@@ -195,7 +195,8 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 
   /* Test input.  */
 
-  if (pcurve1->idim != pcurve2->idim) goto err106;
+  if (pcurve1->idim != pcurve2->idim) 
+    goto err106;
 
   dim = pcurve1 -> idim;
 
@@ -209,7 +210,8 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
     if (dim > 3)
   {
      c1 = newarray(10*dim,double);
-     if (c1 == SISL_NULL) goto err101;
+     if (c1 == SISL_NULL) 
+       goto err101;
   }
   else
      c1 = local;
@@ -242,7 +244,8 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	s1227(pcurve1,1+order,par_val[0],&kleft1,c1,&kstat);
      else
 	s1221(pcurve1,1+order,par_val[0],&kleft1,c1,&kstat);
-     if (kstat < 0) goto error;
+     if (kstat < 0) 
+       goto error;
 
 
      /* Evaluate 0-2.st derivatives of curve 2 */
@@ -251,18 +254,22 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	s1227(pcurve2,1+order,par_val[1],&kleft2,c2,&kstat);
      else
 	s1221(pcurve2,1+order,par_val[1],&kleft2,c2,&kstat);
-     if (kstat < 0) goto error;
+     if (kstat < 0) 
+       goto error;
 
 
      /* Compute the distanse vector and value and the new step. */
 
      s1770_2D_s9dir(&dist,diff,c_d, c1,c1_t,c1_tt,
 		    		    c2,c2_t,c2_tt,dim,order,&det,&kstat);
-     if (kstat < 0) goto error;
+     if (kstat < 0) 
+       goto error;
      if (kstat == 1) 		/* Singular matrix. */
      {
-	if (order == 1 && dist > aepsge) goto singular;
-	else if (order == 1) goto not_singular;
+	if (order == 1 && dist > aepsge) 
+	  goto singular;
+	else if (order == 1) 
+	  goto not_singular;
      }
      else break;
   }
@@ -295,24 +302,29 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	   s1227(pcurve1,1+order,par_val[0],&kleft1,c1,&kstat);
 	else
 	   s1221(pcurve1,1+order,par_val[0],&kleft1,c1,&kstat);
-	if (kstat < 0) goto error;
+	if (kstat < 0) 
+	  goto error;
 
 	if (par_val[1] == aend2)
 	   s1227(pcurve2,1+order,par_val[1],&kleft2,c2,&kstat);
 	else
 	   s1221(pcurve2,1+order,par_val[1],&kleft2,c2,&kstat);
-	if (kstat < 0) goto error;
+	if (kstat < 0) 
+	  goto error;
 
 	/* Compute the distanse vector and value and the new step. */
 
 	s1770_2D_s9dir(&dist,diff,nc_d,c1,c1_t,c1_tt,c2,c2_t,c2_tt,
 		    dim,order,&det,&kstat);
-	if (kstat < 0) goto error;
+	if (kstat < 0) 
+	  goto error;
 	if (kstat == 1)             /* Singular matrix.  */
 	{
 	   sing++;
-	   if (order == 1 && dist > aepsge) goto singular;
-	   else if (order == 1) goto not_singular;
+	   if (order == 1 && dist > aepsge) 
+	     goto singular;
+	   else if (order == 1) 
+	     goto not_singular;
 	   else set_order(2);               /* Change order to 2. */
 	}
 	else
@@ -334,8 +346,10 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	   }
 	   else if (order && !g_dir)
 	   {
-	      if (sing && dist > aepsge) goto singular;
-	      else if (sing) goto not_singular;
+	      if (sing && dist > aepsge) 
+		goto singular;
+	      else if (sing) 
+		goto not_singular;
 	      if (div2) div2 = 0;
 	      set_order(1);
 	   }
@@ -349,7 +363,8 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
      }
 
      if (corr)
-	if (!(p_dir && g_dir)) corr = 0;
+	if (!(p_dir && g_dir)) 
+	  corr = 0;
 
      if (dist < prev_dist || p_dir)
      {
@@ -366,7 +381,8 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 
 	if (corr > 2 ||
 	    ((fabs(d[0]/MAX(par_val[0],delta[0])) <= REL_COMP_RES) &&
-	     (fabs(d[1]/MAX(par_val[1],delta[1])) <= REL_COMP_RES))) break;
+	     (fabs(d[1]/MAX(par_val[1],delta[1])) <= REL_COMP_RES))) 
+	  break;
 	if (div2) div2 = 0;
 
 	     if (corr > 1 && order)
@@ -378,13 +394,16 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 
      else if (corr > 2 ||
 	      ((fabs(d[0]/MAX(par_val[0],delta[0])) <= REL_COMP_RES) &&
-	       (fabs(d[1]/MAX(par_val[1],delta[1])) <= REL_COMP_RES))) break;
+	       (fabs(d[1]/MAX(par_val[1],delta[1])) <= REL_COMP_RES))) 
+       break;
      else
      {
 	/* Not converging, corrigate and try again.  */
 
-	if (dist > prev_dist && div2 > 5) break;
-	if (quick && dist > prev_dist && div2 > 3) break;
+	if (dist > prev_dist && div2 > 5) 
+	  break;
+	if (quick && dist > prev_dist && div2 > 3) 
+	  break;
 	div2++;
 	decr2(par_val,d,2);
 	d[0] /= (double)2; d[1] /= (double)2;
@@ -396,7 +415,7 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
   /* Iteration stopped, test if point founds found is within resolution */
 
 
-  if (dim == 2 && fabs(det)<0.1)
+  if (dim == 2 /*&& fabs(det)<0.1*/)
   {
     if (order < 1)
     {
@@ -406,13 +425,15 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	s1227(pcurve1,1+order,par_val[0],&kleft1,c1,&kstat);
       else
 	s1221(pcurve1,1+order,par_val[0],&kleft1,c1,&kstat);
-      if (kstat < 0) goto error;
+      if (kstat < 0) 
+	goto error;
 
       if (par_val[1] == aend2)
 	s1227(pcurve2,1+order,par_val[1],&kleft2,c2,&kstat);
       else
 	s1221(pcurve2,1+order,par_val[1],&kleft2,c2,&kstat);
-      if (kstat < 0) goto error;
+      if (kstat < 0) 
+	goto error;
     }
     goto singular;
   }
@@ -427,12 +448,14 @@ void s1770_2D(pcurve1,pcurve2,aepsge,astart1,astart2,
 	ki = s1770_2D_s6local_pretop(dist,diff,norm,c1,c1_t,c1_tt,
 				  c2,c2_t,c2_tt,dim,&kstat);
 
-	if (kstat < 0) goto error;
+	if (kstat < 0) 
+	  goto error;
 	if (ki == 0)
 	{
 	   s1770_2D_s6sekant1(pcurve1,pcurve2,par_val,c_d[0],&dist,aepsge,
 			   astart1,astart2,aend1,aend2,c1,c2,norm,&kstat);
-	   if (kstat < 0) goto error;
+	   if (kstat < 0) 
+	     goto error;
 
 	}
      }
