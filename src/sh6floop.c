@@ -93,10 +93,13 @@ void sh6floop(vedgept,inum,jpt,jstat)
 * WRITTEN BY : Vibeke Skytt, SI, 11.92.
 * Revised by : Paal Fugelli, SINTEF, Oslo, Norway, Sept. 1994.  Initialized
 *              gnext.
+* Revised by : Vibeke Skytt, SINTEF, 03.2018. Turn list than ends in 
+*              help points
 *
 *********************************************************************
 */
 {
+  int kstat = 0;
    int kstat2 = -1;   /* Status of traversing the first list.           */
    int kpt = 0;       /* Current number of intersections in first loop. */
    int ki,kj;         /* Counters.                                      */
@@ -105,6 +108,8 @@ void sh6floop(vedgept,inum,jpt,jstat)
    SISLIntpt *qt;     /* Current intersection point in list.            */
    SISLIntpt *qnext = SISL_NULL;  /* The next point to enter the list.              */
    SISLIntpt *qhelp;  /* Help point used in sorting vedgept.            */
+   int nmbmain;       /* Number of main points attahced to a point      */
+   int nmbturn = 0;
 
    /* Check if there is a list.  */
 
@@ -126,7 +131,21 @@ void sh6floop(vedgept,inum,jpt,jstat)
 
 	 qt = qstart;
 	 qprev = (kpt > 0) ? vedgept[1] : SISL_NULL;
+
+	 if (kpt > 0)
+	   {
+	     /* Turn direction of list */
+	     for (ki=0; ki<(kpt+1)/2; ++ki)
+	       {
+		 qhelp = vedgept[ki];
+		 vedgept[ki] = vedgept[kpt-ki];
+		 vedgept[kpt-ki] = qhelp;
+	       }
+	   }
       }
+
+      /* Check if there is any possibility for a continued list */
+      nmbmain = sh6nmbmain(qt, &kstat);
 
       for (ki=0; ki<qt->no_of_curves; ki++)
       {
@@ -138,8 +157,17 @@ void sh6floop(vedgept,inum,jpt,jstat)
 	 {
 	    kstat2 = 0; break;  /* No point.  */
 	 }
-	 if (qnext == qprev) continue;  /* Traversing of list have turned.
-				 	   Try next curve.                 */
+	 if (qnext == qprev) 
+	   {
+	     if (nmbmain == 1 && nmbturn == 0)
+	       {
+		 qnext = SISL_NULL;
+		 kstat2 = -1;
+		 nmbturn++;
+	       }
+	     continue;  /* Traversing of list have turned.
+			   Try next curve.                 */
+	   }
 	 if (qnext == qstart)
 	 {
 	    kstat2 = 1; break;  /* A closed loop is found.  */

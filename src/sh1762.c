@@ -75,7 +75,7 @@ static int xmax = 0;
 static void sh1762_s9mic (SISLObject *, SISLObject *, SISLIntdat **, SISLEdge **[], int *);
 static void sh1762_s9num (SISLObject *, SISLObject *, int *, int *);
 static void sh1762_s9div (SISLObject *, SISLObject *, double, int, int, SISLObject *[], SISLEdge *[], SISLIntdat **, int *);
-static void sh1762_s9subdivpt (SISLObject *, SISLObject *, double, int, int, SISLEdge *[], SISLIntdat **, int *, SISLIntpt **, double[], int *);
+static int sh1762_s9subdivpt (SISLObject *, SISLObject *, double, int, int, SISLEdge *[], SISLIntdat **, int *, SISLIntpt **, double[], int *);
 static void sh1762_s9update (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge **[], int *);
 static void sh1762_s9con (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge *[], int *);
 static void sh1762_s9intercept (SISLObject *, SISLObject *, double, int, SISLIntpt *[], int *);
@@ -93,7 +93,7 @@ static double sh1762_sflength(SISLSurf *, int, int *);
 static void sh1762_s9mic ();
 static void sh1762_s9num ();
 static void sh1762_s9div ();
-static void sh1762_s9subdivpt ();
+static int sh1762_s9subdivpt ();
 static void sh1762_s9update ();
 static void sh1762_s9con ();
 static void sh1762_s9intercept ();
@@ -212,6 +212,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   /* int knum;  */                   /* Number of intersection points at edges. */
   SISLObject *uob1[4];		/* Pointers to subdivided object.     */
   SISLObject *uob2[4];		/* Pointer to object to subdivide.    */
+  int knedge1, knedge2;
 
   int debug_flag=0;
 
@@ -264,6 +265,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		 for (kj = 0; kj < ipar; kj++)
 		    printf(" %#10.10g", up[ki]->epar[kj]);
 	      }
+	      printf("\n");
 	   }
 	   else              /* if (debug_flag == 2) */
 	   {
@@ -389,6 +391,13 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	  if (kstat < 0)
 	    goto error;
 	  /* } */
+
+	  /* Check for tangential belt configuration */
+	  if (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE &&
+	      (po1->s1->sf_type == TANGENTIAL_BELT ||
+	       po2->s1->sf_type == TANGENTIAL_BELT))
+	    kstat = 1;
+
       /* We may have two different values on kstat.
 	 kstat = 0 : No simple case.
 	 kstat = 1 : Simple case (surfaces possible simple case). */
@@ -726,6 +735,30 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   /* Reduction rules */
 
   sh6red (po1, po2, (*pintdat), &kstat);
+
+  /* sh6red may remove points, update edge intersections */
+  if (vedge[0] != SISL_NULL)
+  {
+     knedge1 = vedge[0]->iedge;
+     freeEdge (vedge[0]);
+     if ((vedge[0] = newEdge (knedge1)) == SISL_NULL)
+        goto err101;
+  }
+  if (vedge[1] != SISL_NULL)
+  {
+     knedge2 = vedge[1]->iedge;
+     freeEdge (vedge[1]);
+     if ((vedge[1] = newEdge (knedge2)) == SISL_NULL)
+	goto err101;
+  }
+
+  /* Making new edge object to sub problems. */
+
+
+  sh6idalledg (po1, po2, *pintdat, vedge, &kstat);
+  if (kstat < 0)
+     goto error;
+
 
   /* Make help points and pretopology at bottom */
 
@@ -1302,6 +1335,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
 *
 *
 * WRITTEN BY : Arne Laksaa, SI, 89-04.
+* REVISED BY : Vibeke Skytt, SINTEF, 2018-02. Introduced segmentation
 *
 *********************************************************************
 */
@@ -1311,6 +1345,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   double tang1=DZERO, tang2=DZERO;
   int not_case_2d;
   int kbez1=1, kbez2=1;
+  int hasseg1 = 0, hasseg2 = 0;
 
   /* Init. */
 
@@ -1348,6 +1383,10 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	  tang1 = po->s1->pdir->aang;
 	}
       kbez1 = (po->s1->ik1 == po->s1->in1 && po->s1->ik2 == po->s1->in2);
+      if (po->s1->seg1 && po->s1->seg1->num_seg > 0)
+	hasseg1 += 1;
+      if (po->s1->seg2 && po->s1->seg2->num_seg > 0)
+	hasseg1 += 2;
     }
 
   /* Get attributes from referance object. */
@@ -1369,6 +1408,10 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	}
       kbez2 = (poref->s1->ik1 == poref->s1->in1 &&
 	       poref->s1->ik2 == poref->s1->in2);
+      if (poref->s1->seg1 && poref->s1->seg1->num_seg > 0)
+	hasseg2 += 1;
+      if (poref->s1->seg2 && poref->s1->seg2->num_seg > 0)
+	hasseg2 += 2;
     }
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
@@ -1381,6 +1424,11 @@ sh1762_s9num (po, poref, jdiv, jstat)
   /*---------------------------------------------*/
   /* If linear, we do not subdivide.             */
   if (kgtpi1 == 0 && tang1 <= ANGULAR_TOLERANCE/10.0 && not_case_2d)
+    *jdiv = 0;
+
+  /* If the other surface has segments and this one not, we do
+     not subdivide  */
+  else if (hasseg2 > 0 && hasseg1 == 0)
     *jdiv = 0;
 
   else if (po->iobj == SISLCURVE && poref->iobj == SISLSURFACE)
@@ -1418,16 +1466,25 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	tsfp2 = sh1762_sflength(po->s1, 2, &kstat);
 	if (kstat < 0)
 	  goto error;
-
-	if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
+	
+	/* The segmentation logic is too simple as it does not
+	   take into account that segmentation in theory can be given in 
+	   more than one direction and attached to more than one surface.
+	   However, this should not be the case currently.  */
+	if (hasseg1 == 1)
+	  *jdiv = 1;
+	else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
 	  !(po->s1->ik1 == 2 && tsfp1 < tref*tsfp2))
 	*jdiv = 1;
 
       else
 	*jdiv = 0;
 
-	if (s1791 (po->s1->et2, po->s1->ik2, po->s1->in2) &&
-	  !(po->s1->ik2 == 2 && tsfp2 < tref*tsfp1))
+	if (hasseg1 == 2)
+	  *jdiv = 2;
+	else if (hasseg1 != 1 &&
+		 s1791 (po->s1->et2, po->s1->ik2, po->s1->in2) &&
+		 !(po->s1->ik2 == 2 && tsfp2 < tref*tsfp1))
 	*jdiv += 2;
 
     }
@@ -1603,12 +1660,12 @@ out:
 
 
 #if defined(SISLNEEDPROTOTYPES)
-static void
+static int
 sh1762_s9subdivpt (SISLObject * po1, SISLObject * po2, double aepsge,
 		   int iobj, int idiv, SISLEdge * vedge[], SISLIntdat ** pintdat,
 		   int *fixflag, SISLIntpt ** rpt, double epar[], int *jstat)
 #else
-static void
+static int
 sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, epar, jstat)
      SISLObject *po1;
      SISLObject *po2;
@@ -1649,8 +1706,8 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 *                         *rpt == SISL_NULL.
 *              epar     - Parameter values of subdivision point. The number of
 *                         elements used is equal to the number of parameter
-*                         directions of the object to be subdivide. The dimension
-*                         is equal to 2.
+*                         directions of the object to be subdivide. The 
+*                         dimension is equal to 2.
 *              jstat    - Status messages
 *                          = 1     : Intersection found
 *                          = 0     : no intersection found.
@@ -1664,7 +1721,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 *
 *
 * WRITTEN BY : Arne Laksaa, SI, 89-04.
-* REWISED BY : Vibeke Skytt, SI, 90-10.
+* REVISED BY : Vibeke Skytt, SI, 90-10.
 * REWRITTEN BY : Vibeke Skytt, SINTEF, 94-02.
 *
 *********************************************************************
@@ -1674,7 +1731,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
    int kpos = 0;
    int kpar;            /* First index of subdivision point in the
 			   parameter value of in intersection point.        */
-   int kfound;          /* Indicates if in intersection point / extremal
+   int kfound = 0;      /* Indicates if in intersection point / extremal
 			   point is to be used.                             */
    int kf1=0, kf2=0;    /* Indicates if an internal intersection point is
 			   legal in the parameter directions of a surface.  */
@@ -1691,6 +1748,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
    SISLObject *qo1;	/* Pointer to the object that is to be subdivided. */
    SISLObject *qo2;	/* Pointer to the other object.          */
    SISLIntpt *qpt = SISL_NULL;  /* An internal intersection point.    */
+   int subdiv_flag = 0;
 
    /* Set pointer to subdivision object. */
 
@@ -1841,9 +1899,16 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
      tdel1 = (double) 0.01 *(send[0] - sstart[0]);
      tdel2 = (double) 0.01 *(send[1] - sstart[1]);
 
+     /* First check if a surface segmentation defines the
+	subdivision parameter                                          */
+     kfound = sh6getsegdiv(qo1->s1, idiv, spar, &subdiv_flag);
+     if (kfound > 0)
+       *fixflag = kfound;
+
      /* In the Bezier case, search for an internal intersection point. */
 
-     if (qo1->s1->ik1 == qo1->s1->in1 && qo1->s1->ik2 == qo1->s1->in2)
+     if (kfound != idiv &&
+	 qo1->s1->ik1 == qo1->s1->in1 && qo1->s1->ik2 == qo1->s1->in2)
 	s6idint (po1, po2, *pintdat, &qpt, iobj);
      if (qpt != SISL_NULL)
      {
@@ -1887,8 +1952,8 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	  qpt = SISL_NULL;
      }
 
-     kfound = 0;   /* If no iteration is tryed, use the midpoint. */
-     if ((!qpt) && qo2->iobj != SISLSURFACE &&
+     /* If no iteration is tried, use the midpoint. */
+     if ((!qpt) && kfound != idiv && qo2->iobj != SISLSURFACE &&
 	 !(qo2->iobj == SISLPOINT && qo2->p1->idim == 1) &&
 	 qo1->s1->ik1 == qo1->s1->in1 && qo1->s1->ik2 == qo1->s1->in2)
      {
@@ -1935,7 +2000,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	      kfound -= 2;
 	}
 
-     if ((!qpt) && (!(kfound==3) && qo2->iobj != SISLSURFACE &&
+     if ((!qpt) && (!(kfound==idiv) && qo2->iobj != SISLSURFACE &&
 		    !(qo2->iobj == SISLPOINT && qo2->p1->idim == 1)))
 	 {
 	    /* Use the midpoint of the surface as a subdivision point. */
@@ -1954,9 +2019,10 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	       spar[1] = sparsave[1];
 	 }
 
-     if ((!qpt) && (qo2->iobj == SISLSURFACE ||
-		    (qo2->iobj == SISLPOINT &&
-		     (qo2->p1->idim == 1 || qo2->p1->idim == 2))))
+     if ((!qpt) && kfound != idiv && 
+	 (qo2->iobj == SISLSURFACE ||
+	  (qo2->iobj == SISLPOINT && 
+	   (qo2->p1->idim == 1 || qo2->p1->idim == 2))))
      {
 	SISLPtedge *qptedg;	/* Pointer used to traverse int. points on edges. */
 	SISLIntpt *pt1 = SISL_NULL;  /* Intersection point on edge. */
@@ -2001,6 +2067,12 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
 	   tmean[0] = s1792 (qo1->s1->et1, qo1->s1->ik1, qo1->s1->in1);
 	   tmean[1] = s1792 (qo1->s1->et2, qo1->s1->ik2, qo1->s1->in2);
+
+	   /* Control for edges */
+	   /* if (tmean[0] < sstart[0]+tdel1 || tmean[0] > send[0]-tdel1) */
+	   /*   tmean[0] = 0.5*(sstart[0] + send[0]); */
+	   /* if (tmean[1] < sstart[1]+tdel2 || tmean[1] > send[1]-tdel2) */
+	   /*   tmean[1] = 0.5*(sstart[1] + send[1]); */
 
 	   if (!(*fixflag == 1) && vedge[iobj - 1]->ipoint > 0)
 	   {
@@ -2368,7 +2440,7 @@ error:*jstat = kstat;
   goto out;
 
 out:
-   return;
+   return subdiv_flag;
 
 }
 
@@ -2462,10 +2534,12 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
   SISLEdge *uedge[2];		/* Edge intersections of subproblem.                 */
   int fixflag = 0;		/* UJK 31.10.90 */
   int idummy;
+  int subdiv_flag;
 
   /* Fetch subdivision point of object.  */
 
-  sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, &fixflag, &qpt, spar, &kstat);
+  subdiv_flag = sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, 
+				  pintdat, &fixflag, &qpt, spar, &kstat);
   if (kstat < 0)
     goto error;
 
@@ -2604,6 +2678,13 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      if (kstat < 0)
 		goto error;
 
+	      /* Check if any surface is flagged due to the applied
+		 subdivision strategy  */
+	      if (subdiv_flag == TANGENTIAL_BELT_LEFT)
+		wob[0]->s1->sf_type =  TANGENTIAL_BELT;
+	      else if (subdiv_flag == TANGENTIAL_BELT_RIGHT)
+		wob[1]->s1->sf_type =  TANGENTIAL_BELT;
+
 	      if (wob[0]->edg[1] == SISL_NULL)
 		{
 		  if ((qso = wob[0]->edg[1] = newObject (SISLCURVE)) == SISL_NULL)
@@ -2635,6 +2716,13 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	      s1711 (qo1->s1, 2, spar[1], &(wob[0]->s1), &(wob[1]->s1), &kstat);
 	      if (kstat < 0)
 		goto error;
+
+	      /* Check if any surface is flagged due to the applied
+		 subdivision strategy  */
+	      if (subdiv_flag == TANGENTIAL_BELT_LEFT)
+		wob[0]->s1->sf_type =  TANGENTIAL_BELT;
+	      else if (subdiv_flag == TANGENTIAL_BELT_RIGHT)
+		wob[1]->s1->sf_type =  TANGENTIAL_BELT;
 
 	      if (wob[0]->edg[2] == SISL_NULL)
 		{
@@ -3805,6 +3893,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   int one_edge = 0;             /* Indicates if all intersection points
 				   lies on one edge in each surface.     */
   SISLPtedge *qpt1, *qpt2;      /* Pointers used to traverse edge intersections. */
+  int kdir, kdir2;              /* Constant parameter directions */
 
   /* Set kcrv parameters.  */
 
@@ -3950,10 +4039,25 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 		  sh6comedg(po1, po2, up[ki-1], up[ki], &kstat);
 		  if (kstat < 0) goto error;
 
-		  if (kstat != 3) one_edge = 0;  /* Not a common edge. */
+		  if (kstat != 3) 
+		    one_edge = 0;  /* Not a common edge. */
 	       }
-	    }
 
+	       /* Check if the curve follows one constant parameter
+		  curve in one surface and select the most significant
+		  candidate. Check if this intersection curve is
+		  tangential and, in that case, set appropriate
+		  surface segmentation information. */
+
+	       sh1794(po1, po2, up+kpt, kpt2-kpt, aepsge, &kstat);
+	       if (kstat < 0)
+		 goto error;
+	       if (kstat == 1)
+		 {
+		   /* A tangential intersection curve is found */
+		   printf("Tangential \n");
+		 }
+	    }
 	 }
 
 	 *jstat = kstat2;

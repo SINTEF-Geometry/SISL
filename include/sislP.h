@@ -565,6 +565,11 @@ SISLIntpt    *hp_newIntpt(int,double *,double,int,int,int,int,int,
 extern
 #endif
 SISLIntpt    *hp_copyIntpt(SISLIntpt *);
+#ifndef CONSTRUCT
+extern
+#endif
+SISLSegmentation *newSegmentation(double *segmentation, 
+					 int *type, int nseg);
 #ifndef DESTRUCT
 extern
 #endif
@@ -605,6 +610,10 @@ void freeTrimpar(SISLTrimpar *);
 extern
 #endif
 void freeTrack(SISLTrack * ptrack);
+#ifndef DESTRUCT
+extern
+#endif
+void freeSegmentation(SISLSegmentation *);
 #ifndef MAKE3D
 extern
 #endif
@@ -703,6 +712,11 @@ void s1251(SISLCurve *,double,double *,int *);
 extern
 #endif
 void s1252(SISLCurve *,double,double,double *,int *);
+#ifndef S1291
+extern
+#endif
+void s1291(double cvder[], double sfder[], int idim, double cvder2[], 
+	   int *jstat);
 #ifndef  S1301
 extern
 #endif
@@ -2091,6 +2105,11 @@ void sh1787(SISLObject *,SISLObject *,double,SISLIntdat **,SISLIntpt *,
 extern
 #endif
 void sh1790(SISLObject *,SISLObject *,int,double,int *);
+#ifndef SH1794
+extern
+#endif
+void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
+	    double aepsge, int *jstat);
 #ifndef  SH1830
 extern
 #endif
@@ -2321,6 +2340,10 @@ void sh6getother(SISLIntpt *,SISLIntpt *,SISLIntpt **,int *);
 extern
 #endif
 int sh6getprev(SISLIntpt *,SISLIntpt *);
+#ifndef  SH6GETSEGDIV
+extern
+#endif
+int sh6getsegdiv(SISLSurf *ps, int idiv, double epar[], int *seg_flag);
 #ifndef  SH6GETTOP
 extern
 #endif
@@ -2449,6 +2472,11 @@ void sh6setcnsdir(SISLIntpt *,SISLIntpt *,int,int *);
 extern
 #endif
 void sh6setdir(SISLIntpt *,SISLIntpt *,int *);
+#ifndef SH6SETSEG
+extern
+#endif
+void sh6setseg(SISLSurf *ps, int idir, double *segmentation, int nseg,
+	       int type, int *jstat);
 #ifndef  SH6SETTOP
 extern
 #endif
@@ -2647,6 +2675,10 @@ SISLIntpt     *hp_newIntpt();
 extern
 #endif
 SISLIntpt     *hp_copyIntpt();
+#ifndef CONSTRUCT
+extern
+#endif
+SISLSegmentation *newSegmentation();
 #ifndef DESTRUCT
 extern
 #endif
@@ -2687,6 +2719,10 @@ void freeTrimpar();
 extern
 #endif
 void freeTrack();
+#ifndef DESTRUCT
+extern
+#endif
+void freeSegmentation();
 #ifndef MAKE3D
 extern
 #endif
@@ -2779,6 +2815,10 @@ void s1251();
 extern
 #endif
 void s1252();
+#ifndef S1291
+extern
+#endif
+void s1291();
 #ifndef  S1301
 extern
 #endif
@@ -3987,6 +4027,10 @@ void sh1787();
 extern
 #endif
 void sh1790();
+#ifndef SH1794
+extern
+#endif
+void sh1794();
 #ifndef  SH1830
 extern
 #endif
@@ -4187,6 +4231,10 @@ void sh6getother();
 extern
 #endif
 int sh6getprev();
+#ifndef  SH6GETSEGDIV
+extern
+#endif
+int sh6getsegdiv();
 #ifndef  SH6GETTOP
 extern
 #endif
@@ -4311,6 +4359,10 @@ void sh6setcnsdir();
 extern
 #endif
 void sh6setdir();
+#ifndef SH6SETSEG
+extern
+#endif
+void sh6setseg();
 #ifndef  SH6SETTOP
 extern
 #endif

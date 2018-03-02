@@ -903,9 +903,59 @@ void freeSurf(psurf)
     freearray(psurf->pbox);
   }
 
+  if (psurf->seg1)
+    freeSegmentation(psurf->seg1);
+  if (psurf->seg2)
+    freeSegmentation(psurf->seg2);
+
   /* Free instance of surface. */
 
   freearray(psurf);
+
+  return;
+}
+
+
+#if defined(SISLNEEDPROTOTYPES)
+void
+freeSegmentation(SISLSegmentation *pseg)
+#else
+void freeSegmentation(pseg)
+     SISLSegmentation *pseg;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Free the space occupied by the segmentation array
+*
+*
+*
+* INPUT      : psegmentation - Pointer to the segmentation information
+*
+*
+*
+* OUTPUT     :
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*-
+* CALLS      : freearray - Free space occupied by a given array.
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 2018-02
+*
+*********************************************************************
+*/
+{
+  if (pseg->seg_val != NULL) freearray(pseg->seg_val);
+  if (pseg->seg_type != NULL) freearray(pseg->seg_type);
+  freearray(pseg);
+  pseg = NULL;
 
   return;
 }

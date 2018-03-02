@@ -147,6 +147,7 @@ void s1990(ps,aepsge,jstat)
   double *scoef;    /* Pointer to smoothed coefficient vector.            */
   double slen[5];   /* Distances between coefficients.                    */
   double scorn[4];  /* Angle between derivatives in corner of patch.      */
+  double aepsge2 = min(aepsge, 1.0e-6);
   
   /* Initiate output status */
 
@@ -245,7 +246,7 @@ void s1990(ps,aepsge,jstat)
 		 memcopy(tsen,t+kdim,kdim,DOUBLE);
 		 tlen = slen[1];
 		
-		if (tlen > aepsge)
+		if (tlen > aepsge2)
 		  {
 		    for (k1=0; k1 < kdim; k1++) tsen[k1] /= tlen;
 		    lcone[0] = 0;
@@ -255,7 +256,7 @@ void s1990(ps,aepsge,jstat)
 	    else
 	      {
 		/* Modify existing cone. */
-		 s1990_s9edg(t+(kdim),ttan,tsen,aepsge,sang,kdim,&kstat);
+		 s1990_s9edg(t+(kdim),ttan,tsen,aepsge2,sang,kdim,&kstat);
 		
 		if (kstat)   ps->pdir->igtpi = 10;
 	      }
@@ -269,7 +270,7 @@ void s1990(ps,aepsge,jstat)
 		 memcopy(tsen+kdim,t+3*kdim,kdim,DOUBLE);
 		 tlen = slen[3];
 		
-		if (tlen > aepsge)
+		if (tlen > aepsge2)
 		  {
 		    for (k1=0; k1 < kdim; k1++) tsen[kdim+k1] /= tlen;
 		    lcone[1] = 0;
@@ -278,7 +279,7 @@ void s1990(ps,aepsge,jstat)
 	      }
 	    else
 	      {
-		 s1990_s9edg(t+(3*kdim),ttan,tsen+kdim,aepsge,sang+1,kdim,&kstat);
+		 s1990_s9edg(t+(3*kdim),ttan,tsen+kdim,aepsge2,sang+1,kdim,&kstat);
 		if (kstat) ps->pdir->igtpi = 10;
 	      }
 	  }
@@ -293,7 +294,7 @@ void s1990(ps,aepsge,jstat)
 		 memcopy(tsen+2*kdim,t,kdim,DOUBLE);
 		 tlen = slen[0];
 		
-		if (tlen > aepsge)
+		if (tlen > aepsge2)
 		  {
 		    for (k1=0; k1 < kdim; k1++) tsen[2*kdim+k1] /= tlen;
 		    lcone[2] = 0;
@@ -302,7 +303,7 @@ void s1990(ps,aepsge,jstat)
 	      }
 	    else
 	      {
-		 s1990_s9edg(t,ttan,tsen+(2*kdim),aepsge,sang+2,kdim,&kstat);
+		 s1990_s9edg(t,ttan,tsen+(2*kdim),aepsge2,sang+2,kdim,&kstat);
 		if (kstat) ps->pdir->igtpi = 10;
 	      }
 	  } 
@@ -313,7 +314,7 @@ void s1990(ps,aepsge,jstat)
 		 memcopy(tsen+3*kdim,t+2*kdim,kdim,DOUBLE);
 		 tlen = slen[2];
 		
-		if (tlen > aepsge)
+		if (tlen > aepsge2)
 		  {
 		    for (k1=0; k1 < kdim; k1++) tsen[3*kdim+k1] /= tlen;
 		    lcone[3] = 0;
@@ -322,7 +323,7 @@ void s1990(ps,aepsge,jstat)
 	      }
 	    else
 	      {
-		 s1990_s9edg(t+(2*kdim),ttan,tsen+(3*kdim),aepsge,sang+3,kdim,&kstat);
+		 s1990_s9edg(t+(2*kdim),ttan,tsen+(3*kdim),aepsge2,sang+3,kdim,&kstat);
 		if (kstat)  ps->pdir->igtpi = 10;
 	      }
 	  }
@@ -346,7 +347,7 @@ void s1990(ps,aepsge,jstat)
 	      }
 	    tlen = sqrt(tlen);
 	    /* KYS 070494 : multiplied ANGULAR_TOLERANCE by 1.0e-2 */
-	    if (slen[ki]>aepsge && slen[ki+1]>aepsge &&
+	    if (slen[ki]>aepsge2 && slen[ki+1]>aepsge2 &&
 		scorn[ki] > 1.0e-2*ANGULAR_TOLERANCE)
 	      for (k2=0; k2 < kdim; k2++) tn[k1+k2] /= tlen;
 	    else 
@@ -407,7 +408,7 @@ void s1990(ps,aepsge,jstat)
 		else               tlen = max((double)-1.0,tlen);
 		
 		tlen = acos(tlen);
-		if (sqrt(tnlen) < aepsge) tlen = DZERO;
+		if (sqrt(tnlen) < aepsge2) tlen = DZERO;
 		
 		ps->pdir->aang = max(ps->pdir->aang,tlen);
 	      }
@@ -430,7 +431,7 @@ void s1990(ps,aepsge,jstat)
 	      else               tang = MAX((double)-1.0,tang);
 	      
 	      tang = acos(tang);
-	      if (sqrt(tnlen) < aepsge) tang = DZERO;
+	      if (sqrt(tnlen) < aepsge2) tang = DZERO;
 	      
 	      if (tang + ps->pdir->aang >= PI)
 		{
@@ -496,7 +497,7 @@ void s1990(ps,aepsge,jstat)
       /* No cone has been generated. We must examin if the surface is 
 	 degenerated to a point or line. */
       for (k1 = 1; k1 < kn1*kn2; k1++)
-	if (s6dist(scoef,scoef + (k1*kdim),kdim) >aepsge) break;
+	if (s6dist(scoef,scoef + (k1*kdim),kdim) >aepsge2) break;
       
       if (k1 == kn1*kn2)
 	{
@@ -511,7 +512,7 @@ void s1990(ps,aepsge,jstat)
 	  s6diff(scoef,scoef + (k1*kdim),kdim,svec1);
 	  
 	  for (k2 = k1 + 1; k2 < kn1*kn2; k2++)
-	    if (s6dist(scoef,scoef + (k2*kdim),kdim) >aepsge)
+	    if (s6dist(scoef,scoef + (k2*kdim),kdim) >aepsge2)
 	      {
 		s6diff(scoef,scoef + (k2*kdim),kdim,svec2);
 		if (s6ang(svec1,svec2,kdim) > 1.0e-2*ANGULAR_TOLERANCE) break;
