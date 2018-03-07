@@ -4055,7 +4055,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 	       if (kstat == 1)
 		 {
 		   /* A tangential intersection curve is found */
-		   printf("Tangential \n");
+		   /*printf("Tangential \n");*/
 		 }
 	    }
 	 }
