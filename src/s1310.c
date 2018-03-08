@@ -1871,7 +1871,7 @@ static void s1310_s9constline(SISLSurf *ps1,SISLSurf *ps2,SISLIntcurve *pintcr,
 */
 {
   /*int kguide1,kguide2,kguide3,kguide4;*/ /* Pointers to guide points       */
-  int kguide[3];
+  int kguide[4];
   /*int kderc=2;         Number of derivatives to be claculated on curve */
   int kders=1;        /* Number of derivatives to be calculated on surface*/
   int ki,kj,kl;            /* Control variables in for loops            */
