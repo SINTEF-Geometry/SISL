@@ -1791,6 +1791,9 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   qnew->et2 = st2;
   qnew->pdir = SISL_NULL;
   qnew->pbox = SISL_NULL;
+  qnew->seg1 = SISL_NULL;
+  qnew->seg2 = SISL_NULL;
+  qnew->sf_type = NO_SURFACE_TYPE;
 
   if (ikind == 2 || ikind == 4)
     {
@@ -2169,7 +2172,7 @@ int nseg;
 *********************************************************************
 */
 {
-  SISLSegmentation *qseg;
+  SISLSegmentation *qseg = SISL_NULL;
   qseg = newarray(1, SISLSegmentation);
 
   if (qseg != NULL)
