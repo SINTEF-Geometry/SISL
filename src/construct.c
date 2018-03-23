@@ -1791,6 +1791,9 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   qnew->et2 = st2;
   qnew->pdir = SISL_NULL;
   qnew->pbox = SISL_NULL;
+  qnew->seg1 = SISL_NULL;
+  qnew->seg2 = SISL_NULL;
+  qnew->sf_type = NO_SURFACE_TYPE;
 
   if (ikind == 2 || ikind == 4)
     {
@@ -1818,6 +1821,11 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
   /* UJK, 92.05.05 Default value must be set for cuopen */
   qnew->cuopen_1 = SISL_SURF_OPEN;
   qnew->cuopen_2 = SISL_SURF_OPEN;
+
+  /* Segmentation and type information not set   */
+  qnew->seg1 = NULL;
+  qnew->seg2 = NULL;
+  qnew->sf_type = NO_SURFACE_TYPE;
 
   /* Task done. */
 
@@ -2103,6 +2111,14 @@ copySurface (psurf)
      }
   }
   
+  if (psurf->seg1 != NULL)
+    {
+    }
+  if (psurf->seg2 != NULL)
+    {
+    }
+  qs->sf_type = psurf->sf_type;
+
   goto out;
   
   /* Error in allocation. */
@@ -2113,3 +2129,71 @@ copySurface (psurf)
   out :
      return qs;
 }   
+
+
+#if defined(SISLNEEDPROTOTYPES)
+SISLSegmentation*
+newSegmentation(double *segmentation, int *type, int nseg)
+#else
+SISLSegmentation *
+newSegmentation(segmentation, type, nseg)
+double *segmentation;
+int type; 
+int nseg;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Create and initialize a segmentation array for use in
+*              intersection problems. Each segmentation value has
+*              a corresponding type.
+*
+*
+*
+* INPUT      : 
+*
+*
+*
+* OUTPUT     : newSegmentation - Pointer to resulting structure
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*-
+* CALLS      :
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 2018-02
+*
+*********************************************************************
+*/
+{
+  SISLSegmentation *qseg = SISL_NULL;
+  qseg = newarray(1, SISLSegmentation);
+
+  if (qseg != NULL)
+    {
+      qseg->seg_val = newarray(nseg, DOUBLE);
+      qseg->seg_type = newarray(nseg, INT);  /* SEGMENTATION_TYPE */
+
+      if (qseg->seg_val == NULL || qseg->seg_type == NULL)
+	{
+	  if (qseg->seg_val != NULL) freearray(qseg->seg_val);
+	  if (qseg->seg_type != NULL) freearray(qseg->seg_type);
+	  freearray(qseg);
+	  qseg = NULL;
+	}
+      else
+	{
+	  memcopy(qseg->seg_val, segmentation, nseg, DOUBLE);
+	  memcopy(qseg->seg_type, type, nseg, DOUBLE);
+	  qseg->num_seg = nseg;
+	}
+    }
+  return qseg;
+}
+

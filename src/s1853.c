@@ -125,9 +125,9 @@ void s1853(ps1,epoint,edirec,aradius,idim,aepsco,aepsge,
   int kpos = 0;               /* Position of error.                          */
   int i;
   int trackflag = 0;
-  int jtrack;
+  int jtrack = 0;
   SISLTrack **wtrack=SISL_NULL;
-  int jsurf;
+  int jsurf = 0;
   SISLIntsurf **wsurf=SISL_NULL;
   int *pretop=SISL_NULL;
 

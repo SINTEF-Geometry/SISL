@@ -648,6 +648,8 @@ static void s1772_s9dir(dist,diff,delta,f,f_t,f_tt,g,g_u,g_v,g_uu,
   int    piv[3];		/* Pivotation array                       */
   int k,k3,j;			/* Counters.				  */
   
+  /* Initialize */
+  delta[0] = delta[1] = delta[2] = 0.0;
   
   /* Computing the different vector */
   
@@ -675,7 +677,8 @@ static void s1772_s9dir(dist,diff,delta,f,f_t,f_tt,g,g_u,g_v,g_uu,
      b3 = s6scpr(diff,g_vv,dim);
      b4 = s6scpr(diff,g_uv,dim);
   }
-  else b1=b2=b3=b4=0;
+  else 
+    b1=b2=b3=b4=0;
 
   if (second || dim != 3)
   {  

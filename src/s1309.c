@@ -118,7 +118,7 @@ double s1309(epnt,edir,eimpli,ideg,jstat)
 */
 {
   double sdir[3];         /* Normilized direction vector          */
-  double tb1,ta11,ta12;   /* Dummy variables                      */
+  double tb1=0.0,ta11=0.0,ta12=0.0;   /* Dummy variables          */
   double tsum,t1,t2,tdum1;/* Dummy variables                      */
   double tcurdst=0.0;     /* The distance                         */
   double sq[4];           /* Array used for temporary results     */

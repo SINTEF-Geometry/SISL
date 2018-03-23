@@ -129,8 +129,8 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
 *********************************************************************
 */
 {
-  int    kstat1,kstat2;  /* Local status variable                            */
-  int    kstat;          /* Local status variable                            */
+  int    kstat1=0,kstat2=0;  /* Local status variable                        */
+  int    kstat=0;          /* Local status variable                          */
   int    kpos=0;         /* Position of error                                */
   int    kins1;          /* epar1 inside/outside SISLbox                         */
   int    kins2;          /* epar2 inside/outside SISLbox                         */
@@ -150,29 +150,41 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
   
   kins1 = kins2 = 0; 
   
-  if (eval11[0] <= epar11[0] && epar11[0] <= eval11[1] &&
-      eval12[0] <= epar11[1] && epar11[1] <= eval12[1] &&
-      eval21[0] <= epar12[0] && epar12[0] <= eval21[1] &&
-      eval22[0] <= epar12[1] && epar12[1] <= eval22[1]) kins1 = 1;
+  if (eval11[0] <= epar11[0]+REL_PAR_RES && epar11[0] <= eval11[1]+REL_PAR_RES &&
+      eval12[0] <= epar11[1]+REL_PAR_RES && epar11[1] <= eval12[1]+REL_PAR_RES &&
+      eval21[0] <= epar12[0]+REL_PAR_RES && epar12[0] <= eval21[1]+REL_PAR_RES &&
+      eval22[0] <= epar12[1]+REL_PAR_RES && epar12[1] <= eval22[1]+REL_PAR_RES) 
+    kins1 = 1;
   
-  if (eval11[0] <= epar21[0] && epar21[0] <= eval11[1] &&
-      eval12[0] <= epar21[1] && epar21[1] <= eval12[1] &&
-      eval21[0] <= epar22[0] && epar22[0] <= eval21[1] &&
-      eval22[0] <= epar22[1] && epar22[1] <= eval22[1]) kins2 = 1;
-  
+  if (eval11[0] <= epar21[0]+REL_PAR_RES && epar21[0] <= eval11[1]+REL_PAR_RES &&
+      eval12[0] <= epar21[1]+REL_PAR_RES && epar21[1] <= eval12[1]+REL_PAR_RES &&
+      eval21[0] <= epar22[0]+REL_PAR_RES && epar22[0] <= eval21[1]+REL_PAR_RES &&
+      eval22[0] <= epar22[1]+REL_PAR_RES && epar22[1] <= eval22[1]+REL_PAR_RES) 
+    kins2 = 1;
+   
   
   /* Test if we step from the boundary and out */
   
-  if ((eval11[0] == epar11[0] && epar21[0] < eval11[0]) ||
-      (epar11[0] == eval11[1] && eval11[1] < epar21[0]) ||
-      (eval12[0] == epar11[1] && epar21[1] < eval12[0]) ||
-      (epar11[1] == eval12[1] && eval12[1] < epar21[1]) ||
-      (eval21[0] == epar12[0] && epar22[0] < eval21[0]) ||
-      (epar12[0] == eval21[1] && eval21[1] < epar22[0]) ||
-      (eval22[0] == epar12[1] && epar22[1] < eval22[0]) ||
-      (epar12[1] == eval22[1] && eval22[1] < epar22[1])) goto war04;
+  /* if ((eval11[0] == epar11[0] && epar21[0] < eval11[0]) || */
+  /*     (epar11[0] == eval11[1] && eval11[1] < epar21[0]) || */
+  /*     (eval12[0] == epar11[1] && epar21[1] < eval12[0]) || */
+  /*     (epar11[1] == eval12[1] && eval12[1] < epar21[1]) || */
+  /*     (eval21[0] == epar12[0] && epar22[0] < eval21[0]) || */
+  /*     (epar12[0] == eval21[1] && eval21[1] < epar22[0]) || */
+  /*     (eval22[0] == epar12[1] && epar22[1] < eval22[0]) || */
+  /*     (epar12[1] == eval22[1] && eval22[1] < epar22[1])) goto war04; */
+  if ((DEQUAL(eval11[0],epar11[0]) && epar21[0] < eval11[0]) ||
+      (DEQUAL(epar11[0],eval11[1]) && eval11[1] < epar21[0]) ||
+      (DEQUAL(eval12[0],epar11[1]) && epar21[1] < eval12[0]) ||
+      (DEQUAL(epar11[1],eval12[1]) && eval12[1] < epar21[1]) ||
+      (DEQUAL(eval21[0],epar12[0]) && epar22[0] < eval21[0]) ||
+      (DEQUAL(epar12[0],eval21[1]) && eval21[1] < epar22[0]) ||
+      (DEQUAL(eval22[0],epar12[1]) && epar22[1] < eval22[0]) ||
+      (DEQUAL(epar12[1],eval22[1]) && eval22[1] < epar22[1])) 
+     goto war04;
   
-  if (kins1==1 && kins2==1) goto war01;
+  if (kins1==1 && kins2==1) 
+    goto war01;
   
   /* Test if both ends are to the left, right, below or above */
   
@@ -183,7 +195,8 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
       (epar12[0]  < eval21[0] && epar22[0]  < eval21[0]) ||
       (eval21[1] < epar12[0]  && eval21[1] < epar22[0] ) ||
       (epar12[1]  < eval22[0] && epar22[1]  < eval22[0]) ||
-      (eval22[1] < epar12[1]  && eval22[1] < epar22[1] )   ) goto war00;
+      (eval22[1] < epar12[1]  && eval22[1] < epar22[1] )   ) 
+    goto war00;
   
   
   
@@ -237,11 +250,14 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
   
   s1305(epar12,epar22,eval21,eval22,&kbound2,spar22,&kstat);
   
-  if (kstat<0) goto error;
+  if (kstat<0) 
+    goto error;
   kstat2 = kstat;
-  if (kstat2==0) goto war00;
+  if (kstat2==0) 
+    goto war00;
   
-  if (kstat1==1 && kstat2==1) goto war01;
+  if (kstat1==1 && kstat2==1) 
+    goto war01;
   
   
   /* Calculate two last coefficients */
@@ -341,7 +357,8 @@ void s1330(epar11,epar12,epar21,epar22,eval11,eval12,eval21,eval22,
 	}
     }
   
-  if (kins2 == 1) goto war03; 
+  if (kins2 == 1) 
+    goto war03; 
   
   goto war05;
   

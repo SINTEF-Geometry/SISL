@@ -116,6 +116,28 @@ typedef struct SISLbox
   double etol[3];		/* Tolerances of the boxes.                  */
 } SISLbox;
 
+/* Information used in intersection functionality           */
+enum /* SEGMENTATION_TYPE */
+  {
+    NO_SEG_TYPE = 0,
+    TANGENTIAL_BELT_LEFT,
+    TANGENTIAL_BELT_RIGHT,
+    LIMITING_SEG
+  };
+
+enum /* SURFACE_TYPE */
+  {
+    NO_SURFACE_TYPE = 0,
+    TANGENTIAL_BELT
+  };
+
+typedef struct SISLSegmentation
+{
+  double *seg_val;
+  int *seg_type;   /* SEGMENTATION_TYPE */
+  int num_seg;
+} SISLSegmentation;
+
 /* This file will contain the definition of the structure SISLCurve which
    will contain the description of a B-spline curve.                        */
 
@@ -194,6 +216,11 @@ typedef struct SISLSurf
 				   surfaces, no internal use */
  int cuopen_1;                  /* Open/closed flag, 1. par directiion */
  int cuopen_2;                  /* Open/closed flag. 2. par direction  */
+  SISLSegmentation *seg1;       /* Segmentation information for use in
+				   intersection functionality, 1. par. dir. */
+  SISLSegmentation *seg2;       /* Segmentation information for use in
+				   intersection functionality, 2. par. dir. */
+  int sf_type;        /* SURFACE_TYPE, Flag for special surface information */
 } SISLSurf;
 
 /* This file contains the description of an intersection curve.
@@ -1110,6 +1137,7 @@ SISLSurf      *newSurf();
 extern
 #endif
 SISLSurf      *copySurface();
+
 #ifndef DESTRUCT
 extern
 #endif
@@ -1126,7 +1154,6 @@ void freeIntcurve();
 extern
 #endif
 void freeSurf();
-
 #ifndef  S1001
 extern
 #endif

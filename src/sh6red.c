@@ -290,6 +290,58 @@ sh6red (po1, po2, pintdat, jstat)
 	} while (changed);
     }
 
+  /* VSK, 03-2018. Take another iteration to remove internal points in a
+     list after the help point reduction is performed.  */
+  if (pintdat != SISL_NULL)
+    {
+     for (j = 0; j < pintdat->ipoint; j++)
+     {
+	
+	pcurr = pintdat->vpoint[j];
+	sh6isinside (po1, po2, pcurr, &kstat);
+	if (kstat < 0)
+	   goto error;
+	
+	/* Do not remove points at corners. */
+	if (kstat != 1 && kstat != 2) continue;
+	
+	sh6getnhbrs (pcurr, &pstart, &plast, &kstat);
+	if (kstat < 0)
+	   goto error;
+	
+	if (kstat == 0)
+	{
+	   /* Two neighbours, check */
+	   sh6getlist (pcurr, pstart, &indstart, &inddum, &kstat);
+	   if (kstat < 0)
+	      goto error;		/* Error. */
+	   if (kstat == 1)
+	      goto errinconsist;	/* pcurr and pstart are not linked. */
+	   
+	   sh6getlist (pcurr, plast, &indlast, &inddum, &kstat);
+	   if (kstat < 0)
+	      goto error;		/* Error. */
+	   if (kstat == 1)
+	      goto errinconsist;	/* pcurr and plast are not linked. */
+	   
+	   log_1 = pcurr->curve_dir[indstart];
+	   log_1 = log_1>>1;
+	   log_1 &= 15;
+	   log_2 = pcurr->curve_dir[indlast];
+	   log_2 = log_2>>1;
+	   log_2 &= 15;
+	   	   
+	   if ((log_1 & log_2) || po1->iobj+po2->iobj < 4)
+	   {
+	      sh6idkpt (&pintdat, &pcurr, 1, &kstat);
+	      if (kstat < 0)
+		 goto error;
+	      /* Recursive nature : */
+	      j = -1;
+	   }
+	}
+     }
+    }
 
   /* Reduction done. */
 

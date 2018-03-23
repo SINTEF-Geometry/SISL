@@ -556,8 +556,10 @@ void s1425(ps1,ider1,ider2,iside1,iside2,epar,ileft1,ileft2,eder,jstat)
 	for (ki=ider1 ; 0<=ki ; ki--)
 	  {
 	    if ( ki <= kder1 && kj <= kder2)
-	      memcopy(sder+kdim*(ki+kj*(ider1+1)),sder+kdim*(ki+kj*(kder1+1)),
-		      kdim,DOUBLE);
+	      /* memcopy(sder+kdim*(ki+kj*(ider1+1)),sder+kdim*(ki+kj*(kder1+1)), */
+	      /* 	      kdim,DOUBLE); */
+	      memmove(sder+kdim*(ki+kj*(ider1+1)),sder+kdim*(ki+kj*(kder1+1)),
+		      kdim*sizeof(double));
 	    else
 	      for (kl=0;kl<kdim;kl++)     
 		*(sder+kdim*(ki+kj*(ider1+1))+kl) = DZERO;
