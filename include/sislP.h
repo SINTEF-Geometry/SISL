@@ -362,7 +362,7 @@ enum
 
 #if defined(SISL_INTERNAL)
 #ifndef HUGE
-#define HUGE          MAXDOUBLE
+const double HUGE = std::numeric_limits<double>::max();
 #endif
 
 /* Storage classes. Used in space allocation.  */
