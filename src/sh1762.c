@@ -214,7 +214,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   SISLObject *uob2[4];		/* Pointer to object to subdivide.    */
   int knedge1, knedge2;
 
-  int debug_flag=0;
+  int debug_flag=1;
 
   /*  FOR DEBUGGING define debug_flag as an extern variable, i.e.:
    *
@@ -1346,6 +1346,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
   int not_case_2d;
   int kbez1=1, kbez2=1;
   int hasseg1 = 0, hasseg2 = 0;
+  double tsfp1=0.0, tsfp2=0.0, t2p1=0.0, t2p2=0.0;
+  double tref = 2.0;
 
   /* Init. */
 
@@ -1387,6 +1389,14 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	hasseg1 += 1;
       if (po->s1->seg2 && po->s1->seg2->num_seg > 0)
 	hasseg1 += 2;
+
+      tsfp1 = sh1762_sflength(po->s1, 1, &kstat);
+      if (kstat < 0)
+	goto error;
+
+      tsfp2 = sh1762_sflength(po->s1, 2, &kstat);
+      if (kstat < 0)
+	goto error;
     }
 
   /* Get attributes from referance object. */
@@ -1412,6 +1422,14 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	hasseg2 += 1;
       if (poref->s1->seg2 && poref->s1->seg2->num_seg > 0)
 	hasseg2 += 2;
+
+      t2p1 = sh1762_sflength(poref->s1, 1, &kstat);
+      if (kstat < 0)
+	goto error;
+
+      t2p2 = sh1762_sflength(poref->s1, 2, &kstat);
+      if (kstat < 0)
+	goto error;
     }
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
@@ -1442,7 +1460,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 
     }
 
-  else if (kgtpi1 == 0 && tang1 < SIMPLECASE / (double) 2.0 && kbez1 == 1 &&
+  else if (kgtpi1 == 0 && tang1 < SIMPLECASE /*/ (double) 2.0 */ && 
+	   (kbez1 == 1 || tsfp1*tsfp2 < 0.1*t2p1*t2p2) &&
 	   (kgtpi2 != 0 || tang2 > tang1 * (double) 2.0))
     *jdiv = 0; 
 
@@ -1456,16 +1475,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
     }
   else if (po->iobj == SISLSURFACE)
     {
-	double tsfp1, tsfp2, tref;
-	tref = 5.0;
 
-	tsfp1 = sh1762_sflength(po->s1, 1, &kstat);
-	if (kstat < 0)
-	  goto error;
-
-	tsfp2 = sh1762_sflength(po->s1, 2, &kstat);
-	if (kstat < 0)
-	  goto error;
 	
 	/* The segmentation logic is too simple as it does not
 	   take into account that segmentation in theory can be given in 
@@ -1473,19 +1483,23 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	   However, this should not be the case currently.  */
 	if (hasseg1 == 1)
 	  *jdiv = 1;
-	else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
-	  !(po->s1->ik1 == 2 && tsfp1 < tref*tsfp2))
-	*jdiv = 1;
+	else if ((po->s1->ik1 == 2 || tsfp1 < tref*tsfp2)
+		 && poref->iobj == SISLSURFACE)
+	  *jdiv = 0;
+	else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)) 
+	  *jdiv = 1;
 
       else
 	*jdiv = 0;
 
 	if (hasseg1 == 2)
 	  *jdiv = 2;
+	else if ((po->s1->ik2 == 2 || tsfp2 < tref*tsfp1)
+		 && poref->iobj == SISLSURFACE)
+	  ;
 	else if (hasseg1 != 1 &&
-		 s1791 (po->s1->et2, po->s1->ik2, po->s1->in2) &&
-		 !(po->s1->ik2 == 2 && tsfp2 < tref*tsfp1))
-	*jdiv += 2;
+		 s1791 (po->s1->et2, po->s1->ik2, po->s1->in2))
+	  *jdiv += 2;
 
     }
   goto out;
@@ -1559,6 +1573,7 @@ sh1762_is_taboo(psurf1, psurf2 ,pintpt, idir, jstat)
    int kstat = 0;
    int is_taboo = 0;
    double derivs1[9], derivs2[9], norm[3], nor1[3], nor2[3], angle;
+   double vec[3], ang1, ang2, ang3, ang4;
    double abs_tang1[2], abs_tang2[2];
    double tmax;
    int ilfs = 0, ilft = 0;
@@ -1592,6 +1607,12 @@ sh1762_is_taboo(psurf1, psurf2 ,pintpt, idir, jstat)
        /* If we have a singularity, we don't declare it as taboo. */
 
        angle = s6ang(nor1, nor2, 3);
+
+       s6crss(nor1, nor2, vec);
+       ang1 = s6ang(derivs1+3, vec, 3);
+       ang2 = s6ang(derivs1+6, vec, 3);
+       ang3 = s6ang(derivs2+3, vec, 3);
+       ang4 = s6ang(derivs2+6, vec, 3);
 
        abs_tang1[0] = fabs(s6scpr(derivs1+6, nor2, 3));
        abs_tang1[1] = fabs(s6scpr(derivs1+3, nor2, 3));
