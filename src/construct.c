@@ -2190,7 +2190,7 @@ int nseg;
       else
 	{
 	  memcopy(qseg->seg_val, segmentation, nseg, DOUBLE);
-	  memcopy(qseg->seg_type, type, nseg, DOUBLE);
+	  memcopy(qseg->seg_type, type, nseg, INT);
 	  qseg->num_seg = nseg;
 	}
     }

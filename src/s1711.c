@@ -459,19 +459,19 @@ outfree:
    /* Free local used memory. */
 
 out:
-   if(!q1)
-   {
-      if (st1) freearray(st1);
-      if (st1sec) freearray(st1sec);
-      if (scoef1) freearray(scoef1);
-   }
+   /* if(!q1) */
+   /*   { */
+   /*    if (st1) freearray(st1); */
+   /*    if (st1sec) freearray(st1sec); */
+   /*    if (scoef1) freearray(scoef1); */
+   /*   } */
 
-   if(!q2)
-   {
-      if (st2) freearray(st2);
-      if (st2sec) freearray(st2sec);
-      if (scoef2) freearray(scoef2);
-   }
+   /* if(!q2) */
+   /*   { */
+   /*    if (st2) freearray(st2); */
+   /*    if (st2sec) freearray(st2sec); */
+   /*    if (scoef2) freearray(scoef2); */
+   /*   } */
 
    if (kk > 5 && salfa)
       freearray (salfa);

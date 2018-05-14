@@ -1442,7 +1442,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 
     }
 
-  else if (kgtpi1 == 0 && tang1 < SIMPLECASE / (double) 2.0 && kbez1 == 1 &&
+  else if (kgtpi1 == 0 && tang1 < SIMPLECASE / (double) 2.0 && 
+	   (kbez1 == 1 || tang1 < 10.0*ANGULAR_TOLERANCE) &&
 	   (kgtpi2 != 0 || tang2 > tang1 * (double) 2.0))
     *jdiv = 0; 
 
@@ -1473,8 +1474,11 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	   However, this should not be the case currently.  */
 	if (hasseg1 == 1)
 	  *jdiv = 1;
+	else if ((kgtpi1 == 2 || kgtpi1 == 20) && 
+		 po->s1->in1 < po->s1->in2 && tsfp1 < tsfp2)
+	  *jdiv = 0;
 	else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
-	  !(po->s1->ik1 == 2 && tsfp1 < tref*tsfp2))
+		 !(po->s1->ik1 == 2 && tsfp1 < tref*tsfp2))
 	*jdiv = 1;
 
       else
@@ -1482,9 +1486,12 @@ sh1762_s9num (po, poref, jdiv, jstat)
 
 	if (hasseg1 == 2)
 	  *jdiv = 2;
+	else if ((kgtpi1 == 1 || kgtpi1 == 10) && 
+		 po->s1->in2 < po->s1->in1 && tsfp2 < tsfp1)
+	  ;
 	else if (hasseg1 != 1 &&
 		 s1791 (po->s1->et2, po->s1->ik2, po->s1->in2) &&
-		 !(po->s1->ik2 == 2 && tsfp2 < tref*tsfp1))
+		 !((po->s1->ik2 == 2 || kgtpi1 == 1) && tsfp2 < tref*tsfp1))
 	*jdiv += 2;
 
     }
@@ -4057,6 +4064,8 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 		   /* A tangential intersection curve is found */
 		   /*printf("Tangential \n");*/
 		 }
+	       else if (kstat == 2)
+		 kstat2 = 2;
 	    }
 	 }
 
@@ -5460,6 +5469,7 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
    SISLPoint *pt = SISL_NULL;       /* Point in point surface iteration.       */
    double sstart[2], send[2];  /* Parameter boundaries of second surface. */
    double spar2[2];            /* Parameter value of second surface.      */
+   int at_boundary = 0;
 
    /* Set number of locations to test coincidence. */
 
@@ -5493,6 +5503,13 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	 s1773(pt, po2->s1, aepsge, sstart, send, spar2, spar2, &kstat);
 	 if (kstat < 0) goto error;
 
+	 /* Check if the closest point is found on a surface boundary. */
+	 if (DEQUAL(spar2[0], po2->s1->et1[po2->s1->ik1-1]) ||
+	     DEQUAL(spar2[0], po2->s1->et1[po2->s1->in1]) ||
+	     DEQUAL(spar2[1], po2->s1->et2[po2->s1->ik2-1]) ||
+	     DEQUAL(spar2[1], po2->s1->et2[po2->s1->in2]))
+	   at_boundary = 1;
+
 	 /* Evalutate second surface. */
 
 	 s1421(po2->s1, 0, spar2, &kleft21, &kleft22, sder2, snorm2, &kstat);
@@ -5503,7 +5520,8 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
 
 	 /* Check distance between the closest points. */
 
-	 if (s6dist(sder1, sder2, kdim) > aepsge) break;  /* Not a coincidence.*/
+	 if (s6dist(sder1, sder2, kdim) > aepsge && (!at_boundary)) 
+	   break;  /* Not a coincidence.*/
       }
       if (kj < kntest2) break;  /* Not a coincidence. */
    }
@@ -5622,7 +5640,8 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
   double spos[4];               /* Parameter value of singular point.    */
   double start[4];              /* Start parameter to iteration.         */
   double slimit[8];             /* Limits to the parameter areas.        */
-  SISLIntpt *qsing=SISL_NULL;        /* Singular intersection point.          */
+  SISLIntpt *qsing=SISL_NULL;   /* Singular intersection point.          */
+  int kpt2 = 0;                 /* Number of connected intersection points */
 
   /* Experiment UJK, sept 92 (BEOrd12754) */
     double tolpar = (double) 0.001;
@@ -6498,6 +6517,23 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	     }
 	  }
 
+	  if (ps1->sf_type == TANGENTIAL_BELT || 
+	      ps2->sf_type == TANGENTIAL_BELT)
+	    {
+	      /* One surface represents a fuzzy zone close to a tangential
+		 intersection curve. Unconnected points pointing in or out
+		 should be connected to this curve. To start with, stop
+		 processing if all intersection points are connected */
+	      sh6floop(uipt, kn1, &kpt2, &kstat);
+	      if (kstat < 0)
+		goto error;
+	      if (kpt2 == kn1)
+		{
+		  *jstat = 0;
+		  goto out;
+		}
+	    }
+		
 	  if (kv == 2 || lnumb[2] < 2 || kmarch == 1)
 	  {
 	      /* If we got two points, we always try marching as the second

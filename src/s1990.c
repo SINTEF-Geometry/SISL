@@ -387,9 +387,9 @@ void s1990(ps,aepsge,jstat)
 		 opposite directions, i.e. not simple case */
 	      {
 		if (khor <= kver)
-		  ps->pdir->igtpi = 1;
-		else
 		  ps->pdir->igtpi = 2;
+		else
+		  ps->pdir->igtpi = 1;
 		ps->pdir->aang = PI;
 		goto out;
 	      }
@@ -439,9 +439,9 @@ void s1990(ps,aepsge,jstat)
 		     how to subdivied and exit this function. */
 		  
 		  if (khor <= kver)
-		    ps->pdir->igtpi = 1;
-		  else	
 		    ps->pdir->igtpi = 2;
+		  else	
+		    ps->pdir->igtpi = 1;
 		  goto out;
 		}
 	      else if (tang > ps->pdir->aang)
@@ -484,9 +484,9 @@ void s1990(ps,aepsge,jstat)
 	       how to subdivied and exit this function. */
 	    
 	    if (khor <= kver)
-	      ps->pdir->igtpi = 10;
-	    else	
 	      ps->pdir->igtpi = 20;
+	    else	
+	      ps->pdir->igtpi = 10;
 	  }
       }			
   
