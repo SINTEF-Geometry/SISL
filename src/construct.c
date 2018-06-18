@@ -546,7 +546,7 @@ newEdge (iedge)
   int ki;			/* Counter.                          */
   SISLEdge *pnew;		/* Local pointer to the instance.    */
   SISLPtedge *(*ppt);		/* Pointer to traverst array prpt of
-			       pointers to Ptedge-instances.     */
+  			       pointers to Ptedge-instances.     */
 
   /* Allocate space for instance.  */
 
@@ -1835,14 +1835,14 @@ newSurf (in1, in2, ik1, ik2, et1, et2, ecoef, ikind, idim, icopy)
 
 err101:if (qnew != SISL_NULL)
     freearray (qnew);
-  if (st1 != SISL_NULL)
-    freearray (st1);
-  if (st2 != SISL_NULL)
-    freearray (st2);
-  if (rcoef != SISL_NULL)
-    freearray (rcoef);
-  if (scoef != SISL_NULL)
-    freearray (scoef);
+  /* if (st1 != SISL_NULL) */
+  /*   freearray (st1); */
+  /* if (st2 != SISL_NULL) */
+  /*   freearray (st2); */
+  /* if (rcoef != SISL_NULL) */
+  /*   freearray (rcoef); */
+  /* if (scoef != SISL_NULL) */
+  /*   freearray (scoef); */
   goto out;
 
 out:return (qnew);
@@ -2190,7 +2190,7 @@ int nseg;
       else
 	{
 	  memcopy(qseg->seg_val, segmentation, nseg, DOUBLE);
-	  memcopy(qseg->seg_type, type, nseg, DOUBLE);
+	  memcopy(qseg->seg_type, type, nseg, INT);
 	  qseg->num_seg = nseg;
 	}
     }
