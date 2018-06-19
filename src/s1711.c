@@ -454,7 +454,9 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
 
 outfree:
    if(q1) freeSurf(q1);
+   q1 = SISL_NULL;
    if(q2) freeSurf(q2);
+   q2 = SISL_NULL;
 
    /* Free local used memory. */
 
