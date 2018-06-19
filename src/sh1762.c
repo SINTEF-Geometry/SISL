@@ -608,6 +608,29 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		    *jstat = 1;
 		}
 
+	      /* sh6div may remove points, update edge intersections */
+	      if (vedge[0] != SISL_NULL)
+		{
+		  knedge1 = vedge[0]->iedge;
+		  freeEdge (vedge[0]);
+		  if ((vedge[0] = newEdge (knedge1)) == SISL_NULL)
+		    goto err101;
+		}
+	      if (vedge[1] != SISL_NULL)
+		{
+		  knedge2 = vedge[1]->iedge;
+		  freeEdge (vedge[1]);
+		  if ((vedge[1] = newEdge (knedge2)) == SISL_NULL)
+		    goto err101;
+		}
+
+	      /* Making new edge object */
+
+
+	      sh6idalledg (po1, po2, *pintdat, vedge, &kstat);
+	      if (kstat < 0)
+		goto error;
+
 
 	      if (kdiv2 > 0)	/* New objects for subdivision of po2. */
 		{
@@ -629,6 +652,30 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		  else if (kstat == 1)
 		    *jstat = 1;
 		}
+
+	      /* sh6div may remove points, update edge intersections */
+	      if (vedge[0] != SISL_NULL)
+		{
+		  knedge1 = vedge[0]->iedge;
+		  freeEdge (vedge[0]);
+		  if ((vedge[0] = newEdge (knedge1)) == SISL_NULL)
+		    goto err101;
+		}
+	      if (vedge[1] != SISL_NULL)
+		{
+		  knedge2 = vedge[1]->iedge;
+		  freeEdge (vedge[1]);
+		  if ((vedge[1] = newEdge (knedge2)) == SISL_NULL)
+		    goto err101;
+		}
+
+	      /* Making new edge object */
+
+
+	      sh6idalledg (po1, po2, *pintdat, vedge, &kstat);
+	      if (kstat < 0)
+		goto error;
+
 
 
 	      /***** Recursion. *****/
