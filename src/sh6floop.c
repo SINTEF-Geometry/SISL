@@ -125,7 +125,7 @@ void sh6floop(vedgept,inum,jpt,jstat)
 
    for (qprev=SISL_NULL, qt=qstart; ; qt=vedgept[kpt])
    {
-      if (kstat2 == 0)
+      if (kstat2 == 0 && nmbturn == 0)
       {
 	 /* Open list. Travers in the opposite direction.  */
 
@@ -142,8 +142,9 @@ void sh6floop(vedgept,inum,jpt,jstat)
 		 vedgept[kpt-ki] = qhelp;
 	       }
 	   }
+	 nmbturn++;
       }
-
+      
       /* Check if there is any possibility for a continued list */
       nmbmain = sh6nmbmain(qt, &kstat);
 
@@ -159,11 +160,10 @@ void sh6floop(vedgept,inum,jpt,jstat)
 	 }
 	 if (qnext == qprev) 
 	   {
-	     if (nmbmain == 1 && nmbturn == 0)
+	     if (nmbmain == 1 && nmbturn == 0 && kpt < inum-1)
 	       {
 		 qnext = SISL_NULL;
 		 kstat2 = -1;
-		 nmbturn++;
 	       }
 	     continue;  /* Traversing of list have turned.
 			   Try next curve.                 */

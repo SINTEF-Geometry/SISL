@@ -90,6 +90,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 *                                                                     
 *
 * OUTPUT     : jstat  - status messages  
+*                            = 2      : Entire surface withing tangential zone
 *                            = 1      : Tangential curve found
 *			     = 0      : The curve is not tangential or
 *			                do not end in corners
@@ -343,8 +344,11 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	      dist2 = s6dist(pos1, pos2, kdim);
 	      /*printf("Dist: %7.13f, expected: %7.13f \n",dist2, sdist[kj]); */
 	      if (fabs(dist2 - sdist[kj]) < dtol)
-		break;   /* The estimate for the tangential zone limit
-			    is close enough                            */
+		{
+		  tprev = tpar;
+		  break;   /* The estimate for the tangential zone limit
+			      is close enough                            */
+		}
 	      if (DEQUAL(dist2, tdistprev) || dist2 < initdist)
 		{
 		  failure = 1;
@@ -447,6 +451,14 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	  tmax = min(tmax, zonepar[2*ki+1]);
 	}
       tpar = spar1[kdir] + 0.5*sgn*(tmin + tmax);
+
+      if (tpar < tstart2 || tpar > tend2)
+	{
+	  /* The entire surface is within the tangential intersectin
+	     zone. Set output status */
+	  *jstat = 2;
+	  goto out;
+	}
 
       /* Define segmentation parameter perpendicular to the tangential
 	 intersection curve */
