@@ -1445,7 +1445,7 @@ static double sh1762_cvlength(pcrv, jstat)
   /* Evaluate points. */
   for (ki=0; ki<kneval; ki++, tpar += tdel)
     {
-      s1221(pcrv, 0, tpar, &kleft, sder, &kstat);
+      s1221(pcrv, 0, tpar, &kleft, sder+ki*kdim, &kstat);
       if (kstat < 0)
 	goto error;
     }
@@ -1517,7 +1517,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   int kstat = 0;
   int kgtpi1=0, kgtpi2=0;
   double tang1=DZERO, tang2=DZERO;
-  int not_case_2d;
+  int not_case_2d = 1;
   int kbez1=1, kbez2=1;
   int hasseg1 = 0, hasseg2 = 0;
   double tcvp1 = 0.0, tcvp2 = 0.0;
@@ -1626,9 +1626,9 @@ sh1762_s9num (po, poref, jdiv, jstat)
     }
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
-       not_case_2d = FALSE;
+      not_case_2d = 0; //FALSE;
     else
-       not_case_2d = TRUE;
+      not_case_2d = 1; //TRUE;
 
 
     /* Test for number of division directions.     */
