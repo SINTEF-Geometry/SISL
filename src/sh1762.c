@@ -90,6 +90,7 @@ static void sh1762_s9ptiter (SISLObject *, SISLObject *, double, SISLIntdat **, 
 static int sh1762_is_taboo(SISLSurf *, SISLSurf *, SISLIntpt *, int, int *);
 static int sh1762_is_taboo2(SISLObject *, SISLObject *, SISLIntpt *, int, SISLIntdat*, int);
 static double sh1762_sflength(SISLSurf *, int, int *);
+static double sh1762_cvlength(SISLCurve *, int *);
 #else
 static void sh1762_s9mic ();
 static void sh1762_s9num ();
@@ -109,6 +110,7 @@ static void sh1762_s9ptiter ();
 static int sh1762_is_taboo();
 static int sh1762_is_taboo2();
 static double sh1762_sflength();
+static double sh1762_cvlength();
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -1386,6 +1388,85 @@ static double sh1762_sflength(psurf, idir, jstat)
   out:
   return tlength;
 }
+
+#if defined(SISLNEEDPROTOTYPES)
+static double sh1762_cvlength(SISLCurve *pcrv, int *jstat)
+#else
+static double sh1762_cvlength(pcrv, jstat)
+    SISLCurve *pcrv;
+    int *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Estimate the curve length 
+*
+*
+*
+* INPUT      : pcrv  - The curve
+*
+*
+* OUTPUT     : return value - Estimated surface length.
+*              jstat  - status messages
+*                         = 0     : no error.
+*                         < 0     : error
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 2018-08.
+*
+*********************************************************************
+*/
+{
+  int kstat = 0;
+  int kleft = 0;
+  int ki;
+  int kdim = pcrv->idim;
+  double tpar;  /* Parameter value in which to evaluate. */
+  double tdel;  /* Interval between parameter values.    */
+  double sder[12]; /* Points on the surface.                */
+  int kneval;      /* Number of points to evaluate.         */
+  double tlength = 0.0;  /* Estimated length of surface.    */
+
+  kneval = pcrv->ik;
+  kneval = max(2, min(kneval, 4));
+
+  /* Set first parameter in which to evaluate. */
+  tpar = pcrv->et[pcrv->ik-1];
+  tdel = (pcrv->et[pcrv->in] - tpar)/(double)(kneval-1);
+
+  /* Evaluate points. */
+  for (ki=0; ki<kneval; ki++, tpar += tdel)
+    {
+      s1221(pcrv, 0, tpar, &kleft, sder+ki*kdim, &kstat);
+      if (kstat < 0)
+	goto error;
+    }
+
+  /*  Compute the distance between the points. */
+
+  for (tlength=0.0, ki=1; ki<kneval; ki++)
+    tlength += s6dist(sder+(ki-1)*kdim, sder+ki*kdim, kdim);
+
+  *jstat = 0;
+  goto out;
+
+  /* Error in lower level routine.  */
+  error:
+  *jstat = kstat;
+  s6err ("sh1762_cvength", *jstat, 0);
+  goto out;
+
+  out:
+  return tlength;
+}
   
 #if defined(SISLNEEDPROTOTYPES)
 static void
@@ -1436,10 +1517,12 @@ sh1762_s9num (po, poref, jdiv, jstat)
   int kstat = 0;
   int kgtpi1=0, kgtpi2=0;
   double tang1=DZERO, tang2=DZERO;
-  int not_case_2d;
+  int not_case_2d = 1;
   int kbez1=1, kbez2=1;
   int hasseg1 = 0, hasseg2 = 0;
+  double tcvp1 = 0.0, tcvp2 = 0.0;
   double tsfp1=0.0, tsfp2=0.0, t2p1=0.0, t2p2=0.0;
+  double tsize1 = 0.0, tsize2 = 0.0;
   double tref = 5.0;
   int closed1=0, closed2=0;
 
@@ -1471,8 +1554,11 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	}
       kbez1 = (po->c1->ik == po->c1->in);
       closed1 = (po->c1->cuopen == SISL_CRV_CLOSED);
+      tsize1 = tcvp1 = sh1762_cvlength(po->c1, &kstat);
+      if (kstat < 0)
+	goto error;
     }
-  else
+  else 
     {
       if (po->s1->pdir != SISL_NULL)
 	{
@@ -1494,6 +1580,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
       tsfp2 = sh1762_sflength(po->s1, 2, &kstat);
       if (kstat < 0)
 	goto error;
+
+      tsize1 = max(tsfp1, tsfp2);
     }
 
   /* Get attributes from referance object. */
@@ -1506,6 +1594,9 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	}
       kbez2 = (poref->c1->ik == poref->c1->in);
       closed2 = (poref->c1->cuopen == SISL_CRV_CLOSED);
+      tsize2 = tcvp2 = sh1762_cvlength(poref->c1, &kstat);
+      if (kstat < 0)
+	goto error;
     }
   else if (poref->iobj == SISLSURFACE)
     {
@@ -1530,18 +1621,23 @@ sh1762_s9num (po, poref, jdiv, jstat)
       t2p2 = sh1762_sflength(poref->s1, 2, &kstat);
       if (kstat < 0)
 	goto error;
+
+      tsize2 = max(t2p1, t2p2);
     }
+  else 
+    tsize2 = 0.0;
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
-       not_case_2d = FALSE;
+      not_case_2d = 0; //FALSE;
     else
-       not_case_2d = TRUE;
+      not_case_2d = 1; //TRUE;
 
 
     /* Test for number of division directions.     */
   /*---------------------------------------------*/
   /* If linear, we do not subdivide.             */
-  if (kgtpi1 == 0 && tang1 <= ANGULAR_TOLERANCE/10.0 && not_case_2d)
+  if (kgtpi1 == 0 && tang1 <= ANGULAR_TOLERANCE/10.0 && 
+      not_case_2d && !(tsize1 > 10.0*tsize2))
     *jdiv = 0;
 
   /* If the other surface has segments and this one not, we do
@@ -1550,7 +1646,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
     *jdiv = 0;
 
   /* If the other object is closed and this not, we do not subdivide */
-  if (closed1 == 0 && closed2 == 1)
+  else if (closed1 == 0 && closed2 == 1)
     *jdiv = 0;
 
   else if (po->iobj == SISLCURVE && poref->iobj == SISLSURFACE)
@@ -3963,7 +4059,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	      if (kstat < 0)
 		goto error;
 
-	      if (kstat == 2)
+	      if (kstat >= 2)
 		{
 		  /* Search for a better start point for the
 		     iteration. */

@@ -276,11 +276,18 @@ void s1786(pc1,pc2,aepsge,epar1,epar2,jstat)
 fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
   if (kstat<0) goto error;
 
+  if (DEQUAL(tfirst1,tend1) || DEQUAL(tfirst2,tend2))
+  {
+    *jstat = 0;
+    goto out;
+  }
+
   /* While end not reached */
 
 
   while (tx1 < tend1 && kknot*ty1 < kknot*tend2)
     {
+      tpos = ty1;
 
       /* Calculate unit tangent and radius of curvature of first curve. */
 
@@ -331,6 +338,21 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
 	tyincre = tminstep;
       else
         tyincre = MIN(tstep/tylengthend,tymaxinc);
+
+      /* Update step length */
+
+      if (txincre * txlengthend < tyincre * tylengthend)
+      {
+	 tstep = txincre * txlengthend;
+	 tyincre = (tylengthend > 0.0) ? tstep / tylengthend : REL_PAR_RES;
+	 kchange = 0;
+      }
+      else if (txincre * txlengthend > tyincre * tylengthend)
+      {
+	 tstep = tyincre * tylengthend;
+	 txincre = (txlengthend > 0.0) ? tstep / txlengthend : REL_PAR_RES;
+	 kchange = 1;
+      }
 
       /*  Make sure that we don't pass any knots of curve 1. */
 
@@ -414,11 +436,11 @@ fevalc(pc2,kderc,ty1,&kleftc2,sderc2,&kstat);
       if (kchange == 0)
       {
 	 tx1 = tx2;
-	 ty1 = tpos;
+	 ty1 = (kknot == 1) ? MAX(tpos,ty1) : MIN(tpos,ty1); /*tpos;*/
       }
       else
       {
-	 tx1 = tpos;
+	tx1 = MAX(tpos,tx1); /*tpos; */
 	 ty1 = ty2;
       }
     }
