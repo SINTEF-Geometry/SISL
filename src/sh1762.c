@@ -1558,7 +1558,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
       if (kstat < 0)
 	goto error;
     }
-  else
+  else 
     {
       if (po->s1->pdir != SISL_NULL)
 	{
@@ -1624,6 +1624,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 
       tsize2 = max(t2p1, t2p2);
     }
+  else 
+    tsize2 = 0.0;
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
       not_case_2d = 0; //FALSE;
