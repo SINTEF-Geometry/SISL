@@ -99,6 +99,13 @@ sh6red (po1, po2, pintdat, jstat)
   SISLIntpt *pcurr,*pstart,*plast;	/* to traverse list of points.     */
   int indstart,indlast,inddum;		/* Indexes used in lists           */
   int log_1, log_2;
+  int dim;
+  if (po1->iobj == SISLSURFACE)
+    dim = po1->s1->idim;
+  else if (po1->iobj == SISLCURVE)
+    dim = po1->c1->idim;
+  else if (po1->iobj == SISLPOINT)
+    dim = po1->p1->idim;
 
   /* Remove all internal points in a list when along a
      constant parameter direction */
@@ -331,7 +338,8 @@ sh6red (po1, po2, pintdat, jstat)
 	   log_2 = log_2>>1;
 	   log_2 &= 15;
 	   	   
-	   if ((log_1 & log_2) || po1->iobj+po2->iobj < 4)
+	   if ((log_1 & log_2) || 
+	       (dim == 3 && po1->iobj+po2->iobj < 4))
 	   {
 	      sh6idkpt (&pintdat, &pcurr, 1, &kstat);
 	      if (kstat < 0)
