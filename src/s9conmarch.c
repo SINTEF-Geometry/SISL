@@ -156,7 +156,7 @@ void s9conmarch(ps,alevel,epar,ndir,ipoint,gpar,mpar,jpoint,jstat)
 
   /* Allocate output arrays */
   
-  if ((*mpar=newarray(3*ipoint,INT     )) == SISL_NULL) goto err101;
+  if ((*mpar=newarray(ipoint,INT     )) == SISL_NULL) goto err101;
   if ((*gpar=newarray(6*ipoint,DOUBLE)) == SISL_NULL) goto err101;
   
   lpar = *mpar;
@@ -167,7 +167,7 @@ void s9conmarch(ps,alevel,epar,ndir,ipoint,gpar,mpar,jpoint,jstat)
   
   /* Initiate output integer array to point to no points */
   
-  for (ki=0 ; ki< 3*ipoint ; ki++) *(lpar+ki) = 0;
+  for (ki=0 ; ki< ipoint ; ki++) *(lpar+ki) = 0;
   
 
   /* Loop for all input points. */      
@@ -176,7 +176,8 @@ void s9conmarch(ps,alevel,epar,ndir,ipoint,gpar,mpar,jpoint,jstat)
       /* Start marching from point ki */
 
       /* Exclude points already connected and parallell points. */
-      if (lpar[ki] != 0 || ndir[ki] == 0) continue;
+      if (lpar[ki] != 0 || ndir[ki] == 0) 
+	continue;
 	  
       /* SISLPoint not marched to */
 	  
@@ -191,7 +192,6 @@ void s9conmarch(ps,alevel,epar,ndir,ipoint,gpar,mpar,jpoint,jstat)
 	  
       for (kj=ki+1,sq=spar+2*ki+2 ; kj<ipoint ; kj++,sq+=2)
 	{
-	      
 	  /* SISLPoint found */
 	      
 	  if (DEQUAL(sq[0]+tdum1,scand2[0]+tdum1) && 
