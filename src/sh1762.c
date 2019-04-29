@@ -84,6 +84,8 @@ static void sh1762_s9toucharea (SISLObject *, SISLObject *, double, int, SISLInt
 /*static void sh1762_s9edgpoint (SISLEdge *[], SISLIntpt ***, int *, int *); */
 static void sh1762_s9edgsscon (SISLEdge *[], SISLSurf *, SISLSurf *, SISLIntdat *, int, double, int *);
 static void sh1762_s9edgpscon (SISLEdge *, double, SISLSurf *, int, SISLIntdat *, double, int *);
+static void sh1762_s9checkpscon (SISLIntpt *uipt[], int perm[], int ndir[], int npoints, 
+				 int numb_type[], int *mcon[], int *jstat);
 static void sh1762_s9simple (SISLObject *, SISLObject *, SISLEdge *[], int *);
 /* static void sh1762_s9reex (SISLObject *, SISLObject *, SISLEdge *[], double, SISLIntdat *, int *); */
 static void sh1762_s9ptiter (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge *[], int *);
@@ -104,6 +106,7 @@ static void sh1762_s9toucharea ();
 /*static void sh1762_s9edgpoint ();*/
 static void sh1762_s9edgsscon ();
 static void sh1762_s9edgpscon ();
+static void sh1762_s9checkpscon ();
 static void sh1762_s9simple ();
 /* static void sh1762_s9reex (); */
 static void sh1762_s9ptiter ();
@@ -1558,7 +1561,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
       if (kstat < 0)
 	goto error;
     }
-  else
+  else 
     {
       if (po->s1->pdir != SISL_NULL)
 	{
@@ -1624,6 +1627,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 
       tsize2 = max(t2p1, t2p2);
     }
+  else 
+    tsize2 = 0.0;
 
     if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
       not_case_2d = 0; //FALSE;
@@ -7723,11 +7728,34 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 	      /* If we got more than two points, we march only when the
                  input parameter isimple is set and the no more than one
                  parallel point is given.*/
+	      /* First check if the points can be sorted along one
+		 parameter direction and connected based on in/out information.
+		 Only for points where the tangent points in or out of
+		 the domain. */
+	      if (kv%2 == 0 && lnumb[0] == kv/2 && lnumb[1] == kv/2)
+		{
+		  sh1762_s9checkpscon(uipt, lperm, ldir, kv, lnumb,
+				      &lpar, &kstat);
+		  if (kstat < 0)
+		    goto error;
 
-	      s9conmarch (ps, alevel, spar, lpermdir, kv, &sparout,
-			  &lpar, &kpoints, &kstat);
-	      if (kstat < 0)
-		goto error;
+		  if (kstat != 1)
+		    {
+		      /* Prepare for reuse of array */
+		      if (lpar != SISL_NULL)
+			freearray(lpar);
+		      lpar = SISL_NULL;
+		    }
+		}
+
+	      if (kstat != 1)
+		{
+		  /* No connection conclusion is made. Try marching */
+		  s9conmarch (ps, alevel, spar, lpermdir, kv, &sparout,
+			      &lpar, &kpoints, &kstat);
+		  if (kstat < 0)
+		    goto error;
+		}
 
 	      /* Branch on the given result from s9conmarch. */
 	      if (kstat == 0)
@@ -7739,6 +7767,30 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		*jstat = 0;
 
 	      else
+		{
+		  /* A solution is found. Check if it is consistent with
+		     the classification of the intersection points */
+		  *jstat = 0;
+		  for (kj=0; kj<kv; ++kj)
+		    {
+		      /* Count number of connections to this point */
+		      int kncon = 1;
+		      for (ki=kj+1; ki<kv; ++ki)
+			{
+			  if (lpar[ki] == lpar[kj])
+			    ++kncon;
+			}
+		      if (kncon > 1 && ldir[lperm[lpar[kj]]] != 2)
+			{
+			  /* More than one connection to a non-singular
+			     point. Dismiss. */
+			  *jstat = 1;
+			  break;
+			}
+		    }
+		}
+
+	      if (*jstat == 0 && kstat != 2)
 		{
 		  if (kpoints > kv)
 		    {
@@ -7882,6 +7934,135 @@ out:
 
 #if defined(SISLNEEDPROTOTYPES)
 static void
+sh1762_s9checkpscon (SISLIntpt *uipt[], int perm[], int ndir[], int npoints, 
+		     int numb_type[], int *mcon[], int *jstat)
+#else
+static void
+  sh1762_s9checkpscon (uipt, perm, ndir, npoints, numb_type, mcon, jstat)
+     SISLIntpt *uipt[];
+     int perm[];
+     int ndir[];
+     int npoints;
+     int numb_type[];
+     int *mcon[];
+     int *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Check if a set of points can be sorted along one
+*              parameter direction and connected based on in/out information.
+*              Only for points where the tangent points in or out of
+*	       the domain.
+*
+*
+* INPUT      : uipt     - Array of intersection point at surface boundaries
+*              perm     - Permutation array representing sequence in s9edgpscon
+*              ndir     - Configuration of intersection curve at points
+*                         =  0 : Parallel to surface boundary
+*                         =  1 : Pointing into surface
+*                         = -1 : Pointing out
+*                         =  2 : Singular point
+*                         = 10 : Touching corner of surface domain
+*              numb_type - Number of intersection points according to each
+*                          type specified in ndir
+*
+*
+* OUTPUT     : mcon     - Connection between points
+*                       - 0 : No connection
+*                       - k : Can connect to point number k (k > 0, points
+*                             counted from 1)
+*              jstat    - status messages
+*                           = 1     : Connections defined
+*                           = 0     : No connections found
+*                           < 0     : error
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 2019-03
+*
+*********************************************************************
+*/
+{
+  int ki, kj, ka, kb, ok_pts;
+  int ind;
+  int *perm2 = SISL_NULL;  /* Permutation array for sorting of points */
+
+   *jstat = 0;
+  if (!(npoints%2 == 0 && numb_type[0]==npoints/2 && numb_type[1]==npoints/2))
+    goto out;   /* Input requirements not satisfied */
+
+
+  if ((*mcon = new0array (npoints, int)) == SISL_NULL)    
+    goto err101;
+  if ((perm2 = new0array (npoints, int)) == SISL_NULL)    
+    goto err101;
+
+  for (ki=0; ki<npoints; ++ki)
+    perm2[ki] = ki;
+
+  for (ok_pts=FALSE, ind = 0; ind<2 && (!ok_pts); ind++)
+    {
+      ok_pts = TRUE;
+      
+      for (ki=0; ki<npoints; ki++)
+	{
+	  for (kj=ki+1, kb=ki; kj<npoints; kj++)
+	    if (uipt[perm[perm2[kj]]]->epar[ind] < 
+		uipt[perm[perm2[kb]]]->epar[ind])
+	      kb = kj;
+	    else if (uipt[perm[perm2[kj]]]->epar[ind] == 
+		     uipt[perm[perm2[kb]]]->epar[ind])
+	      {
+		ok_pts=FALSE;
+		break;
+	      }
+	  
+	  ka = perm2[ki];
+	  perm2[ki] = perm2[kb];
+	  perm2[kb] = ka;
+
+	  if (ki > 0 && ndir[perm[perm2[ki]]]*ndir[perm[perm2[ki-1]]] >= 0)
+	    ok_pts=FALSE;
+	  if (!ok_pts) 
+	    break;
+	}
+    }
+
+  /* Define connections */
+  if (ok_pts)
+    {
+      for (ki=0; ki<npoints; ki+=2)
+	{
+	  (*mcon)[perm2[ki]] = perm2[ki+1] + 1;  /* To match output from s9conmarch */
+	  (*mcon)[perm2[ki+1]] = perm2[ki] + 1;
+	}
+    }
+
+  *jstat = (ok_pts) ? 1 : 0;
+  goto out;
+
+/* Error in memory allocation.      */
+
+err101:*jstat = -101;
+  s6err ("sh1762_s9checkpscon", *jstat, 0);
+  goto out;
+
+ out:
+  if (perm2 != SISL_NULL)
+    freearray(perm2);
+}
+
+
+#if defined(SISLNEEDPROTOTYPES)
+static void
 sh1762_s9simple (SISLObject * po1, SISLObject * po2, SISLEdge * vedge[],
 		 int *jstat)
 #else
@@ -7908,7 +8089,7 @@ sh1762_s9simple (po1, po2, vedge, jstat)
 *
 * OUTPUT     : jstat    - status messages
 *                           = 1     : A simple case.
-*                           = 0     : No simel case.
+*                           = 0     : No simple case.
 *                           < 0     : error
 *
 *
