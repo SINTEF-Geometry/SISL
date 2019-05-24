@@ -7734,6 +7734,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		 the domain. */
 	      if (kv%2 == 0 && lnumb[0] == kv/2 && lnumb[1] == kv/2)
 		{
+		  kpoints = kv;
 		  sh1762_s9checkpscon(uipt, lperm, ldir, kv, lnumb,
 				      &lpar, &kstat);
 		  if (kstat < 0)
