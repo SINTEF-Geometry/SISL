@@ -7732,8 +7732,10 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		 parameter direction and connected based on in/out information.
 		 Only for points where the tangent points in or out of
 		 the domain. */
+	      kstat = 0;
 	      if (kv%2 == 0 && lnumb[0] == kv/2 && lnumb[1] == kv/2)
 		{
+		  kpoints = kv;
 		  sh1762_s9checkpscon(uipt, lperm, ldir, kv, lnumb,
 				      &lpar, &kstat);
 		  if (kstat < 0)
