@@ -3533,7 +3533,8 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	  /* ALA and UJK 31.10.90 don't change divide point
 	     when fixflag is set */
-	  if ((fixflag == 0) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
+	  /* if ((fixflag == 0) && idiv == 3 && ki == 0 && qintdat != SISL_NULL) */
+	  if ((fixflag <= 1) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
 	    /*  if (idiv == 3 && ki == 0 && qintdat != SISL_NULL) */
 	    {
 	      double sparsave = spar[1];
@@ -3571,6 +3572,15 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 			changed = 0;
 			break;
 		      }
+		      else if (del < 2.0*tdel)
+			{
+			  /* Using midpoint. This is not a perfect solution,
+			     the midpoint can also be dangerous */
+			  spar[1] = s1792 (qo1->s1->et2, qo1->s1->ik2, 
+					   qo1->s1->in2);
+			  changed = 0;
+			  fixflag = 0;
+			}
 		    }
 		}
 
@@ -3580,8 +3590,10 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	     new intersection point */
 	  else if ((fixflag) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
 	  {
+	     /* tdel = (qso->c1->et[qso->c1->in] - */
+	     /* 	     qso->c1->et[qso->c1->ik - 1]) * (double) 0.000001; */
 	     tdel = (qso->c1->et[qso->c1->in] -
-	     	     qso->c1->et[qso->c1->ik - 1]) * (double) 0.000001;
+	     	     qso->c1->et[qso->c1->ik - 1]) * (double) 0.0001;
 
 	     for (kn = 0; kn < qintdat->ipoint; kn++)
 		if (DNEQUAL(qintdat->vpoint[kn]->epar[kpar],spar[1])
@@ -7319,7 +7331,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
       double tolpar = (double) 0.00001;
 
       double *snorm;
-      double tmax;
+      double tmax, tmax2;
       double *nullp = SISL_NULL;
       kant = pedge->ipoint;
 
@@ -7444,7 +7456,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 
       if (kv == 1 && kn1 > 1 )
       {
-	 int i,j;
+	 int i=-1, j=-1;
 
 	 if (kn1 > 2)
 	 {
@@ -7473,23 +7485,48 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 	    /* We have one point, and the direction is in/out.
 	       The other point is touching a corner it is probably
 	       an error and the point must be close to tangential.*/
-	    if (ldir[i] == -1)
-	    {
-	       int k=j;
-	       j  =  i;
-	       i  =  k;
-	    }
+	   /* VSK 0619. However, it might also be that the touch
+	      point is correct while the in/out point is close to
+	      tangential. Test strength of classification */
 
-	    sh6tomain (uipt[i], &kstat);
-	    sh6tomain (uipt[j], &kstat);
+	    s1421 (ps, 1, uipt[i]->epar, &klfs, &klft, sval + 3*i, snorm + i, 
+		   &kstat);
+	    if (kstat < 0)
+	      goto error;
+	    s1421 (ps, 1, uipt[j]->epar, &klfs, &klft, sval + 3*j, snorm + j, 
+		   &kstat);
+	    if (kstat < 0)
+	      goto error;
+	    tmax = sqrt (sval[3*i+1]*sval[3*i+1] + sval[3*i+2]*sval[3*i+2]);
+	    tmax2 = sqrt (sval[3*j+1]*sval[3*j+1] + sval[3*j+2]*sval[3*j+2]);
+	    if (min(fabs(sval[3*i+1]/tmax), fabs(sval[3*i+2]/tmax)) <
+		min(fabs(sval[3*j+1]/tmax), fabs(sval[3*j+2]/tmax)))
+	      {
+		/* Assume corner cut and no connection inside the current
+		   patch */
+		*jstat = 1;
+	      }
+	    else
+	      {
+		/* In/out point stronger. Connect. */
+		if (ldir[i] == -1)
+		  {
+		    int k=j;
+		    j  =  i;
+		    i  =  k;
+		  }
 
-	    sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
-	    if (kstat < 0)
-	       goto error;
-	    sh6setdir (uipt[i], uipt[j], &kstat);
-	    if (kstat < 0)
-	       goto error;
-	    *jstat = 0;
+		sh6tomain (uipt[i], &kstat);
+		sh6tomain (uipt[j], &kstat);
+
+		sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
+		if (kstat < 0)
+		  goto error;
+		sh6setdir (uipt[i], uipt[j], &kstat);
+		if (kstat < 0)
+		  goto error;
+		*jstat = 0;
+	      }
 	 }
       }
       else if (kv < 2)
