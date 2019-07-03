@@ -275,7 +275,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	      }
 	      printf("\n");
 	   }
-	   if (debug_flag == 2) 
+	   if (debug_flag == 2 && (*pintdat) != NULL) 
 	   {
 	     fp = fopen("curr_int.g2","w");
 	     for (ki = 0; ki < (*pintdat)->ipoint; ki++)
@@ -1527,6 +1527,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   double tsfp1=0.0, tsfp2=0.0, t2p1=0.0, t2p2=0.0;
   double tsize1 = 0.0, tsize2 = 0.0;
   double tref = 5.0;
+  double lenfac = 0.01;
   int closed1=0, closed2=0;
 
   /* Init. */
@@ -1695,7 +1696,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 		 po->s1->in1 < po->s1->in2 && tsfp1 < tsfp2)
 	  *jdiv = 0;
 	else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
-		 !(po->s1->ik1 == 2 && tsfp1 < tref*tsfp2))
+		 !((po->s1->ik1 == 2 && tsfp1 < tref*tsfp2) ||
+		   tsfp1 < lenfac*tsfp2))
 	*jdiv = 1;
       else
 	*jdiv = 0;
@@ -1711,7 +1713,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	  ;
 	else if (hasseg1 != 1 &&
 		 s1791 (po->s1->et2, po->s1->ik2, po->s1->in2)  &&
-		 !(po->s1->ik2 == 2 && tsfp2 < tref*tsfp1))
+		 !((po->s1->ik2 == 2 && tsfp2 < tref*tsfp1) ||
+		   tsfp2 < lenfac*tsfp1))
 	  *jdiv += 2;
     }
   goto out;
@@ -2087,7 +2090,9 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
    int nmb_inter = 0;
    double belt_fac = 0.05;
    SISLIntpt *pcurr;          /* Current intersection point.          */
-   int kj;                    /* Counter.                             */
+   SISLIntpt *pcurr2;          /* Current intersection point.          */
+   int ki, kj;                /* Counter.                             */
+   double fac = 0.2;        
 
    /* Set pointer to subdivision object. */
 
@@ -2414,6 +2419,21 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	s9simple_knot(qo1->s1, idiv, spar, fixflag, &kstat);
 	if ( kstat < 0 ) 
 	  goto error;
+
+	/* Control for edges */
+	if (spar[0] < sstart[0]+0.1*tdel1 || spar[0] > send[0]-0.1*tdel1)
+	  {
+	    spar[0] = 0.5*(sstart[0] + send[0]);
+	    if ((*fixflag) == 1 || (*fixflag) == 3)
+	      (*fixflag) -= 1;
+	  }
+	if (spar[1] < sstart[1]+0.1*tdel2 || spar[1] > send[1]-0.1*tdel2)
+	  {
+	    spar[1] = 0.5*(sstart[1] + send[1]);
+	    if ((*fixflag) == 2 || (*fixflag) == 3)
+	      (*fixflag) -= 2;
+	  }
+
 	if (kf1 == 1)
 	  spar[0] = sparsave[0];
 	if (kf2 == 1)
@@ -2438,10 +2458,10 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	   tmean[1] = s1792 (qo1->s1->et2, qo1->s1->ik2, qo1->s1->in2);
 
 	   /* Control for edges */
-	   /* if (tmean[0] < sstart[0]+tdel1 || tmean[0] > send[0]-tdel1) */
-	   /*   tmean[0] = 0.5*(sstart[0] + send[0]); */
-	   /* if (tmean[1] < sstart[1]+tdel2 || tmean[1] > send[1]-tdel2) */
-	   /*   tmean[1] = 0.5*(sstart[1] + send[1]); */
+	   if (tmean[0] < sstart[0]+0.1*tdel1 || tmean[0] > send[0]-0.1*tdel1)
+	     tmean[0] = 0.5*(sstart[0] + send[0]);
+	   if (tmean[1] < sstart[1]+0.1*tdel2 || tmean[1] > send[1]-0.1*tdel2)
+	     tmean[1] = 0.5*(sstart[1] + send[1]);
 
 	   if (!(*fixflag == 1) && vedge[iobj - 1]->ipoint > 0 &&
 	       !(nmb_inter > 1 && 
@@ -2467,6 +2487,28 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 			pcurr->epar[kpar] > send[0]-tdel1) 
 		      continue;
 
+		    /* Check if the intersection point is too close to
+		       another intersection point */
+		    for (ki=0; ki<(*pintdat)->ipoint; ki++)
+		      {
+		    	pcurr2 = (*pintdat)->vpoint[ki];
+		    	if (pcurr2 == pcurr)
+		    	  continue;
+
+		    	if (pcurr2->epar[kpar] < sstart[0] ||
+		    	    pcurr2->epar[kpar] > send[0] ||
+		    	    pcurr2->epar[kpar+1] < sstart[1] ||
+		    	    pcurr2->epar[kpar+1] > send[1])
+		    	  continue;
+
+		    	if (fabs(pcurr2->epar[kpar] - pcurr->epar[kpar]) <
+		    	    fac*(sbelt1[1]-sbelt1[0]))
+		    	  break;
+		      }
+			
+		    if (ki < (*pintdat)->ipoint)
+		      continue;  // Not a suitable subdivision point
+		    
 		    /* Check if the intersection curve passing through
 		       the point is always parallel to an iso-curve. */
 		    
@@ -2528,11 +2570,33 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		    /* Test if the point is too close to an edge. */
 
 		    if (pcurr->epar[kpar+1] < sstart[1]+tdel2 ||
-			pcurr->epar[kpar+1] > send[1]-tdel2) continue;
+			pcurr->epar[kpar+1] > send[1]-tdel2) 
+		      continue;
 
+		    /* Check if the intersection point is too close to
+		       another intersection point */
+		    for (ki=0; ki<(*pintdat)->ipoint; ki++)
+		      {
+		    	pcurr2 = (*pintdat)->vpoint[ki];
+		    	if (pcurr2 == pcurr)
+		    	  continue;
+
+		    	if (pcurr2->epar[kpar] < sstart[0] ||
+		    	    pcurr2->epar[kpar] > send[0] ||
+		    	    pcurr2->epar[kpar+1] < sstart[1] ||
+		    	    pcurr2->epar[kpar+1] > send[1])
+		    	  continue;
+
+		    	if (fabs(pcurr2->epar[kpar+1] - pcurr->epar[kpar+1]) <
+		    	    fac*(sbelt2[1]-sbelt2[0]))
+		    	  break;
+		      }
+			
+		    if (ki < (*pintdat)->ipoint)
+		      continue;  // Not a suitable subdivision point
+		    
 		    /* Check if the intersection curve passing through
 		       the point is always parallel to an iso-curve. */
-		    
 		    if (sh1762_is_taboo(qo1->s1,  
 					(qo2->iobj == SISLSURFACE) ? 
 					qo2->s1 : SISL_NULL, 
@@ -2549,6 +2613,9 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 			  continue;
 		      }
 
+		    /* Check if the intersection point is too close to 
+		       another intersection point */
+		    
 		    if (pcurr->iinter == SI_SING)
 		    {
 		       /* Test if the singular/near singular point is the one
@@ -3466,7 +3533,8 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 
 	  /* ALA and UJK 31.10.90 don't change divide point
 	     when fixflag is set */
-	  if ((fixflag == 0) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
+	  /* if ((fixflag == 0) && idiv == 3 && ki == 0 && qintdat != SISL_NULL) */
+	  if ((fixflag <= 1) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
 	    /*  if (idiv == 3 && ki == 0 && qintdat != SISL_NULL) */
 	    {
 	      double sparsave = spar[1];
@@ -3485,6 +3553,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 			DNEQUAL (qintdat->vpoint[kn]->epar[kpar],
 				 qso->c1->et[qso->c1->ik - 1]))
 		      {
+			tdel = fabs(spar[1]-qintdat->vpoint[kn]->epar[kpar]);
 			spar[1] = qintdat->vpoint[kn]->epar[kpar];
 			changed = 1;
 		      }
@@ -3495,13 +3564,23 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 		  // to an existing one
 		  for (kn=0; kn<(*pintdat)->ipoint; ++kn)
 		    {
-		      if ((fabs ((*pintdat)->vpoint[kn]->epar[kpar+1]
-				 - spar[1]) < fabs (tdel)))
+		      double del = 
+			fabs ((*pintdat)->vpoint[kn]->epar[kpar+1] - spar[1]);
+		      if (del < tdel && fabs(spar[1]-sparsave) > del) 
 		      {
 			spar[1] = sparsave;
 			changed = 0;
 			break;
 		      }
+		      else if (del < 2.0*tdel)
+			{
+			  /* Using midpoint. This is not a perfect solution,
+			     the midpoint can also be dangerous */
+			  spar[1] = s1792 (qo1->s1->et2, qo1->s1->ik2, 
+					   qo1->s1->in2);
+			  changed = 0;
+			  fixflag = 0;
+			}
 		    }
 		}
 
@@ -3511,8 +3590,10 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 	     new intersection point */
 	  else if ((fixflag) && idiv == 3 && ki == 0 && qintdat != SISL_NULL)
 	  {
+	     /* tdel = (qso->c1->et[qso->c1->in] - */
+	     /* 	     qso->c1->et[qso->c1->ik - 1]) * (double) 0.000001; */
 	     tdel = (qso->c1->et[qso->c1->in] -
-		     qso->c1->et[qso->c1->ik - 1]) * (double) 0.000001;
+	     	     qso->c1->et[qso->c1->ik - 1]) * (double) 0.0001;
 
 	     for (kn = 0; kn < qintdat->ipoint; kn++)
 		if (DNEQUAL(qintdat->vpoint[kn]->epar[kpar],spar[1])
@@ -7250,7 +7331,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
       double tolpar = (double) 0.00001;
 
       double *snorm;
-      double tmax;
+      double tmax, tmax2;
       double *nullp = SISL_NULL;
       kant = pedge->ipoint;
 
@@ -7375,7 +7456,7 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 
       if (kv == 1 && kn1 > 1 )
       {
-	 int i,j;
+	 int i=-1, j=-1;
 
 	 if (kn1 > 2)
 	 {
@@ -7404,23 +7485,48 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 	    /* We have one point, and the direction is in/out.
 	       The other point is touching a corner it is probably
 	       an error and the point must be close to tangential.*/
-	    if (ldir[i] == -1)
-	    {
-	       int k=j;
-	       j  =  i;
-	       i  =  k;
-	    }
+	   /* VSK 0619. However, it might also be that the touch
+	      point is correct while the in/out point is close to
+	      tangential. Test strength of classification */
 
-	    sh6tomain (uipt[i], &kstat);
-	    sh6tomain (uipt[j], &kstat);
+	    s1421 (ps, 1, uipt[i]->epar, &klfs, &klft, sval + 3*i, snorm + i, 
+		   &kstat);
+	    if (kstat < 0)
+	      goto error;
+	    s1421 (ps, 1, uipt[j]->epar, &klfs, &klft, sval + 3*j, snorm + j, 
+		   &kstat);
+	    if (kstat < 0)
+	      goto error;
+	    tmax = sqrt (sval[3*i+1]*sval[3*i+1] + sval[3*i+2]*sval[3*i+2]);
+	    tmax2 = sqrt (sval[3*j+1]*sval[3*j+1] + sval[3*j+2]*sval[3*j+2]);
+	    if (min(fabs(sval[3*i+1]/tmax), fabs(sval[3*i+2]/tmax)) <
+		min(fabs(sval[3*j+1]/tmax), fabs(sval[3*j+2]/tmax)))
+	      {
+		/* Assume corner cut and no connection inside the current
+		   patch */
+		*jstat = 1;
+	      }
+	    else
+	      {
+		/* In/out point stronger. Connect. */
+		if (ldir[i] == -1)
+		  {
+		    int k=j;
+		    j  =  i;
+		    i  =  k;
+		  }
 
-	    sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
-	    if (kstat < 0)
-	       goto error;
-	    sh6setdir (uipt[i], uipt[j], &kstat);
-	    if (kstat < 0)
-	       goto error;
-	    *jstat = 0;
+		sh6tomain (uipt[i], &kstat);
+		sh6tomain (uipt[j], &kstat);
+
+		sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
+		if (kstat < 0)
+		  goto error;
+		sh6setdir (uipt[i], uipt[j], &kstat);
+		if (kstat < 0)
+		  goto error;
+		*jstat = 0;
+	      }
 	 }
       }
       else if (kv < 2)
