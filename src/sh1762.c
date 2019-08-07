@@ -1523,7 +1523,7 @@ sh1762_s9num (po, poref, jdiv, jstat)
   int not_case_2d = 1;
   int kbez1=1, kbez2=1;
   int hasseg1 = 0, hasseg2 = 0;
-  double tcvp1 = 0.0, tcvp2 = 0.0;
+  /*double tcvp1 = 0.0, tcvp2 = 0.0; */
   double tsfp1=0.0, tsfp2=0.0, t2p1=0.0, t2p2=0.0;
   double tsize1 = 0.0, tsize2 = 0.0;
   double tref = 5.0;
@@ -1558,7 +1558,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	}
       kbez1 = (po->c1->ik == po->c1->in);
       closed1 = (po->c1->cuopen == SISL_CRV_CLOSED);
-      tsize1 = tcvp1 = sh1762_cvlength(po->c1, &kstat);
+      tsize1 = tsfp1 = sh1762_cvlength(po->c1, &kstat);
+      tsfp2 = 1.0;
       if (kstat < 0)
 	goto error;
     }
@@ -1598,7 +1599,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
 	}
       kbez2 = (poref->c1->ik == poref->c1->in);
       closed2 = (poref->c1->cuopen == SISL_CRV_CLOSED);
-      tsize2 = tcvp2 = sh1762_cvlength(poref->c1, &kstat);
+      tsize2 = t2p1 = sh1762_cvlength(poref->c1, &kstat);
+      t2p2 = 1.0;
       if (kstat < 0)
 	goto error;
     }
@@ -1667,7 +1669,8 @@ sh1762_s9num (po, poref, jdiv, jstat)
   else if (kgtpi1 == 0 && tang1 < SIMPLECASE /*/ (double) 2.0 */ && 
 	   (kbez1 == 1 || tang1 < 10.0*ANGULAR_TOLERANCE || 
 	    tsfp1*tsfp2 < 0.1*t2p1*t2p2) &&
-	   (kgtpi2 != 0 || tang2 > tang1 * (double) 2.0))
+	   (kgtpi2 != 0 || tang2 > tang1 * (double) 2.0) &&
+	   tsize2 > 100.0*tsize1)
     *jdiv = 0; 
 
   else if (po->iobj == SISLCURVE)
