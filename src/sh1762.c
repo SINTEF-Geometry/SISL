@@ -5365,7 +5365,7 @@ sh1762_s9intercept (po1, po2, aepsge, inmbpt, vintpt, jstat)
      if (kstat == 0)
      {
 	/* nmb_rotated++; */
-       sh1831(po1->c1, po2->c1, 1 /*ksign*/, spoint, snorm, aepsge, &kstat);
+       sh1831(po1->c1, po2->c1, 1, spoint, snorm, aepsge, &kstat);
 	if (kstat < 0) goto error;
      }
 
