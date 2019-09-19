@@ -200,7 +200,7 @@ void s1323(etop,eaxis,econe,idim,inumb,carray,jstat)
   
   /* Make diagonal elements */
   
-  for (ki=0,kl=0 ; ki<kstop ; kl++,ki+=kdimp2)
+  for (ki=0,kl=0 ; kl<idim ; kl++,ki+=kdimp2)
     {
       temp = sdirec[kl];
       carray[ki] = (double)1.0 - temp*temp/tcost2;
