@@ -5,7 +5,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 # Organize the project in folders (VS only?)
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
-
 # Include directories
 
 INCLUDE_DIRECTORIES(
@@ -42,15 +41,81 @@ ENDIF(WIN32)
 
 # Apps, examples, tests, ...?
 
-FILE(GLOB sisl_APPS app/*.C)
-FOREACH(app ${sisl_APPS})
-  GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
-  ADD_EXECUTABLE(${appname} ${app})
-  TARGET_LINK_LIBRARIES(${appname} sisl)
-  SET_PROPERTY(TARGET ${appname}
-    PROPERTY FOLDER "sisl/Apps")
-ENDFOREACH(app)
+option(sisl_COMPILE_APPS "Compile apps?" OFF)
 
+option(sisl_COMPILE_EXAMPLES "Compile examples?" OFF)
+
+option(sisl_COMPILE_VIEWER "Compile viewer?" OFF)
+
+IF(sisl_COMPILE_APPS)
+  FILE(GLOB sisl_APPS app/*.C)
+  FOREACH(app ${sisl_APPS})
+    GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
+    ADD_EXECUTABLE(${appname} ${app})
+    TARGET_LINK_LIBRARIES(${appname} sisl)
+    SET_TARGET_PROPERTIES(${appname}
+      PROPERTIES RUNTIME_OUTPUT_DIRECTORY app)
+  ENDFOREACH(app)
+ENDIF()
+
+IF(sisl_COMPILE_EXAMPLES OR sisl_COMPILE_VIEWER)
+  INCLUDE_DIRECTORIES(
+    ${sisl_SOURCE_DIR}/examples/streaming/include
+    )
+
+  FILE(GLOB sisl_go_SRCS examples/streaming/src/*.cpp examples/streaming/include/*.h)
+  ADD_LIBRARY(sisl_streaming ${sisl_go_SRCS})
+  # IF(CMAKE_COMPILER_IS_GNUCC)
+  #     TARGET_LINK_LIBRARIES(sisl_go m)
+  # ENDIF(CMAKE_COMPILER_IS_GNUCC)
+ENDIF()
+
+IF(sisl_COMPILE_EXAMPLES)
+  FILE(GLOB sisl_APPS2 examples/*.cpp)
+  FOREACH(app ${sisl_APPS2})
+    GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
+    ADD_EXECUTABLE(${appname} ${app})
+    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming)
+    SET_TARGET_PROPERTIES(${appname}
+      PROPERTIES RUNTIME_OUTPUT_DIRECTORY examples)
+  ENDFOREACH(app)
+ENDIF()
+
+IF(sisl_COMPILE_VIEWER)
+
+  find_package(OpenGL REQUIRED)
+  find_path(OPENGL_INCLUDE_DIR
+    gl.h
+    PATH_PREFIXES GL
+    PATHS
+    /usr/local/include
+    /usr/include
+    "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
+    "C:\\Users\\$ENV{USERNAME}\\Install\\include")
+
+  find_package(GLUT REQUIRED)
+
+  INCLUDE_DIRECTORIES(
+    ${sisl_SOURCE_DIR}/examples/viewer/include
+    ${OPENGL_INCLUDE_DIR}
+    ${GLUT_INCLUDE_DIR}
+    )
+
+  FILE(GLOB sisl_viewer_SRCS examples/viewer/src/*.cpp examples/viewer/include/*.h)
+  ADD_LIBRARY(sisl_viewer ${sisl_viewer_SRCS})
+  IF(CMAKE_COMPILER_IS_GNUCC)
+    TARGET_LINK_LIBRARIES(sisl_streaming sisl)
+  ENDIF(CMAKE_COMPILER_IS_GNUCC)
+
+  FILE(GLOB sisl_APPS3 examples/viewer/*.cpp)
+  FOREACH(app ${sisl_APPS3})
+    GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
+    ADD_EXECUTABLE(${appname} ${app})
+    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming sisl_viewer ${OPENGL_LIBRARIES} glut)
+    SET_TARGET_PROPERTIES(${appname}
+      PROPERTIES RUNTIME_OUTPUT_DIRECTORY viewer)
+  ENDFOREACH(app)
+ENDIF()
 
 
 # 'install' target
