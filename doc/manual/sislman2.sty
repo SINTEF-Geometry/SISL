@@ -1,0 +1,50 @@
+\def \RR{\hbox{\rm I\negthinspace R}}
+
+\newif\if@restonecol
+\def\theindex{\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
+\columnseprule \z@
+\columnsep 35pt\twocolumn[\@makeschapterhead{Index}]
+ \@mkboth{INDEX}{INDEX}\thispagestyle{plain}\parindent\z@
+ \parskip\z@ plus .3pt\relax\let\item\@idxitem}
+\def\@idxitem{\par\hangindent 40pt}
+\def\subitem{\par\hangindent 40pt \hspace*{20pt}}
+\def\subsubitem{\par\hangindent 40pt \hspace*{30pt}}
+\def\endtheindex{\if@restonecol\onecolumn\else\clearpage\fi}
+\def\indexspace{\par \vskip 10pt plus 5pt minus 3pt\relax}
+
+\def\pgsbreak{
+	\vfill
+	\pagebreak}
+
+\def\newpagetabs{
+	\end{tabbing}
+	\vfill
+	\newpage
+	\begin{tabbing}
+******\=****\=************\=***\=*******\=*****\=    \kill}
+
+\def\funclabel#1{
+	\label{#1}
+	\index{#1()}
+	\begin{tabbing}
+******\=****\=************\=***\=*******\=*****\=    \kill
+	NAME\\
+	\>\large
+	{\bf{#1}}
+	\normalsize -} 
+
+\def\typelabel#1{
+	\label{#1}
+	\index{#1()}
+	\begin{tabbing}
+****\=************\=****\=*****\=*****\=*****\=    \kill}
+
+\newcommand{\fov}{\sl}
+
+\newenvironment{minipg1}{\begin{minipage}[t]{109.9mm}}{\end{minipage}}
+\newenvironment{minipg2}{\begin{minipage}[t]{88.8mm}}{\end{minipage}}
+\newenvironment{minipg3}{\begin{minipage}[t]{106mm}}{\end{minipage}}
+\newenvironment{minipg4}{\begin{minipage}[t]{106.2mm}}{\end{minipage}}
+\newenvironment{minipg5}{\begin{minipage}[t]{69.5mm}}{\end{minipage}}
+\newenvironment{minipg6}{\begin{minipage}[t]{125.5mm}}{\end{minipage}}
+\newenvironment{minipg7}{\begin{minipage}[t]{105mm}}{\end{minipage}}

@@ -1,7 +1,8 @@
-\documentstyle[a4,twoside,epsf,makeidx]{sislman}
-\def \RR{\hbox{\rm I\negthinspace R}}
-
+%\documentstyle[a4,twoside,epsf,makeidx]{sislman}
+\documentclass[a4paper]{report}
+\usepackage{sislman2}
 \pagestyle{headings}
+\usepackage{imakeidx} 
 \makeindex
 \begin{document}
 
@@ -14,11 +15,11 @@
   The SINTEF Spline Library \\ 
   \LARGE
   Reference Manual \\
-  (version 4.4)\\ 
+  (version 4.5)\\ 
   \vspace{10 mm}
   \large
-  SINTEF ICT, Applied Mathematics \\
-  March 18, 2005
+  SINTEF Digital, Mathematics and Cybernetics \\
+  January 18, 2021
   \end{center}
 
 \end{titlepage}
@@ -50,6 +51,5 @@
 \cleardoublepage
 \input{chap_error_codes}
 \cleardoublepage
-%\input{index}
 \printindex
 \end{document}

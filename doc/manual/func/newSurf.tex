@@ -1,7 +1,18 @@
-\subsection{Create a new surface object.}
+\subsection{Create a new surface object.}\label{sec:newSurf}
 \funclabel{newSurf}
 \begin{minipg1}
-Create and initialize a surface object instance.
+Create and initialize a surface object instance. Note that the vertex input to a
+  rational surface is unstandard. Given the surface
+  $$
+{\bf s}(u,v) = {\sum_{i=1}^{n_1}\sum_{j=1}^{n_2} w_{i,j} {\bf p}_{i,j} 
+	    B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v)  \over
+             \sum_{i=1}^{n_1}\sum_{j=1}^{n_2} w_{i,j}
+	         B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v)},
+$$
+must the vertices be given as
+${w_1  {\bf p}_{1,1}, w_{1,1}, w_{1,2}  {\bf p}_{1,2}, w_{1,2},  \ldots,
+  w_{n_1,n_2}  {\bf p}_{n_1,n_2}, w_{n_1,n_2}}$ when invoking this function. Thus the vertices are multiplied with the
+associated weight.
 \end{minipg1} \\ \\
 SYNOPSIS\\
         \>SISLSurf *newSurf(\begin{minipg3}
@@ -64,14 +75,16 @@ EXAMPLE OF USE\\
         \>\>    SISLSurf\>      *{\fov surf} = NULL;\\
         \>\>    int    \>       {\fov number1} = 5;\\
         \>\>    int    \>       {\fov number2} = 4;\\
-        \>\>    int    \>       {\fov order1} = 4;\\
-        \>\>    int    \>       {\fov order2} = 3;\\
-        \>\>    double \>       {\fov knot1}[9];\\
+        \>\>    int    \>       {\fov order1} = 4; /* Polynomial degree 3 */\\
+        \>\>    int    \>       {\fov order2} = 3; /* Polynomial degree 2 */\\
+        \>\>    double \>       {\fov knot1}[9];  \\
         \>\>    double \>       {\fov knot2}[7];\\
-        \>\>    double \>       {\fov coef}[60];\\
+        \>\>    double \>       {\fov coef}[60]; \\ 
         \>\>    int    \>       {\fov kind} = 1;\\
         \>\>    int    \>       {\fov dim} = 3;\\
         \>\>    int    \>       {\fov copy} = 1;\\
+        \>\> /* Knots and vertices must be defined prior to the function call. \\
+        \>\>    The vertices are given in a 1-dimensional array */ \\
         \>\>    \ldots \\
         \>\>{\fov surf} = newSurf(\begin{minipg4}
           {\fov number}1, {\fov number}2, {\fov order}1, {\fov order}2, {\fov knot}1, {\fov knot}2,\\ {\fov coef}, {\fov kind}, {\fov dim}, {\fov copy});

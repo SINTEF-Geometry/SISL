@@ -1,7 +1,17 @@
-\subsection{Create new curve object.}
+\subsection{Create new curve object.} \label{sec:newCurve}
 \funclabel{newCurve}
 \begin{minipg1}
-Create and initialize a SISLCurve-instance.
+  Create and initialize a SISLCurve-instance. Note that the vertex input to a
+  rational curve is unstandard. Given the curve
+  $$
+{\bf c}(t) = {\sum_{i=1}^{n} w_i {\bf p}_{i} B_{i,k,{\bf t}}(t)
+                 \over
+                 \sum_{i=1}^{n} w_i B_{i,k,{\bf t}}(t)},
+$$
+must the vertices be given as
+${w_1  {\bf p}_1, w_1, w_1  {\bf p}_2, w_2, \ldots,
+  w_n  {\bf p}_n, w_n}$ when invoking this function. Thus the vertices are multiplied with the
+associated weight.
 \end{minipg1} \\ \\
 SYNOPSIS\\
         \>SISLCurve *newCurve(\begin{minipg3}
