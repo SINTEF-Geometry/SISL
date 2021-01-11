@@ -6,17 +6,37 @@ MS Visual Studio project file (on Windows).
 
 For information on using CMake, see www.cmake.org.
 
-As a Quick Start Guide, on Linux, make a build directory somewhere:
+--------------------------------------------------------------------------------
 
-$ cd some_dir
+LINUX
+
+As a Quick Start Guide, on Linux, make a build directory inside the source
+directory
+$ cd <path_to_source_code>
 $ mkdir build
 $ cd build
-$ ccmake <path_to_source_code>
 
-Follow the instructions of 'ccmake' - the CMake "GUI". Then:
+Run the cmake program to setup the build process, selecting Debug or Release
+as build type, optionally selecting a local install folder:
+$ cmake .. -DCMAKE_BUILD_TYPE=Release (-DCMAKE_INSTALL_PREFIX=$HOME/install)
 
+For a gui-like cmake interface use ccmake (from cmake-ncurses-gui).
+
+Build the library:
 $ make
+
+Install the library to a local folder (requires the use of
+-DCMAKE_INSTALL_PREFIX with a local folder in the previous step):
 $ make install
+
+If the -DCMAKE_INSTALL_PREFIX in the cmake step was omitted or was set to a
+system folder (like /usr/local) the user needs elevated privileges to install
+the library:
+$ sudo make install
+
+--------------------------------------------------------------------------------
+
+WINDOWS
 
 On Windows, add a new build folder somewhere. Start the CMake
 executable and fill in the paths to the source and build folders. When
