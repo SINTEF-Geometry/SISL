@@ -9,10 +9,6 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 
 INCLUDE_DIRECTORIES(
   ${sisl_SOURCE_DIR}/include
-  # ${sisl_SOURCE_DIR}/examples/streaming/include
-  # ${sisl_SOURCE_DIR}/viewer/include
-  # ${OPENGL_INCLUDE_DIR}
-  # ${GLUT_INCLUDE_DIR}
   )
 
 
