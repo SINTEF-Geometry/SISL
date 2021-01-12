@@ -1,246 +1,246 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}
 \contentsline {section}{\numberline {1.1}C Syntax Used in Manual}{2}
 \contentsline {section}{\numberline {1.2}Dynamic Allocation in SISL}{2}
-\contentsline {section}{\numberline {1.3}Creating a Program}{4}
+\contentsline {section}{\numberline {1.3}Creating the library}{4}
 \contentsline {section}{\numberline {1.4}An Example Program}{5}
-\contentsline {section}{\numberline {1.5}B-spline Curves}{9}
-\contentsline {subsection}{\numberline {1.5.1}B-splines}{10}
+\contentsline {section}{\numberline {1.5}B-spline Curves}{8}
+\contentsline {subsection}{\numberline {1.5.1}B-splines}{9}
 \contentsline {subsection}{\numberline {1.5.2}The Control Polygon}{11}
-\contentsline {subsection}{\numberline {1.5.3}The Knot Vector}{12}
-\contentsline {subsection}{\numberline {1.5.4}NURBS Curves}{14}
-\contentsline {section}{\numberline {1.6}B-spline Surfaces}{14}
-\contentsline {subsection}{\numberline {1.6.1}The Basis Functions}{15}
-\contentsline {subsection}{\numberline {1.6.2}NURBS Surfaces}{16}
-\contentsline {chapter}{\numberline {2}Curve Definition}{17}
-\contentsline {section}{\numberline {2.1}Interpolation}{17}
-\contentsline {subsection}{\numberline {2.1.1}Compute a curve interpolating a straight line between two points.}{17}
-\contentsline {subsection}{\numberline {2.1.2}Compute a curve interpolating a set of points, \unhbox \voidb@x \hbox {automatic} parameterization.}{19}
-\contentsline {subsection}{\numberline {2.1.3}Compute a curve interpolating a set of points, parameter\-ization as input.}{21}
-\contentsline {subsection}{\numberline {2.1.4}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Compute a curve by Hermite interpolation, automatic parameteriza\-tion.}{24}
-\contentsline {subsection}{\numberline {2.1.5}Compute a curve by Hermite interpolation, parameter\-ization as input.}{26}
-\contentsline {subsection}{\numberline {2.1.6}Compute a fillet curve based on parameter value.}{28}
-\contentsline {subsection}{\numberline {2.1.7}Compute a fillet curve based on points.}{30}
-\contentsline {subsection}{\numberline {2.1.8}Compute a fillet curve based on radius.}{32}
-\contentsline {subsection}{\numberline {2.1.9}Compute a circular fillet between a 2D curve and a circle.}{35}
-\contentsline {subsection}{\numberline {2.1.10}Compute a circular fillet between two 2D curves.}{37}
-\contentsline {subsection}{\numberline {2.1.11}Compute a circular fillet between a 2D curve and a 2D line.}{39}
-\contentsline {subsection}{\numberline {2.1.12}Compute a blending curve between two curves.}{41}
-\contentsline {section}{\numberline {2.2}Approximation}{43}
-\contentsline {subsection}{\numberline {2.2.1}Approximate a circular arc with a curve.}{43}
-\contentsline {subsection}{\numberline {2.2.2}Approximate a conic arc with a curve.}{45}
-\contentsline {subsection}{\numberline {2.2.3}Compute a curve using the input points as controlling \unhbox \voidb@x \hbox {vertices}, automatic parameterization.}{47}
-\contentsline {subsection}{\numberline {2.2.4}Approximate the offset of a curve with a curve.}{49}
-\contentsline {subsection}{\numberline {2.2.5}Approximate a curve with a sequence of straight lines.}{51}
-\contentsline {section}{\numberline {2.3}Mirror a Curve}{52}
-\contentsline {section}{\numberline {2.4}Conversion}{53}
-\contentsline {subsection}{\numberline {2.4.1}Convert a curve of order up to four, to a sequence of cubic polynomials.}{53}
-\contentsline {subsection}{\numberline {2.4.2}Convert a curve to a sequence of Bezier curves.}{54}
-\contentsline {subsection}{\numberline {2.4.3}Pick out the next Bezier curve from a curve.}{55}
-\contentsline {subsection}{\numberline {2.4.4}Express a curve using a higher order basis.}{57}
-\contentsline {subsection}{\numberline {2.4.5}Express the ``i''-th derivative of an open curve as a curve.}{58}
-\contentsline {subsection}{\numberline {2.4.6}Express a 2D or 3D ellipse as a curve.}{59}
-\contentsline {subsection}{\numberline {2.4.7}Express a conic arc as a curve.}{61}
-\contentsline {subsection}{\numberline {2.4.8}Express a truncated helix as a curve.}{63}
-\contentsline {chapter}{\numberline {3}Curve Interrogation}{65}
-\contentsline {section}{\numberline {3.1}Intersections}{65}
-\contentsline {subsection}{\numberline {3.1.1}Intersection between a curve and a point.}{65}
-\contentsline {subsection}{\numberline {3.1.2}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Intersection between a curve and a straight line or a plane.}{67}
-\contentsline {subsection}{\numberline {3.1.3}Convert a curve/line intersection into a two-dimensional curve/origo intersection}{69}
-\contentsline {subsection}{\numberline {3.1.4}Intersection between a curve and a 2D circle or a sphere.}{70}
-\contentsline {subsection}{\numberline {3.1.5}Intersection between a curve and a quadric curve.}{72}
-\contentsline {subsection}{\numberline {3.1.6}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Intersection between two curves.}{74}
-\contentsline {section}{\numberline {3.2}Compute the Length of a Curve}{76}
-\contentsline {section}{\numberline {3.3}Check if a Curve is Closed}{77}
-\contentsline {section}{\numberline {3.4}Check if a Curve is Degenerated.}{78}
-\contentsline {section}{\numberline {3.5}Pick the Parameter Range of a Curve}{79}
-\contentsline {section}{\numberline {3.6}Closest Points}{80}
-\contentsline {subsection}{\numberline {3.6.1}Find the closest point between a curve and a point.}{80}
-\contentsline {subsection}{\numberline {3.6.2}Find the closest point between a curve and a point. Simple version.}{82}
-\contentsline {subsection}{\numberline {3.6.3}Local iteration to closest point between point and curve.}{84}
-\contentsline {subsection}{\numberline {3.6.4}Find the closest points between two curves.}{86}
-\contentsline {subsection}{\numberline {3.6.5}Find a point on a 2D curve along a given direction.}{88}
-\contentsline {section}{\numberline {3.7}Find the Absolute Extremals of a Curve.}{89}
-\contentsline {section}{\numberline {3.8}Area between Curve and Point}{91}
-\contentsline {subsection}{\numberline {3.8.1}Calculate the area between a 2D curve and a 2D point.}{91}
-\contentsline {subsection}{\numberline {3.8.2}Calculate the weight point and rotational momentum of an area between a 2D curve and a 2D point.}{92}
-\contentsline {section}{\numberline {3.9}Bounding Box}{94}
-\contentsline {subsection}{\numberline {3.9.1}Bounding box object.}{94}
-\contentsline {subsection}{\numberline {3.9.2}Create and initialize a curve/surface bounding box instance.}{95}
-\contentsline {subsection}{\numberline {3.9.3}Find the bounding box of a curve.}{96}
-\contentsline {section}{\numberline {3.10}Normal Cone}{97}
-\contentsline {subsection}{\numberline {3.10.1}Normal cone object.}{97}
-\contentsline {subsection}{\numberline {3.10.2}Create and initialize a curve/surface direction instance.}{98}
-\contentsline {subsection}{\numberline {3.10.3}Find the direction cone of a curve.}{99}
-\contentsline {chapter}{\numberline {4}Curve Analysis}{100}
-\contentsline {section}{\numberline {4.1}Curvature Evaluation}{100}
-\contentsline {subsection}{\numberline {4.1.1}Evaluate the curvature of a curve at given parameter values.}{100}
-\contentsline {subsection}{\numberline {4.1.2}Evaluate the torsion of a curve at given parameter values.}{102}
-\contentsline {subsection}{\numberline {4.1.3}Evaluate the Variation of Curvature (VoC) of a curve at given parameter values.}{103}
-\contentsline {subsection}{\numberline {4.1.4}Evaluate the Frenet Frame (t,n,b) of a curve at given parameter values.}{104}
-\contentsline {subsection}{\numberline {4.1.5}Evaluate geometric properties at given parameter values.}{105}
-\contentsline {chapter}{\numberline {5}Curve Utilities}{107}
-\contentsline {section}{\numberline {5.1}Curve Object}{107}
-\contentsline {subsection}{\numberline {5.1.1}Create new curve object.}{109}
-\contentsline {subsection}{\numberline {5.1.2}Make a copy of a curve.}{111}
-\contentsline {subsection}{\numberline {5.1.3}Delete a curve object.}{112}
-\contentsline {section}{\numberline {5.2}Evaluation}{113}
-\contentsline {subsection}{\numberline {5.2.1}Compute the position and the left-hand derivatives of a curve at a given parameter value.}{113}
-\contentsline {subsection}{\numberline {5.2.2}Compute the position and the right-hand derivatives of a curve at a given parameter value.}{115}
-\contentsline {subsection}{\numberline {5.2.3}Evaluate position, first derivative, curvature and radius of curvature of a curve at a given parameter value, from the left hand side.}{117}
-\contentsline {subsection}{\numberline {5.2.4}Evaluate position, first derivative, curvature and radius of curvature of a curve at a given parameter value, from the right hand side.}{119}
-\contentsline {subsection}{\numberline {5.2.5}Evaluate the curve over a grid of m points. Only positions are evaluated.}{121}
-\contentsline {section}{\numberline {5.3}Subdivision}{121}
-\contentsline {subsection}{\numberline {5.3.1}Subdivide a curve at a given parameter value.}{121}
-\contentsline {subsection}{\numberline {5.3.2}Insert a given knot into the description of a curve.}{124}
-\contentsline {subsection}{\numberline {5.3.3}Insert a given set of knots into the description of a curve.}{125}
-\contentsline {subsection}{\numberline {5.3.4}Split a curve into two new curves.}{126}
-\contentsline {subsection}{\numberline {5.3.5}Pick a part of a curve.}{127}
-\contentsline {subsection}{\numberline {5.3.6}Pick a part of a closed curve.}{128}
-\contentsline {section}{\numberline {5.4}Joining}{129}
-\contentsline {subsection}{\numberline {5.4.1}Join two curves at specified ends.}{129}
-\contentsline {subsection}{\numberline {5.4.2}Join two curves at closest ends.}{131}
-\contentsline {section}{\numberline {5.5}Reverse the Orientation of a Curve.}{132}
-\contentsline {section}{\numberline {5.6}Extend a B-spline Curve.}{133}
-\contentsline {section}{\numberline {5.7}Drawing}{135}
-\contentsline {subsection}{\numberline {5.7.1}Draw a sequence of straight lines.}{135}
-\contentsline {subsection}{\numberline {5.7.2}Basic graphics routine template - move plotting position.}{136}
-\contentsline {subsection}{\numberline {5.7.3}Basic graphics routine template - plot line.}{137}
-\contentsline {chapter}{\numberline {6}Surface Definition}{138}
-\contentsline {section}{\numberline {6.1}Interpolation}{138}
-\contentsline {subsection}{\numberline {6.1.1}Compute a surface interpolating a set of points, automatic parameterization.}{138}
-\contentsline {subsection}{\numberline {6.1.2}Compute a surface interpolating a set of points, parameterization as input.}{141}
-\contentsline {subsection}{\numberline {6.1.3}Compute a surface interpolating a set of points, derivatives as input.}{144}
-\contentsline {subsection}{\numberline {6.1.4}Compute a surface interpolating a set of points, derivatives and parameterization as input.}{147}
-\contentsline {subsection}{\numberline {6.1.5}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Compute a surface by Hermite interpolation, automatic parameter\-ization.}{150}
-\contentsline {subsection}{\numberline {6.1.6}Compute a surface by Hermite interpolation, parameter\-ization as input.}{152}
-\contentsline {subsection}{\numberline {6.1.7}Create a lofted surface from a set of B-spline input curves.}{154}
-\contentsline {subsection}{\numberline {6.1.8}Create a lofted surface from a set of B-spline input curves and parametrization.}{156}
-\contentsline {subsection}{\numberline {6.1.9}Create a rational lofted surface from a set of rational input-curves}{158}
-\contentsline {subsection}{\numberline {6.1.10}Compute a rectangular blending surface from a set of \unhbox \voidb@x \hbox {B-spline} input curves.}{159}
-\contentsline {subsection}{\numberline {6.1.11}Compute a first derivative continuous blending surface set, over a 3-, 4-, 5- or 6-sided region in space, from a set of B-spline input curves.}{161}
-\contentsline {subsection}{\numberline {6.1.12}Compute a surface, representing a Gordon patch, from a set of B-spline input curves.}{163}
-\contentsline {section}{\numberline {6.2}Approximation}{165}
-\contentsline {subsection}{\numberline {6.2.1}Compute a surface using the input points as control vertices, automatic parameterization.}{165}
-\contentsline {subsection}{\numberline {6.2.2}Compute a linear swept surface.}{167}
-\contentsline {subsection}{\numberline {6.2.3}Compute a rotational swept surface.}{168}
-\contentsline {subsection}{\numberline {6.2.4}Compute a surface approximating the offset of a surface.}{170}
-\contentsline {section}{\numberline {6.3}Mirror a Surface}{172}
-\contentsline {section}{\numberline {6.4}Conversion}{173}
-\contentsline {subsection}{\numberline {6.4.1}Convert a surface of order up to four to a mesh of Coons patches.}{173}
-\contentsline {subsection}{\numberline {6.4.2}Convert a surface to a mesh of Bezier surfaces.}{175}
-\contentsline {subsection}{\numberline {6.4.3}Pick the next Bezier surface from a surface.}{176}
-\contentsline {subsection}{\numberline {6.4.4}Express a surface using a higher order basis.}{178}
-\contentsline {subsection}{\numberline {6.4.5}Express the ``i,j''-th derivative of an open surface as a \unhbox \voidb@x \hbox {surface}.}{179}
-\contentsline {subsection}{\numberline {6.4.6}Express the octants of a sphere as a surface.}{180}
-\contentsline {subsection}{\numberline {6.4.7}Express a truncated cylinder as a surface.}{182}
-\contentsline {subsection}{\numberline {6.4.8}Express the octants of a torus as a surface.}{183}
-\contentsline {subsection}{\numberline {6.4.9}Express a truncated cone as a surface.}{185}
-\contentsline {chapter}{\numberline {7}Surface Interrogation}{187}
-\contentsline {section}{\numberline {7.1}Intersection Curves}{187}
-\contentsline {subsection}{\numberline {7.1.1}Intersection curve object.}{187}
-\contentsline {subsection}{\numberline {7.1.2}Create a new intersection curve object.}{189}
-\contentsline {subsection}{\numberline {7.1.3}Delete an intersection curve object.}{191}
-\contentsline {subsection}{\numberline {7.1.4}Free a list of intersection curves.}{192}
-\contentsline {section}{\numberline {7.2}Find the Intersections}{193}
-\contentsline {subsection}{\numberline {7.2.1}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Intersection between a curve and a straight line or a plane.}{193}
-\contentsline {subsection}{\numberline {7.2.2}Intersection between a curve and a 2D circle or a sphere.}{195}
-\contentsline {subsection}{\numberline {7.2.3}Intersection between a curve and a cylinder.}{197}
-\contentsline {subsection}{\numberline {7.2.4}Intersection between a curve and a cone.}{199}
-\contentsline {subsection}{\numberline {7.2.5}Intersection between a curve and an elliptic cone.}{201}
-\contentsline {subsection}{\numberline {7.2.6}Intersection between a curve and a torus.}{203}
-\contentsline {subsection}{\numberline {7.2.7}Intersection between a surface and a point.}{205}
-\contentsline {subsection}{\numberline {7.2.8}Intersection between a surface and a straight line.}{207}
-\contentsline {subsection}{\numberline {7.2.9}Newton iteration on the intersection between a 3D NURBS surface and a line.}{209}
-\contentsline {subsection}{\numberline {7.2.10}Convert a surface/line intersection into a two-dimensional surface/origo intersection}{211}
-\contentsline {subsection}{\numberline {7.2.11}Intersection between a surface and a circle.}{212}
-\contentsline {subsection}{\numberline {7.2.12}Intersection between a surface and a curve.}{214}
-\contentsline {section}{\numberline {7.3}Find the Topology of the Intersection}{216}
-\contentsline {subsection}{\numberline {7.3.1}Find the topology for the intersection of a surface and a plane.}{216}
-\contentsline {subsection}{\numberline {7.3.2}Find the topology for the intersection of a surface and a sphere.}{218}
-\contentsline {subsection}{\numberline {7.3.3}Find the topology for the intersection of a surface and a cylinder.}{220}
-\contentsline {subsection}{\numberline {7.3.4}Find the topology for the intersection of a surface and a cone.}{222}
-\contentsline {subsection}{\numberline {7.3.5}Find the topology for the intersection of a surface and an \unhbox \voidb@x \hbox {elliptic} cone.}{224}
-\contentsline {subsection}{\numberline {7.3.6}Find the topology for the intersection of a surface and a \unhbox \voidb@x \hbox {torus}.}{226}
-\contentsline {subsection}{\numberline {7.3.7}Find the topology for the intersection between two surfaces.}{228}
-\contentsline {section}{\numberline {7.4}Find the Topology of a Silhouette}{230}
-\contentsline {subsection}{\numberline {7.4.1}Find the topology of the silhouette curves of a surface, using parallel projection.}{230}
-\contentsline {subsection}{\numberline {7.4.2}Find the topology of the silhouette curves of a surface, using perspective projection.}{232}
-\contentsline {subsection}{\numberline {7.4.3}Find the topology of the circular silhouette curves of a \unhbox \voidb@x \hbox {surface}.}{234}
-\contentsline {section}{\numberline {7.5}Marching}{236}
-\contentsline {subsection}{\numberline {7.5.1}March an intersection curve between a surface and a plane.}{236}
-\contentsline {subsection}{\numberline {7.5.2}March an intersection curve between a surface and a sphere.}{238}
-\contentsline {subsection}{\numberline {7.5.3}March an intersection curve between a surface and a \unhbox \voidb@x \hbox {cylinder}.}{240}
-\contentsline {subsection}{\numberline {7.5.4}March an intersection curve between a surface and a cone.}{242}
-\contentsline {subsection}{\numberline {7.5.5}March an intersection curve between a surface and an \unhbox \voidb@x \hbox {elliptic} cone.}{244}
-\contentsline {subsection}{\numberline {7.5.6}March an intersection curve between a surface and a torus.}{247}
-\contentsline {subsection}{\numberline {7.5.7}March an intersection curve between two surfaces.}{250}
-\contentsline {section}{\numberline {7.6}Marching of Silhouettes}{252}
-\contentsline {subsection}{\numberline {7.6.1}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz March a silhouette curve of a surface, using parallel \unhbox \voidb@x \hbox {projection}.}{252}
-\contentsline {subsection}{\numberline {7.6.2}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz March a silhouette curve of a surface, using perspective \unhbox \voidb@x \hbox {projection}.}{255}
-\contentsline {subsection}{\numberline {7.6.3}March a circular silhouette curve of a surface.}{257}
-\contentsline {section}{\numberline {7.7}Check if a Surface is Closed or has Degenerate Edges.}{259}
-\contentsline {section}{\numberline {7.8}Pick the Parameter Ranges of a Surface}{261}
-\contentsline {section}{\numberline {7.9}Closest Points}{262}
-\contentsline {subsection}{\numberline {7.9.1}Find the closest point between a surface and a point.}{262}
-\contentsline {subsection}{\numberline {7.9.2}Find the closest point between a surface and a point. Simple version.}{264}
-\contentsline {subsection}{\numberline {7.9.3}Local iteration to closest point bewteen point and surface.}{266}
-\contentsline {section}{\numberline {7.10}Find the Absolute Extremals of a Surface.}{268}
-\contentsline {section}{\numberline {7.11}Bounding Box}{270}
-\contentsline {subsection}{\numberline {7.11.1}Bounding box object.}{270}
-\contentsline {subsection}{\numberline {7.11.2}Create and initialize a curve/surface bounding box instance.}{271}
-\contentsline {subsection}{\numberline {7.11.3}Find the bounding box of a surface.}{272}
-\contentsline {section}{\numberline {7.12}Normal Cone}{273}
-\contentsline {subsection}{\numberline {7.12.1}Normal cone object.}{273}
-\contentsline {subsection}{\numberline {7.12.2}Create and initialize a curve/surface direction instance.}{274}
-\contentsline {subsection}{\numberline {7.12.3}Find the direction cone of a surface.}{275}
-\contentsline {chapter}{\numberline {8}Surface Analysis}{277}
-\contentsline {section}{\numberline {8.1}Curvature Evaluation}{277}
-\contentsline {subsection}{\numberline {8.1.1}Gaussian curvature of a spline surface.}{277}
-\contentsline {subsection}{\numberline {8.1.2}Mean curvature of a spline surface.}{279}
-\contentsline {subsection}{\numberline {8.1.3}Absolute curvature of a spline surface.}{281}
-\contentsline {subsection}{\numberline {8.1.4}Total curvature of a spline surface.}{283}
-\contentsline {subsection}{\numberline {8.1.5}Second order Mehlum curvature of a spline surface.}{285}
-\contentsline {subsection}{\numberline {8.1.6}Third order Mehlum curvature of a spline surface.}{287}
-\contentsline {subsection}{\numberline {8.1.7}Gaussian curvature of a B-spline or NURBS surface as a NURBS surface.}{289}
-\contentsline {subsection}{\numberline {8.1.8}Mehlum curvature of a B-spline or NURBS surface as a NURBS surface.}{291}
-\contentsline {subsection}{\numberline {8.1.9}Curvature on a uniform grid of a NURBS surface.}{293}
-\contentsline {subsection}{\numberline {8.1.10}Principal curvatures of a spline surface.}{295}
-\contentsline {subsection}{\numberline {8.1.11}Normal curvature of a spline surface.}{297}
-\contentsline {subsection}{\numberline {8.1.12}Focal values on a uniform grid of a NURBS surface.}{299}
-\contentsline {chapter}{\numberline {9}Surface Utilities}{301}
-\contentsline {section}{\numberline {9.1}Surface Object}{301}
-\contentsline {subsection}{\numberline {9.1.1}Create a new surface object.}{303}
-\contentsline {subsection}{\numberline {9.1.2}Make a copy of a surface object.}{306}
-\contentsline {subsection}{\numberline {9.1.3}Delete a surface object.}{307}
-\contentsline {section}{\numberline {9.2}Evaluation}{308}
-\contentsline {subsection}{\numberline {9.2.1}Compute the position, the derivatives and the normal of a surface at a given parameter value pair.}{308}
-\contentsline {subsection}{\numberline {9.2.2}Compute the position and derivatives of a surface at a given parameter value pair.}{310}
-\contentsline {subsection}{\numberline {9.2.3}Compute the position and the left- or right-hand derivatives of a surface at a given parameter value pair.}{312}
-\contentsline {subsection}{\numberline {9.2.4}Compute the position and the derivatives of a surface at a given parameter value pair.}{315}
-\contentsline {subsection}{\numberline {9.2.5}Evaluate the surface pointed at by ps1 over an m1 * m2 grid of points (x[i],y[j]). Compute ider derivatives and normals if suitable.}{319}
-\contentsline {section}{\numberline {9.3}Subdivision}{321}
-\contentsline {subsection}{\numberline {9.3.1}Subdivide a surface along a given parameter line.}{321}
-\contentsline {subsection}{\numberline {9.3.2}Insert a given set of knots, in each parameter direction, into the description of a surface.}{322}
-\contentsline {section}{\numberline {9.4}Picking Curves from a Surface}{324}
-\contentsline {subsection}{\numberline {9.4.1}Pick a curve along a constant parameter line in a surface.}{324}
-\contentsline {subsection}{\numberline {9.4.2}Pick the curve lying in a surface, described by a curve in the parameter plane of the surface.}{325}
-\contentsline {section}{\numberline {9.5}Pick a Part of a Surface.}{327}
-\contentsline {section}{\numberline {9.6}Turn the Direction of the Surface Normal Vector.}{328}
-\contentsline {section}{\numberline {9.7}Drawing}{329}
-\contentsline {subsection}{\numberline {9.7.1}Draw a sequence of straight lines.}{329}
-\contentsline {subsection}{\numberline {9.7.2}Basic graphics routine template - move plotting position.}{330}
-\contentsline {subsection}{\numberline {9.7.3}Basic graphics routine template - plot line.}{331}
-\contentsline {subsection}{\numberline {9.7.4}Draw constant parameter lines in a surface using piecewise straight lines.}{332}
-\contentsline {subsection}{\numberline {9.7.5}Draw constant parameter lines in a surface bounded by a closed curve in the parameter plane of the surface.}{334}
-\contentsline {chapter}{\numberline {10}Data Reduction}{336}
-\contentsline {section}{\numberline {10.1}Curves}{336}
-\contentsline {subsection}{\numberline {10.1.1}Data reduction: B-spline curve as input.}{336}
-\contentsline {subsection}{\numberline {10.1.2}Data reduction: Point data as input.}{338}
-\contentsline {subsection}{\numberline {10.1.3}Data reduction: Points and tangents as input.}{341}
-\contentsline {subsection}{\numberline {10.1.4}Degree reduction: B-spline curve as input.}{343}
-\contentsline {section}{\numberline {10.2}Surfaces}{345}
-\contentsline {subsection}{\numberline {10.2.1}Data reduction: B-spline surface as input.}{345}
-\contentsline {subsection}{\numberline {10.2.2}Data reduction: Point data as input.}{348}
-\contentsline {subsection}{\numberline {10.2.3}Data reduction: Points and tangents as input.}{351}
-\contentsline {subsection}{\numberline {10.2.4}Degree reduction: B-spline surface as input.}{354}
-\contentsline {chapter}{\numberline {11}Appendix: Error Codes}{356}
+\contentsline {subsection}{\numberline {1.5.3}The Knot Vector}{11}
+\contentsline {subsection}{\numberline {1.5.4}NURBS Curves}{12}
+\contentsline {section}{\numberline {1.6}B-spline Surfaces}{13}
+\contentsline {subsection}{\numberline {1.6.1}The Basis Functions}{14}
+\contentsline {subsection}{\numberline {1.6.2}NURBS Surfaces}{15}
+\contentsline {chapter}{\numberline {2}Curve Definition}{16}
+\contentsline {section}{\numberline {2.1}Interpolation}{16}
+\contentsline {subsection}{\numberline {2.1.1}Compute a curve interpolating a straight line between two points.}{16}
+\contentsline {subsection}{\numberline {2.1.2}Compute a curve interpolating a set of points, \unhbox \voidb@x \hbox {automatic} parameterization.}{18}
+\contentsline {subsection}{\numberline {2.1.3}Compute a curve interpolating a set of points, parameter\-ization as input.}{20}
+\contentsline {subsection}{\numberline {2.1.4}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Compute a curve by Hermite interpolation, automatic parameteriza\-tion.}{23}
+\contentsline {subsection}{\numberline {2.1.5}Compute a curve by Hermite interpolation, parameter\-ization as input.}{25}
+\contentsline {subsection}{\numberline {2.1.6}Compute a fillet curve based on parameter value.}{27}
+\contentsline {subsection}{\numberline {2.1.7}Compute a fillet curve based on points.}{29}
+\contentsline {subsection}{\numberline {2.1.8}Compute a fillet curve based on radius.}{31}
+\contentsline {subsection}{\numberline {2.1.9}Compute a circular fillet between a 2D curve and a circle.}{34}
+\contentsline {subsection}{\numberline {2.1.10}Compute a circular fillet between two 2D curves.}{36}
+\contentsline {subsection}{\numberline {2.1.11}Compute a circular fillet between a 2D curve and a 2D line.}{38}
+\contentsline {subsection}{\numberline {2.1.12}Compute a blending curve between two curves.}{40}
+\contentsline {section}{\numberline {2.2}Approximation}{42}
+\contentsline {subsection}{\numberline {2.2.1}Approximate a circular arc with a curve.}{42}
+\contentsline {subsection}{\numberline {2.2.2}Approximate a conic arc with a curve.}{44}
+\contentsline {subsection}{\numberline {2.2.3}Compute a curve using the input points as controlling \unhbox \voidb@x \hbox {vertices}, automatic parameterization.}{46}
+\contentsline {subsection}{\numberline {2.2.4}Approximate the offset of a curve with a curve.}{48}
+\contentsline {subsection}{\numberline {2.2.5}Approximate a curve with a sequence of straight lines.}{50}
+\contentsline {section}{\numberline {2.3}Mirror a Curve}{51}
+\contentsline {section}{\numberline {2.4}Conversion}{52}
+\contentsline {subsection}{\numberline {2.4.1}Convert a curve of order up to four, to a sequence of cubic polynomials.}{52}
+\contentsline {subsection}{\numberline {2.4.2}Convert a curve to a sequence of Bezier curves.}{53}
+\contentsline {subsection}{\numberline {2.4.3}Pick out the next Bezier curve from a curve.}{54}
+\contentsline {subsection}{\numberline {2.4.4}Express a curve using a higher order basis.}{56}
+\contentsline {subsection}{\numberline {2.4.5}Express the ``i''-th derivative of an open curve as a curve.}{57}
+\contentsline {subsection}{\numberline {2.4.6}Express a 2D or 3D ellipse as a curve.}{58}
+\contentsline {subsection}{\numberline {2.4.7}Express a conic arc as a curve.}{60}
+\contentsline {subsection}{\numberline {2.4.8}Express a truncated helix as a curve.}{62}
+\contentsline {chapter}{\numberline {3}Curve Interrogation}{64}
+\contentsline {section}{\numberline {3.1}Intersections}{64}
+\contentsline {subsection}{\numberline {3.1.1}Intersection between a curve and a point.}{64}
+\contentsline {subsection}{\numberline {3.1.2}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Intersection between a curve and a straight line or a plane.}{66}
+\contentsline {subsection}{\numberline {3.1.3}Convert a curve/line intersection into a two-dimensional curve/origo intersection}{68}
+\contentsline {subsection}{\numberline {3.1.4}Intersection between a curve and a 2D circle or a sphere.}{69}
+\contentsline {subsection}{\numberline {3.1.5}Intersection between a curve and a quadric curve.}{71}
+\contentsline {subsection}{\numberline {3.1.6}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Intersection between two curves.}{73}
+\contentsline {section}{\numberline {3.2}Compute the Length of a Curve}{75}
+\contentsline {section}{\numberline {3.3}Check if a Curve is Closed}{76}
+\contentsline {section}{\numberline {3.4}Check if a Curve is Degenerated.}{77}
+\contentsline {section}{\numberline {3.5}Pick the Parameter Range of a Curve}{78}
+\contentsline {section}{\numberline {3.6}Closest Points}{79}
+\contentsline {subsection}{\numberline {3.6.1}Find the closest point between a curve and a point.}{79}
+\contentsline {subsection}{\numberline {3.6.2}Find the closest point between a curve and a point. Simple version.}{81}
+\contentsline {subsection}{\numberline {3.6.3}Local iteration to closest point between point and curve.}{83}
+\contentsline {subsection}{\numberline {3.6.4}Find the closest points between two curves.}{85}
+\contentsline {subsection}{\numberline {3.6.5}Find a point on a 2D curve along a given direction.}{87}
+\contentsline {section}{\numberline {3.7}Find the Absolute Extremals of a Curve.}{88}
+\contentsline {section}{\numberline {3.8}Area between Curve and Point}{90}
+\contentsline {subsection}{\numberline {3.8.1}Calculate the area between a 2D curve and a 2D point.}{90}
+\contentsline {subsection}{\numberline {3.8.2}Calculate the weight point and rotational momentum of an area between a 2D curve and a 2D point.}{91}
+\contentsline {section}{\numberline {3.9}Bounding Box}{93}
+\contentsline {subsection}{\numberline {3.9.1}Bounding box object.}{93}
+\contentsline {subsection}{\numberline {3.9.2}Create and initialize a curve/surface bounding box instance.}{94}
+\contentsline {subsection}{\numberline {3.9.3}Find the bounding box of a curve.}{95}
+\contentsline {section}{\numberline {3.10}Normal Cone}{96}
+\contentsline {subsection}{\numberline {3.10.1}Normal cone object.}{96}
+\contentsline {subsection}{\numberline {3.10.2}Create and initialize a curve/surface direction instance.}{97}
+\contentsline {subsection}{\numberline {3.10.3}Find the direction cone of a curve.}{98}
+\contentsline {chapter}{\numberline {4}Curve Analysis}{99}
+\contentsline {section}{\numberline {4.1}Curvature Evaluation}{99}
+\contentsline {subsection}{\numberline {4.1.1}Evaluate the curvature of a curve at given parameter values.}{99}
+\contentsline {subsection}{\numberline {4.1.2}Evaluate the torsion of a curve at given parameter values.}{101}
+\contentsline {subsection}{\numberline {4.1.3}Evaluate the Variation of Curvature (VoC) of a curve at given parameter values.}{102}
+\contentsline {subsection}{\numberline {4.1.4}Evaluate the Frenet Frame (t,n,b) of a curve at given parameter values.}{103}
+\contentsline {subsection}{\numberline {4.1.5}Evaluate geometric properties at given parameter values.}{104}
+\contentsline {chapter}{\numberline {5}Curve Utilities}{106}
+\contentsline {section}{\numberline {5.1}Curve Object}{106}
+\contentsline {subsection}{\numberline {5.1.1}Create new curve object.}{108}
+\contentsline {subsection}{\numberline {5.1.2}Make a copy of a curve.}{110}
+\contentsline {subsection}{\numberline {5.1.3}Delete a curve object.}{111}
+\contentsline {section}{\numberline {5.2}Evaluation}{112}
+\contentsline {subsection}{\numberline {5.2.1}Compute the position and the left-hand derivatives of a curve at a given parameter value.}{112}
+\contentsline {subsection}{\numberline {5.2.2}Compute the position and the right-hand derivatives of a curve at a given parameter value.}{114}
+\contentsline {subsection}{\numberline {5.2.3}Evaluate position, first derivative, curvature and radius of curvature of a curve at a given parameter value, from the left hand side.}{116}
+\contentsline {subsection}{\numberline {5.2.4}Evaluate position, first derivative, curvature and radius of curvature of a curve at a given parameter value, from the right hand side.}{118}
+\contentsline {subsection}{\numberline {5.2.5}Evaluate the curve over a grid of m points. Only positions are evaluated.}{120}
+\contentsline {section}{\numberline {5.3}Subdivision}{120}
+\contentsline {subsection}{\numberline {5.3.1}Subdivide a curve at a given parameter value.}{120}
+\contentsline {subsection}{\numberline {5.3.2}Insert a given knot into the description of a curve.}{123}
+\contentsline {subsection}{\numberline {5.3.3}Insert a given set of knots into the description of a curve.}{124}
+\contentsline {subsection}{\numberline {5.3.4}Split a curve into two new curves.}{125}
+\contentsline {subsection}{\numberline {5.3.5}Pick a part of a curve.}{126}
+\contentsline {subsection}{\numberline {5.3.6}Pick a part of a closed curve.}{127}
+\contentsline {section}{\numberline {5.4}Joining}{128}
+\contentsline {subsection}{\numberline {5.4.1}Join two curves at specified ends.}{128}
+\contentsline {subsection}{\numberline {5.4.2}Join two curves at closest ends.}{130}
+\contentsline {section}{\numberline {5.5}Reverse the Orientation of a Curve.}{131}
+\contentsline {section}{\numberline {5.6}Extend a B-spline Curve.}{132}
+\contentsline {section}{\numberline {5.7}Drawing}{134}
+\contentsline {subsection}{\numberline {5.7.1}Draw a sequence of straight lines.}{134}
+\contentsline {subsection}{\numberline {5.7.2}Basic graphics routine template - move plotting position.}{135}
+\contentsline {subsection}{\numberline {5.7.3}Basic graphics routine template - plot line.}{136}
+\contentsline {chapter}{\numberline {6}Surface Definition}{137}
+\contentsline {section}{\numberline {6.1}Interpolation}{137}
+\contentsline {subsection}{\numberline {6.1.1}Compute a surface interpolating a set of points, automatic parameterization.}{137}
+\contentsline {subsection}{\numberline {6.1.2}Compute a surface interpolating a set of points, parameterization as input.}{140}
+\contentsline {subsection}{\numberline {6.1.3}Compute a surface interpolating a set of points, derivatives as input.}{143}
+\contentsline {subsection}{\numberline {6.1.4}Compute a surface interpolating a set of points, derivatives and parameterization as input.}{146}
+\contentsline {subsection}{\numberline {6.1.5}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Compute a surface by Hermite interpolation, automatic parameter\-ization.}{149}
+\contentsline {subsection}{\numberline {6.1.6}Compute a surface by Hermite interpolation, parameter\-ization as input.}{151}
+\contentsline {subsection}{\numberline {6.1.7}Create a lofted surface from a set of B-spline input curves.}{153}
+\contentsline {subsection}{\numberline {6.1.8}Create a lofted surface from a set of B-spline input curves and parametrization.}{155}
+\contentsline {subsection}{\numberline {6.1.9}Create a rational lofted surface from a set of rational input-curves}{157}
+\contentsline {subsection}{\numberline {6.1.10}Compute a rectangular blending surface from a set of \unhbox \voidb@x \hbox {B-spline} input curves.}{158}
+\contentsline {subsection}{\numberline {6.1.11}Compute a first derivative continuous blending surface set, over a 3-, 4-, 5- or 6-sided region in space, from a set of B-spline input curves.}{160}
+\contentsline {subsection}{\numberline {6.1.12}Compute a surface, representing a Gordon patch, from a set of B-spline input curves.}{162}
+\contentsline {section}{\numberline {6.2}Approximation}{164}
+\contentsline {subsection}{\numberline {6.2.1}Compute a surface using the input points as control vertices, automatic parameterization.}{164}
+\contentsline {subsection}{\numberline {6.2.2}Compute a linear swept surface.}{166}
+\contentsline {subsection}{\numberline {6.2.3}Compute a rotational swept surface.}{167}
+\contentsline {subsection}{\numberline {6.2.4}Compute a surface approximating the offset of a surface.}{169}
+\contentsline {section}{\numberline {6.3}Mirror a Surface}{171}
+\contentsline {section}{\numberline {6.4}Conversion}{172}
+\contentsline {subsection}{\numberline {6.4.1}Convert a surface of order up to four to a mesh of Coons patches.}{172}
+\contentsline {subsection}{\numberline {6.4.2}Convert a surface to a mesh of Bezier surfaces.}{174}
+\contentsline {subsection}{\numberline {6.4.3}Pick the next Bezier surface from a surface.}{175}
+\contentsline {subsection}{\numberline {6.4.4}Express a surface using a higher order basis.}{177}
+\contentsline {subsection}{\numberline {6.4.5}Express the ``i,j''-th derivative of an open surface as a \unhbox \voidb@x \hbox {surface}.}{178}
+\contentsline {subsection}{\numberline {6.4.6}Express the octants of a sphere as a surface.}{179}
+\contentsline {subsection}{\numberline {6.4.7}Express a truncated cylinder as a surface.}{181}
+\contentsline {subsection}{\numberline {6.4.8}Express the octants of a torus as a surface.}{182}
+\contentsline {subsection}{\numberline {6.4.9}Express a truncated cone as a surface.}{184}
+\contentsline {chapter}{\numberline {7}Surface Interrogation}{186}
+\contentsline {section}{\numberline {7.1}Intersection Curves}{186}
+\contentsline {subsection}{\numberline {7.1.1}Intersection curve object.}{186}
+\contentsline {subsection}{\numberline {7.1.2}Create a new intersection curve object.}{188}
+\contentsline {subsection}{\numberline {7.1.3}Delete an intersection curve object.}{190}
+\contentsline {subsection}{\numberline {7.1.4}Free a list of intersection curves.}{191}
+\contentsline {section}{\numberline {7.2}Find the Intersections}{192}
+\contentsline {subsection}{\numberline {7.2.1}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz Intersection between a curve and a straight line or a plane.}{192}
+\contentsline {subsection}{\numberline {7.2.2}Intersection between a curve and a 2D circle or a sphere.}{194}
+\contentsline {subsection}{\numberline {7.2.3}Intersection between a curve and a cylinder.}{196}
+\contentsline {subsection}{\numberline {7.2.4}Intersection between a curve and a cone.}{198}
+\contentsline {subsection}{\numberline {7.2.5}Intersection between a curve and an elliptic cone.}{200}
+\contentsline {subsection}{\numberline {7.2.6}Intersection between a curve and a torus.}{202}
+\contentsline {subsection}{\numberline {7.2.7}Intersection between a surface and a point.}{204}
+\contentsline {subsection}{\numberline {7.2.8}Intersection between a surface and a straight line.}{206}
+\contentsline {subsection}{\numberline {7.2.9}Newton iteration on the intersection between a 3D NURBS surface and a line.}{208}
+\contentsline {subsection}{\numberline {7.2.10}Convert a surface/line intersection into a two-dimensional surface/origo intersection}{210}
+\contentsline {subsection}{\numberline {7.2.11}Intersection between a surface and a circle.}{211}
+\contentsline {subsection}{\numberline {7.2.12}Intersection between a surface and a curve.}{213}
+\contentsline {section}{\numberline {7.3}Find the Topology of the Intersection}{215}
+\contentsline {subsection}{\numberline {7.3.1}Find the topology for the intersection of a surface and a plane.}{215}
+\contentsline {subsection}{\numberline {7.3.2}Find the topology for the intersection of a surface and a sphere.}{217}
+\contentsline {subsection}{\numberline {7.3.3}Find the topology for the intersection of a surface and a cylinder.}{219}
+\contentsline {subsection}{\numberline {7.3.4}Find the topology for the intersection of a surface and a cone.}{221}
+\contentsline {subsection}{\numberline {7.3.5}Find the topology for the intersection of a surface and an \unhbox \voidb@x \hbox {elliptic} cone.}{223}
+\contentsline {subsection}{\numberline {7.3.6}Find the topology for the intersection of a surface and a \unhbox \voidb@x \hbox {torus}.}{225}
+\contentsline {subsection}{\numberline {7.3.7}Find the topology for the intersection between two surfaces.}{227}
+\contentsline {section}{\numberline {7.4}Find the Topology of a Silhouette}{229}
+\contentsline {subsection}{\numberline {7.4.1}Find the topology of the silhouette curves of a surface, using parallel projection.}{229}
+\contentsline {subsection}{\numberline {7.4.2}Find the topology of the silhouette curves of a surface, using perspective projection.}{231}
+\contentsline {subsection}{\numberline {7.4.3}Find the topology of the circular silhouette curves of a \unhbox \voidb@x \hbox {surface}.}{233}
+\contentsline {section}{\numberline {7.5}Marching}{235}
+\contentsline {subsection}{\numberline {7.5.1}March an intersection curve between a surface and a plane.}{235}
+\contentsline {subsection}{\numberline {7.5.2}March an intersection curve between a surface and a sphere.}{237}
+\contentsline {subsection}{\numberline {7.5.3}March an intersection curve between a surface and a \unhbox \voidb@x \hbox {cylinder}.}{239}
+\contentsline {subsection}{\numberline {7.5.4}March an intersection curve between a surface and a cone.}{241}
+\contentsline {subsection}{\numberline {7.5.5}March an intersection curve between a surface and an \unhbox \voidb@x \hbox {elliptic} cone.}{243}
+\contentsline {subsection}{\numberline {7.5.6}March an intersection curve between a surface and a torus.}{246}
+\contentsline {subsection}{\numberline {7.5.7}March an intersection curve between two surfaces.}{249}
+\contentsline {section}{\numberline {7.6}Marching of Silhouettes}{251}
+\contentsline {subsection}{\numberline {7.6.1}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz March a silhouette curve of a surface, using parallel \unhbox \voidb@x \hbox {projection}.}{251}
+\contentsline {subsection}{\numberline {7.6.2}\tolerance 9999\emergencystretch 3em\hfuzz .5\p@ \vfuzz \hfuzz March a silhouette curve of a surface, using perspective \unhbox \voidb@x \hbox {projection}.}{254}
+\contentsline {subsection}{\numberline {7.6.3}March a circular silhouette curve of a surface.}{256}
+\contentsline {section}{\numberline {7.7}Check if a Surface is Closed or has Degenerate Edges.}{258}
+\contentsline {section}{\numberline {7.8}Pick the Parameter Ranges of a Surface}{260}
+\contentsline {section}{\numberline {7.9}Closest Points}{261}
+\contentsline {subsection}{\numberline {7.9.1}Find the closest point between a surface and a point.}{261}
+\contentsline {subsection}{\numberline {7.9.2}Find the closest point between a surface and a point. Simple version.}{263}
+\contentsline {subsection}{\numberline {7.9.3}Local iteration to closest point bewteen point and surface.}{265}
+\contentsline {section}{\numberline {7.10}Find the Absolute Extremals of a Surface.}{267}
+\contentsline {section}{\numberline {7.11}Bounding Box}{269}
+\contentsline {subsection}{\numberline {7.11.1}Bounding box object.}{269}
+\contentsline {subsection}{\numberline {7.11.2}Create and initialize a curve/surface bounding box instance.}{270}
+\contentsline {subsection}{\numberline {7.11.3}Find the bounding box of a surface.}{271}
+\contentsline {section}{\numberline {7.12}Normal Cone}{272}
+\contentsline {subsection}{\numberline {7.12.1}Normal cone object.}{272}
+\contentsline {subsection}{\numberline {7.12.2}Create and initialize a curve/surface direction instance.}{273}
+\contentsline {subsection}{\numberline {7.12.3}Find the direction cone of a surface.}{274}
+\contentsline {chapter}{\numberline {8}Surface Analysis}{276}
+\contentsline {section}{\numberline {8.1}Curvature Evaluation}{276}
+\contentsline {subsection}{\numberline {8.1.1}Gaussian curvature of a spline surface.}{276}
+\contentsline {subsection}{\numberline {8.1.2}Mean curvature of a spline surface.}{278}
+\contentsline {subsection}{\numberline {8.1.3}Absolute curvature of a spline surface.}{280}
+\contentsline {subsection}{\numberline {8.1.4}Total curvature of a spline surface.}{282}
+\contentsline {subsection}{\numberline {8.1.5}Second order Mehlum curvature of a spline surface.}{284}
+\contentsline {subsection}{\numberline {8.1.6}Third order Mehlum curvature of a spline surface.}{286}
+\contentsline {subsection}{\numberline {8.1.7}Gaussian curvature of a B-spline or NURBS surface as a NURBS surface.}{288}
+\contentsline {subsection}{\numberline {8.1.8}Mehlum curvature of a B-spline or NURBS surface as a NURBS surface.}{290}
+\contentsline {subsection}{\numberline {8.1.9}Curvature on a uniform grid of a NURBS surface.}{292}
+\contentsline {subsection}{\numberline {8.1.10}Principal curvatures of a spline surface.}{294}
+\contentsline {subsection}{\numberline {8.1.11}Normal curvature of a spline surface.}{296}
+\contentsline {subsection}{\numberline {8.1.12}Focal values on a uniform grid of a NURBS surface.}{298}
+\contentsline {chapter}{\numberline {9}Surface Utilities}{300}
+\contentsline {section}{\numberline {9.1}Surface Object}{300}
+\contentsline {subsection}{\numberline {9.1.1}Create a new surface object.}{302}
+\contentsline {subsection}{\numberline {9.1.2}Make a copy of a surface object.}{305}
+\contentsline {subsection}{\numberline {9.1.3}Delete a surface object.}{306}
+\contentsline {section}{\numberline {9.2}Evaluation}{307}
+\contentsline {subsection}{\numberline {9.2.1}Compute the position, the derivatives and the normal of a surface at a given parameter value pair.}{307}
+\contentsline {subsection}{\numberline {9.2.2}Compute the position and derivatives of a surface at a given parameter value pair.}{309}
+\contentsline {subsection}{\numberline {9.2.3}Compute the position and the left- or right-hand derivatives of a surface at a given parameter value pair.}{311}
+\contentsline {subsection}{\numberline {9.2.4}Compute the position and the derivatives of a surface at a given parameter value pair.}{314}
+\contentsline {subsection}{\numberline {9.2.5}Evaluate the surface pointed at by ps1 over an m1 * m2 grid of points (x[i],y[j]). Compute ider derivatives and normals if suitable.}{318}
+\contentsline {section}{\numberline {9.3}Subdivision}{320}
+\contentsline {subsection}{\numberline {9.3.1}Subdivide a surface along a given parameter line.}{320}
+\contentsline {subsection}{\numberline {9.3.2}Insert a given set of knots, in each parameter direction, into the description of a surface.}{321}
+\contentsline {section}{\numberline {9.4}Picking Curves from a Surface}{323}
+\contentsline {subsection}{\numberline {9.4.1}Pick a curve along a constant parameter line in a surface.}{323}
+\contentsline {subsection}{\numberline {9.4.2}Pick the curve lying in a surface, described by a curve in the parameter plane of the surface.}{324}
+\contentsline {section}{\numberline {9.5}Pick a Part of a Surface.}{326}
+\contentsline {section}{\numberline {9.6}Turn the Direction of the Surface Normal Vector.}{327}
+\contentsline {section}{\numberline {9.7}Drawing}{328}
+\contentsline {subsection}{\numberline {9.7.1}Draw a sequence of straight lines.}{328}
+\contentsline {subsection}{\numberline {9.7.2}Basic graphics routine template - move plotting position.}{329}
+\contentsline {subsection}{\numberline {9.7.3}Basic graphics routine template - plot line.}{330}
+\contentsline {subsection}{\numberline {9.7.4}Draw constant parameter lines in a surface using piecewise straight lines.}{331}
+\contentsline {subsection}{\numberline {9.7.5}Draw constant parameter lines in a surface bounded by a closed curve in the parameter plane of the surface.}{333}
+\contentsline {chapter}{\numberline {10}Data Reduction}{335}
+\contentsline {section}{\numberline {10.1}Curves}{335}
+\contentsline {subsection}{\numberline {10.1.1}Data reduction: B-spline curve as input.}{335}
+\contentsline {subsection}{\numberline {10.1.2}Data reduction: Point data as input.}{337}
+\contentsline {subsection}{\numberline {10.1.3}Data reduction: Points and tangents as input.}{340}
+\contentsline {subsection}{\numberline {10.1.4}Degree reduction: B-spline curve as input.}{342}
+\contentsline {section}{\numberline {10.2}Surfaces}{344}
+\contentsline {subsection}{\numberline {10.2.1}Data reduction: B-spline surface as input.}{344}
+\contentsline {subsection}{\numberline {10.2.2}Data reduction: Point data as input.}{347}
+\contentsline {subsection}{\numberline {10.2.3}Data reduction: Points and tangents as input.}{350}
+\contentsline {subsection}{\numberline {10.2.4}Degree reduction: B-spline surface as input.}{353}
+\contentsline {chapter}{\numberline {11}Appendix: Error Codes}{355}
