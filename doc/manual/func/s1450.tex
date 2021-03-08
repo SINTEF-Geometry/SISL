@@ -90,15 +90,15 @@ ARGUMENTS\\
                 \>\>\>\>\>              $< 0$   : error\\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov close1};\\
-                \>\>    int     \>      {\fov close2};\\
-                \>\>    int     \>      {\fov degen1};\\
-                \>\>    int     \>      {\fov degen2};\\
-                \>\>    int     \>      {\fov degen3};\\
-                \>\>    int     \>      {\fov degen4};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge} = 0.000001;\\
+                \>\>    int     \>      {\fov close1} = 0;\\
+                \>\>    int     \>      {\fov close2} = 0;\\
+                \>\>    int     \>      {\fov degen1} = 0;\\
+                \>\>    int     \>      {\fov degen2} = 0;\\
+                \>\>    int     \>      {\fov degen3} = 0;\\
+                \>\>    int     \>      {\fov degen4} = 0;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1450(\begin{minipg4}
                 {\fov surf}, {\fov epsge}, \&{\fov close1}, \&{\fov close2}, \&{\fov degen1}, \&{\fov degen2}, \&{\fov degen3}, \&{\fov degen4},

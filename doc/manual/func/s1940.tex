@@ -92,18 +92,18 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve \> *{\fov oldcurve};\\
-                \>\>    double \> {\fov eps}[\,];\\
-                \>\>    int \> {\fov startfix};\\
-                \>\>    int \> {\fov endfix};\\
-                \>\>    int \> {\fov iopen};\\
-                \>\>    int \> {\fov itmax};\\
-                \>\>    SISLCurve \> **{\fov newcurve};\\
-                \>\>    double \> {\fov maxerr}[\,];\\
-                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve \> *{\fov oldcurve}; \, /* Must be defined */\\
+                \>\>    double \> {\fov eps}[3]; /* Spatial dimension.  Must be defined */\\
+                \>\>    int \> {\fov startfix} = 1;\\
+                \>\>    int \> {\fov endfix} = 1;\\
+                \>\>    int \> {\fov iopen} = 1;\\
+                \>\>    int \> {\fov itmax} = 8;\\
+                \>\>    SISLCurve \> *{\fov newcurve} = NULL;\\
+                \>\>    double \> {\fov maxerr}[3]; /* Spatial dimension */\\
+                \>\>    int \> {\fov stat} = 0;\\                \>\>    \ldots \\
         \>\>s1940(\begin{minipg4}
-            {\fov oldcurve},  {\fov eps},  {\fov startfix},  {\fov endfix},  {\fov iopen},  {\fov itmax},  {\fov newcurve},
-       {\fov maxerr},  {\fov stat});
+            {\fov oldcurve},  {\fov eps},  {\fov startfix},  {\fov endfix},  {\fov iopen},  {\fov itmax},  \&{\fov newcurve},
+       {\fov maxerr},  \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

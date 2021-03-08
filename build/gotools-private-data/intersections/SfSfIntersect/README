@@ -1,0 +1,8 @@
+
+---------------  /intersections/app/  test_SfSfIntersector  --------------
+
+/home/bsp/GeomGroup/intersections/app/test_SfSfIntersector sf1.g2 sf2.g2 > sf1sf2.log 
+
+/home/bsp/GeomGroup/intersections/app/test_SfSfIntersector hub.g2  blade.g2 > hub_blade.log
+
+

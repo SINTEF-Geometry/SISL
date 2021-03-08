@@ -55,12 +55,12 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      *{\fov coons};\\
-                \>\>    int     \>      {\fov numcoons1};\\
-                \>\>    int     \>      {\fov numcoons2};\\
-                \>\>    int     \>      {\fov dim}\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      *{\fov coons} = NULL;\\
+                \>\>    int     \>      {\fov numcoons1} = 0;\\
+                \>\>    int     \>      {\fov numcoons2} = 0;\\
+                \>\>    int     \>      {\fov dim};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1388(\begin{minipg4}
                 {\fov surf}, \&{\fov coons}, \&{\fov numcoons1}, \&{\fov numcoons2}, \&{\fov dim}, \&{\fov stat});

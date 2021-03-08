@@ -1,4 +1,4 @@
-\subsection{Find the topology of the circular silhouette curves of a
+\subsection{Find the topology of the circular silhouette curves of a spline
 \mbox{surface}.}
 \funclabel{s1511}
 \begin{minipg1}
@@ -70,12 +70,12 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLSurf \> *{\fov ps};\\
-        \>\>    double   \> {\fov qpoint}[3];\\
-        \>\>    double   \> {\fov bvec}[3];\\
+        \>\>    SISLSurf \> *{\fov ps}; \, /* Must be defined */\\
+        \>\>    double   \> {\fov qpoint}[3]; \, /* Must be defined */\\
+        \>\>    double   \> {\fov bvec}[3]; \, /* Must be defined */\\
         \>\>    int      \> {\fov idim} = 3;\\
-        \>\>    double   \> {\fov aepsco};\\
-        \>\>    double   \> {\fov aepsge};\\
+        \>\>    double   \> {\fov aepsco} =1.0e-9; /* Not used */\\
+        \>\>    double   \> {\fov aepsge} = 1.0e-6;\\
         \>\>    int      \> {\fov jpt} = 0;\\
         \>\>    double   \> *{\fov gpar} = NULL;\\
         \>\>    int      \> {\fov jcrv} = 0;\\

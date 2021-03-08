@@ -94,7 +94,7 @@ int main(int avnum, char** vararg)
 	for (int i = 0; i < num_shapes; ++i) {
 
 	    SISLCurve* result_curve = 0;
-	    int jstat;
+	    int jstat = 0;
 	    
 	    // generate the conic section
 	    s1011(start_pos,
@@ -114,7 +114,7 @@ int main(int avnum, char** vararg)
 	    // write the result to file
 	    writeGoCurve(result_curve, os);
 
-	    freeCurve(result_curve);
+	    if (result_curve) freeCurve(result_curve);
 
 	}
 

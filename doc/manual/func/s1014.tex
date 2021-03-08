@@ -68,17 +68,17 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \> *{\fov pc1};\\
-        \>\>    double    \> {\fov circ\_cen}[2];\\
-        \>\>    double    \> {\fov circ\_rad};\\
-        \>\>    double    \> {\fov aepsge};\\
-        \>\>    double    \> {\fov eps1}[2];\\
-        \>\>    double    \> {\fov eps2}[2];\\
-        \>\>    double    \> {\fov aradius};\\
+        \>\>    SISLCurve \> *{\fov pc1}; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov circ\_cen}[2]; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov circ\_rad}; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov aepsge} = 0.00001;\\
+        \>\>    double    \> {\fov eps1}[2]; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov eps2}[2]; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov aradius}; \,/* Must be defined */ \\
         \>\>    double    \> {\fov parpt1};\\
         \>\>    double    \> {\fov parpt2};\\
         \>\>    double    \> {\fov centre}[2];\\
-        \>\>    int       \> {\fov jstat};\\
+        \>\>    int       \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1014(\begin{minipg4}
         {\fov pc1}, {\fov circ\_cen}, {\fov circ\_rad}, {\fov aepsge}, {\fov eps1}, {\fov eps2}, {\fov aradius},

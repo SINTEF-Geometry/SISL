@@ -13,9 +13,9 @@ SYNOPSIS\\
           {\fov pc},  {\fov rc},  {\fov apar},  {\fov jstat})
         \end{minipg3}\\[0.3ex]
         \>\>    SISLCurve \> *{\fov pc};\\
-        \>\>    int       \> *{\fov jstat};\\
-        \>\>    double    \> {\fov apar};\\
         \>\>    SISLCurve \> **{\fov rc};\\
+        \>\>    double    \> {\fov apar};\\
+        \>\>    int       \> *{\fov jstat};\\
 \\
 ARGUMENTS\\
         \>Input Arguments:\\
@@ -31,8 +31,8 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \> *{\fov pc};\\
-        \>\>    double    \> {\fov apar};\\
+        \>\>    SISLCurve \> *{\fov pc}; \, /* Must be defined */\\
+        \>\>    double    \> {\fov apar}; \, /* Must be defined */\\
         \>\>    SISLCurve \> *{\fov rc} = NULL;\\
         \>\>    int       \> {\fov jstat} = 0;\\
         \>\>    \ldots \\

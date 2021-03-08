@@ -82,13 +82,13 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    int       \> {\fov inbcrv};\\
-        \>\>    SISLCurve \> *{\fov vpcurv}[3];\\
-        \>\>    int       \> {\fov nctyp}[3];\\
-        \>\>    double    \> {\fov astpar};\\
-        \>\>    int       \> {\fov iopen};\\
-        \>\>    int       \> {\fov iord2};\\
-        \>\>    int       \> {\fov iflag};\\
+        \>\>    int       \> {\fov inbcrv} = 3;\\
+        \>\>    SISLCurve \> *{\fov vpcurv}[3]; \,/* Must be defined */\\
+        \>\>    int       \> {\fov nctyp}[3]; \, /* Must be defined */\\
+        \>\>    double    \> {\fov astpar} = 0.0;\\
+        \>\>    int       \> {\fov iopen} = 1;\\
+        \>\>    int       \> {\fov iord2} = 4; /* Cubic */ \\
+        \>\>    int       \> {\fov iflag} = 1;\\
         \>\>    SISLSurf  \> *{\fov rsurf} = NULL;\\
         \>\>    double    \> *{\fov gpar} = NULL;\\
         \>\>    int       \> {\fov jstat} = 0;\\

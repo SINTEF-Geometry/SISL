@@ -1,0 +1,2 @@
+* test_SfSfIntersector Tube1.g2 Tube2.g2 1e-6
+* test_SfSfIntersector Tube2.g2 Tube1.g2 1e-6

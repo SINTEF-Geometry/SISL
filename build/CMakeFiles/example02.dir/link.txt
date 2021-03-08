@@ -1,0 +1,1 @@
+/usr/bin/c++   -Wall -Wno-unused-but-set-variable -fPIC -O3 -DNDEBUG  -rdynamic CMakeFiles/example02.dir/examples/example02.cpp.o  -o examples/example02 libsisl.a libsisl_streaming.a libsisl.a -lm 

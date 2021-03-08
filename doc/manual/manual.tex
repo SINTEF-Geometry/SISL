@@ -1,6 +1,8 @@
 %\documentstyle[a4,twoside,epsf,makeidx]{sislman}
 \documentclass[a4paper]{report}
 \usepackage{sislman2}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
 \pagestyle{headings}
 \usepackage{imakeidx} 
 \makeindex
@@ -29,7 +31,8 @@
 \cleardoublepage
 \pagenumbering{arabic}
 \setcounter{page}{1}
-\input{chap_introduction}
+\input{foreword}
+\input{chap_intro_abridged}
 \cleardoublepage
 \input{chap_curve_definition}
 \cleardoublepage
@@ -49,7 +52,12 @@
 \cleardoublepage
 \input{chap_data_reduction}
 \cleardoublepage
+\input{sample_programs}
+\input{viewer}
+\cleardoublepage
 \input{chap_error_codes}
+\cleardoublepage
+\input{licensing_information}
 \cleardoublepage
 \printindex
 \end{document}

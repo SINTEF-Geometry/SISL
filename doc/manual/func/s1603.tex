@@ -41,12 +41,12 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
                 \>\>    double  \>      {\fov min1};\\
                 \>\>    double  \>      {\fov min2};\\
                 \>\>    double  \>      {\fov max1};\\
                 \>\>    double  \>      {\fov max2};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1603(\begin{minipg4}
                 {\fov surf}, \&{\fov min1}, \&{\fov min2}, \&{\fov max1}, \&{\fov max2}, \&{\fov stat});

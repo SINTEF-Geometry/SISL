@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsisl_streaming.a  CMakeFiles/sisl_streaming.dir/streaming/src/GoReadWrite.cpp.o
+/usr/bin/ranlib libsisl_streaming.a

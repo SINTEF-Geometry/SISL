@@ -1,0 +1,69 @@
+\chapter{Preface}
+Welcome to the SISL 4.5 user's manual.  SISL stands for
+\emph{\textbf{Si}ntef \textbf{S}pline \textbf{L}ibrary}, and has been gradually 
+developed and enhanced for more than three decades by the geometry group at SINTEF in Oslo.
+Although it is very comprehensive, its organisation is simple.  There are but a 
+few structures, and its nearly four hundred main functions can usually be employed
+directly and individually. This manual organises and explains the main routines.  However, much of this
+information can also be found directly in the code in the form of commentaries.
+
+The complete software package you have in your hands should contain the following:
+\begin{itemize}
+\item The SISL 4.5 distribution and reference guide (the document you are reading now)
+\item Supplementary routines for writing SISL objects to streams (including file 
+streams) in a simple ASCII format called \textbf{\Verb/Go/}.
+\item A selection of \emph{sample programs}, designed to demonstrate functionalities
+and use of SISL.
+\item Source code for a simple \emph{viewer} that can be used to view geometric objects stored
+in the \Verb/Go/-format.  This allows visual inspection of SISL-generated curves
+and surfaces, as well as points.
+\end{itemize}
+
+\section{The structure of this document}
+\textbf{Chapter 2} is a general introduction to SISL and its programming style. A simple example program
+including instructions in how to compile and link the program and the expected output is provided.
+Since it is strongly recommended that the user has some general knowledge of splines, this 
+chapter also contains a couple of sections introducing the subject of spline curves and
+surfaces. \\
+\\
+\textbf{Chapter 3 to 11} presents the main SISL routines.  \\
+\\
+\textbf{Chapter 12} goes through the provided sample programs and explain what these do,
+and what the user can expect to learn from them.  There are a total of 15 sample 
+programs, ranging from very basic to intermediate complexity.\\
+\\
+The goal of \textbf{Chapter 13} is to explain the use of the \emph{viewer program}, 
+which is a small but handy tool for visually inspecting results from SISL routines.\\
+\\
+\textbf{Chapter 14} is an appendix presenting an explanation of the error codes used in SISL.\\
+\\
+Finally there is an \textbf{annex}, citing the text of the General Public License.
+
+\section{The structure of the software package}\label{compile}
+There are seven directories:
+\begin{itemize}
+\item \textbf{\Verb-include/-} - the inlude files related to the 4.5 release of SISL.
+\item \textbf{\Verb-src/-} - the source code of the 4.5 release of SISL.
+\item \textbf{\Verb-doc/-} - the basis for this document. 
+\item \textbf{\Verb-streaming/-} - source code for the routines that can read and write
+SISL objects to a stream.
+\item \textbf{\Verb-examples/-} - sample programs making use of the SISL 4.5 source code.
+\item \textbf{\Verb-viewer/-} - source code for a viewer that can be used to view SISL 
+  objects saved in the \verb/Go/-format.
+\item \textbf{\Verb-app/-} - the expected directory for test programs and applications. A
+  couple of applications are provided including the example program described in Chapter 2.
+\end{itemize}
+Furthermore is the file CMakeLists.txt provided to facilitate building the library.
+
+\section{Licensing information}
+SISL is distibuted under the \emph{GNU Affero General Public License} (aGPL).  The license text 
+is given in its entirety as an annex to this document.  Commercial licenses are also
+available from SINTEF.  You can contact Tor Dokken (tor.dokken@sintef.no) for more
+information.
+
+%% *what is included in this distibution
+%% *explain chapters
+%% *the manual
+%% *licensing information
+%% *compilation
+%% *the object viewer

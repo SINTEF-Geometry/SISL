@@ -32,10 +32,10 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    int     \>      {\fov derive};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov derive} = 1;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1720(\begin{minipg4}
                 {\fov curve}, {\fov derive}, \&{\fov newcurve}, \&{\fov stat});

@@ -1,4 +1,4 @@
-\subsection{March an intersection curve between a surface and a torus.}
+\subsection{March an intersection curve between a spline surface and a torus.}
 \funclabel{s1318}
 \begin{minipg1}
   To march an intersection curve described by parameter pairs in an intersection
@@ -76,8 +76,8 @@ ARGUMENTS\\
                                 \end{minipg2}\\
                 \>\>\>\>\>      0 -     \>Don't draw the curve.\\
                 \>\>\>\>\>      1 -     \>\begin{minipg5}
-                                        Draw the geometric curve. If this option
-                                        is used see NOTE!
+                                        Draw the geometric curve. This option is
+                                        outdated, if used see NOTE!
                                         \end{minipg5} \\[0.8ex]
 \\
         \>Input/Output Arguments:\\
@@ -111,25 +111,23 @@ NOTE\\
 If the draw option is used the empty dummy functions s6move() and
 s6line() are called.
 Thus if the draw option is used, make sure
-you have versions of s6move() and s6line() interfaced to your graphic package.
-More about s6move() and s6line() on pages~\pageref{s6move}
-and~\pageref{s6line}.
+you have versions of functions s6move() and s6line() interfaced to your graphic package.
 \end{minipg6}\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov centre}[3];\\
-                \>\>    double  \>      {\fov normal}[3];\\
-                \>\>    double  \>      {\fov cendist};\\
-                \>\>    double  \>      {\fov radius};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov centre}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov normal}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov cendist}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov radius}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-5;\\
                 \>\>    double  \>      {\fov maxstep} = 0.0;\\
-                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
-                \>\>    int     \>      {\fov makecurv};\\
-                \>\>    int     \>      {\fov graphic};\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve}; /* The intersection curve instance is defined in s1369 */\\
+                \>\>    int     \>      {\fov makecurv} = 2;\\
+                \>\>    int     \>      {\fov graphic} = 0;\\
                 \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1318(\begin{minipg4}

@@ -43,11 +43,11 @@ ARGUMENTS\\
 \\ %\newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve1};\\
-                \>\>    SISLCurve       \>      *{\fov curve2};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve1}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov curve2}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1716(\begin{minipg4}
                 {\fov curve1}, {\fov curve2}, {\fov epsge}, \&{\fov newcurve}, \&{\fov stat});

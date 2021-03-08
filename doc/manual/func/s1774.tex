@@ -60,17 +60,17 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve \> *{\fov crv};\\
-                \>\>    double \> {\fov point}[\,];\\
-                \>\>    int \> {\fov dim};\\
-                \>\>    double \> {\fov epsge};\\
-                \>\>    double \> {\fov start};\\
-                \>\>    double \> {\fov end};\\
-                \>\>    double \> {\fov guess};\\
-                \>\>    double \> *{\fov clpar};\\
-                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve \> *{\fov crv}; \, /* Must be defined */\\
+                \>\>    double \> {\fov point}[3]; \, /* Must be defined */\\
+                \>\>    int \> {\fov dim} = 3;\\
+                \>\>    double \> {\fov epsge} = 1.0e-6;\\
+                \>\>    double \> {\fov start}; \, /* Must be defined */\\
+                \>\>    double \> {\fov end}; \, /* Must be defined */\\
+                \>\>    double \> {\fov guess}; \, /* Must be defined */\\
+                \>\>    double \> {\fov clpar} = 0;\\
+                \>\>    int \> {\fov stat} = 0;\\                \>\>    \ldots \\
         \>\>s1774(\begin{minipg4}
-            {\fov crv},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov start},  {\fov end},  {\fov guess},  {\fov clpar},  {\fov stat});
+            {\fov crv},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov start},  {\fov end},  {\fov guess},  \&{\fov clpar},  \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

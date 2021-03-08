@@ -3,7 +3,7 @@
 \begin{minipg1}
 Evaluate the curve pointed at by pc1 over a m grid
                of points (x[i]). Only positions are evaluated.
-               This does not work for in the rational case.
+               Do not apply in the rational case.
 \end{minipg1} \\ \\
 SYNOPSIS\\
         \> void s1542(\begin{minipg3}
@@ -29,9 +29,9 @@ ARGUMENTS\\
 \\
 	\>Output Arguments:\\
         \>\>    {\fov eder}\> - \>  \begin{minipg2}
-                     Array where the derivatives of the curve
+                     Array where the positions of the curve
                        are placed, dimension
-                         idim * (ider+1) * m.
+                         idim * m.
                        The sequence is position at point x[0],
                        followed by the same information at x[1],
                        etc.
@@ -43,13 +43,13 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve \> *{\fov pc1};\\
-                \>\>    int    \>  {\fov m};\\
-                \>\>    double    \>  {\fov x}[\,];\\
-                \>\>    double    \>  {\fov eder}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve \> *{\fov pc1}; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov m} = 25;\\
+                \>\>    double    \>  {\fov x}[25];\\
+                \>\>    double    \>  {\fov eder}[75]; /* Geometry space dimension times m */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1542(\begin{minipg4}
-            {\fov pc1}, {\fov m}, {\fov x}, {\fov eder}, {\fov jstat});
+            {\fov pc1}, {\fov m}, {\fov x}, {\fov eder}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

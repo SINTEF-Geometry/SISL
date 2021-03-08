@@ -57,16 +57,16 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov pcurve};\\
-                \>\>    double    \>  {\fov point}[\,];\\
-                \>\>    int    \>  {\fov dim};\\
-                \>\>    double    \>  {\fov epsge};\\
-                \>\>    double    \>  {\fov weight}[\,];\\
-                \>\>    double    \>  *{\fov area};\\
-                \>\>    double    \>  *{\fov moment};\\
-                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov pcurve}; \, /* Must be defined */\\
+                \>\>    double    \>  {\fov point}[2]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov dim} = 2; /* Dimension 2 is required */\\
+                \>\>    double    \>  {\fov epsge} = 0.01;\\
+                \>\>    double    \>  {\fov weight}[2];\\
+                \>\>    double    \>  {\fov area} = 0.0;\\
+                \>\>    double    \>  {\fov moment} = 0.0;\\
+                \>\>    int    \>  {\fov stat} = 0;\\                \>\>    \ldots \\
         \>\>s1243(\begin{minipg4}
-            {\fov pcurve},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov weight},  {\fov area},  {\fov moment},  {\fov stat});
+            {\fov pcurve},  {\fov point},  {\fov dim},  {\fov epsge},  {\fov weight},  \&{\fov area},  \&{\fov moment},  \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

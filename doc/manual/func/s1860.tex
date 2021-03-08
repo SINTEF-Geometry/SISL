@@ -1,4 +1,4 @@
-\subsection{Find the topology of the silhouette curves of a surface,
+\subsection{Find the topology of the silhouette curves of a spline surface,
 using parallel projection.}
 \funclabel{s1860}
 \begin{minipg1}
@@ -75,11 +75,11 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov viewdir}[3];\\
-                \>\>    int     \>      {\fov dim};\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov viewdir}[3]; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
                 \>\>    int     \>      {\fov numsilpt} = 0;\\
                 \>\>    double  \>      *{\fov pointpar} = NULL;\\
                 \>\>    int     \>      {\fov numsilcr} = 0;\\

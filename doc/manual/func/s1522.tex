@@ -55,13 +55,13 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov normal}[3];\\
-        \>\>    double \> {\fov centre}[3];\\
-        \>\>    double \> {\fov ellipaxis}[3];\\
-        \>\>    double \> {\fov ratio};\\
+        \>\>    double \> {\fov normal}[3]; \,/* Must be defined */\\
+        \>\>    double \> {\fov centre}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov ellipaxis}[3]; \,/* Must be defined */\\
+        \>\>    double \> {\fov ratio}; \, /* Must be defined */\\
         \>\>    int    \> {\fov dim} = 3;\\
-        \>\>    SISLCurve \> *{\fov ellipse};\\
-        \>\>    int    \> {\fov jstat};\\
+        \>\>    SISLCurve \> *{\fov ellipse} = NULL;\\
+        \>\>    int    \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1522(\begin{minipg4}
           {\fov normal},  {\fov centre},  {\fov ellipaxis},  {\fov ratio},  {\fov dim},  \&{\fov ellipse},  \&{\fov jstat});

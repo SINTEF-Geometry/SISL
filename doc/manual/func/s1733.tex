@@ -58,8 +58,9 @@ ARGUMENTS\\
         \>\>    {\fov coef}     \> - \>
         \begin{minipg2}
           The vertices of the Bezier patch.
-          Space must be allocated with a size of $(idim+1)\times ik1\times ik2$
-          as given by the surface (this is done for reasons of efficiency).
+          Space must be allocated with a size of $idim\times ik1\times ik2$ or
+          $(idim+1)\times ik1\times ik2$ in the rational case.
+          These parameters are given by the surface (this is done for reasons of efficiency).
         \end{minipg2}\\
 \newpagetabs
         \>\>    {\fov stat}     \> - \> Status messages\\
@@ -69,15 +70,16 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov number1};\\
-                \>\>    int     \>      {\fov number2};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov number1}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov number2}; \, /* Must be defined */\\
                 \>\>    double  \>      {\fov startpar1};\\
                 \>\>    double  \>      {\fov endpar1};\\
                 \>\>    double  \>      {\fov startpar2};\\
                 \>\>    double  \>      {\fov endpar2};\\
-                \>\>    double  \>      {\fov coef}[48];\\
-                \>\>    int     \>      stat;\\
+                \>\>    double  \>      {\fov coef}[48]; /* Non-rational, degree 3 in both directions, \\
+                \>\>\>\>\> geometry space dimension equal to 3 */ \\
+                \>\>    int     \>      stat = 0;\\
                 \>\>    \ldots \\
         \>\>s1733(\begin{minipg4}
                 {\fov surf}, {\fov number1}, {\fov number2}, \&{\fov startpar1}, \&{\fov endpar1},

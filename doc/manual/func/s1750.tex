@@ -30,10 +30,10 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov order};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      stat;\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \,/* Must be defined */\\
+                \>\>    double  \>      {\fov order}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      stat = 0;\\
                 \>\>    \ldots \\
         \>\>s1750(\begin{minipg4}
                 {\fov curve}, {\fov order}, \&{\fov newcurve}, \&{\fov stat});

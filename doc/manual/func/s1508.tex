@@ -1,7 +1,8 @@
 \subsection{Create a rational lofted surface from a set of rational input-curves}
 \funclabel{s1508}
 \begin{minipg1}
-To create a rational lofted surface from a set of rational input-curves.
+  To create a rational lofted surface from a set of rational input-curves. The surface will
+  be $C^1$ cubic in the lofting direction.
 \end{minipg1} \\ \\ 
 SYNOPSIS\\
       \> void s1508(\begin{minipg3}
@@ -38,9 +39,9 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
                \>      \{ \\
 	       
-	       \>\>    int \> {\fov inbcrv};\\
-	       \>\>    SISLCurve \> *{\fov vpcurv[3]};\\
-	       \>\>    double \> {\fov par\_arr[3]};\\
+	       \>\>    int \> {\fov inbcrv} = 3;\\
+	       \>\>    SISLCurve \> *{\fov vpcurv[3]}; \, /* Must be defined */\\
+	       \>\>    double \> {\fov par\_arr[3]}; \, /* Must be defined */\\
 	       \>\>    SISLSurf  \> *{\fov rsurf} = NULL;\\
 	       \>\>    int \> {\fov jstat} = 0;\\
 	       \>\>    \ldots \\

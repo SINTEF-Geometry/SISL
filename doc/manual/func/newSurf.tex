@@ -10,7 +10,7 @@ Create and initialize a surface object instance. Note that the vertex input to a
 	         B_{i,k_1,{\bf u}}(u) B_{j,k_2,{\bf v}}(v)},
 $$
 must the vertices be given as
-${w_1  {\bf p}_{1,1}, w_{1,1}, w_{1,2}  {\bf p}_{1,2}, w_{1,2},  \ldots,
+${w_{1,1}  {\bf p}_{1,1}, w_{1,1}, w_{1,2}  {\bf p}_{1,2}, w_{1,2},  \ldots,
   w_{n_1,n_2}  {\bf p}_{n_1,n_2}, w_{n_1,n_2}}$ when invoking this function. Thus the vertices are multiplied with the
 associated weight.
 \end{minipg1} \\ \\
@@ -77,9 +77,9 @@ EXAMPLE OF USE\\
         \>\>    int    \>       {\fov number2} = 4;\\
         \>\>    int    \>       {\fov order1} = 4; /* Polynomial degree 3 */\\
         \>\>    int    \>       {\fov order2} = 3; /* Polynomial degree 2 */\\
-        \>\>    double \>       {\fov knot1}[9];  \\
-        \>\>    double \>       {\fov knot2}[7];\\
-        \>\>    double \>       {\fov coef}[60]; \\ 
+        \>\>    double \>       {\fov knot1}[9];  \, /* Must be defined */ \\
+        \>\>    double \>       {\fov knot2}[7]; \, /* Must be defined */\\
+        \>\>    double \>       {\fov coef}[60];  \, /* Must be defined */\\ 
         \>\>    int    \>       {\fov kind} = 1;\\
         \>\>    int    \>       {\fov dim} = 3;\\
         \>\>    int    \>       {\fov copy} = 1;\\

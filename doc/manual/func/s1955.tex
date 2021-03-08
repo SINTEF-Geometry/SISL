@@ -65,16 +65,16 @@ ARGUMENTS\\
                 \>\>\>\>\>              $< 0$   : error\\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve1};\\
-                \>\>    SISLCurve       \>      *{\fov curve2};\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov intpar1};\\
-                \>\>    double  \>      *{\fov intpar2};\\
-                \>\>    int     \>      {\fov numintcu};\\
-                \>\>    SISLIntcurve \> **{\fov intcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve1}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov curve2}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov intpar1} = NULL;\\
+                \>\>    double  \>      *{\fov intpar2} =  NULL;\\
+                \>\>    int     \>      {\fov numintcu} = 0;\\
+                \>\>    SISLIntcurve \> **{\fov intcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1955(\begin{minipg4}
                 {\fov curve1}, {\fov curve2}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},

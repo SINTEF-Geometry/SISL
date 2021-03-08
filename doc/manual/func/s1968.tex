@@ -102,18 +102,19 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf    \>  *{\fov ps};\\
-                \>\>    double \> {\fov eeps}[\,];\\
-                \>\>    int    \>  {\fov nend}[\,];\\
-                \>\>    int    \>  {\fov iopen1};\\
-                \>\>    int    \>  {\fov iopen2};\\
-                \>\>    double \> {\fov edgeps}[\,];\\
-                \>\>    int    \>  {\fov iopt};\\
-                \>\>    int    \>  {\fov itmax};\\
-                \>\>    SISLSurf    \>  **{\fov rs};\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf    \>  *{\fov ps}; \, /*Must be defined */\\
+                \>\>    double \> {\fov eeps}[3]; \, /*Must be defined */\\
+                \>\>    int    \>  {\fov nend}[4];\, /*Must be defined */\\
+                \>\>    int    \>  {\fov iopen1} = 1;\\
+                \>\>    int    \>  {\fov iopen2} = -1;\\
+                \>\>    double \> {\fov edgeps}[12];/* Spatial dimension times number of edges. \\
+                \>\>\>\>\>\> Must be defined */\\
+                \>\>    int    \>  {\fov iopt} = 4;\\
+                \>\>    int    \>  {\fov itmax} = 7;\\
+                \>\>    SISLSurf    \>  *{\fov rs} = NULL;\\
+                \>\>    int    \>  *{\fov *jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1968(\begin{minipg4}
-            {\fov ps}, {\fov eeps}, {\fov nend}, {\fov iopen1}, {\fov iopen2}, {\fov edgeps}, {\fov iopt}, {\fov itmax}, {\fov rs}, {\fov jstat});
+            {\fov ps}, {\fov eeps}, {\fov nend}, {\fov iopen1}, {\fov iopen2}, {\fov edgeps}, {\fov iopt}, {\fov itmax}, \&{\fov rs}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

@@ -68,16 +68,16 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov conarray}[16];\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov conarray}[16]; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov intpar};\\
-                \>\>    int     \>      {\fov numintcu};\\
-                \>\>    SISLIntcurve \> **{\fov intcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov intpar} = NULL;\\
+                \>\>    int     \>      {\fov numintcu} = 0;\\
+                \>\>    SISLIntcurve \> **{\fov intcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1374(\begin{minipg4}
         {\fov curve}, {\fov conarray}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},

@@ -97,7 +97,7 @@ int main(int avnum, char** vararg)
 	double* intpar_curve = 0; // parameter values for the curve in the intersections
 	int num_int_curves = 0;   // number of intersection curves
 	SISLIntcurve** intcurve = 0; // pointer to array of detected intersection curves
-	int jstat; // status variable
+	int jstat = 0; // status variable
 
 	s1858(surf,            // the surface
 	      curve,           // the curve
@@ -149,17 +149,15 @@ int main(int avnum, char** vararg)
 	writeGoPoints(num_int_points, &point_coords_3D[0], os);
 
 	// cleaning up
-	freeSurf(surf);
-	freeCurve(curve);
+	if (surf) freeSurf(surf);
+	if (curve) freeCurve(curve);
 	os.close();
 	is_sf.close();
 	is_cv.close();
-	free(intpar_surf);
-	free(intpar_curve);
-	for (i = 0; i < num_int_curves; ++i) {
-	    freeIntcurve(intcurve[i]);
-	}
-	free(intcurve);
+	if (intpar_surf) free(intpar_surf);
+	if (intpar_curve) free(intpar_curve);
+	if (num_int_curves > 0)
+	  freeIntcrvlist(intcurve, num_int_curves);
 
     } catch (exception& e) {
 	cerr << "Exception thrown: " << e.what() << endl;

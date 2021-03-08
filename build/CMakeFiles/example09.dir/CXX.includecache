@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/sisl.h
+
+../streaming/include/GoReadWrite.h
+iostream
+-
+vector
+-
+
+/home/vsk/projects/gotools-all/gotools/sisl/examples/example09.cpp
+iostream
+-
+fstream
+-
+string
+-
+stdexcept
+-
+sisl.h
+/home/vsk/projects/gotools-all/gotools/sisl/examples/sisl.h
+GoReadWrite.h
+/home/vsk/projects/gotools-all/gotools/sisl/examples/GoReadWrite.h
+

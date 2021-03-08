@@ -119,24 +119,24 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    double \> {\fov ep}[\,];\\
-                \>\>    int    \>  {\fov im};\\
-                \>\>    int    \>  {\fov idim};\\
-                \>\>    int    \>  {\fov ipar};\\
-                \>\>    double \> {\fov epar}[\,];\\
-                \>\>    double \> {\fov eeps}[\,];\\
-                \>\>    int    \>  {\fov ilend};\\
-                \>\>    int    \>  {\fov irend};\\
-                \>\>    int    \>  {\fov iopen};\\
-                \>\>    double \> {\fov afctol};\\
-                \>\>    int    \>  {\fov itmax};\\
-                \>\>    int    \>  {\fov ik};\\
-                \>\>    SISLCurve    \>  **{\fov rc};\\
-                \>\>    double \> {\fov emxerr}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    double \> {\fov ep}[300]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov im} = 100;\\
+                \>\>    int    \>  {\fov idim} = 3;\\
+                \>\>    int    \>  {\fov ipar} = 1;\\
+                \>\>    double \> {\fov epar}[100]; /* Used if ipar = 3 */\\
+                \>\>    double \> {\fov eeps}[3]; \, /* Spatial dimension. Must be defined */\\
+                \>\>    int    \>  {\fov ilend} = 0;\\
+                \>\>    int    \>  {\fov irend} = 0;\\
+                \>\>    int    \>  {\fov iopen} = 1;\\
+                \>\>    double \> {\fov afctol} = 0.5;\\
+                \>\>    int    \>  {\fov itmax} = 6;\\
+                \>\>    int    \>  {\fov ik} = 4;\\
+                \>\>    SISLCurve    \>  *{\fov rc} = NULL;\\
+                \>\>    double \> {\fov emxerr}[3];  \,/* Spatial dimension */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1961(\begin{minipg4}
             {\fov ep}, {\fov im}, {\fov idim}, {\fov ipar}, {\fov epar}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov afctol},
-            {\fov itmax}, {\fov ik}, {\fov rc}, {\fov emxerr}, {\fov jstat});
+            {\fov itmax}, {\fov ik}, \&{\fov rc}, {\fov emxerr}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

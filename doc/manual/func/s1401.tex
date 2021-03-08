@@ -66,8 +66,8 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
         \>      \{ \\
         \>\>    int       \> {\fov idim} = 3;\\
-        \>\>    double    \> {\fov etwist}[4*{\fov idim}];\\
-        \>\>    SISLCurve \> *{\fov vcurve}[8];\\
+        \>\>    double    \> {\fov etwist}[12]; /* 4*idim. Must be defined */\\
+        \>\>    SISLCurve \> *{\fov vcurve}[8]; /* Position and derivative curves. Must be defined */\\
         \>\>    int       \> {\fov jstat} = 0;\\
         \>\>    SISLSurf  \> *{\fov rsurf} = NULL;\\
         \>\>    \ldots \\

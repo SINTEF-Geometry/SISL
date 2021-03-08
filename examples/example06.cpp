@@ -132,7 +132,7 @@ int main(int avnum, char** vararg)
 	double* intpar2 = 0; // parameter values for the second curve in the intersections
 	int num_int_curves = 0;   // number of intersection curves
 	SISLIntcurve** intcurve = 0; // pointer to array of detected intersection curves
-	int jstat; // status variable
+	int jstat = 0; // status variable
 
 	s1857(c1,              // first curve 
 	      c2,              // second curve
@@ -187,17 +187,15 @@ int main(int avnum, char** vararg)
 	writeGoPoints(num_int_points, &point_coords_3D[0], os_pts);
 
 	// cleaning up
-	freeCurve(c1);
-	freeCurve(c2);
+	if (c1) freeCurve(c1);
+	if (c2) freeCurve(c2);
 	os_cv1.close();
 	os_cv2.close();
 	os_pts.close();
-	free(intpar1);
-	free(intpar2);
-	for (i = 0; i < num_int_curves; ++i) {
-	    freeIntcurve(intcurve[i]);
-	}
-	free(intcurve);
+	if (intpar1) free(intpar1);
+	if (intpar2) free(intpar2);
+	if (num_int_curves > 0)
+	  freeIntcrvlist(intcurve, num_int_curves);
 
     } catch (exception& e) {
 	cerr << "Exception thrown: " << e.what() << endl;

@@ -1,0 +1,2 @@
+* test_SfSfIntersector plane_t1.g2 tube_p1.g2 1e-3
+* test_SfSfIntersector tube_p1.g2 plane_t1.g2 1e-3

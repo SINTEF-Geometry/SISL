@@ -1,0 +1,2 @@
+* test_SfSfIntersector B65_1.g2 B65_2.g2 1e-6
+* test_SfSfIntersector B65_2.g2 B65_1.g2 1e-6

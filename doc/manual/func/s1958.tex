@@ -57,13 +57,13 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLSurf  \>  *{\fov psurf};\\
-        \>\>    double    \>  {\fov epoint}[3];\\
+        \>\>    SISLSurf  \>  *{\fov psurf}; \, /* Must be defined */\\
+        \>\>    double    \>  {\fov epoint}[3]; \, /* Must be defined */\\
         \>\>    int       \>  {\fov idim} = 3;\\
-        \>\>    double    \>  {\fov aepsco};\\
-        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    double    \>  {\fov aepsco} = 1.0e-9; /* Not used */\\
+        \>\>    double    \>  {\fov aepsge} = 1.0e-6;\\
         \>\>    double    \>  {\fov gpar}[2];\\
-        \>\>    double    \>  {\fov dist} = 0;\\
+        \>\>    double    \>  {\fov dist} = 0.0;\\
         \>\>    int       \>  {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1958(\begin{minipg4}

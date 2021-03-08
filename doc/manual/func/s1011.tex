@@ -52,13 +52,13 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov start\_pos}[3];\\
-        \>\>    double \> {\fov top\_pos}[3];\\
-        \>\>    double \> {\fov end\_pos}[3];\\
-        \>\>    double \> {\fov shape};\\
+        \>\>    double \> {\fov start\_pos}[3]; \,/* Must be defined */\\
+        \>\>    double \> {\fov top\_pos}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov end\_pos}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov shape} = 0.3;\\
         \>\>    int    \> {\fov dim} = 3;\\
-        \>\>    SISLCurve \> *{\fov arc\_seg};\\
-        \>\>    int    \> {\fov stat};\\
+        \>\>    SISLCurve \> *{\fov arc\_seg} = NULL;\\
+        \>\>    int    \> {\fov stat} = 0;\\
         \>\>    \ldots \\
         \>\>s1011(\begin{minipg4}
         {\fov start\_pos},  {\fov top\_pos},  {\fov end\_pos},  {\fov shape},  {\fov dim},  \&{\fov arc\_seg},  \&{\fov stat});

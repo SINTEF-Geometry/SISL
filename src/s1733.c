@@ -92,7 +92,7 @@ void s1733(ps,icont1,icont2,cstart1,cend1,cstart2,cend2,gcoef,jstat)
 *                           the Bezier patch.
 *              cend2      - The vertical end parameter value to
 *                           the Bezier patch.
-*              gcoef      - The vertices to the Bezier curve.
+*              gcoef      - The vertices of the Bezier surface.
 *              jstat      - status messages
 *                                         > 0      : warning
 *                                         = 0      : ok

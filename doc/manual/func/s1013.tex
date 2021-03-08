@@ -34,12 +34,12 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \>  *{\fov pcurve};\\
-        \>\>    double    \>  {\fov ang};\\
-        \>\>    double    \>  {\fov ang\_tol};\\
-        \>\>    double    \>  {\fov guess\_par};\\
+        \>\>    SISLCurve \>  *{\fov pcurve}; \, /* Must be defined */\\
+        \>\>    double    \>  {\fov ang}; \, /* Must be defined */\\
+        \>\>    double    \>  {\fov ang\_tol} = 0.01;\\
+        \>\>    double    \>  {\fov guess\_par}; \, /* Must be defined */\\
         \>\>    double    \>  {\fov iter\_par};\\
-        \>\>    int       \>  {\fov jstat};\\
+        \>\>    int       \>  {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1013(\begin{minipg4}
         {\fov pcurve}, {\fov ang}, {\fov ang\_tol}, {\fov guess\_par}, \&{\fov iter\_par}, \&{\fov jstat});

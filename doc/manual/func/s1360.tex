@@ -63,14 +63,14 @@ NOTE\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
-                \>\>    double  \>      {\fov offset};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov norm}[3];\\
-                \>\>    double  \>      {\fov max};\\
+                \>\>    SISLCurve       \>      *{\fov oldcurve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov offset}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov norm}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov max} = 0.0;\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1360(\begin{minipg4}
         {\fov oldcurve}, {\fov offset}, {\fov epsge}, {\fov norm}, {\fov max}, {\fov dim}, \&{\fov newcurve}, \&{\fov stat});

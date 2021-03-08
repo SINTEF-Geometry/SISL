@@ -3,14 +3,14 @@
 #include <stdio.h>
 int main()
 {
-  SISLCurve *pc=0;
+  SISLCurve *pc=NULL;
   double aepsco,aepsge,top[3],axispt[3],conept[3];
-  double st[100],stcoef[100],*spar;
+  double st[100],stcoef[100],*spar=NULL;
   int kstat;
   int cone_exists=0;
   int kk,kn,kdim,ki;
   int kpt,kcrv;
-  SISLIntcurve **qrcrv;
+  SISLIntcurve **qrcrv=NULL;
   char ksvar[100];
   kdim=3;
   aepsge=0.001; /* geometric tolerance */
@@ -68,12 +68,12 @@ int main()
 	  if (spar)
 	    {
 	      free (spar);
-	      spar=0;
+	      spar=NULL;
 	    }
 	  if (qrcrv)
 	    {
 	      freeIntcrvlist(qrcrv,kcrv);
-	      qrcrv=0;
+	      qrcrv=NULL;
 	    }
 	}
     }

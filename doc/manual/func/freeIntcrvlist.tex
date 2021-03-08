@@ -28,9 +28,12 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
                 \>      \{ \\
 
-                \>\>    SISLIntcurve **{\fov vilist};\\
-                \>\>    int    \>  {\fov icrv};\\                \>\>    \ldots \\
-        \>\>freeIntcrvlist(\begin{minipg4}
+                \>\>    SISLIntcurve **{\fov vilist} = NULL;\\
+                \>\>    int    \>  {\fov icrv} = 0;\\                \>\>    \ldots \\
+                \>\> /* SISLIntcurve instances are generated for instance in surface--surface \\
+                \>\> intersection */ \\
+                \>\> \ldots \\
+        \>\>if (vilist) freeIntcrvlist(\begin{minipg4}
             {\fov vilist}, {\fov icrv});
                 \end{minipg4}\\
                 \>\>    \ldots \\

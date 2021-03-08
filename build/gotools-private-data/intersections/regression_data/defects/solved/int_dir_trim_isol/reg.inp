@@ -1,0 +1,2 @@
+* test_SfSfIntersector trim_isol_1.g2 trim_isol_2.g2 1e-3
+* test_SfSfIntersector trim_isol_2.g2 trim_isol_1.g2 1e-3

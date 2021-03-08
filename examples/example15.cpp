@@ -149,7 +149,7 @@ int main(int varnum, char** vararg)
 	writeGoPoints(points.size() / 3, &points[0], os);
 
 	// cleaning up
-	freeSurf(surf);
+	if (surf) freeSurf(surf);
 	is.close();
 	os.close();
 

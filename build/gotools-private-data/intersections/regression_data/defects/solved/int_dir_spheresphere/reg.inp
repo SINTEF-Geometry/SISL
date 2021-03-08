@@ -1,0 +1,2 @@
+* test_SfSfIntersector sphere_1.g2 sphere_2.g2 1e-3
+* test_SfSfIntersector sphere_2.g2 sphere_1.g2 1e-3

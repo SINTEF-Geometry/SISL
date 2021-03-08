@@ -1,0 +1,2 @@
+* test_SfSfIntersector sweep_2.g2 plane_2.g2 1e-3
+* test_SfSfIntersector plane_2.g2 sweep_2.g2 1e-3

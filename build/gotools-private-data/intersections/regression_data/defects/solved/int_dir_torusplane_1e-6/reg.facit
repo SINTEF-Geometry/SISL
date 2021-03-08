@@ -1,0 +1,12 @@
+-1 ______________Case sf-sf intersector______________
+0 Surf-Surf:    npoints = 0    ncurves = 4
+2 Curve:    Start = 0 0.1858 333.5 232.5    End = 1 0.1858 333.5 232.5 
+2 Curve:    Start = 0.25 0 211.6 151.9    End = 0 0.1826 332.4 232.5 
+2 Curve:    Start = 0.75 1 211.6 313.1    End = 0.25 1 211.6 151.9 
+2 Curve:    Start = 1 0.1826 332.4 232.5    End = 0.75 0 211.6 313.1 
+-1 ______________Case sf-sf intersector______________
+0 Surf-Surf:    npoints = 0    ncurves = 4
+2 Curve:    Start = 211.6 151.9 0.25 1    End = 211.6 313.1 0.75 1 
+2 Curve:    Start = 211.6 313.1 0.75 0    End = 332.4 232.5 1 0.1826 
+2 Curve:    Start = 332.4 232.5 0 0.1826    End = 211.6 151.9 0.25 0 
+2 Curve:    Start = 333.5 232.5 1 0.1858    End = 333.5 232.5 0 0.1858 

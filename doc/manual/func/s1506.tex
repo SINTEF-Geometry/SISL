@@ -58,7 +58,7 @@ ARGUMENTS\\
                        etc.
                                \end{minipg2}\\
         \>\>    {\fov norm}\> - \>  \begin{minipg2}
-                     Normals of surface. Is calculated if ider >= 1.
+                     Normals of surface. Is calculated if ider $\ge$ 1.
                        Dimension is idim*m1*m2.
                        The normals are not normalized.
                                \end{minipg2}\\
@@ -73,17 +73,18 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf \> *{\fov ps1};\\
-                \>\>    int    \>  {\fov ider};\\
-                \>\>    int    \>  {\fov m1};\\
-                \>\>    double    \>  *{\fov x};\\
-                \>\>    int    \>  {\fov m2};\\
-                \>\>    double    \>  *{\fov y};\\
-                \>\>    double    \>  {\fov eder}[\,];\\
-                \>\>    double    \>  {\fov norm}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf \> *{\fov ps1}; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov ider} = 1;\\
+                \>\>    int    \>  {\fov m1} = 10;\\
+                \>\>    double    \>  {\fov x}[10]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov m2} = 8;\\
+                \>\>    double    \>  {\fov y}[8]; \, /* Must be defined */\\
+                \>\>    double    \>  {\fov eder}[720]; /* Length: spatial dimension times number of \\
+                \>\>\>\>\> entities times number of grid points */\\
+                \>\>    double    \>  {\fov norm}[240]; /* Length: spatial dimension times number of grid points */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1506(\begin{minipg4}
-            {\fov ps1}, {\fov ider}, {\fov m1}, {\fov x}, {\fov m2}, {\fov y}, {\fov eder}, {\fov norm}, {\fov jstat});
+            {\fov ps1}, {\fov ider}, {\fov m1}, {\fov x}, {\fov m2}, {\fov y}, {\fov eder}, {\fov norm}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

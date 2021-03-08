@@ -36,11 +36,11 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov der1};\\
-                \>\>    int     \>      {\fov der2};\\
-                \>\>    SISLSurf        \>      *{\fov newsurf};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov der1} = 1;\\
+                \>\>    int     \>      {\fov der2} = 0;\\
+                \>\>    SISLSurf        \>      *{\fov newsurf} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1386(\begin{minipg4}
                 {\fov surf}, {\fov der1}, {\fov der2}, \&{\fov newsurf}, \&{\fov stat});

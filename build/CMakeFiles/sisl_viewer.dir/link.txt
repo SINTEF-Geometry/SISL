@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsisl_viewer.a  CMakeFiles/sisl_viewer.dir/viewer/src/aux2.cpp.o CMakeFiles/sisl_viewer.dir/viewer/src/gl_aux.cpp.o CMakeFiles/sisl_viewer.dir/viewer/src/glutils.cpp.o CMakeFiles/sisl_viewer.dir/viewer/src/mouse.cpp.o CMakeFiles/sisl_viewer.dir/viewer/src/sisl_aux.cpp.o CMakeFiles/sisl_viewer.dir/viewer/src/transfutils.cpp.o
+/usr/bin/ranlib libsisl_viewer.a

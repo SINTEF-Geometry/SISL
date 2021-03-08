@@ -3,6 +3,12 @@
 In the library both B-spline and NURBS curves are stored in a struct SISLCurve containing
 the following:
 \input{type/SISLCurve}
+Note that in the rational case are the curve coefficients stored as
+\newline
+${w_1  {\bf p}_1, w_1, w_2 {\bf p}_2, w_2, \ldots,
+  w_n  {\bf p}_n, w_n}$ where $w_i$ are the weights and ${\bf p}_i$, $i=1, \ldots, n$ are the
+curve coefficients.
+
 When using a curve, do not declare a SISLCurve but a pointer to a SISLCurve,
 and initialize it to point on NULL. Then you may use the
 dynamic allocation functions newCurve and freeCurve described below,

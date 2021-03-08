@@ -1,0 +1,31 @@
+$ This is a B-Spline surface
+$ type: 0 is usual, 5 point, 6 analytic
+0
+$ orders in the two directions ik1, ik2
+2 2
+$ numbers of control vertices in the two directions in1, in2
+2 2
+$ dimension
+3
+$ surface open/closed
+1 1
+$ rational or not
+0
+$ knot vector in the first direction et1[]
+    92.9000029563901     92.9000029563901       96.90000295639       96.90000295639 
+
+$ knot vector in the second direction et2[]
+      -0.06000000285       -0.06000000285     5.88499999750625     5.88499999750625 
+
+$ control vertices in the two directions 
+   -2.90000009536699                    4        0.06000000285 1
+      1.099999904633                    4        0.06000000285 1
+   -2.90000009536699                    4    -5.88499999750625 1
+      1.099999904633                    4    -5.88499999750625 1
+$ instance matrix
+1.000000 0.000000 0.000000 0.000000
+0.000000 1.000000 0.000000 0.000000
+0.000000 0.000000 1.000000 0.000000
+0.000000 0.000000 0.000000 1.000000
+$ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+

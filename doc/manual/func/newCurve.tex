@@ -9,7 +9,7 @@
                  \sum_{i=1}^{n} w_i B_{i,k,{\bf t}}(t)},
 $$
 must the vertices be given as
-${w_1  {\bf p}_1, w_1, w_1  {\bf p}_2, w_2, \ldots,
+${w_1  {\bf p}_1, w_1, w_2  {\bf p}_2, w_2, \ldots,
   w_n  {\bf p}_n, w_n}$ when invoking this function. Thus the vertices are multiplied with the
 associated weight.
 \end{minipg1} \\ \\
@@ -60,9 +60,9 @@ EXAMPLE OF USE\\
         \>\>    SISLCurve    \> *{\fov curve} = NULL;\\
         \>\>    int    \>       {\fov number} = 10;\\
         \>\>    int    \>       {\fov order} = 4;\\
-        \>\>    double \>       {\fov knots}[14];\\
-        \>\>    double \>       {\fov coef}[30];\\
-        \>\>    int    \>       {\fov kind} = 1;\\
+        \>\>    double \>       {\fov knots}[14]; \,/* Must be defined */\\
+        \>\>    double \>       {\fov coef}[30]; \, /* Must be defined */\\
+        \>\>    int    \>       {\fov kind} = 1; /* Non-rational */ \\
         \>\>    int    \>       {\fov dim} = 3;\\
         \>\>    int    \>       {\fov copy} = 1;\\
         \>\>    \ldots \\

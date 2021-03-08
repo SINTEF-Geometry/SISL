@@ -1,0 +1,20 @@
+Problem:
+
+=========================================================================
+
+First run:
+
+Lacks a link in the intersection curve on a degenerate edge. There are also too many intersection curves.
+
+-1 ______________Case sf-sf intersector______________
+0 Surf-Surf:    npoints = 0    ncurves = 4
+2 Curve:    Start = 43.48 74.39 51.35 22.39    End = 43.48 73.81 51.35 21.81
+2 Curve:    Start = 43.48 73.8 51.35 21.8    End = 43.48 73.81 51.35 21.81
+2 Curve:    Start = 43.48 54.14 51.35 2.135    End = 43.48 73.81 51.35 21.81
+2 Curve:    Start = 42.16 82.49 49.87 28.9    End = 0.003625 103.3 0.1589 0
+
+=========================================================================
+
+Reversed run:
+
+Same problem.

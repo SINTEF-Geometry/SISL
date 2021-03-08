@@ -41,11 +41,11 @@ ARGUMENTS\\
                 \>\>\>\>\>      $< 0$   :\> error\\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      *{\fov cubic};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      *{\fov cubic} = NULL;\\
                 \>\>    int     \>      {\fov numcubic};\\
                 \>\>    int     \>      {\fov dim};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1389(\begin{minipg4}
                 {\fov curve}, \&{\fov cubic}, \&{\fov numcubic}, \&{\fov dim},

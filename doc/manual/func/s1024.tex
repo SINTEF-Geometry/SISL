@@ -60,13 +60,13 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov centre}[3];\\
-        \>\>    double \> {\fov axis}[3];\\
-        \>\>    double \> {\fov equator}[3];\\
-        \>\>    double \> {\fov minor\_radius};\\
-        \>\>    int    \> {\fov start\_minor};\\
-        \>\>    int    \> {\fov end\_minor};\\
-        \>\>    int    \> {\fov numb\_major};\\
+        \>\>    double \> {\fov centre}[3]; \,/* Must be defined */\\
+        \>\>    double \> {\fov axis}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov equator}[3]; \,/* Must be defined. Length gives major radius */\\
+        \>\>    double \> {\fov minor\_radius}; \, /* Must be defined */\\
+        \>\>    int    \> {\fov start\_minor} = 1;\\
+        \>\>    int    \> {\fov end\_minor} = 4;  /* start\_minor and end\_minor defines full circle */\\
+        \>\>    int    \> {\fov numb\_major} = 2;\\
         \>\>    SISLSurf \> *{\fov torus} = NULL;\\
         \>\>    int    \> {\fov stat} = 0;\\
         \>\>    \ldots \\

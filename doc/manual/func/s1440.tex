@@ -31,9 +31,9 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    SISLSurf        \>      *{\fov newsurf};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    SISLSurf        \>      *{\fov newsurf} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1440(\begin{minipg4}
                 {\fov surf}, \&{\fov newsurf}, \&{\fov stat});

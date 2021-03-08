@@ -1,0 +1,76 @@
+Number of volumes: 15
+Volume nr 0: 0 0 1
+Result surf: 10, 3, max error: 1.49817e-07
+Result surf: 10, 3, max error: 2.76664e-08
+Result surf: 9, 12, max error: 0.000218333
+Result surf: 10, 15, max error: 0.000366825
+
+Volume nr 1: 0 0 1
+Result surf: 3, 4, max error: 0.000191164
+Result surf: 3, 4, max error: 0.000190166
+Result surf: 3, 4, max error: 0.000191171
+
+Volume nr 2: 0 0 1
+Result surf: 8, 3, max error: 5.60962e-09
+Result surf: 8, 3, max error: 6.6505e-09
+Result surf: 4, 11, max error: 0.000466052
+Result surf: 3, 6, max error: 0.000231162
+
+Volume nr 3: 0 0 1
+Result surf: 4, 3, max error: 8.29938e-13
+Result surf: 4, 3, max error: 1.87202e-13
+Result surf: 4, 6, max error: 0.000155963
+
+Volume nr 4: 0 0 1
+Result surf: 3, 3, max error: 4.82161e-05
+Result surf: 3, 3, max error: 4.82161e-05
+Result surf: 3, 3, max error: 4.82402e-05
+Result surf: 3, 3, max error: 2.25914e-16
+
+Volume nr 5: 0 0 1
+Result surf: 6, 3, max error: 2.23776e-09
+Result surf: 8, 8, max error: 1.94473e-06
+
+Volume nr 6: 0 0 1
+Result surf: 9, 3, max error: 1.19191e-08
+Result surf: 3, 3, max error: 5.17413e-05
+Result surf: 4, 9, max error: 0.00102182
+
+Volume nr 7: 0 0 1
+Result surf: 4, 4, max error: 0.00122893
+Result surf: 3, 4, max error: 0.000194792
+
+Volume nr 8: 0 0 1
+Result surf: 3, 9, max error: 1.02944e-07
+Result surf: 4, 7, max error: 0.000971763
+Result surf: 3, 8, max error: 0.000205632
+
+Volume nr 9: 0 0 1
+Result surf: 6, 3, max error: 0.000677569
+Result surf: 14, 10, max error: 0.00121627
+
+Volume nr 10: 0 0 1
+Result surf: 9, 7, max error: 6.67676e-08
+Result surf: 9, 3, max error: 5.41489e-06
+
+Volume nr 11: 0 0 1
+Result surf: 3, 10, max error: 2.09284e-08
+Result surf: 4, 12, max error: 0.000248669
+Result surf: 10, 12, max error: 0.00128431
+
+Volume nr 12: 0 0 1
+Result surf: 3, 3, max error: 3.78639e-11
+Result surf: 4, 3, max error: 0.000919144
+
+Volume nr 13: 0 0 1
+Result surf: 3, 7, max error: 6.03805e-10
+Result surf: 9, 12, max error: 0.00020758
+Result surf: 4, 7, max error: 0.000953394
+
+Volume nr 14: 0 0 1
+Result surf: 3, 6, max error: 8.74448e-09
+Result surf: 4, 7, max error: 0.000889213
+
+real    5m6.685s
+user    5m1.607s
+sys     0m0.892s

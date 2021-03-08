@@ -96,18 +96,19 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf \> *{\fov surf};\\
-                \>\>    int    \>  {\fov ider};\\
-                \>\>    int    \>  {\fov iside1};\\
-                \>\>    int    \>  {\fov iside2};\\
-                \>\>    double \> {\fov parvalue}[\,];\\
-                \>\>    int \> *{\fov leftknot1};\\
-                \>\>    int \> *{\fov leftknot2};\\
-                \>\>    double \> {\fov norcurv}[\,];\\
-                \>\>    int \> *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf \> *{\fov surf}; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov ider} = 0;\\
+                \>\>    int    \>  {\fov iside1} = 1;\\
+                \>\>    int    \>  {\fov iside2} = 1;\\
+                \>\>    double \> {\fov parvalue}[2]; \, /* Must be defined */\\
+                \>\>    int \> {\fov leftknot1} = 0;/* Define initially as zero. For consequtive evaluations \\
+                \>\>\>\>\>\> leave leftknot1 as returned from s2544 */ \\
+                \>\>    int \> {\fov leftknot2} = 0; /* As for leftknot1 */\\
+                \>\>    double \> {\fov norcurv}[1]; /* An allocated array with length ider is expected */\\
+                \>\>    int \> {\fov jstat};\\                \>\>    \ldots \\
         \> \>s2544(\begin{minipg4}
-            {\fov surf},  {\fov ider},  {\fov iside1},  {\fov iside2},  {\fov parvalue},  {\fov leftknot1},  {\fov leftknot2},  {\fov norcurv},
-	     {\fov jstat});
+            {\fov surf},  {\fov ider},  {\fov iside1},  {\fov iside2},  {\fov parvalue},  \&{\fov leftknot1},  \&{\fov leftknot2},  {\fov norcurv},
+	     \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

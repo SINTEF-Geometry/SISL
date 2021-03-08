@@ -30,12 +30,12 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov oldcurve};\\
-                \>\>    double  \>      {\fov point}[3];\\
-                \>\>    double  \>      {\fov normal}[3];\\
+                \>\>    SISLCurve       \>      *{\fov oldcurve}; \,/* Must be defined */\\
+                \>\>    double  \>      {\fov point}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov normal}[3]; \,/* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} =NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1600(\begin{minipg4}
                 {\fov oldcurve}, {\fov point}, {\fov normal}, {\fov dim}, \&{\fov newcurve}, \&{\fov stat});

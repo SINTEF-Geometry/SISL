@@ -64,10 +64,10 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \> **{\fov pc};\\
-        \>\>    SISLSurf  \> **{\fov ws} = NULL;\\
+        \>\>    SISLCurve \> *{\fov pc}[10];  /* Position and derivative curves. Must be defined */\\
+        \>\>    SISLSurf  \> **{\fov ws} = NULL; /* In this case 5 surfaces will be constructed \\
         \>\>    int       \> {\fov icurv} = 5;\\
-        \>\>    int       \> {\fov nder}[5];\\
+        \>\>    int       \> {\fov nder}[5]; /* Each entry must be equal to 2 */ \\
         \>\>    int       \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1391(\begin{minipg4}

@@ -100,7 +100,7 @@ int main(int avnum, char** vararg)
 	double* intpar_surf_2 = 0; // parameter values for the curve in the intersections
 	int num_int_curves = 0;   // number of intersection curves
 	SISLIntcurve** intcurve = 0; // pointer to array of detected intersection curves
-	int jstat; // status variable
+	int jstat = 0; // status variable
 
 	// calculating topology of intersections
 	s1859(surf_1,          // the first surface
@@ -148,17 +148,15 @@ int main(int avnum, char** vararg)
 	}
 
 	// cleaning up
-	freeSurf(surf_1);
-	freeSurf(surf_2);
+	if (surf_1) freeSurf(surf_1);
+	if (surf_2) freeSurf(surf_2);
 	is_sf1.close();
 	is_sf2.close();
 	os.close();
-	free(intpar_surf_1);
-	free(intpar_surf_2);
-	for (i = 0; i < num_int_curves; ++i) {
-	    freeIntcurve(intcurve[i]);
-	}
-	free(intcurve);
+	if (intpar_surf_1) free(intpar_surf_1);
+	if (intpar_surf_2) free(intpar_surf_2);
+	if (num_int_curves > 0)
+	  freeIntcrvlist(intcurve, num_int_curves);
 
     } catch (exception& e) {
 	cerr << "Exception thrown: " << e.what() << endl;

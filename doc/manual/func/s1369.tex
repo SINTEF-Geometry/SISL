@@ -1,4 +1,4 @@
-\subsection{Find the topology for the intersection of a surface and a \mbox{torus}.}
+\subsection{Find the topology for the intersections between a spline surface and a \mbox{torus}.}
 \funclabel{s1369}
 \begin{minipg1}
   Find all intersections between a surface and a torus.
@@ -82,19 +82,19 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov centre}[3];\\
-                \>\>    double  \>      {\fov normal}[3];\\
-                \>\>    double  \>      {\fov cendist};\\
-                \>\>    double  \>      {\fov radius};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov centre}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov normal}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov cendist}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov radius}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov pointpar};\\
-                \>\>    int     \>      {\fov numintcr};\\
-                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov pointpar} = NULL;\\
+                \>\>    int     \>      {\fov numintcr} = 0;\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1369(\begin{minipg4}
                 {\fov surf}, {\fov centre}, {\fov normal}, {\fov cendist}, {\fov radius}, {\fov dim}, {\fov epsco},

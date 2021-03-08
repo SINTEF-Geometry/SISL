@@ -56,14 +56,14 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    double  \>      {\fov startpt}[3];\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov angle};\\
-                \>\>    double  \>      {\fov centrept}[3];\\
-                \>\>    double  \>      {\fov axis}[3];\\
+                \>\>    double  \>      {\fov startpt}[3]; \, /* Must be defined */ \\
+                \>\>    double  \>      {\fov epsge} = 0.001;\\
+                \>\>    double  \>      {\fov angle}; \, \, /* Must be defined */ \\
+                \>\>    double  \>      {\fov centrept}[3]; \,/* Must be defined */ \\
+                \>\>    double  \>      {\fov axis}[3]; \, \, /* Must be defined */ \\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1303(\begin{minipg4}
                         {\fov startpt}, {\fov epsge}, {\fov angle}, {\fov centrept},

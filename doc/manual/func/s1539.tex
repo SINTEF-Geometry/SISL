@@ -49,7 +49,7 @@ ARGUMENTS\\
                        parametervalues corresponding to position
                        curves are given. For closed curves, one additional
                        parameter value must be spesified. The last entry
-                       contains the parametrization of the repeted start
+                       contains the parametrization of the repeated start
                        curve. (if the endpoint is equal to the startpoint
                        of the interpolation the lenght of the array should
                        be equal to inpt1 also in the closed case). The
@@ -97,20 +97,21 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    int    \>  	{\fov inbcrv};\\
-                \>\>    SISLCurve    \>  *{\fov vpcurv}[\,];\\
-                \>\>    int    \>  	{\fov nctyp}[\,];\\
-                \>\>    double    \>  {\fov epar}[\,];\\
-                \>\>    double	\> {\fov astpar};\\
-                \>\>    int    \>  	{\fov iopen};\\
-                \>\>    int    \>  	{\fov iord2};\\
-                \>\>    int    \>  	{\fov iflag};\\
-                \>\>    SISLSurf    \>  **{\fov rsurf};\\
-                \>\>    double 	\> **{\fov gpar};\\
-                \>\>    int    \>  	*{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    int    \>  	{\fov inbcrv} = 4;\\
+                \>\>    SISLCurve    \>  *{\fov vpcurv}[4]; \, /* Must be defined */\\
+                \>\>    int    \>  	{\fov nctyp}[4]; \, /* Must be defined */\\
+                \>\>    double    \>  {\fov epar}[5]; \, /* Must be defined. The length corresponds to only\\
+                \>\>\>\>\> positional curves and no duplication of first curve */\\
+                \>\>    double	\> {\fov astpar} = 0.0;\\
+                \>\>    int    \>  	{\fov iopen} = 0;\\
+                \>\>    int    \>  	{\fov iord2} = 4; /* Cubic */ \\
+                \>\>    int    \>  	{\fov iflag} = 0;\\
+                \>\>    SISLSurf    \>  *{\fov rsurf} = NULL;\\
+                \>\>    double 	\> *{\fov gpar} = NULL;\\
+                \>\>    int    \>  	{\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1539(\begin{minipg4}
             {\fov inbcrv}, {\fov vpcurv}, {\fov nctyp}, {\fov epar}, {\fov astpar}, {\fov iopen}, {\fov iord2},
-            {\fov iflag}, {\fov rsurf}, {\fov gpar}, {\fov jstat});
+            {\fov iflag}, \&{\fov rsurf}, \&{\fov gpar}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

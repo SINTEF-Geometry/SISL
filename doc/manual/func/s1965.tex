@@ -121,20 +121,21 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf \> 	*{\fov oldsurf};\\
-                \>\>    double	\> {\fov eps}[\,];\\
-                \>\>    int	\> {\fov edgefix}[{\fov 4}];\\
-                \>\>    int    \>  {\fov iopen1};\\
-                \>\>    int    \>  {\fov iopen2};\\
-                \>\>    double	\> {\fov edgeps}[\,];\\
-                \>\>    int 	\> {\fov opt};\\
-                \>\>    int	\> {\fov itmax};\\
-                \>\>    SISLSurf	\> **{\fov newsurf};\\
-                \>\>    double	\> {\fov maxerr}[\,];\\
-                \>\>    int	\> *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf \> 	*{\fov oldsurf}; \, /* Must be defined */\\
+                \>\>    double	\> {\fov eps}[3]; \, /* Spatial dimension. Must be defined */\\
+                \>\>    int	\> {\fov edgefix}[{\fov 4}]; \, /* Must be defined */\\\
+                \>\>    int    \>  {\fov iopen1} = 1;\\
+                \>\>    int    \>  {\fov iopen2} = 1;\\
+                \>\>    double	\> {\fov edgeps}[12]; \, /* Spatial dimension times number of edges. \\
+                \>\>\>\>\>\> Must be defined */\\
+                \>\>    int 	\> {\fov opt} = 3;\\
+                \>\>    int	\> {\fov itmax} = 8;\\
+                \>\>    SISLSurf	\> *{\fov newsurf} = NULL;\\
+                \>\>    double	\> {\fov maxerr}[3]; \, /* Spatial dimension */ \\
+                \>\>    int	\> {\fov stat} = 0;\\                \>\>    \ldots \\
         \>\>s1965(\begin{minipg4}
             {\fov oldsurf},  {\fov eps},  {\fov edgefix},  {\fov iopen1},  {\fov iopen2},  {\fov edgeps},  {\fov opt}, 
-	     {\fov itmax},  {\fov newsurf}, {\fov maxerr},  {\fov stat});
+	     {\fov itmax},  \&{\fov newsurf}, {\fov maxerr},  \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

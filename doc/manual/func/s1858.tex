@@ -76,16 +76,16 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov pointpar1};\\
-                \>\>    double  \>      *{\fov pointpar2};\\
-                \>\>    int     \>      {\fov numintcr};\\
-                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \,/* Must be defined */\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov pointpar1} = NULL;\\
+                \>\>    double  \>      *{\fov pointpar2} = NULL;\\
+                \>\>    int     \>      {\fov numintcr} = 0;\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1858(\begin{minipg4}
                 {\fov surf}, {\fov curve}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt}, \&{\fov pointpar1}, \&{\fov pointpar2}, \&{\fov numintcr},

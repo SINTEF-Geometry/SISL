@@ -209,18 +209,18 @@ s1373() found in Section~\ref{sec:s1373} and freeIntcrvlist() in~\ref{sec:freeIn
 
 int main()
 {
-  SISLCurve *pc=0;                    /* Pointer to spline curve */
+  SISLCurve *pc=NULL;                 /* Pointer to spline curve */
   double aepsco,aepsge;               /* Tolerances */
   double top[3],axispt[3],conept[3];  /* Representating the cone */
   double st[100],scoef[100];          /* Knot vector and coefficients of spline curve */
-  double *spar;                       /* Parameter values of intersection points */
+  double *spar=NULL;                  /* Parameter values of intersection points */
   int kstat;                          /* Return status from function calls */
   int cone_exists=0;
   int kk,kn,kdim;                     /* Order (polynomial degree+1), number of 
                                          coefficients and spatial dimension */
   int ki;                             /* Counter */
   int kpt,kcrv;                       /* Number of intersection points and curves */
-  SISLIntcurve **qrcrv;               /* Array of pointer to intersection curves  */
+  SISLIntcurve **qrcrv=NULL;          /* Array of pointer to intersection curves  */
   char ksvar[100];                    
   kdim=3;
   aepsge=0.001; /* Geometric tolerance */
@@ -284,7 +284,7 @@ int main()
             /* The array containing parameter values of the intersection points between
                the curve and the cone is allocated inside s1373 and must be freed */
             free (spar);
-            spar=0;
+            spar=NULL;
           }
         if (qrcrv)
          {
@@ -293,7 +293,7 @@ int main()
               This is done in a special function taking care of the intersection
               curves themselves */
           freeIntcrvlist(qrcrv,kcrv);
-          qrcrv=0;
+          qrcrv=NULL;
         }
       }
     }

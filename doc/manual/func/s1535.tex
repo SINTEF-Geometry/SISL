@@ -110,23 +110,23 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov points}[300];\\
-        \>\>    double \> {\fov der10}[300];\\
-        \>\>    double \> {\fov der01}[300];\\
-        \>\>    double \> {\fov der11}[300];\\
+        \>\>    double \> {\fov points}[300]; \,/* Must be defined */\\
+        \>\>    double \> {\fov der10}[300]; \, /* Must be defined */\\
+        \>\>    double \> {\fov der01}[300]; \, /* Must be defined */\\
+        \>\>    double \> {\fov der11}[300]; \, /* Must be defined */\\
         \>\>    int    \> {\fov im1} = 10;\\
         \>\>    int    \> {\fov im2} = 10;\\
         \>\>    int    \> {\fov idim} = 3;\\
-        \>\>    double \> {\fov par1}[10];\\
-        \>\>    double \> {\fov par2}[10];\\
-        \>\>    int    \> {\fov con1};\\
-        \>\>    int    \> {\fov con2};\\
-        \>\>    int    \> {\fov con3};\\
-        \>\>    int    \> {\fov con4};\\
-        \>\>    int    \> {\fov order1};\\
-        \>\>    int    \> {\fov order2};\\
-        \>\>    SISLSurf \> *{\fov rsurf};\\
-        \>\>    int    \> {\fov jstat};\\
+        \>\>    double \> {\fov par1}[10]; \, /* Must be defined */\\
+        \>\>    double \> {\fov par2}[10]; \, /* Must be defined */\\
+        \>\>    int    \> {\fov con1} = 0;\\
+        \>\>    int    \> {\fov con2} = 0;\\
+        \>\>    int    \> {\fov con3} = 0;\\
+        \>\>    int    \> {\fov con4} = 0;\\
+        \>\>    int    \> {\fov order1} = 4; /* Cubic */\\
+        \>\>    int    \> {\fov order2} = 4;\\
+        \>\>    SISLSurf \> *{\fov rsurf} = NULL;\\
+        \>\>    int    \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1535(\begin{minipg4}
           {\fov points}, {\fov der10}, {\fov der01}, {\fov der11}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov par1},  {\fov par2},

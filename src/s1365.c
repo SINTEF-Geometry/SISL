@@ -75,11 +75,7 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
 *
 * INPUT      : ps     - The input NURBS surface.
 *              aoffset- The offset distance.
-*                       If idim=2 a positive signe on this value put the
-*                       offset on the side of the positive normal vector,
-*                       and a negative sign puts the offset on the sign
-*                       of the negative normal vector.
-*                       If idim=3 the offset is determined by the cross
+*                       The offset is determined by the cross
 *                       product of the tangent vector and the anorm vector.
 *                       The offset distance is multiplied by this vector.
 *              aepsge - Maximal deviation allowed between true offset surface
@@ -87,7 +83,7 @@ void s1365(ps,aoffset,aepsge,amax,idim,rs,jstat)
 *              amax   - Maximal stepping length. Is negleceted if amax<=aepsge
 *                       If amax==0 then a maximal step length of the longest
 *                       box side is used.
-*              idim   - The dimension of the space (2 or 3).
+*              idim   - The dimension of the space (idm = 3 is required).
 *
 * OUTPUT     :
 *              jstat  - status messages

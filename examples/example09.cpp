@@ -135,7 +135,7 @@ int main(int avnum, char** vararg)
 	    // writing surface and interpolated points to file
 	    writeGoSurface(result_surf, os_surf);
 	    
-	    freeSurf(result_surf);
+	    if (result_surf) freeSurf(result_surf);
 	}
 
 	writeGoPoints(num_points_u * num_points_v, points, os_pts);

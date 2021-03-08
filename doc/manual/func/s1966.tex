@@ -164,30 +164,31 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    double \> {\fov ep}[\,];\\
-                \>\>    int    \>  {\fov im1};\\
-                \>\>    int    \>  {\fov im2};\\
-                \>\>    int    \>  {\fov idim};\\
-                \>\>    int    \>  {\fov ipar};\\
-                \>\>    double \> {\fov epar1}[\,];\\
-                \>\>    double \> {\fov epar2}[\,];\\
-                \>\>    double \> {\fov eeps}[\,];\\
-                \>\>    int    \>  {\fov nend}[\,];\\
-                \>\>    int    \>  {\fov iopen1};\\
-                \>\>    int    \>  {\fov iopen2};\\
-                \>\>    double \> {\fov edgeps}[\,];\\
-                \>\>    double \> {\fov afctol};\\
-                \>\>    int    \>  {\fov iopt};\\
-                \>\>    int    \>  {\fov itmax};\\
-                \>\>    int    \>  {\fov ik1};\\
-                \>\>    int    \>  {\fov ik2};\\
-                \>\>    SISLSurf    \>  **{\fov rs};\\
-                \>\>    double \> {\fov emxerr}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    double \> {\fov ep}[750]; \, /* Spatial dimension times number of points. Must be defined */\\
+                \>\>    int    \>  {\fov im1} = 50;\\
+                \>\>    int    \>  {\fov im2} = 50;\\
+                \>\>    int    \>  {\fov idim} = 3;\\
+                \>\>    int    \>  {\fov ipar} = 1;\\
+                \>\>    double \> {\fov epar1}[50]; /* Used if ipar = 3 */\\
+                \>\>    double \> {\fov epar2}[50]; /* Used if ipar = 3 */\\
+                \>\>    double \> {\fov eeps}[3]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov nend}[4]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov iopen1} = 1;\\
+                \>\>    int    \>  {\fov iopen2} = 1;\\
+                \>\>    double \> {\fov edgeps}[12]; /* Spatial dimension times number of edges. \\
+                \>\>\>\>\>\> Must be defined */\\
+                \>\>    double \> {\fov afctol} = 0.5;\\
+                \>\>    int    \>  {\fov iopt} = 4;\\
+                \>\>    int    \>  {\fov itmax} = 8;\\
+                \>\>    int    \>  {\fov ik1} = 4;\\
+                \>\>    int    \>  {\fov ik2} = 4;\\
+                \>\>    SISLSurf    \>  *{\fov rs} = NULL;\\
+                \>\>    double \> {\fov emxerr}[3]; /* Spatial dimension */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1966(\begin{minipg4}
             {\fov ep}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov epar1}, {\fov epar2}, {\fov eeps}, {\fov nend}, {\fov iopen1}, {\fov iopen2},
             {\fov edgeps}, {\fov afctol}, {\fov iopt}, {\fov itmax}, {\fov ik1}, {\fov ik2},
-            {\fov rs}, {\fov emxerr}, {\fov jstat});
+            \&{\fov rs}, {\fov emxerr}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

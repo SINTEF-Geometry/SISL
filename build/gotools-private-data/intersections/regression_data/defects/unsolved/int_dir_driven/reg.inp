@@ -1,0 +1,2 @@
+* test_SfSfIntersector driven_1.g2 driven_2.g2 1e-3
+* test_SfSfIntersector driven_2.g2 driven_1.g2 1e-3

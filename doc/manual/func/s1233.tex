@@ -45,16 +45,16 @@ ARGUMENTS\\
                 \>\>\>\>\> $= 0$ : Ok.\\
                 \>\>\>\>\> $= 1$ : \begin{minipg5}
                                      Stretching factors less than 0
-                                     -- readjusted factor(s)
+                                     -- read: adjusted factor(s)
                                      have been used.
                                    \end{minipg5}\\[0.3ex]
                 \>\>\>\>\> $> 0$ : Warning.\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \>  *{\fov pc};\\
-        \>\>    double    \>  {\fov afak1};\\
-        \>\>    double    \>  {\fov afak2};\\
+        \>\>    SISLCurve \>  *{\fov pc}; \, /* Must be defined */\\
+        \>\>    double    \>  {\fov afak1} = 0.1;\\
+        \>\>    double    \>  {\fov afak2} = 0.1;\\
         \>\>    SISLCurve \>  *{\fov rc} = NULL;\\
         \>\>    int       \>  {\fov jstat} = 0;\\
         \>\>    \ldots \\

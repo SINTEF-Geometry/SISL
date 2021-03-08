@@ -103,23 +103,23 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve1};\\
-                \>\>    SISLCurve       \>      *{\fov curve2};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov point1}[3];\\
-                \>\>    double  \>      {\fov pointf}[3];\\
-                \>\>    double  \>      {\fov point2}[3];\\
-                \>\>    double  \>      {\fov radius};\\
-                \>\>    double  \>      {\fov normal}[3];\\
-                \>\>    int     \>      {\fov filltype};\\
+                \>\>    SISLCurve       \>      *{\fov curve1}; \,/* Must be defined */ \\
+                \>\>    SISLCurve       \>      *{\fov curve2}; \,/* Must be defined */ \\
+                \>\>    double  \>      {\fov epsge} = 0.00001;\\
+                \>\>    double  \>      {\fov point1}[3];  \, /* Must be defined */ \\
+                \>\>    double  \>      {\fov pointf}[3];  \, /* Must be defined */\\
+                \>\>    double  \>      {\fov point2}[3];  \, /* Must be defined */\\
+                \>\>    double  \>      {\fov radius};  \, \, \, /* Must be defined */\\
+                \>\>    double  \>      {\fov normal}[3];  \,/* Must be defined */\\
+                \>\>    int     \>      {\fov filltype} = 2;\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    int     \>      {\fov order};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
+                \>\>    int     \>      {\fov order} = 4; \,/* If not given by filltype */\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
                 \>\>    double  \>      {\fov parend1};\\
                 \>\>    double  \>      {\fov parspt1};\\
                 \>\>    double  \>      {\fov parend2};\\
                 \>\>    double  \>      {\fov parept2};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1609(\begin{minipg4}
         {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point1}, {\fov pointf}, {\fov point2}, {\fov radius},\\ {\fov normal},

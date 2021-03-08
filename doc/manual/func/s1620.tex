@@ -67,14 +67,14 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov epoint}[300];\\
+        \>\>    double \> {\fov epoint}[300]; \, /* Must be defined */\\
         \>\>    int    \> {\fov inbpnt1} = 10;\\
         \>\>    int    \> {\fov inbpnt2} = 10;\\
-        \>\>    int    \> {\fov ipar};\\
-        \>\>    int    \> {\fov iopen1};\\
-        \>\>    int    \> {\fov iopen2};\\
-        \>\>    int    \> {\fov ik1};\\
-        \>\>    int    \> {\fov ik2};\\
+        \>\>    int    \> {\fov ipar} = 1;\\
+        \>\>    int    \> {\fov iopen1} = 1;\\
+        \>\>    int    \> {\fov iopen2} = 1;\\
+        \>\>    int    \> {\fov ik1} = 4; /* Cubic */\\
+        \>\>    int    \> {\fov ik2} = 4;\\
         \>\>    int    \> {\fov idim} = 3;\\
         \>\>    SISLSurf \> *{\fov rs} = NULL;\\
         \>\>    int    \> {\fov jstat} = 0;\\

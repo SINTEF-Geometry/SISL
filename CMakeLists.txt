@@ -69,10 +69,10 @@ ENDIF()
 
 IF(sisl_COMPILE_EXAMPLES OR sisl_COMPILE_VIEWER)
   INCLUDE_DIRECTORIES(
-    ${sisl_SOURCE_DIR}/examples/streaming/include
+    ${sisl_SOURCE_DIR}/streaming/include
     )
 
-  FILE(GLOB sisl_go_SRCS examples/streaming/src/*.cpp examples/streaming/include/*.h)
+  FILE(GLOB sisl_go_SRCS streaming/src/*.cpp streaming/include/*.h)
   ADD_LIBRARY(sisl_streaming ${sisl_go_SRCS})
   # IF(CMAKE_COMPILER_IS_GNUCC)
   #     TARGET_LINK_LIBRARIES(sisl_go m)
@@ -105,18 +105,18 @@ IF(sisl_COMPILE_VIEWER)
   find_package(GLUT REQUIRED)
 
   INCLUDE_DIRECTORIES(
-    ${sisl_SOURCE_DIR}/examples/viewer/include
+    ${sisl_SOURCE_DIR}/viewer/include
     ${OPENGL_INCLUDE_DIR}
     ${GLUT_INCLUDE_DIR}
     )
 
-  FILE(GLOB sisl_viewer_SRCS examples/viewer/src/*.cpp examples/viewer/include/*.h)
+  FILE(GLOB sisl_viewer_SRCS viewer/src/*.cpp viewer/include/*.h)
   ADD_LIBRARY(sisl_viewer ${sisl_viewer_SRCS})
   IF(CMAKE_COMPILER_IS_GNUCC)
     TARGET_LINK_LIBRARIES(sisl_streaming sisl)
   ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
-  FILE(GLOB sisl_APPS3 examples/viewer/*.cpp)
+  FILE(GLOB sisl_APPS3 viewer/*.cpp)
   FOREACH(app ${sisl_APPS3})
     GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
     ADD_EXECUTABLE(${appname} ${app})
