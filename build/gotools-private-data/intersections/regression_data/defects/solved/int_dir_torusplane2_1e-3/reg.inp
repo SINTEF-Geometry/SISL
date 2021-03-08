@@ -1,2 +1,0 @@
-* test_SfSfIntersector torus_p2.g2 plane_to2.g2 1e-3
-* test_SfSfIntersector plane_to2.g2 torus_p2.g2 1e-3

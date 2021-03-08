@@ -1,2 +1,0 @@
-* test_SfSfIntersector sphere_t.g2 tube_s.g2 1e-3
-* test_SfSfIntersector tube_s.g2 sphere_t.g2 1e-3
