@@ -71,6 +71,8 @@
 # else
 #  define GO_API __declspec(dllimport)
 # endif // __DLL__
+# undef SISLNEEDPROTOTYPES
+# define SISLNEEDPROTOTYPES
 #else
 # define GO_API
 #endif // __BORLANDC__
