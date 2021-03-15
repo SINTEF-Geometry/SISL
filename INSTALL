@@ -1,7 +1,7 @@
 Installation Instructions
 *************************
 
-This GoTools package uses CMake to generate a Makefile (on Linux) or
+This package uses CMake to generate a Makefile (on Linux) or
 MS Visual Studio project file (on Windows).
 
 For information on using CMake, see www.cmake.org.
