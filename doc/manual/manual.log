@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.11.18)  8 MAR 2021 11:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=pdflatex 2019.11.18)  15 MAR 2021 09:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -290,127 +290,127 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--41
 Chapter 2.
 [3
 
-] [4]
-Overfull \hbox (53.99652pt too wide) in paragraph at lines 148--148
+] [4] [5]
+Overfull \hbox (53.99652pt too wide) in paragraph at lines 159--159
 []\OT1/cmtt/m/n/10 $ cmake .. -DCMAKE_BUILD_TYPE=Release (-DCMAKE_INSTALL_PREFI
 X=$HOME/install)[] 
  []
 
 
-Overfull \hbox (0.16714pt too wide) in paragraph at lines 150--151
+Overfull \hbox (0.16714pt too wide) in paragraph at lines 161--162
 []\OT1/cmr/m/n/10 For a gui-like cmake in-ter-face use cc-make (from cmake-ncur
 ses-gui) or cmake-
  []
 
 
-Overfull \hbox (36.39507pt too wide) in paragraph at lines 163--165
+Overfull \hbox (36.39507pt too wide) in paragraph at lines 174--176
 []\OT1/cmr/m/n/10 Install the li-brary to a lo-cal folder (re-quires the use of
  -DCMAKE[]INSTALL[]PREFIX
  []
 
-[5]
-Overfull \hbox (6.74693pt too wide) in paragraph at lines 293--293
+[6]
+Overfull \hbox (6.74693pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 SISLCurve *pc=0;                    /* Pointer to spline c
 urve */[] 
  []
 
 
-Overfull \hbox (6.74693pt too wide) in paragraph at lines 293--293
+Overfull \hbox (6.74693pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 double top[3],axispt[3],conept[3];  /* Representating the 
 cone */[] 
  []
 
 
-Overfull \hbox (116.99597pt too wide) in paragraph at lines 293--293
+Overfull \hbox (116.99597pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 double st[100],scoef[100];          /* Knot vector and coe
 fficients of spline curve */[] 
  []
 
 
-Overfull \hbox (90.7462pt too wide) in paragraph at lines 293--293
+Overfull \hbox (90.7462pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 double *spar;                       /* Parameter values of
  intersection points */[] 
  []
 
 
-Overfull \hbox (59.24648pt too wide) in paragraph at lines 293--293
+Overfull \hbox (59.24648pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 int kstat;                          /* Return status from 
 function calls */[] 
  []
 
 
-Overfull \hbox (69.74638pt too wide) in paragraph at lines 293--293
+Overfull \hbox (69.74638pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 int kk,kn,kdim;                     /* Order (polynomial d
 egree+1), number of[] 
  []
 
 
-Overfull \hbox (64.49643pt too wide) in paragraph at lines 293--293
+Overfull \hbox (64.49643pt too wide) in paragraph at lines 304--304
 []                                         \OT1/cmtt/m/n/10 coefficients and sp
 atial dimension */[] 
  []
 
 
-Overfull \hbox (95.99615pt too wide) in paragraph at lines 293--293
+Overfull \hbox (95.99615pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 int kpt,kcrv;                       /* Number of intersect
 ion points and curves */[] 
  []
 
 
-Overfull \hbox (95.99615pt too wide) in paragraph at lines 293--293
+Overfull \hbox (95.99615pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 SISLIntcurve **qrcrv;               /* Array of pointer to
  intersection curves  */[] 
  []
 
 
-Overfull \hbox (64.49643pt too wide) in paragraph at lines 293--293
+Overfull \hbox (64.49643pt too wide) in paragraph at lines 304--304
 []  \OT1/cmtt/m/n/10 aepsco=0.000001; /* Computational tolerance. This paramete
 r is included from[] 
  []
 
 
-Overfull \hbox (1.49698pt too wide) in paragraph at lines 293--293
+Overfull \hbox (1.49698pt too wide) in paragraph at lines 304--304
 []      \OT1/cmtt/m/n/10 printf("\n i - intersect the B-spline curve with the c
 one");[] 
  []
 
-[6]
-Overfull \hbox (111.74602pt too wide) in paragraph at lines 293--293
+[7]
+Overfull \hbox (111.74602pt too wide) in paragraph at lines 304--304
 []            \OT1/cmtt/m/n/10 /* The array containing parameter values of the 
 intersection points between[] 
  []
 
 
-Overfull \hbox (95.99615pt too wide) in paragraph at lines 293--293
+Overfull \hbox (95.99615pt too wide) in paragraph at lines 304--304
 []               \OT1/cmtt/m/n/10 the curve and the cone is allocated inside s1
 373 and must be freed */[] 
  []
 
 
-Overfull \hbox (80.24629pt too wide) in paragraph at lines 293--293
+Overfull \hbox (80.24629pt too wide) in paragraph at lines 304--304
 []           \OT1/cmtt/m/n/10 /* The array containing pointers to intersection 
 points curves between[] 
  []
 
 
-Overfull \hbox (80.24629pt too wide) in paragraph at lines 293--293
+Overfull \hbox (80.24629pt too wide) in paragraph at lines 304--304
 []              \OT1/cmtt/m/n/10 the curve and the cone is allocated inside s13
 73 and must be freed.[] 
  []
 
 
-Overfull \hbox (74.99634pt too wide) in paragraph at lines 293--293
+Overfull \hbox (74.99634pt too wide) in paragraph at lines 304--304
 []              \OT1/cmtt/m/n/10 This is done in a special function taking care
  of the intersection[] 
  []
 
-[7]
-Overfull \hbox (5.08954pt too wide) in paragraph at lines 304--305
+[8]
+Overfull \hbox (5.08954pt too wide) in paragraph at lines 315--316
 \OT1/cmr/m/n/10 Note that the pro-gram must be placed in the app folder and sis
 l[]COMPILE[]APPS
  []
 
-[8] (./sec_spline_curve.tex
+[9] (./sec_spline_curve.tex
 Overfull \hbox (17.05832pt too wide) in paragraph at lines 41--46
 \OT1/cmr/m/n/10 1\OML/cmm/m/it/10 ; [] ; n:  $ \OT1/cmr/m/n/10 e.g. when $\OML/
 cmm/m/it/10 dim \OT1/cmr/m/n/10 = 3$, we have $\OT1/cmr/bx/n/10 p \OT1/cmr/m/n/
@@ -418,7 +418,7 @@ cmm/m/it/10 dim \OT1/cmr/m/n/10 = 3$, we have $\OT1/cmr/bx/n/10 p \OT1/cmr/m/n/
 /m/n/10 )$. 
  []
 
-[9] [10] [11] [12] [13]) (./sec_spline_surface.tex [14]
+[10] [11] [12] [13] [14]) (./sec_spline_surface.tex [15]
 Overfull \hbox (50.4583pt too wide) in paragraph at lines 29--36
 \OT1/cmr/m/n/10 1\OML/cmm/m/it/10 ; [] ; n[]$\OT1/cmr/m/n/10 , $\OML/cmm/m/it/1
 0 j \OT1/cmr/m/n/10 = 1\OML/cmm/m/it/10 ; [] ; n[]$\OT1/cmr/m/n/10 . When $\OML
@@ -426,13 +426,13 @@ Overfull \hbox (50.4583pt too wide) in paragraph at lines 29--36
 /10 = (\OML/cmm/m/it/10 x[]; y[]; z[]; x[]; y[]; z[]; []$\OT1/cmr/m/n/10 ,
  []
 
-[15
-Non-PDF special ignored!]) [16]) (./chap_curve_definition.tex
+[16
+Non-PDF special ignored!]) [17]) (./chap_curve_definition.tex
 Chapter 3.
-(./func/s1602.tex [17
+(./func/s1602.tex [18
 
 
-]) [18] (./func/s1356.tex
+]) [19] (./func/s1356.tex
 Overfull \hbox (22.05418pt too wide) in paragraph at lines 2--2
 []\OT1/cmr/bx/n/12 Compute a curve in-ter-po-lat-ing a set of points, []
  []
@@ -443,7 +443,7 @@ Underfull \hbox (badness 2351) in paragraph at lines 46--48
 in-ing type in-di-ca-tor for
  []
 
-[19]) [20] (./func/s1357.tex
+[20]) [21] (./func/s1357.tex
 Overfull \hbox (28.15141pt too wide) in paragraph at lines 2--2
 []\OT1/cmr/bx/n/12 Compute a curve in-ter-po-lat-ing a set of points, parameter
 -
@@ -455,12 +455,12 @@ Underfull \hbox (badness 2351) in paragraph at lines 47--49
 in-ing type in-di-ca-tor for
  []
 
-[21] [22]) [23] (./func/s1380.tex [24]) [25] (./func/s1379.tex
+[22] [23]) [24] (./func/s1380.tex [25]) [26] (./func/s1379.tex
 Overfull \hbox (14.79308pt too wide) in paragraph at lines 2--2
 []\OT1/cmr/bx/n/12 Compute a curve by Her-mite in-ter-po-la-tion, parameter-
  []
 
-[26]) [27] (./func/s1607.tex [28]) [29] (./func/s1608.tex [30]
+[27]) [28] (./func/s1607.tex [29]) [30] (./func/s1608.tex [31]
 Underfull \hbox (badness 10000) in paragraph at lines 112--115
 []\OT1/cmr/m/sl/10 curve1\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 curve2\OT1/cmr/m/n/
 10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point1\OT1/cmr/m/
@@ -476,7 +476,7 @@ m/n/10 , &\OT1/cmr/m/sl/10 parpt1\OT1/cmr/m/n/10 , &\OT1/cmr/m/sl/10 par-spt1\O
 T1/cmr/m/n/10 ,
  []
 
-) [31] (./func/s1609.tex
+) [32] (./func/s1609.tex
 Underfull \hbox (badness 1655) in paragraph at lines 10--13
 []\OT1/cmr/m/sl/10 curve1\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 curve2\OT1/cmr/m/n/
 10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point1\OT1/cmr/m/
@@ -493,8 +493,8 @@ n/10 , \OT1/cmr/m/sl/10 parend1\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 par-spt1\OT1/
 cmr/m/n/10 , \OT1/cmr/m/sl/10 parend2\OT1/cmr/m/n/10 ,
  []
 
-[32] [33]) [34] (./func/s1014.tex [35]) [36] (./func/s1015.tex [37]) [38]
-(./func/s1016.tex [39]) [40] (./func/s1606.tex
+[33] [34]) [35] (./func/s1014.tex [36]) [37] (./func/s1015.tex [38]) [39]
+(./func/s1016.tex [40]) [41] (./func/s1606.tex
 Underfull \hbox (badness 1742) in paragraph at lines 14--16
 []\OT1/cmr/m/sl/10 curve1\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 curve2\OT1/cmr/m/n/
 10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point1\OT1/cmr/m/
@@ -503,7 +503,7 @@ n/10 , \OT1/cmr/m/sl/10 point2\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 blend-type\OT1
 /cmr/m/n/10 ,
  []
 
-[41]
+[42]
 Underfull \hbox (badness 1817) in paragraph at lines 74--76
 []\OT1/cmr/m/sl/10 curve1\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 curve2\OT1/cmr/m/n/
 10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point1\OT1/cmr/m/
@@ -512,12 +512,12 @@ n/10 , \OT1/cmr/m/sl/10 point2\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 blend-type\OT1
 /cmr/m/n/10 ,
  []
 
-) [42] (./func/s1303.tex [43]) [44] (./func/s1611.tex
+) [43] (./func/s1303.tex [44]) [45] (./func/s1611.tex
 Underfull \hbox (badness 2277) in paragraph at lines 43--46
 []\OT1/cmr/m/n/10 Array (length numpt) con-tain-ing type in-di-ca-tor for
  []
 
-[45]
+[46]
 Underfull \hbox (badness 6204) in paragraph at lines 99--101
 []\OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 numpt\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 typept\OT1/cmr/m/n/10
@@ -526,13 +526,13 @@ Underfull \hbox (badness 6204) in paragraph at lines 99--101
 m/n/10 ,
  []
 
-) [46] (./func/s1630.tex [47]) [48] (./func/s1360.tex [49]) [50]
-(./func/s1613.tex) [51] (./func/s1600.tex) [52] (./func/s1389.tex) [53]
-(./func/s1730.tex) [54] (./func/s1732.tex [55]) [56] (./func/s1750.tex)
-[57] (./func/s1720.tex) [58] (./func/s1522.tex [59]) [60] (./func/s1011.tex
-[61]) [62] (./func/s1012.tex [63])) [64] (./chap_curve_interrogation.tex
+) [47] (./func/s1630.tex [48]) [49] (./func/s1360.tex [50]) [51]
+(./func/s1613.tex) [52] (./func/s1600.tex) [53] (./func/s1389.tex) [54]
+(./func/s1730.tex) [55] (./func/s1732.tex [56]) [57] (./func/s1750.tex)
+[58] (./func/s1720.tex) [59] (./func/s1522.tex [60]) [61] (./func/s1011.tex
+[62]) [63] (./func/s1012.tex [64])) [65] (./chap_curve_interrogation.tex
 Chapter 4.
-(./func/s1871.tex [65
+(./func/s1871.tex [66
 
 
 ]
@@ -540,7 +540,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 56--60
 
  []
 
-) [66] (./func/s1850.tex
+) [67] (./func/s1850.tex
 Underfull \hbox (badness 3758) in paragraph at lines 10--12
 []\OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 nor-mal\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/1
@@ -549,12 +549,12 @@ Underfull \hbox (badness 3758) in paragraph at lines 10--12
 cmr/m/n/10 ,
  []
 
-[67]) [68] (./func/s1327.tex
+[68]) [69] (./func/s1327.tex
 Overfull \hbox (21.21251pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/12 Convert a curve/line in-ter-sec-tion into a two-dimensional
  []
 
-) [69] (./func/s1371.tex [70]) [71] (./func/s1374.tex [72]
+) [70] (./func/s1371.tex [71]) [72] (./func/s1374.tex [73]
 Underfull \hbox (badness 10000) in paragraph at lines 83--85
 []\OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 conar-ray\OT1/cmr/m/
 n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/
@@ -562,8 +562,8 @@ n/10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , &\OT1/cmr/m/sl/10 nu-mintpt\OT1/
 cmr/m/n/10 , &\OT1/cmr/m/sl/10 int-par\OT1/cmr/m/n/10 ,
  []
 
-) [73] (./func/s1857.tex [74]) [75] (./func/s1240.tex) [76] (./func/s1364.tex)
-[77] (./func/s1451.tex) [78] (./func/s1363.tex) [79] (./func/s1953.tex
+) [74] (./func/s1857.tex [75]) [76] (./func/s1240.tex) [77] (./func/s1364.tex)
+[78] (./func/s1451.tex) [79] (./func/s1363.tex) [80] (./func/s1953.tex
 Underfull \hbox (badness 10000) in paragraph at lines 8--10
 []\OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/n/10
@@ -571,7 +571,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--10
 /n/10 , \OT1/cmr/m/sl/10 int-par\OT1/cmr/m/n/10 ,
  []
 
-[80]
+[81]
 Underfull \hbox (badness 10000) in paragraph at lines 73--75
 []\OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/n/10
@@ -579,22 +579,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 73--75
 m/n/10 , &\OT1/cmr/m/sl/10 int-par\OT1/cmr/m/n/10 ,
  []
 
-) [81] (./func/s1957.tex [82]) [83] (./func/s1774.tex [84]) [85]
-(./func/s1955.tex [86]) [87] (./func/s1013.tex) [88] (./func/s1920.tex [89])
-[90] (./func/s1241.tex) [91] (./func/s1243.tex [92]) [93] (./sec_box_object.tex
-(./type/SISLBox.tex) [94] (./func/newbox.tex)) [95] (./func/s1988.tex) [96]
-(./sec_cone_object.tex (./type/SISLDir.tex) [97] (./func/newdir.tex)) [98]
-(./func/s1986.tex)) [99] (./chap_curve_analysis.tex
+) [82] (./func/s1957.tex [83]) [84] (./func/s1774.tex [85]) [86]
+(./func/s1955.tex [87]) [88] (./func/s1013.tex) [89] (./func/s1920.tex [90])
+[91] (./func/s1241.tex) [92] (./func/s1243.tex [93]) [94] (./sec_box_object.tex
+(./type/SISLBox.tex) [95] (./func/newbox.tex)) [96] (./func/s1988.tex) [97]
+(./sec_cone_object.tex (./type/SISLDir.tex) [98] (./func/newdir.tex)) [99]
+(./func/s1986.tex)) [100] (./chap_curve_analysis.tex
 Chapter 5.
-(./func/s2550.tex [100
+(./func/s2550.tex [101
 
 
-]) [101] (./func/s2553.tex) [102] (./func/s2556.tex
+]) [102] (./func/s2553.tex) [103] (./func/s2556.tex
 Overfull \hbox (1.31796pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/12 Evaluate the Vari-a-tion of Cur-va-ture (VoC) of a curve
  []
 
-) [103] (./func/s2559.tex) [104] (./func/s2562.tex
+) [104] (./func/s2559.tex) [105] (./func/s2562.tex
 Underfull \hbox (badness 3128) in paragraph at lines 59--62
 []\OT1/cmr/m/n/10 Geometric prop-erty (cur-va-ture, tor-sion or vari-a-tion
  []
@@ -604,9 +604,9 @@ Underfull \hbox (badness 1590) in paragraph at lines 59--62
 \OT1/cmr/m/n/10 of cur-va-ture) of a curve at given pa-ram-e-ter val-ues
  []
 
-[105])) [106] (./chap_curve_utilities.tex
+[106])) [107] (./chap_curve_utilities.tex
 Chapter 6.
-(./sec_curve_object.tex (./type/SISLCurve.tex [107
+(./sec_curve_object.tex (./type/SISLCurve.tex [108
 
 
 ])
@@ -615,29 +615,29 @@ Overfull \hbox (3.75056pt too wide) in paragraph at lines 12--16
 r to a SISLCurve,
  []
 
-[108] (./func/newCurve.tex [109]) [110] (./func/copyCurve.tex) [111]
-(./func/freeCurve.tex)) [112] (./func/s1227.tex
+[109] (./func/newCurve.tex [110]) [111] (./func/copyCurve.tex) [112]
+(./func/freeCurve.tex)) [113] (./func/s1227.tex
 Underfull \hbox (badness 10000) in paragraph at lines 39--42
 
  []
 
-[113]) [114] (./func/s1221.tex
+[114]) [115] (./func/s1221.tex
 Underfull \hbox (badness 10000) in paragraph at lines 39--42
 
  []
 
-[115]) [116] (./func/s1225.tex [117]) [118] (./func/s1226.tex [119]) [120]
-(./func/s1542.tex) (./func/s1710.tex [121]
+[116]) [117] (./func/s1225.tex [118]) [119] (./func/s1226.tex [120]) [121]
+(./func/s1542.tex) (./func/s1710.tex [122]
 Underfull \hbox (badness 10000) in paragraph at lines 38--41
 []\OT1/cmr/m/n/10 Parameter value at end of curve,
  []
 
-[122]) [123] (./func/s1017.tex) [124] (./func/s1018.tex) [125]
-(./func/s1714.tex) [126] (./func/s1712.tex) [127] (./func/s1713.tex) [128]
-(./func/s1715.tex [129]) [130] (./func/s1716.tex) [131] (./func/s1706.tex)
-[132] (./func/s1233.tex [133])) [134] (./chap_surface_definition.tex
+[123]) [124] (./func/s1017.tex) [125] (./func/s1018.tex) [126]
+(./func/s1714.tex) [127] (./func/s1712.tex) [128] (./func/s1713.tex) [129]
+(./func/s1715.tex [130]) [131] (./func/s1716.tex) [132] (./func/s1706.tex)
+[133] (./func/s1233.tex [134])) [135] (./chap_surface_definition.tex
 Chapter 7.
-(./func/s1536.tex [135
+(./func/s1536.tex [136
 
 
 ]
@@ -650,7 +650,7 @@ Overfull \hbox (130.0pt too wide) detected at line 60
 []
  []
 
-[136]) [137] (./func/s1537.tex [138]
+[137]) [138] (./func/s1537.tex [139]
 Underfull \hbox (badness 10000) in paragraph at lines 56--57
 
  []
@@ -660,7 +660,7 @@ Overfull \hbox (130.0pt too wide) detected at line 59
 []
  []
 
-[139]) [140] (./func/s1534.tex
+[140]) [141] (./func/s1534.tex
 Overfull \hbox (12.80281pt too wide) in paragraph at lines 2--2
 []\OT1/cmr/bx/n/12 Compute a sur-face in-ter-po-lat-ing a set of points, deriva
 -
@@ -676,7 +676,7 @@ Overfull \hbox (130.0pt too wide) detected at line 77
 []
  []
 
-[141] [142]) [143] (./func/s1535.tex
+[142] [143]) [144] (./func/s1535.tex
 Overfull \hbox (12.80281pt too wide) in paragraph at lines 2--2
 []\OT1/cmr/bx/n/12 Compute a sur-face in-ter-po-lat-ing a set of points, deriva
 -
@@ -692,24 +692,24 @@ Overfull \hbox (130.0pt too wide) detected at line 72
 []
  []
 
-[144] [145]) [146] (./func/s1529.tex
+[145] [146]) [147] (./func/s1529.tex
 Underfull \hbox (badness 1231) in paragraph at lines 58--59
 []\OT1/cmr/m/n/10 Mean ac-cu-mu-lated cord-length para-meter-
  []
 
-[147]) [148] (./func/s1530.tex
+[148]) [149] (./func/s1530.tex
 Overfull \hbox (24.05559pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/12 Compute a sur-face by Her-mite in-ter-po-la-tion, parameter-
 
  []
 
-[149]) [150] (./func/s1538.tex [151]) [152] (./func/s1539.tex [153]) [154]
-(./func/s1508.tex) [155] (./func/s1390.tex
+[150]) [151] (./func/s1538.tex [152]) [153] (./func/s1539.tex [154]) [155]
+(./func/s1508.tex) [156] (./func/s1390.tex
 Overfull \hbox (130.0pt too wide) detected at line 14
 []
  []
 
-[156]) [157] (./func/s1391.tex
+[157]) [158] (./func/s1391.tex
 Underfull \hbox (badness 10000) in paragraph at lines 32--40
 
  []
@@ -724,7 +724,7 @@ t/10 icurv \OMS/cmsy/m/n/10 ^^@ \OT1/cmr/m/n/10 1] \OMS/cmsy/m/n/10 ^^@ \OT1/cm
 r/m/n/10 1
  []
 
-[158]) [159] (./func/s1401.tex
+[159]) [160] (./func/s1401.tex
 Underfull \hbox (badness 10000) in paragraph at lines 28--29
 
  []
@@ -734,9 +734,9 @@ Overfull \hbox (130.0pt too wide) detected at line 31
 []
  []
 
-[160]) [161] (./func/s1620.tex [162]) [163] (./func/s1332.tex) [164]
-(./func/s1302.tex [165]) [166] (./func/s1365.tex [167]) [168] (./func/s1601.tex
-) [169] (./func/s1388.tex [170]) [171] (./func/s1731.tex) [172]
+[161]) [162] (./func/s1620.tex [163]) [164] (./func/s1332.tex) [165]
+(./func/s1302.tex [166]) [167] (./func/s1365.tex [168]) [169] (./func/s1601.tex
+) [170] (./func/s1388.tex [171]) [172] (./func/s1731.tex) [173]
 (./func/s1733.tex
 Underfull \hbox (badness 10000) in paragraph at lines 14--16
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 num-ber1\OT1/cmr/m/n/
@@ -745,8 +745,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 14--16
 -par2\OT1/cmr/m/n/10 ,
  []
 
-[173]) [174] (./func/s1387.tex) [175] (./func/s1386.tex) [176]
-(./func/s1023.tex [177]) [178] (./func/s1021.tex) [179] (./func/s1024.tex
+[174]) [175] (./func/s1387.tex) [176] (./func/s1386.tex) [177]
+(./func/s1023.tex [178]) [179] (./func/s1021.tex) [180] (./func/s1024.tex
 Underfull \hbox (badness 6204) in paragraph at lines 10--12
 []\OT1/cmr/m/sl/10 centre\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 axis\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 equa-tor\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 mi-nor[]radius\O
@@ -754,7 +754,7 @@ T1/cmr/m/n/10 , \OT1/cmr/m/sl/10 start[]minor\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10
  end[]minor\OT1/cmr/m/n/10 ,
  []
 
-[180]
+[181]
 Underfull \hbox (badness 6461) in paragraph at lines 74--76
 []\OT1/cmr/m/sl/10 centre\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 axis\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 equa-tor\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 mi-nor[]radius\O
@@ -762,14 +762,14 @@ T1/cmr/m/n/10 , \OT1/cmr/m/sl/10 start[]minor\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10
  end[]minor\OT1/cmr/m/n/10 ,
  []
 
-) [181] (./func/s1022.tex [182]) [183]) (./chap_surface_interrogation.tex
+) [182] (./func/s1022.tex [183]) [184]) (./chap_surface_interrogation.tex
 Chapter 8.
-(./sec_intcurve_object.tex (./type/SISLIntcurve.tex [184
+(./sec_intcurve_object.tex (./type/SISLIntcurve.tex [185
 
 
-]) [185]
-(./func/newIntcurve.tex [186]) [187] (./func/freeIntcurve.tex) [188]
-(./func/freeIntcrvlist.tex)) [189] (./func/s1850.tex
+]) [186]
+(./func/newIntcurve.tex [187]) [188] (./func/freeIntcurve.tex) [189]
+(./func/freeIntcrvlist.tex)) [190] (./func/s1850.tex
 Underfull \hbox (badness 3758) in paragraph at lines 10--12
 []\OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 nor-mal\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/1
@@ -778,13 +778,13 @@ Underfull \hbox (badness 3758) in paragraph at lines 10--12
 cmr/m/n/10 ,
  []
 
-[190]) [191] (./func/s1371.tex [192]) [193] (./func/s1372.tex [194]) [195]
-(./func/s1373.tex [196]) [197] (./func/s1502.tex
+[191]) [192] (./func/s1371.tex [193]) [194] (./func/s1372.tex [195]) [196]
+(./func/s1373.tex [197]) [198] (./func/s1502.tex
 Underfull \hbox (badness 4353) in paragraph at lines 42--44
 []\OT1/cmr/m/n/10 The ra-tio of the ma-jor and mi-nor axes = el-li-
  []
 
-[198]) [199] (./func/s1375.tex [200]) [201] (./func/s1870.tex [202]) [203]
+[199]) [200] (./func/s1375.tex [201]) [202] (./func/s1870.tex [203]) [204]
 (./func/s1856.tex
 Underfull \hbox (badness 3503) in paragraph at lines 9--11
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10 
@@ -794,13 +794,13 @@ Underfull \hbox (badness 3503) in paragraph at lines 9--11
 /cmr/m/n/10 ,
  []
 
-[204]) [205] (./func/s1518.tex [206]) [207] (./func/s1328.tex
+[205]) [206] (./func/s1518.tex [207]) [208] (./func/s1328.tex
 Overfull \hbox (37.22502pt too wide) in paragraph at lines 1--1
 []\OT1/cmr/bx/n/12 Convert a sur-face/line in-ter-sec-tion into a two-dimension
 al
  []
 
-) [208] (./func/s1855.tex
+) [209] (./func/s1855.tex
 Underfull \hbox (badness 4479) in paragraph at lines 8--10
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 cen-tre\OT1/cmr/m/n/1
 0 , \OT1/cmr/m/sl/10 ra-dius\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 nor-mal\OT1/cmr/
@@ -809,7 +809,7 @@ m/n/10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 nu-mintpt\OT1
 /cmr/m/n/10 ,
  []
 
-[209]) [210] (./func/s1858.tex
+[210]) [211] (./func/s1858.tex
 Underfull \hbox (badness 6575) in paragraph at lines 10--13
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 
 , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/1
@@ -817,7 +817,7 @@ Underfull \hbox (badness 6575) in paragraph at lines 10--13
 /cmr/m/n/10 , \OT1/cmr/m/sl/10 point-par2\OT1/cmr/m/n/10 ,
  []
 
-[211]) [212] (./func/s1851.tex [213]) [214] (./func/s1852.tex
+[212]) [213] (./func/s1851.tex [214]) [215] (./func/s1852.tex
 Underfull \hbox (badness 2961) in paragraph at lines 10--13
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 cen-tre\OT1/cmr/m/n/1
 0 , \OT1/cmr/m/sl/10 ra-dius\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/
@@ -826,7 +826,7 @@ n/10 , \OT1/cmr/m/sl/10 nu-mintpt\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point-par\O
 T1/cmr/m/n/10 ,
  []
 
-[215]) [216] (./func/s1853.tex
+[216]) [217] (./func/s1853.tex
 Underfull \hbox (badness 7415) in paragraph at lines 10--13
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10 
 , \OT1/cmr/m/sl/10 cyldir\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 ra-dius\OT1/cmr/m/n
@@ -835,12 +835,12 @@ Underfull \hbox (badness 7415) in paragraph at lines 10--13
 r/m/n/10 ,
  []
 
-[217]) [218] (./func/s1854.tex [219]) [220] (./func/s1503.tex
+[218]) [219] (./func/s1854.tex [220]) [221] (./func/s1503.tex
 Underfull \hbox (badness 4353) in paragraph at lines 51--53
 []\OT1/cmr/m/n/10 The ra-tio of the ma-jor and mi-nor axes = el-li-
  []
 
-[221]) [222] (./func/s1369.tex
+[222]) [223] (./func/s1369.tex
 Underfull \hbox (badness 7576) in paragraph at lines 10--13
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 cen-tre\OT1/cmr/m/n/1
 0 , \OT1/cmr/m/sl/10 nor-mal\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 cendist\OT1/cmr/
@@ -849,7 +849,7 @@ m/n/10 , \OT1/cmr/m/sl/10 ra-dius\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr
 mr/m/n/10 ,
  []
 
-[223]
+[224]
 Underfull \hbox (badness 7796) in paragraph at lines 100--103
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 cen-tre\OT1/cmr/m/n/1
 0 , \OT1/cmr/m/sl/10 nor-mal\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 cendist\OT1/cmr/
@@ -858,7 +858,7 @@ m/n/10 , \OT1/cmr/m/sl/10 ra-dius\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr
 mr/m/n/10 ,
  []
 
-) [224] (./func/s1859.tex
+) [225] (./func/s1859.tex
 Underfull \hbox (badness 6348) in paragraph at lines 10--13
 []\OT1/cmr/m/sl/10 surfl\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 surf2\OT1/cmr/m/n/10
  , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/
@@ -866,7 +866,7 @@ Underfull \hbox (badness 6348) in paragraph at lines 10--13
 1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point-par2\OT1/cmr/m/n/10 ,
  []
 
-[225]) [226] (./func/s1860.tex [227]
+[226]) [227] (./func/s1860.tex [228]
 Underfull \hbox (badness 10000) in paragraph at lines 90--93
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 viewdir\OT1/cmr/m/n/1
 0 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/n/1
@@ -874,7 +874,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 90--93
 /m/n/10 , &\OT1/cmr/m/sl/10 point-par\OT1/cmr/m/n/10 ,
  []
 
-) [228] (./func/s1510.tex [229]) [230] (./func/s1511.tex [231]) [232]
+) [229] (./func/s1510.tex [230]) [231] (./func/s1511.tex [232]) [233]
 (./func/s1314.tex
 Underfull \hbox (badness 4266) in paragraph at lines 12--14
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10 
@@ -884,7 +884,7 @@ Underfull \hbox (badness 4266) in paragraph at lines 12--14
 r/m/n/10 ,
  []
 
-[233]
+[234]
 Underfull \hbox (badness 4416) in paragraph at lines 122--124
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10 
 , \OT1/cmr/m/sl/10 nor-mal\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10
@@ -893,29 +893,29 @@ Underfull \hbox (badness 4416) in paragraph at lines 122--124
 r/m/n/10 ,
  []
 
-) [234] (./func/s1315.tex [235]) [236] (./func/s1316.tex [237]) [238]
-(./func/s1317.tex [239]) [240] (./func/s1501.tex
+) [235] (./func/s1315.tex [236]) [237] (./func/s1316.tex [238]) [239]
+(./func/s1317.tex [240]) [241] (./func/s1501.tex
 Underfull \hbox (badness 4353) in paragraph at lines 55--57
 []\OT1/cmr/m/n/10 The ra-tio of the ma-jor and mi-nor axes = el-li-
  []
 
-[241] [242]) [243] (./func/s1318.tex [244] [245]) [246] (./func/s1310.tex
-[247]) [248] (./func/s1319.tex [249] [250]) [251] (./func/s1514.tex
+[242] [243]) [244] (./func/s1318.tex [245] [246]) [247] (./func/s1310.tex
+[248]) [249] (./func/s1319.tex [250] [251]) [252] (./func/s1514.tex
 Underfull \hbox (badness 10000) in paragraph at lines 58--60
 
  []
 
-[252]) [253] (./func/s1515.tex
+[253]) [254] (./func/s1515.tex
 Underfull \hbox (badness 10000) in paragraph at lines 61--63
 
  []
 
-[254]) [255] (./func/s1450.tex
+[255]) [256] (./func/s1450.tex
 Overfull \hbox (130.0pt too wide) detected at line 8
 []
  []
 
-[256]) [257] (./func/s1603.tex) [258] (./func/s1954.tex
+[257]) [258] (./func/s1603.tex) [259] (./func/s1954.tex
 Underfull \hbox (badness 1406) in paragraph at lines 8--10
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 point\OT1/cmr/m/n/10 
 , \OT1/cmr/m/sl/10 dim\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 ep-sco\OT1/cmr/m/n/10 
@@ -924,11 +924,11 @@ n/10 , \OT1/cmr/m/sl/10 point-par\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 num-clocr\O
 T1/cmr/m/n/10 ,
  []
 
-[259]) [260] (./func/s1958.tex [261]) [262] (./func/s1775.tex [263]) [264]
-(./func/s1921.tex [265]) [266] (./func/s1989.tex) [267] (./func/s1987.tex
-[268] [269])) [270] (./chap_surface_analysis.tex
+[260]) [261] (./func/s1958.tex [262]) [263] (./func/s1775.tex [264]) [265]
+(./func/s1921.tex [266]) [267] (./func/s1989.tex) [268] (./func/s1987.tex
+[269] [270])) [271] (./chap_surface_analysis.tex
 Chapter 9.
-(./func/s2500.tex [271
+(./func/s2500.tex [272
 
 
 ]
@@ -936,44 +936,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--77
 []\OT1/cmr/m/n/10 Gaussian of the sur-face at (u,v) $=$ (par-
  []
 
-[272]) [273] (./func/s2502.tex [274]
+[273]) [274] (./func/s2502.tex [275]
 Underfull \hbox (badness 4752) in paragraph at lines 75--77
 []\OT1/cmr/m/n/10 Mean cur-va-ture of the sur-face at (u,v) $=$ (par-
  []
 
-) [275] (./func/s2504.tex [276]
+) [276] (./func/s2504.tex [277]
 Underfull \hbox (badness 1629) in paragraph at lines 75--77
 []\OT1/cmr/m/n/10 Absolute cur-va-ture of the sur-face at (u,v) $=$ (par-
  []
 
-) [277] (./func/s2506.tex [278]
+) [278] (./func/s2506.tex [279]
 Underfull \hbox (badness 5091) in paragraph at lines 75--77
 []\OT1/cmr/m/n/10 Total cur-va-ture of the sur-face at (u,v) $=$ (par-
  []
 
-) [279] (./func/s2508.tex [280]) [281] (./func/s2510.tex [282]) [283]
-(./func/s2532.tex [284]
+) [280] (./func/s2508.tex [281]) [282] (./func/s2510.tex [283]) [284]
+(./func/s2532.tex [285]
 Underfull \hbox (badness 10000) in paragraph at lines 91--93
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 u[]continuity\OT1/cmr
 /m/n/10 , \OT1/cmr/m/sl/10 v[]continuity\OT1/cmr/m/n/10 , &\OT1/cmr/m/sl/10 u[]
 surfnumb\OT1/cmr/m/n/10 , &\OT1/cmr/m/sl/10 v[]surfnumb\OT1/cmr/m/n/10 ,
  []
 
-) [285] (./func/s2536.tex
+) [286] (./func/s2536.tex
 Underfull \hbox (badness 10000) in paragraph at lines 19--21
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 u[]continuity\OT1/cmr
 /m/n/10 , \OT1/cmr/m/sl/10 v[]continuity\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 u[]s
 urfnumb\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 v[]surfnumb\OT1/cmr/m/n/10 ,
  []
 
-[286]
+[287]
 Underfull \hbox (badness 10000) in paragraph at lines 92--94
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 u[]continuity\OT1/cmr
 /m/n/10 , \OT1/cmr/m/sl/10 v[]continuity\OT1/cmr/m/n/10 , &\OT1/cmr/m/sl/10 u[]
 surfnumb\OT1/cmr/m/n/10 , &\OT1/cmr/m/sl/10 v[]surfnumb\OT1/cmr/m/n/10 ,
  []
 
-) [287] (./func/s2540.tex
+) [288] (./func/s2540.tex
 Underfull \hbox (badness 1895) in paragraph at lines 69--76
 []\OT1/cmr/m/n/10 Array con-tain-ing the com-puted val-ues on the grid.
  []
@@ -988,7 +988,7 @@ Underfull \hbox (badness 2126) in paragraph at lines 69--76
 \OT1/cmr/m/n/10 is 3*(n[]u+1)*(n[]v+1) if ex-port[]par[]val is true, and
  []
 
-[288]) [289] (./func/s2542.tex
+[289]) [290] (./func/s2542.tex
 Underfull \hbox (badness 1077) in paragraph at lines 4--9
 \OT1/cmr/m/n/10 ci-pal di-rec-tions (d1,d2) of a spline sur-face at given val-u
 es (u,v)
@@ -1000,30 +1000,30 @@ Underfull \hbox (badness 1303) in paragraph at lines 4--9
 /it/10 <\OT1/cmr/m/n/10 =$ par-value[0] $\OML/cmm/m/it/10 <$
  []
 
-[290]) [291] (./func/s2544.tex
+[291]) [292] (./func/s2544.tex
 Underfull \hbox (badness 10000) in paragraph at lines 4--10
 \OT1/cmr/m/n/10 where et1[leftknot1] $\OML/cmm/m/it/10 <\OT1/cmr/m/n/10 =$ par-
 value[0] $\OML/cmm/m/it/10 <$ \OT1/cmr/m/n/10 et1[leftknot1+1] and
  []
 
-[292]) [293] (./func/s2545.tex [294]
+[293]) [294] (./func/s2545.tex [295]
 Underfull \hbox (badness 1895) in paragraph at lines 75--84
 []\OT1/cmr/m/n/10 Array con-tain-ing the com-puted val-ues on the grid.
  []
 
-)) [295] (./chap_surface_utilities.tex
+)) [296] (./chap_surface_utilities.tex
 Chapter 10.
-(./sec_surface_object.tex (./type/SISLSurf.tex [296
+(./sec_surface_object.tex (./type/SISLSurf.tex [297
 
 
-]) [297] (./func/newSurf.tex
+]) [298] (./func/newSurf.tex
 Overfull \hbox (39.73895pt too wide) in paragraph at lines 11--16
 \OT1/cmr/m/n/10 must the ver-tices be given as $[]$
  []
 
-[298] [299]) [300] (./func/copySurface.tex) [301] (./func/freeSurf.tex))
-[302] (./func/s1421.tex [303]) [304] (./func/s1424.tex [305]) [306]
-(./func/s1422.tex [307] [308]) [309] (./func/s1425.tex
+[299] [300]) [301] (./func/copySurface.tex) [302] (./func/freeSurf.tex))
+[303] (./func/s1421.tex [304]) [305] (./func/s1424.tex [306]) [307]
+(./func/s1422.tex [308] [309]) [310] (./func/s1425.tex
 Underfull \hbox (badness 10000) in paragraph at lines 41--45
 []\OT1/cmr/m/n/10 No deriva-tives with re-spect to the
  []
@@ -1038,7 +1038,7 @@ Underfull \hbox (badness 3826) in paragraph at lines 41--45
 \OT1/cmr/m/n/10 puted. (Only deriva-tives of the type
  []
 
-[310]
+[311]
 Underfull \hbox (badness 2556) in paragraph at lines 61--65
 []\OT1/cmr/m/n/10 No deriva-tives with re-spect to the sec-
  []
@@ -1053,9 +1053,9 @@ Underfull \hbox (badness 3826) in paragraph at lines 61--65
 \OT1/cmr/m/n/10 puted. (Only deriva-tives of the type
  []
 
-[311] [312]) [313] (./func/s1506.tex [314]) [315] (./func/s1711.tex) [316]
-(./func/s1025.tex [317]) [318] (./func/s1439.tex) [319] (./func/s1383.tex
-[320]
+[312] [313]) [314] (./func/s1506.tex [315]) [316] (./func/s1711.tex) [317]
+(./func/s1025.tex [318]) [319] (./func/s1439.tex) [320] (./func/s1383.tex
+[321]
 Underfull \hbox (badness 4060) in paragraph at lines 82--84
 []\OT1/cmr/m/sl/10 surf\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 curve\OT1/cmr/m/n/10 
 , \OT1/cmr/m/sl/10 epsge\OT1/cmr/m/n/10 , \OT1/cmr/m/sl/10 maxstep\OT1/cmr/m/n/
@@ -1063,42 +1063,42 @@ Underfull \hbox (badness 4060) in paragraph at lines 82--84
 m/n/10 , &\OT1/cmr/m/sl/10 newcurve2\OT1/cmr/m/n/10 ,
  []
 
-) [321] (./func/s1001.tex) [322] (./func/s1440.tex)) [323]
+) [322] (./func/s1001.tex) [323] (./func/s1440.tex)) [324]
 (./chap_data_reduction.tex
 Chapter 11.
-(./func/s1940.tex [324
+(./func/s1940.tex [325
 
 
-] [325]) [326] (./func/s1961.tex [327] [328]) [329]
-(./func/s1962.tex [330]) [331] (./func/s1963.tex [332]) [333] (./func/s1965.tex
-[334] [335]) [336] (./func/s1966.tex [337] [338]) [339] (./func/s1967.tex
-[340] [341]) [342] (./func/s1968.tex [343])) [344] (./sample_programs.tex
+] [326]) [327] (./func/s1961.tex [328] [329]) [330]
+(./func/s1962.tex [331]) [332] (./func/s1963.tex [333]) [334] (./func/s1965.tex
+[335] [336]) [337] (./func/s1966.tex [338] [339]) [340] (./func/s1967.tex
+[341] [342]) [343] (./func/s1968.tex [344])) [345] (./sample_programs.tex
 Chapter 12.
-[345
+[346
 
 
-] [346]
+] [347]
 Overfull \hbox (16.74867pt too wide) in paragraph at lines 90--93
 \OT1/cmr/m/n/10 The pro-gram takes as in-put the files [][]\OT1/cmtt/m/n/10 exa
 mple1_curve.g2 []\OT1/cmr/m/n/10 and [][]\OT1/cmtt/m/n/10 example2_points.g2[]\
 OT1/cmr/m/n/10 ,
  []
 
-[347] [348] [349]
+[348] [349] [350]
 Overfull \hbox (16.99919pt too wide) in paragraph at lines 241--246
 []\OT1/cmr/m/n/10 and [][]\OT1/cmtt/m/n/10 example10_surf.g2[]\OT1/cmr/m/n/10 ,
  re-spec-tively gen-er-ated by the sam-ple pro-grams [][]\OT1/cmtt/m/n/10 examp
 le04
  []
 
-[350]
+[351]
 Overfull \hbox (7.6667pt too wide) in paragraph at lines 270--274
 \OT1/cmr/m/n/10 The two sur-faces have been gen-er-ated by the pre-vi-ous sam-p
 le pro-grams [][]\OT1/cmtt/m/n/10 example10
  []
 
-[351]
-<raytracing.pdf, id=1170, 513.11702pt x 423.50221pt>
+[352]
+<raytracing.pdf, id=1174, 513.11702pt x 423.50221pt>
 File: raytracing.pdf Graphic file (type pdf)
 <use raytracing.pdf>
 Package pdftex.def Info: raytracing.pdf  used on input line 309.
@@ -1108,16 +1108,16 @@ Underfull \hbox (badness 10000) in paragraph at lines 301--335
 
  []
 
-[352 <./raytracing.pdf>]) (./viewer.tex [353]
+[353 <./raytracing.pdf>]) (./viewer.tex [354]
 Chapter 13.
 
 Underfull \hbox (badness 10000) in paragraph at lines 4--23
 
  []
 
-[354
+[355
 
-] [355]) [356] (./chap_error_codes.tex
+] [356]) [357] (./chap_error_codes.tex
 Chapter 14.
 
 Overfull \hbox (74.99634pt too wide) in paragraph at lines 215--215
@@ -1137,7 +1137,7 @@ Overfull \hbox (43.49661pt too wide) in paragraph at lines 215--215
 ecting closed.[] 
  []
 
-[357
+[358
 
 
 ]
@@ -1152,7 +1152,7 @@ Overfull \hbox (27.74675pt too wide) in paragraph at lines 215--215
 meter area.[] 
  []
 
-[358]
+[359]
 Overfull \hbox (6.74693pt too wide) in paragraph at lines 215--215
 []\OT1/cmtt/m/n/10 err140 -140  Error in data structure. Intersection interval 
 crosses[] 
@@ -1176,7 +1176,7 @@ Overfull \hbox (17.24684pt too wide) in paragraph at lines 215--215
 r err116.[] 
  []
 
-[359]
+[360]
 Overfull \hbox (11.99689pt too wide) in paragraph at lines 215--215
 []\OT1/cmtt/m/n/10 err164 -164  No point conditions specified in interpolation 
 problem.[] 
@@ -1188,9 +1188,9 @@ Overfull \hbox (43.49661pt too wide) in paragraph at lines 215--215
 ve or surface.[] 
  []
 
-[360]) [361] (./licensing_information.tex
+[361]) [362] (./licensing_information.tex
 Appendix A.
-[362
+[363
 
 
 ] [1] [1] [2] [3] [4] [5] [6] [7]
@@ -1227,7 +1227,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  3173 strings out of 494847
  44259 string characters out of 6179079
- 126493 words of memory out of 5000000
+ 125494 words of memory out of 5000000
  5868 multiletter control sequences out of 15000+600000
  9282 words of font info for 33 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
@@ -1254,10 +1254,10 @@ pe1/public/amsfonts/latxfont/lcircle1.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/latxfont/lcirclew.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/latxfont/line10.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/latxfont/linew10.pfb>
-Output written on manual.pdf (383 pages, 827504 bytes).
+Output written on manual.pdf (384 pages, 828239 bytes).
 PDF statistics:
- 1340 PDF objects out of 1440 (max. 8388607)
- 919 compressed objects within 10 object streams
+ 1343 PDF objects out of 1440 (max. 8388607)
+ 921 compressed objects within 10 object streams
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

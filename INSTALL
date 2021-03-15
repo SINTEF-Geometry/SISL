@@ -6,6 +6,9 @@ MS Visual Studio project file (on Windows).
 
 For information on using CMake, see www.cmake.org.
 
+A more extensive guide on how to compile and link the SISL library and 
+applications build upon it can be found in the reference manual.
+
 --------------------------------------------------------------------------------
 
 LINUX
