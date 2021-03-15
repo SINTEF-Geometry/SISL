@@ -159,13 +159,23 @@ void s1251(pcurve,aepsco,clength,jstat)
 
       /* Compute length of first sub-curve. */
 
-      s1251(qc1,aepsco,&tlength1,&kstat);
-      if (kstat < 0) goto error;
+      if (qc1)
+	{
+	  s1251(qc1,aepsco,&tlength1,&kstat);
+	  if (kstat < 0) goto error;
+	}
+      else
+	tlength1 = 0.0;
 
       /* Compute length of second sub-curve.  */
 
-      s1251(qc2,aepsco,&tlength2,&kstat);
-      if (kstat < 0) goto error;
+      if (qc2)
+	{
+	  s1251(qc2,aepsco,&tlength2,&kstat);
+	  if (kstat < 0) goto error;
+	}
+      else
+	tlength2 = 0.0;
 
       *clength = tlength1 + tlength2;
     }
