@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 1998, 2000-2007, 2010, 2011, 2012, 2013 SINTEF ICT,
+ * Copyright (C) 1998, 2000-2007, 2010, 2011, 2012, 2013 SINTEF Digital,
  * Applied Mathematics, Norway.
  *
  * Contact information: E-mail: tor.dokken@sintef.no                      
- * SINTEF ICT, Department of Applied Mathematics,                         
+ * SINTEF Digital, Department of Mathematics and Cybernetics,                         
  * P.O. Box 124 Blindern,                                                 
  * 0314 Oslo, Norway.                                                     
  *
@@ -34,7 +34,7 @@
  * disclosing the source code of your own applications.
  *
  * This file may be used in accordance with the terms contained in a
- * written agreement between you and SINTEF ICT. 
+ * written agreement between you and SINTEF Digital. 
  */
 
 #include <GL/glut.h>
