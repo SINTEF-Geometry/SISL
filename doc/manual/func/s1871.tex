@@ -61,10 +61,10 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \>  *{\fov pc1};\\
-        \>\>    double    \>  *{\fov pt1};\\
-        \>\>    int       \>  {\fov idim};\\
-        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    SISLCurve \>  *{\fov pc1}; \,/* Must be defined */\\
+        \>\>    double    \>  *{\fov pt1}; \,/* Must be defined */\\
+        \>\>    int       \>  {\fov idim}; \, /* Equal to the curve dimension */ \\
+        \>\>    double    \>  {\fov aepsge} = 0.000001 ;\\
         \>\>    int       \>  {\fov jpt} = 0;\\
         \>\>    double    \>  *{\fov gpar1} = NULL;\\
         \>\>    int       \>  {\fov jcrv} = 0;\\

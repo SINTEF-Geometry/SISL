@@ -69,18 +69,18 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve1};\\
-                \>\>    SISLCurve       \>      *{\fov curve2};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov end1};\\
-                \>\>    double  \>      {\fov fillpar1};\\
-                \>\>    double  \>      {\fov end2};\\
-                \>\>    double  \>      {\fov fillpar2};\\
-                \>\>    int     \>      {\fov filltype};\\
-                \>\>    int     \>      {\fov dim};\\
-                \>\>    int     \>      {\fov order};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve1};  /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov curve2};  /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge} = 0.0001;\\
+                \>\>    double  \>      {\fov end1};     \,\,\, /* Must be defined */\\
+                \>\>    double  \>      {\fov fillpar1};  /* Must be defined */\\
+                \>\>    double  \>      {\fov end2};    \,\,\,   /* Must be defined */\\
+                \>\>    double  \>      {\fov fillpar2};  /* Must be defined */\\
+                \>\>    int     \>      {\fov filltype} = 2;\\
+                \>\>    int     \>      {\fov dim} = 3;\\
+                \>\>    int     \>      {\fov order} = 4;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1607(\begin{minipg4}
         {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov end1}, {\fov fillpar1}, {\fov end2}, {\fov fillpar2},

@@ -40,11 +40,11 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov order1};\\
-                \>\>    int     \>      {\fov order2};\\
-                \>\>    SISLSurf        \>      *{\fov newsurf};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov order1}; \, /* Must be defined. Larger than or equal to surf--$>$ik1 */\\
+                \>\>    int     \>      {\fov order2}; \, /* Must be defined. Larger than or equal to surf--$>$ik2 */\\
+                \>\>    SISLSurf        \>      *{\fov newsurf} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1387(\begin{minipg4}
                                 {\fov surf}, {\fov order1}, {\fov order2}, \&{\fov newsurf}, \&{\fov stat});

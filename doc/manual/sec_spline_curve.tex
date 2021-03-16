@@ -12,9 +12,7 @@ The dimension of the curve ${\bf c}$ is equal to that of its
 control points
 is one, the curve is a function, if the dimension is two,
 the curve is planar, and if the dimension is three,
-the curve is spatial.
-Usually the dimension of the curve will be at most three,
-but SISL also allows higher dimensions.
+the curve is spatial. SISL also allows higher dimensions.
 
 Thus, a B-spline curve is a linear combination of a sequence of B-splines
 $B_{i,k,{\bf t}}$ (called a B-basis)
@@ -37,7 +35,7 @@ The complete representation of a B-spline curve consists of
 \item[$dim$]: The dimension of the underlying Euclidean space,
               $1,2,3,\ldots$.
 \item[$n$]: The number of vertices (also the number of B-splines)
-\item[$k$]: The order of the B-splines.
+\item[$k$]: The order (degree plus one) of the B-splines.
 \item[${\bf t}$]: The knot vector of the B-splines.
             ${\bf t} = (t_1, t_2, \ldots, t_{n+k})$.
 \item[${\bf p}$]: The control points of the B-spline curve.

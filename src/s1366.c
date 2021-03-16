@@ -84,17 +84,13 @@ void s1366(ps,aoffset,aepsge,amax,idim,eknot13,in13,ik13,
 *
 * INPUT      : ps     - The input B-spline surface.
 *              aoffset- The offset distance.
-*                       If idim=2 a positive signe on this value put the
-*                       offset on the side of the positive normal vector,
-*                       and a negative sign puts the offset on the sign
-*                       of the negative normal vector.
-*                       If idim=3 the offset is determined by the cross
+*                       The offset is determined by the cross
 *                       product of the tangent vector and the anorm vector.
 *                       The offset distance is multiplied by this vector.
 *              aepsge - Maximal deviation allowed between true offset surface
 *                       and the approximated offset surface.
 *              amax   - Maximal stepping length. Is negleceted if amax<=aepsge
-*              idim   - The dimension of the space (2 or 3).
+*              idim   - The dimension of the space (3).
 *              eknot13- Pointer to common knot-vector along first parameter
 *                       direction.
 *              in13   - Number of vertices of knot-vector along first

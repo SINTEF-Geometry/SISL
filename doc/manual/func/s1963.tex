@@ -60,16 +60,16 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov pc};\\
-                \>\>    double \> {\fov eeps}[\,];\\
-                \>\>    int    \>  {\fov ilend};\\
-                \>\>    int    \>  {\fov irend};\\
-                \>\>    int    \>  {\fov iopen};\\
-                \>\>    int    \>  {\fov itmax};\\
-                \>\>    SISLCurve    \>  **{\fov rc};\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov pc}; \, /* Must be defined */\\
+                \>\>    double \> {\fov eeps}[3]; \, /* Spatial dimension. Must be defined */\\
+                \>\>    int    \>  {\fov ilend} = 1;\\
+                \>\>    int    \>  {\fov irend} = 1;\\
+                \>\>    int    \>  {\fov iopen} = 1;\\
+                \>\>    int    \>  {\fov itmax} = 8;\\
+                \>\>    SISLCurve    \>  *{\fov rc} = NULL;\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1963(\begin{minipg4}
-            {\fov pc}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax}, {\fov rc}, {\fov jstat});
+            {\fov pc}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax}, \&{\fov rc}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

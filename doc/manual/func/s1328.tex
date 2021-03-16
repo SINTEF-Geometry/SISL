@@ -48,15 +48,15 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf    \>  *{\fov psold};\\
-                \>\>    double \> epoint[\,];\\
-                \>\>    double \> enorm1[\,];\\
-                \>\>    double \> enorm2[\,];\\
-                \>\>    int    \>  {\fov idim};\\
-                \>\>    SISLSurf    \>  **{\fov rsnew};\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf    \>  *{\fov psold}; \, /* Must be defined */\\
+                \>\>    double \> epoint[3]; \, /* Must be defined */\\\
+                \>\>    double \> enorm1[3]; \,/* Must be defined */\\\
+                \>\>    double \> enorm2[3]; \,/* Must be defined */\\\
+                \>\>    int    \>  {\fov idim} = 3;\\
+                \>\>    SISLSurf    \>  **{\fov rsnew} = NULL;\\
+                \>\>    int    \>  *{\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1328(\begin{minipg4}
-            {\fov psold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, {\fov rsnew}, {\fov jstat});
+            {\fov psold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, \&{\fov rsnew}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

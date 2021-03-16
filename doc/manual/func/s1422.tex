@@ -114,15 +114,16 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLSurf    \>  *{\fov ps1};\\
+        \>\>    SISLSurf    \>  *{\fov ps1}; \, /* Must be defined */\\
         \>\>    int    \>  {\fov ider} = 1;\\
-        \>\>    int    \>  {\fov iside1};\\
-        \>\>    int    \>  {\fov iside2};\\
-        \>\>    double \>  {\fov epar}[2];\\
-        \>\>    int    \>  {\fov ilfs} = 0;\\
-        \>\>    int    \>  {\fov ilft} = 0;\\
-        \>\>    double \>  {\fov eder}[9];\\
-        \>\>    double \>  {\fov enorm}[3];\\
+        \>\>    int    \>  {\fov iside1} = 0;\\
+        \>\>    int    \>  {\fov iside2} = 1;\\
+        \>\>    double \>  {\fov epar}[2]; \, /* Must be defined */\\
+        \>\>    int    \>  {\fov ilfs} = 0; /* Define initially as zero. For consequtive evaluations \\
+                \>\>\>\>\> leave ilfs as returned from s1422 */\\
+        \>\>    int    \>  {\fov ilft} = 0; /* As for ilfs */\\
+        \>\>    double \>  {\fov eder}[9]; /* Length is spatial dimension times total number of entities */\\
+        \>\>    double \>  {\fov enorm}[3]; /* Length is spatial dimension */ \\
         \>\>    int    \>  {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1422(\begin{minipg4}

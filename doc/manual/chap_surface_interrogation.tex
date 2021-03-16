@@ -6,6 +6,7 @@ This chapter describes the functions in the Surface Interrogation module.
 \pgsbreak
 
 \section{Find the Intersections}
+Intersection functionality where at least one of the input geometry entities is or can be a surface.
 \input{func/s1850}
 \pgsbreak
 \input{func/s1371}
@@ -91,15 +92,11 @@ This chapter describes the functions in the Surface Interrogation module.
 \input{func/s1921}
 \pgsbreak
 \section{Bounding Box}
-Both curves and surfaces have bounding boxes. These are boxes surrounding an object not only parallel to the main axis, but also rotated 45 degrees around each main axis. These bounding boxes are used by the intersection functions to decide if an intersection is possible or not. They might also be used to find the position of objects under other circumstances.
-\input{sec_box_object}
-\pgsbreak
+Both curves and surfaces have bounding boxes. These are boxes surrounding an object not only parallel to the main axis, but also rotated 45 degrees around each main axis. These bounding boxes are used by the intersection functions to decide if an intersection is possible or not. They might also be used to find the position of objects under other circumstances. The bounding box object and corresponding initialization functionality ar described in Section~\ref{sec:bbox} at pages \pageref{SISLBox} and \pageref{newbox}.
 \input{func/s1989}
 \pgsbreak
 \section{Normal Cone}
 Both curves and surfaces have normal cones. These are the cones that are convex hull of all normalized tangents of a curve and all normalized normals of a surface.
 
-These normal cones are used by the intersection functions to decide if only one intersection is possible. They might also be used to find directions of objects for other reasons.
-\input{sec_cone_object}
-\pgsbreak
+These normal cones are used by the intersection functions to decide if only one intersection is possible. They might also be used to find directions of objects for other reasons. The direction cone object and corresponding initialization functionality ar described in Section~\ref{sec:dcone} at pages \pageref{SISLDir} and \pageref{newdir}.
 \input{func/s1987}

@@ -3,14 +3,14 @@
                right hand side.}
 \funclabel{s1226}
 \begin{minipg1}
-Evaluate position, first derivative, curvature and radius of
+Evaluate position, derivatives, curvature and radius of
                curvature of a curve at a given parameter value, from the
                right hand side.
 \end{minipg1} \\ \\
 SYNOPSIS\\
         \> void s1226(\begin{minipg3}
             {\fov curve}, {\fov der}, {\fov parvalue}, {\fov leftknot}, {\fov derive}, {\fov curvature},
-	   radius\_of\_ {\fov curvature}, {\fov jstat})
+	   radius\_of\_{\fov curvature}, {\fov jstat})
                 \end{minipg3}\\
                 \>\>    SISLCurve    \>  *{\fov curve};\\
                 \>\>    int    \>  {\fov der};\\
@@ -81,17 +81,18 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov curve};\\
-                \>\>    int    \>  {\fov der};\\
-                \>\>    double \> parvalue;\\
-                \>\>    int    \>  *{\fov leftknot};\\
-                \>\>    double \>derive[\,];\\
-                \>\>    double \>curvature[\,];\\
-                \>\>    double \> *{\fov radius}\_of\_curvature;\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov curve}; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov der} = 1;\\
+                \>\>    double \> parvalue; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov leftknot} = 0; /* Define initially as zero. For consequtive evaluations \\
+                \>\>\>\>\>\> leave leftknot as returned from s1226 */\\
+                \>\>    double \>derive[6]; /* Geometry space dimension times (der + 1) */\\
+                \>\>    double \>curvature[3]; /* Geometry space dimension */\\
+                \>\>    double \> {\fov radius}\_of\_curvature = 0;\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1226(\begin{minipg4}
             {\fov curve}, {\fov der}, {\fov parvalue}, {\fov leftknot}, {\fov derive}, {\fov curvature},
-	   radius\_of\_ {\fov curvature}, {\fov jstat});
+	   \&radius\_of\_{\fov curvature}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

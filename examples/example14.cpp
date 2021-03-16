@@ -113,7 +113,7 @@ int main(int avnum, char** vararg)
 	vector<double> sampled_point_coords(3 * num_samples);
 	for (int i = 0; i < num_samples; ++i) {
 	    double parameter = double(i)/(num_samples - 1);
-	    int temp, jstat;
+	    int temp, jstat = 0;
 
 	    s1227(sample_curve, // the curve to sample from
 		  0,            // calculate no derivatives
@@ -173,7 +173,7 @@ int main(int avnum, char** vararg)
 	writeGoCurve(result_curve, os_cv);
 
 	// cleaning up
-	freeCurve(result_curve);
+	if (result_curve) freeCurve(result_curve);
 	os_pts.close();
 	os_cv.close();
 

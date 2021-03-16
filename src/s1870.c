@@ -50,7 +50,7 @@ void
 #else
 void s1870(ps1,pt1,idim,aepsge,jpt,gpar1,jcrv,wcurve,jstat)
      SISLSurf     *ps1;
-     double    *pt1;
+     double    pt1[];
      int	idim;
      double   aepsge;
      int      *jpt;

@@ -5,7 +5,8 @@
   curve represented as the curve that is output from s1730().
   If the input curve is rational, the generated Bezier curves will be
   rational too (i.e.\ there will be rational weights in the
-  representation of the Bezier curves).
+  representation of the Bezier curves, note the convention for coefficients in the
+  rational case, see Chapter~\ref{sec:newCurve}).
 \end{minipg1} \\ \\
 SYNOPSIS\\
         \>void s1732(\begin{minipg3}
@@ -49,12 +50,12 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    int     \>      {\fov number};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov number}; \, /* Must be defined */\\
                 \>\>    double  \>      {\fov startpar};\\
                 \>\>    double  \>      {\fov endpar};\\
-                \>\>    double  \>      {\fov coef}[12];\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov coef}[12]; \, /* Assumes dimension=3, order=4, non-rational */\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1732(\begin{minipg4}
                 {\fov curve}, {\fov number}, \&{\fov startpar}, \&{\fov endpar}, {\fov coef}, \&{\fov stat});

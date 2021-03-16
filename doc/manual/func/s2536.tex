@@ -39,7 +39,9 @@ ARGUMENTS\\
                           SISL only accepts surfaces of continuity 0 or higher.
                           If the surface is to be intersected with another,
                           the continuity must be 1 or higher to find all the
-                          intersection curves.
+                          intersection curves. If the requested continuity is higher than
+                          the minimum continuity of the surface in the first parameter
+                          direction minus 2, an approximation will be performed.
                                \end{minipg2}\\[0.8ex]
         \>\>    {\fov v\_continuity}\> - \>  \begin{minipg2}
                      Desired continuity of the Mehlum curvature surfaces
@@ -48,7 +50,9 @@ ARGUMENTS\\
                           SISL only accepts surfaces of continuity 0 or higher.
                           If the surface is to be intersected with another,
                           the continuity must be 1 or higher to find all the
-                          intersection curves.
+                          intersection curves. If the requested continuity is higher than
+                          the minimum continuity of the surface in the second parameter
+                          direction minus 2, an approximation will be performed.
                                \end{minipg2}\\[0.8ex]
 \\
 	\>Output Arguments:\\
@@ -76,16 +80,17 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf \> *{\fov surf};\\
-                \>\>    int    \>  {\fov u\_continuity};\\
-                \>\>    int    \>  {\fov v\_continuity};\\
-                \>\>    int    \>  *{\fov u\_surfnumb};\\
-                \>\>    int    \>  *{\fov v\_surfnumb};\\
-                \>\>    SISLSurf \> ***{\fov mehlum\_surf};\\
-                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf \> *{\fov surf} \, /* Must be defined */;\\
+                \>\>    int    \>  {\fov u\_continuity} = 0; /* Should depend on continuity of input\\
+                \>\>\>\>\>\> surface and the use of the result */\\
+                \>\>    int    \>  {\fov v\_continuity} = 0;\\
+                \>\>    int    \>  {\fov u\_surfnumb} = 0;\\
+                \>\>    int    \>  {\fov v\_surfnumb} = 0;\\
+                \>\>    SISLSurf \> **{\fov mehlum\_surf} = NULL;\\
+                \>\>    int    \>  {\fov stat} = 0;\\                \>\>    \ldots \\
         \>\>s2536(\begin{minipg4}
-            {\fov surf},  {\fov u\_continuity},  {\fov v\_continuity},  {\fov u\_surfnumb}, 
-	    {\fov v\_surfnumb}, {\fov mehlum\_surf}, {\fov stat});
+            {\fov surf},  {\fov u\_continuity},  {\fov v\_continuity},  \&{\fov u\_surfnumb}, 
+	    \&{\fov v\_surfnumb}, \&{\fov mehlum\_surf}, \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

@@ -8,7 +8,7 @@ To compute a set of focal values on a uniform grid
 \end{minipg1} \\ \\
 SYNOPSIS\\
         \> void s2545(\begin{minipg3}
-            {\fov surf}, {\fov curvature\_type},  {\fov export\_par\_val},  {\fov pick\_subpart}, boundary[],  {\fov n\_u},  {\fov n\_v}, 
+            {\fov surf}, {\fov curvature\_type},  {\fov export\_par\_val},  {\fov pick\_subpart}, boundary,  {\fov n\_u},  {\fov n\_v}, 
        {\fov scale}, {\fov garr},  {\fov stat})
                 \end{minipg3}\\
                 \>\>    SISLSurf \> *{\fov surf};\\
@@ -89,19 +89,19 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
 		\>      \{ \\
-                \>\>    SISLSurf \> *{\fov surf};\\
-                \>\>    int \> {\fov curvature\_type};\\
-                \>\>    int \> {\fov export\_par\_val};\\
-                \>\>    int \> {\fov pick\_subpart};\\
-                \>\>    double \> {\fov boundary}[\,];\\
-                \>\>    int \> {\fov n\_u};\\
-                \>\>    int \> {\fov n\_v};\\
-                \>\>    double \> {\fov scale};\\
-                \>\>    double \> **{\fov garr};\\ 
-                \>\>    int \> *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf \> *{\fov surf}; \, /* Must be defined */\\
+                \>\>    int \> {\fov curvature\_type} = 0;\\
+                \>\>    int \> {\fov export\_par\_val} = 1;\\
+                \>\>    int \> {\fov pick\_subpart} 0;\\
+                \>\>    double \> {\fov boundary}[4]; \, /* Must be defined if pick\_subpart = 1*/\\
+                \>\>    int \> {\fov n\_u} = 10;\\
+                \>\>    int \> {\fov n\_v} = 10;\\
+                \>\>    double \> {\fov scale} = 1.0;\\
+                \>\>    double \> *{\fov garr} = NULL;\\ 
+                \>\>    int \> {\fov stat} = 0;\\                \>\>    \ldots \\
         \>\>s2545(\begin{minipg4}
             {\fov surf}, {\fov curvature\_type}, {\fov export\_par\_val}, {\fov pick\_subpart}, {\fov boundary}[], {\fov n\_u}, {\fov n\_v}, 
-       {\fov scale}, {\fov garr}, {\fov stat});
+       {\fov scale}, \&{\fov garr}, \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

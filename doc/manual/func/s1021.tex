@@ -37,11 +37,11 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov bottom\_pos}[3];\\
-        \>\>    double \> {\fov bottom\_axis}[3];\\
-        \>\>    double \> {\fov ellipse\_ratio};\\
-        \>\>    double \> {\fov axis\_dir}[3];\\
-        \>\>    double \> {\fov height};\\
+        \>\>    double \> {\fov bottom\_pos}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov bottom\_axis}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov ellipse\_ratio} = 1.0; /* Circular cylinder */\\
+        \>\>    double \> {\fov axis\_dir}[3]; \, /* Must be defined */\\
+        \>\>    double \> {\fov height}; \, /* Must be defined */\\
         \>\>    SISLSurf \> *{\fov cyl} = NULL;\\
         \>\>    int    \> {\fov stat} = 0;\\
         \>\>    \ldots \\

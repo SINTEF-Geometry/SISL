@@ -41,13 +41,13 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov curve};\\
-                \>\>    double    \>  {\fov ax}[\,];\\
-                \>\>    int    \>  {\fov num}\_ax;\\
-                \>\>    double    \>  {\fov VoC}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double    \>  {\fov ax}[10]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov num}\_ax = 10;\\
+                \>\>    double    \>  {\fov VoC}[10]; /* Size equal to num\_ax */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s2556(\begin{minipg4}
-             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov VoC}, jstat );
+             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov VoC}, \&jstat );
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

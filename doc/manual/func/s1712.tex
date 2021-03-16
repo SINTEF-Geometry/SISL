@@ -39,11 +39,11 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov begpar};\\
-                \>\>    double  \>      {\fov endpar};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      stat;\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov begpar}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov endpar}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      stat = 0;\\
                 \>\>    \ldots \\
         \>\>s1712(\begin{minipg4}
                 {\fov curve}, {\fov begpar}, {\fov endpar}, \&{\fov newcurve}, \&{\fov stat});

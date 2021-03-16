@@ -58,16 +58,16 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \> *{\fov curve};\\
-        \>\>    double  \>   {\fov point}[3];\\
+        \>\>    SISLCurve \> *{\fov curve}; \, /* Must be defined */\\
+        \>\>    double  \>   {\fov point}[3]; \,/* Must be defined */\\
         \>\>    int     \>   {\fov dim} = 3;\\
-        \>\>    double  \>   {\fov epsco};\\
-        \>\>    double  \>   {\fov epsge};\\
-        \>\>    int     \>   {\fov numintpt};\\
-        \>\>    double  \>   *{\fov intpar};\\
-        \>\>    int     \>   {\fov numintcu};\\
-        \>\>    SISLIntcurve \> **{\fov intcurve};\\
-        \>\>    int     \>   {\fov jstat};\\
+        \>\>    double  \>   {\fov epsco} = 1.9e-9; /* Not used */\\
+        \>\>    double  \>   {\fov epsge} = 1.0e-6;\\
+        \>\>    int     \>   {\fov numintpt} = 0;\\
+        \>\>    double  \>   *{\fov intpar} = NULLL;\\
+        \>\>    int     \>   {\fov numintcu} = 0;\\
+        \>\>    SISLIntcurve \> **{\fov intcurve} = NULL;\\
+        \>\>    int     \>   {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1953(\begin{minipg4}
           {\fov curve}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},

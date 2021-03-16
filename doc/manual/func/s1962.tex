@@ -108,23 +108,23 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    double \> {\fov ep}[\,];\\
-                \>\>    double \> {\fov ev}[\,];\\
-                \>\>    int    \>  {\fov im};\\
-                \>\>    int    \>  {\fov idim};\\
-                \>\>    int    \>  {\fov ipar};\\
-                \>\>    double \> {\fov epar}[\,];\\
-                \>\>    double \> {\fov eeps}[\,];\\
-                \>\>    int    \>  {\fov ilend};\\
-                \>\>    int    \>  {\fov irend};\\
-                \>\>    int    \>  {\fov iopen};\\
-                \>\>    int    \>  {\fov itmax};\\
-                \>\>    SISLCurve    \>  **{\fov rc};\\
-                \>\>    double \> {\fov emxerr}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    double \> {\fov ep}[120]; \, /* Must be defined */\\
+                \>\>    double \> {\fov ev}[120]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov im} = 40;\\
+                \>\>    int    \>  {\fov idim} = 3;\\
+                \>\>    int    \>  {\fov ipar} = 3;\\
+                \>\>    double \> {\fov epar}[40]; \, /* Must be defined. Used only if ipar = 3 */\\
+                \>\>    double \> {\fov eeps}[3]; \, /* Spatial dimension. Must be defined */\\
+                \>\>    int    \>  {\fov ilend} = 1;\\
+                \>\>    int    \>  {\fov irend} = 1;\\
+                \>\>    int    \>  {\fov iopen} = 1;\\
+                \>\>    int    \>  {\fov itmax} = 8;\\
+                \>\>    SISLCurve    \>  *{\fov rc} = NULL;\\
+                \>\>    double \> {\fov emxerr}[3]; \, /* Spatial dimension */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1962(\begin{minipg4}
             {\fov ep}, {\fov ev}, {\fov im}, {\fov idim}, {\fov ipar}, {\fov epar}, {\fov eeps}, {\fov ilend}, {\fov irend}, {\fov iopen}, {\fov itmax},
-            {\fov rc}, {\fov emxerr}, {\fov jstat});
+            \&{\fov rc}, {\fov emxerr}, \&{\fov jstat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

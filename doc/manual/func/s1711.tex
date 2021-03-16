@@ -41,12 +41,12 @@ ARGUMENTS\\
 \\ %\newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov pardir};\\
-                \>\>    double  \>      {\fov parval};\\
-                \>\>    SISLSurf        \>      *{\fov newsurf1};\\
-                \>\>    SISLSurf        \>      *{\fov newsurf2};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov pardir} = 2;\\
+                \>\>    double  \>      {\fov parval}; \, /* Must be defined */\\
+                \>\>    SISLSurf        \>      *{\fov newsurf1} = NULL;\\
+                \>\>    SISLSurf        \>      *{\fov newsurf2} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1711(\begin{minipg4}
                 {\fov surf}, {\fov pardir}, {\fov parval}, \&{\fov newsurf1}, \&{\fov newsurf2}, \&{\fov stat});

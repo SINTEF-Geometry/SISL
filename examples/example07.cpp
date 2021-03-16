@@ -94,7 +94,7 @@ int main(int avnum, char** vararg)
 	cout << "Computed length of curve: " << length << "\n";
 
 	// cleaning up
-	freeCurve(cv);
+	if (cv) freeCurve(cv);
 	is.close();
 
     } catch (exception& e) {

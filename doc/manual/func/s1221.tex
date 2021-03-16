@@ -71,12 +71,13 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov der} = 3;\\
-                \>\>    double  \>      {\fov parvalue};\\
-                \>\>    int     \>      {\fov leftknot} = 0;\\
-                \>\>    double  \>      {\fov derive}[12];\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov parvalue}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov leftknot} = 0; /* Define initially as zero. For consequtive evaluations \\
+                \>\>\>\>\>\> leave leftknot as returned from s1221 */\\
+                \>\>    double  \>      {\fov derive}[12]; /* Curve dimension times (der+1) */\\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1221(\begin{minipg4}
                 {\fov curve}, {\fov der}, {\fov parvalue}, \&{\fov leftknot},

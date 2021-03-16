@@ -113,21 +113,21 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov points}[300];\\
+        \>\>    double \> {\fov points}[300]; \, /* Must be defined */\\
         \>\>    int    \> {\fov im1} = 10;\\
         \>\>    int    \> {\fov im2} = 10;\\
         \>\>    int    \> {\fov idim} = 3;\\
-        \>\>    int    \> {\fov ipar};\\
-        \>\>    int    \> {\fov con1};\\
-        \>\>    int    \> {\fov con2};\\
-        \>\>    int    \> {\fov con3};\\
-        \>\>    int    \> {\fov con4};\\
-        \>\>    int    \> {\fov order1};\\
-        \>\>    int    \> {\fov order2};\\
-        \>\>    int    \> {\fov iopen1};\\
-        \>\>    int    \> {\fov iopen2};\\
-        \>\>    SISLSurf \> *{\fov rsurf};\\
-        \>\>    int    \> {\fov jstat};\\
+        \>\>    int    \> {\fov ipar} = 1;\\
+        \>\>    int    \> {\fov con1} = 0;\\
+        \>\>    int    \> {\fov con2} = 0;\\
+        \>\>    int    \> {\fov con3} = 0;\\
+        \>\>    int    \> {\fov con4}= 0;\\
+        \>\>    int    \> {\fov order1} = 4; /* Cubic */\\
+        \>\>    int    \> {\fov order2} = 4;\\
+        \>\>    int    \> {\fov iopen1} = 1;\\
+        \>\>    int    \> {\fov iopen2} = 0;\\
+        \>\>    SISLSurf \> *{\fov rsurf} = NULL;\\
+        \>\>    int    \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1536(\begin{minipg4}
           {\fov points}, {\fov im1}, {\fov im2}, {\fov idim}, {\fov ipar}, {\fov con1}, {\fov con2}, {\fov con3},

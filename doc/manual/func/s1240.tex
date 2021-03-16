@@ -34,10 +34,10 @@ NOTE\\
 \end{minipg6} \\ \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov epsge};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge} = 0.001;\\
                 \>\>    double  \>      {\fov length};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1240(\begin{minipg4}
                 {\fov curve}, {\fov epsge}, \&{\fov length}, \&{\fov stat});

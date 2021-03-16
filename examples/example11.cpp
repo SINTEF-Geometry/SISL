@@ -100,7 +100,7 @@ int main(int avnum, char** vararg)
 	writeGoSurface(result_surf, os_surf);
 
 	// cleaning up
-	freeSurf(result_surf);
+	if (result_surf) freeSurf(result_surf);
 	os_surf.close();
 
     } catch (exception& e) {

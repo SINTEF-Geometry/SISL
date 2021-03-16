@@ -42,12 +42,12 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    curve   \>      *{\fov curve1};\\
-                \>\>    curve   \>       *{\fov curve2};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov point}[3];\\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    curve   \>      *{\fov curve1}; \, /* Must be defined */\\
+                \>\>    curve   \>       *{\fov curve2}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge} = 0.001 ;\\
+                \>\>    double  \>      {\fov point}[3]; \, /* Dimension as for curve coefficients. Must be defined */\\
+                \>\>    SISLSurf        \>      *{\fov surf} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1332(\begin{minipg4}
                 {\fov curve1}, {\fov curve2}, {\fov epsge}, {\fov point}, \&{\fov surf}, \&{\fov stat});

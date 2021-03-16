@@ -90,7 +90,7 @@ int main(int avnum, char** vararg)
 	SISLCurve* result_curve = 0;
 	double* gpar = 0;
 	int jnbpar;
-	int jstat;
+	int jstat = 0;
 
 	s1356(points,        // pointer to where the point coordinates are stored
 	      num_points,    // number of points to be interpolated
@@ -133,8 +133,8 @@ int main(int avnum, char** vararg)
 	writeGoCurve(result_curve, os_curve);
 	
 	// cleaning up
-	freeCurve(result_curve);
-	free(gpar);
+	if (result_curve) freeCurve(result_curve);
+	if (gpar) free(gpar);
 	os_points.close();
 	os_curve.close();
 

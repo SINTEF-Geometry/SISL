@@ -88,10 +88,10 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curves}[8];\\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov numder}[4];\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curves}[8]; \, /* Must be defined */\\
+                \>\>    SISLSurf        \>      *{\fov surf} = NULL;\\
+                \>\>    int     \>      {\fov numder}[4]; /* Each entry is equal to 2 in this case */\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1390(\begin{minipg4}
                 {\fov curves}, \&{\fov surf}, {\fov numder}, \&{\fov stat})

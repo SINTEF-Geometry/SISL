@@ -88,14 +88,15 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov der1} = 2;\\
                 \>\>    int     \>      {\fov der2} = 1;\\
-                \>\>    double  \>      {\fov parvalue}[2];\\
-                \>\>    int     \>      {\fov leftknot1} = 0;\\
-                \>\>    int     \>      {\fov leftknot2} = 0;\\
-                \>\>    double  \>      {\fov derive}[18];\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov parvalue}[2]; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov leftknot1} = 0; /* Define initially as zero. For consequtive evaluations \\
+                \>\>\>\>\>\> leave leftknot1 as returned from s1424 */\\
+                \>\>    int     \>      {\fov leftknot2} = 0;; /* As for leftknot1 */ \\
+                \>\>    double  \>      {\fov derive}[18]; /* Length is spatial dimension times total number of entities */ \\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1424(\begin{minipg4}
                 {\fov surf}, {\fov der1}, {\fov der2}, {\fov parvalue}, \&{\fov leftknot1}, \&{\fov leftknot2}, {\fov derive}, \&{\fov stat});

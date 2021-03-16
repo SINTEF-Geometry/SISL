@@ -40,12 +40,12 @@ ARGUMENTS\\
                 \>\>\>\>\>              $< 0$   : error\\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov parval1};\\
-                \>\>    double  \>      {\fov parval2};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve1};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve2};\\
-                \>\>    int     \>      stat;\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov parval1}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov parval2}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov newcurve1} = NULL;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve2} = NULL;\\
+                \>\>    int     \>      stat = 0;\\
                 \>\>    \ldots \\
         \>\>s1714(\begin{minipg4}
                 {\fov curve}, {\fov parval1}, {\fov parval2}, \&{\fov newcurve1}, \&{\fov newcurve2}, \&{\fov stat});

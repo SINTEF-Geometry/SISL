@@ -86,7 +86,7 @@ int main(int avnum, char** vararg)
 	double epsge = 1.0e-5;     // geometric tolerance 
 	double direction[] = {0, 0, 1}; // the direction of the offset
 	int dim = 3; // the dimension of the Euclidean space
-	int jstat; // status variable
+	int jstat = 0; // status variable
 	SISLCurve* offset_curve = 0;
 
 	s1360(c1,            // the 'old' curve
@@ -112,8 +112,8 @@ int main(int avnum, char** vararg)
 	writeGoCurve(offset_curve, os);
 	
 	// cleaning up
-	freeCurve(c1);
-	freeCurve(offset_curve);
+	if (c1) freeCurve(c1);
+	if (offset_curve) freeCurve(offset_curve);
 	is.close();
 	os.close();
 

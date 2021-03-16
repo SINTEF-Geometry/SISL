@@ -46,11 +46,11 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \>  *{\fov pcurve};\\
-        \>\>    double    \>  {\fov epoint}[3];\\
+        \>\>    SISLCurve \>  *{\fov pcurve}; \, /* Must be defined */\\
+        \>\>    double    \>  {\fov epoint}[3]; \, /* Must be defined */\\
         \>\>    int       \>  {\fov idim} = 3;\\
-        \>\>    double    \>  {\fov aepsco};\\
-        \>\>    double    \>  {\fov aepsge};\\
+        \>\>    double    \>  {\fov aepsco} = 1.0e-9;  /* Not used */\\
+        \>\>    double    \>  {\fov aepsge} = 1.0e-6;\\
         \>\>    double    \>  {\fov gpar} = 0;\\
         \>\>    double    \>  {\fov dist} = 0;\\
         \>\>    int       \>  {\fov jstat} = 0;\\

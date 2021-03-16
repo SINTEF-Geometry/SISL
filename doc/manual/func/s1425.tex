@@ -165,15 +165,16 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLSurf    \>  *{\fov ps1};\\
+        \>\>    SISLSurf    \>  *{\fov ps1}; \, /* Must be defined */\\
         \>\>    int    \>  {\fov ider1} = 1;\\
         \>\>    int    \>  {\fov ider2} = 1;\\
-        \>\>    int    \>  {\fov iside1};\\
-        \>\>    int    \>  {\fov iside2};\\
-        \>\>    double \>  {\fov epar}[2];\\
-        \>\>    int    \>  {\fov ileft1} = 0;\\
-        \>\>    int    \>  {\fov ileft2} = 0;\\
-        \>\>    double \>  {\fov eder}[12];\\
+        \>\>    int    \>  {\fov iside1} = 0;\\
+        \>\>    int    \>  {\fov iside2} = -1;\\
+        \>\>    double \>  {\fov epar}[2]; \, /* Must be defined */\\
+        \>\>    int    \>  {\fov ileft1} = 0; /* Define initially as zero. For consequtive evaluations \\
+                \>\>\>\>\> leave ileft1 as returned from s1425 */\\
+        \>\>    int    \>  {\fov ileft2} = 0; /* As for ileft1 */\\
+        \>\>    double \>  {\fov eder}[12]; /* Length is spatial dimension times total number of entities */\\
         \>\>    int    \>  {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1425(\begin{minipg4}

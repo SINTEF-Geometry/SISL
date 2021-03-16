@@ -83,17 +83,17 @@ actually be points.
 \\ \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    double  \>      {\fov point}[30];\\
+                \>\>    double  \>      {\fov point}[30]; \, /* Must be defined */ \\
                 \>\>    int     \>      {\fov numpt} = 10;\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov typept}[10];\\
-                \>\>    int     \>      {\fov open};\\
-                \>\>    int     \>      {\fov order};\\
-                \>\>    double  \>      {\fov startpar};\\
-                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov typept}[10]; \, /* Must be defined */ \\
+                \>\>    int     \>      {\fov open} = 1;\\
+                \>\>    int     \>      {\fov order} = 4;\\
+                \>\>    double  \>      {\fov startpar} = 0.0;\\
+                \>\>    double  \>      {\fov epsge} = 0.0001;\\
                 \>\>    double  \>      {\fov endpar};\\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1611(\begin{minipg4}
                 {\fov point}, {\fov numpt}, {\fov dim}, {\fov typept}, {\fov open}, {\fov order}, {\fov startpar}, {\fov epsge},\linebreak

@@ -63,16 +63,16 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve \> *{\fov pc1};\\
-        \>\>    SISLCurve \> *{\fov pc2};\\
-        \>\>    double    \> {\fov aepsge};\\
-        \>\>    double    \> {\fov eps1}[2];\\
-        \>\>    double    \> {\fov eps2}[2];\\
-        \>\>    double    \> {\fov aradius};\\
-        \>\>    double    \> {\fov parpt1};\\
-        \>\>    double    \> {\fov parpt2};\\
+        \>\>    SISLCurve \> *{\fov pc1}; \,/* Must be defined */ \\
+        \>\>    SISLCurve \> *{\fov pc2}; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov aepsge} = 0.00001;\\
+        \>\>    double    \> {\fov eps1}[2]; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov eps2}[2]; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov aradius}; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov parpt1}; \,/* Must be defined */ \\
+        \>\>    double    \> {\fov parpt2}; \,/* Must be defined */ \\
         \>\>    double    \> {\fov centre}[2];\\
-        \>\>    int       \> {\fov jstat};\\
+        \>\>    int       \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1015(\begin{minipg4}
           {\fov pc1}, {\fov pc2}, {\fov aepsge}, {\fov eps1}, {\fov eps2}, {\fov aradius}, \&{\fov parpt1}, \&{\fov parpt2},

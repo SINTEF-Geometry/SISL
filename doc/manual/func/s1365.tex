@@ -24,11 +24,7 @@ ARGUMENTS\\
         \>\>    {\fov aoffset} \> - \>
         \begin{minipg2}
           The offset distance.
-          If $idim=2$ a positive signe on this value put the
-          offset on the side of the positive normal vector,
-          and a negative sign puts the offset on the sign
-          of the negative normal vector.
-          If $idim=3$ the offset is determined by the cross
+          The offset direction is determined by the normalized cross
           product of the tangent vector and the anorm vector.
           The offset distance is multiplied by this vector.
         \end{minipg2}\\[0.8ex]
@@ -43,7 +39,7 @@ ARGUMENTS\\
           If $amax=0$ then a maximal step length of the longest box side
           is used.
         \end{minipg2}\\[0.8ex]
-        \>\>    {\fov idim} \> - \> The dimension of the space (2 or 3).
+        \>\>    {\fov idim} \> - \> The dimension of the space (idim = 3 is required).
 \\
         \>Output Arguments:\\
         \>\>    {\fov rs} \> - \>
@@ -58,13 +54,13 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLSurf \> *{\fov ps};\\
-        \>\>    double   \> {\fov aoffset};\\
-        \>\>    double   \> {\fov aepsge};\\
-        \>\>    double   \> {\fov amax};\\
-        \>\>    int      \> {\fov idim};\\
-        \>\>    SISLSurf \> *{\fov rs};\\
-        \>\>    int      \> {\fov jstat};\\
+        \>\>    SISLSurf \> *{\fov ps}; \, /* Must be defined */\\
+        \>\>    double   \> {\fov aoffset}; \, /* Must be defined */\\
+        \>\>    double   \> {\fov aepsge} = 0.001;\\
+        \>\>    double   \> {\fov amax} = 0;\\
+        \>\>    int      \> {\fov idim} = 3;\\
+        \>\>    SISLSurf \> *{\fov rs} = NULL;\\
+        \>\>    int      \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1365(\begin{minipg4}
           {\fov ps}, {\fov aoffset}, {\fov aepsge}, {\fov amax}, {\fov idim}, \&{\fov rs}, \&{\fov jstat});

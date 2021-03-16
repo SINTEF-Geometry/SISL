@@ -87,7 +87,7 @@ void s1367(ps,aoffset,aepsge,idim,epar,ider,ilfs,ilft,eder,jstat)
 *                       The offset distance is multiplied by this vector.
 *              aepsge - Maximal deviation allowed between true offset surface
 *                       and the approximated offset surface.
-*              idim   - The dimension of the space (2 or 3).
+*              idim   - The dimension of the space (3).
 *              epar   - Parameter pair value at which to compute position
 *                       and derivatives.
 *              ider   - The number of derivatives to compute.

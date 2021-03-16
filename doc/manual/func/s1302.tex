@@ -57,13 +57,13 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov angle};\\
-                \>\>    double  \>      {\fov point}[3];\\
-                \>\>    double  \>      {\fov axis}[3];\\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge} = 0.0;\\
+                \>\>    double  \>      {\fov angle}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov point}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov axis}[3]; \, /* Must be defined */\\
+                \>\>    SISLSurf        \>      *{\fov surf} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>    s1302(\begin{minipg4}
                         {\fov curve}, {\fov epsge}, {\fov angle}, {\fov point}, {\fov axis}, \&{\fov surf}, \&{\fov stat});

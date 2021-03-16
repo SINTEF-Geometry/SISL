@@ -63,16 +63,16 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov point}[3];\\
+                \>\>    SISLSurf        \>      *{\fov surf} \, /* Must be defined */;\\
+                \>\>    double  \>      {\fov point}[3]; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numclopt};\\
-                \>\>    double  \>      *{\fov pointpar};\\
-                \>\>    int     \>      {\fov numclocr};\\
-                \>\>    SISLIntcurve\>  **{\fov clocurves};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */ \\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numclopt} = 0;\\
+                \>\>    double  \>      *{\fov pointpar} = NULL;\\
+                \>\>    int     \>      {\fov numclocr} = 0;\\
+                \>\>    SISLIntcurve\>  **{\fov clocurves} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1954(\begin{minipg4}
                 {\fov surf}, {\fov point}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numclopt}, \&{\fov pointpar},

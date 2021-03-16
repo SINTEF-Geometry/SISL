@@ -51,14 +51,14 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov epoint}[30];\\
+        \>\>    double \> {\fov epoint}[30]; \, /* Must be defined */ \\
         \>\>    int    \> {\fov inbpnt} = 10;\\
         \>\>    double \> {\fov astpar} = 0.0;\\
         \>\>    int    \> {\fov iopen} = 1;\\
         \>\>    int    \> {\fov idim} = 3;\\
         \>\>    int    \> {\fov ik} = 4;\\
         \>\>    SISLCurve \> *{\fov rc} = NULL;\\
-        \>\>    int    \> {\fov jstat};\\
+        \>\>    int    \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1630(\begin{minipg4}
           {\fov epoint}, {\fov inbpnt}, {\fov astpar}, {\fov iopen}, {\fov idim}, {\fov ik}, \&{\fov rc}, \&{\fov jstat});

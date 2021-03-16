@@ -1,4 +1,4 @@
-\subsection{Intersection between a surface and a straight line.}
+\subsection{Intersection between a spline surface and a straight line.}
 \funclabel{s1856}
 \begin{minipg1}
   Find all intersections between a tensor-product surface and an infinite straight
@@ -71,17 +71,17 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov point}[3];\\
-                \>\>    double  \>      {\fov linedir}[3];\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov point}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov linedir}[3]; \,/* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov pointpar};\\
-                \>\>    int     \>      {\fov numintcr};\\
-                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} =1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov pointpar} =  NULL;\\
+                \>\>    int     \>      {\fov numintcr} = 0;\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1856(\begin{minipg4}
                 {\fov surf}, {\fov point}, {\fov linedir}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt}, \&{\fov pointpar},

@@ -32,10 +32,10 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    SISLCurve    \>  *{\fov pc1};\\
-        \>\>    double \>  {\fov aepsge};\\
-        \>\>    int    \>  *{\fov jdgen};\\
-        \>\>    int    \>  *{\fov jstat};\\
+        \>\>    SISLCurve    \>  *{\fov pc1}; \, /* Must be defined */\\
+        \>\>    double \>  {\fov aepsge} = 1.0e-5;\\
+        \>\>    int    \>  *{\fov jdgen} = 0;\\
+        \>\>    int    \>  *{\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1451(\begin{minipg4}
           {\fov pc1}, {\fov aepsge}, {\fov jdgen}, {\fov jstat});

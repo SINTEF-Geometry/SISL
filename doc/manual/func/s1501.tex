@@ -84,8 +84,8 @@ ARGUMENTS\\
                                 \end{minipg2}\\
                 \>\>\>\>\>      0 -     \>Don't draw the curve.\\
                 \>\>\>\>\>      1 -     \>\begin{minipg5}
-                                        Draw the geometric curve. If this option
-                                        is used see NOTE!
+                                        Draw the geometric curve. This option is
+                                        outdated, if used see NOTE!
                                         \end{minipg5} \\[0.8ex]
         \>Input/Output Arguments:\\
         \>\>    {\fov intcurve}\> - \>  \begin{minipg2}
@@ -117,25 +117,24 @@ NOTE\\
 If the draw option is used the empty dummy functions s6move() and
 s6line() are called.
 Thus if the draw option is used, make sure
-you have versions of s6move() and s6line() interfaced to your graphic package.
-More about s6move() and s6line() on pages~\pageref{s6move} and~\pageref{s6line}.
+you have versions of functions s6move() and s6line() interfaced to your graphic package.
 \end{minipg6}\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov basept}[3];\\
-                \>\>    double  \>      {\fov normdir}[3];\\
-                \>\>    double  \>      {\fov ellipaxis}[3];\\
-                \>\>    double  \>      {\fov alpha};\\
-                \>\>    double  \>      {\fov ratio};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov basept}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov normdir}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov ellipaxis}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov alpha}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov ratio}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
                 \>\>    double  \>      {\fov maxstep} = 0.0;\\
-                \>\>    SISLIntcurve\>  *{\fov intcurve};\\
-                \>\>    int     \>      {\fov makecurv};\\
-                \>\>    int     \>      {\fov graphic};\\
+                \>\>    SISLIntcurve\>  *{\fov intcurve}; /* The intersection curve instance is defined in s1853 */\\
+                \>\>    int     \>      {\fov makecurv} = 2;\\
+                \>\>    int     \>      {\fov graphic} = 0;\\
                 \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1501(\begin{minipg4}

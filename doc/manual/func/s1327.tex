@@ -49,13 +49,13 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov pcold};\\
-                \>\>    double \> epoint[\,];\\
-                \>\>    double \> enorm1[\,];\\
-                \>\>    double \> enorm2[\,];\\
-                \>\>    int    \>  {\fov idim};\\
-                \>\>    SISLCurve    \>  **{\fov rcnew};\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov pcold}; \, /* Must be defined */\\
+                \>\>    double \> epoint[3]; \, /* Must be defined */\\
+                \>\>    double \> enorm1[3]; \, /* Must be defined */\\
+                \>\>    double \> enorm2[3]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov idim} = 3; /* Equal to curve dimension */ \\
+                \>\>    SISLCurve    \>  **{\fov rcnew} = NULL;\\
+                \>\>    int    \>  *{\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s1327(\begin{minipg4}
             {\fov pcold}, {\fov epoint}, {\fov enorm1}, {\fov enorm2}, {\fov idim}, {\fov rcnew}, {\fov jstat});
                 \end{minipg4}\\

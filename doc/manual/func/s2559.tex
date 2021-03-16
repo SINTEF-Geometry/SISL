@@ -50,16 +50,16 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov curve};\\
-                \>\>    double    \>  {\fov ax}[\,];\\
-                \>\>    int    \>  {\fov num}\_ax;\\
-                \>\>    double    \>  {\fov p}[\,];\\
-                \>\>    double    \>  {\fov t}[\,];\\
-                \>\>    double    \>  {\fov n}[\,];\\
-                \>\>    double    \>  {\fov b}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double    \>  {\fov ax}[10];\\
+                \>\>    int    \>  {\fov num}\_ax = 10;\\
+                \>\>    double    \>  {\fov p}[10]; /* Size equal to num\_ax */ \\
+                \>\>    double    \>  {\fov t}[10]; /* Size equal to num\_ax */\\
+                \>\>    double    \>  {\fov n}[10]; /* Size equal to num\_ax */\\
+                \>\>    double    \>  {\fov b}[10]; /* Size equal to num\_ax */\\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s2559(\begin{minipg4}
-             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov p},  {\fov t},  {\fov n},  {\fov b}, jstat );
+             {\fov curve},  {\fov ax}, num\_ {\fov ax},  {\fov p},  {\fov t},  {\fov n},  {\fov b}, \&jstat );
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

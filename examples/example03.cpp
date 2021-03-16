@@ -104,7 +104,7 @@ int main(int avnum, char** vararg)
 	// of control points is indicated by the data member 'in'.
 	double c1_endpar = c1->et[c1->in]; // end parameter of curve 1
 	double c2_endpar = c2->et[c2->in]; // end parameter of curve 2
-	int temp, jstat1, jstat2;
+	int temp, jstat1=0, jstat2=0;
 	
 	// evaluating endpoint positions of both curves
 	s1227(c1,          // input curve
@@ -129,7 +129,7 @@ int main(int avnum, char** vararg)
     
 	// calculating blend curve
 	SISLCurve* blend_curve = 0;
-	int jstat;
+	int jstat=0;
 
 	s1606(c1,           // the first input curve
 	      c2,           // the second input curve
@@ -157,9 +157,9 @@ int main(int avnum, char** vararg)
 	writeGoCurve(blend_curve, os);
 	
 	// cleaning up
-	freeCurve(blend_curve);
-	freeCurve(c1);
-	freeCurve(c2);
+	if (blend_curve) freeCurve(blend_curve);
+	if (c1) freeCurve(c1);
+	if (c2) freeCurve(c2);
 	os.close();
 	stream_1.close();
 	stream_2.close();

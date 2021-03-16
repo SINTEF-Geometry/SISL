@@ -1,7 +1,7 @@
-\subsection{Intersection between a curve and a cylinder.}
+\subsection{Intersection between a spline curve and a cylinder.}
 \funclabel{s1372}
 \begin{minipg1}
-  Find all the intersections between a curve and a cylinder.
+  Find all the intersections between a spline curve and a cylinder.
 
 \end{minipg1} \\ \\
 SYNOPSIS\\
@@ -61,18 +61,18 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov point}[3];\\
-                \>\>    double  \>      {\fov dir}[3];\\
-                \>\>    double  \>      {\fov radius};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov point}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov dir}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov radius}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov intpar};\\
-                \>\>    int     \>      {\fov numintcu};\\
-                \>\>    SISLIntcurve \> **{\fov intcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9 /* Not used */;\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov intpar} = NULL;\\
+                \>\>    int     \>      {\fov numintcu} = 0;\\
+                \>\>    SISLIntcurve \> **{\fov intcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1372(\begin{minipg4}
         {\fov curve}, {\fov point}, {\fov dir}, {\fov radius}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt},\\

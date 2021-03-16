@@ -68,15 +68,15 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      {\fov maxstep};\\
-                \>\>    int     \>      {\fov der};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve1};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve2};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve3};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov epsge}  = 0.0001;\\
+                \>\>    double  \>      {\fov maxstep} = 0.0;\\
+                \>\>    int     \>      {\fov der} = 1;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve1} = NULL;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve2} = NULL;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve3} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1383(\begin{minipg4}
                 {\fov surf}, {\fov curve}, {\fov epsge}, {\fov maxstep}, {\fov der}, \&{\fov newcurve1}, \&{\fov newcurve2}, \&{\fov newcurve3},

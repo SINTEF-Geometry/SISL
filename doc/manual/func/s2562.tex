@@ -68,18 +68,18 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLCurve    \>  *{\fov curve};\\
-                \>\>    double    \>  {\fov ax}[\,];\\
-                \>\>    int    \>  {\fov num}\_ax;\\
-                \>\>    int    \>  {\fov val}\_flag;\\
-                \>\>    double    \>  {\fov p}[\,];\\
-                \>\>    double    \>  {\fov t}[\,];\\
-                \>\>    double    \>  {\fov n}[\,];\\
-                \>\>    double    \>  {\fov b}[\,];\\
-                \>\>    double    \>  {\fov val}[\,];\\
-                \>\>    int    \>  *{\fov jstat};\\                \>\>    \ldots \\
+                \>\>    SISLCurve    \>  *{\fov curve}; \, /* Must be defined */\\
+                \>\>    double    \>  {\fov ax}[10]; \, /* Must be defined */\\
+                \>\>    int    \>  {\fov num}\_ax = 10;\\
+                \>\>    int    \>  {\fov val}\_flag = 1;\\
+                \>\>    double    \>  {\fov p}[30]; /* Size equal to dimension times num\_ax */ \\
+                \>\>    double    \>  {\fov t}[30]; /* Size equal to dimension times num\_ax */ \\
+                \>\>    double    \>  {\fov n}[30]; /* Size equal to dimension times num\_ax */ \\
+                \>\>    double    \>  {\fov b}[30]; /* Size equal to dimension times num\_ax */ \\
+                \>\>    double    \>  {\fov val}[10]; /* Size equal to num\_ax */ \\
+                \>\>    int    \>  {\fov jstat} = 0;\\                \>\>    \ldots \\
         \>\>s2562(\begin{minipg4}
-             {\fov curve},  {\fov ax}, num\_ {\fov ax}, val\_ {\fov flag},  {\fov p},  {\fov t},  {\fov n},  {\fov b},  {\fov val}, jstat );
+             {\fov curve},  {\fov ax}, num\_ {\fov ax}, val\_ {\fov flag},  {\fov p},  {\fov t},  {\fov n},  {\fov b},  {\fov val}, \&jstat );
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

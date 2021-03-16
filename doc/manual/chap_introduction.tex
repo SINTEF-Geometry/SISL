@@ -35,27 +35,57 @@ will also handle continuous curves and surfaces, including piecewise
 linear ones.
 
 \medskip
-SISL is divided into seven modules, partly in order to provide a logical
-structure, but also to enable users with a specific application to use
-subsets of SISL. There are three modules dealing with curves, three with
-surfaces, and one module to perform data reduction on curves and
-surfaces (this last module is largely in Fortran). The modules for
-curves and surfaces focus on functions for creation and definition,
-intersection and interrogation, and general utilities.
+All arrays in SISL are 1-dimensional. In an array with points or vertices
+are the points stored consecutively. In a raster are points or vertices
+stored consecutively while points in the first parameter direction have
+the shortest stride (stored right after each other). There is a special
+rule for vertices given as input to a rational curve or surface, see the
+Sections~\ref{sec:newCurve} and~\ref{sec:newSurf}.
 
 The three important data structures used by SISL are SISLCurve,
 SISLSurf, and SISLIntcurve. These are defined in the Curve Utilities,
-Surface Utilities, and Surface Interrogation modules respectively. It is
+Surface Utilities, and Surface Interrogation modules respectively. Other
+structures are SISLBox and SISLCone, which represents a bounding box and
+a normal cone, respectively. It is
 important to remember to always free these structures and also to free
 internally allocated structures used to pass results to the application,
 otherwise strange errors might result.
 
-Each chapter in this manual contains information concerning the top
+The various functions are equipped with a status variable, typically
+placed as the last entity in the parameter list. It returns information
+about whether or not the function succeeded in its purpose. A negative
+value means failure, the result zero means success while a positive
+number is a warning. Section~\ref{errorcodes} provides a list over
+possible error messages where most occurances are explained. 
+
+\medskip
+SISL is divided into seven modules, partly in order to provide a logical
+structure, but also to enable users with a specific application to use
+subsets of SISL. There are three modules dealing with curves, three with
+surfaces, and one module to perform data reduction on curves and
+surfaces. The modules for
+curves and surfaces focus on functions for creation and definition,
+intersection and interrogation, and general utilities.
+
+The chapters in this manual contains information concerning the top
 level functions of each module. Lower level functions not usually
 required by an application are not included. Each top level function is
 documented by describing the purpose, the input and output arguments and
 an example of use. To get you started, this chapter contains an Example
 Program.
+
+\medskip
+SISL is a mature library that is no longer subject to the introduction of new functionality.
+This version of the library differ from the previous one by bug fixing and
+an update of the documentation. SINTEF Mathematics and Cybernetics provide, in
+addition to SISL, GoTools. This is a collection of geometry libraries written
+in C++ that complements SISL. New geometry software development is integrated
+into GoTools. Corresponding geometry entities like NURBS curves and surfaces
+have different representations in SISL and GoTools, but conversion
+functionality exist and is placed in GoTools as well as a viewer of a set of geometry
+entities including NURBS curves and surfaces. An overview of the interplay
+between SISL and GoTools will be provided in the end of this document.
+
 
 %\vfill
 %\newpage
@@ -92,9 +122,9 @@ in the argument list.
 
 \vfill
 \newpage
-\section{Creating a Program}
+\section{Creating the library}
 
-In order to access SISL from your program you need only one inclusion, namely
+In order to access SISL from your program you need one library inclusion, namely
 the header file sisl.h. The statement
 \begin{verbatim}
 #include "sisl.h"
@@ -104,148 +134,184 @@ In this header file all types
 are defined.
 It also contains all the
 SISL top level function declarations.
+Memory management and input/output require two more includes to avoid compiler warnings,
+see Section~\ref{sec:exampleprog}.
 
+SISL is prepared for makefile generation with CMake and equipped with a CMakeLists.txt file.
+For information on using CMake, see www.cmake.org. The building procedure depends on whether your platform is
+Linux or Windows.
 
-To compile the calling program you merely need to remember to include
-the name of the directory where sisl.h resides.
-For example, if the directory is called sisldir then,
+\medskip
+    {\noindent \bf LINUX}
+
+Start by creating a build directory:
 \begin{verbatim}
-$ cc -c -Isisldir prog1.c
+$ cd <path_to_source_code>
+$ mkdir build
+$ cd build
 \end{verbatim}
-will compile the source code prog1.c to produce prog1.o.
 
-In order to build the executable, the $c$ parts of the
-SISL library libsislc.a must be included. Thus
+Run the cmake program to setup the build process, selecting Debug or Release
+as build type, optionally selecting a local install folder:
 \begin{verbatim}
-$ cc prog1.o -Lsisldir -lsisl -o prog1
+$ cmake .. -DCMAKE_BUILD_TYPE=Release (-DCMAKE_INSTALL_PREFIX=$HOME/install)
 \end{verbatim}
-will build the test program prog1. See the next section for an example.
+
+For a gui-like cmake interface use ccmake (from cmake-ncurses-gui) or cmake-gui (from cmake.org).
+
+Build the library:
+\begin{verbatim}
+$ make
+\end{verbatim}
+This will install the library in the build folder. Compilation and build of one particular
+example program is done by a specific make statement:
+\begin{verbatim}
+$ make example01
+\end{verbatim}
+This option requires compilation of examples to be set in the Makefile.
+
+Install the library to a local folder (requires the use of
+-DCMAKE\_INSTALL\_PREFIX with a local folder in the previous step):
+\begin{verbatim}
+$ make install
+\end{verbatim}
+
+If the -DCMAKE\_INSTALL\_PREFIX in the cmake step was omitted or was set to a
+system folder (like /usr/local) the user needs elevated privileges to install
+the library:
+\begin{verbatim}
+$ sudo make install
+\end{verbatim}
+
+\medskip
+{\noindent \bf Windows}
+
+Add a new build folder somewhere. Start the CMake
+executable and fill in the paths to the source and build folders. When
+you run CMake, a Visual Studio project solution file will be generated
+in the build folder.
+
+
 
 \newpage
-\section{An Example Program}
+\section{An Example Program} \label{sec:exampleprog}
 
 To clarify the previous section here is an example program designed to
 test the SISL algorithm for intersecting a cone with
-a B-spline curve. The program calls the SISL routines newCurve() and s1373().
+a B-spline curve. The program calls the SISL routines newCurve() documented in
+Section ~\ref{sec:newCurve}, freeCurve() documented in~\ref{sec:freeCurve},
+s1373() found in Section~\ref{sec:s1373} and freeIntcrvlist() in~\ref{sec:freeIntcrvlist}.
 
 \begin{verbatim}
 #include "sisl.h"
+#include <stdlib.h>  
+#include <stdio.h>
 
-
-main()
+int main()
 {
+  SISLCurve *pc=NULL;                 /* Pointer to spline curve */
+  double aepsco,aepsge;               /* Tolerances */
+  double top[3],axispt[3],conept[3];  /* Representating the cone */
+  double st[100],scoef[100];          /* Knot vector and coefficients of spline curve */
+  double *spar=NULL;                  /* Parameter values of intersection points */
+  int kstat;                          /* Return status from function calls */
+  int cone_exists=0;
+  int kk,kn,kdim;                     /* Order (polynomial degree+1), number of 
+                                         coefficients and spatial dimension */
+  int ki;                             /* Counter */
+  int kpt,kcrv;                       /* Number of intersection points and curves */
+  SISLIntcurve **qrcrv=NULL;          /* Array of pointer to intersection curves  */
+  char ksvar[100];                    
+  kdim=3;
+  aepsge=0.001; /* Geometric tolerance */
+  aepsco=0.000001; /* Computational tolerance. This parameter is included from 
+                      historical reasons and no longer used */
 
-SISLCurve *pc=NULL;
-
-double aepsco,aepsge,top[3],axispt[3],conept[3];
-
-double st[100],stcoef[100],*spar;
-
-int kstat;
-int cone_exists=FALSE;
-
-int kk,kn,kdim,ki;
-int kpt,kcrv;
-SISLIntcurve **qrcrv;
-char ksvar[100];
-
-kdim=3;
-
-aepsge=0.001;   /* geometric tolerance */
-aepsco=0.000001;   /* computational tolerance */
-
-loop:
-printf("\n     cu - define a new B-spline curve");
-printf("\n     co - define a new cone");
-printf("\n     i  - intersect the B-spline curve with the cone");
-printf("\n     q  - quit");
-printf("\n> ");
-scanf("%s",ksvar);
-
-
-
-if (ksvar[0] == 'c' && ksvar[1] == 'u')
-{
-
-    printf("\n Give number of vertices, order of curve: ");
-    scanf("%d %d", &kn, &kk);
-    printf("Give knots values in ascending order: \n");
-
-    for (ki=0;ki<kn+kk;ki++)
+  ksvar[0] = '0';  /* Arbitrary character */
+  while (ksvar[0] != 'q')
     {
-        scanf("%lf",&st[ki]);
+      printf("\n cu - define a new B-spline curve");
+      printf("\n co - define a new cone");
+      printf("\n i - intersect the B-spline curve with the cone");
+      printf("\n q - quit");
+      printf("\n> ");
+      scanf("%s",ksvar);
+
+      if (ksvar[0] == 'c' && ksvar[1] == 'u')
+        {
+          /* Define spline curve */
+          printf("\n Give number of vertices, order of curve: ");
+          scanf("%d %d", &kn, &kk);
+          printf("Give knots values in ascending order: \n");
+          for (ki=0; ki<kn+kk; ki++)
+            {
+               scanf("%lf",&st[ki]);
+            }
+          printf("Give vertices \n");
+          for (ki=0; ki<kn*kdim; ki++)
+            {
+              scanf("%lf",&scoef[ki]);
+            }
+         if(pc) freeCurve(pc);
+
+          /* Create curve */
+          pc = newCurve(kn,kk,st,scoef,1,kdim,1);
+        }
+      else if (ksvar[0] == 'c' && ksvar[1] == 'o')
+       {
+         printf("\n Give top point: ");
+         scanf("%lf %lf %lf",&top[0],&top[1],&top[2]);
+         printf("\n Give a point on the axis: ");
+         scanf("%lf %lf %lf",&axispt[0],&axispt[1],&axispt[2]);
+         printf("\n Give a point on the cone surface: ");
+         scanf("%lf %lf %lf",&conept[0],&conept[1],&conept[2]);
+         cone_exists=1;
+       }
+      else if (ksvar[0] == 'i' && cone_exists && pc)
+       {
+         /* Intersect spline curve with cone */
+         s1373(pc,top,axispt,conept,kdim,aepsco,aepsge,
+               &kpt,&spar,&kcrv,&qrcrv,&kstat);
+         printf("\n kstat %d",kstat);
+         printf("\n kpt %d",kpt);
+         printf("\n kcrv %d",kcrv);
+         for (ki=0;ki<kpt;ki++)
+          {
+            printf("\nIntersection point %lf",spar[ki]);
+          }
+        if (spar)
+          {
+            /* The array containing parameter values of the intersection points between
+               the curve and the cone is allocated inside s1373 and must be freed */
+            free (spar);
+            spar=NULL;
+          }
+        if (qrcrv)
+         {
+           /* The array containing pointers to intersection points curves between
+              the curve and the cone is allocated inside s1373 and must be freed.
+              This is done in a special function taking care of the intersection
+              curves themselves */
+          freeIntcrvlist(qrcrv,kcrv);
+          qrcrv=NULL;
+        }
+      }
     }
-
-    printf("Give vertices \n");
-
-    for (ki=0;ki<kn*kdim;ki++)
-    {
-        scanf("%lf",&stcoef[ki]);
-    }
-
-    if(pc) freeCurve(pc);
-    pc = newCurve(kn,kk,st,stcoef,1,kdim,1);
-
-}
-else if (ksvar[0] == 'c' && ksvar[1] == 'o')
-{
-
-    printf("\n Give top point: ");
-    scanf("%lf %lf %lf",&top[0],&top[1],&top[2]);
-
-    printf("\n Give a point on the axis: ");
-    scanf("%lf %lf %lf",&axispt[0],&axispt[1],&axispt[2]);
-
-    printf("\n Give a point on the cone surface: ");
-    scanf("%lf %lf %lf",&conept[0],&conept[1],&conept[2]);
-
-    cone_exists=TRUE;
-
-}
-
-
-else if (ksvar[0] == 'i' && cone_exists && pc)
-{
-
-    s1373(pc,top,axispt,conept,kdim,aepsco,aepsge,
-      &kpt,&spar,&kcrv,&qrcrv,&kstat);
-
-    printf("\n kstat %d",kstat);
-    printf("\n kpt   %d",kpt);
-    printf("\n kcrv  %d",kcrv);
-    for (ki=0;ki<kpt;ki++)
-    {
-        printf("\nIntersection point %lf",spar[ki]);
-    }
-    if (spar)
-    {
-        free (spar);
-        spar=NULL;
-    }
-    if (qrcrv)
-    {
-        freeIntcrvlist(qrcrv,kcrv);
-        qrcrv=NULL;
-    }
+  return 0;
 }
 
-
-else if (ksvar[0] == 'q')
-{
-    return;
-}
-
-goto loop;
-}
 \end{verbatim}
-Note the include statement.
-\vfill
-\newpage
-The program was compiled and built using the commands:
+Note that sisl.h is included. stdlib.h is included to declare free, which
+releases memory allocated in the function s1373. stdio.h declares printf and
+scanf.
+
+\bigskip
+
+The program was compiled and built using the command:
 \begin{verbatim}
-$ cc -c -Isisldir prog1.c
-$ cc prog1.o -Lsisldir -lsisl -o prog1
+$ make prog1
 \end{verbatim}
+Note that the program must be placed in the app folder and sisl\_COMPILE\_APPS must be set to true.
 
 A sample run of prog1 went as follows:
 \begin{verbatim}

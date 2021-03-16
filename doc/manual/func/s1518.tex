@@ -63,17 +63,17 @@ ARGUMENTS\\
 EXAMPLE OF USE\\
 		\>      \{ \\
 
-                \>\>    SISLSurf    \>  *{\fov surf};\\
-                \>\>    double \> point[\,];\\
-                \>\>    double \> dir[\,];\\
-                \>\>    double \> epsge;\\
-                \>\>    double \> start[\,];\\
-                \>\>    double \> end[\,];\\
-                \>\>    double \> parin[\,];\\
-                \>\>    double \> parout[\,];\\
-                \>\>    int    \>  *{\fov stat};\\                \>\>    \ldots \\
+                \>\>    SISLSurf    \>  *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double \> point[3]; \,/* Must be defined */\\
+                \>\>    double \> dir[3]; \, /* Must be defined */\\
+                \>\>    double \> epsge = 1.0e-6;\\
+                \>\>    double \> start[2]; \,/* Must be defined */\\
+                \>\>    double \> end[2]; \, /* Must be defined */\\
+                \>\>    double \> parin[2]; \, /* Guess parameter. Must be defined */\\
+                \>\>    double \> parout[2];\\
+                \>\>    int    \>  {\fov stat} = 0;\\                \>\>    \ldots \\
         \>    \>s1518(\begin{minipg4}
-            {\fov surf},  {\fov point},  {\fov dir},  {\fov epsge},  {\fov start},  {\fov end},  {\fov parin},  {\fov parout},  {\fov stat});
+            {\fov surf},  {\fov point},  {\fov dir},  {\fov epsge},  {\fov start},  {\fov end},  {\fov parin},  {\fov parout},  \&{\fov stat});
                 \end{minipg4}\\
                 \>\>    \ldots \\
 		\>      \}

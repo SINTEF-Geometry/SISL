@@ -37,12 +37,15 @@ EXAMPLE OF USE\\
                 \>      \{ \\
                 \>\>    double          \>{\fov startpt}[2];\\
                 \>\>    double          \>{\fov endpt}[2];\\
-                \>\>    int             \>{\fov order};\\
-                \>\>    int             \>{\fov dim};\\
-                \>\>    double          \>{\fov startpar};\\
+                \>\>    int             \>{\fov order}=2;  /* If a higher order is requested will a degree \\
+                \>\>\>\>\> one curve be constructed and degree raising \\
+                \>\>\>\>\> performed to reach the requested order */ \\
+                \>\>    int             \>{\fov dim}=2; /* Corresponds to the number of parameters \\
+                \>\>\>\>\> in startpt and endpt */\\
+                \>\>    double          \>{\fov startpar}=0.0;\\
                 \>\>    double          \>{\fov endpar};\\
-                \>\>    SISLCurve               \>*{\fov curve};\\
-                \>\>    int             \>{\fov stat};\\
+                \>\>    SISLCurve               \>*{\fov curve}=NULL;\\
+                \>\>    int             \>{\fov stat}=0;\\
                 \>\>    \ldots \\
         \>\>s1602(\begin{minipg4}
                 {\fov startpt}, {\fov endpt}, {\fov order}, {\fov dim},

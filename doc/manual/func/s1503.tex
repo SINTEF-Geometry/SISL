@@ -1,4 +1,4 @@
-\subsection{Find the topology for the intersection of a surface and an
+\subsection{Find the topology for the intersections between a spline surface and an
 \mbox{elliptic} cone.}
 \funclabel{s1503}
 \begin{minipg1}
@@ -89,21 +89,20 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLSurf        \>      *{\fov surf};\\
-                \>\>    double  \>      {\fov basept}[3];\\
-                \>\>    double  \>      {\fov normdir}[3];\\
-                \>\>    double  \>      {\fov ellipaxis}[3];\\
-                \>\>    double  \>      {\fov alpha};\\
-                \>\>    double  \>      {\fov ratio};\\
-                \>\>    double  \>      {\fov alpha};\\
+                \>\>    SISLSurf        \>      *{\fov surf}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov basept}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov normdir}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov ellipaxis}[3]; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov alpha}; \, /* Must be defined */\\
+                \>\>    double  \>      {\fov ratio}; \, /* Must be defined */\\
                 \>\>    int     \>      {\fov dim} = 3;\\
-                \>\>    double  \>      {\fov epsco};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    int     \>      {\fov numintpt};\\
-                \>\>    double  \>      *{\fov pointpar};\\
-                \>\>    int     \>      {\fov numintcr};\\
-                \>\>    SISLIntcurve\>  **{\fov intcurves};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    double  \>      {\fov epsco} = 1.0e-9; /* Not used */\\
+                \>\>    double  \>      {\fov epsge} = 1.0e-6;\\
+                \>\>    int     \>      {\fov numintpt} = 0;\\
+                \>\>    double  \>      *{\fov pointpar} = NULL;\\
+                \>\>    int     \>      {\fov numintcr} = 0;\\
+                \>\>    SISLIntcurve\>  **{\fov intcurves} = NULL;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1503(\begin{minipg4}
                 {\fov surf}, {\fov basept}, {\fov normdir}, {\fov ellipaxis}, {\fov alpha}, {\fov ratio}, {\fov dim}, {\fov epsco}, {\fov epsge}, \&{\fov numintpt}, \&{\fov pointpar},

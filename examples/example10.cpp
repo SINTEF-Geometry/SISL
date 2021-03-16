@@ -123,7 +123,7 @@ int main(int avnum, char** vararg)
 	SISLSurf* result_surf = 0;
 	double* gpar = 0;
 	vector<int> cv_type(num_curves, 1); // to indicate that all curves are 'ordinary'
-	int jstat;
+	int jstat = 0;
 	
 	s1538(num_curves,   // the number of curves that are used to generate the lofted surf.
 	      &curves[0],   // pointer to the array of input curves
@@ -146,11 +146,11 @@ int main(int avnum, char** vararg)
 	writeGoSurface(result_surf, os_surf);
 
 	// cleaning up
-	free(gpar);
+	if (gpar) free(gpar);
 	for (int i = 0; i < num_curves; ++i) {
-	    freeCurve(curves[i]);
+	  if (curves[i]) freeCurve(curves[i]);
 	}
-	freeSurf(result_surf);
+	if (result_surf) freeSurf(result_surf);
 	os_surf.close();
 	os_curves.close();
 

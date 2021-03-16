@@ -77,17 +77,17 @@ ARGUMENTS\\
 \\
 EXAMPLE OF USE\\
         \>      \{ \\
-        \>\>    double \> {\fov ep}[30];\\
-        \>\>    double \> {\fov eder10}[30];\\
-        \>\>    double \> {\fov eder01}[30];\\
-        \>\>    double \> {\fov eder11}[30];\\
-        \>\>    double \> {\fov epar1}[2];\\
-        \>\>    double \> {\fov epar2}[5];\\
+        \>\>    double \> {\fov ep}[30]; \, /* Must be defined */\\
+        \>\>    double \> {\fov eder10}[30]; \, /* Must be defined */\\
+        \>\>    double \> {\fov eder01}[30]; \, /* Must be defined */\\
+        \>\>    double \> {\fov eder11}[30]; \, /* Must be defined */\\
+        \>\>    double \> {\fov epar1}[2]; \, /* Must be defined */\\
+        \>\>    double \> {\fov epar2}[5]; \, /* Must be defined */\\
         \>\>    int    \> {\fov im1 = 2};\\
         \>\>    int    \> {\fov im2 = 5};\\
         \>\>    int    \> {\fov idim = 3};\\
-        \>\>    SISLSurf \>  *{\fov rsurf};\\
-        \>\>    int    \> {\fov jstat};\\
+        \>\>    SISLSurf \>  *{\fov rsurf} = NULL;\\
+        \>\>    int    \> {\fov jstat} = 0;\\
         \>\>    \ldots \\
         \>\>s1530(\begin{minipg4}
           {\fov ep}, {\fov eder10}, {\fov eder01}, {\fov eder11}, {\fov epar1}, {\fov epar2},

@@ -42,12 +42,12 @@ ARGUMENTS\\
 \newpagetabs
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve1};\\
-                \>\>    SISLCurve       \>      *{\fov curve2};\\
-                \>\>    int     \>      {\fov end1};\\
-                \>\>    int     \>      {\fov end2};\\
-                \>\>    SISLCurve       \>      *{\fov newcurve};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve1}; \, /* Must be defined */\\
+                \>\>    SISLCurve       \>      *{\fov curve2}; \, /* Must be defined */\\
+                \>\>    int     \>      {\fov end1} = 1;\\
+                \>\>    int     \>      {\fov end2} = 0;\\
+                \>\>    SISLCurve       \>      *{\fov newcurve} = NULL;\\
+                \>\>    int     \>      {\fov stat = 0};\\
                 \>\>    \ldots \\
         \>\>s1715(\begin{minipg4}
                 {\fov curve1}, {\fov curve2}, {\fov end1}, {\fov end2}, \&{\fov newcurve}, \&{\fov stat});

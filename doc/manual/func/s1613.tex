@@ -41,11 +41,11 @@ ARGUMENTS\\
                 \>\>\>\>\>              $< 0$   : error\\
 EXAMPLE OF USE\\
                 \>      \{ \\
-                \>\>    SISLCurve       \>      *{\fov curve};\\
-                \>\>    double  \>      {\fov epsge};\\
-                \>\>    double  \>      *{\fov points};\\
-                \>\>    int     \>      {\fov numpoints};\\
-                \>\>    int     \>      {\fov stat};\\
+                \>\>    SISLCurve       \>      *{\fov curve}; \,/* Must be defined */\\
+                \>\>    double  \>      {\fov epsge}; \, /* Must be defined */\\
+                \>\>    double  \>      *{\fov points} = NULL;\\
+                \>\>    int     \>      {\fov numpoints} = 0;\\
+                \>\>    int     \>      {\fov stat} = 0;\\
                 \>\>    \ldots \\
         \>\>s1613(\begin{minipg4}
                 {\fov curve}, {\fov epsge}, \&{\fov points}, \&{\fov numpoints}, \&{\fov stat});
