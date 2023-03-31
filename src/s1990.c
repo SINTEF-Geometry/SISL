@@ -528,12 +528,21 @@ void s1990(ps,aepsge,jstat)
 	    }
 	  else
 	    {
-	       /* Three points describing a plane found, continue subdividing. */
+	      /* TEST */
+	      if (kdim == 3)
+		{
+		  s6crss(svec1, svec2, ps->pdir->ecoef);
+		  s6norm(ps->pdir->ecoef, kdim, ps->pdir->ecoef, &kstat);
+		}
+	      else
+		{
+		  /*  Three points describing a plane found, continue subdividing.*/ 
 	       if (ps->et1[kn1] - ps->et1[ps->ik1-1] >=
 		   ps->et2[kn2] - ps->et2[ps->ik2-1])
 		  ps->pdir->igtpi = 1;
 	       else
-	       ps->pdir->igtpi = 2; 
+	       ps->pdir->igtpi = 2;
+		}
 	    }
 	}
     }

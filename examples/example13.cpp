@@ -74,19 +74,24 @@ int main(int avnum, char** vararg)
     cout << "To proceed, press enter, or ^C to quit." << endl;
     getchar();
 
-    try {
-	ifstream is_sf1(IN_FILE_SURFACE_1.c_str());
-	ifstream is_sf2(IN_FILE_SURFACE_2.c_str());
-	if (!is_sf1 || !is_sf2) {
-	    throw runtime_error("Could not open input files.  Hav you run "
-				"the necessary example programs? (example10 "
-				"and example11).");
-	}
+    ifstream is_sf1(vararg[1]);
+    ifstream is_sf2(vararg[2]);
+    double eps = atof(vararg[3]);
+    ofstream os(vararg[4]);
 
-	ofstream os(OUT_FILE_CURVE.c_str());
-	if (!os) {
-	    throw runtime_error("Unable to open output file.");
-	}
+    try {
+    // 	ifstream is_sf1(IN_FILE_SURFACE_1.c_str());
+    // 	ifstream is_sf2(IN_FILE_SURFACE_2.c_str());
+    // 	if (!is_sf1 || !is_sf2) {
+    // 	    throw runtime_error("Could not open input files.  Hav you run "
+    // 				"the necessary example programs? (example10 "
+    // 				"and example11).");
+    // 	}
+
+    // 	ofstream os(OUT_FILE_CURVE.c_str());
+    // 	if (!os) {
+    // 	    throw runtime_error("Unable to open output file.");
+    // 	}
 
 	// reading surfaces
 	SISLSurf* surf_1 = readGoSurface(is_sf1);
@@ -106,7 +111,7 @@ int main(int avnum, char** vararg)
 	s1859(surf_1,          // the first surface
 	      surf_2,          // the second surface
 	      epsco,           // computational resolution
-	      epsge,           // geometry resolution
+	      eps,           // geometry resolution
 	      &num_int_points, // number of single intersection points
 	      &intpar_surf_1,  // pointer to array of parameter values for surface 1
 	      &intpar_surf_2,  //               -"-                    for surface 2

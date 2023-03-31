@@ -141,6 +141,9 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
 			   The sequence is a11, a12, a21, a22.        */
    double Su[3];        /* Tangent in first parameter direction.      */
    double Sv[3];        /* Tangent in second parameter direction.     */
+   double H, K;
+   double k1_2, k2_2, lambda1, lambda2, du1, du2, dv1, dv2;
+   double swap;
 
    if (surf->idim == 1 || surf->idim == 3) /* 1D and 3D surface */
    {
@@ -183,7 +186,21 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
 	 denom;
       transform[3] = (fundform[1]*fundform[4] - fundform[0]*fundform[5])/
 	 denom;
-      
+
+      /* H = (fundform[2]*fundform[3] + fundform[0]*fundform[5] - */
+      /* 	   2.0*fundform[1]*fundform[4])/(2.0*denom); */
+      /* K = (fundform[3]*fundform[5] - fundform[4]*fundform[4])/denom; */
+      /* k1_2 = H + sqrt(H*H - K); */
+      /* k2_2 = H - sqrt(H*H - K); */
+      /* if (fabs(fundform[5]-k1_2*fundform[2]) > fabs(fundform[4]-k1_2*fundform[1])) */
+      /* 	lambda1 = -(fundform[4] - k1_2*fundform[1])/(fundform[5]-k1_2*fundform[2]); */
+      /* else */
+      /* 	lambda1 = -(fundform[3] - k1_2*fundform[0])/(fundform[4]-k1_2*fundform[1]); */
+      /* if (fabs(fundform[5]-k2_2*fundform[2]) > fabs(fundform[4]-k2_2*fundform[1])) */
+      /* 	lambda2 = -(fundform[4] - k2_2*fundform[1])/(fundform[5]-k2_2*fundform[2]); */
+      /* else */
+      /* 	lambda2 = -(fundform[3] - k2_2*fundform[0])/(fundform[4]-k2_2*fundform[1]); */
+
       /* Calculate the principal curvature. */
       
       a = 1.;
@@ -306,6 +323,18 @@ s2543(SISLSurf *surf, int ider, double derive[], double normal[], double *k1,
       goto err105;
    }
 
+   if (fabs(*k1) > fabs(*k2))
+     {
+       swap = *k1;
+       *k1 = *k2;
+       *k2 = swap;
+       swap = d1[0];
+       d1[0] = d2[0];
+       d2[0] = swap;
+       swap = d1[1];
+       d1[1] = d2[1];
+       d2[1] = swap;
+     }
    
    /* Successful computations  */
    
