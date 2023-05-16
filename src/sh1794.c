@@ -142,6 +142,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
   int nseg = 0;         /* Number of segmentation parameters        */
   double ptol = 100*REL_PAR_RES;
   double tpar;    /* Parameter value at the end of the zone         */
+  double tpar2;
   double tprev;   /* Previous estimate for parameter value          */
   double tdistprev, tdist0;  /* Distance at previous parameter value        */
   double initdist;   /* Distance at initial parameter value        */
@@ -164,6 +165,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
   SISLIntdat *qintdat = NULL;
   int nmbmain = 0;
   double minfrac = 0.1;
+  double minfrac2 = 0.1;
 
   sdist[0] = 1.2*aepsge;
   sdist[1] = 2.0*aepsge;
@@ -238,7 +240,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	  tstart2 = qs1->et2[qs1->ik2-1];
 	  tend2 = qs1->et2[qs2->in2];
 	}
-      sgn = (spar1[kdir]-tstart < tend-spar1[kdir]) ? 1 : -1;
+      sgn = (spar1[kdir]-tstart2 < tend2-spar1[kdir]) ? 1 : -1;
 
       /* Set pointers to evaluation results */
       sder1 = scratch;
@@ -430,7 +432,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 
       /* When we have got here, there is a tangential curve. Check for
 	 a configuration with an additional point */
-      if (pt3 != NULL)
+      if (pt3 != NULL || (nmb_dir > 1 && tend-tstart < minfrac2*(tend2-tstart2)))
 	{
 	  /* Define candidate width of tangential zone */
 	  tmin = zonepar[0];
@@ -473,7 +475,12 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 		}
 	    }
 
-	  if (fabs(pt3->epar[kdir] - spar1[kdir]) > fabs(tpar - spar1[kdir]))
+	  if (pt3 != NULL)
+	    tpar2 = pt3->epar[kdir];
+	  else
+	    tpar2 = (fabs(spar1[kdir]-tstart2) < fabs(tend2-spar1[kdir])) ?
+		     tend2 : tstart2;
+	  if (fabs(tpar2 - spar1[kdir]) > fabs(tpar - spar1[kdir]))
 	    {
 	      /* Check for intersections along the possible tangenial
 		 belt limit */

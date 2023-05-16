@@ -2317,6 +2317,10 @@ sh6cvvert(SISLCurve *pc1, SISLCurve *pc2, double *cpar1, double *cpar2);
 extern
 #endif
 void sh6comedg(SISLObject *,SISLObject *,SISLIntpt *,SISLIntpt *,int *);
+#ifndef  SH6COMEDG_SF
+extern
+#endif
+void sh6comedg_sf(SISLSurf *,SISLSurf *,SISLIntpt *,SISLIntpt *,int *);
 #ifndef  SH6CONNECT
 extern
 #endif
@@ -4237,6 +4241,10 @@ void sh6cvvert();
 extern
 #endif
 void sh6comedg();
+#ifndef  SH6COMEDG_SF
+extern
+#endif
+void sh6comedg_sf();
 #ifndef  SH6CONNECT
 extern
 #endif

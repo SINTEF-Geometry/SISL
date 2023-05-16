@@ -151,6 +151,8 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
   double *nullp = SISL_NULL;
   double sf_low_lim[2];
   double sf_high_lim[2];
+  SISLIntpt *qprev = SISL_NULL;
+  SISLIntpt *qnext = SISL_NULL;
 
   /* Don't make pretop for help points ! */
   if (sh6ishelp (pintpt))
@@ -186,6 +188,17 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
       lr2 = lright;
     }
 
+  /* Look for existing help points */
+  for (ki=0; ki<pintpt->no_of_curves; ++ki)
+    {
+      if (sh6ismain(pintpt->pnext[ki]) || pintpt->pnext[ki]->no_of_curves > 1)
+	continue;
+      if (pintpt->pnext[ki]->epar[kpar1] < pintpt->epar[kpar1])
+	qprev = pintpt->pnext[ki];
+      else if (pintpt->pnext[ki]->epar[kpar1] > pintpt->epar[kpar1])
+	qnext = pintpt->pnext[ki];
+    }
+  
   /* Get pre-topology of intersection point.  */
   sh6gettop (pintpt, -1, lleft, lright, lleft + 1, lright + 1, &kstat);
 
@@ -225,7 +238,7 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 
   /* (ALA) Test if local information may be used to compute pre-topology. */
   s6length (snorm, kdim, &kstat);
-  s6length (snorm, kdim, &ki);
+  s6length (stang, kdim, &ki);
 
   if (!kstat || !ki || fabs (PIHALF - s6ang (snorm, stang, kdim)) < 0.05)
     {
@@ -456,6 +469,11 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	sh6settop (uintpt[ki], -1, *(pintpt->left_obj_1), *(pintpt->right_obj_1),
 		   *(pintpt->left_obj_2), *(pintpt->right_obj_2), &kstat);
 
+      if (qprev && ki==0)
+	sh6idkpt(rintdat, &qprev, 0, &kstat);
+      else if (qnext && ki==1)
+	sh6idkpt(rintdat, &qnext, 0, &kstat);
+	
       sh6idcon (rintdat, &uintpt[ki], &pintpt, &kstat);
       if (kstat < 0)
 	goto error;

@@ -407,6 +407,39 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
                     scoef1,newkind,ps->idim,2)) == SISL_NULL) goto err101;
     if ((q2=newSurf(kn2,knsec,kk,kksec,st2,st2sec,     /* PFU 15/07-94 */
                     scoef2,newkind,ps->idim,2)) == SISL_NULL) goto err101;
+
+    /* Transfer segmentation information */
+    if (ps->seg1 != NULL)
+      {
+	for (ki=0; ki<ps->seg1->num_seg; ++ki)
+	  if (ps->seg1->seg_val[ki] >= apar)
+	    break;
+	if (ki > 1)
+	  {
+	    sh6setseg(q1, 0, ps->seg1->seg_val, ki-1, ps->seg1->seg_type[0],
+		      &kstat);
+	    if (kstat < 0)
+	      goto error;
+	  }
+	if (ki < ps->seg1->num_seg-1)
+	  {
+	    sh6setseg(q2, 0, &ps->seg1->seg_val[ki+1], ps->seg1->num_seg-ki-1,
+		      ps->seg1->seg_type[0], &kstat);
+	    if (kstat < 0)
+	      goto error;
+	  }
+      }
+    if (ps->seg2 != NULL)
+      {
+	sh6setseg(q1, 1, ps->seg2->seg_val, ps->seg2->num_seg, 
+		  ps->seg2->seg_type[0], &kstat);
+	if (kstat < 0)
+	  goto error;
+	sh6setseg(q2, 1, ps->seg2->seg_val, ps->seg2->num_seg, 
+		  ps->seg2->seg_type[0], &kstat);
+	if (kstat < 0)
+	  goto error;
+      }
   }
   else
   {
@@ -414,6 +447,37 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
                     scoef1,newkind,ps->idim,2)) == SISL_NULL) goto err101;
     if ((q2=newSurf(knsec,kn2,kksec,kk,st2sec,st2,     /* PFU 15/07-94 */
                     scoef2,newkind,ps->idim,2)) == SISL_NULL) goto err101;
+    if (ps->seg1 != NULL)
+      {
+	sh6setseg(q1, 0, ps->seg1->seg_val, ps->seg1->num_seg, 
+		  ps->seg1->seg_type[0], &kstat);
+	if (kstat < 0)
+	  goto error;
+	sh6setseg(q2, 0, ps->seg1->seg_val, ps->seg1->num_seg, 
+		  ps->seg1->seg_type[0], &kstat);
+	if (kstat < 0)
+	  goto error;
+      }
+    if (ps->seg2 != NULL)
+      {
+	for (ki=0; ki<ps->seg2->num_seg; ++ki)
+	  if (ps->seg2->seg_val[ki] >= apar)
+	    break;
+	if (ki > 1)
+	  {
+	    sh6setseg(q1, 1, ps->seg2->seg_val, ki-1, ps->seg2->seg_type[0],
+		      &kstat);
+	    if (kstat < 0)
+	      goto error;
+	  }
+	if (ki < ps->seg2->num_seg-1)
+	  {
+	    sh6setseg(q2, 1, &ps->seg2->seg_val[ki+1], ps->seg2->num_seg-ki-1,
+		      ps->seg2->seg_type[0], &kstat);
+	    if (kstat < 0)
+	      goto error;
+	  }
+      }
   }
 
 
@@ -451,6 +515,10 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
   s6err("s1711",*jstat,kpos);
   goto outfree;
 
+
+ error:
+  *jstat = kstat;
+  goto outfree;
 
 outfree:
    if(q1) freeSurf(q1);

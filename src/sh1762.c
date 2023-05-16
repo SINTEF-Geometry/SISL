@@ -74,6 +74,7 @@ static int xmax = 0;
 #if defined(SISLNEEDPROTOTYPES)
 static void sh1762_s9mic (SISLObject *, SISLObject *, SISLIntdat **, SISLEdge **[], int *);
 static void sh1762_s9num (SISLObject *, SISLObject *, int *, int *);
+static void sh1762_s9num2 (SISLObject *, SISLObject *, int, SISLEdge *[], int *, int *);
 static void sh1762_s9div (SISLObject *, SISLObject *, double, int, int, SISLObject *[], SISLEdge *[], SISLIntdat **, int *);
 static int sh1762_s9subdivpt (SISLObject *, SISLObject *, double, int, int, SISLEdge *[], SISLIntdat **, int *, SISLIntpt **, double[], int *);
 static void sh1762_s9update (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge **[], int *);
@@ -96,6 +97,7 @@ static double sh1762_cvlength(SISLCurve *, int *);
 #else
 static void sh1762_s9mic ();
 static void sh1762_s9num ();
+static void sh1762_s9num2 ();
 static void sh1762_s9div ();
 static int sh1762_s9subdivpt ();
 static void sh1762_s9update ();
@@ -216,13 +218,13 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   int knewpt=0;                 /* No of points made in prtop part    */
   int kexpand = 2;		/* Expand box in the inner of object. */
   int kxintercept = (*jstat == 202);  /* Extra interception           */
-  /* int knum;  */                   /* Number of intersection points at edges. */
+  int knum;                   /* Number of intersection points at edges. */
   SISLObject *uob1[4];		/* Pointers to subdivided object.     */
   SISLObject *uob2[4];		/* Pointer to object to subdivide.    */
   int knedge1, knedge2;
 
   FILE *fp;
-  int debug_flag=0;
+  int debug_flag=2;
 
   /*  FOR DEBUGGING define debug_flag as an extern variable, i.e.:
    *
@@ -240,7 +242,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		        po1->s1->et2[po1->s1->in2] <= 0.9)
 		        {
 		   */
-	   int knum;
+	     /*int knum; */
 	   int ipar = 2;
 	   int kj, ki, kr;
 	   SISLIntpt **up = SISL_NULL;  /* Array of poiners to intersection point.*/
@@ -534,9 +536,21 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	  if (kstat < 0)
 	    goto error;
 
+	  /* Check with help point configuration */
+	  if (kdiv1 > 0)
+	    sh1762_s9num2 (po1, po2, 1, vedge, &kdiv1, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	    
 	  sh1762_s9num (po2, po1, &kdiv2, &kstat);
 	  if (kstat < 0)
 	    goto error;
+	  
+	  if (kdiv2 > 0)
+	    sh1762_s9num2 (po1, po2, 2, vedge, &kdiv2, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	    
 
 	  if (kdiv1 + kdiv2 == 0)
 	    {
@@ -547,9 +561,9 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	       /* VSK, 11-92. Since partial coincidence is not
 		  implemented, there might be intersections on the
 		  edges. Check this.   This should not be necessary
-		  any more.
+		  any more. */
 
-	        Check if there are intersection points on edges.
+	      /* Check if there are intersection points on edges.*/
 
 	       if (vedge[0] == SISL_NULL)
 		  knum = 0;
@@ -561,7 +575,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 
 
 
-	       if (knum > 0)
+	       /*if (knum > 0)
 	       {
 		   Do something that makes the routine terminate
 		     until partial coincidence is implemented.
@@ -577,8 +591,24 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		  goto out;
 	       } */
 
-	       *jstat = 0;
-	       goto out;
+	      if (po1->iobj + po2->iobj < 2*SISLSURFACE ||
+		  knum > 0)
+		{
+		  /* Check for an internal intersection */
+		  kstat = 100; /* Indicates that no further subdivision will 
+				  be performed */
+		  sh1762_s9update (po1, po2, aepsge, pintdat, &vedge, &kstat);
+		  if (kstat < 0)
+		    goto error;
+		  if (po1->iobj + po2->iobj == 2*SISLSURFACE && kstat == 2)
+		    kstat = 1;
+		  *jstat = (kstat == 1) ? 1 : 0;
+		}
+	      else
+		{
+		  *jstat = 0;
+		  goto out;
+		}
 	    }
 	  else
 	    {
@@ -1638,17 +1668,19 @@ sh1762_s9num (po, poref, jdiv, jstat)
   else 
     tsize2 = 0.0;
 
-    if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
-      not_case_2d = 0; //FALSE;
-    else
-      not_case_2d = 1; //TRUE;
+  if (poref->iobj == SISLPOINT && poref->p1->idim == 2)
+    not_case_2d = 0; //FALSE;
+  else
+    not_case_2d = 1; //TRUE;
 
 
     /* Test for number of division directions.     */
   /*---------------------------------------------*/
   /* If linear, we do not subdivide.             */
   if (kgtpi1 == 0 && tang1 <= ANGULAR_TOLERANCE/10.0 && 
-      not_case_2d && !(tsize1 > 10.0*tsize2))
+    not_case_2d && !(tsize1 > 10.0*tsize2))
+    /*if (kgtpi1 == 0 && tang1 <= ANGULAR_TOLERANCE/20.0 && 
+      not_case_2d && !(tsize1 > 10.0*tsize2))*/
     *jdiv = 0;
 
   /* If the other surface has segments and this one not, we do
@@ -1690,40 +1722,40 @@ sh1762_s9num (po, poref, jdiv, jstat)
     {
 
 	
-	/* The segmentation logic is too simple as it does not
-	   take into account that segmentation in theory can be given in 
-	   more than one direction and attached to more than one surface.
-	   However, this should not be the case currently.  */
-	if (hasseg1 == 1)
-	  *jdiv = 1;
-	else if (po->s1->cuopen_1 == 0 && po->s1->cuopen_2 == 1)
-	  *jdiv = 1;
-	else if (po->s1->cuopen_1 == 1 && po->s1->cuopen_2 == 0)
-	  *jdiv = 0;	
-	else if ((kgtpi1 == 2 || kgtpi1 == 20) && 
-		 po->s1->in1 < po->s1->in2 && tsfp1 < tsfp2)
-	  *jdiv = 0;
-	else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
-		 !((po->s1->ik1 == 2 && tsfp1 < tref*tsfp2) ||
-		   tsfp1 < lenfac*tsfp2))
+      /* The segmentation logic is too simple as it does not
+	 take into account that segmentation in theory can be given in 
+	 more than one direction and attached to more than one surface.
+	 However, this should not be the case currently.  */
+      if (hasseg1 == 1)
+	*jdiv = 1;
+      else if (po->s1->cuopen_1 == 0 && po->s1->cuopen_2 == 1)
+	*jdiv = 1;
+      else if (po->s1->cuopen_1 == 1 && po->s1->cuopen_2 == 0)
+	*jdiv = 0;	
+      else if ((kgtpi1 == 2 || kgtpi1 == 20) && 
+	       po->s1->in1 < po->s1->in2 && tsfp1 < tsfp2)
+	*jdiv = 0;
+      else if (s1791 (po->s1->et1, po->s1->ik1, po->s1->in1)  &&
+	       !((po->s1->ik1 == 2 && tsfp1 < tref*tsfp2) ||
+		 tsfp1 < lenfac*tsfp2))
 	*jdiv = 1;
       else
 	*jdiv = 0;
 
-	if (hasseg1 == 2)
-	  *jdiv = 2;
-	else if (po->s1->cuopen_1 == 1 && po->s1->cuopen_2 == 0)
-	  *jdiv += 2;
-	else if (po->s1->cuopen_1 == 0 && po->s1->cuopen_2 == 1)
-	  ;	
-	else if ((kgtpi1 == 1 || kgtpi1 == 10) && 
-		 po->s1->in2 < po->s1->in1 && tsfp2 < tsfp1)
-	  ;
-	else if (hasseg1 != 1 &&
-		 s1791 (po->s1->et2, po->s1->ik2, po->s1->in2)  &&
-		 !((po->s1->ik2 == 2 && tsfp2 < tref*tsfp1) ||
-		   tsfp2 < lenfac*tsfp1))
-	  *jdiv += 2;
+      if (hasseg1 == 2)
+	*jdiv = 2;
+      else if (po->s1->cuopen_1 == 1 && po->s1->cuopen_2 == 0)
+	*jdiv += 2;
+      else if (po->s1->cuopen_1 == 0 && po->s1->cuopen_2 == 1)
+	;	
+      else if ((kgtpi1 == 1 || kgtpi1 == 10) && 
+	       po->s1->in2 < po->s1->in1 && tsfp2 < tsfp1)
+	;
+      else if (hasseg1 != 1 &&
+	       s1791 (po->s1->et2, po->s1->ik2, po->s1->in2)  &&
+	       !((po->s1->ik2 == 2 && tsfp2 < tref*tsfp1) ||
+		 tsfp2 < lenfac*tsfp1))
+	*jdiv += 2;
     }
   goto out;
 
@@ -1741,6 +1773,131 @@ err121:
 
 out:;
 }
+  
+#if defined(SISLNEEDPROTOTYPES)
+static void
+sh1762_s9num2 (SISLObject *po1, SISLObject *po2, int obj,
+	       SISLEdge *vedge[], int *jdiv, int *jstat)
+#else
+static void
+  sh1762_s9num2 (po1, po2, obj, vedge, jdiv, jstat)
+     SISLObject *po1;
+     SISLObject *po2;
+     int obj;
+     SISLEdge *vedge[];
+     int *jdiv;
+     int *jstat;
+#endif
+/*
+*********************************************************************
+*
+*********************************************************************
+*
+* PURPOSE    : Update number of parameter directions in which to
+*              subdivide based on configuration of edge intersections
+*
+*
+*
+* INPUT      : po1     - First object in intersection
+*              po2     - Second other object in intersection
+*              obj     - Object to subdivide (1 = first, 2 = second)
+*              vedge[2] - intersection on edges
+*
+* INPUT/OUTPUT jdiv   - Possible subdivisions of object.
+*                         = 0     : No subdivision.
+*                         = 1     : Subdivision in first parameter direction.
+*                         = 2     : Subdivision in second parameter direction.
+*                         = 3     : Subdivision in both parameter direction.
+*
+*
+* OUTPUT     : jstat  - status messages
+*                         = 0     : no error.
+*                         < 0     : error
+*
+*
+* METHOD     :
+*
+*
+* REFERENCES :
+*
+*
+* WRITTEN BY : Vibeke Skytt, SINTEF, 2023-05
+*
+*********************************************************************
+*/
+{
+  int kstat = 0;
+  int ki, kj;
+  SISLObject *qo;
+  SISLIntpt **up = SISL_NULL;
+  int knum = 0;
+  double range[4];
+  double tdel;
+  int ix = (obj == 1) ? 0 : po1->iobj;
+  double frac = 0.6;
+
+  qo = (obj == 1) ? po1 : po2;
+  if (qo->iobj != SISLSURFACE || *jdiv == 0)
+    goto out;  /* Nothing to do */
+
+  range[0] = qo->s1->et1[qo->s1->ik1-1];
+  range[1] = qo->s1->et1[qo->s1->in1];
+  range[2] = qo->s1->et2[qo->s1->ik2-1];
+  range[3] = qo->s1->et2[qo->s1->in2];
+
+  /* Fetch main intersections on edges */
+  sh6edgpoint (vedge, &up, &knum, &kstat);
+  if (kstat < 0)
+    goto error;
+
+  /* For each intersection point, fetch associated help points and
+     compute the parameter distance between the main point and the help
+     point internal to the current object */
+  for (ki=0; ki<knum; ++ki)
+    {
+      for (kj=0; kj<up[ki]->no_of_curves; ++kj)
+	{
+	  if (!sh6ishelp(up[ki]->pnext[kj]))
+	    continue;
+
+	  sh6isinside(po1, po2, up[ki]->pnext[kj], &kstat);
+	  if (kstat < 0)
+	    goto error;
+	  if (kstat == 0)
+	    continue;   /* The point is outside both objects */
+
+	  if (*jdiv == 1 || *jdiv == 3)
+	    {
+	      /* Check extent of help point interval in first parameter direction */
+	      tdel = fabs(up[ki]->pnext[kj]->epar[ix] - up[ki]->epar[ix]);
+	      if (tdel > frac*(range[1] - range[0]))
+		*jdiv -= 1;
+	    }
+	      
+	  if (*jdiv == 2 || *jdiv == 3)
+	    {
+	      /* Check extent of help point interval in second parameter direction */
+	      tdel = fabs(up[ki]->pnext[kj]->epar[ix+1] - up[ki]->epar[ix+1]);
+	      if (tdel > frac*(range[3] - range[2]))
+		*jdiv -= 2;
+	    }
+	      
+	}
+    }
+  goto out;
+  
+/* Error in lower level routine.  */
+error:*jstat = kstat;
+  s6err ("sh1762_s9num2", *jstat, 0);
+  goto out;
+
+out:
+  if (up != SISL_NULL)
+    freearray (up);
+
+  return;
+}
+
 
 #if defined(SISLNEEDPROTOTYPES)
 static int 
@@ -2102,12 +2259,14 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
    int ki, kj;                /* Counter.                             */
    double fac = 0.2;
    int npt = (*pintdat) ? (*pintdat)->ipoint : 0;
+   int kpar2;
 
    /* Set pointer to subdivision object. */
 
-   qo1 = (iobj == 1 ? po1 : po2);
-   qo2 = (iobj == 1 ? po2 : po1);
-   kpar = (iobj == 1 ? 0 : po1->iobj);
+   qo1 = (iobj == 1) ? po1 : po2;
+   qo2 = (iobj == 1) ? po2 : po1;
+   kpar = (iobj == 1) ? 0 : po1->iobj;
+   kpar2 = (iobj == 1) ? po1->iobj : 0;
 
   *jstat = 0;
 
@@ -2141,7 +2300,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	}
 
       if (qpt == SISL_NULL &&
-	  vedge[iobj - 1]->ipoint == 0 && qo1->c1->ik == qo1->c1->in)
+	  /*vedge[iobj - 1]->ipoint == 0 &&*/ qo1->c1->ik == qo1->c1->in)
       {
 	 /* No internal intersection is found. The curve is of Bezier type,
 	    and there is no intersection on the endpoints of the curve.
@@ -2187,6 +2346,27 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
 	    if (tpar2 < tstart2+tdel2 || tpar2 > tend2-tdel2)
 	       kfound = 0;
+	    
+	    if (kfound && vedge[iobj - 1]->ipoint > 0)
+	      {
+		/* Check distance to existing intersection points */
+		for (kj=0; kj<(*pintdat)->ipoint; kj++)
+		  {
+		    pcurr = (*pintdat)->vpoint[kj];
+		    if (sh6ishelp(pcurr))
+		      continue;
+		    sh6isinside(po1, po2, pcurr, &kstat);
+		    if (kstat < 0)
+		      goto error;
+		    if (kstat == 0)
+		      continue;
+		    if (fabs(tpar2 - pcurr->epar[kpar2]) < tdel2)
+		      {
+			kfound = 0;
+			break;
+		      }
+		  }
+	      }
 	 }
 
 	 else if (qo2->iobj == SISLSURFACE)
@@ -2214,8 +2394,51 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	    if (spar[0] < sstart[0]+tdel1 || spar[0] > send[0]-tdel1 ||
 		spar[1] < sstart[1]+tdel2 || spar[1] > send[1]-tdel2)
 	       kfound = 0;
+	    
+	    if (kfound && vedge[iobj - 1]->ipoint > 0)
+	      {
+		/* Check distance to existing intersection points */
+		for (kj=0; kj<(*pintdat)->ipoint; kj++)
+		  {
+		    pcurr = (*pintdat)->vpoint[kj];
+		    if (sh6ishelp(pcurr))
+		      continue;
+		    sh6isinside(po1, po2, pcurr, &kstat);
+		    if (kstat < 0)
+		      goto error;
+		    if (kstat == 0)
+		      continue;
+		    if (fabs(spar[0] - pcurr->epar[kpar2]) < tdel1 ||
+			fabs(spar[1] - pcurr->epar[kpar2+1]) < tdel2)
+		      {
+			kfound = 0;
+			break;
+		      }
+		  }
+	      }
 	 }
 
+	 if (kfound && vedge[iobj - 1]->ipoint > 0)
+	   {
+	     /* Check distance to existing intersection points */
+	     for (kj=0; kj<(*pintdat)->ipoint; kj++)
+	       {
+		 pcurr = (*pintdat)->vpoint[kj];
+		 if (sh6ishelp(pcurr))
+		   continue;
+		 sh6isinside(po1, po2, pcurr, &kstat);
+		 if (kstat < 0)
+		   goto error;
+		 if (kstat == 0)
+		   continue;
+		 if (fabs(tpar - pcurr->epar[kpar]) < tdel)
+		   {
+		     kfound = 0;
+		     break;
+		   }
+	       }
+	   }
+	 
 	 /* Test the subdivision point towards the edges of the subdivision
 	    curve. */
 
@@ -2430,9 +2653,9 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 	SISLIntpt *ptsing1 = SISL_NULL; /* Singular intersection point on edge. */
 	SISLIntpt *ptsing2 = SISL_NULL; /* Singular intersection point on edge. */
 	double tmean[2];           /* Middle parameter of the surface.     */
-	double tpar1=HUGE, tpar2=HUGE;  /* Used for comparisement with
+	/*double tpar1=HUGE, tpar2=HUGE;   Used for comparisement with
 					   intersection point.             */
-	int ktype1=-10, ktype2=-10;     /* As previous.                    */
+	/*int ktype1=-10, ktype2=-10;     As previous.                    */
 
 	/* There is a surface-surface intersection or an intersection
 	   between a surface and a point in 1D. In both cases intersection
@@ -3799,7 +4022,7 @@ sh1762_s9div (po1, po2, aepsge, iobj, idiv, wob, vedge, pintdat, jstat)
 */
 
 
-	  if (kstat)
+	  if (kstat == 1)
 	    {
 	      /* Total number of points. */
 
@@ -3906,6 +4129,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 * INPUT      : po1      - First object in intersection.
 *              po2      - Second object in intersection.
 *              aepsge    - Geometry resolution.
+*              jstat    - = 100: A close to planar conficuration
 *
 *
 * OUTPUT     : pintdat  - intersection data.
@@ -3937,6 +4161,7 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
   int kdim;
   SISLObject *qo;
   SISLIntpt **up = SISL_NULL;
+  int planar = (*jstat == 100);
 
   /* Test input.  */
 
@@ -4344,11 +4569,11 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	      if (kstat < 0)
 		goto error;
 
-		if (kstat == 3)
+	      if (kstat == 3)
 		{
-		   /* FLAT */
-		   *jstat = 0;
-		   goto out;
+		  /* FLAT */
+		  *jstat = 0;
+		  goto out;
 		}
 
 	      /* UJIK, Retry, with better startpoint */
@@ -4443,8 +4668,9 @@ sh1762_s9update (po1, po2, aepsge, pintdat, vedge, jstat)
 	  /* We have more than one intersection point on the edges,
              we therefor connect these points to each other. */
 	  int ksimple;
-
-	  if (po1->psimple == po2)
+	  if (planar)
+	    ksimple = 2;
+	  else if (po1->psimple == po2)
 	    ksimple = 1;
 	  else
 	    ksimple = 0;
@@ -4584,7 +4810,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
   int one_edge = 0;             /* Indicates if all intersection points
 				   lies on one edge in each surface.     */
   SISLPtedge *qpt1, *qpt2;      /* Pointers used to traverse edge intersections. */
-  int kdir, kdir2;              /* Constant parameter directions */
+  /*int kdir, kdir2;               Constant parameter directions */
   int kgtpi1, kgtpi2;
 
   /* Set kcrv parameters.  */
@@ -4791,16 +5017,22 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 		       tangential and, in that case, set appropriate
 		       surface segmentation information. */
 
-		    sh1794(po1, po2, up, knum, aepsge, &kstat);
-		    if (kstat < 0)
-		      goto error;
-		    if (kstat == 1)
+		    if (po1->s1->seg1 || po1->s1->seg2 || po2->s1->seg1 ||
+			po2->s1->seg2)
+		      kstat = 1;
+		    else
 		      {
-			/* A tangential intersection curve is found */
-			/*printf("Tangential \n");*/
+			sh1794(po1, po2, up, knum, aepsge, &kstat);
+			if (kstat < 0)
+			  goto error;
+			if (kstat == 1)
+			  {
+			    /* A tangential intersection curve is found */
+			    /*printf("Tangential \n");*/
+			  }
+			else if (kstat == 2)
+			  kstat2 = 2;
 		      }
-		    else if (kstat == 2)
-		      kstat2 = 2;
 		  }
 	    }
 	 }
@@ -6403,6 +6635,8 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
  *              ps2      - Second surface in intersection.
  *              isimple  - If value 1, we use a special connecting
  *                         strategy for 4 points.
+ *                         = 2: No further subdivision will be performed
+ *                              Special connections
  *              aepsge   - Geometry tolerance.
  *
  * OUTPUT     : rintdat  - Intersection dates to be updated.
@@ -6496,10 +6730,11 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 
   if (lant[0] + lant[1] > 1)
     {
-      int kn1, kn, ki, kj, kv, kant, klfs, klft, kdir, kpar;
-      double *sval2, *snorm1, *snorm2, *stang, *sdec1, *sdec2;
+      int kn1, kn, ki, kj, kr, kv, kant, klfs, klft, kdir, kpar;
+      double *sval2, *snorm1, *snorm2, *stang, *sdec1, *sdec2, *sdist;
       SISLPtedge *qpt;
       double tang;
+      double distfac = 10.0;
 
       kant = lant[0] + lant[1];
 
@@ -6511,7 +6746,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	goto err101;
       if ((ldir = new0array (kant, int)) == SISL_NULL)
 	goto err101;
-      if ((sval1 = newarray (33 * kant, double)) == SISL_NULL)
+      if ((sval1 = newarray (34 * kant, double)) == SISL_NULL)
 	goto err101;
       sval2 = sval1 + 9 * kant;
       snorm1 = sval2 + 9 * kant;
@@ -6519,6 +6754,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
       stang = snorm2 + 3 * kant;
       sdec1 = stang + 3 * kant;
       sdec2 = sdec1 + 3 * kant;
+      sdist = sdec2 + 3 * kant;
 
 
       /* UPDATE (ujk) Main point vs helppoints covered ? */
@@ -6569,6 +6805,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 		continue;
 	      }
 
+	    sdist[ki] = s6dist(&sval1[kn], &sval2[kn], 3);
 	    tang = s6ang (snorm1 + kv, snorm2 + kv, 3);
 	    if (tang < REL_PAR_RES)
 	      /*	    if (tang < ANGULAR_TOLERANCE) */
@@ -6705,23 +6942,61 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	    /* We have one point, and the direction is in/out.
 	       The other point is touching a corner it is probably
 	       an error and the point must be close to tangential.*/
-	    if (ldir[i] == -1)
-	    {
-	       int k=j;
-	       j  =  i;
-	       i  =  k;
-	    }
+	   /* But first check if it really is a part of a help point
+	      configuration */
+	   kr = uipt[j]->no_of_curves;  /* Initially assume not a resolved 
+					   configuration */
+	   if (max(sdist[i],sdist[j]) > distfac*min(sdist[i],sdist[j]))
+	     {
+	       /* Check if the points are already connected trough one
+		  common main point */
+	       for (kr=0; kr<uipt[j]->no_of_curves; ++kr)
+		 {
+		   if (sh6ismain(uipt[j]->pnext[kr]))
+		     {
+		       sh6getlist (uipt[i], uipt[j]->pnext[kr], &klist1,
+				   &klist2, &kstat);
+		       if (kstat < 0)
+			 goto error;
+		       if (kstat == 0)
+			 {
+			   /* Connected. Assume configuration to be re solved */
+			   break;
+			 }
+		     }
+		 }
+	     }
 
-	    sh6tomain (uipt[i], &kstat);
-	    sh6tomain (uipt[j], &kstat);
+	   if (kr < uipt[j]->no_of_curves)
+	     kv = 0;
+	   else
+	     {
+	       /* Check if it is a real corner touch */
+	       if (sdist[i] > distfac*sdist[j] && sh6nmbmain(uipt[i],&kstat) == 1)
+		 {
+		   kv = 0;
+		 }
+	       else
+		 {
+		   if (ldir[i] == -1)
+		     {
+		       int k=j;
+		       j  =  i;
+		       i  =  k;
+		     }
 
-	    sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
-	    if (kstat < 0)
-	       goto error;
-	    sh6setdir (uipt[i], uipt[j], &kstat);
-	    if (kstat < 0)
-	       goto error;
-	    *jstat = 0;
+		   sh6tomain (uipt[i], &kstat);
+		   sh6tomain (uipt[j], &kstat);
+
+		   sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
+		   if (kstat < 0)
+		     goto error;
+		   sh6setdir (uipt[i], uipt[j], &kstat);
+		   if (kstat < 0)
+		     goto error;
+		   *jstat = 0;
+		 }
+	     }
 	 }
       }
       else if (kv < 2)
@@ -6732,7 +7007,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	/* More than eight points, it's not a simple case. */
 	*jstat = 1;
 
-      else if (kv == 4 && isimple > 0)
+      else if (kv == 4 && isimple == 1)
 	{
 	  /* Connect point in to closest point out. */
 	  int kinn = 0, kout = 0;
@@ -6924,21 +7199,21 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 		      sh6idcon (&rintdat, &uipt[lperm[0]],
 				&uipt[lperm[2]], &kstat);
 		      if (kstat < 0)
-			 goto error;
+			goto error;
 
-			 /* Set in/out direction */
-			 if (lpermdir[0] == 1)
-			    sh6setdir (uipt[lperm[0]],
-				       uipt[lperm[2]], &kstat);
-			 else
-			 sh6setdir (uipt[lperm[2]],
-				    uipt[lperm[0]], &kstat);
+		      /* Set in/out direction */
+		      if (lpermdir[0] == 1)
+			sh6setdir (uipt[lperm[0]],
+				   uipt[lperm[2]], &kstat);
+		      else
+			sh6setdir (uipt[lperm[2]],
+				   uipt[lperm[0]], &kstat);
 
-			 if (kstat < 0)
-			    goto error;
+		      if (kstat < 0)
+			goto error;
 
-			    /* Set status JUNCTION point. */
-			    uipt[lperm[2]]->iinter = SI_SING;
+		      /* Set status JUNCTION point. */
+		      uipt[lperm[2]]->iinter = SI_SING;
 
 
 		      *jstat=0;
@@ -7377,15 +7652,15 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 		goto error;
 
 	      /* Branch on the given result from s9surmarch. */
-	      if (kstat == 0)
-		/* The points are not connected, continue subdividing. */
-		*jstat = 1;
+	      /*if (kstat == 0)
+		 The points are not connected, continue subdividing. 
+		*jstat = 1;*/
 
-	      else if (kstat == 2)
+	      if (kstat == 2)
 		/* Only singulear points, set status ok. */
 		*jstat = 0;
 
-	      else
+	      else if (kstat == 1)
 		{
 		  if (kpoints > kv)
 		    {
@@ -7474,9 +7749,92 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 			}
 		    }
 		}
-	    }
+	  }
 	  else
 	    /* No marching is to be done. */
+	    *jstat = 1;
+	}
+      
+      if (kv > 2 && isimple == 2)
+	{
+	  /* An extra effort to connect at the bottom of the
+	     recursion */
+	  /* Count the number of points pointing in and out */
+	  int kinn = 0, kout = 0;
+	  int ixin = -1, ixout = -1;
+	  for (ki = 0; ki < kn1; ki++)
+	    if (ldir[ki] == 1)
+	      {
+		kinn++;
+		ixin = ki;
+	      }
+	    else if (ldir[ki] == -1)
+	      {
+		kout++;
+		ixout = ki;
+	      }
+	  if (kinn + kout == kn1 && (kinn == 1 || kout == 1))
+	    {
+	      int kcode = (kinn == 1) ? 1 : -1;
+	      int num_single = 0;
+	      int ix_main;
+	      for (ki=0; ki<kn1; ++ki)
+		{
+		  if (ldir[ki] == kcode)
+		    continue;
+		  if (sh6nmbmain(uipt[ki], &kstat) == 1)
+		    num_single++;
+		  else
+		    ix_main = ki;
+		}
+	      if ((kinn > 1 && kinn-num_single == 1) ||
+		  (kout > 1 && kout-num_single == 1))
+		{
+		  /* Check if all points of the same type is connected,
+		     and follows the same edge */
+		  for (ki=0; ki<kn1; ++ki)
+		    {
+		      if (ki == ix_main)
+			continue;
+		      if (ldir[ki] == kcode)
+			continue;
+		      sh6comedg_sf(ps1, ps2, uipt[ki], uipt[ix_main], &kstat);
+		      if (kstat < 0)
+			goto error;
+		      if (kstat == 0)
+			break;
+		    }
+		  if (ki == kn1)
+		    {
+		      /* Change loose points to help points. Connect to
+			 remaining main point */
+		      for (ki=0; ki<kn1; ++ki)
+			{
+			  if (ki == ix_main)
+			    continue;
+			  if (ldir[ki] == kcode)
+			    continue;
+			  sh6tohelp(uipt[ki], &kstat);
+			}
+		      if (kinn == 1)
+			ixout = ix_main;
+		      else
+			ixin = ix_main;
+		      sh6idcon(&rintdat, &uipt[ixin], &uipt[ixout], &kstat);
+		      if (kstat < 0)
+			goto error;
+		      sh6setdir(uipt[ixin], uipt[ixout], &kstat);
+		      if (kstat < 0)
+			goto error;
+		      *jstat = 0;
+		    }
+		  else
+		    *jstat = 1;
+		}
+	      else
+		*jstat = 1;
+	    }
+	  else
 	    *jstat = 1;
 	}
     }
@@ -7932,21 +8290,21 @@ sh1762_s9edgpscon (pedge, alevel, ps, isimple, rintdat, aepsge, jstat)
 		      sh6idcon (&rintdat, &uipt[lperm[0]],
 				&uipt[lperm[2]], &kstat);
 		      if (kstat < 0)
-			 goto error;
+			goto error;
 
-			 /* Set in/out direction */
-			 if (lpermdir[0] == 1)
-			    sh6setdir (uipt[lperm[0]],
-				       uipt[lperm[2]], &kstat);
-			 else
-			 sh6setdir (uipt[lperm[2]],
-				    uipt[lperm[0]], &kstat);
+		      /* Set in/out direction */
+		      if (lpermdir[0] == 1)
+			sh6setdir (uipt[lperm[0]],
+				   uipt[lperm[2]], &kstat);
+		      else
+			sh6setdir (uipt[lperm[2]],
+				   uipt[lperm[0]], &kstat);
 
-			 if (kstat < 0)
-			    goto error;
+		      if (kstat < 0)
+			goto error;
 
-			    /* Set status JUNCTION point. */
-			    uipt[lperm[2]]->iinter = SI_SING;
+		      /* Set status JUNCTION point. */
+		      uipt[lperm[2]]->iinter = SI_SING;
 
 
 		      *jstat=0;
