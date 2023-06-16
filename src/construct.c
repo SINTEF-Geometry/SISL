@@ -905,6 +905,7 @@ newIntpt (ipar, epar, adist)
 
   pnew->trim[0] = SISL_NULL;
   pnew->trim[1] = SISL_NULL;
+  pnew->fromhelp = 0;
 
   /* Task done.  */
 
@@ -1274,6 +1275,7 @@ hp_newIntpt (ipar, epar, adist, itype, ileft1, iright1, ileft2, iright2,
   /* Init the left/right evaluator to default value zero. */
   pnew->iside_1 = 0;
   pnew->iside_2 = 0;
+  pnew->fromhelp = 0;
   
   /* Task done.  */
 

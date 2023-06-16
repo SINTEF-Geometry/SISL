@@ -146,9 +146,9 @@ void sh1795(SISLObject *po1, SISLObject *po2, SISLIntpt *pt,
   double ptol = 100*REL_PAR_RES;
   double tmin, tmax;
   double tpar;
-  SISLCurve *qc = NULL;
-  SISLObject *qoc = NULL;
-  SISLIntdat *qintdat = NULL;
+  SISLCurve *qc = SISL_NULL;
+  SISLObject *qoc = SISL_NULL;
+  SISLIntdat *qintdat = SISL_NULL;
   double seg[2];
  
   sdist[0] = 1.2*aepsge;
@@ -314,8 +314,8 @@ void sh1795(SISLObject *po1, SISLObject *po2, SISLIntpt *pt,
       tmax = zonepar[6*ki+1];
       for (kr=1; kr<3; ++kr)
 	{
-	  tmin = max(tmin, zonepar[6*ki+2*kr]);
 	  tmax = min(tmax, zonepar[6*ki+2*kr+1]);
+	  tmin = max(tmin, zonepar[6*ki+2*kr]);
 	}
       tpar = pt->epar[2*iobj+1-ki] + sgn[1-ki]*max(0.5*(tmin+tmax),zonepar[6*ki]);
       
@@ -344,7 +344,7 @@ void sh1795(SISLObject *po1, SISLObject *po2, SISLIntpt *pt,
 	goto error;
 
       /* Intersect with the other surface and count intersections */
-      if ((qoc = newObject(SISLCURVE)) == NULL)
+      if ((qoc = newObject(SISLCURVE)) == SISL_NULL)
 	goto err101;
       qoc->c1 = qc;
 
@@ -354,9 +354,16 @@ void sh1795(SISLObject *po1, SISLObject *po2, SISLIntpt *pt,
       if (qintdat)
 	goto out;  /* Not an isolated singularity */
       seg[ki] = tpar;
+      if (qoc != SISL_NULL) 
+	{
+	  freeObject(qoc);
+	  qoc = SISL_NULL;
+	  qc = SISL_NULL;
+	}
     }
 
   /* Define segmentation parameters */
+  po1->psimple = po2;
   for (ki=0; ki<2; ++ki)
     {
       sh6setseg(qs1, 1-ki, seg+ki, 1, (sgn[1-ki] == 1) ? TANGENTIAL_BELT_LEFT :
@@ -383,13 +390,13 @@ error:
   goto out;
 
  out:
-  if (qoc != NULL) 
+  if (qoc != SISL_NULL) 
     {
       freeObject(qoc);
-      qc = NULL;
+      qc = SISL_NULL;
     }
-  if (qc != NULL) freeCurve(qc);
-  if (qintdat != NULL) freeIntdat(qintdat);
+  if (qc != SISL_NULL) freeCurve(qc);
+  if (qintdat != SISL_NULL) freeIntdat(qintdat);
   return;
 }
 
@@ -460,7 +467,6 @@ int *jstat;
   double tdistprev = HUGE;
   double dist;
   double tdel;
-  int failure = 0;
   int kr;
   double par1[2], par2[2], pos1[3], pos2[3];
   int kleft1 = 0, kleft2 = 0, kleft3 = 0, kleft4 = 0;
@@ -504,7 +510,7 @@ int *jstat;
 	goto error;
       dist = s6dist(pos1, pos2, kdim);
       if (fabs(dist - eps) < dtol ||
-	  dist < eps && tdel >= lim2 - lim1 - REL_PAR_RES)
+	  (dist < eps && tdel >= lim2 - lim1 - REL_PAR_RES))
 	{
 	  tprev = tdel;
 	  break;   /* The estimate for the tangential zone limit
@@ -528,7 +534,7 @@ int *jstat;
     }
   
   if (fabs(dist - eps) < dtol ||
-      dist < eps && tdel >= lim2 - lim1 - REL_PAR_RES)
+      (dist < eps && tdel >= lim2 - lim1 - REL_PAR_RES))
     {
       *zonepar = tprev;
       converge = 1;

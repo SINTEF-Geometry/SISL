@@ -51,12 +51,12 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
-static void sh6red2help_isatknot(SISLIntpt *pt, double* eknot[], int nkn[], 
-				 int nkk[], int atknot[], int left[], int *jstat);
+static int sh6red_help(SISLObject *po1, SISLObject *po2,
+		       SISLIntpt *pt, SISLIntpt *pmain, int *jstat);
 static void sh6red2help (SISLObject * po1, SISLObject * po2, 
 			 SISLIntdat * pintdat, int *jstat);
 #else
-static void sh6red2help_isatknot;
+static int sh6red_help;
 static void sh6red2help;
 #endif
 
@@ -105,11 +105,12 @@ sh6red (po1, po2, pintdat, jstat)
   int kstat, i, j;
   double tepsge = (double)10000.0*REL_COMP_RES;
   double weight = (double) 0.5;
-  int changed;
+  int changed, doreduce;
   SISLIntpt *pcurr,*pstart,*plast;	/* to traverse list of points.     */
   int indstart,indlast,inddum;		/* Indexes used in lists           */
   int log_1, log_2;
   int dim;
+  SISLIntpt *qmain;
   if (po1->iobj == SISLSURFACE)
     dim = po1->s1->idim;
   else if (po1->iobj == SISLCURVE)
@@ -121,12 +122,16 @@ sh6red (po1, po2, pintdat, jstat)
      constant parameter direction */
   
   if (((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT
-        && po1->s1->idim == 1) ||
+        && dim == 1) ||
        (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT
-        && po2->s1->idim == 1) ||
+        && dim == 1) ||
        (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE
-        && po1->s1->idim == 3)) &&
-        pintdat != SISL_NULL)
+        && dim == 3) ||
+      (po1->iobj + po2->iobj == SISLSURFACE + SISLCURVE
+        && dim == 3) ||
+      (po2->iobj == SISLSURFACE && po1->iobj == SISLCURVE
+       && dim == 3)) &&
+       pintdat != SISL_NULL)
      for (j = 0; j < pintdat->ipoint; j++)
      {
 	
@@ -228,20 +233,52 @@ sh6red (po1, po2, pintdat, jstat)
       do
 	{
 	  changed = 0;
-	  for (i = 0; i < pintdat->ipoint; i++)
+	  //for (i = 0; i < pintdat->ipoint; i++)
+	  for (i = pintdat->ipoint-1; i >= 0; i--)
 	    {
 	      sh6isinside (po1, po2, pintdat->vpoint[i], &kstat);
 	      if (kstat < 0)
 		goto error;
-	      if (kstat == 1)
+	      if (kstat == 1 || (kstat == 2 && po1->iobj+po2->iobj == 2*SISLSURFACE))
 		{
 		  if (sh6ismain (pintdat->vpoint[i]) &&
 		      sh6nmbmain (pintdat->vpoint[i], &kstat) == 1)
 		    {
-		      sh6tohelp (pintdat->vpoint[i], &kstat);
-		      if (kstat < 0)
-			goto error;
-		      changed = 1;
+		      if (pintdat->vpoint[i]->fromhelp > 0)
+			doreduce = 1;
+		      else
+			{
+			  /* Check if a reduction is recommended */
+			  qmain = SISL_NULL;
+			  for (j=0; j<pintdat->vpoint[i]->no_of_curves; ++j)
+			    if (pintdat->vpoint[i]->pnext[j]->iinter > 0)
+			      {
+				qmain = pintdat->vpoint[i]->pnext[j];
+				break;
+			      }
+
+			  if (qmain && po1->iobj+po2->iobj == 2*SISLSURFACE)
+			    {
+			      /* Check if the points are connected along an
+				 edge */
+			      sh6comedg(po1, po2, pintdat->vpoint[i], qmain, &kstat);
+			      if (kstat < 0)
+				goto error;
+			      if (kstat == 0)
+				qmain = SISL_NULL;   /* Not a common edge */
+			    }
+			  doreduce = (qmain == SISL_NULL) ? 0 :
+			    sh6red_help(po1, po2, pintdat->vpoint[i], qmain, &kstat);
+			  if (kstat < 0)
+			    goto error;
+			}
+		      if (doreduce)
+			{
+			  sh6tohelp (pintdat->vpoint[i], &kstat);
+			  if (kstat < 0)
+			    goto error;
+			  changed = 1;
+			}
 		    }
 		}
 	    }
@@ -362,9 +399,9 @@ sh6red (po1, po2, pintdat, jstat)
     }
 
   /* Reduce illegal main points to help points. */
-  sh6red2help(po1, po2, pintdat, &kstat);
-  if (kstat < 0)
-    goto error;
+  /* sh6red2help(po1, po2, pintdat, &kstat); */
+  /* if (kstat < 0) */
+  /*   goto error; */
 
    /* Reduction done. */
 
@@ -385,55 +422,96 @@ out:
 }
 
 #if defined(SISLNEEDPROTOTYPES)
-static void sh6red2help_isatknot(SISLIntpt *pt, double* eknot[], int nkn[], 
-				 int nkk[], int atknot[], int left[], int *jstat)
+static int sh6red_help(SISLObject *po1, SISLObject *po2,
+		       SISLIntpt *pt, SISLIntpt *pmain, int *jstat)
 #else
-  static void sh6red2help_isatknot(pt, eknot, nkn, nkk, atknot, left, jstat)
+  static int sh6red_help(po1, po2, pt, pmain, jstat)
+     SISLObject *po1;
+     SISLObject *po2;
      SISLIntpt *pt;
-     double* eknot[];
-     int nkn[]; 
-     int nkk[];
-     int atknot[];
-     int left[];
+     SISLIntpt *pmain;
      int *jstat;
 #endif
 {
   int kstat = 0;
-  int ki;
-  int kleft = 0;
-  double tpar;
+  int ki, k1;
+  int kleft1 = 0, kleft2 = 0, kleft3;
+  double tpar1, tpar2;
+  double *sst[4];   /* Knot vectors in the problem, maximum 4. */
+  int lkn[4];       /* Number of coefficients in each parameter direction. */
+  int lkk[4];       /* Order in each parameter direction. */
+  int  doreduce = 1;
 
   *jstat = 0;
+  if (po1->iobj == SISLSURFACE)
+    {
+      sst[0] = po1->s1->et1;
+      sst[1] = po1->s1->et2;
+      lkn[0] = po1->s1->in1;
+      lkn[1] = po1->s1->in2;
+      lkk[0] = po1->s1->ik1;
+      lkk[1] = po1->s1->ik2;
+      k1 = 2;
+    }
+  else if (po1->iobj == SISLCURVE)
+    {
+      sst[0] = po1->c1->et;
+      lkn[0] = po1->c1->in;
+      lkk[0] = po1->c1->ik;
+      k1 = 1;
+    }
+  else
+    k1 = 0;
+
+  if (po2->iobj == SISLSURFACE)
+    {
+      sst[k1] = po2->s1->et1;
+      sst[k1+1] = po2->s1->et2;
+      lkn[k1] = po2->s1->in1;
+      lkn[k1+1] = po2->s1->in2;
+      lkk[k1] = po2->s1->ik1;
+      lkk[k1+1] = po2->s1->ik2;
+    }
+  else if (po2->iobj == SISLCURVE)
+    {
+      sst[k1] = po2->c1->et;
+      lkn[k1] = po2->c1->in;
+      lkk[k1] = po2->c1->ik;
+    }
+      
   for (ki=0; ki<pt->ipar; ki++)
     {
-      tpar = pt->epar[ki];
-      s1219(eknot[ki], nkk[ki], nkn[ki], &kleft, tpar, &kstat);
+      tpar1 = pt->epar[ki];
+      s1219(sst[ki], lkk[ki], lkn[ki], &kleft1, tpar1, &kstat);
       if (kstat < 0)
-	{
-	  *jstat = kstat;
-	  return;
-	}
-      if (tpar >= eknot[ki][nkn[ki]])
-	kleft = nkn[ki];
+	goto error;
+      if (tpar1 >= sst[ki][lkn[ki]])
+	kleft1 = lkn[ki];
 
-      if (DEQUAL(eknot[ki][kleft],tpar))
-	atknot[ki] = 1;
-      else if (DEQUAL(eknot[ki][kleft+1],tpar))
+      tpar2 = pmain->epar[ki];
+      s1219(sst[ki], lkk[ki], lkn[ki], &kleft2, tpar2, &kstat);
+      if (kstat < 0)
+	goto error;
+      if (tpar2 >= sst[ki][lkn[ki]])
+	kleft2 = lkn[ki];
+
+      kleft3 = (kleft2 > kleft1) ? kleft1 + 1 :
+	((kleft1 == kleft2) ? kleft1 : kleft1 - 1);
+      if (DEQUAL(sst[ki][kleft1],tpar1) ||
+	  (kleft1 != kleft2 && DNEQUAL(sst[ki][kleft3],sst[ki][kleft2])))
 	{
-	  s1219(eknot[ki], nkk[ki], nkn[ki], &kleft, tpar+REL_PAR_RES, &kstat); 
-	  if (kstat < 0)
-	    {
-	      *jstat = kstat;
-	      return;
-	    }
-	  if (tpar+REL_PAR_RES >= eknot[ki][nkn[ki]])
-	    kleft = nkn[ki];
-	  atknot[ki] = 1;
+	  doreduce = 0;
+	  break;
 	}
-      else
-	atknot[ki] = 0;
-      left[ki] = kleft;
     }
+  goto out;
+
+ error:
+  *jstat = kstat;
+  goto out;
+
+ out:
+  return doreduce;
 }
 	
 
@@ -469,305 +547,6 @@ static void sh6red2help (po1, po2, pintdat, jstat)
 *********************************************************************
 */
 {
-  /* int kstat=0, i; */
-  /* int changed;                          /\* indicates if a point is changed *\/ */
-
-  /* SISLIntpt *qnext = NULL; /\* Neighbour int. point. *\/ */
-  /* SISLIntpt *qprev = NULL, *qnext2 = NULL; /\* Neighbour int. point. *\/ */
-  /* int k1, k2;              /\* Counter.                *\/ */
-
-  /* int existfuzzy, infbelt; */
-  /* SISLIntpt *pcurr; */
-  /* SISLIntpt **curr_vpoint; */
-  /* int curr_npt, curr_first; */
-
-  /* double *sst[4];   /\* Knot vectors in the problem, maximum 4. *\/ */
-  /* int lkn[4];       /\* Number of coefficients in each parameter direction. *\/ */
-  /* int lkk[4];       /\* Order in each parameter direction. *\/ */
-  /* int atknot1[4];   /\* =1 if the intersection point lies at a knot, =0 otherwise *\/ */
-  /* int atknot2[4];   /\* =1 if the intersection point lies at a knot, =0 otherwise *\/ */
-  /* int left1[4];     /\* Pointer into knot vector corresponding to intersection point *\/ */
-  /* int left2[4];     /\* Pointer into knot vector corresponding to intersection point *\/ */
-  /* int check_more; */
-  /* int pass_knot = 0; */
-  /* int is_at_knot1, is_at_knot2; */
-  /* SISLIntpt *qother = NULL; */
-  /* int dim; */
-  /* double *val1 = NULL, *val2 = NULL, *norm1 = NULL, *norm2 = NULL; */
-  /* double d1, d2; */
-  /* int atbd; */
-  /* int kmin, kmax; */
-
-  /* *jstat = 0; */
-  
-  /* /\* Collect knot vector information *\/ */
-  /* if (po1->iobj == SISLSURFACE) */
-  /*   { */
-  /*     dim = po1->s1->idim; */
-  /*     sst[0] = po1->s1->et1; */
-  /*     sst[1] = po1->s1->et2; */
-  /*     lkn[0] = po1->s1->in1; */
-  /*     lkn[1] = po1->s1->in2; */
-  /*     lkk[0] = po1->s1->ik1; */
-  /*     lkk[1] = po1->s1->ik2; */
-  /*     k1 = 2; */
-  /*   } */
-  /* else if (po1->iobj == SISLCURVE) */
-  /*   { */
-  /*     dim = po1->c1->idim; */
-  /*     sst[0] = po1->c1->et; */
-  /*     lkn[0] = po1->c1->in; */
-  /*     lkk[0] = po1->c1->ik; */
-  /*     k1 = 1; */
-  /*   } */
-  /* else */
-  /*   { */
-  /*     dim = po1->p1->idim; */
-  /*     k1 = 0; */
-  /*   } */
-  
-  /* if (po2->iobj == SISLSURFACE) */
-  /*   { */
-  /*     sst[k1] = po2->s1->et1; */
-  /*     sst[k1+1] = po2->s1->et2; */
-  /*     lkn[k1] = po2->s1->in1; */
-  /*     lkn[k1+1] = po2->s1->in2; */
-  /*     lkk[k1] = po2->s1->ik1; */
-  /*     lkk[k1+1] = po2->s1->ik2; */
-  /*   } */
-  /* else if (po2->iobj == SISLCURVE) */
-  /*   { */
-  /*     sst[k1] = po2->c1->et; */
-  /*     lkn[k1] = po2->c1->in; */
-  /*     lkk[k1] = po2->c1->ik; */
-  /*   } */
-
-
-  /* /\* Reduse ilegal main points to help points. *\/ */
-
-  /* if (!(po1->iobj + po2->iobj >= 2*SISLCURVE || */
-  /*     (po1->iobj == SISLCURVE && po1->c1->idim == 1) || */
-  /*     (po2->iobj == SISLCURVE && po2->c1->idim == 1))) */
-  /*   goto out; */
-
-  /* if (pintdat == NULL) */
-  /*   goto out; */
-
-  /* curr_vpoint = pintdat->vpoint; */
-  /* curr_npt = pintdat->ipoint; */
-  /* curr_first = 0; */
-
-  /* do */
-  /*   { */
-  /*     changed = 0; */
-  /*     for (i = curr_first; i < curr_npt; i++) */
-  /* 	{ */
-  /* 	  pcurr = curr_vpoint[i]; */
-  /* 	  if (sh6ishelp(pcurr)) */
-  /* 	      continue; // Already help point */
-
-  /* 	  /\* Initialize all pointers into the knot vectors to zero. *\/ */
-
-  /* 	  for (k1=0; k1<pcurr->ipar; k1++) */
-  /* 	  { */
-  /* 	      left1[k1] = left2[k1] = 0; */
-  /* 	      atknot1[k1] = atknot2[k1] = 0; */
-  /* 	  } */
-  /* 	  check_more = 0; */
-
-  /* 	  sh6isinside (po1, po2, pcurr, &kstat); */
-  /* 	  if (kstat < 0) */
-  /* 	    goto error; */
-  /* 	  if (kstat == 1 || (kstat == 2 && po1->iobj+po2->iobj == 2*SISLSURFACE)) */
-  /* 	  { */
-  /* 	    if (sh6ismain (pcurr) && */
-  /* 		sh6nmbmain (pcurr, &kstat) == 1) */
-  /* 	    { */
-  /* 	      /\* Check if the list between the two intersection */
-  /* 		 points crosses a knot line. In that case do not */
-  /* 		 mark the point as a help point. */
-  /* 		 First set pointers into the parameter array of */
-  /* 		 the intersection points. *\/ */
-
-  /* 	      /\* Find the neighbour point. *\/ */
-
-  /* 	      for (k1=0; k1<pcurr->no_of_curves; k1++) */
-  /* 		{ */
-  /* 		  qnext = sh6getnext(pcurr,k1); */
-  /* 		  if (sh6ismain (qnext))  */
-  /* 		    break; */
-  /* 		} */
-  /* 	      qother = qnext;  // Remember pointer */
-
-  /* 	      /\* Find position of the two points in the current knotvectors    *\/ */
-  /* 	      sh6red2help_isatknot(pcurr, sst, lkn, lkk, atknot1, left1, &kstat); */
-  /* 	      if (kstat < 0) */
-  /* 		goto error; */
-
-  /* 	      /\* Find position of the two points in the current knotvectors    *\/ */
-  /* 	      sh6red2help_isatknot(qnext, sst, lkn, lkk, atknot2, left2, &kstat); */
-  /* 	      if (kstat < 0) */
-  /* 		goto error; */
-
-  /* 	      /\* Check if the current point should be transformed */
-  /* 		 to a help point. *\/ */
-  /* 	      is_at_knot1 = is_at_knot2 = 0;  // Initiate to no point at knot line */
-  /* 	      for (k1=0; k1<pcurr->ipar; k1++) */
-  /* 	      { */
-  /* 		  if (atknot1[k1]) */
-  /* 		      is_at_knot1 = 1; */
-  /* 		  if (atknot2[k1]) */
-  /* 		      is_at_knot2 = 1; */
-
-  /* 		  if (atknot1[k1] && atknot2[k1] && left1[k1] != left2[k1]) */
-  /* 		      break;  // The intersection point lies at different knots */
-		
-  /* 		  if (pass_knot) */
-  /* 		  { */
-  /* 		  if (atknot1[k1] == 0 && atknot2[k1] == 0 && left1[k1] != left2[k1]) */
-  /* 		      break; // The points lie in different knot intervals */
-  /* 		  } */
-
-  /* 		  kmin = min(left1[k1], left2[k1]); */
-  /* 		  kmax = max(left1[k1], left2[k1]); */
-  /* 		  for (k2=kmin+1; k2<kmax; k2++) */
-  /* 		    { */
-  /* 		      if (DNEQUAL(sst[k1][k2], (sst[k1][kmax]))) */
-  /* 			break; */
-  /* 		    } */
-  /* 		  if (k2 < kmax) */
-  /* 		    break;  // The points do not lie in neighbouring intervals */
-
-  /* 		  if (left1[k1] != left2[k1] && */
-  /* 		      fabs(sst[k1][left1[k1]] - sst[k1][left2[k1]]) <  */
-  /* 		      fabs(pcurr->epar[k1]-qnext->epar[k1])) */
-  /* 		      break; // The points are more than one knot interval apart */
-
-  /* 		  if (atknot1[k1]) */
-  /* 		      check_more = 1; */
-  /* 	      } */
-
-  /* 	      if (k1 == pcurr->ipar && check_more) */
-  /* 	      { */
-  /* 		  // One more check */
-  /* 		  qprev = pcurr; */
-  /* 		  while (check_more) */
-  /* 		  { */
-  /* 		      /\* Find the previous point with simple connection. *\/ */
-  /* 		      sh6getother(qnext, qprev, &qnext2, &kstat); */
-  /* 		      if (kstat < 0) */
-  /* 			  goto error; */
-		    
-  /* 		      if (qnext2 == 0) */
-  /* 			  check_more = 0; */
-  /* 		      else */
-  /* 		      { */
-  /* 			  /\* Find position of the two points in the current knotvectors    *\/ */
-  /* 			  sh6red2help_isatknot(qnext2, sst, lkn, lkk, atknot2, left2, &kstat); */
-  /* 			  if (kstat < 0) */
-  /* 			      goto error; */
-
-  /* 			  for (k1=0; k1<pcurr->ipar; k1++) */
-  /* 			  { */
-  /* 			      if (atknot1[k1] && atknot2[k1] && left1[k1] != left2[k1]) */
-  /* 				  break;  // The intersection point lies at different knots */
-		
-  /* 			      if (pass_knot) */
-  /* 			      { */
-  /* 			      if (atknot1[k1] == 0 && atknot2[k1] == 0 && left1[k1] != left2[k1]) */
-  /* 				  break; // The points lie in different knot intervals */
-  /* 			      } */
-
-  /* 			      kmin = min(left1[k1], left2[k1]); */
-  /* 			      kmax = max(left1[k1], left2[k1]); */
-  /* 			      for (k2=kmin+1; k2<kmax; k2++) */
-  /* 				{ */
-  /* 				  if (DNEQUAL(sst[k1][k2], (sst[k1][kmax]))) */
-  /* 				    break; */
-  /* 				} */
-  /* 			      if (k2 < kmax) */
-  /* 				break;  // The points do not lie in neighbouring intervals */
-  /* 			      if (left1[k1] != left2[k1] && */
-  /* 				  fabs(sst[k1][left1[k1]] - sst[k1][left2[k1]]) <  */
-  /* 				  fabs(pcurr->epar[k1]-qnext2->epar[k1])) */
-  /* 				  break; // The points are more than one knot interval apart */
-  /* 			  } */
-
-  /* 			  if (k1 < pcurr->ipar  || po1->iobj+po2->iobj == 2*SISLSURFACE) */
-  /* 			      check_more = 0; */
-
-  /* 			  qprev = qnext; */
-  /* 			  qnext = qnext2; */
-  /* 		      } */
-  /* 		  } */
-  /* 	      } */
-
-  /* 	      if (k1 == pcurr->ipar) */
-  /* 	      { */
-  /* 		  if (!qother) */
-  /* 		  { */
-  /* 		      // Set necessary info */
-  /* 		      for (k1=0; k1<pcurr->no_of_curves; k1++) */
-  /* 		      { */
-  /* 			  qother = sh6getnext(pcurr,k1); */
-  /* 			  if (sh6ismain (qother))  */
-  /* 			      break; */
-  /* 		      }	 */
-  /* 		      sh6isinside(po1, po2, pcurr, &kstat); */
-  /* 		      if (kstat < 0) */
-  /* 			  goto error; */
-  /* 		      if (kstat > 1) */
-  /* 			  is_at_knot1 = 1; */
-  /* 		      sh6isinside(po1, po2, qother, &kstat); */
-  /* 		      if (kstat < 0) */
-  /* 			  goto error; */
-  /* 		      if (kstat > 1) */
-  /* 			  is_at_knot2 = 1; */
-  /* 		  } */
-
-  /* 		  // Ensure that the right point is made to be a help point */
-  /* 		  sh6getgeom(po1, 1, pcurr, &val1, &norm1, REL_COMP_RES, &kstat); */
-  /* 		  if (kstat < 0) */
-  /* 		    goto error; */
-  /* 		  sh6getgeom(po2, 2, pcurr, &val2, &norm2, REL_COMP_RES, &kstat); */
-  /* 		  if (kstat < 0) */
-  /* 		    goto error; */
-  /* 		  d1 = s6dist(val1, val2, dim); */
-
-  /* 		  sh6getgeom(po1, 1, qother, &val1, &norm1, REL_COMP_RES, &kstat); */
-  /* 		  if (kstat < 0) */
-  /* 		    goto error; */
-  /* 		  sh6getgeom(po2, 2, qother, &val2, &norm2, REL_COMP_RES, &kstat); */
-  /* 		  if (kstat < 0) */
-  /* 		    goto error; */
-  /* 		  d2 = s6dist(val1, val2, dim); */
-
-  /* 		  // Check if the other points is a boundary point. In that case it cannot be */
-  /* 		  // transformed to a help point */
-  /* 		  atbd = 0; */
-  /* 		  sh6isinside(po1, po2, qother, &kstat); */
-  /* 		  if (kstat < 0) */
-  /* 		      goto error; */
-  /* 		  if (kstat > 1) */
-  /* 		      atbd = 1; */
-
-  /* 		  if (sh6nmbmain(qother, &kstat) == 1 && !(is_at_knot2 && !is_at_knot1) &&  */
-  /* 		      d1 < d2 && !(pcurr->no_of_curves == 1 && qother->no_of_curves > 1) && !atbd) */
-  /* 		      sh6tohelp(qother, &kstat); */
-  /* 		  else */
-  /* 		      sh6tohelp (pcurr, &kstat); */
-  /* 		  if (kstat < 0) */
-  /* 		      goto error; */
-  /* 		  qother = NULL; */
-  /* 		  changed = 1; */
-
-  /* 	      } */
-  /* 	    } */
-  /* 	  } */
-  /* 	} */
-  /*   } while (changed); */
-
-
   int change = 0;
   int kstat = 0, gstat = 0;
   int i;
@@ -780,7 +559,8 @@ static void sh6red2help (po1, po2, pintdat, jstat)
   do
     {
       change = 0;
-      for (i = 0; i < pintdat->ipoint; i++)
+      //for (i = 0; i < pintdat->ipoint; i++)
+      for (i = pintdat->ipoint-1; i >= 0; i--)
 	{
 	  if (sh6ismain (pintdat->vpoint[i]))
 	    {

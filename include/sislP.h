@@ -248,6 +248,7 @@ typedef struct SISLIntpt
   struct SISLTrimpar *trim[2];          /* Used if pt is in trim curve. */
   int iside_1;			/* Left/right evaluator flag.  -1,0+ */
   int iside_2;			/* Left/right evaluator flag.  -1,0+*/
+  int fromhelp;
 } SISLIntpt;
 
 /* This file contains the definition of the structure SISLTrack
@@ -2317,10 +2318,10 @@ sh6cvvert(SISLCurve *pc1, SISLCurve *pc2, double *cpar1, double *cpar2);
 extern
 #endif
 void sh6comedg(SISLObject *,SISLObject *,SISLIntpt *,SISLIntpt *,int *);
-#ifndef  SH6COMEDG_SF
+#ifndef  SH6CONDIR
 extern
 #endif
-void sh6comedg_sf(SISLSurf *,SISLSurf *,SISLIntpt *,SISLIntpt *,int *);
+void sh6condir(SISLIntdat *, SISLIntpt *,SISLIntpt *,int *);
 #ifndef  SH6CONNECT
 extern
 #endif
@@ -4241,10 +4242,10 @@ void sh6cvvert();
 extern
 #endif
 void sh6comedg();
-#ifndef  SH6COMEDG_SF
+#ifndef  SH6CONDIR
 extern
 #endif
-void sh6comedg_sf();
+void sh6condir();
 #ifndef  SH6CONNECT
 extern
 #endif

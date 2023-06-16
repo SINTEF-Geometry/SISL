@@ -289,11 +289,11 @@ void
 		    }
 		}
 	      if (notfound == TRUE)
-		{
-		  sh6tomain(pte->ppt, &kstat);
-		  prev = pte;
-		  pte = pte->pnext;
-		}
+	      	{
+	      	  sh6tomain(pte->ppt, &kstat);
+	      	  prev = pte;
+	      	  pte = pte->pnext;
+	      	}
 
 	    }
 	}

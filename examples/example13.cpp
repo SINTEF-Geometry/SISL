@@ -130,11 +130,19 @@ int main(int avnum, char** vararg)
 	// intersection points.
 
 	cout << "Number of intersection points detected: " << num_int_points << endl;
+	for (int i=0; i<num_int_points; ++i)
+	  cout << intpar_surf_1[2*i] << " " << intpar_surf_1[2*i+1] << " " << intpar_surf_2[2*i] << " " << intpar_surf_2[2*i+1] << endl;
 	cout << "Number of intersection curves detected: " << num_int_curves << endl;
-	
+	for (int i=0; i<num_int_curves; ++i)
+	  {
+	    int npt = intcurve[i]->ipoint;
+	    cout << intcurve[i]->epar1[0] << " " << intcurve[i]->epar1[1] << " " ;
+	    cout << intcurve[i]->epar2[0] << " " << intcurve[i]->epar2[1] << " " ;
 	// evaluating (tracing out) intersection curves and writing them to file
-	int i;
-	for (i = 0; i < num_int_curves; ++i) {
+	    cout << intcurve[i]->epar1[2*(npt-1)] << " " << intcurve[i]->epar1[2*npt-1] << " " ;
+	    cout << intcurve[i]->epar2[2*(npt-1)] << " " << intcurve[i]->epar2[2*npt-1] << endl;
+	  }
+	for (int i = 0; i < num_int_curves; ++i) {
 	    s1310(surf_1,          // the first surface
 		  surf_2,          // the second surface
 		  intcurve[i],     // pointer to the intersection curve object 

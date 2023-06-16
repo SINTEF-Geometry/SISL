@@ -121,7 +121,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
   double spar1[2], spar2[2];  /* Parameter value of point on intersection
 				 curve with respect to surface            */
   double tstart, tend;  /* Endparameters of intersection curve in surface */
-  double tdel, tdel2;   /* Step length                                  */
+  double tdel0, tdel, tdel2;   /* Step length                                  */
   int kdir;        /* Parameter direction of constant parameter in surface */
   int kd;          /* Parameter direction                          */
   double scratch[60];  /* Storage for results of surface evaluation */
@@ -166,6 +166,9 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
   int nmbmain = 0;
   double minfrac = 0.1;
   double minfrac2 = 0.1;
+  double minfrac3 = 1.0; /*0.5;*/
+  double tp2;
+  double sp2[2];
 
   sdist[0] = 1.2*aepsge;
   sdist[1] = 2.0*aepsge;
@@ -238,7 +241,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
       else
 	{
 	  tstart2 = qs1->et2[qs1->ik2-1];
-	  tend2 = qs1->et2[qs2->in2];
+	  tend2 = qs1->et2[qs1->in2];
 	}
       sgn = (spar1[kdir]-tstart2 < tend2-spar1[kdir]) ? 1 : -1;
 
@@ -297,6 +300,35 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
       for (ki=0, spar1[1-kdir]=tstart+0.5*tdel; ki<nsample;
 	   ++ki, spar1[1-kdir]+=tdel)
 	{
+	  spar1[kdir] = pt1[kh]->epar[idir];
+	  tdel0 = 0.0;
+	  
+	  /* Start at the best intersection point */
+	  if (kdir == 1)
+	    s1437(qs1, spar1[1-kdir], &qc, &kstat);
+	  else
+	    s1436(qs1, spar1[1-kdir], &qc, &kstat);
+	  if (kstat < 0)
+	    goto error;
+
+	  s1772(qc, qs2, aepsge, tstart2, sstart, tend2, send, spar1[kdir],
+		spar2, &tp2, sp2, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	  if (kstat == 1)
+	    {
+	      tdel0 = fabs(tp2-spar1[kdir]);
+	      spar1[kdir] = tp2;
+	      spar2[0] =  sp2[0];
+	      spar2[1] =  sp2[1];
+	    }
+
+	  /* /\* Compute distance *\/ */
+	  /* s1221(qc, 0, tp2, &kleft1, pos1, &kstat); */
+	  /* if (kstat < 0) goto error; */
+	  /* s1424(qs2, 0, 0, sp2, &kleft3, &kleft4, pos2, &kstat); */
+	  /* dist2 = s6dist(pos1, pos2, kdim); */
+
 	  samplepar[ki] = spar1[1-kdir];
 
 	  /* Test if the two surfaces intersect tangentially in the
@@ -385,6 +417,32 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 		    {
 		      failure = 1;
 		      break;
+		      /* /\* The boundary curve may be an inexact representation of  */
+		      /* 	 the intersection curve. Start again the iteration from here *\/ */
+		      /* s1421(qs1, 2, par1, &kleft1, &kleft2, sder1, snorm1, &kstat); */
+		      /* if (kstat < 0) */
+		      /* 	goto error; */
+		      /* s1421(qs2, 2, par2, &kleft3, &kleft4, sder2, snorm2, &kstat); */
+		      /* if (kstat < 0) */
+		      /* 	goto error; */
+		      /* memmove(cvder1, sder1, kdim*sizeof(double)); */
+		      /* memmove(cvder1+kdim, sder1+(1+kdir)*kdim, kdim*sizeof(double)); */
+		      /* memmove(cvder1+2*kdim, sder1+(3+2*kdir)*kdim, kdim*sizeof(double)); */
+		      /* s1291(cvder1, sder2, kdim, cvder2, &kstat); */
+		      /* if (kstat < 0) */
+		      /* 	goto error; */
+		      /* tdum = s6dist(cvder1+2*kdim, cvder2+2*kdim, kdim); */
+		      /* if (tdum > REL_PAR_RES) */
+		      /* 	{ */
+		      /* 	  tpar = 2*sdist[kj]/tdum; */
+		      /* 	  tpar = sqrt(tpar); */
+		      /* 	  if (tpar > tend2-tstart2) */
+		      /* 	    tpar = tend2 - tstart2; */
+		      /* 	} */
+		      /* else */
+		      /* 	tpar = tend2 - tstart2; */
+		      /* tpar = min(tend2 - tstart2, tpar + (par1[kdir]-spar1[kdir])); */
+		      /* continue; */
 		    }
 		  if (fabs(dist2 - sdist[kj]) > fabs(tdistprev - sdist[kj]))
 		    {
@@ -410,7 +468,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 		  else
 		    break;
 		}
-	      zonepar[2*ki+kj] = tprev;
+	      zonepar[2*ki+kj] = tprev + tdel0;
 	    }
 
 	  if (failure)
@@ -422,6 +480,8 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	      zonepar[2*ki] = zonepar[2*ki+1];
 	      zonepar[2*ki+1] = tdum;
 	    }
+	  if (qc) freeCurve(qc);
+	  qc = SISL_NULL;
 	}
   
       if (ki < nsample)
@@ -432,7 +492,8 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 
       /* When we have got here, there is a tangential curve. Check for
 	 a configuration with an additional point */
-      if (pt3 != NULL || (nmb_dir > 1 && tend-tstart < minfrac2*(tend2-tstart2)))
+      if ((pt3 != NULL && tend-tstart < minfrac3*(tend2-tstart2)) ||
+	   (nmb_dir > 1 && tend-tstart < minfrac2*(tend2-tstart2)))
 	{
 	  /* Define candidate width of tangential zone */
 	  tmin = zonepar[0];
@@ -525,6 +586,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	      if (nmbmain == 1)
 		{
 		  /* Define tangential belt */
+		  po1->psimple = po2;
 		  seg[nseg++] = tpar;
 		  sh6setseg(qs1, kdir, seg, nseg,
 			    (sgn == 1) ? TANGENTIAL_BELT_LEFT :
@@ -565,7 +627,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 		    {
 		      seg[nseg++] = st[kleft2];
 		      for (kr=kj-1; kr>ki && samplepar[kr]>st[kleft2]; --kr);
-		      kj = max(kr, ki+1);
+		      kj = max(kr+1, ki+1);
 		    }
 		  else if (kj > ki+1)
 		    {
@@ -587,6 +649,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	{
 	  /* Define segmentation parameters along the tangential 
 	     intersection curve   */
+	  po1->psimple = po2;
 	  sh6setseg(qs1, 1-kdir, seg, nseg, LIMITING_SEG, &kstat);
 	  if (kstat < 0)
 	    goto error;
@@ -601,7 +664,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	      tmin = max(tmin, zonepar[2*ki]);
 	      tmax = min(tmax, zonepar[2*ki+1]);
 	    }
-	  tpar = spar1[kdir] + 0.5*sgn*(tmin + tmax);
+	  tpar = pt1[kh]->epar[idir] + sgn*max(0.5*(tmin + tmax),tmin);
 
 	  if (tpar < tstart2 || tpar > tend2)
 	    {
@@ -613,6 +676,7 @@ void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 
 	  /* Define segmentation parameter perpendicular to the tangential
 	     intersection curve */
+	  po1->psimple = po2;
 	  seg[nseg++] = tpar;
 	  sh6setseg(qs1, kdir, seg, nseg, (sgn == 1) ? TANGENTIAL_BELT_LEFT :
 		    TANGENTIAL_BELT_RIGHT, &kstat);
@@ -697,7 +761,9 @@ int *jstat;
 *              sdir   - Detected directions
 *              pt3    - Possible intersection point not coupled to 
 *                       other points
-*              jstat  - status messages  
+*              jstat  - status messages 
+*                            = 1      : Probably degenerate situation. Do not searh
+*                                       for tangential intersection 
 *			     = 0      : OK
 *                            < 0      : error
 *
@@ -797,6 +863,8 @@ int *jstat;
 	      kdir = kdir2;
 	    }
 	}
+      if (kidx > 3)
+	goto warn1;
     }
   if (kdir2 >= 0 && (kidx == 0 || kdir2 != sdir[kidx-1]))
     {
@@ -847,6 +915,11 @@ int *jstat;
   *jstat = 0;
   goto out;
 
+ warn1:
+  *jstat = 1;
+  kidx = 0;
+  goto out;
+  
  error:
   *jstat = kstat;
   goto out;

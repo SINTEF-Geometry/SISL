@@ -469,10 +469,10 @@ sh1779 (po1, po2, aepsge, rintdat, pintpt, jnewpt, jstat)
 	sh6settop (uintpt[ki], -1, *(pintpt->left_obj_1), *(pintpt->right_obj_1),
 		   *(pintpt->left_obj_2), *(pintpt->right_obj_2), &kstat);
 
-      if (qprev && ki==0)
-	sh6idkpt(rintdat, &qprev, 0, &kstat);
-      else if (qnext && ki==1)
-	sh6idkpt(rintdat, &qnext, 0, &kstat);
+      /* if (qprev && ki==0) */
+      /* 	sh6idkpt(rintdat, &qprev, 0, &kstat); */
+      /* else if (qnext && ki==1) */
+      /* 	sh6idkpt(rintdat, &qnext, 0, &kstat); */
 	
       sh6idcon (rintdat, &uintpt[ki], &pintpt, &kstat);
       if (kstat < 0)

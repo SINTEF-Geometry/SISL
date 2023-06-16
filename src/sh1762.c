@@ -83,11 +83,29 @@ static void sh1762_s9intercept (SISLObject *, SISLObject *, double, int, SISLInt
 static void sh1762_s9coincide (SISLObject *, SISLObject *, double, int, SISLIntpt *[], int *);
 static void sh1762_s9toucharea (SISLObject *, SISLObject *, double, int, SISLIntpt *[], int *);
 /*static void sh1762_s9edgpoint (SISLEdge *[], SISLIntpt ***, int *, int *); */
+static void
+s9edgsscon_eval(SISLSurf *ps1, SISLSurf *ps2, SISLIntpt **uipt, unsigned char *edg,
+		int kn1, int isimple, double *eval, double *edist, double *dirval,
+		int* ndir, int *jstat);
+static void s9edgsscon_simplify(SISLIntdat *rintdat, SISLIntpt **uipt,
+				unsigned char *edg, int *kn1,
+				double *eval, double *edist, double *dirval,
+				int *ndir, double aepsge, int *jstat);
+static int s9edgsscon_connected(SISLIntpt **uipt, int *ndir, int kn1);
+static int s9edgsscon_con(SISLIntpt *pt1, SISLIntpt *pt2);
+static SISLIntpt* s9edgsscon_samecon(SISLIntpt *pt1, SISLIntpt *pt2);
+static void
+s9edgsscon_directed(SISLIntdat * rintdat, SISLIntpt **uipt, int kn1, double *eval, 
+		    double *dirval, int *ndir, double aepsge, int *jstat);
+static void
+s9edgsscon_singsearch(SISLSurf *ps1, SISLSurf *ps2, SISLIntdat *rintdat, 
+		      SISLIntpt **uipt, int *ndir, int kn1, double aepsge,
+		      int *jstat);
 static void sh1762_s9edgsscon (SISLEdge *[], SISLSurf *, SISLSurf *, SISLIntdat *, int, double, int *);
 static void sh1762_s9edgpscon (SISLEdge *, double, SISLSurf *, int, SISLIntdat *, double, int *);
 static void sh1762_s9checkpscon (SISLIntpt *uipt[], int perm[], int ndir[], int npoints, 
 				 int numb_type[], int *mcon[], int *jstat);
-static void sh1762_s9simple (SISLObject *, SISLObject *, SISLEdge *[], int *);
+/* static void sh1762_s9simple (SISLObject *, SISLObject *, SISLEdge *[], int *); */
 /* static void sh1762_s9reex (SISLObject *, SISLObject *, SISLEdge *[], double, SISLIntdat *, int *); */
 static void sh1762_s9ptiter (SISLObject *, SISLObject *, double, SISLIntdat **, SISLEdge *[], int *);
 static int sh1762_is_taboo(SISLSurf *, SISLSurf *, SISLIntpt *, int, int *);
@@ -106,10 +124,17 @@ static void sh1762_s9intercept ();
 static void sh1762_s9coincide ();
 static void sh1762_s9toucharea ();
 /*static void sh1762_s9edgpoint ();*/
+static void s9edgsscon_eval();
+static void s9edgsscon_simplify();
+static int s9edgsscon_con();
+static SISLIntpt* s9edgsscon_samecon();
+static int s9edgsscon_connected();
+static void s9edgsscon_directed();
+static void s9edgsscon_singsearch();
 static void sh1762_s9edgsscon ();
 static void sh1762_s9edgpscon ();
 static void sh1762_s9checkpscon ();
-static void sh1762_s9simple ();
+/* static void sh1762_s9simple (); */
 /* static void sh1762_s9reex (); */
 static void sh1762_s9ptiter ();
 static int sh1762_is_taboo();
@@ -591,8 +616,8 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 		  goto out;
 	       } */
 
-	      if (po1->iobj + po2->iobj < 2*SISLSURFACE ||
-		  knum > 0)
+	       if ((po1->iobj + po2->iobj < 2*SISLSURFACE && knum == 0) ||
+		   (po1->iobj + po2->iobj == 2*SISLSURFACE && knum > 0))
 		{
 		  /* Check for an internal intersection */
 		  kstat = 100; /* Indicates that no further subdivision will 
@@ -607,7 +632,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
 	      else
 		{
 		  *jstat = 0;
-		  goto out;
+		  /* goto out; */
 		}
 	    }
 	  else
@@ -1017,7 +1042,7 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
       int kturn, ki;
 
       /* We have more than one intersection point on the edges,
-	 we therefor have to treat these problem. */
+	 we therefore have to treat these problem. */
 
       if ((po1->iobj == SISLPOINT && po1->p1->idim <= 2) ||
 	  (po2->iobj == SISLPOINT && po2->p1->idim <= 2) ||
@@ -1189,7 +1214,7 @@ sh1762_s9mic (po1, po2, rintdat, vedge, jstat)
 	}
 
       /* We have more than one intersection point on the edges.
-	 We therefor kill these points and
+	 We therefore kill these points and
 	 try to find a new intersection point. */
 
 
@@ -2360,7 +2385,8 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		      goto error;
 		    if (kstat == 0)
 		      continue;
-		    if (fabs(tpar2 - pcurr->epar[kpar2]) < tdel2)
+		    if (fabs(tpar2 - pcurr->epar[kpar2]) < tdel2 &&
+			DNEQUAL(tpar2, pcurr->epar[kpar2]))
 		      {
 			kfound = 0;
 			break;
@@ -2388,12 +2414,31 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		   send, tpar, spar, &tpar, spar, &kstat);
 	    if (kstat < 0)
 	       goto error;
+	    /* if (kstat == 2) */
+	    /*   { */
+	    /* 	sh6closevert(qo1->c1, qo2->s1, &tpar2, &spar2[0]); */
+	    /* 	tpar2 = min(tend-10.0*tdel, max(tpar2, tstart+1.0*tdel)); */
+	    /* 	spar2[0] = min(send[0]-10.0*tdel1, max(spar2[0], sstart[0]+10.0*tdel1)); */
+	    /* 	spar2[1] = min(send[1]-10.0*tdel2, max(spar2[1], sstart[1]+10.0*tdel2)); */
+	    /* 	s1772 (qo1->o1->c1, qo2->o1->s1, aepsge, tstart, sstart, tend, */
+	    /* 	       send, tpar2, spar2, &tpar2, spar2, &kstat); */
+	    /* 	if (kstat < 0) */
+	    /* 	  goto error; */
+	    /* 	if (kstat == 1) */
+	    /* 	  { */
+	    /* 	    tpar = tpar2; */
+	    /* 	    spar[0] = spar2[0]; */
+	    /* 	    spar[1] = spar2[1]; */
+	    /* 	  } */
+	    /*   } */
 
 	    /* Test the subdivision point towards the edges of the surface. */
 
 	    if (spar[0] < sstart[0]+tdel1 || spar[0] > send[0]-tdel1 ||
 		spar[1] < sstart[1]+tdel2 || spar[1] > send[1]-tdel2)
 	       kfound = 0;
+	    /* else if (kstat == 2) */
+	    /*   kfound = 0; */
 	    
 	    if (kfound && vedge[iobj - 1]->ipoint > 0)
 	      {
@@ -2408,8 +2453,10 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 		      goto error;
 		    if (kstat == 0)
 		      continue;
-		    if (fabs(spar[0] - pcurr->epar[kpar2]) < tdel1 ||
-			fabs(spar[1] - pcurr->epar[kpar2+1]) < tdel2)
+		    if ((fabs(spar[0] - pcurr->epar[kpar2]) < tdel1 &&
+			 DNEQUAL(spar[0],pcurr->epar[kpar2]))  ||
+			(fabs(spar[1] - pcurr->epar[kpar2+1]) < tdel2 &&
+			 DNEQUAL(spar[1], pcurr->epar[kpar2+1])))
 		      {
 			kfound = 0;
 			break;
@@ -2508,10 +2555,12 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
 
      /* First check if a surface segmentation defines the
 	subdivision parameter                                          */
-     kfound = sh6getsegdiv(qo1->s1, idiv, spar, &subdiv_flag);
+     kfound = 0;
+     if (po1->psimple == po2)
+       kfound = sh6getsegdiv(qo1->s1, idiv, spar, &subdiv_flag);
      if (kfound > 0)
        {
-	 printf("Segment subdivision: %7.13f, %d \n",spar[idiv-1], subdiv_flag);
+	 printf("Segment subdivision \n"); /* %7.13f, %d \n",spar[idiv-1], subdiv_flag);*/
 	 *fixflag = kfound;
        }
 
@@ -6532,6 +6581,7 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
    double sstart[2], send[2];  /* Parameter boundaries of second surface. */
    double spar2[2];            /* Parameter value of second surface.      */
    int at_boundary = 0;
+   /* int nmb_inner = 0; */
 
    /* Set number of locations to test coincidence. */
 
@@ -6553,6 +6603,8 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
    {
       for (spar[1]=st12[kk12-1]+tint2, kj=0; kj<kntest2; kj++, spar[1]+=tint2)
       {
+	at_boundary = 0;
+	
 	 /* Evaluate first surface. */
 
 	 s1421(po1->s1, 0, spar, &kleft11, &kleft12, sder1, snorm1, &kstat);
@@ -6571,6 +6623,8 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
 	     DEQUAL(spar2[1], po2->s1->et2[po2->s1->ik2-1]) ||
 	     DEQUAL(spar2[1], po2->s1->et2[po2->s1->in2]))
 	   at_boundary = 1;
+	 /* else
+	    nmb_inner++; */
 
 	 /* Evalutate second surface. */
 
@@ -6588,7 +6642,7 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
       if (kj < kntest2) break;  /* Not a coincidence. */
    }
 
-   *jstat = (ki==kntest1 && kj==kntest2) ? 1 : 0;
+   *jstat = (ki==kntest1 && kj==kntest2 /* && nmb_inner>0 */) ? 1 : 0;
    goto out;
 
    err101 : *jstat = -101;    /* Error in scratch allocation. */
@@ -6604,6 +6658,940 @@ sh1762_s9toucharea (po1, po2, aepsge, inmbpt, vintpt, jstat)
 }
 
 
+#if defined(SISLNEEDPROTOTYPES)
+static void
+s9edgsscon_eval(SISLSurf *ps1, SISLSurf *ps2, SISLIntpt **uipt, unsigned char *edg,
+		int kn1, int isimple, double *eval, double *edist, double *dirval,
+		int* ndir, int *jstat)
+#else
+static void
+  s9edgsscon_eval(ps1, ps2, uipt, edg, kn1, isimple, eval, edist, dirval, ndir, jstat)
+     SISLSurf *ps1;
+     SISLSurf *ps2;
+     SISLIntpt **uipt;
+     unsigned char *edg;
+     int kn1;
+     int isimple;
+     double *eval;
+     double *edist;
+     double *dirval;
+     int* ndir;
+     int *jstat;  
+#endif
+ /*
+ *********************************************************************
+ *
+ *********************************************************************
+ *
+ * PURPOSE    : Evaluate intersection point properties for use in
+ *              connecting intersection points into curves
+ *
+ *
+ *
+ * INPUT      : ps1      - First surface in intersection.
+ *              ps2      - Second surface in intersection.
+ *              uipt     - Array of intersection points
+ *              edg      - The edge associated with the intersection points
+ *              kn1      - Number of intersection points
+ *              isimple  - = 1: The direction of the intersection curve can
+ *                              be deduced
+ *
+ * OUTPUT     : eval     - Points and tangents in intersection points
+ *              edist    - Distance between surfaces at intersection points
+ *              dirval   - Sorting parameter for intersection points if a
+ *                         direction is available
+ *              ndir     - Status value for the intersection points
+ *                         0 - The intersect.curve is parallel to one par. dir.
+ *			   1 - The intersect.curve has direction into the domain.
+ *			   -1 - The intersect.curve has direction out of the domain.
+ *			    2 - The point is singulear.
+ *			    10 - The intersect.curve touch one corner of the domain.
+ *              jstat    - status messages
+ *                           = 0     : OK.
+ *                           < 0     : error
+ *
+ *
+ * METHOD     :
+ *
+ *
+ * REFERENCES :
+ *
+ *
+ * WRITTEN BY : Arne Laksaa, SI, 89-06.
+ * ADAPTED BY: Vibeke Skytt, SINTEF, 2023-06.
+ *
+ *********************************************************************
+ */
+{
+  int kstat = 0;
+  int ki, kj, kpar;
+  int klfs = 0, klft = 0;
+  double sval1[30];
+  double *snorm1 = sval1 + 9;
+  double *sdec1 = snorm1 + 3;
+  double *sval2 = sval1 + 12;
+  double *snorm2 = sval2 + 9;
+  double *sdec2 = snorm2 + 3;
+  double *stang;
+  double svec[3];
+  double tang;
+  int kdir;
+  double tolpar = (double)0.001;
+  
+  if (isimple == 1 && ps1->pdir && ps2->pdir)
+    {
+      s6crss(ps1->pdir->ecoef, ps2->pdir->ecoef, svec);
+      s6norm(svec, 3, svec, &kstat);
+    }
+  else
+    svec[0] = svec[1] = svec[2] = 0.0;
+
+  for (ki = 0; ki < kn1; ki++)
+    {
+      klfs = klft = 0;
+      s1421 (ps1, 1, uipt[ki]->epar, &klfs, &klft, sval1, snorm1, &kstat);
+      if (kstat < 0)
+	goto error;
+      else if (kstat > 0)
+	{
+	  ndir[ki] = 2;
+	  continue;
+	}
+
+      klfs = klft = 0;
+      s1421 (ps2, 1, uipt[ki]->epar + 2, &klfs, &klft, sval2, snorm2, &kstat);
+      if (kstat < 0)
+	goto error;
+      else if (kstat > 0)
+	{
+	  ndir[ki] = 2;
+	  continue;
+	}
+
+      for (kj=0; kj<3; ++kj)
+	eval[6*ki+kj] = 0.5*(sval1[kj] + sval2[kj]);
+      dirval[ki] = eval[6*ki]*svec[0] + eval[6*ki+1]*svec[1] + eval[6*ki+2]*svec[2];
+      edist[ki] = s6dist(sval1, sval2, 3);
+      tang = s6ang (snorm1, snorm2, 3);
+      if (tang < REL_PAR_RES)
+	{
+	  ndir[ki] = 2;
+	  continue;
+	}
+
+      stang = &eval[6*ki+3];
+      s6crss (snorm1, snorm2, stang);
+
+      s6decomp (stang, sdec1, sval1+3, sval1+6, snorm1, &kstat);
+      if (kstat < 0)
+	goto error;
+      else if (kstat > 0)
+	{
+	  ndir[ki] = 2;
+	  continue;
+	}
+
+
+      s6decomp (stang, sdec2, sval2+3, sval2+6, snorm2, &kstat);
+      if (kstat < 0)
+	goto error;
+      else if (kstat > 0)
+	{
+	  ndir[ki] = 2;
+	  continue;
+	}
+
+      for (kpar = 1, kj = 0; kj < 8; kj++)
+	if ((edg[ki] & 1 << kj) == 1 << kj)
+	  {
+	    switch (kj)
+	      {
+	      case 0:
+		tang = s6ang (stang, sval1+3, 3);
+		kdir = (sdec1[1] > DZERO ? 1 : -1);
+		break;
+	      case 4:
+		tang = s6ang (stang, sval2+3, 3);
+		kdir = (sdec2[1] > DZERO ? 1 : -1);
+		break;
+	      case 1:
+		tang = s6ang (stang, sval1+6, 3);
+		kdir = (sdec1[0] > DZERO ? -1 : 1);
+		break;
+	      case 5:
+		tang = s6ang (stang, sval2+6, 3);
+		kdir = (sdec2[0] > DZERO ? -1 : 1);
+		break;
+	      case 2:
+		tang = s6ang (stang, sval1+3, 3);
+		kdir = (sdec1[1] > DZERO ? -1 : 1);
+		break;
+	      case 6:
+		tang = s6ang (stang, sval2+3, 3);
+		kdir = (sdec2[1] > DZERO ? -1 : 1);
+		break;
+	      case 3:
+		tang = s6ang (stang, sval1+6, 3);
+		kdir = (sdec1[0] > DZERO ? 1 : -1);
+		break;
+	      case 7:
+		tang = s6ang (stang, sval2+6, 3);
+		kdir = (sdec2[0] > DZERO ? 1 : -1);
+	      }
+
+	    if (tang < tolpar)
+	      kdir = 0;
+	    /* if (tang < REL_PAR_RES)
+	       kdir = 0; */
+	    /*  if (tang < ANGULAR_TOLERANCE) kdir = 0;*/
+	    if (kdir == 0)
+	      kpar = 0;
+	    else if (ndir[ki] != kdir)
+	      {
+		if (ndir[ki] == 0)
+		  ndir[ki] = kdir;
+		else
+		  {
+		    ndir[ki] = 10;
+		    break;
+		  }
+	      }
+	  }
+      if (kpar == 0 && ndir[ki] != 10)
+	ndir[ki] = 0;
+    }
+  goto out;
+
+ error : *jstat = kstat;    /* Error in lower level function. */
+  goto out;
+
+ out:
+  return;
+}
+
+
+
+ 
+#if defined(SISLNEEDPROTOTYPES)
+static void s9edgsscon_simplify(SISLIntdat *rintdat, SISLIntpt **uipt,
+				unsigned char *edg, int *kn1,
+				double *eval, double *edist, double *dirval,
+				int *ndir, double aepsge, int *jstat)
+#else
+  static void s9edgsscon_simplify(rintdat, uipt, edg, kn1, eval, edist, dirval, ndir, 
+				  aepsge, jstat)
+     SISLIntdat *rintdat;
+     SISLIntpt **uipt;
+     unsigned char *edg;
+     int *kn1;
+     double *eval;
+     double *edist;
+     double *dirval;
+     int *ndir;
+     double aepsge;
+     int *jstat;
+#endif
+ /*
+ *********************************************************************
+ *
+ *********************************************************************
+ *
+ * PURPOSE    : Simplify intersection point configuration in an unclear
+ *              situation
+ *
+ * INPUT      : uipt     - Array of intersection points
+ *              kn1      - Number of intersection points
+ *
+ * OUTPUT     :  jstat    - status messages
+ *                           = 0     : Simplified
+ *                           = 1     : Not changed
+ *                           < 0     : error
+ *
+ * WRITTEN BY: Vibeke Skytt, SINTEF, 2023-06.
+ *
+ *********************************************************************
+ */
+{
+  int kstat = 0;
+  int kr, ki, kj, kh;
+  int kv;
+  int code[3];
+  int knn, khelp;
+  int kcon1, kcon2;
+  SISLIntpt *qother = SISL_NULL;
+  code[0] = -1;
+  code[1] = 1;
+  code[2] = 0;
+  
+  /* Count occurances of classified points */
+  for (kr=0; kr<2; ++kr)
+    {
+      knn = khelp = 0;
+      for (ki=0, kv=0; ki < (*kn1); ki++)
+	{
+	  if (ndir[ki] < 10)
+	    kv++;
+	  if (ndir[ki] == code[kr])
+	    {
+	      knn++;
+	      if (uipt[ki]->fromhelp)
+		khelp++;
+	    }
+	}
+      if (knn > 1 && khelp > 0)
+	{
+	  /* Check if one point has more than one representation */
+	  for (ki=0; ki<(*kn1); ++ki)
+	    {
+	      int ix = -1;
+	      if (ndir[ki] != code[kr])
+		continue;
+	      for (kj=ki+1; kj<(*kn1); ++kj)
+		{
+		  if (ndir[kj] != code[kr])
+		    continue;
+		  kcon1 = s9edgsscon_con(uipt[ki], uipt[kj]);
+		  qother = s9edgsscon_samecon(uipt[ki], uipt[kj]);
+		  kcon2 = (qother != SISL_NULL);
+		  if ((kcon1 || kcon2) && (edg[ki] & edg[kj]))
+		    {
+		      /* Possible dual representation */
+		      /* Check if a point lies in the corner */
+		      int kc1 = 0, kc2 = 0, kc3 = 0, kc4 = 0;
+		      int nmain1, nmain2;
+		      int kdum;
+		      double tdum;
+		      SISLIntpt *qdum;
+		      unsigned int kdum2;
+		      for (kh=0; kh<4; ++kh)
+			{
+			  if (edg[ki] & (1 << kh))
+			    kc1++;
+			  if (edg[kj] & (1 << kh))
+			    kc2++;
+			}
+		      for (kh=4; kh<8; ++kh)
+			{
+			  if (edg[ki] & (1 << kh))
+			    kc3++;
+			  if (edg[kj] & (1 << kh))
+			    kc4++;
+			}
+		      kc1 = max(kc1, kc3);
+		      kc2 = max(kc2, kc4);
+		      nmain1 = sh6nmbmain(uipt[ki], &kstat);
+		      nmain2 = sh6nmbmain(uipt[kj], &kstat);
+		      nmain1 -= (kcon1+kcon2);
+		      nmain2 -= (kcon1+kcon2);
+		      if (kc1 < 2 && kc2 >= 2 && nmain1 <= 1 && uipt[ki]->fromhelp)
+			ix = ki;
+		      else if (kc2 < 2 && kc1 >= 2 && nmain2 <= 1 && uipt[kj]->fromhelp)
+			ix = kj;
+		      else if (edist[ki] > edist[kj] && nmain1 <= 1 && uipt[ki]->fromhelp)
+			ix = ki;
+		      else if (edist[kj] >= edist[ki] && nmain2 <= 1 && uipt[kj]->fromhelp)
+			ix = kj;
+
+		      if (ix >= 0)
+			{
+			  /* Kill dual point */
+			  sh6idkpt (&rintdat, &uipt[ix], 1, &kstat);
+			  if (kstat < 0)
+			    goto error;
+
+			  /* Remove point info from arrays */
+			  if (ix < *kn1-1)
+			    {
+			      qdum = uipt[ix];
+			      uipt[ix] = uipt[*kn1-1];
+			      uipt[*kn1-1] = qdum;
+			      kdum = ndir[ix];
+			      ndir[ix] = ndir[*kn1-1];
+			      ndir[*kn1-1] = ndir[ix];
+			      kdum2 = edg[ix];
+			      edg[ix] = edg[*kn1-1];
+			      edg[*kn1-1] = kdum2;
+			      tdum = edist[ix];
+			      edist[ix] = edist[*kn1-1];
+			      edist[*kn1-1] = tdum;
+			      tdum = dirval[ix];
+			      dirval[ix] = dirval[*kn1-1];
+			      dirval[*kn1-1] = tdum;
+			      for (kh=0; kh<6; ++kh)
+				{
+				  tdum = eval[6*ix+kh];
+				  eval[6*ix+kh] = eval[6*(*kn1-1)+kh];
+				  eval[6*(*kn1-1)+kh] = tdum;
+				}
+			    }
+			  (*kn1)--;
+			  break;
+			}
+		    }
+		}
+	      if (ix >= 0)
+	      	ki = -1;  /* Start from the beginning */
+	    }
+	}
+    }
+
+  goto out;
+
+ error:
+  *jstat = kstat;
+  goto out;
+  
+ out:
+  return;
+}
+
+
+
+#if defined(SISLNEEDPROTOTYPES)
+static int s9edgsscon_con(SISLIntpt *pt1, SISLIntpt *pt2)
+#else
+  static int s9edgsscon_con(pt1, pt2)
+     SISLIntpt *pt1;
+     SISLIntpt *pt2;  
+#endif
+{
+  int kstat = 0;
+  int klist1=-1, klist2=-1;
+  sh6getlist (pt1, pt2, &klist1, &klist2, &kstat);
+  return (kstat == 0);
+}
+
+
+#if defined(SISLNEEDPROTOTYPES)
+static SISLIntpt* s9edgsscon_samecon(SISLIntpt *pt1, SISLIntpt *pt2)
+#else
+  static SiSLIntpt s9edgsscon_samecon(pt1, pt2)
+     SISLIntpt *pt1;
+     SISLIntpt *pt2;  
+#endif
+{
+  SISLIntpt *dummy = SISL_NULL;
+  int ki, kj;
+  for (ki=0; ki<pt1->no_of_curves; ++ki)
+    for (kj=0; kj<pt2->no_of_curves; ++kj)
+      if (pt1->pnext[ki] == pt2->pnext[kj])
+	return pt1->pnext[ki];
+  return dummy;
+}
+
+#if defined(SISLNEEDPROTOTYPES)
+static int s9edgsscon_connected(SISLIntpt **uipt, int *ndir, int kn1)
+#else
+  static int s9edgsscon_connected(uipt, ndir, kn1)
+     SISLIntpt **uipt;
+     int *ndir;
+     int kn1;
+#endif
+ /*
+ *********************************************************************
+ *
+ *********************************************************************
+ *
+ * PURPOSE    : Check if a numbar of intersection points are connected into
+ *              a chain, excluding corner touches
+ *
+ * INPUT      : uipt     - Array of intersection points
+ *              ndir     - Point classification
+ *              kn1      - Number of intersection points
+ *
+ * OUTPUT     : retur value - status messages
+ *                           = 0     : Connected
+ *                           = 1     : Not a chain
+ *                           < 0     : error
+ *
+ * WRITTEN BY: Vibeke Skytt, SINTEF, 2023-06.
+ *
+ *********************************************************************
+ */
+{
+  int kstat = 0;
+  int ki, kj;
+  int klist1, klist2;
+  int nmb_one = 0;
+  int *count = SISL_NULL;
+
+  if ((count = new0array (kn1, int)) == SISL_NULL)
+    goto err101;
+
+  for (ki=0; ki<kn1; ++ki)
+    {
+      for (kj=0; kj<kn1; ++kj)
+	{
+	  if (ki == kj)
+	    continue;
+	  if (ndir[ki] == 10)
+	    continue;  /* Corner touch */
+
+	  /* Check if the points are connected */
+	  sh6getlist (uipt[ki], uipt[kj], &klist1, &klist2, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	  if (kstat == 0)
+	    count[ki]++;
+	}
+    }
+
+  /* Check if the list has two endpoints and no branches */
+  kstat = 0;
+  for (ki=0; ki<kn1; ++ki)
+    {
+      if (count[ki] == 1)
+	nmb_one++;
+      if ((count[ki] < 1 && ndir[ki] != 10) || count[ki] > 2)
+	{
+	  kstat = 1;  /* Not a chain including all points */
+	  goto out;
+	}
+    }
+  if (nmb_one != 2)
+    kstat = 1;
+
+  goto out;
+
+ err101:
+  kstat = -101;
+  goto out;
+
+ error:
+  goto out;
+
+ out:
+  if (count)
+    freearray(count);
+  return kstat;
+}
+
+
+#if defined(SISLNEEDPROTOTYPES)
+static void
+s9edgsscon_directed(SISLIntdat *rintdat, SISLIntpt **uipt, int kn1, double *eval, 
+		    double *dirval, int *ndir, double aepsge, int *jstat)
+#else
+  static void s9edgsscon_directed(rintdat, uipt, kn1, eval, dirval, ndir, aepsge, jstat)
+     SISLIntdat *rintdat;
+     SISLIntpt **uipt;
+     int kn1;
+     double *eval;
+     double *dirval;
+     int *ndir;
+     double aepsge;
+     int *jstat;
+#endif
+ /*
+ *********************************************************************
+ *
+ *********************************************************************
+ *
+ * PURPOSE    : Connect a directed curve
+ *
+ * INPUT      : uipt     - Array of intersection points
+ *              kn1      - Number of intersection points
+ *
+ * OUTPUT     :  jstat    - status messages
+ *                           = 0     : Connected
+ *                           = 1     : Not connected
+ *                           < 0     : error
+ *
+ * WRITTEN BY: Vibeke Skytt, SINTEF, 2023-06.
+ *
+ *********************************************************************
+ */
+{
+  int kstat = 0;
+  int ki, kj;
+  int klist1, klist2;
+  int kdum;
+  int *lperm = SISL_NULL;
+  int *lconn;
+  int nconn = 0;
+  
+  /* Sort intersection points */
+  if ((lperm = newarray(3*kn1,  int)) == SISL_NULL)
+    goto err101;
+  lconn = lperm + kn1;
+  for (ki=0; ki<kn1; ++ki)
+    lperm[ki] = ki;
+
+  for (ki=0; ki<kn1; ++ki)
+    for (kj=ki+1; kj<kn1; ++kj)
+      if (dirval[lperm[kj]] < dirval[lperm[ki]])
+	{
+	  kdum = lperm[ki];
+	  lperm[ki] = lperm[kj];
+	  lperm[kj] = kdum;
+	}
+
+  /* Check if a connection is possible */
+  *jstat = 0;  /* Suppose that it is possible to connect */
+  for (ki=1; ki<kn1; ++ki)
+    {
+      sh6getlist (uipt[lperm[ki-1]], uipt[lperm[ki]], &klist1, &klist2, &kstat);
+      if (kstat < 0)
+	goto error;
+      if (kstat == 0)
+	continue;  /* Already connected */
+      else if ((ndir[lperm[ki-1]] == -1 || ndir[lperm[ki-1]] == 1) &&
+	  ndir[lperm[ki]] == 1)
+	{
+	  *jstat = 1;  /* Not possible to connect */
+	  goto out;
+	}
+      else if ((ndir[lperm[ki-1]] == 1 || ndir[lperm[ki-1]] == 0 ) &&
+	       ndir[lperm[ki]] == -1)
+	{
+	  /* Going out of the domain. Continue to next pair of points */
+	  lconn[nconn++] = lperm[ki-1];
+	  lconn[nconn++] = lperm[ki];
+	  ++ki;
+	  continue;
+	}
+      else if (ndir[lperm[ki-1]] == 1 && ndir[lperm[ki]] == 0)
+	{
+	  /* From in to touching. */
+	  lconn[nconn++] = lperm[ki-1];
+	  lconn[nconn++] = lperm[ki];
+	  continue;
+	}
+      else if (ndir[lperm[ki-1]] == 1 && ndir[lperm[ki]] == 2)
+	{
+	  /* From in to singular */
+	  lconn[nconn++] = lperm[ki-1];
+	  lconn[nconn++] = lperm[ki];
+	  continue;
+	}
+      else if (ndir[lperm[ki-1]] == 2 && ndir[lperm[ki]] == -1)
+	{
+	  /* From singular to out */
+	  lconn[nconn++] = lperm[ki-1];
+	  lconn[nconn++] = lperm[ki];
+	  ++ki;
+	  continue;
+	}
+      else if (ndir[lperm[ki-1]] == 0 && ndir[lperm[ki]] == 0)
+	{
+	  /* Two parallel points that are not connected. Check if there is a 
+	     connection within the surface domains */
+	  /* For the time being */
+	  *jstat = 1;
+	  goto out;
+	}
+      else if (s6dist(&eval[lperm[ki-1]*6], &eval[lperm[ki]*6], 3) < aepsge)
+	{
+	  /* Two instances of the same point. Connect */
+	  lconn[nconn++] = lperm[ki-1];
+	  lconn[nconn++] = lperm[ki];
+	  continue;
+	}
+      else
+	{
+	  /* Not a known configuration */
+	  *jstat = 1;
+	  goto out;
+	}
+    }
+
+  /* Connect */
+  for (ki=0; ki<nconn; ki+=2)
+    {
+      sh6condir(rintdat, uipt[lconn[ki]], uipt[lconn[ki+1]], &kstat);
+      if (kstat < 0)
+	goto error;
+    }
+
+  *jstat = 0;
+  goto out;
+
+ err101:
+  *jstat = -101;
+  goto out;
+
+ error:
+  *jstat = kstat;
+  goto out;
+
+ out:
+  if (lperm) freearray(lperm);
+}
+
+
+#if defined(SISLNEEDPROTOTYPES)
+static void
+s9edgsscon_singsearch(SISLSurf *ps1, SISLSurf *ps2, SISLIntdat *rintdat, 
+		      SISLIntpt **uipt, int *ndir, int kn1, double aepsge,
+		      int *jstat)
+#else
+  static void s9edgsscon_singsearch(ps1, ps2, rintdat, uipt, ndir, kn1, aepsge, jstat)
+     SISLSurf *ps1;
+     SISLSurf *ps2; 
+     SISLIntdat *rintdat;
+     SISLIntpt **uipt;
+     int *ndir;
+     int kn1;
+     double aepsge;
+     int *jstat;
+#endif
+ /*
+ *********************************************************************
+ *
+ *********************************************************************
+ *
+ * PURPOSE    : Search for a singular intersection to which in/out points 
+ *              should be connected
+ *
+ * INPUT      : ps1      - First surface in intersection.
+ *              ps2      - Second surface in intersection.
+ *              uipt     - Array of intersection points
+ *              ndir     - Classification of intersection points
+ *              kn1      - Number of intersection points
+ *              aepsge   - Geometry tolerance
+ *
+ * OUTPUT     : rintdat  - Intersection dates to be updated.
+ *              jstat    - status messages
+ *                           = 1     : Not a simple case.
+ *                           = 0     : OK.
+ *                           < 0     : error
+ *
+ * WRITTEN BY: Vibeke Skytt, SINTEF, 2023-06.
+ *
+ *********************************************************************
+ */
+{
+  int kstat = 0;
+  int ki, kj;
+  int kv;
+  int klist1, klist2;		/* List index in iintpt.   */
+  double *nullp = SISL_NULL;
+  double tdist;                 /* Distance between surfaces in point.   */
+  double tref;                  /* Reference value.                      */
+  double spos[4];               /* Parameter value of singular point.    */
+  double spnt1[3], spnt2[3];    /* Value of singularity in the two surfaces */
+  double start[4];              /* Start parameter to iteration.         */
+  double slimit[8];             /* Limits to the parameter areas.        */
+  SISLIntpt *qsing=SISL_NULL;   /* Singular intersection point.          */
+  int klfs = 0, klft = 0; 
+  int kinn = 0, kout = 0, ksing = 0, kpar = 0;
+  int ki1=-1, ki2=-1, ko1=-1, ko2=-1, kx1 = -1, kx2 = -1;
+
+  /* Count occurances of classified points */
+  for (ki=0, kv=0; ki < kn1; ki++)
+    {
+      if (ndir[ki] < 10)
+	kv++;
+      if (ndir[ki] == 1)
+	{
+	  if (kinn == 0)
+	    ki1 = ki;
+	  else
+	    ki2 = ki;
+	  kinn++;
+	}
+      else if (ndir[ki] == -1)
+	{
+	  if (kout == 0)
+	    ko1 = ki;
+	  else
+	    ko2 = ki;
+	  kout++;
+	}
+      else if (ndir[ki] == 0)
+	{
+	  if (kx1 < 0)
+	    kx1 = ki;
+	  else
+	    kx2 = ki;
+	  kpar++;
+	}
+      else if (ndir[ki] == 2)
+	ksing++;
+    }
+
+  /* Configuration is assumed to be checked prior to calling this function. */
+  
+  /* If two parallel points check if they are connected */
+  if (kpar == 2)
+    {
+      if (kx1 < 0 || kx2 < 0)
+	goto warn1;
+      sh6getlist (uipt[kx1], uipt[kx2], &klist1, &klist2, &kstat);
+      if (kstat != 0)
+	goto warn1;   /* Not a suitable configuration */
+    }
+
+  /* A configuration that might include a singularity.
+     Prepare for a search. */
+      
+  slimit[0] = *(ps1->et1 + ps1->ik1 - 1);
+  slimit[1] = *(ps1->et1 + ps1->in1);
+  slimit[2] = *(ps1->et2 + ps1->ik2 - 1);
+  slimit[3] = *(ps1->et2 + ps1->in2);
+  slimit[4] = *(ps2->et1 + ps2->ik1 - 1);
+  slimit[5] = *(ps2->et1 + ps2->in1);
+  slimit[6] = *(ps2->et2 + ps2->ik2 - 1);
+  slimit[7] = *(ps2->et2 + ps2->in2);
+  tref = MAX(MAX(slimit[1]-slimit[0],slimit[3]-slimit[2]),
+	     MAX(slimit[5]-slimit[4],slimit[7]-slimit[6]));
+      
+  for (kj=0; kj<4; kj++)
+    {
+      start[kj] = DZERO;
+      for (ki=0; ki<kn1; ki++)
+	{
+	  if (ndir[ki] == 10)
+	    continue;
+	  start[kj] += uipt[ki]->epar[kj];
+	}
+      start[kj] /= (double)kv;
+    }
+      
+  /* Search for singularity.  */
+      
+  shsing(ps1, ps2, slimit, start, spos, &kstat);
+  if (kstat < 0)
+    goto error;
+      
+  if (kstat == 1)
+    {
+      /* A singularity is found. Check if it is an
+	 intersection point. */
+	  
+      s1424(ps1, 0, 0, spos, &klfs, &klft, spnt1, &kstat);
+      if (kstat < 0)
+	goto error;
+	  
+      s1424(ps2, 0, 0, spos+2, &klfs, &klft, spnt2, &kstat);
+      if (kstat < 0) 
+	goto error;
+	  
+      tdist = s6dist(spnt1, spnt2, 3);
+      if (tdist < aepsge)
+	{
+	  /* A singular intersection point is found. Check if
+	     it is identical to any of the existing. */
+	      
+	  for (ki=0; ki<kn1; ki++)
+	    {
+	      if (ndir[ki] == 10)
+		continue;
+	      for (kj=0; kj<4; kj++)
+		if (DNEQUAL(spos[kj]+tref,uipt[ki]->epar[kj]+tref))
+		  break;
+	      if (kj == 4)
+		break;
+	    }
+
+	  if (ki < kn1)
+	    {
+	      /* An existing interesction points is found to be
+		 singular. Connect in/out points to the singular point
+		 and mark it as singular */
+	      for (kj=0; kj<kn1; ++kj)
+		{
+		  if (kj == ki)
+		    continue;
+		  if (ndir[kj] == 1)
+		    sh6condir(rintdat, uipt[kj], uipt[ki], &kstat);
+		  else if (ndir[kj] == -1)
+		    sh6condir(rintdat, uipt[ki], uipt[kj], &kstat);
+		  if (kstat < 0)
+		    goto error;
+		}
+
+	      uipt[ki]->iinter = SI_SING;
+	    }
+	  else
+	    {
+	      /* The singular intersection point does not exist already.
+		 Create intersection point.  */
+		      
+	      qsing = hp_newIntpt (4, spos, DZERO,
+				   SI_ORD, SI_UNDEF, SI_UNDEF,
+				   SI_UNDEF, SI_UNDEF,
+				   0, 0, nullp, nullp);
+	      if (qsing == SISL_NULL)
+		goto err101;
+	      /* Mark point as singular.  */
+	      qsing -> iinter = SI_SING;
+		      
+	      /*  Check if it lies on an edge.       */
+		      
+	      for (kj=0; kj<4; kj++)
+		if (DEQUAL(spos[kj]+tref,slimit[2*kj]+tref) ||
+		    DEQUAL(spos[kj]+tref,slimit[2*kj+1]+tref))
+		  break;
+		      
+	      if (kj < 4 && kpar == 2)
+		{
+		  /* Singular intersection point at an edge.
+		     Insert between the two parallel points.  */
+
+		  sh6insert(&rintdat,uipt[kx1], uipt[kx2], &qsing, &kstat);
+		  if (kstat < 0)
+		    goto error;
+
+		  /* Connect to in/out point.  */
+		  if (kinn == 1)
+		    sh6condir(rintdat, uipt[ki1], qsing, &kstat);
+		  else
+		    sh6condir(rintdat, qsing, uipt[ko1], &kstat);
+		  if (kstat < 0)
+		    goto error;
+
+		}
+	      else if (kj == 4)
+		{
+		  /* Singular point in the inner. Connect to
+		     all edge points. First put into data structure. */
+		  sh6idnpt (&rintdat, &qsing, 1, &kstat);
+		  if (kstat < 0)
+		    goto error;
+
+		  for (ki=0; ki<kn1; ++ki)
+		    {
+		      if (ndir[ki] == 1)
+			sh6condir(rintdat, uipt[ki], qsing, &kstat);
+		      else if (ndir[ki] == -1)
+			sh6condir(rintdat, qsing, uipt[ki], &kstat);
+		      if (kstat < 0)
+			goto error;
+		    }
+		}
+	      else
+		goto warn1;
+	    }
+	}
+      else
+	goto warn1;
+    }
+  else
+    goto warn1;
+
+  *jstat = 0;
+  goto out;
+
+ warn1:
+  *jstat = 1;
+  goto out;
+
+ err101:
+  *jstat = -101;
+  goto out;
+  
+ error:
+  *jstat = kstat;
+  goto out;
+  
+ out:
+  return;
+}
+
+
+
+
 #if defined(SISLNEEDPROTOTYPES)
 static void
 sh1762_s9edgsscon (SISLEdge * vedge[], SISLSurf * ps1, SISLSurf * ps2,
@@ -6657,8 +7645,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
  *********************************************************************
  */
 {
-  int kstat,kstat1,kstat2;
-  int kmarch = 0;               /* Indicates if marching is to be done. */
+  int kstat = 0;
   int *ldir = SISL_NULL;		/* Local array containing one of the statusvalues for
 				 * each point:
 				 *  0 - The intersect.curve is parallel to one
@@ -6675,42 +7662,19 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 
   int lant[2];
   unsigned char *edg = SISL_NULL;
-  double *sval1 = SISL_NULL;
+  double *sval = SISL_NULL;      /* Position and tangen of intersection point */
+  double *sdist;
+  double *sdval;
   SISLIntpt **uipt = SISL_NULL;
-  SISLIntpt **uinewpt = SISL_NULL;
-
-  double *spar = SISL_NULL;		/* Local array with parameter values used as
-				   input to s9surmarch. */
-  int *lperm = SISL_NULL;		/* Local permutation array after sorting
-				   input points to s9surmarch.*/
-  int *lpermdir = SISL_NULL;		/* Local array with status values used as
-				   input to s9surmarch. */
-  int lstatus[4];		/* Local array containing the possible status
-				   constants -1,1,0,2. */
-  int lnumb[4];			/* Local array containing the number of points
-				   with status lstatus. */
-
-  double *sparout = SISL_NULL;	/* Local array with parameter values used as
-				   output from s9surmarch.*/
-  int *lpar = SISL_NULL;		/* Local array containing the connection information
-				   from s9surmarch.*/
-  int kpoints;			/* Local integer containing number of points returned
-				   from s9surmarch.*/
-  double *nullp = SISL_NULL;
+  SISLPtedge *qpt;
   int klist1, klist2;		/* List index in iintpt.   */
 
-  double tdist;                 /* Distance between surfaces in point.   */
-  double tref;                  /* Reference value.                      */
-  double spos[4];               /* Parameter value of singular point.    */
-  double start[4];              /* Start parameter to iteration.         */
-  double slimit[8];             /* Limits to the parameter areas.        */
-  SISLIntpt *qsing=SISL_NULL;   /* Singular intersection point.          */
   int kpt2 = 0;                 /* Number of connected intersection points */
+  int kn1, ki, kj, kn, kr, kv, kant;
+  double distfac = 10.0;
+  int kinn = 0, kout = 0, ksing = 0, kpar = 0;
+  int ki1=-1, ki2=-1, ko1=-1, ko2=-1, kx1 = -1, kx2 = -1;
 
-  /* Experiment UJK, sept 92 (BEOrd12754) */
-    double tolpar = (double) 0.001;
-
-    /* double tolpar = (double) 0.01; */
 
   if (ps1->idim != 3 || ps2->idim != 3)
     goto err200;
@@ -6728,1118 +7692,486 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
     lant[1] = vedge[1]->ipoint;
 
 
-  if (lant[0] + lant[1] > 1)
+  kant = lant[0] + lant[1];
+  if (kant == 0)
     {
-      int kn1, kn, ki, kj, kr, kv, kant, klfs, klft, kdir, kpar;
-      double *sval2, *snorm1, *snorm2, *stang, *sdec1, *sdec2, *sdist;
-      SISLPtedge *qpt;
-      double tang;
-      double distfac = 10.0;
+      /* No point at the edges. Stop recursion */
+      *jstat = 0;
+      goto out;
+    }
+  
+  /* Allocate array of pointers to the points. */
+  if ((uipt = newarray (kant, SISLIntpt *)) == SISL_NULL)
+    goto err101;
+  if ((edg = new0array (kant, unsigned char)) == SISL_NULL)
+    goto err101;
 
-      kant = lant[0] + lant[1];
-
-      /* Allocate array of pointers to the points. */
-
-      if ((uipt = newarray (kant, SISLIntpt *)) == SISL_NULL)
-	goto err101;
-      if ((edg = new0array (kant, unsigned char)) == SISL_NULL)
-	goto err101;
-      if ((ldir = new0array (kant, int)) == SISL_NULL)
-	goto err101;
-      if ((sval1 = newarray (34 * kant, double)) == SISL_NULL)
-	goto err101;
-      sval2 = sval1 + 9 * kant;
-      snorm1 = sval2 + 9 * kant;
-      snorm2 = snorm1 + 3 * kant;
-      stang = snorm2 + 3 * kant;
-      sdec1 = stang + 3 * kant;
-      sdec2 = sdec1 + 3 * kant;
-      sdist = sdec2 + 3 * kant;
-
-
-      /* UPDATE (ujk) Main point vs helppoints covered ? */
-      /* Update the arrays. */
-
-      for (kn1 = 0, kn = 0; kn < 2; kn++)
-	if (lant[kn] > 0)
-	  for (kj = 0; kj < vedge[kn]->iedge; kj++)
-	    for (qpt = vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
-	      {
-		for (ki = 0; ki < kn1; ki++)
-		  {
-		    if (qpt->ppt == uipt[ki])
-		      break;
-		  }
-		if (ki == kn1)
-		  uipt[kn1++] = qpt->ppt;
-
-		edg[ki] |= 1 << (vedge[kn]->iedge * kn + kj);
-	      }
-
-      if (kn1 > 1)
-	for (ki = 0; ki < kn1; ki++)
+  /* Collect points and identify corresponding edges */
+  for (kn1 = 0, kn = 0; kn < 2; kn++)
+    if (lant[kn] > 0)
+      for (kj = 0; kj < vedge[kn]->iedge; kj++)
+	for (qpt = vedge[kn]->prpt[kj]; qpt != SISL_NULL; qpt = qpt->pnext)
 	  {
-	    kv = 3 * ki;
-	    kn = 9 * ki;
-	    /* UPDATE (ujk) : getgeom !!  */
-
-	    klfs = klft = 0;
-	    s1421 (ps1, 1, uipt[ki]->epar, &klfs, &klft, sval1 + kn, snorm1 + kv,
-		   &kstat);
-	    if (kstat < 0)
-	      goto error;
-	    else if (kstat > 0)
+	    for (ki = 0; ki < kn1; ki++)
 	      {
-		ldir[ki] = 2;
-		continue;
+		if (qpt->ppt == uipt[ki])
+		  break;
 	      }
+	    if (ki == kn1)
+	      uipt[kn1++] = qpt->ppt;
 
-	    klfs = klft = 0;
-	    s1421 (ps2, 1, uipt[ki]->epar + 2, &klfs, &klft, sval2 + kn, snorm2 + kv,
-		   &kstat);
-	    if (kstat < 0)
-	      goto error;
-	    else if (kstat > 0)
-	      {
-		ldir[ki] = 2;
-		continue;
-	      }
-
-	    sdist[ki] = s6dist(&sval1[kn], &sval2[kn], 3);
-	    tang = s6ang (snorm1 + kv, snorm2 + kv, 3);
-	    if (tang < REL_PAR_RES)
-	      /*	    if (tang < ANGULAR_TOLERANCE) */
-	      {
-		ldir[ki] = 2;
-		continue;
-	      }
-
-	    s6crss (snorm1 + kv, snorm2 + kv, stang + kv);
-
-	    s6decomp (stang + kv, sdec1 + kv, sval1 + kn + 3, sval1 + kn + 6,
-		      snorm1 + kv, &kstat);
-	    if (kstat < 0)
-	      goto error;
-	    else if (kstat > 0)
-	      {
-		ldir[ki] = 2;
-		continue;
-	      }
-
-
-	    s6decomp (stang + kv, sdec2 + kv, sval2 + kn + 3, sval2 + kn + 6,
-		      snorm2 + kv, &kstat);
-	    if (kstat < 0)
-	      goto error;
-	    else if (kstat > 0)
-	      {
-		ldir[ki] = 2;
-		continue;
-	      }
-
-	    for (kpar = 1, kj = 0; kj < 8; kj++)
-	      if ((edg[ki] & 1 << kj) == 1 << kj)
-		{
-		  switch (kj)
-		    {
-		    case 0:
-		      tang = s6ang (stang + kv, sval1 + kn + 3, 3);
-		      kdir = (sdec1[kv + 1] > DZERO ? 1 : -1);
-		      break;
-		    case 4:
-		      tang = s6ang (stang + kv, sval2 + kn + 3, 3);
-		      kdir = (sdec2[kv + 1] > DZERO ? 1 : -1);
-		      break;
-		    case 1:
-		      tang = s6ang (stang + kv, sval1 + kn + 6, 3);
-		      kdir = (sdec1[kv] > DZERO ? -1 : 1);
-		      break;
-		    case 5:
-		      tang = s6ang (stang + kv, sval2 + kn + 6, 3);
-		      kdir = (sdec2[kv] > DZERO ? -1 : 1);
-		      break;
-		    case 2:
-		      tang = s6ang (stang + kv, sval1 + kn + 3, 3);
-		      kdir = (sdec1[kv + 1] > DZERO ? -1 : 1);
-		      break;
-		    case 6:
-		      tang = s6ang (stang + kv, sval2 + kn + 3, 3);
-		      kdir = (sdec2[kv + 1] > DZERO ? -1 : 1);
-		      break;
-		    case 3:
-		      tang = s6ang (stang + kv, sval1 + kn + 6, 3);
-		      kdir = (sdec1[kv] > DZERO ? 1 : -1);
-		      break;
-		    case 7:
-		      tang = s6ang (stang + kv, sval2 + kn + 6, 3);
-		      kdir = (sdec2[kv] > DZERO ? 1 : -1);
-		    }
-
-		  if (tang < tolpar)
-		    kdir = 0;
-		  /* if (tang < REL_PAR_RES)
-		    kdir = 0; */
-		  /*  if (tang < ANGULAR_TOLERANCE) kdir = 0;*/
-		  if (kdir == 0)
-		    kpar = 0;
-		  else if (ldir[ki] != kdir)
-		    {
-		      if (ldir[ki] == 0)
-			ldir[ki] = kdir;
-		      else
-			{
-			  ldir[ki] = 10;
-			  break;
-			}
-		    }
-		}
-	    if (kpar == 0 && ldir[ki] != 10)
-	      ldir[ki] = 0;
+	    edg[ki] |= 1 << (vedge[kn]->iedge * kn + kj);
 	  }
 
+  if (kn1 <= 1)
+    {
+      /* One point only. No connection possible. Stop recursion */
+      *jstat = 0;
+      goto out;
+    }
 
-      /* When only two points, check if they are connected. */
-      if (kn1 == 2)
+  /* Allocate arrays for intersection point properties */
+  if ((ldir = new0array (kn1, int)) == SISL_NULL)
+    goto err101;
+  if ((sval = newarray (8*kn1, double)) == SISL_NULL)
+    goto err101;
+  sdval = sval + 6*kn1;
+  sdist = sdval + kn1;
+  
+  /* Evaluate intersection point properties */
+  s9edgsscon_eval(ps1, ps2, uipt, edg, kn1, isimple, sval, sdist, sdval,
+		  ldir, &kstat);
+  if (kstat < 0)
+    goto error;
+
+  /* Check if the configuration can be simplified */
+  s9edgsscon_simplify(rintdat, uipt, edg, &kn1, sval, sdist, sdval, ldir,
+  		      aepsge, &kstat);
+  if (kstat < 0)
+    goto error;
+
+  /* Count occurances of in-points, out-points and non-corner points */
+  for (ki=0, kv=0; ki < kn1; ki++)
+    {
+      if (ldir[ki] < 10)
+	kv++;
+      if (ldir[ki] == 1)
 	{
-	  sh6getlist (uipt[0], uipt[1], &klist1, &klist2, &kstat);
-	  if (kstat == 0)
-	    kn1 = 0;
-	}
-
-
-      for (kv = ki = 0; ki < kn1; ki++)
-	if (ldir[ki] < 10)
-	  kv++;
-
-      if (kv == 1 && kn1 > 1 )
-      {
-	 int i,j;
-
-	 if (kn1 > 2)
-	 {
-	    *jstat = 0;
-	    for (i=0;i<kn1;i++)
-	       if (ldir[i] == 1 || ldir[i] == -1)
-		  *jstat = 1;
-	    goto out;
-	 }
-
-
-	 if (ldir[0] == 1 || ldir[0] == -1)
-	 {
-	    i =  0;
-	    j =  1;
-	 }
-	 else if (ldir[1] == 1 || ldir[1] == -1)
-	 {
-	    i =  1;
-	    j =  0;
-	 }
-	 else						i = -1;
-
-	 if (i >=0)
-	 {
-	    /* We have one point, and the direction is in/out.
-	       The other point is touching a corner it is probably
-	       an error and the point must be close to tangential.*/
-	   /* But first check if it really is a part of a help point
-	      configuration */
-	   kr = uipt[j]->no_of_curves;  /* Initially assume not a resolved 
-					   configuration */
-	   if (max(sdist[i],sdist[j]) > distfac*min(sdist[i],sdist[j]))
-	     {
-	       /* Check if the points are already connected trough one
-		  common main point */
-	       for (kr=0; kr<uipt[j]->no_of_curves; ++kr)
-		 {
-		   if (sh6ismain(uipt[j]->pnext[kr]))
-		     {
-		       sh6getlist (uipt[i], uipt[j]->pnext[kr], &klist1,
-				   &klist2, &kstat);
-		       if (kstat < 0)
-			 goto error;
-		       if (kstat == 0)
-			 {
-			   /* Connected. Assume configuration to be re solved */
-			   break;
-			 }
-		     }
-		 }
-	     }
-
-	   if (kr < uipt[j]->no_of_curves)
-	     kv = 0;
-	   else
-	     {
-	       /* Check if it is a real corner touch */
-	       if (sdist[i] > distfac*sdist[j] && sh6nmbmain(uipt[i],&kstat) == 1)
-		 {
-		   kv = 0;
-		 }
-	       else
-		 {
-		   if (ldir[i] == -1)
-		     {
-		       int k=j;
-		       j  =  i;
-		       i  =  k;
-		     }
-
-		   sh6tomain (uipt[i], &kstat);
-		   sh6tomain (uipt[j], &kstat);
-
-		   sh6idcon (&rintdat, &uipt[i], &uipt[j], &kstat);
-		   if (kstat < 0)
-		     goto error;
-		   sh6setdir (uipt[i], uipt[j], &kstat);
-		   if (kstat < 0)
-		     goto error;
-		   *jstat = 0;
-		 }
-	     }
-	 }
-      }
-      else if (kv < 2)
-	/* Less than two points, it's a simple case. */
-	*jstat = 0;
-
-      else if (kv > 8)
-	/* More than eight points, it's not a simple case. */
-	*jstat = 1;
-
-      else if (kv == 4 && isimple == 1)
-	{
-	  /* Connect point in to closest point out. */
-	  int kinn = 0, kout = 0;
-	  int ki, ki1, ki2, ko1, ko2;
-
-	  for (ki = 0; ki < kn1; ki++)
-	    if (ldir[ki] == 1)
-	      {
-		if (kinn == 0)
-		  ki1 = ki;
-		else
-		  ki2 = ki;
-		kinn++;
-	      }
-	    else if (ldir[ki] == -1)
-	      {
-		if (kout == 0)
-		  ko1 = ki;
-		else
-		  ko2 = ki;
-		kout++;
-	      }
-
-	  if (kinn == 2 && kout == 2)
-	    {
-	      double tdist1, tdist2, tdir1, tdir2;
-
-	      tdist1 = s6dist (sval1 + (ki1 * 9), sval1 + (ko1 * 9), 3);
-	      tdist2 = s6dist (sval1 + (ki1 * 9), sval1 + (ko2 * 9), 3);
-
-	      tdir1 = s6scpr (stang + (ki1 * 3), stang + (ko1 * 3), 3);
-	      tdir2 = s6scpr (stang + (ki1 * 3), stang + (ko2 * 3), 3);
-
-	      if (tdir2 < DZERO || (tdir1 >= DZERO && tdist1 <= tdist2))
-		{
-		  /* We can connect the points. */
-		  /* UPDATE (ujk) : do we need to make conistency
-	             between the points ? or can it be delayed until
-	             s6idlis ?? (this comments is valid for all
-	             connects in sscon and pscon)*/
-
-		  sh6tomain (uipt[ki1], &kstat);
-		  sh6tomain (uipt[ko1], &kstat);
-		  sh6tomain (uipt[ki2], &kstat);
-		  sh6tomain (uipt[ko2], &kstat);
-
-		  sh6idcon (&rintdat, &uipt[ki1], &uipt[ko1], &kstat);
-		  if (kstat < 0)
-		    goto error;
-		  /* Newi (ujk) Set in/out direction */
-		  sh6setdir (uipt[ki1], uipt[ko1], &kstat);
-		  if (kstat < 0)
-		    goto error;
-
-		  sh6idcon (&rintdat, &uipt[ki2], &uipt[ko2], &kstat);
-		  if (kstat < 0)
-		    goto error;
-		  /* Newi (ujk) Set in/out direction */
-		  sh6setdir (uipt[ki2], uipt[ko2], &kstat);
-		  if (kstat < 0)
-		    goto error;
-
-		}
-	      else
-		{
-		  /* We can connect the points. */
-
-		  sh6tomain (uipt[ki1], &kstat);
-		  sh6tomain (uipt[ko1], &kstat);
-		  sh6tomain (uipt[ki2], &kstat);
-		  sh6tomain (uipt[ko2], &kstat);
-
-		  sh6idcon (&rintdat, &uipt[ki1], &uipt[ko2], &kstat);
-		  if (kstat < 0)
-		    goto error;
-		  /* Newi (ujk) Set in/out direction */
-		  sh6setdir (uipt[ki1], uipt[ko2], &kstat);
-		  if (kstat < 0)
-		    goto error;
-
-		  sh6idcon (&rintdat, &uipt[ki2], &uipt[ko1], &kstat);
-		  if (kstat < 0)
-		    goto error;
-		  /* Newi (ujk) Set in/out direction */
-		  sh6setdir (uipt[ki2], uipt[ko1], &kstat);
-		  if (kstat < 0)
-		    goto error;
-
-		}
-	      *jstat = 0;
-	    }
+	  if (kinn == 0)
+	    ki1 = ki;
 	  else
-	    *jstat = 1;
+	    ki2 = ki;
+	  kinn++;
 	}
-
-      else
-	/* Prepare a marching strategy for connection.*/
+      else if (ldir[ki] == -1)
 	{
-	  lstatus[0] = 1;
-	  lstatus[1] = -1;
-	  lstatus[2] = 0;
-	  lstatus[3] = 2;
-
-	  lnumb[0] = 0;
-	  lnumb[1] = 0;
-	  lnumb[2] = 0;
-	  lnumb[3] = 0;
-
-	  if ((lperm = new0array (kv, int)) == SISL_NULL)
-	    goto err101;
-	  if ((lpermdir = new0array (kv, int)) == SISL_NULL)
-	    goto err101;
-	  if ((spar = newarray (4 * kv, double)) == SISL_NULL)
-	    goto err101;
-
-	  for (kn = 0, kj = 0; kn < 4 && kj < kv; kn++)
-	    {
-	      /* We pass through the points four times, one for each
-                 possible statusvalue.*/
-	      /* In this way they will be sorted : 111..-1-1-1..000..222.. */
-
-	      for (ki = 0; ki < kn1 && kj < kv; ki++)
-		{
-
-		  if (ldir[ki] == lstatus[kn])
-		    {
-		      lnumb[kn] += 1;
-		      spar[4 * kj] = uipt[ki]->epar[0];
-		      spar[4 * kj + 1] = uipt[ki]->epar[1];
-		      spar[4 * kj + 2] = uipt[ki]->epar[2];
-		      spar[4 * kj + 3] = uipt[ki]->epar[3];
-		      lperm[kj] = ki;
-		      lpermdir[kj] = ldir[ki];
-		      kj++;
-		    }
-		}
-	    }
-
-	  /* If the first point is a parallel point, change status. */
-	  if (lpermdir[0] == 0)
-	    lpermdir[0] = 11;
-
-
-	  /* UJK, aug. 92 */
-	  if (kv == 3)
-	    {
-	       /* When three points, check if they are connected. */
-
-	       sh6getlist (uipt[lperm[0]], uipt[lperm[1]],
-			   &klist1, &klist2, &kstat);
-	       if (kstat < 0) goto error;
-	       sh6getlist (uipt[lperm[0]], uipt[lperm[2]],
-			   &klist1, &klist2, &kstat1);
-	       if (kstat1 < 0) goto error;
-	       sh6getlist (uipt[lperm[1]], uipt[lperm[2]],
-			   &klist1, &klist2, &kstat2);
-	       if (kstat2 < 0) goto error;
-
-	       if (kstat + kstat1 + kstat2 <= 1)
-		 {
-		    *jstat=0;
-		    goto out;
-		 }
-	    }
-	  if (kv == 3 &&  lpermdir[2] == 2)
-	     {
-		/* When three points, one singular, check if they are connected. */
-
-		sh6getlist (uipt[lperm[0]], uipt[lperm[2]],
-			    &klist1, &klist2, &kstat);
-		sh6getlist (uipt[lperm[1]], uipt[lperm[2]],
-			    &klist1, &klist2, &kstat1);
-
-		if (kstat == 0 && kstat1 == 0)
-		{
-		   *jstat=0;
-		   goto out;
-		}
-		else if (kstat1 == 0 &&
-			 abs(lpermdir[0]) == 1 &&
-			     lpermdir[1] == 0  &&
-			     lpermdir[2] == 2)
-		   {
-		      /* Sing point is connected to parallell,
-			 connect singular point to in(out) point. */
-		      sh6tomain (uipt[lperm[0]], &kstat);
-		      sh6tomain (uipt[lperm[2]], &kstat);
-
-		      sh6idcon (&rintdat, &uipt[lperm[0]],
-				&uipt[lperm[2]], &kstat);
-		      if (kstat < 0)
-			goto error;
-
-		      /* Set in/out direction */
-		      if (lpermdir[0] == 1)
-			sh6setdir (uipt[lperm[0]],
-				   uipt[lperm[2]], &kstat);
-		      else
-			sh6setdir (uipt[lperm[2]],
-				   uipt[lperm[0]], &kstat);
-
-		      if (kstat < 0)
-			goto error;
-
-		      /* Set status JUNCTION point. */
-		      uipt[lperm[2]]->iinter = SI_SING;
-
-
-		      *jstat=0;
-		      goto out;
-		   }
-	     }
-
-
-	  /* UJK 18.09.90 Connecting whenever we have two points and
-             at least one of them is moving in or out. */
-	  if (kv == 2 && (abs (lpermdir[0]) == 1))
-/*	  if (kv==2 &&
-	      ((lpermdir[0]*lpermdir[1] == -1) ||
-	       (abs(lpermdir[0])==1 && lpermdir[1] == 0))) */
-	    {
-	      /* We have only two points and there has to be a curve,
-                 connect. */
-	      sh6tomain (uipt[lperm[0]], &kstat);
-	      sh6tomain (uipt[lperm[1]], &kstat);
-
-	      sh6idcon (&rintdat, &uipt[lperm[0]], &uipt[lperm[1]], &kstat);
-	      if (kstat < 0)
-		goto error;
-
-	      /* Newi (ujk) Set in/out direction */
-	      if (lpermdir[0] == 1)
-		sh6setdir (uipt[lperm[0]],
-			   uipt[lperm[1]], &kstat);
-	      else
-		sh6setdir (uipt[lperm[1]],
-			   uipt[lperm[0]], &kstat);
-
-	      if (kstat < 0)
-		goto error;
-
-	      /* ALA && UJK 19.09.90 Set status JUNCTION point. */
-	      if (lpermdir[1] == 2)
-		uipt[lperm[1]]->iinter = SI_SING;
-
-
-	      *jstat = 0;
-	      goto out;
-	    }
-
-	  else if (kv > 4 && lpermdir[kv - 1] != -1)
-	     {
-		/* More than four points, some with status /= +-1;
-		   , it's not a simple case. */
-		*jstat = 1;
-		goto out;
-	     }
-
-
-	  else if (kv == 3 &&
-		   lpermdir[0] == 1 &&
-		   lpermdir[1] == -1 &&
-		   lpermdir[2] == 0)
-	    /* Three points, one in, one out, one parallel, connect in-out,
-               delete parallel.. */
-	    {
-
-	      sh6tomain (uipt[lperm[0]], &kstat);
-	      sh6tomain (uipt[lperm[1]], &kstat);
-	      sh6idcon (&rintdat, &uipt[lperm[0]], &uipt[lperm[1]], &kstat);
-	      if (kstat < 0)
-		goto error;
-
-	      /* Newi (ujk) Set in/out direction */
-	      sh6setdir (uipt[lperm[0]], uipt[lperm[1]], &kstat);
-
-	      /* UPDATE: (ujk) Avoid killing on edge !!! */
-	      /* UJK, Aug.92, can't delete the parallel point
-		 if it's in a corner. */
-
-	      /* Corner first surface ? */
-	      for (kn1 = kj = 0; kj < 4; kj++)
-		if (edg[lperm[2]] & (1<<kj)) kn1++;
-
-	      /* Corner second surface ? */
-	      if (kn1 < 2)
-		for (kn1 = 0, kj = 4; kj < 8; kj++)
-		  if (edg[lperm[2]] & (1<<kj)) kn1++;
-
-	      if (kn1 < 2)
-		{
-		   sh6idkpt (&rintdat, &uipt[lperm[2]], 1, &kstat);
-		   if (kstat < 0)
-		     goto error;
-		}
-
-	      *jstat = 0;
-	      goto out;
-	    }
-
-
-	    else if (kv == 3 && (lpermdir[0] == 1 || lpermdir[0] == -1) &&
-		     lpermdir[1] == 0 && lpermdir[2] == 0)
-	       {
-		  /* Set up parameters for search for singularity.  */
-
-		  slimit[0] = *(ps1->et1 + ps1->ik1 - 1);
-		  slimit[1] = *(ps1->et1 + ps1->in1);
-		  slimit[2] = *(ps1->et2 + ps1->ik2 - 1);
-		  slimit[3] = *(ps1->et2 + ps1->in2);
-		  slimit[4] = *(ps2->et1 + ps2->ik1 - 1);
-		  slimit[5] = *(ps2->et1 + ps2->in1);
-		  slimit[6] = *(ps2->et2 + ps2->ik2 - 1);
-		  slimit[7] = *(ps2->et2 + ps2->in2);
-		  tref = MAX(MAX(slimit[1]-slimit[0],slimit[3]-slimit[2]),
-			     MAX(slimit[5]-slimit[4],slimit[7]-slimit[6]));
-
-		  for (kj=0; kj<4; kj++)
-		  {
-		     start[kj] = DZERO;
-		     for (ki=1; ki<3; ki++) start[kj] += spar[ki*4+kj];
-		     start[kj] /= (double)2;
-		  }
-
-		  /* Search for singularity.  */
-
-		  shsing(ps1, ps2, slimit, start, spos, &kstat);
-		  if (kstat < 0) goto error;
-
-		  if (kstat == 1)
-		  {
-		     /* A singularity is found. Check if it is an
-			intersection point. */
-
-		     s1421(ps1, 0, spos, &klfs, &klft, sval1, snorm1, &kstat);
-		     if (kstat < 0) goto error;
-
-		     s1421(ps2, 0, spos+2, &klfs, &klft, sval2, snorm2, &kstat);
-		     if (kstat < 0) goto error;
-
-		     tdist = s6dist(sval1, sval2, 3);
-		     if (tdist < aepsge)
-		     {
-			/* A singular intersection point is found. Check if
-			   it is identical to any of the existing. */
-
-			for (ki=0; ki<3; ki++)
-			{
-			   for (kj=0; kj<4; kj++)
-			      if (DNEQUAL(spos[kj]+tref,spar[4*ki+kj]+tref)) break;
-			   if (kj == 4) break;
-			}
-
-			if (ki > 0 && ki < 3)
-			{
-			   /* Connect the in/out point to the singular,
-			      parallel point. */
-
-			   sh6tomain(uipt[lperm[0]],&kstat);
-			   sh6tomain(uipt[ki],&kstat);
-			   sh6idcon(&rintdat,&uipt[lperm[0]],&uipt[ki],&kstat);
-			   if (kstat < 0) goto error;
-
-			   /* Newi Set in/out direction */
-			   if (lpermdir[0] == 1)
-			      sh6setdir (uipt[lperm[0]], uipt[ki], &kstat);
-			   else
-			      sh6setdir (uipt[ki], uipt[lperm[0]], &kstat);
-
-			   goto out;
-			}
-
-			if (ki == 3)
-			{
-			   /* The singular intersection point do not exist already.
-			      Create intersection point.  */
-
-			   qsing = hp_newIntpt (4, spos, DZERO,
-						SI_ORD, SI_UNDEF, SI_UNDEF,
-						SI_UNDEF, SI_UNDEF,
-						0, 0, nullp, nullp);
-			   if (qsing == SISL_NULL) goto err101;
-
-			  /*  Check if it lies on an edge.       */
-
-			   for (kj=0; kj<4; kj++)
-			      if (DEQUAL(spos[kj]+tref,slimit[2*kj]+tref) ||
-				  DEQUAL(spos[kj]+tref,slimit[2*kj+1]+tref))
-				 break;
-
-			   if (kj < 4)
-			   {
-			      /* Singular intersection point at an edge.
-				 Insert between the two parallel points.  */
-
-			      sh6insert(&rintdat,uipt[lperm[1]],uipt[lperm[2]],
-					&qsing, &kstat);
-			      if (kstat < 0) goto error;
-
-			      /* Connect to in/out point.  */
-
-			      sh6tomain(uipt[lperm[0]],&kstat);
-			      sh6tomain(qsing,&kstat);
-			      sh6idcon(&rintdat,&uipt[lperm[0]],&qsing,&kstat);
-			      if (kstat < 0) goto error;
-
-			      /* Mark point as singular.  */
-
-			      qsing -> iinter = SI_SING;
-
-			      /* Newi Set in/out direction */
-			      if (lpermdir[0] == 1)
-				 sh6setdir (uipt[lperm[0]], qsing, &kstat);
-			      else
-				 sh6setdir (qsing, uipt[lperm[0]], &kstat);
-
-			      goto out;
-			   }
-			   else
-			   {
-			      /* Singular point in the inner. Connect to
-				 all edge points. First put into data structure. */
-
-			      sh6idnpt (&rintdat, &qsing, 1, &kstat);
-			      if (kstat < 0)
-				 goto error;
-
-			      sh6tomain(uipt[lperm[0]],&kstat);
-			      sh6tomain(uipt[lperm[1]],&kstat);
-			      sh6tomain(uipt[lperm[2]],&kstat);
-			      sh6tomain(qsing,&kstat);
-			      sh6idcon(&rintdat,&uipt[lperm[0]],&qsing,&kstat);
-			      if (kstat < 0) goto error;
-			      sh6idcon(&rintdat,&uipt[lperm[1]],&qsing,&kstat);
-			      if (kstat < 0) goto error;
-			      sh6idcon(&rintdat,&uipt[lperm[1]],&qsing,&kstat);
-			      if (kstat < 0) goto error;
-
-			      /* Mark point as singular.  */
-
-			      qsing -> iinter = SI_SING;
-
-			      /* Newi Set in/out direction */
-			      if (lpermdir[0] == 1)
-				 sh6setdir (uipt[lperm[0]], qsing, &kstat);
-			      else
-				 sh6setdir (qsing, uipt[lperm[0]], &kstat);
-
-			      goto out;
-			   }
-			}
-		     }
-		  }
-		  /* else
-		  {
-		      Check if only one of the parallel point is connected
-			to only one point and the other is connected to two,
-			connect to the first parallel point.
-
-		     if ((sh6nmbmain(uipt[lperm[1]],&kstat) +
-			  sh6nmbhelp(uipt[lperm[1]],&kstat) == 1) &&
-			 (sh6nmbmain(uipt[lperm[2]],&kstat) +
-			  sh6nmbhelp(uipt[lperm[2]],&kstat) == 2))
-		     {
-			sh6tomain(uipt[lperm[0]],&kstat);
-			sh6tomain(uipt[lperm[1]],&kstat);
-			sh6idcon(&rintdat,&uipt[lperm[0]],&uipt[lperm[1]],&kstat);
-			if (kstat < 0) goto error;
-
-			 Newi Set in/out direction
-			if (lpermdir[0] == 1)
-			   sh6setdir (uipt[lperm[0]], uipt[lperm[1]], &kstat);
-			else
-			   sh6setdir (uipt[lperm[1]], uipt[lperm[0]], &kstat);
-
-			goto out;
-	             }
-		     else if ((sh6nmbmain(uipt[lperm[2]],&kstat) +
-			       sh6nmbhelp(uipt[lperm[2]],&kstat) == 1) &&
-			      (sh6nmbmain(uipt[lperm[1]],&kstat) +
-			       sh6nmbhelp(uipt[lperm[1]],&kstat) == 2))
-		     {
-			sh6tomain(uipt[lperm[0]],&kstat);
-			sh6tomain(uipt[lperm[2]],&kstat);
-			sh6idcon(&rintdat,&uipt[lperm[0]],&uipt[lperm[2]],&kstat);
-			if (kstat < 0) goto error;
-
-			 Newi Set in/out direction
-			if (lpermdir[0] == 1)
-			   sh6setdir (uipt[lperm[0]], uipt[lperm[2]], &kstat);
-			else
-			   sh6setdir (uipt[lperm[2]], uipt[lperm[0]], &kstat);
-
-			 Newi Set in/out direction
-			if (lpermdir[0] == 1)
-			   sh6setdir (uipt[lperm[0]], uipt[lperm[2]], &kstat);
-			else
-			   sh6setdir (uipt[lperm[2]], uipt[lperm[0]], &kstat);
-
-			goto out;
-	             }
-		     else
-		     {
-			 Try to march from the non-parallel point.
-			   Set parameter to enter marching.
-
-			kmarch = 1;
-		     }
-		  }   */
-	       }
-
-	  if (kv == 3 &&  abs(lpermdir[2]) == 1)
-	  {
-	     /* There is three points, all of which pointing in or out.
-		Prepare for a search for a singularity.  */
-
-	     slimit[0] = *(ps1->et1 + ps1->ik1 - 1);
-	     slimit[1] = *(ps1->et1 + ps1->in1);
-	     slimit[2] = *(ps1->et2 + ps1->ik2 - 1);
-	     slimit[3] = *(ps1->et2 + ps1->in2);
-	     slimit[4] = *(ps2->et1 + ps2->ik1 - 1);
-	     slimit[5] = *(ps2->et1 + ps2->in1);
-	     slimit[6] = *(ps2->et2 + ps2->ik2 - 1);
-	     slimit[7] = *(ps2->et2 + ps2->in2);
-	     tref = MAX(MAX(slimit[1]-slimit[0],slimit[3]-slimit[2]),
-			MAX(slimit[5]-slimit[4],slimit[7]-slimit[6]));
-
-	     for (kj=0; kj<4; kj++)
-	     {
-		start[kj] = DZERO;
-		for (ki=0; ki<3; ki++) start[kj] += spar[ki*4+kj];
-		start[kj] /= (double)3;
-	     }
-
-	     /* Search for singularity.  */
-
-	     shsing(ps1, ps2, slimit, start, spos, &kstat);
-	     if (kstat < 0) goto error;
-
-	     if (kstat == 1)
-	     {
-		/* A singularity is found. Check if it is an
-		   intersection point. */
-
-		s1421(ps1, 0, spos, &klfs, &klft, sval1, snorm1, &kstat);
-		if (kstat < 0) goto error;
-
-		s1421(ps2, 0, spos+2, &klfs, &klft, sval2, snorm2, &kstat);
-		if (kstat < 0) goto error;
-
-		tdist = s6dist(sval1, sval2, 3);
-		if (tdist < aepsge)
-		{
-		   /* A singular intersection point is found. Check if
-		      it is identical to any of the existing. */
-
-		   for (ki=0; ki<3; ki++)
-		   {
-		      for (kj=0; kj<4; kj++)
-			 if (DNEQUAL(spos[kj]+tref,spar[4*ki+kj]+tref)) break;
-		      if (kj == 4) break;
-		   }
-
-		   if (ki < 3)
-		   {
-		      /* Something is wrong. Non of the existing
-			 points are classified as singular. Continue
-			 subdividing.   */
-		   }
-		   else
-		   {
-		      /* The singular intersection point do not exist already.
-			 Create intersection point.  */
-
-		      qsing = hp_newIntpt (4, spos, DZERO,
-					   SI_ORD, SI_UNDEF, SI_UNDEF,
-					   SI_UNDEF, SI_UNDEF,
-					   0, 0, nullp, nullp);
-		      if (qsing == SISL_NULL) goto err101;
-
-		      /* Connect to all edge points. First put into
-			 data structure. */
-
-		      sh6idnpt (&rintdat, &qsing, 1, &kstat);
-		      if (kstat < 0)
-			 goto error;
-
-		      sh6tomain(uipt[lperm[0]],&kstat);
-		      sh6tomain(uipt[lperm[1]],&kstat);
-		      sh6tomain(uipt[lperm[2]],&kstat);
-		      sh6tomain(qsing,&kstat);
-		      sh6idcon(&rintdat,&uipt[lperm[0]],&qsing,&kstat);
-		      if (kstat < 0) goto error;
-		      sh6idcon(&rintdat,&uipt[lperm[1]],&qsing,&kstat);
-		      if (kstat < 0) goto error;
-		      sh6idcon(&rintdat,&uipt[lperm[1]],&qsing,&kstat);
-		      if (kstat < 0) goto error;
-
-		      /* Mark point as singular.  */
-
-		      qsing -> iinter = SI_SING;
-
-		      /* Newi Set in/out direction */
-		      if (lpermdir[0] == 1)
-			 sh6setdir (uipt[lperm[0]], qsing, &kstat);
-		      else
-			 sh6setdir (qsing, uipt[lperm[0]], &kstat);
-
-		      goto out;
-		   }
-		}
-	     }
-	  }
-
-	  if (ps1->sf_type == TANGENTIAL_BELT || 
-	      ps2->sf_type == TANGENTIAL_BELT)
-	    {
-	      /* One surface represents a fuzzy zone close to a tangential
-		 intersection curve. Unconnected points pointing in or out
-		 should be connected to this curve. To start with, stop
-		 processing if all intersection points are connected */
-	      sh6floop(uipt, kn1, &kpt2, &kstat);
-	      if (kstat < 0)
-		goto error;
-	      if (kpt2 == kn1)
-		{
-		  *jstat = 0;
-		  goto out;
-		}
-	    }
-		
-	  if (kv == 2 || lnumb[2] < 2 || kmarch == 1)
-	  {
-	      /* If we got two points, we always try marching as the second
-                 strategy. */
-	      /* If we got more than two points, we march only when
-                 no more than one parallel point is given.*/
-
-	      s9surmarch (ps1, ps2, spar, lpermdir, kv, &sparout,
-			  &lpar, &kpoints, &kstat);
-	      if (kstat < 0)
-		goto error;
-
-	      /* Branch on the given result from s9surmarch. */
-	      /*if (kstat == 0)
-		 The points are not connected, continue subdividing. 
-		*jstat = 1;*/
-
-	      if (kstat == 2)
-		/* Only singulear points, set status ok. */
-		*jstat = 0;
-
-	      else if (kstat == 1)
-		{
-		  if (kpoints > kv)
-		    {
-		      if ((uinewpt = newarray (kpoints - kv, SISLIntpt *))
-			  == SISL_NULL)
-			goto err101;
-		      for (kj = kv, ki = 0; kj < kpoints; kj++, ki++)
-			{
-			  /* For each new point returned from s9surmarch,
-                             we create an intersection point. */
-			  SISLIntpt *qt;
-			  double sintpar[4];
-
-			  sintpar[0] = sparout[4 * kj];
-			  sintpar[1] = sparout[4 * kj + 1];
-			  sintpar[2] = sparout[4 * kj + 2];
-			  sintpar[3] = sparout[4 * kj + 3];
-
-			  uinewpt[ki] = qt = hp_newIntpt (4, sintpar, DZERO,
-						 SI_ORD, SI_UNDEF, SI_UNDEF,
-							  SI_UNDEF, SI_UNDEF,
-							0, 0, nullp, nullp);
-
-
-			  if (qt == SISL_NULL)
-			    goto err101;
-
-			  sh6idnpt (&rintdat, &qt, 1, &kstat);
-			  if (kstat < 0)
-			    goto error;
-
-			}
-		    }
-
-		  /* Now we connect the points. */
-		  *jstat = 0;
-
-		  for (kj = 0; kj < kv; kj++)
-		    {
-		      ki = lpar[kj] - 1;
-
-		      if (lpar[kj] > 0)
-			{
-			  if (lpar[kj] > kv)
-			    {
-			      /* SISLPoint is to be connected to a new point */
-
-			      sh6tomain (uipt[lperm[kj]], &kstat);
-			      sh6tomain (uinewpt[ki - kv], &kstat);
-
-			      sh6idcon (&rintdat, &uipt[lperm[kj]],
-					&uinewpt[ki - kv], &kstat);
-			      if (kstat < 0)
-				goto error;
-			      /* Newi (ujk) Set in/out direction */
-			      if (lpermdir[kj] == 1)
-				sh6setdir (uipt[lperm[kj]],
-					   uinewpt[ki - kv], &kstat);
-			      else if (lpermdir[kj] == -1)
-				sh6setdir (uinewpt[ki - kv],
-					   uipt[lperm[kj]], &kstat);
-
-			      if (kstat < 0)
-				goto error;
-			    }
-			  else
-			    {
-			      /* SISLPoint is to be connected to an old point */
-			      sh6tomain (uipt[lperm[kj]], &kstat);
-			      sh6tomain (uipt[lperm[ki]], &kstat);
-			      sh6idcon (&rintdat, &uipt[lperm[kj]],
-					&uipt[lperm[ki]], &kstat);
-
-			      /* Newi (ujk) Set in/out direction */
-			      if (lpermdir[kj] == 1 || lpermdir[ki] == -1)
-				sh6setdir (uipt[lperm[kj]],
-					   uipt[lperm[ki]], &kstat);
-			      else if (lpermdir[kj] == -1 ||
-				       lpermdir[ki] == 1)
-				sh6setdir (uipt[lperm[ki]],
-					   uipt[lperm[kj]], &kstat);
-			      if (kstat < 0)
-				goto error;
-
-			    }
-			}
-		    }
-		}
-	  }
+	  if (kout == 0)
+	    ko1 = ki;
 	  else
-	    /* No marching is to be done. */
-	    *jstat = 1;
+	    ko2 = ki;
+	  kout++;
 	}
-      
-      if (kv > 2 && isimple == 2)
+      else if (ldir[ki] == 0)
 	{
-	  /* An extra effort to connect at the bottom of the
-	     recursion */
-	  /* Count the number of points pointing in and out */
-	  int kinn = 0, kout = 0;
-	  int ixin = -1, ixout = -1;
-	  for (ki = 0; ki < kn1; ki++)
-	    if (ldir[ki] == 1)
-	      {
-		kinn++;
-		ixin = ki;
-	      }
-	    else if (ldir[ki] == -1)
-	      {
-		kout++;
-		ixout = ki;
-	      }
-	  if (kinn + kout == kn1 && (kinn == 1 || kout == 1))
-	    {
-	      int kcode = (kinn == 1) ? 1 : -1;
-	      int num_single = 0;
-	      int ix_main;
-	      for (ki=0; ki<kn1; ++ki)
-		{
-		  if (ldir[ki] == kcode)
-		    continue;
-		  if (sh6nmbmain(uipt[ki], &kstat) == 1)
-		    num_single++;
-		  else
-		    ix_main = ki;
-		}
-	      if ((kinn > 1 && kinn-num_single == 1) ||
-		  (kout > 1 && kout-num_single == 1))
-		{
-		  /* Check if all points of the same type is connected,
-		     and follows the same edge */
-		  for (ki=0; ki<kn1; ++ki)
-		    {
-		      if (ki == ix_main)
-			continue;
-		      if (ldir[ki] == kcode)
-			continue;
-		      sh6comedg_sf(ps1, ps2, uipt[ki], uipt[ix_main], &kstat);
-		      if (kstat < 0)
-			goto error;
-		      if (kstat == 0)
-			break;
-		    }
-		  if (ki == kn1)
-		    {
-		      /* Change loose points to help points. Connect to
-			 remaining main point */
-		      for (ki=0; ki<kn1; ++ki)
-			{
-			  if (ki == ix_main)
-			    continue;
-			  if (ldir[ki] == kcode)
-			    continue;
-			  sh6tohelp(uipt[ki], &kstat);
-			}
-		      if (kinn == 1)
-			ixout = ix_main;
-		      else
-			ixin = ix_main;
-		      sh6idcon(&rintdat, &uipt[ixin], &uipt[ixout], &kstat);
-		      if (kstat < 0)
-			goto error;
-		      sh6setdir(uipt[ixin], uipt[ixout], &kstat);
-		      if (kstat < 0)
-			goto error;
-		      *jstat = 0;
-		    }
-		  else
-		    *jstat = 1;
-		}
-	      else
-		*jstat = 1;
-	    }
+	  if (kx1 < 0)
+	    kx1 = ki;
 	  else
-	    *jstat = 1;
+	    kx2 = ki;
+	  kpar++;
+	}
+      else if (ldir[ki] == 2)
+	ksing++;
+    }
+  
+  if (kv == 0)
+    {
+      /* Only corner points. No connection. Stop recursion */
+      *jstat = 0;
+      goto out;
+    }
+
+  /* Check if the points are connected in a chain */
+  kstat = s9edgsscon_connected(uipt, ldir, kn1);
+  if (kstat < 0)
+    goto error;
+  if (kstat == 0)
+    {
+      /* Already connected */
+      *jstat = 0;
+      goto out;
+    }
+
+  /* Try to connect a directed curve */
+  if (isimple == 1)
+    {
+      s9edgsscon_directed(rintdat, uipt, kn1, sval, sdval, ldir, aepsge, &kstat);
+      if (kstat < 0)
+	goto error;
+      if (kstat == 0)
+	{
+	  /* Connection performed */
+	  *jstat = 0;
+	  goto out;
 	}
     }
 
+  /* Handle non-directed curves and special cases */
+  
+  if (kinn == 1 && kout == 1)
+    {
+      /* One in, one out. Connect */
+      sh6condir(rintdat, uipt[ki1], uipt[ko1], &kstat);
+      if (kstat < 0)
+	goto error;
 
+      if (kv > 2)
+	{
+	  /* There exist non-connected parallel points. Check if they can
+	     be removed */
+	  for (ki=0; ki<kv; ++ki)
+	    {
+	      if (ki != ki1 && ki != ko1)
+		{
+		  if (uipt[ki]->fromhelp > 0)
+		    {
+		      sh6idkpt (&rintdat, &uipt[ki], 1, &kstat);
+		      if (kstat < 0)
+			goto error;
+		    }
+		}
+	    }
+	}
+      *jstat = 0;
+      goto out;
+    }
+
+  if (kinn + kout == 1 && ksing == 1 && kv == 2)
+    {
+      /* Connect in/out point to singular */
+      kx1 = -1;
+      for (ki=0; ki<kn1; ++ki)
+	{
+	  if (ldir[ki] == 2)
+	    {
+	      kx1 = ki;
+	      break;
+	    }
+	}
+      if (kx1 >= 0)
+	{
+	  if (kinn == 1)
+	    sh6condir(rintdat, uipt[ki1], uipt[kx1], &kstat);
+	  else
+	    sh6condir(rintdat, uipt[kx1], uipt[ko1], &kstat);
+	  if (kstat < 0)
+	    goto error;
+	  *jstat = 0;
+	  goto out;
+	}
+    }
+
+  if (kv == 2 && kinn + kout == kv)
+    {
+      /* One in-out point. Check if there should be a connection */
+      int kd = (kinn >= 1) ? ki1 : ko1;
+      int kx = -1;
+      for (ki=0; ki<kn1; ++ki)
+	if (ldir[ki] != 10 && ki != kd)
+	  kx = ki;
+
+      /* Check if the points are connected to the same main point */
+      for (kr=0; kr<uipt[kd]->no_of_curves; ++kr)
+	{
+	  if (sh6ismain(uipt[kd]->pnext[kr]))
+	    {
+	      sh6getlist (uipt[kx], uipt[kd]->pnext[kr], 
+			  &klist1, &klist2, &kstat);
+	      if (kstat < 0)
+		goto error;
+	      if (kstat == 0)
+		{
+		  /* Connected. */
+		  break;
+		}
+	    }
+	}
+      if (kr < uipt[kd]->no_of_curves)
+	printf("Connection with one in or out point. Must have a look at this \n");
+    }
+
+  if (kn1-kv == 1 && kinn+kout == 1)
+    {
+      /* Handle situation with one in or out point and one corner point */
+      /* Check if the points should be connected */
+      int kic, kid;
+
+      kid =  (ldir[0] == 10) ? 1 : 0;
+      kic =  (ldir[0] == 10) ? 0 : 1;
+
+      /* Check if it is a part of a help point configuration */
+      kr = uipt[kid]->no_of_curves;  /* Initially assume not a resolved 
+				      configuration */
+      if (max(sdist[kic],sdist[kid]) > distfac*min(sdist[kic],sdist[kid]) ||
+	  uipt[kid]->fromhelp > 0)
+	{
+	  /* Check if the points are already connected trough one
+	     common main point */
+	  for (kr=0; kr<uipt[kid]->no_of_curves; ++kr)
+	    {
+	      if (sh6ismain(uipt[kid]->pnext[kr]))
+		{
+		  sh6getlist (uipt[kic], uipt[kid]->pnext[kr], &klist1,
+			      &klist2, &kstat);
+		  if (kstat < 0)
+		    goto error;
+		  if (kstat == 0)
+		    {
+		      /* Connected. Assume configuration to be resolved */
+		      break;
+		    }
+		}
+	    }
+	}
+
+      if (kr == uipt[kid]->no_of_curves)
+	{
+	  /* Check if it is a real corner touch */
+	  if (!((sdist[kid] > distfac*sdist[kic] ||
+		 (uipt[kid]->fromhelp > 0 && uipt[kic]->fromhelp == 0)) &&
+		sh6nmbmain(uipt[kid],&kstat) == 1))
+	    {
+	      /* The in/out point is stronger than the corner. Do connect */
+	      if (kinn == 1)
+		sh6condir(rintdat, uipt[kid], uipt[kic], &kstat);
+	      else
+		sh6condir(rintdat, uipt[kic], uipt[kid], &kstat);
+	      if (kstat < 0)
+		goto error;
+	    }
+	}
+      *jstat = 0;
+      goto out;
+    }
+
+  if ((kv == 3 &&  ((kpar == 2 && kinn+kout == 1) || kinn+kout == kv)) ||
+       (kv == 4 && isimple == 2 && kinn == 2 && kout == 2))
+    {
+      s9edgsscon_singsearch(ps1, ps2, rintdat, uipt, ldir, kn1, aepsge, &kstat);
+      if (kstat < 0)
+	goto error;
+
+      if (kstat == 0)
+	{
+	  *jstat = 0;
+	  goto out;
+	}
+    }
+
+  if (ps1->sf_type == TANGENTIAL_BELT || 
+      ps2->sf_type == TANGENTIAL_BELT)
+    {
+      /* One surface represents a fuzzy zone close to a tangential
+	 intersection curve. Unconnected points pointing in or out
+	 should be connected to this curve. To start with, stop
+	 processing if all intersection points are connected */
+      int ix1 = -1, ix2 = -1;
+      sh6floop(uipt, kn1, &kpt2, &kstat);
+      if (kstat < 0)
+	goto error;
+      if (kpt2 == kn1)
+	{
+	  *jstat = 0;
+	  goto out;
+	}
+
+      /* There is at least one loose point. Due to the configuration there
+	 must be two points connected along an edge */
+      for (ki=0; ki<kn1; ++ki)
+	{
+	  for (kj=ki+1; kj<kn1; ++kj)
+	    {
+	      if (edg[ki] & edg[kj])
+		{
+		  ix1 = ki;
+		  ix2 = kj;
+		  break;
+		}
+	      if (kj < kn1)
+		break;
+	    }
+	  }
+
+      if (ix1 >= 0 && ix2 >= 0)
+	{
+	  for (ki=0; ki<kn1; ++ki)
+	    {
+	      if (ki==ix1 || ki==ix2)
+		continue;
+	      if (sdist[ki] < distfac*max(sdist[ix1],sdist[ix2]))
+		break;
+	    }
+	  if (ki == kn1)
+	    {
+	      /* Extra points are noise. Stop recursion */
+	      /* Could possibly check and connect */
+	      *jstat = 0;
+	      goto out;
+	    }
+	}
+    }
+		
+
+  if (kv == 3 && kinn == 1 && kout == 1 && kpar == 1)
+    {
+      int kc = 0;
+      
+      /* Three points, one in, one out, one parallel, connect in-out,
+	 delete parallel.. */
+      sh6condir(rintdat, uipt[ki1], uipt[ko1], &kstat);
+      if (kstat < 0)
+	goto error;
+
+      /* Can't delete the parallel point if it's in a corner. */
+      /* Should check the configuration with the parallel point further */
+
+      /* Corner first surface ? */
+      for (kc = kj = 0; kj < 4; kj++)
+	if (edg[kx1] & (1<<kj))
+	  kc++;
+
+      /* Corner second surface ? */
+      if (kc < 2)
+	for (kc = 0, kj = 4; kj < 8; kj++)
+	  if (edg[kx1] & (1<<kj))
+	    kc++;
+
+      if (kc < 2)
+	{
+	  sh6idkpt (&rintdat, &uipt[kx1], 1, &kstat);
+	  if (kstat < 0)
+	    goto error;
+	}
+
+      *jstat = 0;
+      goto out;
+    }
+
+  if (kinn+kout == 1 && kpar > 1)
+    {
+      /* One in or out point */
+      /* More than one parallel point. Check if they are connected */
+      for (ki=0; ki<kn1; ++ki)
+	{
+	  if (ldir[ki] != 0)
+	    continue;
+	  for (kj=0; kj<kn1; ++kj)
+	    {
+	      if (kj == ki)
+		continue;
+	      if (ldir[kj] != 0)
+		continue;
+	      sh6getlist (uipt[ki], uipt[kj], &klist1, &klist2, &kstat);
+	      if (kstat < 0)
+		goto error;
+	      if (kstat == 0)
+		break;
+	    }
+	  if (kj == kn1)
+	    break;   /* Point not connected to another parallel point */
+	}
+
+      if (ki == kn1)
+	{
+	  /* Connect in/out point to closest parallel point */
+	  double mindist = HUGE;
+	  int minix = -1;
+	  double tdist;
+	  int ix = (kinn == 1) ? ki1 : ko1;
+	  for (kj=0; kj<kn1; ++kj)
+	    {
+	      if (ldir[kj] != 0)
+		continue;
+	      tdist = s6dist(sval+ix*6, sval+kj*6, 3);
+	      if (tdist < mindist)
+		{
+		  mindist = tdist;
+		  minix = kj;
+		}
+	    }
+	  if (minix >= 0)
+	    {
+	      if (kinn == 1)
+		sh6condir(rintdat, uipt[ix], uipt[minix], &kstat);
+	      else
+		sh6condir(rintdat, uipt[minix], uipt[ix], &kstat);
+	      if (kstat < 0)
+		goto error;
+	      *jstat = 0;
+	      goto out;
+	    }
+	}
+    }
+      
+  if (kv > 2 && isimple == 2 && kinn + kout == kn1 && (kinn == 1 || kout == 1))
+    {
+      /* An extra effort to connect at the bottom of the
+	 recursion */
+      int kcode = (kinn == 1) ? 1 : -1;
+      int num_single = 0;
+      int num_fromhelp = 0;
+      int ix_main1 = -1, ix_main2 = -1;
+      int ixin = ki1;
+      int ixout = ko1;
+      for (ki=0; ki<kn1; ++ki)
+	{
+	  if (ldir[ki] == kcode)
+	    continue;
+	  if (sh6nmbmain(uipt[ki], &kstat) == 1)
+	    num_single++;
+	  else
+	    ix_main1 = ki;
+	  if (uipt[ki]->fromhelp > 0)
+	    num_fromhelp++;
+	  else
+	    ix_main2 = ki;
+	}
+
+      if (ix_main1 < 0)
+	ix_main1 = ix_main2;
+      if (ix_main1 >= 0)
+	{
+	  /* Change loose points to help points. Connect to
+	     remaining main point */
+	  for (ki=0; ki<kn1; ++ki)
+	    {
+	      if (ki == ix_main1)
+		continue;
+	      if (ldir[ki] == kcode)
+		continue;
+	      sh6tohelp(uipt[ki], &kstat);
+	    }
+	  if (kinn == 1)
+	    ixout = ix_main1;
+	  else
+	    ixin = ix_main1;
+
+	  sh6condir(rintdat, uipt[ixin], uipt[ixout], &kstat);
+	  if (kstat < 0)
+	    goto error;
+	  *jstat = 0;
+	  goto out;
+	}
+    }
+
+  if (kinn == kout && ksing == 0 && kpar == 0)
+    {
+      /* This is a situation where connection could be possible. Leaving
+	 it to later */
+      printf("Should try to connect \n");
+    }
+
+
+  *jstat = 1;   /* No conclution is reached */
   goto out;
 
 
@@ -7869,23 +8201,10 @@ out:
     freearray (edg);
   if (ldir != SISL_NULL)
     freearray (ldir);
-  if (sval1 != SISL_NULL)
-    freearray (sval1);
-
-
-  if (uinewpt != SISL_NULL)
-    freearray (uinewpt);
-  if (spar != SISL_NULL)
-    freearray (spar);
-  if (sparout != SISL_NULL)
-    freearray (sparout);
-  if (lpar != SISL_NULL)
-    freearray (lpar);
-  if (lperm != SISL_NULL)
-    freearray (lperm);
-  if (lpermdir != SISL_NULL)
-    freearray (lpermdir);
+  if (sval != SISL_NULL)
+    freearray (sval);
 }
+
 
 #if defined(SISLNEEDPROTOTYPES)
 static void
@@ -8828,6 +9147,7 @@ err101:*jstat = -101;
 }
 
 
+#if 0
 #if defined(SISLNEEDPROTOTYPES)
 static void
 sh1762_s9simple (SISLObject * po1, SISLObject * po2, SISLEdge * vedge[],
@@ -8973,6 +9293,7 @@ error:*jstat = kstat;
 out:if (up != SISL_NULL)
     freearray (up);
 }
+#endif
 
 #if 0
 #if defined(SISLNEEDPROTOTYPES)

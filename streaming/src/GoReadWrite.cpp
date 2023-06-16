@@ -48,7 +48,7 @@ using namespace std;
 
 namespace {
     // Go-header-related info.
-    const int HEADER_SIZE = 4;
+    const int HEADER_SIZE = 3;
     const int CURVE_INSTANCE_TYPE = 100;
     const int SURFACE_INSTANCE_TYPE = 200;
     const int POINTCLOUD_INSTANCE_TYPE = 400;
@@ -60,6 +60,10 @@ namespace {
 	int result;
 	is >> result;
 	for (int dummy, i = 1; i < HEADER_SIZE; ++i)
+	    is >> dummy;
+	int num;
+	is >> num;
+	for (int dummy, i = 0; i < num; ++i)
 	    is >> dummy;
 	return result;
     }
