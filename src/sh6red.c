@@ -53,11 +53,8 @@
 #if defined(SISLNEEDPROTOTYPES)
 static int sh6red_help(SISLObject *po1, SISLObject *po2,
 		       SISLIntpt *pt, SISLIntpt *pmain, int *jstat);
-static void sh6red2help (SISLObject * po1, SISLObject * po2, 
-			 SISLIntdat * pintdat, int *jstat);
 #else
 static int sh6red_help;
-static void sh6red2help;
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)
@@ -398,11 +395,6 @@ sh6red (po1, po2, pintdat, jstat)
      }
     }
 
-  /* Reduce illegal main points to help points. */
-  /* sh6red2help(po1, po2, pintdat, &kstat); */
-  /* if (kstat < 0) */
-  /*   goto error; */
-
    /* Reduction done. */
 
   (*jstat) = 0;
@@ -512,98 +504,4 @@ static int sh6red_help(SISLObject *po1, SISLObject *po2,
 
  out:
   return doreduce;
-}
-	
-
-#if defined(SISLNEEDPROTOTYPES)
-static void sh6red2help (SISLObject * po1, SISLObject * po2, 
-			 SISLIntdat * pintdat, int *jstat)
-#else
-static void sh6red2help (po1, po2, pintdat, jstat)
-     SISLObject *po1;
-     SISLObject *po2;
-     SISLIntdat *pintdat;
-     int *jstat;
-#endif
-/*
-*********************************************************************
-*
-*********************************************************************
-*
-* PURPOSE    : Reduse main int point to help point if they are not legal.
-*
-*
-* INPUT      : po1      - Pointer to the first object in the intersection.
-*              po2      - Pointer to the second object in the intersection.
-*              pintdat  - Intersection data structure.
-*
-*
-* OUTPUT     : jstat    - status messages
-*                                > 0   : Warning.
-*                                = 0   : Ok.
-*                                < 0   : Error.
-*
-
-*********************************************************************
-*/
-{
-  int change = 0;
-  int kstat = 0, gstat = 0;
-  int i;
-  SISLIntpt *pt1 = SISL_NULL;
-  SISLIntpt *pt2 = SISL_NULL;
-  SISLIntpt *pcurr = SISL_NULL;
-
-  if (po1->iobj + po2->iobj == 2*SISLSURFACE && pintdat != SISL_NULL)
-    {
-  do
-    {
-      change = 0;
-      //for (i = 0; i < pintdat->ipoint; i++)
-      for (i = pintdat->ipoint-1; i >= 0; i--)
-	{
-	  if (sh6ismain (pintdat->vpoint[i]))
-	    {
-	      sh6isinside (po1, po2, pintdat->vpoint[i], &kstat);
-	      if (kstat < 0)
-		goto error;
-	      
-	      /* ALA and VSK. Test if the point lies on edge in 
-		 one or two objects.         */
-	      if (kstat == 2 || kstat == 5)
-		{
-		  sh6getnhbrs (pintdat->vpoint[i], &pt1, &pt2, &gstat);
-		  if (gstat == 1)
-		    {
-		      sh6comedg (po1, po2, pintdat->vpoint[i], pt1, &gstat);
-		      
-		      /* ALA and VSK. Test if the points lie on the same
-			 edge in both objects if it lies on an edge in
-			 both objects.                  */
-		      if ((kstat == 2 && gstat > 0) ||
-			  (kstat == 5 && gstat == 3))
-			{
-			  sh6tohelp (pintdat->vpoint[i], &kstat);
-			  if (kstat < 0)
-			    goto error;
-			  change = 1;
-			}
-		    }
-		}
-	    }
-	}
-    } while (change);
-    }
-  
-  /* Reduction done. */
-
-  (*jstat) = 0;
-  goto out;
-
-error:(*jstat) = kstat;
-  s6err ("sh6red2help", *jstat, 0);
-  goto out;
-
-out:
-  return;
 }

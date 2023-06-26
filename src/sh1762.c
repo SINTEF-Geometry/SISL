@@ -249,7 +249,7 @@ sh1762 (po1, po2, aepsge, pintdat, vedge, jstat)
   int knedge1, knedge2;
 
   FILE *fp;
-  int debug_flag=2;
+  int debug_flag=0;
 
   /*  FOR DEBUGGING define debug_flag as an extern variable, i.e.:
    *
@@ -2560,7 +2560,7 @@ sh1762_s9subdivpt (po1, po2, aepsge, iobj, idiv, vedge, pintdat, fixflag, rpt, e
        kfound = sh6getsegdiv(qo1->s1, idiv, spar, &subdiv_flag);
      if (kfound > 0)
        {
-	 printf("Segment subdivision \n"); /* %7.13f, %d \n",spar[idiv-1], subdiv_flag);*/
+	 /* printf("Segment subdivision \n");  %7.13f, %d \n",spar[idiv-1], subdiv_flag);*/
 	 *fixflag = kfound;
        }
 
@@ -4994,7 +4994,7 @@ sh1762_s9con (po1, po2, aepsge, pintdat, vedge, jstat)
 		/* A singular intersection point. Check if it is isolated.
 		   In that case, define a segmentation to avoid too close
 		   subdivisions */
-		printf("Singular corner intersection found \n");
+		/* printf("Singular corner intersection found \n"); */
 		sh1795(po1, po2, up[0], aepsge, &kstat);
 		if (kstat < 0)
 		  goto error;
@@ -7896,7 +7896,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
 	    }
 	}
       if (kr < uipt[kd]->no_of_curves)
-	printf("Connection with one in or out point. Must have a look at this \n");
+	/*printf("Connection with one in or out point. Must have a look at this \n"); */ ;
     }
 
   if (kn1-kv == 1 && kinn+kout == 1)
@@ -8167,7 +8167,7 @@ sh1762_s9edgsscon (vedge, ps1, ps2, rintdat, isimple, aepsge, jstat)
     {
       /* This is a situation where connection could be possible. Leaving
 	 it to later */
-      printf("Should try to connect \n");
+      /* printf("Should try to connect \n"); */ ;
     }
 
 

@@ -1,9 +1,10 @@
 /*
  * Copyright (C) 1998, 2000-2007, 2010, 2011, 2012, 2013 SINTEF Digital,
- * Applied Mathematics, Norway.
+ * Department of Mathematics and Cybernetics, Norway.
  *
  * Contact information: E-mail: tor.dokken@sintef.no                      
- * SINTEF Digital, Department of Mathematics and Cybernetics,                         
+ * SINTEF Digital, Department of Mathematics and Cybernetics,                   
+
  * P.O. Box 124 Blindern,                                                 
  * 0314 Oslo, Norway.                                                     
  *
@@ -74,24 +75,19 @@ int main(int avnum, char** vararg)
     cout << "To proceed, press enter, or ^C to quit." << endl;
     getchar();
 
-    ifstream is_sf1(vararg[1]);
-    ifstream is_sf2(vararg[2]);
-    double eps = atof(vararg[3]);
-    ofstream os(vararg[4]);
-
     try {
-    // 	ifstream is_sf1(IN_FILE_SURFACE_1.c_str());
-    // 	ifstream is_sf2(IN_FILE_SURFACE_2.c_str());
-    // 	if (!is_sf1 || !is_sf2) {
-    // 	    throw runtime_error("Could not open input files.  Hav you run "
-    // 				"the necessary example programs? (example10 "
-    // 				"and example11).");
-    // 	}
+	ifstream is_sf1(IN_FILE_SURFACE_1.c_str());
+	ifstream is_sf2(IN_FILE_SURFACE_2.c_str());
+	if (!is_sf1 || !is_sf2) {
+	    throw runtime_error("Could not open input files.  Have you run "
+				"the necessary example programs? (example10 "
+				"and example11).");
+	}
 
-    // 	ofstream os(OUT_FILE_CURVE.c_str());
-    // 	if (!os) {
-    // 	    throw runtime_error("Unable to open output file.");
-    // 	}
+	ofstream os(OUT_FILE_CURVE.c_str());
+	if (!os) {
+	    throw runtime_error("Unable to open output file.");
+	}
 
 	// reading surfaces
 	SISLSurf* surf_1 = readGoSurface(is_sf1);
@@ -111,7 +107,7 @@ int main(int avnum, char** vararg)
 	s1859(surf_1,          // the first surface
 	      surf_2,          // the second surface
 	      epsco,           // computational resolution
-	      eps,           // geometry resolution
+	      epsge,           // geometry resolution
 	      &num_int_points, // number of single intersection points
 	      &intpar_surf_1,  // pointer to array of parameter values for surface 1
 	      &intpar_surf_2,  //               -"-                    for surface 2
@@ -130,19 +126,11 @@ int main(int avnum, char** vararg)
 	// intersection points.
 
 	cout << "Number of intersection points detected: " << num_int_points << endl;
-	for (int i=0; i<num_int_points; ++i)
-	  cout << intpar_surf_1[2*i] << " " << intpar_surf_1[2*i+1] << " " << intpar_surf_2[2*i] << " " << intpar_surf_2[2*i+1] << endl;
 	cout << "Number of intersection curves detected: " << num_int_curves << endl;
-	for (int i=0; i<num_int_curves; ++i)
-	  {
-	    int npt = intcurve[i]->ipoint;
-	    cout << intcurve[i]->epar1[0] << " " << intcurve[i]->epar1[1] << " " ;
-	    cout << intcurve[i]->epar2[0] << " " << intcurve[i]->epar2[1] << " " ;
+	
 	// evaluating (tracing out) intersection curves and writing them to file
-	    cout << intcurve[i]->epar1[2*(npt-1)] << " " << intcurve[i]->epar1[2*npt-1] << " " ;
-	    cout << intcurve[i]->epar2[2*(npt-1)] << " " << intcurve[i]->epar2[2*npt-1] << endl;
-	  }
-	for (int i = 0; i < num_int_curves; ++i) {
+	int i;
+	for (i = 0; i < num_int_curves; ++i) {
 	    s1310(surf_1,          // the first surface
 		  surf_2,          // the second surface
 		  intcurve[i],     // pointer to the intersection curve object 
@@ -161,19 +149,20 @@ int main(int avnum, char** vararg)
 	}
 
 	// cleaning up
-	if (surf_1) freeSurf(surf_1);
+	if (surf_1) ffreeSurf(surf_1);
 	if (surf_2) freeSurf(surf_2);
 	is_sf1.close();
 	is_sf2.close();
 	os.close();
 	if (intpar_surf_1) free(intpar_surf_1);
-	if (intpar_surf_2) free(intpar_surf_2);
+	if (intpar_surf_2)  free(intpar_surf_2);
 	if (num_int_curves > 0)
 	  freeIntcrvlist(intcurve, num_int_curves);
-
+	if (intcurve) free(intcurve);
+	
     } catch (exception& e) {
-	cerr << "Exception thrown: " << e.what() << endl;
-	return 0;
+      cerr << "Exception thrown: " << e.what() << endl;
+      return 0;
     }
 
     return 1;
