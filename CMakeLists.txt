@@ -93,16 +93,16 @@ IF(sisl_COMPILE_VIEWER)
     "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
     "C:\\Users\\$ENV{USERNAME}\\Install\\include")
 
-if(WIN32)
-  set(GLUT_INCLUDE_DIR
-    "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
-    "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
-    "C:\\Users\\$ENV{USERNAME}\\Install\\include"
+  if(WIN32)
+    set(GLUT_INCLUDE_DIR
+      "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
+      "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
+      "C:\\Users\\$ENV{USERNAME}\\Install\\include"
     )
-else()
-  find_package(GLUT REQUIRED)
-endif()
-
+  else()
+    find_package(GLUT REQUIRED)
+  endif()
+  
   INCLUDE_DIRECTORIES(
     ${sisl_SOURCE_DIR}/viewer/include
     ${OPENGL_INCLUDE_DIR}
