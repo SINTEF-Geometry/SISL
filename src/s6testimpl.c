@@ -61,9 +61,9 @@ void
   s6testimpl(ps1, ps2, first, vintpt, inmbpt, aepsge, jstat)
    SISLSurf *ps1;
    SISLSurf *ps2;
-int first,
-  SISLIntpt *vintpt[];
-int inmbpt;
+   int first;
+   SISLIntpt *vintpt[];
+   int inmbpt;
    double aepsge;
    int *jstat;
 #endif
