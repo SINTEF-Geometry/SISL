@@ -109,6 +109,16 @@ IF(sisl_COMPILE_VIEWER)
     ${GLUT_INCLUDE_DIR}
     )
 
+  find_library( GLUT_glut_LIBRARY_RELEASE NAMES glut
+    PATHS
+    ${OPENGL_LIBRARY_DIR}
+    ${GLUT_ROOT_PATH}/Release
+    "~/Install/msvc2019_lib64/Release"
+    #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
+    )
+
+message("MSVC_NAME lib WIN_LIB_TYPE: ${MSVC_NAME}lib${WIN_LIB_TYPE}")
+
   FILE(GLOB sisl_viewer_SRCS viewer/src/*.cpp viewer/include/*.h)
   ADD_LIBRARY(sisl_viewer ${sisl_viewer_SRCS})
   IF(CMAKE_COMPILER_IS_GNUCC)
@@ -119,7 +129,7 @@ IF(sisl_COMPILE_VIEWER)
   FOREACH(app ${sisl_APPS3})
     GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
     ADD_EXECUTABLE(${appname} ${app})
-    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming sisl_viewer ${OPENGL_LIBRARIES} glut)
+    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming sisl_viewer ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY_RELEASE})
     SET_TARGET_PROPERTIES(${appname}
       PROPERTIES RUNTIME_OUTPUT_DIRECTORY viewer)
   ENDFOREACH(app)

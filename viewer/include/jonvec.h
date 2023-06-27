@@ -300,7 +300,7 @@ public:
   // return a new object, like for 'clamp' above, or to just modify
   // *this, like in this definition??)
   //
-#ifdef MICROSOFT
+#ifdef _WIN32
   //
   // 030208: I simply don't know where these get defined as macros...
   //         (But I suspect some Microsoft .h-file does it...)
