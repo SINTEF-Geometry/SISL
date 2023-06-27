@@ -7065,7 +7065,7 @@ static int s9edgsscon_con(SISLIntpt *pt1, SISLIntpt *pt2)
 #if defined(SISLNEEDPROTOTYPES)
 static SISLIntpt* s9edgsscon_samecon(SISLIntpt *pt1, SISLIntpt *pt2)
 #else
-  static SiSLIntpt s9edgsscon_samecon(pt1, pt2)
+  static SISLIntpt* s9edgsscon_samecon(pt1, pt2)
      SISLIntpt *pt1;
      SISLIntpt *pt2;  
 #endif

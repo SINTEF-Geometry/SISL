@@ -52,9 +52,9 @@
 
 #if defined(SISLNEEDPROTOTYPES)
 static int sh6red_help(SISLObject *po1, SISLObject *po2,
-		       SISLIntpt *pt, SISLIntpt *pmain, int *jstat);
+			 SISLIntpt *pt, SISLIntpt *pmain, int *jstat);
 #else
-static int sh6red_help;
+static int sh6red_help(po1, po2, pt, pmain, jstat);
 #endif
 
 #if defined(SISLNEEDPROTOTYPES)

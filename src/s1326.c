@@ -51,6 +51,7 @@ void
        double **et2, double **ecoef, int *ik1, int *ik2, int *in1,
        int *in2, int *numprd, int *jstat)
 #else
+void
     s1326(ps, power, ecimp, inarr, et1, et2, ecoef, ik1, ik2,
 	  in1, in2, numprd, jstat)
        SISLSurf *ps;

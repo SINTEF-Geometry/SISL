@@ -149,7 +149,7 @@ int main(int avnum, char** vararg)
 	}
 
 	// cleaning up
-	if (surf_1) ffreeSurf(surf_1);
+	if (surf_1) freeSurf(surf_1);
 	if (surf_2) freeSurf(surf_2);
 	is_sf1.close();
 	is_sf2.close();
