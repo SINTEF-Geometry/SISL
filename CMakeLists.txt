@@ -48,20 +48,11 @@ option(sisl_COMPILE_EXAMPLES "Compile examples?" OFF)
 option(sisl_COMPILE_VIEWER "Compile viewer?" OFF)
 
 IF(sisl_COMPILE_APPS)
-  FILE(GLOB sisl_APPS app/*.C)
+  FILE(GLOB sisl_APPS app/*.[cC])
   FOREACH(app ${sisl_APPS})
     GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
     ADD_EXECUTABLE(${appname} ${app})
     TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming)
-    SET_TARGET_PROPERTIES(${appname}
-      PROPERTIES RUNTIME_OUTPUT_DIRECTORY app)
-  ENDFOREACH(app)
-  
-  FILE(GLOB sisl_APPS app/*.c)
-  FOREACH(app ${sisl_APPS})
-    GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
-    ADD_EXECUTABLE(${appname} ${app})
-    TARGET_LINK_LIBRARIES(${appname} sisl)
     SET_TARGET_PROPERTIES(${appname}
       PROPERTIES RUNTIME_OUTPUT_DIRECTORY app)
   ENDFOREACH(app)
@@ -102,7 +93,15 @@ IF(sisl_COMPILE_VIEWER)
     "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
     "C:\\Users\\$ENV{USERNAME}\\Install\\include")
 
+if(WIN32)
+  set(GLUT_INCLUDE_DIR
+    "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
+    "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
+    "C:\\Users\\$ENV{USERNAME}\\Install\\include"
+    )
+else()
   find_package(GLUT REQUIRED)
+endif()
 
   INCLUDE_DIRECTORIES(
     ${sisl_SOURCE_DIR}/viewer/include
