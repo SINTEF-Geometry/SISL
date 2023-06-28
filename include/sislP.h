@@ -248,6 +248,7 @@ typedef struct SISLIntpt
   struct SISLTrimpar *trim[2];          /* Used if pt is in trim curve. */
   int iside_1;			/* Left/right evaluator flag.  -1,0+ */
   int iside_2;			/* Left/right evaluator flag.  -1,0+*/
+  int fromhelp;
 } SISLIntpt;
 
 /* This file contains the definition of the structure SISLTrack
@@ -786,6 +787,12 @@ void s1324(double [],double,double [],int,double [],int *);
 extern
 #endif
 double s1325(double,double);
+#ifndef  S1326
+extern
+#endif
+void s1326(SISLSurf *ps, int power, double *ecimp, int inarr, double **et1,
+	   double **et2, double **ecoef, int *ik1, int *ik2, int *in1,
+	   int *in2, int *numprd, int *jstat);
 #ifndef  S1329
 extern
 #endif
@@ -817,6 +824,11 @@ extern
 #endif
 void s1334(double [],int,int,double [],int,int,int,int,double,
 	   double *,SISLCurve **,double **,int *,int *);
+#ifndef  S1339
+extern
+#endif
+void s1339(SISLSurf *ps, int ipow, double ea[], int inumprd, int incoef,
+	   double aepsge, double ecimp[], double *cgrad, int *jstat);
 #ifndef  S1340
 extern
 #endif
@@ -1641,6 +1653,11 @@ double s6ang(double [],double [],int);
 extern
 #endif
 double s6angle(double [],double [],double [],int,int *);
+#ifndef S6BEZPOWSF
+      extern
+#endif
+      void  s6bezpowsf(double *c1, int order11,int order12, int power, 
+		       double *Pascal, double *c1_power);
 #ifndef  S6CHPAR
 extern
 #endif
@@ -1814,6 +1831,14 @@ void s6move(double []);
 extern
 #endif
 void s6mulvec (double [],double [],double []);
+#ifndef S6MULTSFS
+extern
+#endif
+void 
+s6multsfs(double *c1, int order11,int order12,
+	  double* c2, int order21,int order22,
+	  double *Pascal,
+	  double *newsurf, int *order_newsurf1,int *order_newsurf2);
 #ifndef  S6MVEC
 extern
 #endif
@@ -1826,6 +1851,11 @@ void s6newbox(SISLbox *pbox,int inum,int itype,double aepsge,int *jstat);
 extern
 #endif
 double s6norm(double [],int,double [],int *);
+#ifndef S6NULLSPACE
+extern
+#endif
+void s6nullspace(double ea[],int im1,int im2,double aepsge,
+		 double **nullspace,int *numbvect,int *jstat);
 #ifndef  S6RATDER
 extern
 #endif
@@ -1862,6 +1892,11 @@ void s6strider(double [],int,int,double [],int *);
 extern
 #endif
 void s6takeunion(double [],int,double [],int,double **,int *,int *);
+#ifndef  S6TESTIMPL
+extern
+#endif
+void s6testimpl(SISLSurf *ps1, SISLSurf *ps2, int first, SISLIntpt *vintpt[],
+		int inmbpt, double aepsge, int *jstat);
 #ifndef  S6TWONORM
 extern
 #endif
@@ -2113,6 +2148,11 @@ extern
 #endif
 void sh1794(SISLObject *po1, SISLObject *po2, SISLIntpt **up, int nmb_pt,
 	    double aepsge, int *jstat);
+#ifndef SH1795
+extern
+#endif
+void sh1795(SISLObject *po1, SISLObject *po2, SISLIntpt *pt,
+	    double aepsge, int *jstat);
 #ifndef  SH1830
 extern
 #endif
@@ -2278,6 +2318,10 @@ sh6cvvert(SISLCurve *pc1, SISLCurve *pc2, double *cpar1, double *cpar2);
 extern
 #endif
 void sh6comedg(SISLObject *,SISLObject *,SISLIntpt *,SISLIntpt *,int *);
+#ifndef  SH6CONDIR
+extern
+#endif
+void sh6condir(SISLIntdat *, SISLIntpt *,SISLIntpt *,int *);
 #ifndef  SH6CONNECT
 extern
 #endif
@@ -2886,6 +2930,10 @@ void s1324();
 extern
 #endif
 double s1325();
+#ifndef  S1326
+extern
+#endif
+void s1326();
 #ifndef  S1329
 extern
 #endif
@@ -2914,6 +2962,10 @@ void s1333_cyclic();
 extern
 #endif
 void s1334();
+#ifndef  S1339
+extern
+#endif
+void s1339();
 #ifndef  S1340
 extern
 #endif
@@ -3618,6 +3670,10 @@ double s6ang();
 extern
 #endif
 double s6angle();
+#ifndef S6BEZPOWSF
+      extern
+#endif
+      void s6bezpowsf();
 #ifndef  S6CHPAR
 extern
 #endif
@@ -3786,6 +3842,10 @@ void s6move();
 extern
 #endif
 void s6mulvec ();
+#ifndef S6MULTSFS
+extern
+#endif
+void s6multsfs();
 #ifndef  S6MVEC
 extern
 #endif
@@ -3798,6 +3858,10 @@ void s6newbox();
 extern
 #endif
 double s6norm();
+#ifndef S6NULLSPACE
+extern
+#endif
+void s6nullspace();
 #ifndef  S6RATDER
 extern
 #endif
@@ -3834,6 +3898,10 @@ void s6strider();
 extern
 #endif
 void s6takeunion();
+#ifndef  S6TESTIMPL
+extern
+#endif
+void s6testimpl();
 #ifndef  S6TWONORM
 extern
 #endif
@@ -4034,6 +4102,10 @@ void sh1790();
 extern
 #endif
 void sh1794();
+#ifndef SH1795
+extern
+#endif
+void sh1795();
 #ifndef  SH1830
 extern
 #endif
@@ -4170,6 +4242,10 @@ void sh6cvvert();
 extern
 #endif
 void sh6comedg();
+#ifndef  SH6CONDIR
+extern
+#endif
+void sh6condir();
 #ifndef  SH6CONNECT
 extern
 #endif

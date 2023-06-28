@@ -1,9 +1,10 @@
 /*
  * Copyright (C) 1998, 2000-2007, 2010, 2011, 2012, 2013 SINTEF Digital,
- * Applied Mathematics, Norway.
+ * Department of Mathematics and Cybernetics, Norway.
  *
  * Contact information: E-mail: tor.dokken@sintef.no                      
- * SINTEF Digital, Department of Mathematics and Cybernetics,                         
+ * SINTEF Digital, Department of Mathematics and Cybernetics,                   
+
  * P.O. Box 124 Blindern,                                                 
  * 0314 Oslo, Norway.                                                     
  *
@@ -78,7 +79,7 @@ int main(int avnum, char** vararg)
 	ifstream is_sf1(IN_FILE_SURFACE_1.c_str());
 	ifstream is_sf2(IN_FILE_SURFACE_2.c_str());
 	if (!is_sf1 || !is_sf2) {
-	    throw runtime_error("Could not open input files.  Hav you run "
+	    throw runtime_error("Could not open input files.  Have you run "
 				"the necessary example programs? (example10 "
 				"and example11).");
 	}
@@ -154,13 +155,14 @@ int main(int avnum, char** vararg)
 	is_sf2.close();
 	os.close();
 	if (intpar_surf_1) free(intpar_surf_1);
-	if (intpar_surf_2) free(intpar_surf_2);
+	if (intpar_surf_2)  free(intpar_surf_2);
 	if (num_int_curves > 0)
 	  freeIntcrvlist(intcurve, num_int_curves);
-
+	if (intcurve) free(intcurve);
+	
     } catch (exception& e) {
-	cerr << "Exception thrown: " << e.what() << endl;
-	return 0;
+      cerr << "Exception thrown: " << e.what() << endl;
+      return 0;
     }
 
     return 1;

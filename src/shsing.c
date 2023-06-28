@@ -374,9 +374,12 @@ static void shsing_s9corr(gd,coef,limit)
   int ki;
 
   for (ki=0;ki<4;ki++)
-    if (coef[ki] + gd[ki] < limit[2*ki])        gd[ki] = limit[2*ki]    - coef[ki];
-    else if (coef[ki] + gd[ki] > limit[2*ki+1]) gd[ki] = limit[2*ki +1] - coef[ki];
-  
+    {
+      if (coef[ki] + gd[ki] < limit[2*ki])
+	gd[ki] = limit[2*ki]    - coef[ki];
+      else if (coef[ki] + gd[ki] > limit[2*ki+1])
+	gd[ki] = limit[2*ki +1] - coef[ki];
+    }
 
 }
 

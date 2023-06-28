@@ -52,7 +52,7 @@ IF(sisl_COMPILE_APPS)
   FOREACH(app ${sisl_APPS})
     GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
     ADD_EXECUTABLE(${appname} ${app})
-    TARGET_LINK_LIBRARIES(${appname} sisl)
+    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming)
     SET_TARGET_PROPERTIES(${appname}
       PROPERTIES RUNTIME_OUTPUT_DIRECTORY app)
   ENDFOREACH(app)
@@ -67,7 +67,7 @@ IF(sisl_COMPILE_APPS)
   ENDFOREACH(app)
 ENDIF()
 
-IF(sisl_COMPILE_EXAMPLES OR sisl_COMPILE_VIEWER)
+IF(sisl_COMPILE_EXAMPLES OR sisl_COMPILE_VIEWER OR sisl_COMPILE_APPS)
   INCLUDE_DIRECTORIES(
     ${sisl_SOURCE_DIR}/streaming/include
     )

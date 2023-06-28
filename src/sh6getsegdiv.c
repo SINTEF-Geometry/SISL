@@ -98,6 +98,14 @@ int sh6getsegdiv(SISLSurf *ps, int idiv, double epar[], int *seg_flag)
   double tstart, tend;
 
   *seg_flag = 0;
+  /* seg_flag =
+     0 : Segmentation to split along tangential belt
+     1 : Tangential belt to the left
+     2 : Tangential belt to the right
+     3 : Isolated singularity left-left
+     4 : Isolated singularity left-right
+     5 : Isolated singularity right-left
+     6 : Isolated singularity right-right */
 
   if ((idiv == 1 || idiv == 3) && ps->seg1)
     {
@@ -124,7 +132,7 @@ int sh6getsegdiv(SISLSurf *ps, int idiv, double epar[], int *seg_flag)
 	  epar[0] = par;
 	  found += 1;
 	  if (prio == TANGENTIAL_BELT_LEFT || prio == TANGENTIAL_BELT_RIGHT)
-	    (*seg_flag) += prio;
+	    (*seg_flag) = prio;
 	}
     }
 
@@ -155,7 +163,13 @@ int sh6getsegdiv(SISLSurf *ps, int idiv, double epar[], int *seg_flag)
 	  if (prio == TANGENTIAL_BELT_LEFT || prio == TANGENTIAL_BELT_RIGHT)
 	    {
 	      if ((*seg_flag) == 0)
-		(*seg_flag) += prio;
+		(*seg_flag) = prio;
+	      else if ((*seg_flag) == TANGENTIAL_BELT_LEFT)
+		(*seg_flag) = (prio == TANGENTIAL_BELT_LEFT) ?
+		  ISOLATED_SING_LEFT_LEFT : ISOLATED_SING_LEFT_RIGHT;
+	      else if ((*seg_flag) == TANGENTIAL_BELT_RIGHT)
+		(*seg_flag) = (prio == TANGENTIAL_BELT_LEFT) ?
+		  ISOLATED_SING_RIGHT_LEFT : ISOLATED_SING_RIGHT_RIGHT;
 	      else
 		(*seg_flag) = 0;  /* Tangential belt segmentation is
 				     expected in one parameter dir. only */

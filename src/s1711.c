@@ -451,7 +451,6 @@ void s1711(ps,ipar,apar,rsnew1,rsnew2,jstat)
   s6err("s1711",*jstat,kpos);
   goto outfree;
 
-
 outfree:
    if(q1) freeSurf(q1);
    q1 = SISL_NULL;

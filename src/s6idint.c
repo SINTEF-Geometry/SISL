@@ -159,6 +159,8 @@ void s6idint(po1,po2,pintdat,rpt,iob)
   
   for (ki=pintdat->ipoint-1; ki>=0; ki--)
     {
+      if (pintdat->vpoint[ki]->iinter < 0)
+	continue;  /* Help point */
       for (kj=0; kj<kpar1; kj++)
         if (sstart1[kj] > pintdat->vpoint[ki]->epar[kj]  ||
 	    send1[kj] < pintdat->vpoint[ki]->epar[kj])

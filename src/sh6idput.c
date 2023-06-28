@@ -50,6 +50,7 @@
 
 #include "sislP.h"
 
+
 
 #if defined(SISLNEEDPROTOTYPES)
 void
@@ -115,18 +116,23 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
 *********************************************************************
 */
 {
-  int kstat;			/* Local status variable.               */
+  int kstat=0;	                /* Local status variable.               */
   int kpos = 0;			/* Position of error.                   */
-  int ki, kj;			/* Counters                             */
+  int ki, kj, kr, kh, kh2, ka1, ka2, kb;  	/* Counters             */
   int keep_first;		/* Flag, which object is not enhanced   */
   int kant;			/* Number of parameters in new points.  */
-  int ind1, ind2;		/* Indexes (not used)                   */
+  int ind1, ind2;	        /* Indexes                              */
   int no;			/* No. of doubles to copy into geo_aux  */
   double *scoef = SISL_NULL;		/* Pointer to array copying into geo_aux*/
   double *spar = SISL_NULL;		/* Storing uppdated parametervalues.    */
   SISLIntpt **uintpt = SISL_NULL;	/* Help array while getting connections */
   int iinter;
   double *nullp = SISL_NULL;
+  int kx;
+  int log_1, log_2;                     /* Used to check curve_dir         */
+  double t1, t2, t3, t4;
+  SISLIntpt *prev, *curr;
+
   /* VSK. Remove cross intersections. ----------------------------  */
   int kcross = 1;     /* Indicates existence of cross intersections. */
   int kncross = 0;    /* Number of cross intersections.              */
@@ -160,6 +166,7 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
   /* Allocate an array for intersection points. */
   if ((uintpt = newarray (pintdat->ipoint, SISLIntpt *)) == SISL_NULL)
     goto err101;
+
 
   /* Allocate an array for parametervalues. */
   if ((spar = newarray (kant, double)) == SISL_NULL)
@@ -208,15 +215,12 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
 	}
       /*      if (no > 0)
         	memcopy (uintpt[ki]->geo_aux, scoef, (no < 6) ? no : 6, DOUBLE); */
-
-
-
     }
 
 
 
   /* Insert all new intersection points in rintdat. */
-  for (ki = 0; ki < pintdat->ipoint; ki++)
+  for (ki = 0; ki < (*npoint); ki++)
     {
       sh6idnpt (rintdat, &uintpt[ki], 1, &kstat);
       if (kstat < 0)
@@ -224,15 +228,113 @@ sh6idput (po1, po2, rintdat, pintdat, inr, apar, outintpt, npoint, jstat)
     }
 
   /* Transform the connections. */
-  for (ki = 0; ki < pintdat->ipoint; ki++)
+  for (ki = 0; ki < (*npoint); ki++)
     {
-      for (kj = ki + 1; kj < pintdat->ipoint; kj++)
+      for (kj = ki + 1; kj < (*npoint); kj++)
 	{
 	  sh6getlist (pintdat->vpoint[ki], pintdat->vpoint[kj],
 		      &ind1, &ind2, &kstat);
 	  if (kstat < 0)
 	    goto error;
-	  if (kstat == 0)
+	  kb = 2;
+	  if (kstat == 0 && (uintpt[ki]->no_of_curves > 0 ||
+			     uintpt[kj]->no_of_curves > 0))
+	    {
+	      /* Test curve direction */
+ 	      log_1 = pintdat->vpoint[ki]->curve_dir[ind1];
+	      log_1 = log_1>>1;
+	      log_1 &= 15;
+	      for (kb=0, ka1=ki, ka2=kj; kb<2; ++kb, ka1=kj, ka2=ki)
+		{
+		  for (kh=0; kh<uintpt[ka1]->no_of_curves; ++kh)
+		    {
+		      if (uintpt[ka1]->pnext[kh] == uintpt[ka2])
+			continue;
+		      log_2 = uintpt[ka1]->curve_dir[kh];
+		      log_2 = log_2 >> 1;
+		      log_2 &= 15;
+		      if (log_1 & log_2)
+			{
+			  /* Test equality */
+			  for (kr=0, kx=-1; kr<uintpt[ka1]->ipar; ++kr)
+			    if (DNEQUAL(uintpt[ka1]->epar[kr], uintpt[ka2]->epar[kr]))
+			      {
+				kx = kr;
+				break;
+			      }
+
+			  if (kx >= 0)
+			    {
+			      /* Check if the two points are connected in a chain,
+				 or the new point(s) lies between two previous ones */
+			      t1 = pintdat->vpoint[ka1]->epar[kx];
+			      t2 = pintdat->vpoint[ka2]->epar[kx];
+			      t3 = uintpt[ka1]->pnext[kh]->epar[kx];
+			      if (fabs(t3-t1) > fabs(t2-t1) &&
+				  (t3 - t1)*(t2 - t1) > 0.0)
+				{
+				  /* place uintpt[ka2] in the link between
+				     uintpt[ka1] and uintpt[ka1]->pnext[kh] */
+				  sh6insertpt(uintpt[ka1], uintpt[ka1]->pnext[kh],
+					      uintpt[ka2], &kstat);
+				  if (kstat < 0)
+				    goto error;
+				  break;
+				}
+			      else if (fabs(t3-t1) < fabs(t2-t1) &&
+				       (t3 - t1)*(t2 - t1) > 0.0)
+				{
+				  /* Follow the list of isocurve points until 
+				     uintpt[ka2] or the last point before it */
+				  prev = uintpt[ka1];
+				  curr = uintpt[ka1]->pnext[kh];
+
+				  for (kh2=0; kh2<curr->no_of_curves; ++kh2)
+				    {
+				      if (curr->pnext[kh2] == prev)
+					continue;
+				      log_2 = curr->curve_dir[kh];
+				      log_2 = log_2 >> 1;
+				      log_2 &= 15;
+				      if (!(log_1 & log_2))
+					continue;
+				      t4 = curr->pnext[kh2]->epar[kx];
+				      prev = curr;
+				      curr = curr->pnext[kh2];
+				      if (fabs(t4-t1) >= fabs(t2-t1))
+					break;
+				    }
+				  t3 = curr->epar[kx];
+				  if (curr == uintpt[ka2])
+				    {
+				      /* Do nothing, connection already established */
+				      ;
+				    }
+				  else if (fabs(t3-t1) > fabs(t2-t1))
+				    {
+				      sh6insertpt(uintpt[ka1], uintpt[ka1]->pnext[kh],
+						  uintpt[ka2], &kstat);
+				      if (kstat < 0)
+					goto error;
+				    }
+				  else
+				    {
+				      sh6idcon (rintdat, &curr, &uintpt[ka2], &kstat);
+				      if (kstat < 0)
+					goto error;
+				    }
+				  break;
+				}
+			      /* printf("Here we are \n"); */
+			    }
+			}
+		    }
+		  if (kh < uintpt[ka1]->no_of_curves)
+		    break;
+		}
+	    }
+
+	  if (kstat == 0 && kb == 2)
 	    {
 	      sh6idcon (rintdat, &uintpt[ki], &uintpt[kj], &kstat);
 	      if (kstat < 0)
@@ -319,3 +421,4 @@ out:*outintpt = uintpt;
   if (spar != SISL_NULL)
     freearray (spar);
 }
+

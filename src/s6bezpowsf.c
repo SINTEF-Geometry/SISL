@@ -39,97 +39,78 @@
 
 #include "sisl-copyright.h"
 
-/*
- *
- * $Id: sh6tomain.c,v 1.2 2001-03-19 16:06:04 afr Exp $
- *
- */
 
-
-#define SH6TOMAIN
+#define S6BEZPOWSF
 
 #include "sislP.h"
 
-
+
 #if defined(SISLNEEDPROTOTYPES)
 void 
-      sh6tomain(SISLIntpt *pt,int *jstat)
+s6bezpowsf(double *c1, int order11,int order12, int power, 
+		 double *Pascal, double *c1_power)
 #else
-void sh6tomain(pt,jstat)
-   SISLIntpt *pt;
-   int       *jstat;
-#endif   
+   void s6bezpowsf(c1, order11, order12, power, Pascal, c1_power)
+      double *c1;
+      int order11;
+      int order12;
+      int power;
+      double *Pascal;
+      double *c1_power;
+#endif      
+{
 /*
 *********************************************************************
 *
 *********************************************************************
-*
-* PURPOSE    : Check if pt is a help point. If it is, transform to
-*              main point, if not give a message.
-*
-*
-* INPUT      : pt       - Pointer to the Intpt.
+*                                                                   
+* PURPOSE    : Multiply a given 1D Bezier surface with itself till a
+*              specified power.
 *
 *
-* OUTPUT     : pt       - Pointer to the updated Intpt.
-*              jstat    - Error flag.
-*                         jstat =  0  => pt was a help point, now main.
-*                         jstat =  1  => pt is not a help point.
-*                         jstat = -1  => Error in pt.
+*
+* INPUT      : c1      - Coefficients of Bezier surface.
+*              order11 - Order of surface in first par. dir.
+*              order12 - Order of surface in second par. dir.
+*              power   - The factor into which the surfaces are
+*                        to be multiplied.
+*              Pascal  - Factors used in curve multiplication.
 *
 *
-* METHOD     : 
+*
+* OUTPUT     : c1_power - Coefficients of product surface.
 *
 *
-* REFERENCES :
+* REFERENCES : s6multsfs
 *
-* WRITTEN BY : Michael Floater, SI, Oslo, Norway. June 91.
-* MODYFIED BY: UJK, SI, Oslo, Norway. September 91.
+* NOTE       : Factors necessary for the multiplication must be
+*              precomputed. If the multiplication routine is to be
+*              calles severatl times, it speeds up the computations
+*              if this factors are called only once.
+*
+*-
+* CALLS      :
+*
+* WRITTEN BY : Tor Dokken, SINTEF, 1993. 
+* COMMENTED BY : Vibeke Skytt, SINTEF, 06.94.
+*
 *********************************************************************
 */
-{
-   int ki; /* Loop variable. */
-   int num; 
-   int kstat;
-   
-   *jstat=0;
+  int p;
+  int kgrad11=order11-1;
+  int kgrad12=order12-1;
+  int kdum1,kdum2;
+  double *c1_p;
+  double *c1_pm1;
+  int pgrad11, pgrad12;
 
-   if(pt == SISL_NULL) goto err1;
+  c1_power[0] = 1;
+  for(p=1,pgrad11=0,pgrad12=0,c1_pm1=c1_power,c1_p=c1_power+1;p<=power;
+      p++,pgrad11+=kgrad11,pgrad12+=kgrad12,c1_pm1=c1_p,c1_p+=(pgrad11+1)*(pgrad12+1))
+    {
 
-   if(sh6ishelp(pt))  /* If pt is a help point. */
-   {
-       pt->iinter = -pt->iinter;  /* Convert status to main point. */
-
-       /* Go through all neighbours and keep invariant:
-	  not more than one mainpoint connected to a help point. */
-       for(ki=0; ki<pt->no_of_curves; ki++) 
-       {
-	   if(sh6ishelp(pt->pnext[ki]))
-	   {
-	      /* UJK, change all NON-terminators to main */
-	      /* num=sh6nmbmain(pt->pnext[ki],&kstat); */
-	       num = pt->pnext[ki]->no_of_curves;
-	       if(num > 1) sh6tomain(pt->pnext[ki],&kstat);
-	   }
-       }
-       pt->fromhelp++;
-   }
-   else
-   {
-       *jstat=1;
-   }
-
-   goto out;
-   
-
-err1:
-   /* Error in input. pt is null. */
-   
-   *jstat = -1;
-   s6err("sh6tomain",*jstat,0);
-   goto out;
-   
-   
-   out :
-      return;
+      s6multsfs(c1, order11,order12, c1_pm1,pgrad11+1,pgrad12+1,
+                 Pascal, c1_p, &kdum1,&kdum2);
+            }
+  
 }

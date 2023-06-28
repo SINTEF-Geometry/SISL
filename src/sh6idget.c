@@ -129,6 +129,7 @@ sh6idget (po1, po2, ipar, apar, pintdat, rintdat, aepsge, jstat)
   int kleftt = 0, klefts = 0;
   double point[3];
   int log_ind;
+  SISLIntpt *qtmain = NULL;
 
   /* Find out which object the parameter belongs to */
  if (ipar < po1->iobj)
@@ -295,6 +296,29 @@ sh6idget (po1, po2, ipar, apar, pintdat, rintdat, aepsge, jstat)
 
     if (kj == pintdat->vpoint[ki]->ipar)
     {
+	  if (sh6ishelp(pintdat->vpoint[ki]))
+	    qtmain = sh6getmain(pintdat->vpoint[ki]);
+	  else 
+	    qtmain = NULL;
+
+	  if (qtmain)
+	    {
+	      /* A unique main point exist. Check if it belongs to the
+		 subproblem. */
+
+	      for (kn=0; kn<qtmain->ipar; kn++)
+		if ((qtmain->epar[kn] < tstart[kn] &&
+		     DNEQUAL(qtmain->epar[kn], tstart[kn])) ||
+		    (qtmain->epar[kn] > tend[kn] &&
+		     DNEQUAL(qtmain->epar[kn], tend[kn])))
+		  break;
+
+	      if (kn == qtmain->ipar)
+		/* The main point belongs to the subproblem. 
+		   Skip the help point. */
+		continue;
+	    }
+
       for (kn = 0; kn < ipar; kn++)
 	spar[kn] = pintdat->vpoint[ki]->epar[kn];
       for (; kn < pintdat->vpoint[ki]->ipar - 1; kn++)

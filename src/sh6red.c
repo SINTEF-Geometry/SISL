@@ -51,6 +51,13 @@
 #include "sislP.h"
 
 #if defined(SISLNEEDPROTOTYPES)
+static int sh6red_help(SISLObject *po1, SISLObject *po2,
+			 SISLIntpt *pt, SISLIntpt *pmain, int *jstat);
+#else
+static int sh6red_help(po1, po2, pt, pmain, jstat);
+#endif
+
+#if defined(SISLNEEDPROTOTYPES)
 void
 sh6red (SISLObject * po1, SISLObject * po2,
 	SISLIntdat * pintdat, int *jstat)
@@ -95,11 +102,12 @@ sh6red (po1, po2, pintdat, jstat)
   int kstat, i, j;
   double tepsge = (double)10000.0*REL_COMP_RES;
   double weight = (double) 0.5;
-  int changed;
+  int changed, doreduce;
   SISLIntpt *pcurr,*pstart,*plast;	/* to traverse list of points.     */
   int indstart,indlast,inddum;		/* Indexes used in lists           */
   int log_1, log_2;
   int dim;
+  SISLIntpt *qmain;
   if (po1->iobj == SISLSURFACE)
     dim = po1->s1->idim;
   else if (po1->iobj == SISLCURVE)
@@ -111,12 +119,16 @@ sh6red (po1, po2, pintdat, jstat)
      constant parameter direction */
   
   if (((po1->iobj == SISLSURFACE && po2->iobj == SISLPOINT
-        && po1->s1->idim == 1) ||
+        && dim == 1) ||
        (po2->iobj == SISLSURFACE && po1->iobj == SISLPOINT
-        && po2->s1->idim == 1) ||
+        && dim == 1) ||
        (po1->iobj == SISLSURFACE && po2->iobj == SISLSURFACE
-        && po1->s1->idim == 3)) &&
-        pintdat != SISL_NULL)
+        && dim == 3) ||
+      (po1->iobj + po2->iobj == SISLSURFACE + SISLCURVE
+        && dim == 3) ||
+      (po2->iobj == SISLSURFACE && po1->iobj == SISLCURVE
+       && dim == 3)) &&
+       pintdat != SISL_NULL)
      for (j = 0; j < pintdat->ipoint; j++)
      {
 	
@@ -218,20 +230,52 @@ sh6red (po1, po2, pintdat, jstat)
       do
 	{
 	  changed = 0;
-	  for (i = 0; i < pintdat->ipoint; i++)
+	  //for (i = 0; i < pintdat->ipoint; i++)
+	  for (i = pintdat->ipoint-1; i >= 0; i--)
 	    {
 	      sh6isinside (po1, po2, pintdat->vpoint[i], &kstat);
 	      if (kstat < 0)
 		goto error;
-	      if (kstat == 1)
+	      if (kstat == 1 || (kstat == 2 && po1->iobj+po2->iobj == 2*SISLSURFACE))
 		{
 		  if (sh6ismain (pintdat->vpoint[i]) &&
 		      sh6nmbmain (pintdat->vpoint[i], &kstat) == 1)
 		    {
-		      sh6tohelp (pintdat->vpoint[i], &kstat);
-		      if (kstat < 0)
-			goto error;
-		      changed = 1;
+		      if (pintdat->vpoint[i]->fromhelp > 0)
+			doreduce = 1;
+		      else
+			{
+			  /* Check if a reduction is recommended */
+			  qmain = SISL_NULL;
+			  for (j=0; j<pintdat->vpoint[i]->no_of_curves; ++j)
+			    if (pintdat->vpoint[i]->pnext[j]->iinter > 0)
+			      {
+				qmain = pintdat->vpoint[i]->pnext[j];
+				break;
+			      }
+
+			  if (qmain && po1->iobj+po2->iobj == 2*SISLSURFACE)
+			    {
+			      /* Check if the points are connected along an
+				 edge */
+			      sh6comedg(po1, po2, pintdat->vpoint[i], qmain, &kstat);
+			      if (kstat < 0)
+				goto error;
+			      if (kstat == 0)
+				qmain = SISL_NULL;   /* Not a common edge */
+			    }
+			  doreduce = (qmain == SISL_NULL) ? 0 :
+			    sh6red_help(po1, po2, pintdat->vpoint[i], qmain, &kstat);
+			  if (kstat < 0)
+			    goto error;
+			}
+		      if (doreduce)
+			{
+			  sh6tohelp (pintdat->vpoint[i], &kstat);
+			  if (kstat < 0)
+			    goto error;
+			  changed = 1;
+			}
 		    }
 		}
 	    }
@@ -351,7 +395,7 @@ sh6red (po1, po2, pintdat, jstat)
      }
     }
 
-  /* Reduction done. */
+   /* Reduction done. */
 
   (*jstat) = 0;
   goto out;
@@ -369,3 +413,95 @@ out:
   return;
 }
 
+#if defined(SISLNEEDPROTOTYPES)
+static int sh6red_help(SISLObject *po1, SISLObject *po2,
+		       SISLIntpt *pt, SISLIntpt *pmain, int *jstat)
+#else
+  static int sh6red_help(po1, po2, pt, pmain, jstat)
+     SISLObject *po1;
+     SISLObject *po2;
+     SISLIntpt *pt;
+     SISLIntpt *pmain;
+     int *jstat;
+#endif
+{
+  int kstat = 0;
+  int ki, k1;
+  int kleft1 = 0, kleft2 = 0, kleft3;
+  double tpar1, tpar2;
+  double *sst[4];   /* Knot vectors in the problem, maximum 4. */
+  int lkn[4];       /* Number of coefficients in each parameter direction. */
+  int lkk[4];       /* Order in each parameter direction. */
+  int  doreduce = 1;
+
+  *jstat = 0;
+  if (po1->iobj == SISLSURFACE)
+    {
+      sst[0] = po1->s1->et1;
+      sst[1] = po1->s1->et2;
+      lkn[0] = po1->s1->in1;
+      lkn[1] = po1->s1->in2;
+      lkk[0] = po1->s1->ik1;
+      lkk[1] = po1->s1->ik2;
+      k1 = 2;
+    }
+  else if (po1->iobj == SISLCURVE)
+    {
+      sst[0] = po1->c1->et;
+      lkn[0] = po1->c1->in;
+      lkk[0] = po1->c1->ik;
+      k1 = 1;
+    }
+  else
+    k1 = 0;
+
+  if (po2->iobj == SISLSURFACE)
+    {
+      sst[k1] = po2->s1->et1;
+      sst[k1+1] = po2->s1->et2;
+      lkn[k1] = po2->s1->in1;
+      lkn[k1+1] = po2->s1->in2;
+      lkk[k1] = po2->s1->ik1;
+      lkk[k1+1] = po2->s1->ik2;
+    }
+  else if (po2->iobj == SISLCURVE)
+    {
+      sst[k1] = po2->c1->et;
+      lkn[k1] = po2->c1->in;
+      lkk[k1] = po2->c1->ik;
+    }
+      
+  for (ki=0; ki<pt->ipar; ki++)
+    {
+      tpar1 = pt->epar[ki];
+      s1219(sst[ki], lkk[ki], lkn[ki], &kleft1, tpar1, &kstat);
+      if (kstat < 0)
+	goto error;
+      if (tpar1 >= sst[ki][lkn[ki]])
+	kleft1 = lkn[ki];
+
+      tpar2 = pmain->epar[ki];
+      s1219(sst[ki], lkk[ki], lkn[ki], &kleft2, tpar2, &kstat);
+      if (kstat < 0)
+	goto error;
+      if (tpar2 >= sst[ki][lkn[ki]])
+	kleft2 = lkn[ki];
+
+      kleft3 = (kleft2 > kleft1) ? kleft1 + 1 :
+	((kleft1 == kleft2) ? kleft1 : kleft1 - 1);
+      if (DEQUAL(sst[ki][kleft1],tpar1) ||
+	  (kleft1 != kleft2 && DNEQUAL(sst[ki][kleft3],sst[ki][kleft2])))
+	{
+	  doreduce = 0;
+	  break;
+	}
+    }
+  goto out;
+
+ error:
+  *jstat = kstat;
+  goto out;
+
+ out:
+  return doreduce;
+}
