@@ -84,40 +84,49 @@ ENDIF()
 IF(sisl_COMPILE_VIEWER)
 
   find_package(OpenGL REQUIRED)
+
   find_path(OPENGL_INCLUDE_DIR
-    gl.h
-    PATH_PREFIXES GL
-    PATHS
-    /usr/local/include
-    /usr/include
-    "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
-    "C:\\Users\\$ENV{USERNAME}\\Install\\include")
+            gl.h
+            PATH_PREFIXES GL
+            PATHS
+            /usr/local/include
+            /usr/include
+            "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
+            "C:\\Users\\$ENV{USERNAME}\\Install\\include"
+            )
 
   if(WIN32)
-    set(GLUT_INCLUDE_DIR
-      "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
-      "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
-      "C:\\Users\\$ENV{USERNAME}\\Install\\include"
-    )
+
+    find_path(GLUT_INCLUDE_DIR
+              glut.h
+              PATH_PREFIXES GL
+              PATHS
+              "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
+              "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
+              "C:\\Users\\$ENV{USERNAME}\\Install\\include"
+              )
+
+    find_library( GLUT_glut_LIBRARY_RELEASE NAMES freeglut
+    		  PATHS
+                  ${OPENGL_LIBRARY_DIR}
+                  ${GLUT_ROOT_PATH}/Release
+                  "~/Install/msvc2019_lib64/Release"
+                  #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
+                 )
   else()
-    find_package(GLUT REQUIRED)
+    find_package(glut REQUIRED)  
   endif()
-  
+
   INCLUDE_DIRECTORIES(
     ${sisl_SOURCE_DIR}/viewer/include
     ${OPENGL_INCLUDE_DIR}
     ${GLUT_INCLUDE_DIR}
     )
 
-  find_library( GLUT_glut_LIBRARY_RELEASE NAMES glut
-    PATHS
-    ${OPENGL_LIBRARY_DIR}
-    ${GLUT_ROOT_PATH}/Release
-    "~/Install/msvc2019_lib64/Release"
-    #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
-    )
-
-message("MSVC_NAME lib WIN_LIB_TYPE: ${MSVC_NAME}lib${WIN_LIB_TYPE}")
+  # message("GLUT_glut_LIBRARY_RELEASE: ${GLUT_glut_LIBRARY_RELEASE}")
+  # message("GLUT_INCLUDE_DIR: ${GLUT_INCLUDE_DIR}")
+  # message("OPENGL_LIBRARIES: ${OPENGL_LIBRARIES}")
+  # message("MSVC_NAME lib WIN_LIB_TYPE: ${MSVC_NAME}lib${WIN_LIB_TYPE}")
 
   FILE(GLOB sisl_viewer_SRCS viewer/src/*.cpp viewer/include/*.h)
   ADD_LIBRARY(sisl_viewer ${sisl_viewer_SRCS})
