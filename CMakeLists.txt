@@ -106,7 +106,7 @@ IF(sisl_COMPILE_VIEWER)
               "C:\\Users\\$ENV{USERNAME}\\Install\\include"
               )
 
-    find_library( GLUT_glut_LIBRARY_RELEASE NAMES freeglut
+    find_library( GLUT_glut_LIBRARY NAMES freeglut
     		  PATHS
                   ${OPENGL_LIBRARY_DIR}
                   ${GLUT_ROOT_PATH}/Release
@@ -114,7 +114,7 @@ IF(sisl_COMPILE_VIEWER)
                   #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
                  )
   else()
-    find_package(glut REQUIRED)  
+    find_package(GLUT REQUIRED)  
   endif()
 
   INCLUDE_DIRECTORIES(
@@ -123,8 +123,11 @@ IF(sisl_COMPILE_VIEWER)
     ${GLUT_INCLUDE_DIR}
     )
 
-  # message("GLUT_glut_LIBRARY_RELEASE: ${GLUT_glut_LIBRARY_RELEASE}")
   # message("GLUT_INCLUDE_DIR: ${GLUT_INCLUDE_DIR}")
+  # message("GLUT_INCLUDE_PATH: ${GLUT_INCLUDE_PATH}")
+  # message("GLUT_glut_LIBRARY_RELEASE: ${GLUT_glut_LIBRARY_RELEASE}")
+  # message("GLUT_glut_LIBRARY_DEBUG: ${GLUT_glut_LIBRARY_DEBUG}")
+  # message("GLUT_glut_LIBRARY: ${GLUT_glut_LIBRARY}")
   # message("OPENGL_LIBRARIES: ${OPENGL_LIBRARIES}")
   # message("MSVC_NAME lib WIN_LIB_TYPE: ${MSVC_NAME}lib${WIN_LIB_TYPE}")
 
@@ -138,7 +141,7 @@ IF(sisl_COMPILE_VIEWER)
   FOREACH(app ${sisl_APPS3})
     GET_FILENAME_COMPONENT(appname ${app} NAME_WE)
     ADD_EXECUTABLE(${appname} ${app})
-    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming sisl_viewer ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY_RELEASE})
+    TARGET_LINK_LIBRARIES(${appname} sisl sisl_streaming sisl_viewer ${OPENGL_LIBRARIES} ${GLUT_glut_LIBRARY})
     SET_TARGET_PROPERTIES(${appname}
       PROPERTIES RUNTIME_OUTPUT_DIRECTORY viewer)
   ENDFOREACH(app)
