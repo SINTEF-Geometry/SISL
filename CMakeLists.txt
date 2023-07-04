@@ -106,13 +106,31 @@ IF(sisl_COMPILE_VIEWER)
               "C:\\Users\\$ENV{USERNAME}\\Install\\include"
               )
 
-    find_library( GLUT_glut_LIBRARY NAMES freeglut
+    find_library( GLUT_LIBRARY_RELEASE NAMES freeglut
     		  PATHS
-                  ${OPENGL_LIBRARY_DIR}
                   ${GLUT_ROOT_PATH}/Release
                   "~/Install/msvc2019_lib64/Release"
                   #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
                  )
+
+    find_library( GLUT_LIBRARY_DEBUG NAMES freeglutd
+    		  PATHS
+                  ${GLUT_ROOT_PATH}/Debug
+                  "~/Install/msvc2019_lib64/Debug"
+                  #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Debug"
+                 )
+    # message("GLUT_LIBRARY_RELEASE: ${GLUT_LIBRARY_RELEASE}")
+    # message("GLUT_LIBRARY_DEBUG: ${GLUT_LIBRARY_DEBUG}")
+    
+    set(GLUT_glut_LIBRARY "")
+    # message("GLUT_glut_LIBRARY: ${GLUT_glut_LIBRARY}")
+    if(GLUT_LIBRARY_DEBUG)
+      set(GLUT_glut_LIBRARY ${GLUT_glut_LIBRARY} debug ${GLUT_LIBRARY_DEBUG})
+    endif()
+    if(GLUT_LIBRARY_RELEASE)
+      set(GLUT_glut_LIBRARY ${GLUT_glut_LIBRARY} optimized ${GLUT_LIBRARY_RELEASE})
+    endif()
+    # message("GLUT_glut_LIBRARY: ${GLUT_glut_LIBRARY}")
   else()
     find_package(GLUT REQUIRED)  
   endif()
