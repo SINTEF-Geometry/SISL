@@ -104,12 +104,14 @@ IF(sisl_COMPILE_VIEWER)
               "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
               "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
               "C:\\Users\\$ENV{USERNAME}\\Install\\include"
+	      "C:\\local\\include"
               )
 
     find_library( GLUT_LIBRARY_RELEASE NAMES freeglut
     		  PATHS
                   ${GLUT_ROOT_PATH}/Release
                   "~/Install/msvc2019_lib64/Release"
+		  "C:/local/msvc2019_lib64/Release"
                   #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
                  )
 
@@ -117,6 +119,7 @@ IF(sisl_COMPILE_VIEWER)
     		  PATHS
                   ${GLUT_ROOT_PATH}/Debug
                   "~/Install/msvc2019_lib64/Debug"
+		  "C:/local/msvc2019_lib64/Debug"
                   #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Debug"
                  )
     # message("GLUT_LIBRARY_RELEASE: ${GLUT_LIBRARY_RELEASE}")
