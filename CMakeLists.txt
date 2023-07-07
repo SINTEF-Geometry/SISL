@@ -93,6 +93,7 @@ IF(sisl_COMPILE_VIEWER)
             /usr/include
             "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
             "C:\\Users\\$ENV{USERNAME}\\Install\\include"
+	    "C:\\local\\include"
             )
 
   if(WIN32)
