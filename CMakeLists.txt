@@ -107,20 +107,36 @@ IF(sisl_COMPILE_VIEWER)
               "C:\\Users\\$ENV{USERNAME}\\Install\\include"
 	      "C:\\local\\include"
               )
+    if(${MSVC_VERSION} EQUAL 1900)
+      set(MSVC_NAME "msvc2015_")
+      # MESSAGE("Visual Studio 2015!")
+    elseif((${MSVC_VERSION} GREATER_EQUAL 1920) AND (${MSVC_VERSION} LESS 1930))
+      # MESSAGE("Visual Studio 2019!")
+      set(MSVC_NAME "msvc2019_")
+    elseif((${MSVC_VERSION} GREATER_EQUAL 1930) AND (${MSVC_VERSION} LESS 1940))
+      set(MSVC_NAME "msvc2022_")
+    else()
+      message("MSVC version not supported or not installed!")
+    endif()
+    if(CMAKE_CL_64)
+      set(WIN_LIB_TYPE "64")
+    else()
+      set(WIN_LIB_TYPE "32")
+    endif()
 
     find_library( GLUT_LIBRARY_RELEASE NAMES freeglut
     		  PATHS
+  		  "~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
+  		  "C:/local/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
                   ${GLUT_ROOT_PATH}/Release
-                  "~/Install/msvc2019_lib64/Release"
-		  "C:/local/msvc2019_lib64/Release"
                   #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Release"
                  )
 
     find_library( GLUT_LIBRARY_DEBUG NAMES freeglutd
     		  PATHS
                   ${GLUT_ROOT_PATH}/Debug
-                  "~/Install/msvc2019_lib64/Debug"
-		  "C:/local/msvc2019_lib64/Debug"
+		  "~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Debug"
+		  "C:/local/${MSVC_NAME}lib${WIN_LIB_TYPE}/Debug"
                   #"~/Install/${MSVC_NAME}lib${WIN_LIB_TYPE}/Debug"
                  )
     # message("GLUT_LIBRARY_RELEASE: ${GLUT_LIBRARY_RELEASE}")
