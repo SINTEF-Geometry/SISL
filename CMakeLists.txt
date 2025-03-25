@@ -212,6 +212,50 @@ ELSE(WIN32)
     )
 ENDIF(WIN32)
 
+# === Install Targets and Export CMake Package ===
+
+include(CMakePackageConfigHelpers)
+
+# Install the sisl target with export
+install(TARGETS sisl
+    EXPORT SISLTargets
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+# Install header files
+install(DIRECTORY include/
+    DESTINATION include
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# Export target info to a file
+install(EXPORT SISLTargets
+    FILE SISLTargets.cmake
+    #NAMESPACE SISL::             # Allow target_link_libraries(MyApp SISL::sisl)
+    DESTINATION lib/cmake/SISL
+)
+
+# Generate and install version/config files
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/SISLConfigVersion.cmake"
+    VERSION 4.6.0
+    COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/SISLConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/SISLConfig.cmake"
+    INSTALL_DESTINATION lib/cmake/SISL
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/SISLConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/SISLConfigVersion.cmake"
+    DESTINATION lib/cmake/SISL
+)
 
 # CPack stuff
 IF(NOT GoTools_ALL_COMPILE)
