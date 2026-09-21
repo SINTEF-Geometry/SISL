@@ -2140,7 +2140,7 @@ newSegmentation(double *segmentation, int *type, int nseg)
 SISLSegmentation *
 newSegmentation(segmentation, type, nseg)
 double *segmentation;
-int type; 
+int *type; 
 int nseg;
 #endif
 /*
