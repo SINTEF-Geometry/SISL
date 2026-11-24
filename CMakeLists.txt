@@ -86,8 +86,8 @@ IF(sisl_COMPILE_VIEWER)
   find_package(OpenGL REQUIRED)
 
   find_path(OPENGL_INCLUDE_DIR
-            gl.h
-            PATH_PREFIXES GL
+            GL/gl.h
+            # PATH_PREFIXES GL
             PATHS
             /usr/local/include
             /usr/include
@@ -99,8 +99,8 @@ IF(sisl_COMPILE_VIEWER)
   if(WIN32)
 
     find_path(GLUT_INCLUDE_DIR
-              glut.h
-              PATH_PREFIXES GL
+              GL/glut.h
+              # PATH_PREFIXES GL
               PATHS
               "$ENV{PROGRAMW6432}/Microsoft SDKs/Windows/v6.0A/Include"
               "$ENV{HOME}\\Install\\include" # For some reason HOME is not found in VS 2019.
