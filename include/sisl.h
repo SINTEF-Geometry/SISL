@@ -71,6 +71,8 @@
 # else
 #  define GO_API __declspec(dllimport)
 # endif // __DLL__
+# undef SISLNEEDPROTOTYPES
+# define SISLNEEDPROTOTYPES
 #else
 # define GO_API
 #endif // __BORLANDC__
@@ -920,14 +922,12 @@ void GO_API s1860(SISLSurf *,double [],int,double,double,
 #ifndef  S1870
 extern
 #endif
-void
-   s1870(SISLSurf *ps1, double *pt1, int idim, double aepsge,
+void GO_API s1870(SISLSurf *ps1, double *pt1, int idim, double aepsge,
 	 int *jpt,double **gpar1,int *jcrv,SISLIntcurve ***wcurve,int *jstat);
 #ifndef S1871
 extern
 #endif
-void
-   s1871(SISLCurve *pc1, double *pt1, int idim, double aepsge,
+void GO_API s1871(SISLCurve *pc1, double *pt1, int idim, double aepsge,
 	 int *jpt,double **gpar1,int *jcrv,SISLIntcurve ***wcurve,int *jstat);
 #ifndef  S1920
 extern
